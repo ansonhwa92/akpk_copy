@@ -129,13 +129,25 @@ namespace FEP.Model.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        CourseId = c.Int(nullable: false),
+                        ModuleId = c.Int(nullable: false),
                         Type = c.Int(nullable: false),
                         Title = c.String(),
                         CompletionType = c.Int(nullable: false),
                         Order = c.Int(nullable: false),
                         QuestionType = c.Int(),
                         Timer = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.CourseModule", t => t.ModuleId)
+                .Index(t => t.ModuleId);
+            
+            CreateTable(
+                "dbo.CourseModule",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Title = c.String(),
+                        CourseId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.LearningCourse", t => t.CourseId)
@@ -537,7 +549,8 @@ namespace FEP.Model.Migrations
             DropForeignKey("dbo.CourseInstructor", "CourseId", "dbo.LearningCourse");
             DropForeignKey("dbo.CourseFile", "FileId", "dbo.File");
             DropForeignKey("dbo.CourseFile", "CourseId", "dbo.LearningCourse");
-            DropForeignKey("dbo.CourseContent", "CourseId", "dbo.LearningCourse");
+            DropForeignKey("dbo.CourseContent", "ModuleId", "dbo.CourseModule");
+            DropForeignKey("dbo.CourseModule", "CourseId", "dbo.LearningCourse");
             DropForeignKey("dbo.CourseAdministrator", "CourseId", "dbo.LearningCourse");
             DropForeignKey("dbo.LearningCourse", "CertificateId", "dbo.LearningCourseCertificates");
             DropForeignKey("dbo.LearningCourse", "CategoryId", "dbo.LearningCourseCategory");
@@ -582,7 +595,8 @@ namespace FEP.Model.Migrations
             DropIndex("dbo.CourseInstructor", new[] { "UserId" });
             DropIndex("dbo.CourseFile", new[] { "FileId" });
             DropIndex("dbo.CourseFile", new[] { "CourseId" });
-            DropIndex("dbo.CourseContent", new[] { "CourseId" });
+            DropIndex("dbo.CourseModule", new[] { "CourseId" });
+            DropIndex("dbo.CourseContent", new[] { "ModuleId" });
             DropIndex("dbo.LearningCourse", new[] { "ApprovalId4" });
             DropIndex("dbo.LearningCourse", new[] { "ApprovalId3" });
             DropIndex("dbo.LearningCourse", new[] { "ApprovalId2" });
@@ -616,6 +630,7 @@ namespace FEP.Model.Migrations
             DropTable("dbo.CourseInstructor");
             DropTable("dbo.File");
             DropTable("dbo.CourseFile");
+            DropTable("dbo.CourseModule");
             DropTable("dbo.CourseContent");
             DropTable("dbo.LearningCourseCertificates");
             DropTable("dbo.LearningCourseCategory");

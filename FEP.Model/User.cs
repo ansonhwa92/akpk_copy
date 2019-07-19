@@ -38,6 +38,7 @@ namespace FEP.Model
         public int? CreatedBy { get; set; }
         public bool Display { get; set; }
         public virtual User User { get; set; }        
+
     }
         
     public enum UserType

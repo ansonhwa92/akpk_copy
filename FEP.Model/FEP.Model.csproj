@@ -55,10 +55,6 @@
     <Compile Include="eLearning.cs" />
     <Compile Include="eEvent.cs" />
     <Compile Include="File.cs" />
-    <Compile Include="Migrations\201907191123464_x.cs" />
-    <Compile Include="Migrations\201907191123464_x.Designer.cs">
-      <DependentUpon>201907191123464_x.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publication.cs" />
@@ -75,11 +71,6 @@
       <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
       <Name>FEP.Language</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201907191123464_x.resx">
-      <DependentUpon>201907191123464_x.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

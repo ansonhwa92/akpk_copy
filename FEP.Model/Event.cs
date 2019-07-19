@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace FEP.Model
 {
-    [Table("eEvent")]
-    public class eEvent
-    {
+	[Table("Event")]
+	public class Event
+	{
 		[Key]
 
 		public int Id { get; set; }
@@ -94,7 +94,7 @@ namespace FEP.Model
 
 		public int? EventId { get; set; }
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual Event Event { get; set; }
 	}
 
 	public class Agenda
@@ -134,7 +134,7 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual Event Event { get; set; }
 
 		public int? UserId { get; set; }
 
@@ -153,7 +153,7 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual Event Event { get; set; }
 
 		public decimal Price { get; set; }
 
@@ -194,7 +194,7 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual Event Event { get; set; }
 	}
 
 	public class EventInterviewRequest
@@ -224,11 +224,10 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual Event Event { get; set; }
 	}
 
-	public class EventAttendance
-	{
+	public class EventAttendance {
 		[Key]
 		public int Id { get; set; }
 
@@ -242,13 +241,12 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual Event Event { get; set; }
 
 		public string Remark { get; set; }
 	}
 
-	public class ManuscriptSubmission
-	{
+	public class ManuscriptSubmission {
 		[Key]
 		public int Id { get; set; }
 
@@ -264,11 +262,10 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual Event Event { get; set; }
 	}
 
-	public class ParticipantFeedback
-	{
+	public class ParticipantFeedback {
 		[Key]
 		public int Id { get; set; }
 
@@ -284,6 +281,6 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual Event Event { get; set; }
 	}
 }

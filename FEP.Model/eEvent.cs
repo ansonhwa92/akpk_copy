@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace FEP.Model
 {
-    [Table("eEvent")]
-    public class eEvent
-    {
+	[Table("eEvent")]
+	public class eEvent
+	{
 		[Key]
 
 		public int Id { get; set; }
@@ -23,18 +23,13 @@ namespace FEP.Model
 
 		public string Venue { get; set; }
 
-		public decimal? Fee { get; set; }
+		public float? Fee { get; set; }
 
 		public int? ParticipantAllowed { get; set; }
 
 		public int? TargetedGroup { get; set; }
 
 		public string ExternalExhibitor { get; set; }
-
-		public int? SpeakerId { get; set; }
-
-		[ForeignKey("SpeakerId")]
-		public virtual Speaker Speaker { get; set; }
 
 		public int? ApprovalId1 { get; set; }
 
@@ -45,16 +40,16 @@ namespace FEP.Model
 		public int? ApprovalId4 { get; set; }
 
 		[ForeignKey("ApprovalId1")]
-		public virtual CourseApproval Approval1 { get; set; }
+		public virtual EventApproval Approval1 { get; set; }
 
 		[ForeignKey("ApprovalId2")]
-		public virtual CourseApproval Approval2 { get; set; }
+		public virtual EventApproval Approval2 { get; set; }
 
 		[ForeignKey("ApprovalId3")]
-		public virtual CourseApproval Approval3 { get; set; }
+		public virtual EventApproval Approval3 { get; set; }
 
 		[ForeignKey("ApprovalId4")]
-		public virtual CourseApproval Approval4 { get; set; }
+		public virtual EventApproval Approval4 { get; set; }
 
 		public EventStatus EventStatus { get; set; }
 
@@ -66,6 +61,13 @@ namespace FEP.Model
 		public EventCategory EventCategory { get; set; }
 
 		public string Remarks { get; set; }
+
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
+
 	}
 
 	public enum EventCategory
@@ -73,6 +75,7 @@ namespace FEP.Model
 		Workshop, Seminar, Dialogue, Conference, Symposium, Convention
 	}
 
+	[Table("EventCalendar")]
 	public class EventCalendar
 	{
 		[Key]
@@ -97,6 +100,7 @@ namespace FEP.Model
 		public virtual eEvent Event { get; set; }
 	}
 
+	[Table("Agenda")]
 	public class Agenda
 	{
 		[Key]
@@ -106,12 +110,18 @@ namespace FEP.Model
 
 		public DateTime Time { get; set; }
 
-		public string PersonInCharge { get; set; }
+		public int? PersonInCharge { get; set; }
 
 		[ForeignKey("PersonInCharge")]
 		public virtual User User { get; set; }
 
 		public string Remark { get; set; }
+
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
 	}
 
 	public enum EventStatus
@@ -142,6 +152,12 @@ namespace FEP.Model
 		public virtual User User { get; set; }
 
 		public string Remark { get; set; }
+
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
 	}
 
 	[Table("EventBooking")]
@@ -155,11 +171,11 @@ namespace FEP.Model
 		[ForeignKey("EventId")]
 		public virtual eEvent Event { get; set; }
 
-		public decimal Price { get; set; }
+		public float Price { get; set; }
 
 		public int? SeatAvailable { get; set; }
 
-		public decimal Total { get; set; }
+		public float Total { get; set; }
 
 		public int? UserId { get; set; }
 
@@ -167,6 +183,14 @@ namespace FEP.Model
 		public virtual User User { get; set; }
 
 		public Ticket Tiket { get; set; }
+
+		public BookingStatus BookingStatus { get; set; }
+
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
 	}
 
 	public enum Ticket
@@ -177,6 +201,14 @@ namespace FEP.Model
 		Agency = 4
 	}
 
+	public enum BookingStatus
+	{
+		NewBooking,
+		Paid,
+		Withdraw
+	}
+
+	[Table("InvitationEvent")]
 	public class InvitationEvent
 	{
 		[Key]
@@ -195,8 +227,14 @@ namespace FEP.Model
 
 		[ForeignKey("EventId")]
 		public virtual eEvent Event { get; set; }
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
 	}
 
+	[Table("EventInterviewRequest")]
 	public class EventInterviewRequest
 	{
 		[Key]
@@ -225,8 +263,15 @@ namespace FEP.Model
 
 		[ForeignKey("EventId")]
 		public virtual eEvent Event { get; set; }
+
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
 	}
 
+	[Table("EventAttendance")]
 	public class EventAttendance
 	{
 		[Key]
@@ -245,8 +290,15 @@ namespace FEP.Model
 		public virtual eEvent Event { get; set; }
 
 		public string Remark { get; set; }
+
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
 	}
 
+	[Table("ManuscriptSubmission")]
 	public class ManuscriptSubmission
 	{
 		[Key]
@@ -265,8 +317,15 @@ namespace FEP.Model
 
 		[ForeignKey("EventId")]
 		public virtual eEvent Event { get; set; }
+
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
 	}
 
+	[Table("ParticipantFeedback")]
 	public class ParticipantFeedback
 	{
 		[Key]
@@ -285,5 +344,50 @@ namespace FEP.Model
 
 		[ForeignKey("EventId")]
 		public virtual eEvent Event { get; set; }
+
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
+	}
+
+	[Table("EventMember")]
+	public class EventMember
+	{
+		[Key]
+		public int Id { get; set; }
+
+		public int? UserId { get; set; }
+
+		[ForeignKey("UserId")]
+		public virtual User User { get; set; }
+
+		public int? EventId { get; set; }
+
+		[ForeignKey("EventId")]
+		public virtual eEvent Event { get; set; }
+
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+		public int? CreatedBy { get; set; }
+
+		public DateTime? CreatedDate { get; set; }
+
+		public bool Display { get; set; }
+
+	}
+
+	[Table("EventApproval")]
+	public class EventApproval
+	{
+		[Key]
+		public int Id { get; set; }
+		public int ApproverId { get; set; }
+
+		[ForeignKey("ApproverId")]
+		public virtual User User { get; set; }
+		public DateTime? ApprovedDate { get; set; }
+		public string Remark { get; set; }
 	}
 }

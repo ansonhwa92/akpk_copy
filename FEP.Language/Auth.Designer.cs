@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FEP.Language {
+namespace Language {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace FEP.Language {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FEP.Language.Auth", typeof(Auth).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Language.Auth", typeof(Auth).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

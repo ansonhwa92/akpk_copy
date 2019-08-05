@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEP.WebApi", "FEP.WebApi\FE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEP.Language", "FEP.Language\FEP.Language.csproj", "{511BA85D-13B0-4657-9583-892D70535AB9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEP.WebApiModel", "FEP.WebApiModel\FEP.WebApiModel.csproj", "{91AF142D-C57F-4296-A485-D17A80CDC57E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{511BA85D-13B0-4657-9583-892D70535AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{511BA85D-13B0-4657-9583-892D70535AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{511BA85D-13B0-4657-9583-892D70535AB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91AF142D-C57F-4296-A485-D17A80CDC57E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91AF142D-C57F-4296-A485-D17A80CDC57E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91AF142D-C57F-4296-A485-D17A80CDC57E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91AF142D-C57F-4296-A485-D17A80CDC57E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

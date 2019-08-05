@@ -12,7 +12,7 @@ namespace FEP.WebApi.Controllers
         {
             ViewBag.Title = "Home Page";
 
-            return View();
+            return RedirectToAction("Index", "Help");
         }
     }
 }

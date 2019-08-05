@@ -266,7 +266,7 @@ namespace FEP.Model
         public virtual LearningCourse Course { get; set; }
 
         [ForeignKey("FileId")]
-        public File File { get; set; }
+        public FileDocument FileDocument { get; set; }
     }
 
     public enum CourseMaterialType
@@ -600,7 +600,7 @@ namespace FEP.Model
         public virtual LearningDiscussionReply Reply { get; set; }
 
         [ForeignKey("AttachmentId")]
-        public virtual File Attachment { get; set; }
+        public virtual FileDocument Attachment { get; set; }
     }
 
     public class LearningDiscussionComment

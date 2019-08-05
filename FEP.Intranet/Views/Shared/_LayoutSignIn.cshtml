@@ -1,0 +1,191 @@
+﻿
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+
+    @RenderSection("ContentStyle", false)
+
+    @Styles.Render("~/core/css")
+
+    <script type="text/javascript">
+
+         function login () {
+
+            $.ajax({
+                type: 'get',
+                url: '@Url.Action("_Login", "Auth", new { area = "" })',
+                success: function (data) {
+                    debugger;
+                    $('#modalLogin').html(data).modal('show');
+                    initFormLogin();
+                },
+                error: function () {
+
+                }
+            });
+
+        }
+
+        initFormLogin = function () {
+
+            $.validator.unobtrusive.parse('#formLogin');
+
+            $("#formLogin").data("validator").settings.submitHandler = function (form) {
+
+                var data = new FormData(form);
+
+                var request = new XMLHttpRequest();
+
+                request.responseType = 'json';
+
+                request.onreadystatechange = function (evt) {
+                    if (request.readyState == 4) {
+                        if (request.status == 200) {
+                            onSuccessLogin(request.response);
+                        }
+                        else
+                        {
+                            onFailLogin();
+                        }
+                    }
+                };
+
+                request.open("POST", "@Url.Action("_ExternalLogin", "Auth", new { area = "" })", true);
+
+                request.send(data);
+                               
+                return false;
+
+            };
+
+        };
+
+        function onSuccessLogin(data) {
+            if (data.isSuccess) {
+                window.location.href = data.returnUrl;
+            }
+            else
+            {
+                showError('Sign in fail');
+            }
+        }
+
+        function onFailLogin() {
+
+            showError('Sign in fail');
+        }
+
+    </script>
+
+</head>
+<body class=" layout-fluid">
+
+    <div class="preloader">
+        <div class="sk-double-bounce">
+            <div class="sk-child sk-double-bounce1"></div>
+            <div class="sk-child sk-double-bounce2"></div>
+        </div>
+    </div>
+
+    <div class="mdk-header-layout js-mdk-header-layout">
+
+        @Html.Partial("_Header")
+
+        <div class="mdk-header-layout__content d-flex flex-column">
+
+            @*@Html.Partial("_TopMenu")*@
+
+            <div class="page ">
+
+                <div class="container page__container">
+
+                    @RenderBody()
+
+                </div>
+
+                <div class="container page__container">
+                    <div class="footer">
+                        Copyright &copy; 2019 - Primuscore
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="modalLogin" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+
+    @Html.Partial("_SideMenu")
+
+    <!-- App Settings FAB -->
+    <div id="app-settings">
+        <app-settings layout-active="fixed" :layout-location="{
+      'fixed': 'fixed-ui-forms.html',
+      'default': 'ui-forms.html'
+    }" sidebar-variant="bg-transparent border-0"></app-settings>
+    </div>
+
+    @Scripts.Render("~/core/js")
+
+    @RenderSection("ContentScript", false)
+
+    <script type="text/javascript">
+
+        $(function () {
+
+
+            @if (TempData["Message"] != null)
+            {
+                @:showInfo('@TempData["Message"]');
+            }
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                @:showSuccess('@TempData["SuccessMessage"]');
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                @:showError('@TempData["ErrorMessage"]');
+            }
+
+        });
+
+
+        function showInfo(message) {
+
+            $.notify({
+	            message: message
+            });
+        }
+
+        function showSuccess(message) {
+
+            $.notify({
+	            message: message
+            },{
+	            type: 'success'
+            });
+        }
+
+        function showError(message) {
+
+            $.notify({
+	            message: message
+            },{
+	            type: 'danger'
+            });
+
+        }
+
+    </script>
+
+</body>
+</html>

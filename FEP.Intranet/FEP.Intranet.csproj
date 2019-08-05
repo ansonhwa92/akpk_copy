@@ -153,6 +153,8 @@
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
     <Compile Include="Areas\eEvent\eEventAreaRegistration.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
+    <Compile Include="Areas\Publication\PublicationAreaRegistration.cs" />
+    <Compile Include="Areas\Research\ResearchAreaRegistration.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -386,6 +388,8 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Areas\Publication\Views\web.config" />
+    <Content Include="Areas\Research\Views\web.config" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -447,6 +451,12 @@
     <Folder Include="Areas\eLearning\Controllers\" />
     <Folder Include="Areas\eLearning\Models\" />
     <Folder Include="Areas\eLearning\Views\Shared\" />
+    <Folder Include="Areas\Publication\Controllers\" />
+    <Folder Include="Areas\Publication\Models\" />
+    <Folder Include="Areas\Publication\Views\Shared\" />
+    <Folder Include="Areas\Research\Controllers\" />
+    <Folder Include="Areas\Research\Models\" />
+    <Folder Include="Areas\Research\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

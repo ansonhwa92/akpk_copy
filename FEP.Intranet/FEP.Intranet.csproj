@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -25,6 +26,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>3.5</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,10 +53,34 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FEP.Helper">
+      <HintPath>..\..\FEP.Helper\FEP.Helper\bin\Debug\FEP.Helper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -105,9 +131,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -126,6 +149,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
+    <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
+    <Compile Include="Areas\eEvent\eEventAreaRegistration.cs" />
+    <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
+    <Compile Include="Areas\Publication\PublicationAreaRegistration.cs" />
+    <Compile Include="Areas\Research\ResearchAreaRegistration.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Areas\eEventCancellationRequest\Controllers\CancellationRequestController.cs" />
     <Compile Include="Areas\eEventCancellationRequest\eEventCancellationRequestAreaRegistration.cs" />
     <Compile Include="Areas\eEventCancellationRequest\Models\CancellationRequest.cs" />
@@ -139,19 +169,243 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Method.cs" />
+    <Compile Include="Models\Auth.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="assets\css\app.css" />
+    <Content Include="assets\css\app.rtl.css" />
+    <Content Include="assets\css\bootstrap-touchspin.css" />
+    <Content Include="assets\css\bootstrap-touchspin.rtl.css" />
+    <Content Include="assets\css\dropzone.css" />
+    <Content Include="assets\css\dropzone.rtl.css" />
+    <Content Include="assets\css\fancytree.css" />
+    <Content Include="assets\css\fancytree.rtl.css" />
+    <Content Include="assets\css\flatpickr-airbnb.css" />
+    <Content Include="assets\css\flatpickr-airbnb.rtl.css" />
+    <Content Include="assets\css\flatpickr.css" />
+    <Content Include="assets\css\flatpickr.rtl.css" />
+    <Content Include="assets\css\fontawesome.css" />
+    <Content Include="assets\css\fontawesome.rtl.css" />
+    <Content Include="assets\css\fullcalendar.css" />
+    <Content Include="assets\css\fullcalendar.rtl.css" />
+    <Content Include="assets\css\jvectormap.css" />
+    <Content Include="assets\css\jvectormap.rtl.css" />
+    <Content Include="assets\css\material-icons.css" />
+    <Content Include="assets\css\material-icons.rtl.css" />
+    <Content Include="assets\css\nestable.css" />
+    <Content Include="assets\css\nestable.rtl.css" />
+    <Content Include="assets\css\quill.css" />
+    <Content Include="assets\css\quill.rtl.css" />
+    <Content Include="assets\css\sweetalert.css" />
+    <Content Include="assets\css\sweetalert.rtl.css" />
+    <Content Include="assets\data\vector-maps\custom\jquery-jvectormap-de-merc-en.js" />
+    <Content Include="assets\data\vector-maps\custom\jquery-jvectormap-es-merc-en.js" />
+    <Content Include="assets\data\vector-maps\custom\jquery-jvectormap-fr-merc-en.js" />
+    <Content Include="assets\data\vector-maps\custom\jquery-jvectormap-us-aea-en.js" />
+    <Content Include="assets\data\vector-maps\custom\jquery-jvectormap-us-lcc-en.js" />
+    <Content Include="assets\data\vector-maps\custom\jquery-jvectormap-world-mill-en.js" />
+    <Content Include="assets\data\vector-maps\custom\mall-map.js" />
+    <Content Include="assets\data\vector-maps\data\gdp-data.js" />
+    <Content Include="assets\fonts\fontawesome-free\fa-brands-400.svg" />
+    <Content Include="assets\fonts\fontawesome-free\fa-regular-400.svg" />
+    <Content Include="assets\fonts\fontawesome-free\fa-solid-900.svg" />
+    <Content Include="assets\images\1280_rsz_aman-dhakal-205796-unsplash.jpg" />
+    <Content Include="assets\images\256_rsz_90-jiang-640827-unsplash.jpg" />
+    <Content Include="assets\images\256_rsz_clem-onojeghuo-150467-unsplash.jpg" />
+    <Content Include="assets\images\256_rsz_florian-perennes-594195-unsplash.jpg" />
+    <Content Include="assets\images\256_rsz_james-gillespie-714755-unsplash.jpg" />
+    <Content Include="assets\images\256_rsz_karl-s-973833-unsplash.jpg" />
+    <Content Include="assets\images\256_rsz_nicolas-horn-689011-unsplash.jpg" />
+    <Content Include="assets\images\256_rsz_sharina-mae-agellon-377466-unsplash.jpg" />
+    <Content Include="assets\images\265_rsz_mubariz-mehdizadeh-364026-unsplash.jpg" />
+    <Content Include="assets\images\AKPK_logo.png" />
+    <Content Include="assets\images\Bootstrap_logo.svg" />
+    <Content Include="assets\images\github.png" />
+    <Content Include="assets\images\gulp.png" />
+    <Content Include="assets\images\logo\akpk.jpg" />
+    <Content Include="assets\images\logo\bootstrap.svg" />
+    <Content Include="assets\images\logo\primary.svg" />
+    <Content Include="assets\images\logo\white.svg" />
+    <Content Include="assets\images\markers\marker.png" />
+    <Content Include="assets\images\navigation-side.svg" />
+    <Content Include="assets\images\navigation-top.svg" />
+    <Content Include="assets\images\nodejs.png" />
+    <Content Include="assets\images\people\110\child-1.jpg" />
+    <Content Include="assets\images\people\110\guy-1.jpg" />
+    <Content Include="assets\images\people\110\guy-2.jpg" />
+    <Content Include="assets\images\people\110\guy-3.jpg" />
+    <Content Include="assets\images\people\110\guy-4.jpg" />
+    <Content Include="assets\images\people\110\guy-5.jpg" />
+    <Content Include="assets\images\people\110\guy-6.jpg" />
+    <Content Include="assets\images\people\110\guy-7.jpg" />
+    <Content Include="assets\images\people\110\guy-8.jpg" />
+    <Content Include="assets\images\people\110\guy-9.jpg" />
+    <Content Include="assets\images\people\110\woman-1.jpg" />
+    <Content Include="assets\images\people\110\woman-10.jpg" />
+    <Content Include="assets\images\people\110\woman-2.jpg" />
+    <Content Include="assets\images\people\110\woman-3.jpg" />
+    <Content Include="assets\images\people\110\woman-4.jpg" />
+    <Content Include="assets\images\people\110\woman-5.jpg" />
+    <Content Include="assets\images\people\110\woman-6.jpg" />
+    <Content Include="assets\images\people\110\woman-7.jpg" />
+    <Content Include="assets\images\people\110\woman-8.jpg" />
+    <Content Include="assets\images\people\110\woman-9.jpg" />
+    <Content Include="assets\images\people\50\child-1.jpg" />
+    <Content Include="assets\images\people\50\guy-1.jpg" />
+    <Content Include="assets\images\people\50\guy-2.jpg" />
+    <Content Include="assets\images\people\50\guy-3.jpg" />
+    <Content Include="assets\images\people\50\guy-4.jpg" />
+    <Content Include="assets\images\people\50\guy-5.jpg" />
+    <Content Include="assets\images\people\50\guy-6.jpg" />
+    <Content Include="assets\images\people\50\guy-7.jpg" />
+    <Content Include="assets\images\people\50\guy-8.jpg" />
+    <Content Include="assets\images\people\50\guy-9.jpg" />
+    <Content Include="assets\images\people\50\woman-1.jpg" />
+    <Content Include="assets\images\people\50\woman-10.jpg" />
+    <Content Include="assets\images\people\50\woman-2.jpg" />
+    <Content Include="assets\images\people\50\woman-3.jpg" />
+    <Content Include="assets\images\people\50\woman-4.jpg" />
+    <Content Include="assets\images\people\50\woman-5.jpg" />
+    <Content Include="assets\images\people\50\woman-6.jpg" />
+    <Content Include="assets\images\people\50\woman-7.jpg" />
+    <Content Include="assets\images\people\50\woman-8.jpg" />
+    <Content Include="assets\images\people\50\woman-9.jpg" />
+    <Content Include="assets\images\Slack_Mark.svg" />
+    <Content Include="assets\images\stories\256_rsz_phil-hearing-769014-unsplash.jpg" />
+    <Content Include="assets\images\stories\256_rsz_ross-sneddon-798476-unsplash.jpg" />
+    <Content Include="assets\images\stories\256_rsz_thomas-russell-751613-unsplash.jpg" />
+    <Content Include="assets\images\visa.svg" />
+    <Content Include="assets\images\Vue.js_Logo_2.svg" />
+    <Content Include="assets\images\vuejs.png" />
+    <Content Include="assets\js\app-icons.js" />
+    <Content Include="assets\js\app-settings.js" />
+    <Content Include="assets\js\app.js" />
+    <Content Include="assets\js\bootstrap-notify.js" />
+    <Content Include="assets\js\bootstrap-notify.min.js" />
+    <Content Include="assets\js\chartjs-rounded-bar.js" />
+    <Content Include="assets\js\chartjs.js" />
+    <Content Include="assets\js\check-selected-row.js" />
+    <Content Include="assets\js\countdown.js" />
+    <Content Include="assets\js\dragula.js" />
+    <Content Include="assets\js\dropdown-dismissable.js" />
+    <Content Include="assets\js\fancytree.js" />
+    <Content Include="assets\js\flatpickr.js" />
+    <Content Include="assets\js\fullcalendar.js" />
+    <Content Include="assets\js\hljs.js" />
+    <Content Include="assets\js\learnplus-app-settings-mixin.js" />
+    <Content Include="assets\js\list.js" />
+    <Content Include="assets\js\map-single-marker.js" />
+    <Content Include="assets\js\map.js" />
+    <Content Include="assets\js\messages.js" />
+    <Content Include="assets\js\nestable.js" />
+    <Content Include="assets\js\quill.js" />
+    <Content Include="assets\js\settings.js" />
+    <Content Include="assets\js\sweetalert.js" />
+    <Content Include="assets\js\toggle-check-all.js" />
+    <Content Include="assets\js\touchspin.js" />
+    <Content Include="assets\js\vector-maps.js" />
+    <Content Include="assets\vendor\bootstrap.min.js" />
+    <Content Include="assets\vendor\Chart.min.js" />
+    <Content Include="assets\vendor\dom-factory.js" />
+    <Content Include="assets\vendor\dragula\dragula.min.css" />
+    <Content Include="assets\vendor\dragula\dragula.min.js" />
+    <Content Include="assets\vendor\dropzone.min.css" />
+    <Content Include="assets\vendor\dropzone.min.js" />
+    <Content Include="assets\vendor\flatpickr\airbnb.css" />
+    <Content Include="assets\vendor\flatpickr\flatpickr.min.css" />
+    <Content Include="assets\vendor\flatpickr\flatpickr.min.js" />
+    <Content Include="assets\vendor\fullcalendar.min.js" />
+    <Content Include="assets\vendor\highlight.js" />
+    <Content Include="assets\vendor\jquery-jvectormap.css" />
+    <Content Include="assets\vendor\jquery.bootstrap-touchspin.js" />
+    <Content Include="assets\vendor\jquery.countdown.min.js" />
+    <Content Include="assets\vendor\jquery.fancytree-all.min.js" />
+    <Content Include="assets\vendor\jquery.jvectormap.min.js" />
+    <Content Include="assets\vendor\jquery.mask.min.js" />
+    <Content Include="assets\vendor\jquery.min.js" />
+    <Content Include="assets\vendor\jquery.nestable.js" />
+    <Content Include="assets\vendor\list.min.js" />
+    <Content Include="assets\vendor\material-design-kit.css" />
+    <Content Include="assets\vendor\material-design-kit.js" />
+    <Content Include="assets\vendor\moment-range.min.js" />
+    <Content Include="assets\vendor\moment.min.js" />
+    <Content Include="assets\vendor\perfect-scrollbar.css" />
+    <Content Include="assets\vendor\perfect-scrollbar.min.js" />
+    <Content Include="assets\vendor\popper.min.js" />
+    <Content Include="assets\vendor\quill.min.js" />
+    <Content Include="assets\vendor\sweetalert.min.js" />
+    <Content Include="assets\vendor\vue.min.js" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Areas\Administrator\Views\web.config" />
+    <Content Include="Areas\eLearning\Views\web.config" />
+    <Content Include="Areas\eEvent\Views\web.config" />
+    <Content Include="Areas\Administrator\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Administrator\Views\User\Index.cshtml" />
+    <Content Include="assets\data\.DS_Store" />
+    <Content Include="assets\data\material-icons\MaterialIcons-Regular.ijmap" />
+    <Content Include="assets\data\vector-maps\data\france-elections.json" />
+    <Content Include="assets\data\vector-maps\data\us-unemployment.json" />
+    <Content Include="assets\fonts\fontawesome-free\fa-brands-400.eot" />
+    <Content Include="assets\fonts\fontawesome-free\fa-brands-400.ttf" />
+    <Content Include="assets\fonts\fontawesome-free\fa-brands-400.woff" />
+    <Content Include="assets\fonts\fontawesome-free\fa-brands-400.woff2" />
+    <Content Include="assets\fonts\fontawesome-free\fa-regular-400.eot" />
+    <Content Include="assets\fonts\fontawesome-free\fa-regular-400.ttf" />
+    <Content Include="assets\fonts\fontawesome-free\fa-regular-400.woff" />
+    <Content Include="assets\fonts\fontawesome-free\fa-regular-400.woff2" />
+    <Content Include="assets\fonts\fontawesome-free\fa-solid-900.eot" />
+    <Content Include="assets\fonts\fontawesome-free\fa-solid-900.ttf" />
+    <Content Include="assets\fonts\fontawesome-free\fa-solid-900.woff" />
+    <Content Include="assets\fonts\fontawesome-free\fa-solid-900.woff2" />
+    <Content Include="assets\fonts\material-icons\MaterialIcons-Regular.eot" />
+    <Content Include="assets\fonts\material-icons\MaterialIcons-Regular.ttf" />
+    <Content Include="assets\fonts\material-icons\MaterialIcons-Regular.woff" />
+    <Content Include="assets\fonts\material-icons\MaterialIcons-Regular.woff2" />
+    <Content Include="assets\images\markers\marker.psd" />
+    <Content Include="assets\vendor\bootstrap.min.js.map" />
+    <Content Include="assets\vendor\popper.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Areas\Publication\Views\web.config" />
+    <Content Include="Areas\Research\Views\web.config" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
     <Content Include="Areas\eEvent\Views\web.config" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -178,11 +432,21 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -191,12 +455,26 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Shared\_TopMenu.cshtml" />
+    <Content Include="Views\Shared\_SideMenu.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_LayoutSignIn.cshtml" />
+    <Content Include="Views\Auth\_Login.cshtml" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\Shared\_HeaderSignIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -204,31 +482,49 @@
     <Folder Include="Areas\eEventMediaInterview\Views\Shared\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Models\" />
+    <Folder Include="Areas\Administrator\Models\" />
+    <Folder Include="Areas\eEvent\Controllers\" />
+    <Folder Include="Areas\eEvent\Models\" />
+    <Folder Include="Areas\eEvent\Views\Shared\" />
+    <Folder Include="Areas\eLearning\Controllers\" />
+    <Folder Include="Areas\eLearning\Models\" />
+    <Folder Include="Areas\eLearning\Views\Shared\" />
+    <Folder Include="Areas\Publication\Controllers\" />
+    <Folder Include="Areas\Publication\Models\" />
+    <Folder Include="Areas\Publication\Views\Shared\" />
+    <Folder Include="Areas\Research\Controllers\" />
+    <Folder Include="Areas\Research\Models\" />
+    <Folder Include="Areas\Research\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FEP.Language\FEP.Language.csproj">
+      <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
+      <Name>FEP.Language</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FEP.Model\FEP.Model.csproj">
       <Project>{2a1a9157-1c94-4b4a-96a4-52648bd8076a}</Project>
       <Name>FEP.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FEP.WebApiModel\FEP.WebApiModel.csproj">
+      <Project>{91af142d-c57f-4296-a485-d17a80cdc57e}</Project>
+      <Name>FEP.WebApiModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">

@@ -5,19 +5,16 @@ namespace FEP.Model.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<FEP.Model.DbEntities>
+    internal sealed class Configuration : DbMigrationsConfiguration<DbEntities>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(FEP.Model.DbEntities context)
+        protected override void Seed(DbEntities context)
         {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
+            seed.Default(context);
         }
     }
 }

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace FEP.Model
 {
-    [Table("File")]
-    public class File
+    [Table("FileDocument")]
+    public class FileDocument
     {
         [Key]
         public int Id { get; set; }
@@ -20,10 +20,16 @@ namespace FEP.Model
 
         public int FileSize { get; set; } //Byte
 
-        public FileType FileType { get; set; } 
+        public string FileType { get; set; } 
 
         public string FileTag { get; set; }
+        
+        public int CreatedBy { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+
+        [ForeignKey("CreatedBy")]
+        public User User { get; set; }
     }
 
     public enum FileType

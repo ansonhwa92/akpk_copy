@@ -1,22 +1,22 @@
 ﻿using System.Web.Mvc;
 
-namespace FEP.Intranet.Areas.eEvent
+namespace FEP.Intranet.Areas.eEventMediaInterview
 {
-    public class eEventAreaRegistration : AreaRegistration 
+    public class eEventMediaInterviewAreaRegistration : AreaRegistration 
     {
         public override string AreaName 
         {
             get 
             {
-                return "eEvent";
+                return "eEventMediaInterview";
             }
         }
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
-                "eEvent_default",
-                "eEvent/{controller}/{action}/{id}",
+                "eEventMediaInterview_default",
+                "eEventMediaInterview/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }

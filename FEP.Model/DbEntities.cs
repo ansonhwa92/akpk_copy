@@ -4,7 +4,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Text;
 
-namespace TAS.Model
+namespace FEP.Model
 {
 	public class DbEntities : DbContext
 	{
@@ -60,18 +60,22 @@ namespace TAS.Model
 		public DbSet<LearningEventAudience> LearningEventAudience { get; set; }
 
 		//eEvent
-		public DbSet<eEvent> eEvent { get; set; }
+		public DbSet<PublicEvent> PublicEvent { get; set; }
 		public DbSet<EventCalendar> EventCalendar { get; set; }
 		public DbSet<Agenda> Agenda { get; set; }
 		public DbSet<Speaker> Speaker { get; set; }
 		public DbSet<EventBooking> EventBooking { get; set; }
 		public DbSet<InvitationEvent> InvitationEvent { get; set; }
-		public DbSet<EventInterviewRequest> EventInterviewRequest { get; set; }
+		public DbSet<EventMediaInterviewRequest> EventMediaInterviewRequest { get; set; }
 		public DbSet<EventAttendance> EventAttendance { get; set; }
 		public DbSet<ManuscriptSubmission> ManuscriptSubmission { get; set; }
 		public DbSet<ParticipantFeedback> ParticipantFeedback { get; set; }
 		public DbSet<EventMember> EventMember { get; set; }
 		public DbSet<EventApproval> EventApproval { get; set; }
+		public DbSet<EventVerifier> EventVerifier { get; set; }
+		public DbSet<EventCancellation> EventCancellation { get; set; }
+		public DbSet<EventExhibitionRequest> EventExhibitionRequest { get; set; }
+		public DbSet<EventFile> EventFile { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{

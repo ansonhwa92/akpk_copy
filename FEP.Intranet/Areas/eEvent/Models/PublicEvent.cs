@@ -9,6 +9,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 {
 	public class PublicEventModel
 	{
+		public PublicEventModel() { }
+		[Required(ErrorMessage = "Please Insert Event Title")]
 		[Display(Name = "Event Title")]
 		public string EventTitle { get; set; }
 

@@ -5,14 +5,14 @@ namespace FEP.Model.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<TAS.Model.DbEntities>
+    internal sealed class Configuration : DbMigrationsConfiguration<FEP.Model.DbEntities>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(TAS.Model.DbEntities context)
+        protected override void Seed(FEP.Model.DbEntities context)
         {
             //  This method will be called after migrating to the latest version.
 

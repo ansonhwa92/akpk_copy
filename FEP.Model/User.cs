@@ -18,6 +18,7 @@ namespace FEP.Model
         public string Email { get; set; }
         public UserType UserType { get; set; }        
         public virtual UserAccount UserAccount { get; set; }
+		public bool Display { get; set; }
     }
 
     [Table("UserAccount")]

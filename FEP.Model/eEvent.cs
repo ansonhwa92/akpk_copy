@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace FEP.Model
 {
-	[Table("eEvent")]
-	public class eEvent
+	[Table("PublicEvent")]
+	public class PublicEvent
 	{
 		[Key]
 
@@ -68,6 +68,8 @@ namespace FEP.Model
 		public DateTime? CreatedDate { get; set; }
 		public bool Display { get; set; }
 
+		public virtual ICollection<EventVerifier> EventVerifier { get; set; }
+		public virtual ICollection<EventFile> EventFile { get; set; }
 	}
 
 	public enum EventCategory
@@ -97,7 +99,7 @@ namespace FEP.Model
 
 		public int? EventId { get; set; }
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual PublicEvent Event { get; set; }
 	}
 
 	[Table("Agenda")]
@@ -127,9 +129,11 @@ namespace FEP.Model
 	public enum EventStatus
 	{
 		New,
-		Pending,
+		PendingToVerified,
 		Approval,
-		Approved,
+		Approved, //==Published
+		RequestToModify,
+		RequestToCancel,
 		Cancelled
 	}
 
@@ -144,7 +148,7 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual PublicEvent Event { get; set; }
 
 		public int? UserId { get; set; }
 
@@ -169,7 +173,7 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual PublicEvent Event { get; set; }
 
 		public float Price { get; set; }
 
@@ -226,7 +230,7 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual PublicEvent Event { get; set; }
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
 		public int? CreatedBy { get; set; }
@@ -234,11 +238,23 @@ namespace FEP.Model
 		public bool Display { get; set; }
 	}
 
-	[Table("EventInterviewRequest")]
-	public class EventInterviewRequest
+	[Table("EventMediaInterviewRequest")]
+	public class EventMediaInterviewRequest
 	{
 		[Key]
 		public int Id { get; set; }
+
+		public string MediaName {get;set;}
+
+		public string MediaType { get; set; }
+
+		public string ContactPerson { get; set; }
+
+		public int ContactNo { get; set; }
+
+		public string Address { get; set; }
+
+		public string Email { get; set; }
 
 		public DateTime Date { get; set; }
 
@@ -250,8 +266,6 @@ namespace FEP.Model
 
 		public string Topic { get; set; }
 
-		public string Name { get; set; }
-
 		public string Designation { get; set; }
 
 		public int? UserId { get; set; }
@@ -262,7 +276,7 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual PublicEvent Event { get; set; }
 
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
@@ -287,7 +301,7 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual PublicEvent Event { get; set; }
 
 		public string Remark { get; set; }
 
@@ -316,7 +330,7 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual PublicEvent Event { get; set; }
 
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
@@ -343,7 +357,7 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual PublicEvent Event { get; set; }
 
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
@@ -366,7 +380,7 @@ namespace FEP.Model
 		public int? EventId { get; set; }
 
 		[ForeignKey("EventId")]
-		public virtual eEvent Event { get; set; }
+		public virtual PublicEvent Event { get; set; }
 
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
@@ -383,11 +397,136 @@ namespace FEP.Model
 	{
 		[Key]
 		public int Id { get; set; }
+
 		public int ApproverId { get; set; }
 
 		[ForeignKey("ApproverId")]
 		public virtual User User { get; set; }
+
+		public int? EventId { get; set; }
+
+		[ForeignKey("EventId")]
+		public virtual PublicEvent Event { get; set; }
+
 		public DateTime? ApprovedDate { get; set; }
+
 		public string Remark { get; set; }
+	}
+
+	[Table("EventVerifier")]
+	public class EventVerifier
+	{
+		[Key]
+		public int Id { get; set; }
+
+		public int VerifierId { get; set; }
+
+		[ForeignKey("VerifierId")]
+		public virtual User User { get; set; }
+
+		public int? EventId { get; set; }
+
+		[ForeignKey("EventId")]
+		public virtual PublicEvent Event { get; set; }
+
+		public DateTime? VerifiedDate { get; set; }
+
+		public string Remark { get; set; }
+	}
+
+	[Table("EventCancellation")]
+	public class EventCancellation
+	{
+		[Key]
+		public int Id { get; set; }
+
+		public int? UserId { get; set; }
+
+		[ForeignKey("UserId")]
+		public virtual User User { get; set; }
+
+		public int? EventId { get; set; }
+
+		[ForeignKey("EventId")]
+		public virtual PublicEvent Event { get; set; }
+
+		public string Reasons { get; set; }
+
+		public int? ApprovalId1 { get; set; }
+
+		public int? ApprovalId2 { get; set; }
+
+		public int? ApprovalId3 { get; set; }
+
+		public int? ApprovalId4 { get; set; }
+
+		[ForeignKey("ApprovalId1")]
+		public virtual EventApproval Approval1 { get; set; }
+
+		[ForeignKey("ApprovalId2")]
+		public virtual EventApproval Approval2 { get; set; }
+
+		[ForeignKey("ApprovalId3")]
+		public virtual EventApproval Approval3 { get; set; }
+
+		[ForeignKey("ApprovalId4")]
+		public virtual EventApproval Approval4 { get; set; }
+
+		public int? VerifyId { get; set; }
+
+		[ForeignKey("VerifyId")]
+		public virtual EventVerifier Verifier { get; set; }
+
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
+	}
+
+	[Table("EventExhibitionRequest")]
+	public class EventExhibitionRequest
+	{
+		[Key]
+		public int Id { get; set; }
+
+		public int? ReceivedBy { get; set; }
+
+		public DateTime ReceivedDate { get; set; }
+
+		public string Receive_Via { get; set; }
+
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
+	}
+
+	public enum FileCategory
+	{
+		PublicEventFile,
+		CancellationFile
+	}
+
+	[Table("EventFile")]
+	public class EventFile
+	{
+		[Key]
+		public int Id { get; set; }
+		public string FileName { get; set; }
+		public string FilePath { get; set; }
+		public long FileSize { get; set; }
+		public string FileDescription { get; set; }
+		public FileCategory? Category { get; set; }
+
+		public DateTime UploadedDate { get; set; }
+		public int? CreatedBy { get; set; }
+		public bool Display { get; set; }
+
+		public int? EventId { get; set; }
+
+		[ForeignKey("EventId")]
+		public virtual PublicEvent Event { get; set; }
 	}
 }

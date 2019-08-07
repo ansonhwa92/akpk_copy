@@ -1,0 +1,166 @@
+﻿@model FEP.Intranet.Areas.eEvent.Models.DetailsPublicEventModel
+
+@{
+	ViewBag.Title = "Public Event";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section ContentScript{
+
+	@Scripts.Render("~/bundles/dataTable-script")
+
+	<script type="text/javascript">
+		$('.menu_publicEvent').addClass('active');
+		$('.menu_publicEvent').parent('ul').parent('li').addClass('active');
+	</script>
+}
+
+@section Nav {
+	<ol class="breadcrumb">
+		<li>E-Event</li>
+		<li>Public Event</li>
+		<li>Public Event List</li>
+	</ol>
+}
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box box-info">
+			<div class="box-header">
+				<h3 class="box-title">Public Event Details</h3>
+			</div>
+
+			<div class="box-body">
+				<dl class="dl-horizontal">
+
+					<dt>
+						@Html.DisplayNameFor(model => model.EventTitle)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.EventTitle)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.EventObjective)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.EventObjective)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.Date)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.Date)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.Venue)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.Venue)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.Fee)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.Fee)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.ParticipantAllowed)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.ParticipantAllowed)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.TargetedGroup)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.TargetedGroup)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.ExternalExhibitor)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.ExternalExhibitor)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.ApprovalId1)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.ApprovalId1)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.ApprovalName1)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.ApprovalName1)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.ApprovalId2)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.ApprovalId2)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.ApprovalName2)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.ApprovalName2)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.ApprovalId3)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.ApprovalId3)
+					</dd>
+
+					<dt>
+						@Html.DisplayNameFor(model => model.ApprovalName3)
+					</dt>
+
+					<dd>
+						@Html.DisplayFor(model => model.ApprovalName3)
+					</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.ApprovalName4)</dt>
+					<dd>@Html.DisplayFor(model => model.ApprovalName4)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.AgendaName)</dt>
+					<dd>@Html.DisplayFor(model => model.AgendaName)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Remarks)</dt>
+					<dd>@Html.DisplayFor(model => model.Remarks)</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<a href='@Url.Action("List")' class="btn btn-warning">Back</a>
+		<a href='@Url.Action("Edit",new { id = Model.Id })' class="btn btn-primary">Edit</a>
+	</div>
+</div>

@@ -13,13 +13,16 @@ namespace FEP.Model
     {
         [Key]
         public int  Id { get; set; }
-        public string RoleName { get; set; }
-        public string RoleDescription { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public bool Display { get; set; }
+
+        public virtual ICollection<RoleAccess> RoleAccess { get; set; }
     }
 
+    [Table("RoleAccess")]
     public class RoleAccess
     {
         [Key]
@@ -34,6 +37,7 @@ namespace FEP.Model
 
     }
 
+    [Table("UserRole")]
     public class UserRole
     {
         [Key]

@@ -117,13 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="NotificationTypeActivateAccount" xml:space="preserve">
+    <value>Activate Account</value>
+  </data>
+  <data name="NotificationTypeResetPassword" xml:space="preserve">
+    <value>Reset Account Password</value>
+  </data>
   <data name="UserTypeCompany" xml:space="preserve">
-    <value />
+    <value>Company</value>
   </data>
   <data name="UserTypeIndividual" xml:space="preserve">
-    <value />
+    <value>Individual</value>
   </data>
   <data name="UserTypeStaff" xml:space="preserve">
-    <value />
+    <value>Staff</value>
   </data>
 </root>

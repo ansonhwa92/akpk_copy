@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FEP.Language {
+namespace Language {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace FEP.Language {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FEP.Language.Enum", typeof(Enum).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Language.Enum", typeof(Enum).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,25 @@ namespace FEP.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Activate Account.
+        /// </summary>
+        public static string NotificationTypeActivateAccount {
+            get {
+                return ResourceManager.GetString("NotificationTypeActivateAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset Account Password.
+        /// </summary>
+        public static string NotificationTypeResetPassword {
+            get {
+                return ResourceManager.GetString("NotificationTypeResetPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company.
         /// </summary>
         public static string UserTypeCompany {
             get {
@@ -70,7 +88,7 @@ namespace FEP.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Individual.
         /// </summary>
         public static string UserTypeIndividual {
             get {
@@ -79,7 +97,7 @@ namespace FEP.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Staff.
         /// </summary>
         public static string UserTypeStaff {
             get {

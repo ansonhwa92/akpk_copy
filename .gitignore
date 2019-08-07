@@ -338,3 +338,13 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# Exception
+/FEP.Intranet/bin/*
+!/FEP.Intranet/bin/FEP.Helper.dll
+/FEP.WebApi/bin/*
+!/FEP.WebApi/bin/FEP.Helper.dll
+
+# Migration File
+/FEP.Model/Migrations/*
+!/FEP.Model/Migrations/Configuration.cs

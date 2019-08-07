@@ -82,7 +82,6 @@ namespace FEP.Model
 
     }
 
-
     public enum CourseStatus
     {
         Draft,
@@ -181,13 +180,28 @@ namespace FEP.Model
         public virtual LearningCourse Course { get; set; }
     }
 
+    [Table("CourseModule")]
+    public class CourseModule
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public string Title { get; set; }
+
+        public int CourseId { get; set; }
+
+        [ForeignKey("CourseId")]
+        public virtual LearningCourse Course { get; set; }
+
+    }
+
     [Table("CourseContent")]
     public class CourseContent
     {
         [Key]
         public int Id { get; set; }
 
-        public int CourseId { get; set; }
+        public int ModuleId { get; set; }
 
         public CourseContentType Type { get; set; }
 
@@ -201,8 +215,8 @@ namespace FEP.Model
 
         public int? Timer { get; set; } //completiontype timer in sec
 
-        [ForeignKey("CourseId")]
-        public virtual LearningCourse Course { get; set; }
+        [ForeignKey("ModuleId")]
+        public virtual CourseModule Module { get; set; }
     }
     
     public enum ContentCompletionType
@@ -252,7 +266,7 @@ namespace FEP.Model
         public virtual LearningCourse Course { get; set; }
 
         [ForeignKey("FileId")]
-        public File File { get; set; }
+        public FileDocument FileDocument { get; set; }
     }
 
     public enum CourseMaterialType
@@ -464,6 +478,7 @@ namespace FEP.Model
 
     public class LearningGroupMember
     {
+
         [Key]
         public int Id { get; set; }
 
@@ -483,6 +498,7 @@ namespace FEP.Model
 
     public class LearningDiscussion
     {
+
         [Key]
         public int Id { get; set; }
 
@@ -503,6 +519,7 @@ namespace FEP.Model
 
     public class LearningDiscussionView
     {
+
         [Key]
         public int Id { get; set; }
 
@@ -529,8 +546,7 @@ namespace FEP.Model
         public virtual LearningCourse Course { get; set; }
 
     }
-
-   
+      
 
     public class LearningDiscussionReply
     {
@@ -584,7 +600,7 @@ namespace FEP.Model
         public virtual LearningDiscussionReply Reply { get; set; }
 
         [ForeignKey("AttachmentId")]
-        public virtual File Attachment { get; set; }
+        public virtual FileDocument Attachment { get; set; }
     }
 
     public class LearningDiscussionComment

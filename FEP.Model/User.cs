@@ -12,12 +12,14 @@ namespace FEP.Model
     public class User
     {
         [Key]
-        public int Id { get; set; }
-        public string LoginId { get; set; }
+        public int Id { get; set; }        
         public string Name { get; set; }
         public string Email { get; set; }
         public UserType UserType { get; set; }        
         public virtual UserAccount UserAccount { get; set; }
+        public bool Display { get; set; }
+        public int? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 
     [Table("UserAccount")]
@@ -34,20 +36,22 @@ namespace FEP.Model
         public int LoginAttempt { get; set; }
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidTo { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public int? CreatedBy { get; set; }
-        public bool Display { get; set; }
+
         public virtual User User { get; set; }        
+
     }
         
     public enum UserType
     {
+        [Display(Name = "UserTypeSystemAdmin", ResourceType = typeof(Language.Enum))]
+        SystemAdmin = 0,
         [Display(Name = "UserTypeIndividual", ResourceType = typeof(Language.Enum))]
-        Individual = 0,
+        Individual = 1,
         [Display(Name = "UserTypeCompany", ResourceType = typeof(Language.Enum))]
-        Company = 1,
+        Company = 2,
         [Display(Name = "UserTypeStaff", ResourceType = typeof(Language.Enum))]
-        Staff = 2       
+        Staff = 3,
+        
     }
       
 }

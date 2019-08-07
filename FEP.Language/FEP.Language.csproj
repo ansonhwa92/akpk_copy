@@ -7,7 +7,7 @@
     <ProjectGuid>{511BA85D-13B0-4657-9583-892D70535AB9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FEP.Language</RootNamespace>
+    <RootNamespace>Language</RootNamespace>
     <AssemblyName>FEP.Language</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

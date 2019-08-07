@@ -27,8 +27,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				{
 					Id = i.Id,
 					EventTitle = i.EventTitle,
-					EventObjective = i.EventObjective,
-					Date = i.Date,
+					EventObjectiveId = i.EventObjectiveId,
+					StartDate = i.StartDate,
+					EndDate = i.EndDate,
 					Venue = i.Venue,
 					Fee = i.Fee
 				}).ToList();
@@ -52,13 +53,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				{
 					Id = i.Id,
 					EventTitle = i.EventTitle,
-					EventObjective = i.EventObjective,
-					Date = i.Date,
+					EventObjectiveId = i.EventObjectiveId,
+					StartDate = i.StartDate,
+					EndDate = i.EndDate,
 					Venue = i.Venue,
 					Fee = i.Fee,
 					ParticipantAllowed = i.ParticipantAllowed,
 					TargetedGroup = i.TargetedGroup,
-					ExternalExhibitor = i.ExternalExhibitor,
+					ExternalExhibitorId = i.ExternalExhibitorId,
 					ApprovalId1 = i.ApprovalId1,
 					ApprovalName1 = i.Approval1.User.Name,
 					ApprovalId2 = i.ApprovalId2,
@@ -68,8 +70,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ApprovalId4 = i.ApprovalId4,
 					ApprovalName4 = i.Approval4.User.Name,
 					EventStatus = i.EventStatus,
-					AgendaId = i.AgendaId,
-					AgendaName = i.Agenda.AgendaTitle,
 					EventCategory = i.EventCategory,
 					Remarks = i.Remarks
 				}).FirstOrDefault();
@@ -85,7 +85,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		// GET: PublicEvent/Create
 		public ActionResult Create()
 		{
-			ViewBag.AgendaId = new SelectList(db.Agenda.Where(p => p.Display).OrderBy(o => o.AgendaTitle), "Id", "AgendaTitle");
+			ViewBag.AgendaId = new SelectList(db.EventAgenda.Where(p => p.Display).OrderBy(o => o.AgendaTitle), "Id", "AgendaTitle");
 
 			return View("Create");
 		}
@@ -100,19 +100,19 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				PublicEvent x = new PublicEvent
 				{
 					EventTitle = model.EventTitle,
-					EventObjective = model.EventObjective,
-					Date = model.Date,
+					EventObjectiveId = model.EventObjectiveId,
+					StartDate = model.StartDate,
+					EndDate = model.EndDate,
 					Venue = model.Venue,
 					Fee = model.Fee,
 					ParticipantAllowed = model.ParticipantAllowed,
 					TargetedGroup = model.TargetedGroup,
-					ExternalExhibitor = model.ExternalExhibitor,
+					ExternalExhibitorId = model.ExternalExhibitorId,
 					ApprovalId1 = model.ApprovalId1,
 					ApprovalId2 = model.ApprovalId2,
 					ApprovalId3 = model.ApprovalId3,
 					ApprovalId4 = model.ApprovalId4,
 					EventStatus = model.EventStatus,
-					AgendaId = model.AgendaId,
 					EventCategory = model.EventCategory,
 					Remarks = model.Remarks,
 					CreatedBy = null,
@@ -141,13 +141,17 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				{
 					Id = i.Id,
 					EventTitle = i.EventTitle,
-					EventObjective = i.EventObjective,
-					Date = i.Date,
+					EventObjectiveId = i.EventObjectiveId,
+					EventObjectiveTitle = i.EventObjective.ObjectiveTitle,
+					StartDate = i.StartDate,
+					EndDate = i.EndDate,
 					Venue = i.Venue,
 					Fee = i.Fee,
 					ParticipantAllowed = i.ParticipantAllowed,
 					TargetedGroup = i.TargetedGroup,
-					ExternalExhibitor = i.ExternalExhibitor,
+
+					ExternalExhibitorId = i.ExternalExhibitorId,
+					ExternalExhibitorName = i.EventExternalExhibitor.Name,
 
 					ApprovalId1 = i.ApprovalId1,
 					ApprovalId2 = i.ApprovalId2,
@@ -161,9 +165,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 					EventStatus = i.EventStatus,
 
-					AgendaId = i.AgendaId,
-					AgendaName = i.Agenda.AgendaTitle,
-
 					EventCategory = i.EventCategory,
 					Remarks = i.Remarks
 				}).FirstOrDefault();
@@ -173,7 +174,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			ViewBag.AgendaId = new SelectList(db.Agenda.Where(p => p.Display).OrderBy(o => o.AgendaTitle), "Id", "AgendaTitle");
+			ViewBag.AgendaId = new SelectList(db.EventAgenda.Where(p => p.Display).OrderBy(o => o.AgendaTitle), "Id", "AgendaTitle");
 
 			return View(e);
 		}
@@ -189,19 +190,19 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				{
 					Id = model.Id,
 					EventTitle = (model.EventTitle != null) ? model.EventTitle.ToUpper() : model.EventTitle,
-					EventObjective = model.EventObjective,
-					Date = model.Date,
+					EventObjectiveId = model.EventObjectiveId,
+					StartDate = model.StartDate,
+					EndDate = model.EndDate,
 					Venue = model.Venue,
 					Fee = model.Fee,
 					ParticipantAllowed = model.ParticipantAllowed,
 					TargetedGroup = model.TargetedGroup,
-					ExternalExhibitor = model.ExternalExhibitor,
+					ExternalExhibitorId = model.ExternalExhibitorId,
 					ApprovalId1 = model.ApprovalId1,
 					ApprovalId2 = model.ApprovalId2,
 					ApprovalId3 = model.ApprovalId3,
 					ApprovalId4 = model.ApprovalId4,
 					EventStatus = model.EventStatus,
-					AgendaId = model.AgendaId,
 					EventCategory = model.EventCategory,
 					Remarks = model.Remarks
 				};
@@ -232,13 +233,17 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				{
 					Id = i.Id,
 					EventTitle = i.EventTitle,
-					EventObjective = i.EventObjective,
-					Date = i.Date,
+
+					EventObjectiveId = i.EventObjectiveId,
+					EventObjectiveTitle = i.EventExternalExhibitor.Name,
+					StartDate = i.StartDate,
+					EndDate = i.EndDate,
 					Venue = i.Venue,
 					Fee = i.Fee,
 					ParticipantAllowed = i.ParticipantAllowed,
 					TargetedGroup = i.TargetedGroup,
-					ExternalExhibitor = i.ExternalExhibitor,
+					ExternalExhibitorId = i.ExternalExhibitorId,
+					ExternalExhibitorName = i.EventExternalExhibitor.Name,
 
 					ApprovalId1 = i.ApprovalId1,
 					ApprovalId2 = i.ApprovalId2,
@@ -251,9 +256,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ApprovalName4 = i.Approval4.User.Name,
 
 					EventStatus = i.EventStatus,
-
-					AgendaId = i.AgendaId,
-					AgendaName = i.Agenda.AgendaTitle,
 
 					EventCategory = i.EventCategory,
 					Remarks = i.Remarks

@@ -151,19 +151,15 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
-    <Compile Include="Areas\eEvent\eEventAreaRegistration.cs" />
+    <Compile Include="Areas\eEvent\eEventAreaRegisteration.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
     <Compile Include="Areas\Publication\PublicationAreaRegistration.cs" />
     <Compile Include="Areas\Research\ResearchAreaRegistration.cs" />
     <Compile Include="Controllers\AuthController.cs" />
-    <Compile Include="Areas\eEventCancellationRequest\Controllers\CancellationRequestController.cs" />
-    <Compile Include="Areas\eEventCancellationRequest\eEventCancellationRequestAreaRegistration.cs" />
-    <Compile Include="Areas\eEventCancellationRequest\Models\CancellationRequest.cs" />
     <Compile Include="Areas\eEventMediaInterview\Controllers\MediaInterviewController.cs" />
     <Compile Include="Areas\eEventMediaInterview\eEventMediaInterviewAreaRegistration.cs" />
     <Compile Include="Areas\eEventMediaInterview\Models\MediaInterview.cs" />
     <Compile Include="Areas\eEvent\Controllers\PublicEventController.cs" />
-    <Compile Include="Areas\eEvent\eEventAreaRegistration.cs" />
     <Compile Include="Areas\eEvent\Models\PublicEvent.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -413,13 +409,6 @@
     <Content Include="Areas\eEvent\Views\PublicEvent\Edit.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Delete.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Details.cshtml" />
-    <Content Include="Areas\eEventCancellationRequest\Views\web.config" />
-    <Content Include="Areas\eEventCancellationRequest\Views\CancellationRequest\List.cshtml" />
-    <Content Include="Areas\eEventCancellationRequest\Views\CancellationRequest\Details.cshtml" />
-    <Content Include="Areas\eEventCancellationRequest\Views\CancellationRequest\Create.cshtml" />
-    <Content Include="Areas\eEventCancellationRequest\Views\CancellationRequest\Edit.cshtml" />
-    <Content Include="Areas\eEventCancellationRequest\Views\CancellationRequest\Delete.cshtml" />
-    <Content Include="Areas\eEventCancellationRequest\Views\CancellationRequest\Index.cshtml" />
     <Content Include="Areas\eEventMediaInterview\Views\web.config" />
     <Content Include="Areas\eEventMediaInterview\Views\MediaInterview\List.cshtml" />
     <Content Include="Areas\eEventMediaInterview\Views\MediaInterview\Details.cshtml" />
@@ -478,13 +467,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\eEventCancellationRequest\Views\Shared\" />
-    <Folder Include="Areas\eEventMediaInterview\Views\Shared\" />
-    <Folder Include="Areas\eEvent\Views\Shared\" />
-    <Folder Include="Models\" />
     <Folder Include="Areas\Administrator\Models\" />
-    <Folder Include="Areas\eEvent\Controllers\" />
-    <Folder Include="Areas\eEvent\Models\" />
+    <Folder Include="Areas\eEventMediaInterview\Views\Shared\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Areas\eLearning\Controllers\" />
     <Folder Include="Areas\eLearning\Models\" />

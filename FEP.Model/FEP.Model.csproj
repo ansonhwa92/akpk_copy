@@ -53,28 +53,15 @@
     <Compile Include="Cart.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="DbEntities.cs" />
+    <Compile Include="eEventFile.cs" />
+    <Compile Include="eEvent_Enum.cs" />
     <Compile Include="eLearning.cs" />
     <Compile Include="eEvent.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="File.cs" />
-    <Compile Include="Migrations\201907191206382_s.cs" />
-    <Compile Include="Migrations\201907191206382_s.Designer.cs">
-      <DependentUpon>201907191206382_s.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907300758463_x.cs" />
-    <Compile Include="Migrations\201907300758463_x.Designer.cs">
-      <DependentUpon>201907300758463_x.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908020846127_x1.cs" />
-    <Compile Include="Migrations\201908020846127_x1.Designer.cs">
-      <DependentUpon>201908020846127_x1.cs</DependentUpon>
-    <Compile Include="Migrations\201907311038032_x.cs" />
-    <Compile Include="Migrations\201907311038032_x.Designer.cs">
-      <DependentUpon>201907311038032_x.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907311332525_x1.cs" />
-    <Compile Include="Migrations\201907311332525_x1.Designer.cs">
-      <DependentUpon>201907311332525_x1.cs</DependentUpon>
+    <Compile Include="Migrations\201908070123314_x.cs" />
+    <Compile Include="Migrations\201908070123314_x.Designer.cs">
+      <DependentUpon>201908070123314_x.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\Seed.cs" />
@@ -97,11 +84,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201907311038032_x.resx">
-      <DependentUpon>201907311038032_x.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907311332525_x1.resx">
-      <DependentUpon>201907311332525_x1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201908070123314_x.resx">
+      <DependentUpon>201908070123314_x.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

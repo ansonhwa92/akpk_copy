@@ -14,12 +14,20 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Title")]
 		public string EventTitle { get; set; }
 
+		[Required(ErrorMessage = "")]
 		[Display(Name = "Objective")]
-		public string EventObjective { get; set; }
+		public int? EventObjectiveId { get; set; }
+
+		[Display(Name = "Objective")]
+		public string EventObjectiveTitle { get; set; }
 
 		[DataType(DataType.Date)]
 		[Display(Name = "Event Date")]
-		public DateTime Date { get; set; }
+		public DateTime StartDate { get; set; }
+
+		[DataType(DataType.Date)]
+		[Display(Name = "Event Date")]
+		public DateTime EndDate { get; set; }
 
 		[Display(Name = "Event Venue")]
 		public string Venue { get; set; }
@@ -31,10 +39,13 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public int? ParticipantAllowed { get; set; }
 
 		[Display(Name = "")]
-		public int? TargetedGroup { get; set; }
+		public EventTargetGroup TargetedGroup { get; set; }
 
 		[Display(Name = "External Exhibitor")]
-		public string ExternalExhibitor { get; set; }
+		public int? ExternalExhibitorId { get; set; }
+
+		[Display(Name = "External Exhibitor")]
+		public string ExternalExhibitorName { get; set; }
 
 		[Display(Name = "Approver Name")]
 		public int? ApprovalId1 { get; set; }

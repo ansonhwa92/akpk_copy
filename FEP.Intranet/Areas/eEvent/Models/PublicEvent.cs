@@ -75,9 +75,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public EventStatus EventStatus { get; set; }
 
 		[Display(Name = "Agenda Name")]
-		public int? AgendaId { get; set; }
-
-		[Display(Name = "Agenda Name")]
 		public string AgendaName { get; set; }
 
 		[Display(Name = "Category")]

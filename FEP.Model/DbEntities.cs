@@ -32,9 +32,7 @@ namespace FEP.Model
                
         //file
         public DbSet<FileDocument> FileDocument { get; set; }
-		//file
-		public DbSet<File> File { get; set; }
-
+		
         //notification
         public DbSet<Notification> Notification { get; set; }
         public DbSet<NotificationToSend> NotificationToSend { get; set; }

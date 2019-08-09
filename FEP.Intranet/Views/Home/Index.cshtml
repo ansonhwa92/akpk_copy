@@ -1,341 +1,795 @@
 ﻿
 @{
     ViewBag.Title = "Home";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
 }
 
-<ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="fixed-student-dashboard.html">Home</a></li>
-    <li class="breadcrumb-item active">Dashboard</li>
-</ol>
-<h1 class="h2">Dashboard</h1>
 
-<div class="card border-left-3 border-left-primary card-2by1">
-    <div class="card-body">
-        <div class="media flex-wrap align-items-center">
-            <div class="media-left">
-                <i class="material-icons text-muted-light">credit_card</i>
-            </div>
-            <div class="media-body" style="min-width: 180px">
-                Your subscription ends on <strong>25 February 2015</strong>
-            </div>
-            <div class="media-right mt-2 mt-xs-plus-0">
-                <a class="btn btn-success" href="fixed-student-account-billing-upgrade.html">Upgrade</a>
-            </div>
-        </div>
+@section Preloader{
+
+    <div id="preloader">
+        <div class="loader"></div>
     </div>
-</div>
-<div class="row">
-    <div class="col-lg-7">
 
-        <div class="card">
-            <div class="card-header d-flex align-items-center">
-                <div class="h2 mb-0 mr-3 text-primary">116</div>
-                <div class="flex">
-                    <h4 class="card-title">Angular</h4>
-                    <p class="card-subtitle">Best score</p>
-                </div>
-                <div class="dropdown">
-                    <a href="#" class="dropdown-toggle text-black-70" data-toggle="dropdown">Popular Topics</a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a href="" class="dropdown-item">Popular Topics</a>
-                        <a href="" class="dropdown-item">Web Design</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="chart" style="height: 319px;">
-                    <canvas id="topicIqChart" class="chart-canvas"></canvas>
-                </div>
-            </div>
-        </div>
+}
 
-        <div class="card">
-            <div class="card-header">
-                <div class="media align-items-center">
-                    <div class="media-body">
-                        <h4 class="card-title">Courses</h4>
-                        <p class="card-subtitle">Your recent courses</p>
-                    </div>
-                    <div class="media-right">
-                        <a class="btn btn-sm btn-primary" href="fixed-student-my-courses.html">My courses</a>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <ul class="list-group list-group-fit mb-0" style="z-index: initial;">
-
-                <li class="list-group-item" style="z-index: initial;">
-                    <div class="d-flex align-items-center">
-                        <a href="fixed-student-take-course.html" class="avatar avatar-4by3 avatar-sm mr-3">
-                            <img src="assets/images/gulp.png" alt="course" class="avatar-img rounded">
-                        </a>
-                        <div class="flex">
-                            <a href="fixed-student-take-course.html" class="text-body"><strong>Learn Vue.js Fundamentals</strong></a>
-                            <div class="d-flex align-items-center">
-                                <div class="progress" style="width: 100px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small class="text-muted ml-2">25%</small>
-                            </div>
-                        </div>
-                        <div class="dropdown ml-3">
-                            <a href="#" class="dropdown-toggle text-muted" data-caret="false" data-toggle="dropdown">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="fixed-student-take-course.html">Continue</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="list-group-item" style="z-index: initial;">
-                    <div class="d-flex align-items-center">
-                        <a href="fixed-student-take-course.html" class="avatar avatar-4by3 avatar-sm mr-3">
-                            <img src="assets/images/vuejs.png" alt="course" class="avatar-img rounded">
-                        </a>
-                        <div class="flex">
-                            <a href="fixed-student-take-course.html" class="text-body"><strong>Angular in Steps</strong></a>
-                            <div class="d-flex align-items-center">
-                                <div class="progress" style="width: 100px;">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small class="text-muted ml-2">100%</small>
-                            </div>
-                        </div>
-                        <div class="dropdown ml-3">
-                            <a href="#" class="dropdown-toggle text-muted" data-caret="false" data-toggle="dropdown">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="fixed-student-take-course.html">Continue</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="list-group-item" style="z-index: initial;">
-                    <div class="d-flex align-items-center">
-                        <a href="fixed-student-take-course.html" class="avatar avatar-4by3 avatar-sm mr-3">
-                            <img src="assets/images/nodejs.png" alt="course" class="avatar-img rounded">
-                        </a>
-                        <div class="flex">
-                            <a href="fixed-student-take-course.html" class="text-body"><strong>Bootstrap Foundations</strong></a>
-                            <div class="d-flex align-items-center">
-                                <div class="progress" style="width: 100px;">
-                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small class="text-muted ml-2">80%</small>
-                            </div>
-                        </div>
-                        <div class="dropdown ml-3">
-                            <a href="#" class="dropdown-toggle text-muted" data-caret="false" data-toggle="dropdown">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="fixed-student-take-course.html">Continue</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <div class="media align-items-center">
-                    <div class="media-body">
-                        <h4 class="card-title">Quizzes</h4>
-                        <p class="card-subtitle">Your Performance</p>
-                    </div>
-                    <div class="media-right">
-                        <a class="btn btn-sm btn-primary" href="#">Quiz results</a>
-                    </div>
-                </div>
-            </div>
-
-
-            <ul class="list-group list-group-fit mb-0">
-
-                <li class="list-group-item">
-                    <div class="media align-items-center">
-                        <div class="media-body">
-                            <a class="text-body" href="fixed-student-quiz-results.html"><strong>Title of quiz goes here?</strong></a><br>
-                            <div class="d-flex align-items-center">
-                                <small class="text-black-50 text-uppercase mr-2">Course</small>
-                                <a href="fixed-student-take-course.html">Basics of HTML</a>
-                            </div>
-                        </div>
-                        <div class="media-right text-center d-flex align-items-center">
-                            <span class="text-black-50 mr-3">Good</span>
-                            <h4 class="mb-0">5.8</h4>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="list-group-item">
-                    <div class="media align-items-center">
-                        <div class="media-body">
-                            <a class="text-body" href="fixed-student-quiz-results.html"><strong>Directives &amp; Routing</strong></a><br>
-                            <div class="d-flex align-items-center">
-                                <small class="text-black-50 text-uppercase mr-2">Course</small>
-                                <a href="fixed-student-take-course.html">Angular in Steps</a>
-                            </div>
-                        </div>
-                        <div class="media-right text-center d-flex align-items-center">
-                            <span class="text-black-50 mr-3">Great</span>
-                            <h4 class="mb-0 text-success">9.8</h4>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="list-group-item">
-                    <div class="media align-items-center">
-                        <div class="media-body">
-                            <a class="text-body" href="fixed-student-quiz-results.html"><strong>Responsive &amp; Retina</strong></a><br>
-                            <div class="d-flex align-items-center">
-                                <small class="text-black-50 text-uppercase mr-2">Course</small>
-                                <a href="fixed-student-take-course.html">Bootstrap Foundations</a>
-                            </div>
-                        </div>
-                        <div class="media-right text-center d-flex align-items-center">
-                            <span class="text-black-50 mr-3">Failed</span>
-                            <h4 class="mb-0 text-danger">2.8</h4>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </div>
+<section id="intro">
+    <div class="intro-container wow fadeInUp">
+        <h1>Your financial well-being is <span class="color-primary">our concern</span></h1>
+        <p>We're a nonprofit with the mission to provide a free, world class education for anyone, anywhere.</p>
+        <div class="mt-4"><a class="btn btn-outline-secondary">Tell Me More</a> <a class="btn btn-outline-default"><span class="pr-2"><i class="la la-play-circle"></i></span> Watch Video</a></div>
     </div>
-    <div class="col-lg-5">
+</section>
 
-        <div class="card">
-            <div class="card-header d-flex align-items-center">
-                <div class="h2 mb-0 mr-3 text-primary">432</div>
-                <div class="flex">
-                    <h4 class="card-title">Experience IQ</h4>
-                    <p class="card-subtitle">4 days streak this week</p>
-                </div>
-                <i class="material-icons text-muted ml-2">trending_up</i>
-            </div>
-            <div class="card-body">
-                <div class="chart" style="height: 154px;">
-                    <canvas id="iqChart" class="chart-canvas"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="card card-2by1">
-            <div class="card-header">
-                <h4 class="card-title">Rewards</h4>
-                <p class="card-subtitle">Your latest achievements</p>
-            </div>
-            <div class="card-body text-center">
-                <div class="btn btn-primary btn-circle"><i class="material-icons">thumb_up</i></div>
-                <div class="btn btn-danger btn-circle"><i class="material-icons">grade</i></div>
-                <div class="btn btn-success btn-circle"><i class="material-icons">bubble_chart</i></div>
-                <div class="btn btn-warning btn-circle"><i class="material-icons">keyboard_voice</i></div>
-                <div class="btn btn-info btn-circle"><i class="material-icons">event_available</i></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <div class="media align-items-center">
-                    <div class="media-body">
-                        <h4 class="card-title">Forum Activity</h4>
-                        <p class="card-subtitle">Latest forum topics &amp; replies</p>
-                    </div>
-                    <div class="media-right">
-                        <a class="btn btn-sm btn-primary" href="fixed-student-forum.html"> <i class="material-icons">keyboard_arrow_right</i></a>
+<main id="main">
+    <!-- =====================
+        About Us
+    ========================-->
+    <section id="aboutus">
+        <!-- =====================
+            Search Dropdown
+        ========================-->
+        <div id="search-dropdown">
+            <div class="container">
+                <div class="search-dropdown-wrapper">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <select class="select2" name="module">
+                                <option value="e-Learning">e-Learning</option>
+                                <option value="e-Events">e-Events</option>
+                                <option value="Research">Research</option>
+                                <option value="Publications">Publications</option>
+                            </select>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Search for online courses, instructor name, etc.." name="search">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
-
-
-
-            <ul class="list-group list-group-fit">
-
-
-                <li class="list-group-item forum-thread">
-                    <div class="media align-items-center">
-                        <div class="media-left">
-                            <div class="forum-icon-wrapper">
-                                <a href="fixed-student-forum-thread.html" class="forum-thread-icon">
-                                    <i class="material-icons">description</i>
-                                </a>
-                                <a href="fixed-student-profile.html" class="forum-thread-user">
-                                    <img src="assets/images/people/50/guy-1.jpg" alt="" width="20" class="rounded-circle">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="media-body">
-                            <div class="d-flex align-items-center">
-                                <a href="fixed-student-profile.html" class="text-body"><strong>Luci Bryant</strong></a>
-                                <small class="ml-auto text-muted">5 min ago</small>
-                            </div>
-                            <a class="text-black-70" href="fixed-student-forum-thread.html">Am I learning the right way?</a>
-                        </div>
-                    </div>
-                </li>
-
-
-
-                <li class="list-group-item forum-thread">
-                    <div class="media align-items-center">
-                        <div class="media-left">
-                            <div class="forum-icon-wrapper">
-                                <a href="fixed-student-forum-thread.html" class="forum-thread-icon">
-                                    <i class="material-icons">description</i>
-                                </a>
-                                <a href="fixed-student-profile.html" class="forum-thread-user">
-                                    <img src="assets/images/people/50/guy-2.jpg" alt="" width="20" class="rounded-circle">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="media-body">
-                            <div class="d-flex align-items-center">
-                                <a href="fixed-student-profile.html" class="text-body"><strong>Magnus Goldsmith</strong></a>
-                                <small class="ml-auto text-muted">7 min ago</small>
-                            </div>
-                            <a class="text-black-70" href="fixed-student-forum-thread.html">Can someone help me with the basic Setup?</a>
-                        </div>
-                    </div>
-                </li>
-
-
-
-                <li class="list-group-item forum-thread">
-                    <div class="media align-items-center">
-                        <div class="media-left">
-                            <div class="forum-icon-wrapper">
-                                <a href="fixed-student-forum-thread.html" class="forum-thread-icon">
-                                    <i class="material-icons">description</i>
-                                </a>
-                                <a href="fixed-student-profile.html" class="forum-thread-user">
-                                    <img src="assets/images/people/50/woman-1.jpg" alt="" width="20" class="rounded-circle">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="media-body">
-                            <div class="d-flex align-items-center">
-                                <a href="fixed-student-profile.html" class="text-body"><strong>Katelyn Rankin</strong></a>
-                                <small class="ml-auto text-muted">12 min ago</small>
-                            </div>
-                            <a class="text-black-70" href="fixed-student-forum-thread.html">I think this is the right way?</a>
-                        </div>
-                    </div>
-                </li>
-
-
-            </ul>
         </div>
-    </div>
-</div>
+        <div class="empty_6"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h6 class="color-secondary">ABOUT US</h6>
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    <div class="col-pr">
+                        <h1 class="color-darkblue">Make Prudent Financial Management A Way Of Life</h2>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    <div class="mt-2">
+                        <div class="col-wrapper">
+                            <p>The Credit Counselling and Debt Management Agency, or commonly known as Agensi Kaunseling dan Pengurusan Kredit (AKPK), is an agency set up by Bank Negara Malaysia in April 2006 to help individuals take control of their financial situation and gain peace of mind that comes from the wise use of credit.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="empty_3"></div>
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                    <div class="box-item">
+                        <a href="#"></a>
+                        <div class="box-container">
+                            <img src="img/about-us/icon-mission.svg" alt="image">
+                            <p>OUR MISSION</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="box-item">
+                        <a href="#"></a>
+                        <div class="box-container">
+                            <img src="img/about-us/icon-vision.svg" alt="image">
+                            <p>OUR VISION</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="box-item">
+                        <a href="#"></a>
+                        <div class="box-container">
+                            <img src="img/about-us/icon-story.svg" alt="image">
+                            <p>OUR STORY</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="box-item">
+                        <a href="#"></a>
+                        <div class="box-container">
+                            <img src="img/about-us/icon-establishment.svg" alt="image">
+                            <p>OUR ESTABLISHMENT</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- =====================
+        Our Services
+    ========================-->
+    <section id="ourservices">
+        <div class="empty_4"></div>
+        <div class="container">
+            <div class="text-center">
+                <h6 class="color-secondary">OUR SERVICES</h6>
+                <h1 class="color-darkblue">We've got your back, financially speaking</h1>
+                <p>Find out how these financial services we offered to you can help you manage your financial burden.</p>
+            </div>
+            <div class="empty_3"></div>
+            <div>
+                <div class="item row wow fadeInUp">
+                    <div class="col-lg-5 col-md-12">
+                        <div class="item__left pr-3">
+                            <img class="item__left__image" src="img/services/icon-fe.svg" alt="image">
+                            <h2 class="item__left__title color-darkblue">Financial Education</h2>
+                            <p class="item__left__content">
+                                AKPK provides financial education materials on the proper use of credit and basic money management as
+                                well as tips on how to use credit responsibly.
+                            </p>
+                            <p><a href="#" class="btn btn-rounded btn-info text-white">READ MORE <span class="align-middle"><i class="icon ion-ios-arrow-round-forward">&nbsp;</i></span></a></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-12">
+                        <div class="item__right">
+                            <div class="item__right__image-left"><img class="item__right__image" src="img/03.png" alt="image"></div>
+                            <div class="item__right__image-right rellax" data-rellax-speed="4"><img class="item__right__image" src="img/04.png" alt="image"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item row wow fadeInUp">
+                    <div class="col-lg-7 col-md-12">
+                        <div class="item__right">
+                            <div class="item__right__image-left"><img class="item__right__image" src="img/05.png" alt="image"></div>
+                            <div class="item__right__image-right rellax" data-rellax-speed="2"><img class="item__right__image" src="img/06.png" alt=""></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-12">
+                        <div class="item__left pl-3">
+                            <img class="item__left__image" src="img/services/icon-fc.svg" alt="image">
+                            <h2 class="item__left__title color-darkblue">Financial Counselling</h2>
+                            <p class="item__left__content">
+                                AKPK offers counselling and advice on managing ypur financial wisely - from budgeting, money management and credit related issues.
+                            </p>
+                            <p><a href="#" class="btn btn-rounded btn-info text-white">READ MORE <span class="align-middle"><i class="icon ion-ios-arrow-round-forward">&nbsp;</i></span></a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="item row wow fadeInUp">
+                    <div class="col-lg-5 col-md-12">
+                        <div class="item__left pr-3">
+                            <img class="item__left__image" src="img/services/icon-dmp.svg" alt="image">
+                            <h2 class="item__left__title color-darkblue">Debt Management Programme</h2>
+                            <p class="item__left__content">
+                                Our counsellors will work with you to develop a personalised debt repayment plan in consultation
+                                with your financial service providers.
+                            </p>
+                            <p><a href="#" class="btn btn-rounded btn-info text-white">READ MORE <span class="align-middle"><i class="icon ion-ios-arrow-round-forward">&nbsp;</i></span></a></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-12">
+                        <div class="item__right">
+                            <div class="item__right__image-left-3 rellax" data-rellax-speed="4"><img class="item__right__image" src="img/07.png" alt=""></div>
+                            <div class="item__right__image-right-3"><img class="item__right__image" src="img/13.png" alt="image"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- =====================
+        Client Testimonial
+    ========================-->
+    <section id="clienttestimonial">
+        <!-- <div class="empty_3"></div> -->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-sm-12 pr-0">
+                    <div class="empty_3"></div>
+                    <h6 class="testi-header color-secondary">CLIENT TESTIMONIAL</h6>
+                    <div class="testimonial-slide">
+                        <div class="testi-content">
+                            <h4 class="color-darkblue">The program they came up with is not an undue hardship. I can handle it easily. I'm in control of my life again and it feels really good.</h4>
+                            <h6 class="color-darkblue">FATTAYAH HAMID, <span class="job">Content Specialist</span></h6>
+                        </div>
+                        <div class="testi-content">
+                            <h4 class="color-darkblue">The program they came up with is not an undue hardship. I can handle it easily. I'm in control of my life again and it feels really good.</h4>
+                            <h6 class="color-darkblue">ADILA, <span class="job">Content Specialist</span></h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-sm-12 pr-0">
+                    <div class="col-right">
+                        <!-- <img src="img/image-2.jpg" alt="image" class="img-fluid rounded"> -->
+                        <iframe width="100%" height="400" src="https://www.youtube.com/embed/uBfh8ckHXCk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- =====================
+        Learning Centre
+    ========================-->
+    <section id="learningcentre">
+        <div class="empty_3"></div>
+        <div class="container">
+            <h6 class="color-secondary">LEARNING CENTRE</h6>
+            <h1 class="style2 text-white">But wait! There's more!</h1>
+            <p class="lead">We also provide the learning hub for you to learn our financial eduvation online.</p>
+        </div>
+        <div class="container elementor-timeline-wrapper">
+            <div class="elementor-timeline-carousel">
+                <div class="owl-carousel owl-learning">
+                    <div class="owl-item">
+                        <div class="timeline-carosuel-item timeline-item-0">
+                            <div class="timeline-content timeline-animation">
+                                <div class="timeline-number">
+                                    <span>1</span>
+                                </div>
+                                <h6 class="timeline-title">Sign Up</h6>
+                                <div class="content">
+                                    <p>The time has come to bring those ideas and plans to life.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item">
+                        <div class="timeline-carosuel-item timeline-item-1">
+                            <div class="timeline-content timeline-animation">
+                                <div class="timeline-number">
+                                    <span>2</span>
+                                </div>
+                                <h6 class="timeline-title">Update your Profile</h6>
+                                <div class="content">
+                                    <p>Find what you need in one template and combine features at will.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item">
+                        <div class="timeline-carosuel-item timeline-item-2">
+                            <div class="timeline-content timeline-animation">
+                                <div class="timeline-number">
+                                    <span>3</span>
+                                </div>
+                                <h6 class="timeline-title">Browse Course</h6>
+                                <div class="content">
+                                    <p>Easy and fast adjustments of elements are possible with Front template</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-item">
+                        <div class="timeline-carosuel-item timeline-item-3">
+                            <div class="timeline-content timeline-animation">
+                                <div class="timeline-number">
+                                    <span>4</span>
+                                </div>
+                                <h6 class="timeline-title">Take Course</h6>
+                                <div class="content">
+                                    <p>Achieve virtually any design and layout from within the one template.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- =====================
+        Statistik
+    ========================-->
+    <section id="counter">
+        <div class="container">
+            <div class="counter-up">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="counter-icon-number">
+                            <div class="counter-icon">
+                                <img src="img/stats/icon-stats-event.svg" alt="image">
+                            </div>
+                            <div class="counter-number">
+                                <span class="counter-count" data-to="1300">1300</span>
+                                <p>Events Registered</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /counter -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="counter-icon-number">
+                            <div class="counter-icon">
+                                <img src="img/stats/icon-stats-rnp.svg" alt="image">
+                            </div>
+                            <div class="counter-number">
+                                <span class="counter-count" data-to="323">323</span><span>+</span>
+                                <p>Publication Published</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /counter -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="counter-icon-number">
+                            <div class="counter-icon">
+                                <img src="img/stats/icon-stats-course.svg" alt="image">
+                            </div>
+                            <div class="counter-number">
+                                <span class="counter-count" data-to="845">845</span>
+                                <p>Online Available Courses</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /counter -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="counter-icon-number">
+                            <div class="counter-icon">
+                                <img src="img/stats/icon-stats-enrolled.svg" alt="image">
+                            </div>
+                            <div class="counter-number">
+                                <span class="counter-count" data-to="6579">6579</span>
+                                <p>Students Enrolled</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /counter -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- =====================
+        Our Course
+    ========================-->
+    <section id="ourcourse" class="bg-main">
+        <div class="container">
+            <h6 class="color-secondary">OUR COURSE</h6>
+            <a href="#" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
+            <h1 class="color-darkblue">Featured Courses</h1>
+            <div class="empty_3"></div>
+            <div class="row">
+                <div class="card-slider owl-carousel">
+                    <div class="wow fadeInUp">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="card__top__wapper">
+                                    <img class="card__top__image" src="img/cover-1.jpg" alt="image">
+                                    <div class="share-wrap">
+                                        <div class="share-button sharer">
+                                            <span class="share-icon">
+                                                <ion-icon name="share"></ion-icon>
+                                            </span>
+                                            <div class="social top center"></div>
+                                        </div>
+                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                    </div>
+                                    <div class="badge"><span>RM128.90</span></div>
+                                </div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Uruskan Aliran Tunai Anda: Simpan, Simpan, Simpan</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
+                                </div>
+                                <div class="card__text">Menabung satu jumlah setiap hari, contohnya RM 1 setiap hari.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">5</span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">100</span></div>
+                                    </div>
+                                    <div class="card__col-right">
+                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wow fadeInUp" data-wow-delay=".5s">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="card__top__wapper">
+                                    <img class="card__top__image" src="img/cover-2.jpg" alt="image">
+                                    <div class="share-wrap">
+                                        <div class="share-button sharer">
+                                            <span class="share-icon">
+                                                <ion-icon name="share"></ion-icon>
+                                            </span>
+                                            <div class="social top center"></div>
+                                        </div>
+                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                    </div>
+                                    <div class="badge"><span>RM40.90</span></div>
+                                </div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">The Complete Foundation Stock Trading</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Mu'adz Zulkifli</span></span></a>
+                                </div>
+                                <div class="card__text">Learn to trade the stock market by a trading firm CEO.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">3</span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">1266</span></div>
+                                    </div>
+                                    <div class="card__col-right">
+                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wow fadeInUp" data-wow-delay=".7s">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="card__top__wapper">
+                                    <img class="card__top__image" src="img/cover-3.jpg" alt="image">
+                                    <div class="share-wrap">
+                                        <div class="share-button sharer">
+                                            <span class="share-icon">
+                                                <ion-icon name="share"></ion-icon>
+                                            </span>
+                                            <div class="social top center"></div>
+                                        </div>
+                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                    </div>
+                                    <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
+                                </div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">The Complete Financial Analyst Training & Investing</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/68.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Noorhaliza Abu Bakar</span></span></a>
+                                </div>
+                                <div class="card__text">Succeed as a Financial Analyst & Investor by Award Winning MBA.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">6</span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">3641</span></div>
+                                    </div>
+                                    <div class="card__col-right">
+                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wow fadeInUp" data-wow-delay=".9s">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="courses__top__wapper">
+                                    <img class="card__top__image" src="img/cover-4.jpg" alt="image">
+                                    <div class="share-wrap">
+                                        <div class="share-button sharer">
+                                            <span class="share-icon">
+                                                <ion-icon name="share"></ion-icon>
+                                            </span>
+                                            <div class="social top center"></div>
+                                        </div>
+                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                    </div>
+                                    <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
+                                </div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Uruskan Aliran Tunai Anda: Simpan, Simpan, Simpan</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
+                                </div>
+                                <div class="card__text">Menabung satu jumlah setiap hari, contohnya RM 1 setiap hari.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">5</span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">100</span></div>
+                                    </div>
+                                    <div class="card__col-right">
+                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="empty_3"></div>
+        </div>
+    </section>
+    <!-- =====================
+        Our Instructors
+    ======================== -->
+    <section id="ourinstructors">
+        <div class="container">
+            <div class="row flex-column-reverse flex-md-row">
+                <div class="col-lg-7 col-sm-12">
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-4">
+                            <div class="instructor-wrapper">
+                                <div class="iotm"><span class="card__icon"><i class="la la-trophy"></i></span><span data-toggle="tooltip" title="Instructor of The Month">IoTM</span></div>
+                                <div class="instructor-container element_instructor1">
+                                    <div class="element_column">
+                                        <div class="element_instructor">
+                                            <img src="img/lect-01.jpg" alt="image">
+                                            <div class="instructor-team-details">
+                                                <div class="instructor-team-name">Emma Watson</div>
+                                                <div class="instructor-team-job">AKPK Facilitator</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="element_column_back pt-6">
+                                        <p class="profile-text">Emma's been a proffesional software developer for over 35 years. During her career she has worked for major companies such as Fujitsu, Mitsubishi and Saab.</p>
+                                        <p class="more-link"><a href="#" class="color-secondary">View Full Profile<span class="align-middle"><i class="icon ion-ios-arrow-round-forward">&nbsp;</i></span></a></p>
+                                        <div class="mediasocial"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-4">
+                            <div class="instructor-wrapper">
+                                <div class="iotm"><span class="card__icon"><i class="la la-trophy"></i></span><span data-toggle="tooltip" title="Instructor of The Month">IoTM</span></div>
+                                <div class="instructor-container element_instructor2">
+                                    <div class="element_column">
+                                        <div class="element_instructor">
+                                            <img src="img/lect-02.jpg" alt="image">
+                                            <div class="instructor-team-details">
+                                                <div class="instructor-team-name">Abraham Smith</div>
+                                                <div class="instructor-team-job">Teacher</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="element_column_back pt-6">
+                                        <p class="profile-text">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+                                        </p>
+                                        <p class="more-link"><a href="#" class="color-secondary">View Full Profile<span class="align-middle"><i class="icon ion-ios-arrow-round-forward">&nbsp;</i></span></a></p>
+                                        <div class="mediasocial"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-sm-12">
+                    <div class="col-instructor-right pl-3">
+                        <h6 class="color-secondary">
+                            OUR INSTRUCTORS</h65>
+                            <h1 class="color-darkblue">Meet the Instructors</h1>
+                            <p class="mb-4">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+                            </p>
+                            <p class="pt-2"><a href="#" class="btn btn-rounded btn-info text-white">MEET NOW <span class="align-middle"><i class="icon ion-ios-arrow-round-forward">&nbsp;</i></span></a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- =====================
+        Our Publications
+    ========================-->
+    <section id="ourpublications">
+        <div class="empty_6"></div>
+        <div class="container">
+            <h6 class="color-secondary">OUR PUBLICATIONS</h6>
+            <a href="#" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
+            <h1 class="color-darkblue">Featured Publications</h1>
+            <div class="empty_3"></div>
+            <div class="row">
+                <div class="col-lg-6 col-sm-12">
+                    <div class="publications__wrapper wow fadeInUp">
+                        <div class="publications_col_left card__top">
+                            <div class="card__top__wapper">
+                                <img class="card__top__image" src="img/cover-buku-1.jpg" alt="image">
+                                <div class="share-wrap">
+                                    <div class="share-button sharer">
+                                        <span class="share-icon">
+                                            <ion-icon name="share"></ion-icon>
+                                        </span>
+                                        <div class="social top center"></div>
+                                    </div>
+                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="publications_col_right">
+                            <div class="card__body">
+                                <a class="card__title" href="#">The Tower & The Cloud:<br /> Higher Education in the Age of Cloud Computing</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Richard N.Kartz</span></span></a>
+                                </div>
+                                <div class="card__text">The emergence of the networked information economy is unleashing tow powerful forces.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Books</span></span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                    </div>
+                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    <div class="publications__wrapper wow fadeInUp" data-wow-delay=".5s">
+                        <div class="publications_col_left card__top">
+                            <div class="card__top__wapper">
+                                <img class="card__top__image" src="img/cover-buku-2.jpg" alt="image">
+                                <div class="share-wrap">
+                                    <div class="share-button sharer">
+                                        <span class="share-icon">
+                                            <ion-icon name="share"></ion-icon>
+                                        </span>
+                                        <div class="social top center"></div>
+                                    </div>
+                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="publications_col_right">
+                            <div class="card__body">
+                                <a class="card__title" href="#">Cultivating Careers: <br /> Professional Development for Campus IT</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Cynthia Golden</span></span></a>
+                                </div>
+                                <div class="card__text">This research provides an overview of current principles and practices for mentoring and developing IT professionals in higher education.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                    </div>
+                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="empty_6"></div>
+    </section>
+    <!-- =====================
+        e-Events
+    ========================-->
+    <section id="eevents" class="bg-main">
+        <div class="empty_3"></div>
+        <div class="container">
+            <h6 class="color-secondary">
+                E-EVENTS</6>
+                <a href="#" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
+                <h1 class="color-darkblue">Featured Events</h1>
+                <div class="empty_3"></div>
+                <div class="row">
+                    <div class="card-slider owl-carousel">
+                        <div class="card__wrapper wow fadeInUp">
+                            <div class="card__top">
+                                <div class="card__top__wapper">
+                                    <img class="card__top__image" src="img/cover-5.jpg" alt="image">
+                                </div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Employee Engagement from A to Z</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Angela Jackson</span></span></a>
+                                </div>
+                                <div class="card__info">
+                                    <ul>
+                                        <li class="date"><span class="d-inline-block" data-toggle="tooltip" title="Event Date"><span class="card__icon"><i class="la la-calendar"></i></span></span>8 - 9 Sept, 2019</li>
+                                        <li class="place"><span class="d-inline-block" data-toggle="tooltip" title="Venue"><span class="card__icon"><i class="la la-map-marker"></i></span></span>PWTC, Kuala Lumpur</li>
+                                        <li class="eventname"><span class="d-inline-block" data-toggle="tooltip" title="Event type"><span class="card__icon"><i class="la la-list-ul"></i></span></span>Workshop</li>
+                                        <li class="status sellingfast"><span class="d-inline-block" data-toggle="tooltip" title="Seating Availability"><span class="card__icon"><i class="fas fa-chair"></i></span></span>Selling Fast</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__wrapper wow fadeInUp" data-wow-delay=".5s">
+                            <div class="card__top">
+                                <div class="card__top__wapper"><img class="card__top__image" src="img/cover-6.jpg" alt="image"></div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Financial Management Excellence Certificate</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Norman Bier</span></span></a>
+                                </div>
+                                <div class="card__info">
+                                    <ul>
+                                        <li class="date"><span class="card__icon"><i class="la la-calendar"></i></span>3 - 5 Sept, 2019</li>
+                                        <li class="place"><span class="card__icon"><i class="la la-map-marker"></i></span>KLCC, Kuala Lumpur</li>
+                                        <li class="eventname"><span class="card__icon"><i class="la la-list-ul"></i></span>Symposium</li>
+                                        <li class="status available"><span class="card__icon"><i class="fas fa-chair"></i></span>Available</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__wrapper wow fadeInUp" data-wow-delay=".7s">
+                            <div class="card__top">
+                                <div class="card__top__wapper"><img class="card__top__image" src="img/cover-7.jpg" alt="image"></div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Sales Enablement Leadership & Learning</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Antony Awaida</span></span></a>
+                                </div>
+                                <div class="card__info">
+                                    <ul>
+                                        <li class="date"><span class="card__icon"><i class="la la-calendar"></i></span>3 - 7 Sept, 2019</li>
+                                        <li class="place"><span class="card__icon"><i class="la la-map-marker"></i></span>PICC, Kuala Lumpur</li>
+                                        <li class="eventname"><span class="card__icon"><i class="la la-list-ul"></i></span>Exhibition</li>
+                                        <li class="status available"><span class="card__icon"><i class="fas fa-chair"></i></span>Available</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__wrapper wow fadeInUp" data-wow-delay=".9s">
+                            <div class="card__top">
+                                <div class="card__top__wapper"><img class="card__top__image" src="img/cover-8.jpg" alt="image"></div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">AKPK International Conference & Expo</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/68.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Aazman Iskandar</span></span></a>
+                                </div>
+                                <div class="card__info">
+                                    <ul>
+                                        <li class="date"><span class="card__icon"><i class="la la-calendar"></i></span>8 - 9 Sept, 2019</li>
+                                        <li class="place"><span class="card__icon"><i class="la la-map-marker"></i></span>Bukit Jalil Conference Hall</li>
+                                        <li class="eventname"><span class="card__icon"><i class="la la-list-ul"></i></span>Workshop</li>
+                                        <li class="status soldout"><span class="card__icon"><i class="fas fa-chair"></i></span>Sold Out</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="empty_6"></div>
+        </div>
+    </section>
+    <!-- =====================
+       Our News & Articles
+    ========================-->
+    <section id="ournews" class="bg-main">
+        <div class="row ournews-container no-gutters">
+            <div class="col-lg-6">
+                <div class="empty_3"></div>
+                <div class="news-desc">
+                    <h6 class="color-secondary">LATEST NEWS</h6>
+                    <h1 class="color-darkblue">Our News & Articles</h1>
+                    <p>Your trusted source for breaking news, analysis, exclusive interviews, headlines, and videos at AKPK.org.my</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="empty_3"></div>
+                <div class="news-carousel">
+                    <div class="owl-news">
+                        <div class="news-wrapper">
+                            <div class="news-container">
+                                <img src="img/akpk-news-01.jpg" alt="image">
+                                <div class="news-details">
+                                    <div class="news-title">Video raya AKPK ingatkan kita supaya bayar hutang</div>
+                                    <div class="news-info">
+                                        <span class="news-category">News</span>
+                                        <span class="news-separator"><i class="fas fa-circle"></i></span>
+                                        <span class="news-date">7 Sept 2019</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="news-wrapper">
+                            <div class="news-container">
+                                <img src="img/akpk-news-02.jpg" alt="image">
+                                <div class="news-details">
+                                    <div class="news-title">10 Ciri Yang Ada Pada Semua Rumah Idaman</div>
+                                    <div class="news-info">
+                                        <span class="news-category">Articles</span>
+                                        <span class="news-separator"><i class="fas fa-circle"></i></span>
+                                        <span class="news-date">7 Sept 2019</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

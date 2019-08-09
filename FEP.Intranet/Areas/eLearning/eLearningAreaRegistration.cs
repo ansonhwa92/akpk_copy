@@ -17,7 +17,8 @@ namespace FEP.Intranet.Areas.eLearning
             context.MapRoute(
                 "eLearning_default",
                 "eLearning/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                new[] { "FEP.Intranet.Areas.eLearning.Controllers" }
             );
         }
     }

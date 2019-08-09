@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+}
+
+@section ButtonBack{
+
+    <a href="@Url.Action("Index", "Home", new { area = "" })" class="btn btn-outline-secondary"><span class="align-middle"><i class="icon ion-ios-arrow-round-back">&nbsp;</i></span> Back</a>
+
+}
+
+<div class="register-select-wrapper" style="min-height: 100vh">
+    <div class="col-sm-8 col-md-6 col-lg-4 mx-auto mw-600">
+        <h4 class="color-darkblue mb-5 text-center pt-3">How would you like to register as?</h4>
+        <div class="row">
+            <div class="col">
+                <div class="card text-center">
+                    <a href="@Url.Action("RegisterIndividual", "Auth", new { area = "" })"></a>
+                    <img src="@BaseURL/img/icon-individual.svg" class="mb-4">
+                    <p class="color-darkblue font-weight-bold">Individual</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card text-center">
+                    <a href="@Url.Action("RegisterAgency", "Auth", new { area = "" })"></a>
+                    <img src="@BaseURL/img/icon-group.svg" class="mb-4">
+                    <p class="color-darkblue font-weight-bold">Agency</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

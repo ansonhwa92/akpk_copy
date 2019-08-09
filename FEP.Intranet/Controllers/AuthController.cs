@@ -21,16 +21,67 @@ namespace FEP.Intranet.Controllers
     {
         
         [AllowAnonymous]
-        [HttpGet]
-        public ActionResult _Login()
+        public ActionResult Login()
         {
             return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult RegisterIndividual()
+        {
+            var model = new RegisterIndividualModel();
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        public ActionResult RegisterAgency()
+        {
+            var model = new RegisterAgencyModel();
+            model.Sectors = Enumerable.Empty<SelectListItem>();
+            model.States = Enumerable.Empty<SelectListItem>();
+
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegisterIndividual(RegisterIndividualModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegisterAgency(RegisterAgencyModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+
+            model.Sectors = Enumerable.Empty<SelectListItem>();
+            model.States = Enumerable.Empty<SelectListItem>();
+
+            return View(model);
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> _ExternalLogIn(LogInModel model)
+        public async Task<ActionResult> LogIn(LogInModel model)
         {
 
             if (ModelState.IsValid)
@@ -43,7 +94,6 @@ namespace FEP.Intranet.Controllers
 
                     if (userId != null)
                     {
-
                         var resUser = await WepApiMethod.SendApiAsync<UserApiModel>(HttpVerbs.Get, $"Administration/User?id={userId}");
 
                         if (resUser.isSuccess)
@@ -72,7 +122,7 @@ namespace FEP.Intranet.Controllers
 
                         //LogActivity();
 
-                        return Json(new { isSuccess = true, returnUrl = GetRedirectUrl(model.ReturnUrl) });
+                        return Redirect(GetRedirectUrl(model.ReturnUrl));
 
                     }
 
@@ -80,23 +130,10 @@ namespace FEP.Intranet.Controllers
                 
             }
 
-            return Json(new { isSuccess = false });
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> _InternalLogIn(LogInModel model)
-        {
-
-            if (ModelState.IsValid)
-            {
-                
-            }
-
             return View(model);
         }
 
+        
         [NonAction]
         private void SignInUser(CurrentUserModel usermodel)
         {
@@ -141,7 +178,7 @@ namespace FEP.Intranet.Controllers
         {
             if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
             {
-                return Url.Action("Dashboard", "Home", routeValues: null);
+                return Url.Action("Index", "Home", routeValues: null);
             }
 
             return returnUrl;

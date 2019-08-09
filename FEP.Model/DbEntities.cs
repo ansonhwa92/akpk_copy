@@ -19,8 +19,20 @@ namespace FEP.Model
             Database.Connection.ConnectionString = connString;
         }
 
+        //user
         public DbSet<UserAccount> UserAccount { get; set; }
         public DbSet<User> User { get; set; }
+
+        public DbSet<CompanyProfile> CompanyProfile { get; set; }
+        public DbSet<StaffProfile> StaffProfile { get; set; }
+
+        public DbSet<Sector> Sector { get; set; }
+        public DbSet<State> State { get; set; }
+
+        public DbSet<Department> Department { get; set; }
+        public DbSet<Branch> Branch { get; set; }
+
+        //role
         public DbSet<Role> Role { get; set; }
         public DbSet<RoleAccess> RoleAccess { get; set; }
         public DbSet<UserRole> UserRole { get; set; }

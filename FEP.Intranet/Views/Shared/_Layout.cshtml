@@ -1,190 +1,85 @@
 ﻿
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@ViewBag.Title</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <!-- Favicons -->
+    <link href="img/favicon.png" rel="icon">
 
     @RenderSection("ContentStyle", false)
 
-    @Styles.Render("~/core/css")
+    @*@Styles.Render("~/core/css")*@
 
-    <script type="text/javascript">
-
-         function login () {
-
-            $.ajax({
-                type: 'get',
-                url: '@Url.Action("_Login", "Auth", new { area = "" })',
-                success: function (data) {
-                    debugger;
-                    $('#modalLogin').html(data).modal('show');
-                    initFormLogin();
-                },
-                error: function () {
-
-                }
-            });
-
-        }
-
-        initFormLogin = function () {
-
-            $.validator.unobtrusive.parse('#formLogin');
-
-            $("#formLogin").data("validator").settings.submitHandler = function (form) {
-
-                var data = new FormData(form);
-
-                var request = new XMLHttpRequest();
-
-                request.responseType = 'json';
-
-                request.onreadystatechange = function (evt) {
-                    if (request.readyState == 4) {
-                        if (request.status == 200) {
-                            onSuccessLogin(request.response);
-                        }
-                        else
-                        {
-                            onFailLogin();
-                        }
-                    }
-                };
-
-                request.open("POST", "@Url.Action("_ExternalLogin", "Auth", new { area = "" })", true);
-
-                request.send(data);
-
-                return false;
-
-            };
-
-        };
-
-        function onSuccessLogin(data) {
-            if (data.isSuccess) {
-                window.location.href = data.returnUrl;
-            }
-            else
-            {
-                showError('Sign in fail');
-                $('#modalLogin').modal('hide');
-            }
-        }
-
-        function onFailLogin() {
-
-            showError('Sign in fail');
-            $('#modalLogin').modal('hide');
-        }
-
-    </script>
+    <link href="https://unpkg.com/ionicons@4.2.2/dist/css/ionicons.min.css" rel="stylesheet">
+    <!-- Material Design Icons -->
+    <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.css" rel="stylesheet">
+    <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.rtl.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.css" rel="stylesheet">
+    <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.rtl.css" rel="stylesheet">
+    <link href="@BaseURL/lib/line-awesome/css/line-awesome.min.css" rel="stylesheet">
+    <!-- Animation Transition -->
+    <link href="@BaseURL/lib/animate/animate.min.css" rel="stylesheet">
+    <!-- Flatpickr -->
+    <link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.css" rel="stylesheet">
+    <link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.rtl.css" rel="stylesheet">
+    <!-- Slider -->
+    <link href="@BaseURL/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="@BaseURL/css/slick.css" rel="stylesheet">
+    <!-- Social media share -->
+    <link href="@BaseURL/css/jssocials.css" rel="stylesheet">
+    <!-- Select2 form -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet">
+    <!-- App CSS -->
+    <link type="text/css" href="@BaseURL/dist/assets/css/app.css" rel="stylesheet">
+    <!-- Main Stylesheet File -->
+    <link href="@BaseURL/css/base.css" rel="stylesheet">
+    <link href="@BaseURL/css/style.css" rel="stylesheet">
 
 </head>
-<body class="fixed-layout">
+<body>
 
-    <div class="preloader">
-        <div class="sk-double-bounce">
-            <div class="sk-child sk-double-bounce1"></div>
-            <div class="sk-child sk-double-bounce2"></div>
-        </div>
-    </div>
+    @RenderSection("Preloader", false)
 
-    <!-- Header Layout -->
-    <div class="mdk-header-layout js-mdk-header-layout">
+    @Html.Partial("_Header")
 
-        @Html.Partial("_Header")
+    @RenderBody()
 
-        <div class="mdk-header-layout__content d-flex flex-column">
-
-            <div class="page__header">
-                @Html.Partial("_TopMenu")
-            </div>
-
-            <div class="page">
-
-                <div class="container page__container">
-
-                    @RenderBody()
-
-                </div>
-
-                <div class="container page__container">
-                    <div class="footer">
-                        Copyright &copy; 2019 - Primuscore
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+    @Html.Partial("_Footer")
 
     <div id="modalLogin" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
-    @Html.Partial("_SideMenu")
-
-    <!-- App Settings FAB -->
-    @*<div id="app-settings">
-        <app-settings layout-active="fixed" :layout-location="{}" sidebar-variant="bg-transparent border-0"></app-settings>
-    </div>*@
-
-    @Scripts.Render("~/core/js")
+    <a href="#" class="back-to-top text-white"><i class="fa fa-angle-up"></i></a>
+    <!-- jQuery -->
+    <script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
+    <script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
+    <script src="@BaseURL/lib/easing/easing.min.js"></script>
+    <!-- ion Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
+    <!-- Javascript Library -->
+    <script src="@BaseURL/dist/assets/vendor/flatpickr/flatpickr.min.js"></script>
+    <script src="@BaseURL/dist/assets/js/flatpickr.js"></script>
+    <script src="@BaseURL/js/jquery.simpleLoadMore.js"></script>
+    <script src="@BaseURL/lib/wow/wow.min.js"></script>
+    <script src="@BaseURL/js/jssocials.min.js"></script>
+    <script src="@BaseURL/js/rellax.min.js"></script>
+    <script src="@BaseURL/js/jquery.countTo.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+    <!-- Slider -->
+    <script src="@BaseURL/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="@BaseURL/js/slick.min.js"></script>
+    <!-- Template Main Javascript File -->
+    <script src="@BaseURL/js/main.js"></script>
 
     @RenderSection("ContentScript", false)
 
-    <script type="text/javascript">
-
-        $(function () {
-
-
-            @if (TempData["Message"] != null)
-            {
-                @:showInfo('@TempData["Message"]');
-            }
-
-            @if (TempData["SuccessMessage"] != null)
-            {
-                @:showSuccess('@TempData["SuccessMessage"]');
-            }
-
-            @if (TempData["ErrorMessage"] != null)
-            {
-                @:showError('@TempData["ErrorMessage"]');
-            }
-
-        });
-
-        function showInfo(message) {
-
-            $.notify({
-	            message: message
-            });
-        }
-
-        function showSuccess(message) {
-
-            $.notify({
-	            message: message
-            },{
-	            type: 'success'
-            });
-        }
-
-        function showError(message) {
-
-            $.notify({
-	            message: message
-            },{
-	            type: 'danger'
-            });
-
-        }
-
-    </script>
 
 </body>
 </html>

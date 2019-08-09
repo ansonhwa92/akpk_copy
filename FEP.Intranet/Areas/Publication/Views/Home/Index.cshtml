@@ -1,0 +1,475 @@
+﻿
+@{
+    ViewBag.Title = "Publication";
+    Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
+}
+
+<section id="top_header_content">
+    <div class="top-header-container">
+        <div class="container wow fadeInUp">
+            <!-- if have button -->
+            <!-- <div class="header-col-right pull-right mt-5"><a href="#" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="icon ion-ios-arrow-round-back">&nbsp;</i></span> Back</a></div> -->
+            <div class="header-col-left">
+                <div id="breadcrumb">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><a href="#">Research & Publications</a></li>
+                        </ol>
+                    </nav>
+                </div>
+                <!-- Trigger page title here from last child breadcrumb item -->
+                <h1 class="page-title"></h1>
+                <!-- end -->
+                <div class="header-text">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.Lorem ipsum dolor sit amet.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<main id="landing-inner" class="rellax" data-rellax-speed="0">
+    <!-- =====================
+        Landing Content
+    ========================-->
+    <section id="main-content">
+        <!-- =====================
+            Search Dropdown
+        ========================-->
+        <div id="search-dropdown">
+            <div class="container">
+                <div id="search-dropdown">
+                    <div class="container">
+                        <div class="search-dropdown-wrapper">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <select class="select2" name="module">
+                                        <option value="e-Learning">e-Learning</option>
+                                        <option value="e-Events">e-Events</option>
+                                        <option value="Research">Research</option>
+                                        <option value="Publications">Publications</option>
+                                    </select>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Search for online courses, instructor name, etc.." name="search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="empty_6"></div>
+    </section>
+    <!-- =====================
+        Our Publications
+    ========================-->
+    <section id="ourpublications">
+        <div class="container">
+            <a href="#" class="btn btn-outline-secondary btn-rounded pull-right">VIEW ALL</a>
+            <h1 class="color-darkblue">Featured Publications</h1>
+            <div class="empty_3"></div>
+            <div class="row">
+                <div class="col-lg-6 col-sm-12">
+                    <div class="publications__wrapper wow fadeInUp">
+                        <div class="publications_col_left card__top">
+                            <div class="card__top__wapper">
+                                <img class="card__top__image" src="@BaseURL/img/cover-buku-1.jpg" alt="image">
+                                <div class="share-wrap">
+                                    <div class="share-button sharer">
+                                        <span class="share-icon">
+                                            <ion-icon name="share"></ion-icon>
+                                        </span>
+                                        <div class="social top center"></div>
+                                    </div>
+                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="publications_col_right">
+                            <div class="card__body">
+                                <a class="card__title" href="#">The Tower & The Cloud:<br /> Higher Education in the Age of Cloud Computing</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Richard N.Kartz</span></span></a>
+                                </div>
+                                <div class="card__text">The emergence of the networked information economy is unleashing tow powerful forces.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Books</span></span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                    </div>
+                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    <div class="publications__wrapper wow fadeInUp" data-wow-delay=".5s">
+                        <div class="publications_col_left card__top">
+                            <div class="card__top__wapper">
+                                <img class="card__top__image" src="@BaseURL/img/cover-buku-2.jpg" alt="image">
+                                <div class="share-wrap">
+                                    <div class="share-button sharer">
+                                        <span class="share-icon">
+                                            <ion-icon name="share"></ion-icon>
+                                        </span>
+                                        <div class="social top center"></div>
+                                    </div>
+                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="publications_col_right">
+                            <div class="card__body">
+                                <a class="card__title" href="#">Cultivating Careers: <br /> Professional Development for Campus IT</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Cynthia Golden</span></span></a>
+                                </div>
+                                <div class="card__text">This research provides an overview of current principles and practices for mentoring and developing IT professionals in higher education.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                    </div>
+                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr>
+    <!-- =====================
+       Searching Result
+    ========================-->
+    <section id="search-result" class="publications">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="search-col-left">
+                        <div class="input-keyword mb-5">
+                            <input type="text" class="form-control form-control-rounded" placeholder="Type keyword here..." name="keyword">
+                            <div class="input-group-append">
+                                <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+                            </div>
+                        </div>
+                        <!-- Listing Filter -->
+                        <div class="listing_filter dropdown dd-side">
+                            <div class="dropdown-menu">
+                                <div class="listing-filter-inner">
+                                    <div class="filter-type">
+                                        <h4 class="color-darkblue">Published Type</h4>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="customRadio1">All Type</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio2">Books</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio3">Fact Sheet</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio4" name="customRadio" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio4">Journal</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio5" name="customRadio" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio5">Literature Reviews</label>
+                                        </div>
+                                    </div>
+                                    <div class="filter-type">
+                                        <h4 class="color-darkblue">Published Year</h4>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">2019</label>
+                                            <span class="filter-counter">(100)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                            <label class="custom-control-label" for="customCheck2">2018</label>
+                                            <span class="filter-counter">(430)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck3">
+                                            <label class="custom-control-label" for="customCheck3">2017</label>
+                                            <span class="filter-counter">(29)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck4">
+                                            <label class="custom-control-label" for="customCheck4">2016</label>
+                                            <span class="filter-counter">(560)</span>
+                                        </div>
+                                    </div>
+                                    <div class="filter-type">
+                                        <h4 class="color-darkblue">Format</h4>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck5">
+                                            <label class="custom-control-label" for="customCheck5">Digital</label>
+                                            <span class="filter-counter">(13)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck6">
+                                            <label class="custom-control-label" for="customCheck6">Hard Copy</label>
+                                            <span class="filter-counter">(30)</span>
+                                        </div>
+                                    </div>
+                                    <div class="filter-type">
+                                        <h4 class="color-darkblue">Language</h4>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck9">
+                                            <label class="custom-control-label" for="customCheck9">English</label>
+                                            <span class="filter-counter">(3666)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck10">
+                                            <label class="custom-control-label" for="customCheck10">Bahasa</label>
+                                            <span class="filter-counter">(100)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck11">
+                                            <label class="custom-control-label" for="customCheck11">Chinese</label>
+                                            <span class="filter-counter">(63)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck12">
+                                            <label class="custom-control-label" for="customCheck12">Tamil</label>
+                                            <span class="filter-counter">(54)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck13">
+                                            <label class="custom-control-label" for="customCheck13">Multi-language</label>
+                                            <span class="filter-counter">(20)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary btn-rounded">Clear Filter</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="search-col-right">
+                        <div class="top-filter-wrap">
+                            <div class="showing-result">Showing 1 - 6 of 2000 results</div>
+                            <div class="sorting-wrap">
+                                <div class="sorting-dropdown">
+                                    <select class="select2 form-control" name="sorting">
+                                        <option value="Default Sorting">Default Sorting</option>
+                                        <option value="Other Sorting">Other Sorting</option>
+                                    </select>
+                                </div>
+                                <!--  <div class="layout-wrap ml-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <a href="#" class="btn btn-linear mw-auto px-3"><i class="fas fa-th-list"></i></a>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <a href="#" class="btn btn-default mw-auto px-3 color-lightgrey"><i class="fas fa-th-list"></i></a>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="empty_3"></div>
+                        <!-- Filter result -->
+                        <div class="some-list">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="@BaseURL/img/cover-buku-1.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">The Tower & The Cloud:<br /> Higher Education in the Age of Cloud Computing</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Richard N.Kartz</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <div class="card__col-left">
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Books</span></span></div>
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                                </div>
+                                                <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="@BaseURL/img/cover-buku-2.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">Cultivating Careers: <br /> Professional Development for Campus IT</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Cynthia Golden</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <div class="card__col-left">
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                                </div>
+                                                <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="@BaseURL/img/cover-buku-1.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">The Sociology of Human Rights</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Mark Luker</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <div class="card__col-left">
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                                </div>
+                                                <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="img/cover-buku-2.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">Cultivating Careers: Professional Development for Campus IT</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Cynthia Golden</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <div class="card__col-left">
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                                </div>
+                                                <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="img/cover-buku-1.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">The Educations Challenge</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Mark Luker</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <div class="card__col-left">
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                                </div>
+                                                <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="img/cover-buku-1.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">The Sociology of Human Rights</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Mark Luker</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <div class="card__col-left">
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                                </div>
+                                                <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="@BaseURL/img/cover-buku-2.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">Cultivating Careers: Professional Development for Campus IT</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Cynthia Golden</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <div class="card__col-left">
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                                </div>
+                                                <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="img/cover-buku-1.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">The Educations Challenge</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Mark Luker</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <div class="card__col-left">
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                                </div>
+                                                <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="img/cover-buku-1.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">The Sociology of Human Rights</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Mark Luker</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <div class="card__col-left">
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
+                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                                </div>
+                                                <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr>
+
+    @Html.Partial("_NewsArticle")
+</main>
+

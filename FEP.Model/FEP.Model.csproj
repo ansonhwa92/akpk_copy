@@ -65,6 +65,10 @@
     <Compile Include="Migrations\201907311332525_x1.Designer.cs">
       <DependentUpon>201907311332525_x1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908081333354_x2.cs" />
+    <Compile Include="Migrations\201908081333354_x2.Designer.cs">
+      <DependentUpon>201908081333354_x2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\Seed.cs" />
     <Compile Include="Notification.cs" />
@@ -91,6 +95,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907311332525_x1.resx">
       <DependentUpon>201907311332525_x1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908081333354_x2.resx">
+      <DependentUpon>201908081333354_x2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

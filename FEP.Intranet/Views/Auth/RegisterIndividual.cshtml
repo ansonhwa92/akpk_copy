@@ -1,0 +1,103 @@
+﻿@model  RegisterIndividualModel
+
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+}
+
+@section ButtonBack{
+
+    <a href="@Url.Action("Register", "Auth", new { area = "" })" class="btn btn-outline-secondary"><span class="align-middle"><i class="icon ion-ios-arrow-round-back">&nbsp;</i></span> Back</a>
+
+}
+
+<div class="login-wrapper" style="min-height: 100vh">
+    <div class="col-sm-8 col-md-6 col-lg-4 mx-auto pt-3 mw-600">
+        <div class="card">
+            <div class="card-header text-center">
+                <h4 class="color-darkblue mb-1 mt-2">Individual</h4>
+                <p>Create an account to get started. It's free!</p>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.Name, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderName } })
+                            @Html.ValidationMessageFor(m => m.Name)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.ICNo, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderICNo } })
+                            @Html.ValidationMessageFor(m => m.ICNo)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.MobileNo, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderMobileNo } })
+                            @Html.ValidationMessageFor(m => m.MobileNo)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.Email, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderEmail } })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.Password, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderPassword } })
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.RetypePassword, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.RetypePassword, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderRetypePassword } })
+                            @Html.ValidationMessageFor(m => m.RetypePassword)
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-secondary btn-block mt-3 mb-4">Sign Up</button>
+                    <div class="form-group text-center mb-0">
+                        <div class="custom-control custom-checkbox">
+                            <input id="terms" type="checkbox" class="custom-control-input" checked required="">
+                            <label for="terms" class="custom-control-label">I agree to the Terms of Use</label>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="card-footer text-center">Already signed up? <a href="@Url.Action("Login", "Auth", new { area = "" })" class="font-weight-bold">Login</a></div>
+            <!-- Complete Registration trigger a popup modal-->
+            <div class="modal fade" id="registersuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="@BaseURL/img/icon-noti-email.svg" alt="image">
+                            <h4 class="color-darkblue mt-4">Registration received.</h4>
+                            <p class="small">Your registration information has been received and is waiting approval from the Administrator. Please check the email you used to register for this website for further instruction.</p>
+                        </div>
+                        <div class="divider-border"></div>
+                        <div class="m-4">
+                            <a href="login.html" class="btn btn-outline-primary float-right">Log in</a>
+                            <div class="small py-2">Already have an AKPK account?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

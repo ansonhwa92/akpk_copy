@@ -1,0 +1,11 @@
+.header-login {
+    display: inline-block;
+    width: 100%;
+    padding: 1.5rem 1.5rem;
+    border-bottom: 1px solid #c0ccdb;
+}
+
+.login-wrapper .card-body,
+.login-wrapper .card-footer {
+	font-size: 0.875rem;
+}

@@ -1,0 +1,37 @@
+﻿
+<header id="header" class="topbar">
+    <div class="container-fluid">
+        <div id="logo" class="float-left">
+            <a href="/" class="scrollto"><img src="@BaseURL/img/logo-akpk.svg" alt="logo" title="logo akpk"></a>
+        </div>
+        <nav id="nav-menu-container">
+            <ul class="nav-menu">
+                <li><a href="@Url.Action("Index", "Home", new { area = "eEvent" })" class="nav-item">e-Events</a></li>
+                <li><a href="@Url.Action("Index", "Home", new { area = "Publication" })" class="nav-item">Research & Publications</a></li>
+                <li><a href="@Url.Action("Index", "Home", new { area = "eLearning" })" class="nav-item">e-Learning</a></li>
+                <li><a href="#" class="nav-item">Online Booking System</a></li>
+            </ul>
+            <div class="other-menu-wrap">
+                <div class="wrapper-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="line-menu half end"></div>
+                    <div class="line-menu"></div>
+                    <div class="line-menu short end"></div>
+                </div>
+                <div class="dropdown-menu dropdown-menu-left animated--grow-in" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">About Us</a>
+                    <a class="dropdown-item" href="#">Financial Education</a>
+                    <a class="dropdown-item" href="#">Financial Counseling</a>
+                    <a class="dropdown-item" href="#">Debt Management</a>
+                    <a class="dropdown-item" href="#">Tools</a>
+                    <a class="dropdown-item" href="#">AKPK Gateway</a>
+                    <a class="dropdown-item" href="#">Contact Us</a>
+                </div>
+            </div>
+            <div class="login-wrap">
+                <a href="@Url.Action("Login", "Auth", new { area = "" })" class="btn btn-primary text-white">Sign in</a>
+                <a href="@Url.Action("Register", "Auth", new { area = "" })" class="btn btn-outline-primary text-white">Register</a>
+            </div>
+        </nav>
+        <!-- #nav-menu-container -->
+    </div>
+</header>

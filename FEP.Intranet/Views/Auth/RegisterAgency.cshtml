@@ -1,0 +1,153 @@
+﻿@model  RegisterAgencyModel
+
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+}
+
+@section ButtonBack{
+
+    <a href="@Url.Action("Register", "Auth", new { area = "" })" class="btn btn-outline-secondary"><span class="align-middle"><i class="icon ion-ios-arrow-round-back">&nbsp;</i></span> Back</a>
+
+}
+
+<div class="login-wrapper" style="min-height: 100vh">
+    <div class="col-sm-8 col-md-6 col-lg-4 mx-auto pt-3 mw-600">
+        <div class="card">
+            <div class="card-header text-center">
+                <h4 class="color-darkblue mb-1 mt-2">Agency</h4>
+                <p>Create an account to get started. It's free!</p>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.CompanyName, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.CompanyName, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderCompanyName } })
+                            @Html.ValidationMessageFor(m => m.CompanyName)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.SectorId, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            <span class="select-arrow">
+                                @Html.DropDownListFor(m => m.SectorId, Model.Sectors, Language.Auth.PlaceholderSectorId, htmlAttributes: new { @class = "custom-select" })
+                            </span>
+                            @Html.ValidationMessageFor(m => m.Name)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.CompanyRegNo, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.CompanyRegNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderCompRegNo } })
+                            @Html.ValidationMessageFor(m => m.CompanyRegNo)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.Address1, htmlAttributes: new { @class = "form-label" })
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    @Html.EditorFor(m => m.Address1, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderAddress1 } })
+                                    @Html.ValidationMessageFor(m => m.Address1)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    @Html.EditorFor(m => m.Address2, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderAddress2 } })
+                                    @Html.ValidationMessageFor(m => m.Address2)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                @Html.EditorFor(m => m.PostCode, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderPostCode } })
+                                @Html.ValidationMessageFor(m => m.PostCode)
+                            </div>
+                            <div class="col">
+                                @Html.EditorFor(m => m.City, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderCity } })
+                                @Html.ValidationMessageFor(m => m.City)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group">
+                                    <span class="select-arrow">
+                                        @Html.DropDownListFor(m => m.StateId, Model.States, Language.Auth.PlaceholderStateId, htmlAttributes: new { @class = "custom-select" })
+                                    </span>
+                                    @Html.ValidationMessageFor(m => m.StateId)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.CompanyPhoneNo, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.CompanyPhoneNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderCompanyPhoneNo } })
+                            @Html.ValidationMessageFor(m => m.CompanyPhoneNo)
+                        </div>
+                    </div>
+
+                    <div class="empty_2"></div>
+
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.Name, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderName } })
+                            @Html.ValidationMessageFor(m => m.Name)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.ICNo, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderICNo } })
+                            @Html.ValidationMessageFor(m => m.ICNo)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.MobileNo, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderMobileNo } })
+                            @Html.ValidationMessageFor(m => m.MobileNo)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.Email, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderEmail } })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.Password, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderPassword } })
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.RetypePassword, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.RetypePassword, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderRetypePassword } })
+                            @Html.ValidationMessageFor(m => m.RetypePassword)
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary btn-block mt-3 mb-4">Sign Up</button>
+                    <div class="form-group text-center mb-0">
+                        <div class="custom-control custom-checkbox">
+                            <input id="terms" type="checkbox" class="custom-control-input" required="">
+                            <label for="terms" class="custom-control-label">I agree to the Terms of Use</label>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="card-footer text-center">Already signed up? <a href="@Url.Action("Login", "Auth", new { area = "" })" class="font-weight-bold">Login</a></div>
+        </div>
+    </div>
+</div>

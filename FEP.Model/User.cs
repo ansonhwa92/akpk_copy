@@ -15,11 +15,16 @@ namespace FEP.Model
         public int Id { get; set; }        
         public string Name { get; set; }
         public string Email { get; set; }
+        public string ICNo { get; set; }
+        public string MobileNo { get; set; }
         public UserType UserType { get; set; }        
         public virtual UserAccount UserAccount { get; set; }
         public bool Display { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
+
+        public virtual CompanyProfile CompanyProfile { get; set; }
+        public virtual StaffProfile StaffProfile { get; set; }
     }
 
     [Table("UserAccount")]
@@ -36,9 +41,81 @@ namespace FEP.Model
         public int LoginAttempt { get; set; }
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidTo { get; set; }
-
         public virtual User User { get; set; }        
 
+    }
+
+    [Table("CompanyProfile")]
+    public class CompanyProfile
+    {
+        [Key, ForeignKey("User")]
+        public int UserId { get; set; }
+        public string CompanyName { get; set; }
+        public int SectorId { get; set; }
+        public string CompanyRegNo { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string PostCode { get; set; }
+        public string City { get; set; }
+        public int StateId { get; set; }
+        public string CompanyPhoneNo { get; set; }
+
+        public virtual User User { get; set; }
+
+        [ForeignKey("StateId")]
+        public virtual State State { get; set; }
+
+        [ForeignKey("SectorId")]
+        public virtual Sector Sector { get; set; }
+    }
+
+    [Table("StaffProfile")]
+    public class StaffProfile
+    {
+        [Key, ForeignKey("User")]
+        public int UserId { get; set; }
+        public int DepartmentId { get; set; }
+        public int BranchId { get; set; }
+        public virtual User User { get; set; }
+
+        [ForeignKey("DepartmentId")]
+        public virtual Department Department { get; set; }
+        [ForeignKey("BranchId")]
+        public virtual Branch Branch { get; set; }
+
+    }
+
+    [Table("Branch")]
+    public class Branch
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    [Table("Department")]
+    public class Department
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    [Table("Sector")]
+    public class Sector
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    [Table("State")]
+    public class State
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
     }
         
     public enum UserType

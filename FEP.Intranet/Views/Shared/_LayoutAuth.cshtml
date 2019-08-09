@@ -1,0 +1,73 @@
+﻿
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <title>@ViewBag.Title</title>
+    <!-- Favicons -->
+    <link href="img/favicon.png" rel="icon">
+    <!-- Perfect Scrollbar -->
+    <link type="text/css" href="@BaseURL/dist/assets/vendor/perfect-scrollbar.css" rel="stylesheet">
+    <!-- Ion Icons -->
+    <link href="https://unpkg.com/ionicons@4.2.2/dist/css/ionicons.min.css" rel="stylesheet">
+    <!-- Material Design Icons -->
+    <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.css" rel="stylesheet">
+    <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.rtl.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.css" rel="stylesheet">
+    <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.rtl.css" rel="stylesheet">
+    <!-- App CSS -->
+    <link type="text/css" href="@BaseURL/dist/assets/css/app.css" rel="stylesheet">
+    <!-- Main Stylesheet File -->
+    <link href="@BaseURL/css/base.css" rel="stylesheet">
+    <link href="@BaseURL/css/style.css" rel="stylesheet">
+
+    @RenderSection("ContentStyle", false)
+
+</head>
+<body class="login bg-main">
+    <div class="header-login">
+        <div id="logo" class="float-left">
+            <a href="/" class="scrollto"><img src="@BaseURL/img/logo-akpk-normal.svg" alt="logo" title="logo akpk"></a>
+        </div>
+        <div class="float-right">
+            @RenderSection("ButtonBack", false)
+        </div>
+    </div>
+    <div class="clearfix">&nbsp;</div>
+
+    @RenderBody()
+
+    <!-- jQuery -->
+    <script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
+    <script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
+    <!-- Perfect Scrollbar -->
+    <script src="@BaseURL/dist/assets/vendor/perfect-scrollbar.min.js"></script>
+    <!-- MDK -->
+    <script src="@BaseURL/dist/assets/vendor/dom-factory.js"></script>
+    <script src="@BaseURL/dist/assets/vendor/material-design-kit.js"></script>
+    <!-- ion Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
+    <!-- App JS -->
+    <script src="@BaseURL/dist/assets/js/app.js"></script>
+    <!-- Highlight.js -->
+    <script src="@BaseURL/dist/assets/js/hljs.js"></script>
+    <!-- App Settings (safe to remove) -->
+    <script src="@BaseURL/dist/assets/js/app-settings.js"></script>
+
+    <script src="@BaseURL/Scripts/jquery.validate.min.js"></script>
+    <script src="@BaseURL/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="@BaseURL/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    @RenderSection("ContentScript", false)
+
+</body>
+
+</html>

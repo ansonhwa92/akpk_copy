@@ -17,7 +17,8 @@ namespace FEP.Intranet.Areas.eEvent
             context.MapRoute(
                 "eEvent_default",
                 "eEvent/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                new[] { "FEP.Intranet.Areas.eEvent.Controllers" }
             );
         }
     }

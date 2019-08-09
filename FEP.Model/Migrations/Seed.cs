@@ -102,6 +102,54 @@ namespace FEP.Model.Migrations
                 );
 
             }
+
+            if (!db.State.Any())
+            {
+                db.State.AddOrUpdate(s => s.Code,
+                    new State { Code = "01", Name = "Johor" },
+                    new State { Code = "02", Name = "Kedah" },
+                    new State { Code = "03", Name = "Kelantan" },
+                    new State { Code = "04", Name = "Melaka" },
+                    new State { Code = "05", Name = "Negeri Sembilan" },
+                    new State { Code = "06", Name = "Pahang" },
+                    new State { Code = "07", Name = "Pulau Pinang" },
+                    new State { Code = "08", Name = "Perak" },
+                    new State { Code = "09", Name = "Perlis" },
+                    new State { Code = "10", Name = "Selangor" },
+                    new State { Code = "11", Name = "Terengganu" },
+                    new State { Code = "12", Name = "Sabah" },
+                    new State { Code = "13", Name = "Sarawak" },
+                    new State { Code = "14", Name = "Wilayah Persekutuan Kuala Lumpur" },
+                    new State { Code = "15", Name = "Wilayah Persekutuan Labuan" },
+                    new State { Code = "16", Name = "Wilayah Persekutuan Putrajaya" }
+                );
+            }
+
+            if (!db.Sector.Any())
+            {
+                db.Sector.AddOrUpdate(s => s.Name,
+                    new Sector { Name = "Aerospace" },
+                    new Sector { Name = "Transport" },
+                    new Sector { Name = "Computer" },
+                    new Sector { Name = "Telecommunication" },
+                    new Sector { Name = "Agriculture" },
+                    new Sector { Name = "Construction" },
+                    new Sector { Name = "Education" },
+                    new Sector { Name = "Pharmaceutical" },
+                    new Sector { Name = "Food" },
+                    new Sector { Name = "HealthCare" },
+                    new Sector { Name = "Hospitality" },
+                    new Sector { Name = "Entertainment" },
+                    new Sector { Name = "News Media" },
+                    new Sector { Name = "Energy" },
+                    new Sector { Name = "Manufacturing" },
+                    new Sector { Name = "Music" },
+                    new Sector { Name = "Mining" },
+                    new Sector { Name = "Worldwide Web" },
+                    new Sector { Name = "Electronic" }
+                );
+            }
+
         }
 
     }

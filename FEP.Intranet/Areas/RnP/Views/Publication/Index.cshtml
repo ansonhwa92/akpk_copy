@@ -1,0 +1,101 @@
+﻿@model IEnumerable<FEP.Model.Publication>
+
+@{
+    ViewBag.Title = "Publication";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+    <li class="breadcrumb-item"><a href="~/RnP/RnPHome">Research & Publication</a></li>
+    <li class="breadcrumb-item active">Publication</li>
+</ol>
+<h1 class="h2">Publication</h1>
+
+<div class="card">
+    <div class="card-header">
+        <div class="media align-items-center">
+            <div class="media-body">
+                <h4 class="card-title">Publications</h4>
+                <p class="card-subtitle">List of Publications</p>
+            </div>
+            <div class="media-right">
+                <a class="btn btn-sm btn-primary" href="Publication/Create">Add Publication</a>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Category.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ISBN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Year)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ISBN)
+        </td>
+        <td>
+            @if (item.WStatus == FEP.Model.PublicationWithdrawalStatus.None)
+            {
+                @Html.DisplayFor(modelItem => item.Status)
+            }
+            else if (item.WStatus == FEP.Model.PublicationWithdrawalStatus.Submitted)
+            {
+                @Html.Display("Withdrawal Submitted")
+            }
+            else if (item.WStatus == FEP.Model.PublicationWithdrawalStatus.Withdrawn)
+            {
+                @Html.Display("Withdrawn")
+            }
+        </td>
+        @if (item.Status == FEP.Model.PublicationStatus.New)
+        {
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        }
+        else
+        {
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.ID })
+            </td>
+        }
+        </tr>
+    }
+    </table>
+
+</div>
+

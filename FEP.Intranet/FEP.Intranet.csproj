@@ -159,8 +159,10 @@
     <Compile Include="Areas\eEvent\eEventAreaRegisteration.cs" />
     <Compile Include="Areas\eEvent\Models\ExternalExhibitor.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
-    <Compile Include="Areas\Publication\PublicationAreaRegistration.cs" />
-    <Compile Include="Areas\Research\ResearchAreaRegistration.cs" />
+    <Compile Include="Areas\RnP\Controllers\PublicationController.cs" />
+    <Compile Include="Areas\RnP\Controllers\RnPHomeController.cs" />
+    <Compile Include="Areas\RnP\Controllers\SurveyController.cs" />
+    <Compile Include="Areas\RnP\RnPAreaRegistration.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Areas\eEvent\Controllers\MediaInterviewController.cs" />
     <Compile Include="Areas\eEvent\Models\MediaInterview.cs" />
@@ -410,6 +412,18 @@
     <Content Include="Areas\eEvent\Views\EventObjective\Create.cshtml" />
     <Content Include="Areas\eEvent\Views\EventObjective\Edit.cshtml" />
     <Content Include="Areas\eEvent\Views\EventObjective\Delete.cshtml" />
+    <Content Include="Areas\RnP\Views\web.config" />
+    <Content Include="Areas\RnP\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\RnP\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\RnP\Views\RnPHome\Index.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Index.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Create.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Details.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Edit.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Delete.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\Index.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\Details.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\Create.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -487,12 +501,7 @@
     <Folder Include="Areas\eLearning\Controllers\" />
     <Folder Include="Areas\eLearning\Models\" />
     <Folder Include="Areas\eLearning\Views\Shared\" />
-    <Folder Include="Areas\Publication\Controllers\" />
-    <Folder Include="Areas\Publication\Models\" />
-    <Folder Include="Areas\Publication\Views\Shared\" />
-    <Folder Include="Areas\Research\Controllers\" />
-    <Folder Include="Areas\Research\Models\" />
-    <Folder Include="Areas\Research\Views\Shared\" />
+    <Folder Include="Areas\RnP\Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

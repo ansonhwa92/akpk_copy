@@ -71,6 +71,14 @@
     <Compile Include="Migrations\201908080602053_a2.Designer.cs">
       <DependentUpon>201908080602053_a2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908051202327_PublicationMigration.cs" />
+    <Compile Include="Migrations\201908051202327_PublicationMigration.Designer.cs">
+      <DependentUpon>201908051202327_PublicationMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908070342537_PublicationMigration2.cs" />
+    <Compile Include="Migrations\201908070342537_PublicationMigration2.Designer.cs">
+      <DependentUpon>201908070342537_PublicationMigration2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\Seed.cs" />
     <Compile Include="Notification.cs" />
@@ -100,6 +108,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908080602053_a2.resx">
       <DependentUpon>201908080602053_a2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908051202327_PublicationMigration.resx">
+      <DependentUpon>201908051202327_PublicationMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908070342537_PublicationMigration2.resx">
+      <DependentUpon>201908070342537_PublicationMigration2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

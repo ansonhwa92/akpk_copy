@@ -5,12 +5,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
-    <li class="breadcrumb-item"><a href="~/RnP/RnPHome">Research & Publication</a></li>
-    <li class="breadcrumb-item"><a href="~/RnP/Publication">Publication</a></li>
-    <li class="breadcrumb-item active">Create Publication</li>
-</ol>
+@section Nav{
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/Publication">Publication</a></li>
+                <li class="breadcrumb-item active">Create Publication</li>
+            </ol>
+        </nav>
+    </div>
+}
+
 <h1 class="h2">Create Publication</h1>
 
 @using (Html.BeginForm())

@@ -28,7 +28,7 @@ namespace FEP.Intranet.Controllers
         {
 
             var view = View();
-            view.MasterName = "~/Views/Shared/_LayoutLandingPage.cshtml";
+            view.MasterName = "~/Views/Shared/_LayoutLandingPagePublic.cshtml";
            
             if (CurrentUser.IsAuthenticated())
             {

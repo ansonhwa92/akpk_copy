@@ -1,5 +1,4 @@
 ﻿using FEP.Helper;
-using FEP.Intranet.Areas.Administrator.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +7,12 @@ using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.Administrator.Controllers
 {
-    public class UserController : FEPController
-    {        
+    public class CompanyController : FEPController
+    {
+        
         public ActionResult List()
         {
             return View();
         }
-
-        
     }
 }

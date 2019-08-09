@@ -13,8 +13,7 @@ namespace FEP.WebApiModel
         public string LoginId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public UserType UserType { get; set; }
-        public virtual UserAccount UserAccount { get; set; }
+        public UserType UserType { get; set; }        
         public bool Display { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }              
@@ -25,5 +24,10 @@ namespace FEP.WebApiModel
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidTo { get; set; }
         public List<UserAccess> UserAccesses { get; set; }
+    }
+
+    public class CompanyApiModel
+    {
+
     }
 }

@@ -45,6 +45,21 @@ namespace FEP.Model
 
     }
 
+    [Table("ActivateAccount")]
+    public class ActivateAccount
+    {
+        [Key]
+        public int Id { get; set; }
+        public string UID { get; set; }
+        public int UserId { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public bool IsActivate { get; set; }
+        public DateTime? ActivateDate { get; set; }
+
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
+    }
+
     [Table("CompanyProfile")]
     public class CompanyProfile
     {

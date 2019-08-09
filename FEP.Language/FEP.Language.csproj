@@ -41,6 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="User.Designer.cs">
+      <DependentUpon>User.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Enum.Designer.cs">
       <DependentUpon>Enum.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -54,6 +59,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="User.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>User.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Enum.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Enum.Designer.cs</LastGenOutput>

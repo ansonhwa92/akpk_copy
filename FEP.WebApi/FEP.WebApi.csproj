@@ -133,6 +133,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\Administration\AuthController.cs" />
+    <Compile Include="Api\Administration\CompanyController.cs" />
+    <Compile Include="Api\Administration\StaffController.cs" />
     <Compile Include="Api\Administration\UserController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />

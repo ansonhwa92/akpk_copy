@@ -150,7 +150,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
+    <Compile Include="Areas\Administrator\Controllers\CompanyController.cs" />
+    <Compile Include="Areas\Administrator\Controllers\StaffController.cs" />
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
+    <Compile Include="Areas\Administrator\Models\Company.cs" />
+    <Compile Include="Areas\Administrator\Models\Staff.cs" />
+    <Compile Include="Areas\Administrator\Models\User.cs" />
     <Compile Include="Areas\eEvent\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\eEventAreaRegistration.cs" />
     <Compile Include="Areas\eLearning\Controllers\HomeController.cs" />
@@ -950,7 +955,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Administrator\Models\" />
+    <Folder Include="Areas\Administrator\Views\Company\" />
+    <Folder Include="Areas\Administrator\Views\Staff\" />
     <Folder Include="Areas\eEvent\Models\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Areas\eLearning\Models\" />

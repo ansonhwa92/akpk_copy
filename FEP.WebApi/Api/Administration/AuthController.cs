@@ -39,6 +39,53 @@ namespace FEP.WebApi.Api.Administration
             return null;
         }
 
+        [HttpPost]
+        public int? RegisterIndividual(RegisterIndividualApiModel model)
+        {
+            //if (ModelState.IsValid)
+            //{
+            //    var password = Authentication.RandomString(10);
+            //    Authentication.GeneratePassword(password);
+
+            //    var account = new UserAccount
+            //    {
+            //        LoginId = model.Email,
+            //        IsEnable = false,
+            //        HashPassword = Authentication.HashPassword,
+            //        Salt = Authentication.Salt,
+            //        LoginAttempt = 0
+            //    };
+
+            //    var user = new User
+            //    {
+            //        UserType = UserType.Individual,
+            //        Name = model.Name,
+            //        Email = model.Email,
+            //        ICNo = model.ICNo,
+            //        MobileNo = model.MobileNo,
+            //        Display = true,
+            //        CreatedBy = model.CreatedBy,
+            //        UserAccount = account
+            //    };
+
+            //    db.User.Add(user);
+
+            //    ActivateAccount activateaccount = new ActivateAccount
+            //    {
+            //        UID = Authentication.RandomString(50, true),//random alphanumeric
+            //        UserId = user.Id,
+            //        CreatedDate = DateTime.Now,
+            //        IsActivate = false
+            //    };
+
+            //    db.ActivateAccount.Add(activateaccount);
+
+            //    db.SaveChanges();
+            //}
+
+            return null;
+        }
+
 
     }
 }

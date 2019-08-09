@@ -143,7 +143,5 @@ namespace FEP.Model
         Company = 2,
         [Display(Name = "UserTypeStaff", ResourceType = typeof(Language.Enum))]
         Staff = 3,
-        
     }
-      
 }

@@ -41,6 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RnPForm.Designer.cs">
+      <DependentUpon>RnPForm.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="RnPEnum.Designer.cs">
+      <DependentUpon>RnPEnum.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="User.Designer.cs">
       <DependentUpon>User.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -59,6 +69,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="RnPForm.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RnPForm.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RnPEnum.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RnPEnum.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="User.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>User.Designer.cs</LastGenOutput>

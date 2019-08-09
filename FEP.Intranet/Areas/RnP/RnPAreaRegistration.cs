@@ -1,22 +1,22 @@
 ﻿using System.Web.Mvc;
 
-namespace FEP.Intranet.Areas.Research
+namespace FEP.Intranet.Areas.RnP
 {
-    public class ResearchAreaRegistration : AreaRegistration 
+    public class RnPAreaRegistration : AreaRegistration 
     {
         public override string AreaName 
         {
             get 
             {
-                return "Research";
+                return "RnP";
             }
         }
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
-                "Research_default",
-                "Research/{controller}/{action}/{id}",
+                "RnP_default",
+                "RnP/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }

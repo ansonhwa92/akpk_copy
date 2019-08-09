@@ -1,0 +1,80 @@
+﻿@model FEP.Intranet.Areas.eEvent.Models.DetailsMediaInterviewModel
+
+@{
+	ViewBag.Title = "Media Interview";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section ContentScript{
+
+	@Scripts.Render("~/bundles/dataTable-script")
+
+	<script type="text/javascript">
+		$('.menu_mediaInterview').addClass('active');
+		$('.menu_mediaInterview').parent('ul').parent('li').addClass('active');
+	</script>
+}
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box box-info">
+			<div class="box-header">
+				<h3 class="box-title">Media Interview Details</h3>
+			</div>
+
+			<div class="box-body">
+				<dl class="dl-horizontal">
+					<dt>@Html.DisplayNameFor(model => model.MediaName)</dt>
+					<dd>@Html.DisplayFor(model => model.MediaName)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.MediaType)</dt>
+					<dd>@Html.DisplayFor(model => model.MediaType)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.ContactPerson)</dt>
+					<dd>@Html.DisplayFor(model => model.ContactPerson)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.ContactNo)</dt>
+					<dd>@Html.DisplayFor(model => model.ContactNo)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Address)</dt>
+					<dd>@Html.DisplayFor(model => model.Address)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Email)</dt>
+					<dd>@Html.DisplayFor(model => model.Email)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Date)</dt>
+					<dd>@Html.DisplayFor(model => model.Date)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Time)</dt>
+					<dd>@Html.DisplayFor(model => model.Time)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Location)</dt>
+					<dd>@Html.DisplayFor(model => model.Location)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Language)</dt>
+					<dd>@Html.DisplayFor(model => model.Language)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Topic)</dt>
+					<dd>@Html.DisplayFor(model => model.Topic)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Designation)</dt>
+					<dd>@Html.DisplayFor(model => model.Designation)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.UserId)</dt>
+					<dd>@Html.DisplayFor(model => model.UserName)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.EventId)</dt>
+					<dd>@Html.DisplayFor(model => model.EventTitle)</dd>
+
+				</dl>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<a href='@Url.Action("List")' class="btn btn-warning">Back</a>
+		<a href='@Url.Action("Edit",new { id = Model.Id })' class="btn btn-primary">Edit</a>
+	</div>
+</div>

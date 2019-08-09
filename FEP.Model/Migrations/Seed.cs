@@ -103,6 +103,18 @@ namespace FEP.Model.Migrations
 
             }
 
+            //publication category
+            if (!db.PublicationCategory.Any())
+            {
+                db.PublicationCategory.Add(new PublicationCategory { Name = "Articles" });
+                db.PublicationCategory.Add(new PublicationCategory { Name = "Books" });
+                db.PublicationCategory.Add(new PublicationCategory { Name = "Facts Sheet" });
+                db.PublicationCategory.Add(new PublicationCategory { Name = "Journals" });
+                db.PublicationCategory.Add(new PublicationCategory { Name = "Literature Reviews" });
+                db.PublicationCategory.Add(new PublicationCategory { Name = "Reports" });
+                db.PublicationCategory.Add(new PublicationCategory { Name = "Research Papers" });
+            }
+
             if (!db.State.Any())
             {
                 db.State.AddOrUpdate(s => s.Code,

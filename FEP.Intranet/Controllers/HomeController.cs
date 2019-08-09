@@ -32,7 +32,7 @@ namespace FEP.Intranet.Controllers
            
             if (CurrentUser.IsAuthenticated())
             {
-                view.MasterName = "~/Views/Shared/_Layout.cshtml";
+                view.MasterName = "~/Views/Shared/_LayoutPublic.cshtml";
             }
 
             return view;

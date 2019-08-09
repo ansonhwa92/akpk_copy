@@ -4,30 +4,19 @@
     Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
 }
 
-<section id="top_header_content">
-    <div class="top-header-container">
-        <div class="container wow fadeInUp">
-            <!-- if have button -->
-            <!-- <div class="header-col-right float-right mt-5"><a href="#" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="icon ion-ios-arrow-round-back">&nbsp;</i></span> Back</a></div> -->
-            <div class="header-col-left">
-                <div id="breadcrumb">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page"><a href="#">e-Events</a></li>
-                        </ol>
-                    </nav>
-                </div>
-                <!-- Trigger page title here from last child breadcrumb item -->
-                <h1 class="page-title"></h1>
-                <!-- end -->
-                <div class="header-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.Lorem ipsum dolor sit amet.
-                </div>
-            </div>
-        </div>
+@section Nav {
+    
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#">e-Events</a></li>
+            </ol>
+        </nav>
     </div>
-</section>
+    
+    }
+
 <main id="landing-inner" class="rellax" data-rellax-speed="0">
     <!-- =====================
         Landing Content

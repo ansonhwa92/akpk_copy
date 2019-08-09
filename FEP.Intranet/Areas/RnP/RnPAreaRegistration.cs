@@ -17,7 +17,8 @@ namespace FEP.Intranet.Areas.RnP
             context.MapRoute(
                 "RnP_default",
                 "RnP/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { action = "Index", id = UrlParameter.Optional },                
+                new[] { "FEP.Intranet.Areas.RnP.Controllers" }
             );
         }
     }

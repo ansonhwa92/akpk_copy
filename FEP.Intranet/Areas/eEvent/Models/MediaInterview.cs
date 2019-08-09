@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace FEP.Intranet.Areas.eEventMediaInterview.Models
+namespace FEP.Intranet.Areas.eEvent.Models
 {
 	public class MediaInterviewModel
 	{

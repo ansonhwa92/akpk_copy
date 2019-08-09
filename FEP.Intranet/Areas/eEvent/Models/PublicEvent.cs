@@ -14,7 +14,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Title")]
 		public string EventTitle { get; set; }
 
-		[Required(ErrorMessage = "")]
+		[Required(ErrorMessage = "Please Select Objective")]
 		[Display(Name = "Objective")]
 		public int? EventObjectiveId { get; set; }
 
@@ -38,7 +38,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Participant")]
 		public int? ParticipantAllowed { get; set; }
 
-		[Display(Name = "")]
+		[Display(Name = "Targeted Group")]
 		public EventTargetGroup TargetedGroup { get; set; }
 
 		[Display(Name = "External Exhibitor")]
@@ -74,11 +74,11 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Status")]
 		public EventStatus EventStatus { get; set; }
 
-		[Display(Name = "Agenda Name")]
-		public string AgendaName { get; set; }
-
 		[Display(Name = "Category")]
 		public EventCategory EventCategory { get; set; }
+
+		[Display(Name = "Reasons")]
+		public string Reasons { get; set; }
 
 		[Display(Name = "Remarks")]
 		public string Remarks { get; set; }
@@ -133,11 +133,15 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string EventTitle { get; set; }
 
 		[Display(Name = "Objective")]
-		public string EventObjective { get; set; }
+		public string EventObjectiveTitle { get; set; }
 
 		[DataType(DataType.Date)]
-		[Display(Name = "Event Date")]
-		public DateTime Date { get; set; }
+		[Display(Name = "Start Date")]
+		public DateTime StartDate { get; set; }
+
+		[DataType(DataType.Date)]
+		[Display(Name = "End Date")]
+		public DateTime EndDate { get; set; }
 
 		[Display(Name = "Event Venue")]
 		public string Venue { get; set; }

@@ -15,15 +15,6 @@
 	</script>
 }
 
-
-@section Nav {
-	<ol class="breadcrumb">
-		<li>E-Event</li>
-		<li>Public Event</li>
-		<li>Public Event List</li>
-	</ol>
-}
-
 @using (Html.BeginForm())
 {
 	@Html.AntiForgeryToken()
@@ -46,18 +37,26 @@
 						</div>
 
 						<div class="form-group">
-							@Html.LabelFor(model => model.EventObjective, htmlAttributes: new { @class = "control-label col-md-2" })
+							@Html.LabelFor(model => model.EventObjectiveId, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(model => model.EventObjective, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.EventObjective, "", new { @class = "text-danger" })
+								@Html.DropDownListFor(model => model.EventObjectiveId, null, "-Select Objective-", new { @class = "form-control select2", style = "width:100%" })
+								@Html.ValidationMessageFor(model => model.EventObjectiveId, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
 						<div class="form-group">
-							@Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+							@Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+								@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
@@ -94,10 +93,10 @@
 						</div>
 
 						<div class="form-group">
-							@Html.LabelFor(model => model.ExternalExhibitor, htmlAttributes: new { @class = "control-label col-md-2" })
+							@Html.LabelFor(model => model.ExternalExhibitorId, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(model => model.ExternalExhibitor, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.ExternalExhibitor, "", new { @class = "text-danger" })
+								@Html.DropDownListFor(model => model.ExternalExhibitorId, null, "-Select Exhibitor-", new { @class = "form-control select2", style = "width:100%" })
+								@Html.ValidationMessageFor(model => model.ExternalExhibitorId, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
@@ -166,10 +165,26 @@
 						</div>
 
 						<div class="form-group">
-							@Html.LabelFor(model => model.AgendaId, htmlAttributes: new { @class = "control-label col-md-2" })
+							@Html.LabelFor(model => model.EventStatus, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.DropDownListFor(model => model.AgendaId, null, "-Select Agenda-", new { @class = "form-control select2", style = "width:100%" })
-								@Html.ValidationMessageFor(model => model.AgendaId, "", new { @class = "text-danger" })
+								@Html.EnumDropDownListFor(model => model.EventStatus, "-Select Status-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @id = "mygranttypeid" })
+								@Html.ValidationMessageFor(model => model.EventStatus, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(model => model.EventCategory, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EnumDropDownListFor(model => model.EventCategory, "-Select Category-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @id = "mygranttypeid" })
+								@Html.ValidationMessageFor(model => model.EventCategory, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(model => model.Reasons, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.Reasons, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.Reasons, "", new { @class = "text-danger" })
 							</div>
 						</div>
 

@@ -1,4 +1,4 @@
-﻿@model FEP.Intranet.Areas.eEventMediaInterview.Models.EditMediaInterviewModel
+﻿@model FEP.Intranet.Areas.eEvent.Models.CreateMediaInterviewModel
 
 @{
 	ViewBag.Title = "Media Interview";
@@ -15,26 +15,18 @@
 	</script>
 }
 
-@section Nav {
-	<ol class="breadcrumb">
-		<li>E-Event</li>
-		<li>Media Interview</li>
-	</ol>
-}
-
 @using (Html.BeginForm())
 {
 	@Html.AntiForgeryToken()
+
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="box box-info">
-				<div class="box-header"><h3 class="box-title">Edit Media Interview</h3></div>
+				<div class="box-header"><h3 class="box-title">Create Media Interview</h3></div>
 
 				<div class="form-horizontal">
 					<div class="box-body">
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-						@Html.HiddenFor(model => model.Id)
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.MediaName, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -155,8 +147,8 @@
 
 	<div class="row">
 		<div class="col-xs-12">
-			<a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
-			<button type="submit" class="btn btn-primary btn-flat">Save</button>
+			<a href='@Url.Action("List")' class="btn btn-warning">Cancel</a>
+			<button type="submit" class="btn btn-primary">Save</button>
 		</div>
 	</div>
 }

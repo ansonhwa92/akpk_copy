@@ -1,0 +1,50 @@
+﻿@model FEP.Intranet.Areas.eEvent.Models.DetailsEventSpeakerModel
+
+@{
+	ViewBag.Title = "Event Speaker";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section ContentScript{
+
+	@Scripts.Render("~/bundles/dataTable-script")
+
+	<script type="text/javascript">
+		$('.menu_eventSpeaker').addClass('active');
+		$('.menu_eventSpeaker').parent('ul').parent('li').addClass('active');
+	</script>
+}
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box box-info">
+			<div class="box-header">
+				<h3 class="box-title">Event Speaker Details</h3>
+			</div>
+
+			<div class="box-body">
+				<dl class="dl-horizontal">
+					<dt>@Html.DisplayNameFor(model => model.SpeakerType)</dt>
+					<dd>@Html.DisplayFor(model => model.SpeakerType)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.UserId)</dt>
+					<dd>@Html.DisplayFor(model => model.UserName)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.DateAssigned)</dt>
+					<dd>@Html.DisplayFor(model => model.DateAssigned)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Remark)</dt>
+					<dd>@Html.DisplayFor(model => model.Remark)</dd>
+
+				</dl>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<a href='@Url.Action("List")' class="btn btn-warning">Back</a>
+		<a href='@Url.Action("Edit",new { id = Model.Id })' class="btn btn-primary">Edit</a>
+	</div>
+</div>

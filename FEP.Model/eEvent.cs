@@ -65,7 +65,8 @@ namespace FEP.Model
 	}
 
 	[Table("EventExternalExhibitor")]
-	public class EventExternalExhibitor
+	public class 
+		EventExternalExhibitor
 	{
 		[Key]
 		public int Id { get; set; }
@@ -132,8 +133,13 @@ namespace FEP.Model
 	{
 		[Key]
 		public int Id { get; set; }
-		public string SpeakerName { get; set; }
 		public string Remark { get; set; }
+		public SpeakerType SpeakerType { get; set; }
+		public DateTime DateAssigned { get; set; }
+		public int? UserId { get; set; }
+		[ForeignKey("UserId")]
+		public virtual User User { get; set; } 
+
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
 		public int? CreatedBy { get; set; }

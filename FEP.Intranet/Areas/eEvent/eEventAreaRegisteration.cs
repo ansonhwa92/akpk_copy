@@ -12,15 +12,15 @@ namespace FEP.Intranet.Areas.eEvent
 		{
 			get
 			{
-				return "eEventAreaRegistration";
+				return "eEvent";
 			}
 		}
 
 		public override void RegisterArea(AreaRegistrationContext context)
 		{
 			context.MapRoute(
-				"eEventAreaRegistration_default",
-				"eEventAreaRegistration/{controller}/{action}/{id}",
+				"eEvent_default",
+				"eEvent/{controller}/{action}/{id}",
 				new { action = "Index", id = UrlParameter.Optional }
 			);
 		}

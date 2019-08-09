@@ -4,6 +4,7 @@
 	ViewBag.Title = "Public Event";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @section ContentScript{
 
 	@Scripts.Render("~/bundles/dataTable-script")
@@ -12,14 +13,6 @@
 		$('.menu_publicEvent').addClass('active');
 		$('.menu_publicEvent').parent('ul').parent('li').addClass('active');
 	</script>
-}
-
-@section Nav {
-	<ol class="breadcrumb">
-		<li>E-Event</li>
-		<li>Public Event</li>
-		<li>Public Event List</li>
-	</ol>
 }
 
 <div class="row">
@@ -32,29 +25,17 @@
 			<div class="box-body">
 				<dl class="dl-horizontal">
 
-					<dt>
-						@Html.DisplayNameFor(model => model.EventTitle)
-					</dt>
+					<dt>@Html.DisplayNameFor(model => model.EventTitle)</dt>
+					<dd>@Html.DisplayFor(model => model.EventTitle)</dd>
 
-					<dd>
-						@Html.DisplayFor(model => model.EventTitle)
-					</dd>
+					<dt>@Html.DisplayNameFor(model => model.EventObjectiveId)</dt>
+					<dd>@Html.DisplayFor(model => model.EventObjectiveTitle)</dd>
 
-					<dt>
-						@Html.DisplayNameFor(model => model.EventObjective)
-					</dt>
+					<dt>@Html.DisplayNameFor(model => model.StartDate)</dt>
+					<dd>@Html.DisplayFor(model => model.StartDate)</dd>
 
-					<dd>
-						@Html.DisplayFor(model => model.EventObjective)
-					</dd>
-
-					<dt>
-						@Html.DisplayNameFor(model => model.Date)
-					</dt>
-
-					<dd>
-						@Html.DisplayFor(model => model.Date)
-					</dd>
+					<dt>@Html.DisplayNameFor(model => model.EndDate)</dt>
+					<dd>@Html.DisplayFor(model => model.EndDate)</dd>
 
 					<dt>
 						@Html.DisplayNameFor(model => model.Venue)
@@ -89,11 +70,11 @@
 					</dd>
 
 					<dt>
-						@Html.DisplayNameFor(model => model.ExternalExhibitor)
+						@Html.DisplayNameFor(model => model.ExternalExhibitorId)
 					</dt>
 
 					<dd>
-						@Html.DisplayFor(model => model.ExternalExhibitor)
+						@Html.DisplayFor(model => model.ExternalExhibitorName)
 					</dd>
 
 					<dt>

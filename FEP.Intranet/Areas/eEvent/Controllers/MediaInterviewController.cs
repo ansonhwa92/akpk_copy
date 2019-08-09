@@ -1,4 +1,5 @@
-﻿using FEP.Intranet.Areas.eEventMediaInterview.Models;
+﻿using FEP.Helper;
+using FEP.Intranet.Areas.eEvent.Models;
 using FEP.Model;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-namespace FEP.Intranet.Areas.eEventMediaInterview.Controllers
+namespace FEP.Intranet.Areas.eEvent.Controllers
 {
-	public class MediaInterviewController : Controller
+	public class MediaInterviewController : FEPController
 	{
 		private DbEntities db = new DbEntities();
 

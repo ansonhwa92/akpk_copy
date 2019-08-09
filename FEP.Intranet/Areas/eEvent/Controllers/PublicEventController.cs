@@ -1,4 +1,5 @@
-﻿using FEP.Intranet.Areas.eEvent.Models;
+﻿using FEP.Helper;
+using FEP.Intranet.Areas.eEvent.Models;
 using FEP.Model;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
 {
-	public class PublicEventController : Controller
+	public class PublicEventController : FEPController
 	{
 		private DbEntities db = new DbEntities();
 
@@ -71,6 +72,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ApprovalName4 = i.Approval4.User.Name,
 					EventStatus = i.EventStatus,
 					EventCategory = i.EventCategory,
+					Reasons = i.Reasons,
 					Remarks = i.Remarks
 				}).FirstOrDefault();
 
@@ -85,9 +87,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		// GET: PublicEvent/Create
 		public ActionResult Create()
 		{
-			ViewBag.AgendaId = new SelectList(db.EventAgenda.Where(p => p.Display).OrderBy(o => o.AgendaTitle), "Id", "AgendaTitle");
+			CreatePublicEventModel model = new CreatePublicEventModel
+			{
+				EventStatus = EventStatus.New,
+			};
 
-			return View("Create");
+			ViewBag.EventObjectiveId = new SelectList(db.EventObjective.Where(p => p.Display).OrderBy(o => o.ObjectiveTitle), "Id", "ObjectiveTitle");
+			ViewBag.ExternalExhibitorId = new SelectList(db.EventExternalExhibitor.Where(p => p.Display).OrderBy(o => o.Name), "Id", "Name");
+
+			return View("Create", model);
 		}
 
 		// POST: PublicEvent/Create
@@ -114,6 +122,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ApprovalId4 = model.ApprovalId4,
 					EventStatus = model.EventStatus,
 					EventCategory = model.EventCategory,
+					Reasons = model.Reasons,
 					Remarks = model.Remarks,
 					CreatedBy = null,
 					CreatedDate = DateTime.Now,
@@ -166,6 +175,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventStatus = i.EventStatus,
 
 					EventCategory = i.EventCategory,
+					Reasons = i.Reasons,
 					Remarks = i.Remarks
 				}).FirstOrDefault();
 
@@ -204,6 +214,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ApprovalId4 = model.ApprovalId4,
 					EventStatus = model.EventStatus,
 					EventCategory = model.EventCategory,
+					Reasons = model.Reasons,
 					Remarks = model.Remarks
 				};
 
@@ -256,8 +267,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ApprovalName4 = i.Approval4.User.Name,
 
 					EventStatus = i.EventStatus,
-
 					EventCategory = i.EventCategory,
+					Reasons = i.Reasons,
 					Remarks = i.Remarks
 				}).FirstOrDefault();
 

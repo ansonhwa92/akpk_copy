@@ -76,4 +76,10 @@ namespace FEP.Model
 		ModifyEvent,
 		CancelEvent
 	}
+
+	public enum SpeakerType
+	{
+		FEP,
+		OBS
+	}
 }

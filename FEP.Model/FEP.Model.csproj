@@ -63,6 +63,14 @@
     <Compile Include="Migrations\201908070737028_a.Designer.cs">
       <DependentUpon>201908070737028_a.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908071627251_a1.cs" />
+    <Compile Include="Migrations\201908071627251_a1.Designer.cs">
+      <DependentUpon>201908071627251_a1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908080602053_a2.cs" />
+    <Compile Include="Migrations\201908080602053_a2.Designer.cs">
+      <DependentUpon>201908080602053_a2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\Seed.cs" />
     <Compile Include="Notification.cs" />
@@ -86,6 +94,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201908070737028_a.resx">
       <DependentUpon>201908070737028_a.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908071627251_a1.resx">
+      <DependentUpon>201908071627251_a1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908080602053_a2.resx">
+      <DependentUpon>201908080602053_a2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

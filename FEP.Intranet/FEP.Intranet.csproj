@@ -151,14 +151,19 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\EventObjectiveController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\EventSpeakerController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\ExternalExhibitorController.cs" />
+    <Compile Include="Areas\eEvent\Models\EventObjective.cs" />
+    <Compile Include="Areas\eEvent\Models\EventSpeaker.cs" />
     <Compile Include="Areas\eEvent\eEventAreaRegisteration.cs" />
+    <Compile Include="Areas\eEvent\Models\ExternalExhibitor.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
     <Compile Include="Areas\Publication\PublicationAreaRegistration.cs" />
     <Compile Include="Areas\Research\ResearchAreaRegistration.cs" />
     <Compile Include="Controllers\AuthController.cs" />
-    <Compile Include="Areas\eEventMediaInterview\Controllers\MediaInterviewController.cs" />
-    <Compile Include="Areas\eEventMediaInterview\eEventMediaInterviewAreaRegistration.cs" />
-    <Compile Include="Areas\eEventMediaInterview\Models\MediaInterview.cs" />
+    <Compile Include="Areas\eEvent\Controllers\MediaInterviewController.cs" />
+    <Compile Include="Areas\eEvent\Models\MediaInterview.cs" />
     <Compile Include="Areas\eEvent\Controllers\PublicEventController.cs" />
     <Compile Include="Areas\eEvent\Models\PublicEvent.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -171,6 +176,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\eEvent\Views\web.config" />
     <Content Include="assets\css\app.css" />
     <Content Include="assets\css\app.rtl.css" />
     <Content Include="assets\css\bootstrap-touchspin.css" />
@@ -345,7 +351,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Areas\Administrator\Views\web.config" />
     <Content Include="Areas\eLearning\Views\web.config" />
-    <Content Include="Areas\eEvent\Views\web.config" />
     <Content Include="Areas\Administrator\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Administrator\Views\User\Index.cshtml" />
     <Content Include="assets\data\.DS_Store" />
@@ -395,6 +400,16 @@
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Areas\Publication\Views\web.config" />
     <Content Include="Areas\Research\Views\web.config" />
+    <Content Include="Areas\eEvent\Views\EventObjective\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventSpeaker\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventSpeaker\Details.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventSpeaker\Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventSpeaker\Edit.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventSpeaker\Delete.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventObjective\Details.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventObjective\Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventObjective\Edit.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventObjective\Delete.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -402,19 +417,17 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-    <Content Include="Areas\eEvent\Views\web.config" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Create.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Edit.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Delete.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Details.cshtml" />
-    <Content Include="Areas\eEventMediaInterview\Views\web.config" />
-    <Content Include="Areas\eEventMediaInterview\Views\MediaInterview\List.cshtml" />
-    <Content Include="Areas\eEventMediaInterview\Views\MediaInterview\Details.cshtml" />
-    <Content Include="Areas\eEventMediaInterview\Views\MediaInterview\Create.cshtml" />
-    <Content Include="Areas\eEventMediaInterview\Views\MediaInterview\Edit.cshtml" />
-    <Content Include="Areas\eEventMediaInterview\Views\MediaInterview\Delete.cshtml" />
+    <Content Include="Areas\eEvent\Views\MediaInterview\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\MediaInterview\Details.cshtml" />
+    <Content Include="Areas\eEvent\Views\MediaInterview\Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\MediaInterview\Edit.cshtml" />
+    <Content Include="Areas\eEvent\Views\MediaInterview\Delete.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -468,7 +481,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administrator\Models\" />
-    <Folder Include="Areas\eEventMediaInterview\Views\Shared\" />
+    <Folder Include="Areas\eEvent\Views\Default\" />
+    <Folder Include="Areas\eEvent\Views\ExternalExhibitor\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Areas\eLearning\Controllers\" />
     <Folder Include="Areas\eLearning\Models\" />

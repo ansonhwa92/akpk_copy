@@ -1,4 +1,4 @@
-﻿@model FEP.Intranet.Areas.eEventMediaInterview.Models.ListMediaInterviewModel
+﻿@model FEP.Intranet.Areas.eEvent.Models.ListMediaInterviewModel
 
 @{
 	ViewBag.Title = "Media Interview";
@@ -57,14 +57,6 @@
 	</script>
 }
 
-@section Nav {
-
-	<ol class="breadcrumb">
-		<li>E-Event</li>
-		<li>Media Interview</li>
-	</ol>
-}
-
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box box-info">
@@ -72,8 +64,8 @@
 				<h3 class="box-title">Media Interview List</h3>
 				<div class="pull-right box-tools">
 
-					<a href='@Url.Action("Create")' class="btn btn-primary btn-xs" title="Add"><i class="fa fa-plus"></i></a>
-					<a class="btn btn-success btn-xs" title="Export" id="export"><i class="fa fa-file-excel-o"></i></a>
+					<a href='@Url.Action("Create")' class="btn btn-primary btn-xs" title="Add"><i class="fa fa-plus"></i> Media Interview</a>
+					<a class="btn btn-success btn-xs" title="Export" id="export"><i class="fa fa-file-excel-o"></i> Export</a>
 
 				</div>
 			</div><!-- /.box-header -->

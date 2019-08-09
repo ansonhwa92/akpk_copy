@@ -1,0 +1,239 @@
+﻿@model FEP.Model.Publication
+
+@{
+    ViewBag.Title = "Publication Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+    <li class="breadcrumb-item"><a href="~/RnP/RnPHome">Research & Publication</a></li>
+    <li class="breadcrumb-item"><a href="~/RnP/Publication">Publication</a></li>
+    <li class="breadcrumb-item active">Publication Details</li>
+</ol>
+<h1 class="h2">Publication Details</h1>
+
+<div class="card">
+    <div class="card-header">
+        <div class="media align-items-center">
+            <div class="media-body">
+                <h4 class="card-title">Details of Publications</h4>
+            </div>
+            <div class="media-right">
+                <a class="btn btn-sm btn-primary" href="~/RnP/Publication">Back to List</a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h4>Publication</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Category.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Category.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Author)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Author)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Coauthor)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Coauthor)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Year)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Year)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Language)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Language)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ISBN)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ISBN)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Free)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Free)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Hardcopy)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Hardcopy)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Digitalcopy)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Digitalcopy)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.HDcopy)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.HDcopy)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.HPrice)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.HPrice)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DPrice)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DPrice)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.HDPrice)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.HDPrice)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ProofOfApproval)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ProofOfApproval)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.StockBalance)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.StockBalance)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.WithdrawalReason)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.WithdrawalReason)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ProofOfWithdrawal)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ProofOfWithdrawal)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DateAdded)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DateAdded)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.WStatus)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.WStatus)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ViewCount)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ViewCount)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PurchaseCount)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PurchaseCount)
+            </dd>
+
+        </dl>
+    </div>
+    @if (Model.Status == FEP.Model.PublicationStatus.New)
+    {
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    }
+    else
+    {
+        <p>
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    }
+
+</div>

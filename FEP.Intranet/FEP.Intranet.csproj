@@ -155,6 +155,7 @@
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
     <Compile Include="Areas\RnP\Controllers\PublicationController.cs" />
     <Compile Include="Areas\RnP\Controllers\RnPHomeController.cs" />
+    <Compile Include="Areas\RnP\Controllers\SurveyController.cs" />
     <Compile Include="Areas\RnP\RnPAreaRegistration.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -394,6 +395,13 @@
     <Content Include="Areas\RnP\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\RnP\Views\RnPHome\Index.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\Index.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Create.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Details.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Edit.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Delete.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\Index.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\Details.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\Create.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

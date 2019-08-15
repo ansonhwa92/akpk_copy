@@ -59,9 +59,17 @@
     <Compile Include="eEvent.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="File.cs" />
-    <Compile Include="Migrations\201908091028458_x.cs" />
-    <Compile Include="Migrations\201908091028458_x.Designer.cs">
-      <DependentUpon>201908091028458_x.cs</DependentUpon>
+    <Compile Include="Migrations\201908131612234_a.cs" />
+    <Compile Include="Migrations\201908131612234_a.Designer.cs">
+      <DependentUpon>201908131612234_a.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908141108380_a1.cs" />
+    <Compile Include="Migrations\201908141108380_a1.Designer.cs">
+      <DependentUpon>201908141108380_a1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908151629297_a2.cs" />
+    <Compile Include="Migrations\201908151629297_a2.Designer.cs">
+      <DependentUpon>201908151629297_a2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\Seed.cs" />
@@ -84,8 +92,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201908091028458_x.resx">
-      <DependentUpon>201908091028458_x.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201908131612234_a.resx">
+      <DependentUpon>201908131612234_a.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908141108380_a1.resx">
+      <DependentUpon>201908141108380_a1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908151629297_a2.resx">
+      <DependentUpon>201908151629297_a2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

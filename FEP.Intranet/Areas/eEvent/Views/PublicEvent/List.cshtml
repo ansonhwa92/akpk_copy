@@ -68,13 +68,12 @@
         <div class="box box-info">
             <div class="box-header">
                 <h3 class="box-title">Public Event List</h3>
-                <div class="pull-right box-tools">
-                    <a href='@Url.Action("Create")' class="btn btn-primary btn-xs" title="Add"><i class="fa fa-plus"></i>  Public Event</a>
-                    <a class="btn btn-success btn-xs" title="Export" id="export"><i class="fa fa-file-excel"></i>  Export</a>
-                    <a href='@Url.Action("List", "EventObjective", new { area = "eEvent"})' class="btn btn-default btn-xs" title="Add"><i class="fa fa-plus"></i>  Objective</a>
-                    <a href='@Url.Action("List", "EventSpeaker", new { area = "eEvent"})' class="btn btn-default btn-xs" title="Add"><i class="fa fa-plus"></i>  Speaker</a>
-                    <a href='@Url.Action("List", "MediaInterview", new { area = "eEvent"})' class="btn btn-default btn-xs" title="Add"><i class="fa fa-plus"></i>  Media Interview</a>
-                </div>
+				<div class="pull-right box-tools">
+					<a href='@Url.Action("Create")' class="btn btn-primary btn-xs" title="Add"><i class="fa fa-plus"></i>  Public Event</a>
+					<a class="btn btn-success btn-xs" title="Export" id="export"><i class="fa fa-file-excel"></i>  Export</a>
+					<a href='@Url.Action("List", "MediaInterview", new { area = "eEvent"})' class="btn btn-default btn-xs" title="Add"><i class="fa fa-plus"></i>  Media Interview</a>
+
+				</div>
             </div><!-- /.box-header -->
 
 
@@ -84,7 +83,7 @@
                         <tr>
                             <th>No.</th>
                             <th>@Html.DisplayNameFor(m => m.filter.EventTitle)</th>
-                            <th>@Html.DisplayNameFor(m => m.filter.EventObjectiveTitle)</th>
+                            <th>@Html.DisplayNameFor(m => m.filter.EventObjective)</th>
                             <th>@Html.DisplayNameFor(m => m.filter.StartDate)</th>
                             <th>@Html.DisplayNameFor(m => m.filter.EndDate)</th>
                             <th>@Html.DisplayNameFor(m => m.filter.Venue)</th>
@@ -98,7 +97,7 @@
                             <tr>
                                 <td></td>
                                 <td>@Html.DisplayFor(m => item.EventTitle)</td>
-                                <td>@Html.DisplayFor(m => item.EventObjectiveTitle)</td>
+                                <td>@Html.DisplayFor(m => item.EventObjective)</td>
                                 <td>@Html.DisplayFor(m => item.StartDate)</td>
                                 <td>@Html.DisplayFor(m => item.EndDate)</td>
                                 <td>@Html.DisplayFor(m => item.Venue)</td>

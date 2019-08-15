@@ -28,7 +28,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				{
 					Id = i.Id,
 					EventTitle = i.EventTitle,
-					EventObjectiveId = i.EventObjectiveId,
 					StartDate = i.StartDate,
 					EndDate = i.EndDate,
 					Venue = i.Venue,
@@ -54,14 +53,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				{
 					Id = i.Id,
 					EventTitle = i.EventTitle,
-					EventObjectiveId = i.EventObjectiveId,
+					EventObjective = i.EventObjective,
 					StartDate = i.StartDate,
 					EndDate = i.EndDate,
 					Venue = i.Venue,
 					Fee = i.Fee,
 					ParticipantAllowed = i.ParticipantAllowed,
 					TargetedGroup = i.TargetedGroup,
-					ExternalExhibitorId = i.ExternalExhibitorId,
 					ApprovalId1 = i.ApprovalId1,
 					ApprovalName1 = i.Approval1.User.Name,
 					ApprovalId2 = i.ApprovalId2,
@@ -71,7 +69,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ApprovalId4 = i.ApprovalId4,
 					ApprovalName4 = i.Approval4.User.Name,
 					EventStatus = i.EventStatus,
-					EventCategory = i.EventCategory,
+					EventCategoryId = i.EventCategoryId,
+					EventCategoryName = i.EventCategory.CategoryName,
 					Reasons = i.Reasons,
 					Remarks = i.Remarks
 				}).FirstOrDefault();
@@ -81,7 +80,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			return View("Details", e);
+			return View(e);
 		}
 
 		// GET: PublicEvent/Create
@@ -92,10 +91,16 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				EventStatus = EventStatus.New,
 			};
 
-			ViewBag.EventObjectiveId = new SelectList(db.EventObjective.Where(p => p.Display).OrderBy(o => o.ObjectiveTitle), "Id", "ObjectiveTitle");
-			ViewBag.ExternalExhibitorId = new SelectList(db.EventExternalExhibitor.Where(p => p.Display).OrderBy(o => o.Name), "Id", "Name");
+			var getcategory = db.EventCategory.Where(c => c.Display)
+				.Select(i => new
+				{
+					Id = i.Id,
+					Name = i.CategoryName
+				});
 
-			return View("Create", model);
+			model.CategoryList = new SelectList(getcategory, "Id", "Name", 0);
+
+			return View(model);
 		}
 
 		// POST: PublicEvent/Create
@@ -108,23 +113,19 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				PublicEvent x = new PublicEvent
 				{
 					EventTitle = model.EventTitle,
-					EventObjectiveId = model.EventObjectiveId,
+					EventObjective = model.EventObjective,
 					StartDate = model.StartDate,
 					EndDate = model.EndDate,
 					Venue = model.Venue,
 					Fee = model.Fee,
 					ParticipantAllowed = model.ParticipantAllowed,
 					TargetedGroup = model.TargetedGroup,
-					ExternalExhibitorId = model.ExternalExhibitorId,
-					ApprovalId1 = model.ApprovalId1,
-					ApprovalId2 = model.ApprovalId2,
-					ApprovalId3 = model.ApprovalId3,
-					ApprovalId4 = model.ApprovalId4,
+					
 					EventStatus = model.EventStatus,
-					EventCategory = model.EventCategory,
+					EventCategoryId = model.EventCategoryId,
 					Reasons = model.Reasons,
 					Remarks = model.Remarks,
-					CreatedBy = null,
+					CreatedBy = CurrentUser.UserId,
 					CreatedDate = DateTime.Now,
 					Display = true
 				};
@@ -150,8 +151,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				{
 					Id = i.Id,
 					EventTitle = i.EventTitle,
-					EventObjectiveId = i.EventObjectiveId,
-					EventObjectiveTitle = i.EventObjective.ObjectiveTitle,
+					EventObjective = i.EventObjective,
 					StartDate = i.StartDate,
 					EndDate = i.EndDate,
 					Venue = i.Venue,
@@ -159,22 +159,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ParticipantAllowed = i.ParticipantAllowed,
 					TargetedGroup = i.TargetedGroup,
 
-					ExternalExhibitorId = i.ExternalExhibitorId,
-					ExternalExhibitorName = i.EventExternalExhibitor.Name,
-
-					ApprovalId1 = i.ApprovalId1,
-					ApprovalId2 = i.ApprovalId2,
-					ApprovalId3 = i.ApprovalId3,
-					ApprovalId4 = i.ApprovalId4,
-
-					ApprovalName1 = i.Approval1.User.Name,
-					ApprovalName2 = i.Approval2.User.Name,
-					ApprovalName3 = i.Approval3.User.Name,
-					ApprovalName4 = i.Approval4.User.Name,
-
 					EventStatus = i.EventStatus,
-
-					EventCategory = i.EventCategory,
+					EventCategoryId = i.EventCategoryId,
+					EventCategoryName = i.EventCategory.CategoryName,
 					Reasons = i.Reasons,
 					Remarks = i.Remarks
 				}).FirstOrDefault();
@@ -183,8 +170,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
-
-			ViewBag.AgendaId = new SelectList(db.EventAgenda.Where(p => p.Display).OrderBy(o => o.AgendaTitle), "Id", "AgendaTitle");
 
 			return View(e);
 		}
@@ -200,20 +185,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				{
 					Id = model.Id,
 					EventTitle = (model.EventTitle != null) ? model.EventTitle.ToUpper() : model.EventTitle,
-					EventObjectiveId = model.EventObjectiveId,
+					EventObjective = model.EventObjective,
 					StartDate = model.StartDate,
 					EndDate = model.EndDate,
 					Venue = model.Venue,
 					Fee = model.Fee,
 					ParticipantAllowed = model.ParticipantAllowed,
 					TargetedGroup = model.TargetedGroup,
-					ExternalExhibitorId = model.ExternalExhibitorId,
-					ApprovalId1 = model.ApprovalId1,
-					ApprovalId2 = model.ApprovalId2,
-					ApprovalId3 = model.ApprovalId3,
-					ApprovalId4 = model.ApprovalId4,
 					EventStatus = model.EventStatus,
-					EventCategory = model.EventCategory,
+					EventCategoryId = model.EventCategoryId,
 					Reasons = model.Reasons,
 					Remarks = model.Remarks
 				};
@@ -244,18 +224,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				{
 					Id = i.Id,
 					EventTitle = i.EventTitle,
-
-					EventObjectiveId = i.EventObjectiveId,
-					EventObjectiveTitle = i.EventExternalExhibitor.Name,
+					EventObjective = i.EventObjective,
 					StartDate = i.StartDate,
 					EndDate = i.EndDate,
 					Venue = i.Venue,
 					Fee = i.Fee,
 					ParticipantAllowed = i.ParticipantAllowed,
 					TargetedGroup = i.TargetedGroup,
-					ExternalExhibitorId = i.ExternalExhibitorId,
-					ExternalExhibitorName = i.EventExternalExhibitor.Name,
-
 					ApprovalId1 = i.ApprovalId1,
 					ApprovalId2 = i.ApprovalId2,
 					ApprovalId3 = i.ApprovalId3,
@@ -267,7 +242,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ApprovalName4 = i.Approval4.User.Name,
 
 					EventStatus = i.EventStatus,
-					EventCategory = i.EventCategory,
+					EventCategoryId = i.EventCategoryId,
+					EventCategoryName = i.EventCategory.CategoryName,
 					Reasons = i.Reasons,
 					Remarks = i.Remarks
 				}).FirstOrDefault();

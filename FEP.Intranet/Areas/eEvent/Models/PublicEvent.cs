@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eEvent.Models
 {
@@ -14,12 +15,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Title")]
 		public string EventTitle { get; set; }
 
-		[Required(ErrorMessage = "Please Select Objective")]
+		[Required(ErrorMessage = "Please Insert Objective")]
 		[Display(Name = "Objective")]
-		public int? EventObjectiveId { get; set; }
-
-		[Display(Name = "Objective")]
-		public string EventObjectiveTitle { get; set; }
+		public string EventObjective { get; set; }
 
 		[DataType(DataType.Date)]
 		[Display(Name = "Event Date")]
@@ -40,12 +38,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Display(Name = "Targeted Group")]
 		public EventTargetGroup TargetedGroup { get; set; }
-
-		[Display(Name = "External Exhibitor")]
-		public int? ExternalExhibitorId { get; set; }
-
-		[Display(Name = "External Exhibitor")]
-		public string ExternalExhibitorName { get; set; }
 
 		[Display(Name = "Approver Name")]
 		public int? ApprovalId1 { get; set; }
@@ -74,8 +66,17 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Status")]
 		public EventStatus EventStatus { get; set; }
 
-		[Display(Name = "Category")]
-		public EventCategory EventCategory { get; set; }
+
+
+		[Display(Name = "Event Category")]
+		public int? EventCategoryId { get; set; }
+
+		[Display(Name = "Event Category")]
+		public string EventCategoryName { get; set; }
+
+		[Display(Name = "Event Category")]
+		public IEnumerable<SelectListItem> CategoryList { get; set; }
+
 
 		[Display(Name = "Reasons")]
 		public string Reasons { get; set; }
@@ -133,7 +134,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string EventTitle { get; set; }
 
 		[Display(Name = "Objective")]
-		public string EventObjectiveTitle { get; set; }
+		public string EventObjective { get; set; }
+
 
 		[DataType(DataType.Date)]
 		[Display(Name = "Start Date")]

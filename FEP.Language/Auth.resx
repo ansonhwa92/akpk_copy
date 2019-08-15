@@ -286,7 +286,7 @@
     <value>Please enter IC No</value>
   </data>
   <data name="ValidRequiredLoginId" xml:space="preserve">
-    <value>Please enter LoginId</value>
+    <value>Please enter Email</value>
   </data>
   <data name="ValidRequiredMobileNo" xml:space="preserve">
     <value>Please enter Mobile No</value>

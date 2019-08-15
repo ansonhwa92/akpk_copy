@@ -51,6 +51,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Administration.Designer.cs">
+      <DependentUpon>Administration.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="User.Designer.cs">
       <DependentUpon>User.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -76,6 +81,10 @@
     <EmbeddedResource Include="RnPEnum.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RnPEnum.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Administration.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="User.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

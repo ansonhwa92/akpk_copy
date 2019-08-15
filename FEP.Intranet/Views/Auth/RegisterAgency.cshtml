@@ -23,6 +23,7 @@
                 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
                 {
                     @Html.AntiForgeryToken()
+
                     <div class="form-group">
                         @Html.FEPLabelFor(m => m.CompanyName, htmlAttributes: new { @class = "form-label" })
                         <div class="input-group">
@@ -127,23 +128,25 @@
                         @Html.FEPLabelFor(m => m.Password, htmlAttributes: new { @class = "form-label" })
                         <div class="input-group">
                             @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderPassword } })
-                            @Html.ValidationMessageFor(m => m.Password)
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "invalid-feedback" })
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.FEPLabelFor(m => m.RetypePassword, htmlAttributes: new { @class = "form-label" })
                         <div class="input-group">
                             @Html.EditorFor(m => m.RetypePassword, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderRetypePassword } })
-                            @Html.ValidationMessageFor(m => m.RetypePassword)
+                            @Html.ValidationMessageFor(m => m.RetypePassword, "", new { @class = "invalid-feedback" })
                         </div>
                     </div>
 
                     <button type="submit" class="btn btn-secondary btn-block mt-3 mb-4">Sign Up</button>
+
                     <div class="form-group text-center mb-0">
-                        <div class="custom-control custom-checkbox">
-                            <input id="terms" type="checkbox" class="custom-control-input" required="">
-                            <label for="terms" class="custom-control-label">I agree to the Terms of Use</label>
+                        <div class="custom-control custom-checkbox">                            
+                            @Html.EditorFor(m => m.IsTermAgreed, new { htmlAttributes = new { @class = "custom-control-input" } })
+                            <label for="IsTermAgreed" class="custom-control-label">I agree to the <a href="#">Terms of Use</a></label>
                         </div>
+                        @Html.ValidationMessageFor(m => m.IsTermAgreed)
                     </div>
                 }
             </div>

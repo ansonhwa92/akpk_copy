@@ -12,8 +12,10 @@ using FEP.Helper;
 using FEP.Intranet.Models;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json;
-using FEP.WebApiModel;
+//using FEP.WebApiModel;
 using FEP.Model;
+using FEP.WebApiModel.Auth;
+using FEP.WebApiModel.Administration;
 
 namespace FEP.Intranet.Controllers
 {
@@ -62,8 +64,9 @@ namespace FEP.Intranet.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+        
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult RegisterAgency(RegisterAgencyModel model)
         {
@@ -178,7 +181,7 @@ namespace FEP.Intranet.Controllers
         {
             if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
             {
-                return Url.Action("Index", "Home", routeValues: null);
+                return Url.Action("Dashboard", "Home", routeValues: null);
             }
 
             return returnUrl;

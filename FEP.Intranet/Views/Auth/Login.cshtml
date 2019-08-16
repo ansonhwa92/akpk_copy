@@ -6,9 +6,7 @@
 }
 
 @section ButtonBack{
-
     <a href="@Url.Action("Index", "Home", new { area = "" })" class="btn btn-outline-secondary"><span class="align-middle"><i class="icon ion-ios-arrow-round-back">&nbsp;</i></span> Back</a>
-
 }
 
 <div class="login-wrapper" style="min-height: 100vh">
@@ -23,6 +21,7 @@
                 @using (Html.BeginForm("Login", "Auth", new { area = "" }, FormMethod.Post, new { id = "form" }))
                 {
                     @Html.AntiForgeryToken()
+
                     <div class="form-group">
                         @Html.FEPLabelFor(m => m.LoginId, htmlAttributes: new { @class = "form-label" })
                         <div class="input-group">

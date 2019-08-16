@@ -12,22 +12,20 @@
     <!-- Favicons -->
     <link href="img/favicon.png" rel="icon">
     <!-- Perfect Scrollbar -->
-    <link type="text/css" href="@BaseURL/dist/assets/vendor/perfect-scrollbar.css" rel="stylesheet">
-    <!-- Ion Icons -->
-    <link href="https://unpkg.com/ionicons@4.2.2/dist/css/ionicons.min.css" rel="stylesheet">
-    <!-- Material Design Icons -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.rtl.css" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.rtl.css" rel="stylesheet">
-    <!-- App CSS -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/app.css" rel="stylesheet">
-    <!-- Main Stylesheet File -->
-    <link href="@BaseURL/css/base.css" rel="stylesheet">
-    <link href="@BaseURL/css/style.css" rel="stylesheet">
+
+    @Styles.Render("~/auth/style")
 
     @RenderSection("ContentStyle", false)
+
+    <style>
+
+        span.field-validation-error {
+            width: 100%;
+            margin-top: .25rem;
+            font-size: .75rem;
+            color: #f44336;
+        }
+    </style>
 
 </head>
 <body class="login bg-main">
@@ -43,30 +41,52 @@
 
     @RenderBody()
 
-    <!-- jQuery -->
-    <script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
-    <script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
-    <!-- Perfect Scrollbar -->
-    <script src="@BaseURL/dist/assets/vendor/perfect-scrollbar.min.js"></script>
-    <!-- MDK -->
-    <script src="@BaseURL/dist/assets/vendor/dom-factory.js"></script>
-    <script src="@BaseURL/dist/assets/vendor/material-design-kit.js"></script>
-    <!-- ion Icons -->
-    <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
-    <!-- App JS -->
-    <script src="@BaseURL/dist/assets/js/app.js"></script>
-    <!-- Highlight.js -->
-    <script src="@BaseURL/dist/assets/js/hljs.js"></script>
-    <!-- App Settings (safe to remove) -->
-    <script src="@BaseURL/dist/assets/js/app-settings.js"></script>
 
-    <script src="@BaseURL/Scripts/jquery.validate.min.js"></script>
-    <script src="@BaseURL/Scripts/jquery.validate.unobtrusive.min.js"></script>
-    <script src="@BaseURL/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    @*<script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
+
+        <script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
+
+        <script src="@BaseURL/dist/assets/vendor/perfect-scrollbar.min.js"></script>
+
+        <script src="@BaseURL/dist/assets/vendor/dom-factory.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/material-design-kit.js"></script>
+
+        <script src="@BaseURL/dist/assets/js/app.js"></script>
+
+        <script src="@BaseURL/dist/assets/js/hljs.js"></script>
+
+        <script src="@BaseURL/dist/assets/js/app-settings.js"></script>*@
+
+    @Scripts.Render("~/auth/script")
 
     @RenderSection("ContentScript", false)
+
+    <script type="text/javascript">
+
+        $(function () {
+
+
+            var defaultRangeValidator = $.validator.methods.range;
+            $.validator.methods.range = function (value, element, param) {
+
+                debugger;
+
+                if (element.type === 'checkbox') {
+
+                    // if it's a checkbox return true if it is checked
+                    return element.checked;
+                } else {
+                    // otherwise run the default validation function
+                    return defaultRangeValidator.call(this, value, element, param);
+                }
+            }
+
+
+        });
+
+
+    </script>
 
 </body>
 

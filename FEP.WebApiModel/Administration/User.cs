@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FEP.Model;
 
-namespace FEP.WebApiModel
+namespace FEP.WebApiModel.Administration
 {
     public class UserApiModel
     {

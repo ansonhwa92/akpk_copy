@@ -151,6 +151,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
     <Compile Include="Areas\Administrator\Controllers\CompanyController.cs" />
+    <Compile Include="Areas\Administrator\Controllers\SectorController.cs" />
     <Compile Include="Areas\Administrator\Controllers\StaffController.cs" />
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
     <Compile Include="Areas\Administrator\Models\Company.cs" />
@@ -194,9 +195,11 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="css\base.css" />
+    <Content Include="css\custom-admin.css" />
     <Content Include="css\fonts\social-share-kit.svg" />
     <Content Include="css\jssocials.css" />
     <Content Include="css\login.css" />
+    <Content Include="css\select2.min.css" />
     <Content Include="css\slick-theme.css" />
     <Content Include="css\slick.css" />
     <Content Include="css\style.css" />
@@ -429,6 +432,8 @@
     <Content Include="js\jssocials.min.js" />
     <Content Include="js\main.js" />
     <Content Include="js\rellax.min.js" />
+    <Content Include="js\script-admin.js" />
+    <Content Include="js\select2.min.js" />
     <Content Include="js\slick.min.js" />
     <Content Include="lib\animate\animate.css" />
     <Content Include="lib\animate\animate.min.css" />
@@ -1001,10 +1006,12 @@
     <Content Include="Views\Shared\_LayoutLandingPagePublic.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Views\Shared\_Layout1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administrator\Views\Company\" />
+    <Folder Include="Areas\Administrator\Views\Sector\" />
     <Folder Include="Areas\Administrator\Views\Staff\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />

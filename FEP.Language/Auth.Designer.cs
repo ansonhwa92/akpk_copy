@@ -565,7 +565,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter LoginId.
+        ///   Looks up a localized string similar to Please enter Email.
         /// </summary>
         public static string ValidRequiredLoginId {
             get {

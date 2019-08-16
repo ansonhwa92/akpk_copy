@@ -134,6 +134,7 @@
   <ItemGroup>
     <Compile Include="Api\Administration\AuthController.cs" />
     <Compile Include="Api\Administration\CompanyController.cs" />
+    <Compile Include="Api\Administration\SectorController.cs" />
     <Compile Include="Api\Administration\StaffController.cs" />
     <Compile Include="Api\Administration\UserController.cs" />
     <Compile Include="Api\eEvent\EventCategoryController.cs" />

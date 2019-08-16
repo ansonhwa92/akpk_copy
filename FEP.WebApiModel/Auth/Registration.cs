@@ -42,8 +42,6 @@ namespace FEP.WebApiModel.Auth
         [Display(Name = "I agree to the Terms of Use")]
         public bool IsTermAgreed { get; set; }
 
-        [UIHint("Date")]
-        public DateTime? Tarikh { get; set; }
     }
 
 

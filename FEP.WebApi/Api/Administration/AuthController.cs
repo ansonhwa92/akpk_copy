@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using FEP.Helper;
+using FEP.WebApiModel.Auth;
 
 namespace FEP.WebApi.Api.Administration
 {
@@ -39,53 +40,112 @@ namespace FEP.WebApi.Api.Administration
             return null;
         }
 
+        [Route("api/Auth/RegisterIndividual")]
         [HttpPost]
-        public int? RegisterIndividual(RegisterIndividualApiModel model)
+        [ValidationActionFilter]
+        public int? RegisterIndividual([FromBody] RegisterIndividualModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    var password = Authentication.RandomString(10);
-            //    Authentication.GeneratePassword(password);
+            
+            var password = Authentication.RandomString(10);
+            Authentication.GeneratePassword(password);
 
-            //    var account = new UserAccount
-            //    {
-            //        LoginId = model.Email,
-            //        IsEnable = false,
-            //        HashPassword = Authentication.HashPassword,
-            //        Salt = Authentication.Salt,
-            //        LoginAttempt = 0
-            //    };
+            var account = new UserAccount
+            {
+                LoginId = model.Email,
+                IsEnable = false,
+                HashPassword = Authentication.HashPassword,
+                Salt = Authentication.Salt,
+                LoginAttempt = 0
+            };
 
-            //    var user = new User
-            //    {
-            //        UserType = UserType.Individual,
-            //        Name = model.Name,
-            //        Email = model.Email,
-            //        ICNo = model.ICNo,
-            //        MobileNo = model.MobileNo,
-            //        Display = true,
-            //        CreatedBy = model.CreatedBy,
-            //        UserAccount = account
-            //    };
+            var user = new User
+            {
+                UserType = UserType.Individual,
+                Name = model.Name,
+                Email = model.Email,
+                ICNo = model.ICNo,
+                MobileNo = model.MobileNo,
+                Display = true,
+                CreatedBy = null,
+                UserAccount = account
+            };
 
-            //    db.User.Add(user);
+            db.User.Add(user);
 
-            //    ActivateAccount activateaccount = new ActivateAccount
-            //    {
-            //        UID = Authentication.RandomString(50, true),//random alphanumeric
-            //        UserId = user.Id,
-            //        CreatedDate = DateTime.Now,
-            //        IsActivate = false
-            //    };
+            ActivateAccount activateaccount = new ActivateAccount
+            {
+                UID = Authentication.RandomString(50, true),//random alphanumeric
+                UserId = user.Id,
+                CreatedDate = DateTime.Now,
+                IsActivate = false
+            };
 
-            //    db.ActivateAccount.Add(activateaccount);
+            db.ActivateAccount.Add(activateaccount);
 
-            //    db.SaveChanges();
-            //}
-
+            db.SaveChanges();
+            
             return null;
         }
 
+        [Route("api/Auth/RegisterAgency")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public int? RegisterAgency([FromBody] RegisterAgencyModel model)
+        {
 
+            var password = Authentication.RandomString(10);
+            Authentication.GeneratePassword(password);
+
+            var account = new UserAccount
+            {
+                LoginId = model.Email,
+                IsEnable = false,
+                HashPassword = Authentication.HashPassword,
+                Salt = Authentication.Salt,
+                LoginAttempt = 0
+            };
+
+            var company = new CompanyProfile
+            {
+                CompanyName = model.CompanyName,
+                CompanyRegNo = model.CompanyRegNo,
+                SectorId = model.SectorId,
+                Address1 = model.Address1,
+                Address2 = model.Address2,
+                City = model.City,
+                PostCode = model.PostCode,                
+                StateId = model.StateId,
+                CompanyPhoneNo = model.CompanyPhoneNo
+            };
+            
+            var user = new User
+            {
+                UserType = UserType.Individual,
+                Name = model.Name,
+                Email = model.Email,
+                ICNo = model.ICNo,
+                MobileNo = model.MobileNo,
+                Display = true,
+                CreatedBy = null,
+                UserAccount = account,
+                CompanyProfile = company
+            };
+
+            db.User.Add(user);
+
+            ActivateAccount activateaccount = new ActivateAccount
+            {
+                UID = Authentication.RandomString(50, true),//random alphanumeric
+                UserId = user.Id,
+                CreatedDate = DateTime.Now,
+                IsActivate = false
+            };
+
+            db.ActivateAccount.Add(activateaccount);
+
+            db.SaveChanges();
+
+            return null;
+        }
     }
 }

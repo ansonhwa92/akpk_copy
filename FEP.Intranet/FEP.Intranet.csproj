@@ -186,7 +186,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\FEP.Helper.dll" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -1007,6 +1006,7 @@
     <Folder Include="Areas\eLearning\Models\" />
     <Folder Include="Areas\eLearning\Views\Shared\" />
     <Folder Include="Areas\RnP\Models\" />
+    <Folder Include="bin\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

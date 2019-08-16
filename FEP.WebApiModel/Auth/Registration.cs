@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+//using System.Web.Mvc;
 
 namespace FEP.WebApiModel.Auth
 {
@@ -32,6 +32,7 @@ namespace FEP.WebApiModel.Auth
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [Compare("Password")]
         [Required(ErrorMessageResourceName = "ValidRequiredRetypePassword", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldRetypePassword", ResourceType = typeof(Language.Auth))]
         [DataType(DataType.Password)]
@@ -40,6 +41,9 @@ namespace FEP.WebApiModel.Auth
         [Range(typeof(bool), "true", "true", ErrorMessage = "Please agree to Terms of Use")]
         [Display(Name = "I agree to the Terms of Use")]
         public bool IsTermAgreed { get; set; }
+
+        [UIHint("Date")]
+        public DateTime? Tarikh { get; set; }
     }
 
 
@@ -99,6 +103,7 @@ namespace FEP.WebApiModel.Auth
         [Display(Name = "FieldPassword", ResourceType = typeof(Language.Auth))]
         public string Password { get; set; }
 
+        [Compare("Password")]
         [Required(ErrorMessageResourceName = "ValidRequiredRetypePassword", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldRetypePassword", ResourceType = typeof(Language.Auth))]
         public string RetypePassword { get; set; }
@@ -106,7 +111,7 @@ namespace FEP.WebApiModel.Auth
         [Range(typeof(bool), "true", "true", ErrorMessage = "Please agree to Terms of Use")]
         [Display(Name = "I agree to the Terms of Use")]
         public bool IsTermAgreed { get; set; }
-        public IEnumerable<SelectListItem> States { get; set; }
-        public IEnumerable<SelectListItem> Sectors { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> States { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> Sectors { get; set; }
     }
 }

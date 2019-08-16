@@ -89,6 +89,10 @@
                     </div>
                 }
             </div>
+
+            @Html.EditorFor(m => m.Tarikh, new { htmlAttributes = new { @class = "form-control", @placeholder="taik" } })
+
+
             <div class="card-footer text-center">Already signed up? <a href="@Url.Action("Login", "Auth", new { area = "" })" class="font-weight-bold">Login</a></div>
             <!-- Complete Registration trigger a popup modal-->
             <div class="modal fade" id="registersuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

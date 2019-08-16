@@ -37,8 +37,11 @@ namespace FEP.Intranet
                .Include("~/dist/assets/css/fontawesome.css", new CssRewriteUrlTransform())
                .Include("~/dist/assets/css/fontawesome.rtl.css", new CssRewriteUrlTransform())
                .Include("~/dist/assets/css/app.css", new CssRewriteUrlTransform())
+               .Include("~/css/select2.min.css", new CssRewriteUrlTransform())
                .Include("~/css/base.css", new CssRewriteUrlTransform())
-               .Include("~/css/style.css", new CssRewriteUrlTransform())               
+               .Include("~/css/style.css", new CssRewriteUrlTransform())
+               .Include("~/dist/assets/css/flatpickr.css", new CssRewriteUrlTransform())
+               .Include("~/dist/assets/css/flatpickr.rtl.css", new CssRewriteUrlTransform())
                ;
             
             stylebundle.Orderer = new NonOrderingBundleOrderer();
@@ -77,6 +80,10 @@ namespace FEP.Intranet
                 .Include("~/dist/assets/js/app.js")
                 .Include("~/dist/assets/js/hljs.js")
                 .Include("~/dist/assets/js/app-settings.js")
+                .Include("~/js/select2.min.js")
+                .Include("~/dist/assets/vendor/flatpickr/flatpickr.min.js")
+                .Include("~/dist/assets/js/flatpickr.js")
+                .Include("~/js/script-admin.js")
                 .Include("~/Scripts/jquery.validate.min.js")
                 .Include("~/Scripts/jquery.validate.unobtrusive.min.js")
                 .Include("~/Scripts/jquery.unobtrusive-ajax.min.js");

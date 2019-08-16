@@ -44,11 +44,11 @@ namespace FEP.WebApi.Api.Administration
         [Route("api/Auth/RegisterIndividual")]
         [HttpPost]
         [ValidationActionFilter]
-        public string RegisterIndividual(RegisterIndividualModel model)
+        public string RegisterIndividual([FromBody] RegisterIndividualModel model)
         {
 
-            var password = Authentication.RandomString(10);
-            Authentication.GeneratePassword(password);
+            //var password = Authentication.RandomString(10);
+            Authentication.GeneratePassword(model.Password);
 
             var account = new UserAccount
             {
@@ -66,8 +66,9 @@ namespace FEP.WebApi.Api.Administration
                 Email = model.Email,
                 ICNo = model.ICNo,
                 MobileNo = model.MobileNo,
-                Display = true,
+                Display = false,
                 CreatedBy = null,
+                CreatedDate = DateTime.Now,
                 UserAccount = account
             };
 
@@ -92,11 +93,11 @@ namespace FEP.WebApi.Api.Administration
         [Route("api/Auth/RegisterAgency")]
         [HttpPost]
         [ValidationActionFilter]
-        public string RegisterAgency(RegisterAgencyModel model)
+        public string RegisterAgency([FromBody] RegisterAgencyModel model)
         {
-            
-            var password = Authentication.RandomString(10);
-            Authentication.GeneratePassword(password);
+
+            //var password = Authentication.RandomString(10);
+            Authentication.GeneratePassword(model.Password);
 
             var account = new UserAccount
             {
@@ -122,13 +123,14 @@ namespace FEP.WebApi.Api.Administration
 
             var user = new User
             {
-                UserType = UserType.Individual,
+                UserType = UserType.Company,
                 Name = model.Name,
                 Email = model.Email,
                 ICNo = model.ICNo,
                 MobileNo = model.MobileNo,
-                Display = true,
+                Display = false,
                 CreatedBy = null,
+                CreatedDate = DateTime.Now,
                 UserAccount = account,
                 CompanyProfile = company
             };
@@ -152,35 +154,51 @@ namespace FEP.WebApi.Api.Administration
 
         [Route("api/Auth/ActivateAccount")]
         [HttpPost]
-        [ValidationActionFilter]
-        public bool ActivateAccount(string UID)
+        public bool ActivateAccount([FromBody] string UID)
         {
-            var activateaccount = db.ActivateAccount.Where(m => m.UID == UID && m.IsActivate == false).FirstOrDefault();
 
-            if (activateaccount != null)
+            if (ModelState.IsValid)
             {
-                activateaccount.IsActivate = true;
-                activateaccount.ActivateDate = DateTime.Now;
-                db.ActivateAccount.Attach(activateaccount);
-                db.Entry(activateaccount).Property(e => e.IsActivate).IsModified = true;
-                db.Entry(activateaccount).Property(e => e.ActivateDate).IsModified = true;
 
-                UserAccount userAccount = new UserAccount()
+                var activateaccount = db.ActivateAccount.Where(m => m.UID == UID && m.IsActivate == false).FirstOrDefault();
+
+                if (activateaccount != null)
                 {
-                    UserId = activateaccount.UserId,
-                    IsEnable = true
-                };
+                    activateaccount.IsActivate = true;
+                    activateaccount.ActivateDate = DateTime.Now;
+                    db.ActivateAccount.Attach(activateaccount);
+                    db.Entry(activateaccount).Property(e => e.IsActivate).IsModified = true;
+                    db.Entry(activateaccount).Property(e => e.ActivateDate).IsModified = true;
 
-                db.UserAccount.Attach(userAccount);
-                db.Entry(userAccount).Property(e => e.IsEnable).IsModified = true;
+                    UserAccount userAccount = new UserAccount()
+                    {
+                        UserId = activateaccount.UserId,
+                        IsEnable = true
+                    };
 
-                db.Configuration.ValidateOnSaveEnabled = false;
+                    db.UserAccount.Attach(userAccount);
+                    db.Entry(userAccount).Property(e => e.IsEnable).IsModified = true;
 
-                return true;
+                    User user = new User
+                    {
+                        Id = activateaccount.UserId,
+                        Display = true
+                    };
 
+                    db.User.Attach(user);
+                    db.Entry(user).Property(e => e.Display).IsModified = true;
+
+                    db.Configuration.ValidateOnSaveEnabled = false;
+
+                    db.SaveChanges();
+
+                    return true;
+
+                }
             }
-
             return false;
+
+
         }
     }
 }

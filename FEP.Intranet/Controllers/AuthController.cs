@@ -153,7 +153,22 @@ namespace FEP.Intranet.Controllers
             }
 
             model.Sectors = Enumerable.Empty<SelectListItem>();
+
+            var sectorResponse = await WepApiMethod.SendApiAsync<List<SectorModel>>(HttpVerbs.Get, $"Administration/Sector");
+
+            if (sectorResponse.isSuccess)
+            {
+                model.Sectors = new SelectList(sectorResponse.Data, "Id", "Name", 0);
+            }
+
             model.States = Enumerable.Empty<SelectListItem>();
+
+            var stateResponse = await WepApiMethod.SendApiAsync<List<StateModel>>(HttpVerbs.Get, $"Administration/State");
+
+            if (stateResponse.isSuccess)
+            {
+                model.States = new SelectList(stateResponse.Data, "Id", "Name", 0);
+            }
 
             return View(model);
         }
@@ -205,7 +220,15 @@ namespace FEP.Intranet.Controllers
                         return Redirect(GetRedirectUrl(model.ReturnUrl));
 
                     }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Sign in fail. Please use your email and correct password.";
+                    }
 
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Sign in fail. Please use your email and correct password.";
                 }
 
             }
@@ -279,7 +302,7 @@ namespace FEP.Intranet.Controllers
 
             if (id != null)
             {
-                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Auth/ActivateAccount", new { UID = id });
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Auth/ActivateAccount", id);
 
                 if (response.isSuccess)
                 {

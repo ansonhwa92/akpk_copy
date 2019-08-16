@@ -19,6 +19,9 @@
     <link href="@BaseURL/lib/line-awesome/css/line-awesome.min.css" rel="stylesheet">
     <!-- Select 2 form -->
     <link href="@BaseURL/css/select2.min.css" rel="stylesheet">
+    <!-- Flatpickr -->
+    <link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.css" rel="stylesheet">
+    <link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.rtl.css" rel="stylesheet">
     <!-- App CSS -->
     <link type="text/css" href="@BaseURL/dist/assets/css/app.css" rel="stylesheet">
     <link type="text/css" href="@BaseURL/dist/assets/css/app.rtl.css" rel="stylesheet">
@@ -28,27 +31,16 @@
 
     @RenderSection("ContentStyle", false)
 
-    <style>
-
-        span.field-validation-error {
-            width: 100%;
-            margin-top: .25rem;
-            font-size: .75rem;
-            color: #f44336;
-        }
-
-    </style>
-
 </head>
 
 <body class="fixed-layout">
 
     @*<div class="preloader">
-        <div class="sk-double-bounce">
-            <div class="sk-child sk-double-bounce1"></div>
-            <div class="sk-child sk-double-bounce2"></div>
-        </div>
-    </div>*@
+            <div class="sk-double-bounce">
+                <div class="sk-child sk-double-bounce1"></div>
+                <div class="sk-child sk-double-bounce2"></div>
+            </div>
+        </div>*@
 
     @RenderSection("Preloader", false)
 
@@ -354,11 +346,14 @@
     <!-- Highlight.js -->
     <script src="@BaseURL/dist/assets/js/hljs.js"></script>
     <script src="@BaseURL/js/select2.min.js"></script>
-    <!-- App Settings (safe to remove) -->
-    <script src="@BaseURL/dist/assets/js/app-settings.js"></script>
+
     <!-- Tables -->
     <script src="@BaseURL/dist/assets/js/toggle-check-all.js"></script>
     <script src="@BaseURL/dist/assets/js/check-selected-row.js"></script>
+
+    <script src="@BaseURL/dist/assets/vendor/flatpickr/flatpickr.min.js"></script>
+    <script src="@BaseURL/dist/assets/js/flatpickr.js"></script>
+
     <!-- Global Settings -->
     <script src="@BaseURL/dist/assets/js/settings.js"></script>
     <script src="@BaseURL/js/script-admin.js"></script>

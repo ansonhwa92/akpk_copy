@@ -20,12 +20,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string EventObjective { get; set; }
 
 		[DataType(DataType.Date)]
+		[UIHint("Date")]
 		[Display(Name = "Event Date")]
-		public DateTime StartDate { get; set; }
+		public DateTime? StartDate { get; set; }
 
 		[DataType(DataType.Date)]
+		[UIHint("Date")]
 		[Display(Name = "Event Date")]
-		public DateTime EndDate { get; set; }
+		public DateTime? EndDate { get; set; }
 
 		[Display(Name = "Event Venue")]
 		public string Venue { get; set; }

@@ -15,12 +15,12 @@ namespace FEP.Model.Migrations
 			if (!db.EventCategory.Any())
 			{
 				db.EventCategory.AddOrUpdate(c => c.CategoryName,
-					new EventCategory { CategoryName = "Workshops", Display = true },
-					new EventCategory { CategoryName = "Seminars", Display = true },
-					new EventCategory { CategoryName = "Dialogues", Display = true },
-					new EventCategory { CategoryName = "Conferences", Display = true },
-					new EventCategory { CategoryName = "Symposium", Display = true },
-					new EventCategory { CategoryName = "Convention", Display = true }
+					new EventCategory { CategoryName = "Workshops",CreatedDate= DateTime.Now, Display = true },
+					new EventCategory { CategoryName = "Seminars", CreatedDate = DateTime.Now, Display = true },
+					new EventCategory { CategoryName = "Dialogues", CreatedDate = DateTime.Now, Display = true },
+					new EventCategory { CategoryName = "Conferences", CreatedDate = DateTime.Now, Display = true },
+					new EventCategory { CategoryName = "Symposium", CreatedDate = DateTime.Now, Display = true },
+					new EventCategory { CategoryName = "Convention", CreatedDate = DateTime.Now, Display = true }
 					);
 			}
 		}

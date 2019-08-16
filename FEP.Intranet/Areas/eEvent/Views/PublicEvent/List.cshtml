@@ -59,14 +59,7 @@
 	<table class="table tableStyle1 tabledata">
 		<thead>
 			<tr>
-				<th>
-					<div class="custom-control custom-checkbox">
-						<input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#table01" id="customCheckAll">
-						<label class="custom-control-label" for="customCheckAll">
-							<span class="text-hide">Toggle all</span>
-						</label>
-					</div>
-				</th>
+				
 				<th>No.</th>
 				<th>@Html.DisplayNameFor(m => m.filter.EventTitle)</th>
 				<th>@Html.DisplayNameFor(m => m.filter.EventObjective)</th>
@@ -81,14 +74,6 @@
 			@foreach (var item in Model.PublicEventList)
 			{
 				<tr>
-					<td>
-						<div class="custom-control custom-checkbox">
-							<input id="customCheck1" type="checkbox" class="custom-control-input js-check-selected-row">
-							<label class="custom-control-label" for="customCheck1">
-								<span class="text-hide">Check</span>
-							</label>
-						</div>
-					</td>
 					<td>#</td>
 					<td>@Html.DisplayFor(m => item.EventTitle)</td>
 					<td>@Html.DisplayFor(m => item.EventObjective)</td>

@@ -15,8 +15,8 @@ namespace FEP.Model
 		public int Id { get; set; }
 		public string EventTitle { get; set; }
 		public string EventObjective { get; set; }
-		public DateTime StartDate { get; set; }
-		public DateTime EndDate { get; set; }
+		public DateTime? StartDate { get; set; }
+		public DateTime? EndDate { get; set; }
 		public string Venue { get; set; }
 		public float? Fee { get; set; }
 		public int? ParticipantAllowed { get; set; }

@@ -19,7 +19,7 @@ namespace Language {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class RnPForm {
@@ -61,6 +61,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remarks.
+        /// </summary>
+        public static string PubApprovalRemarks {
+            get {
+                return ResourceManager.GetString("PubApprovalRemarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Author.
         /// </summary>
         public static string PubAuthor {
@@ -97,7 +106,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Co-Authors.
+        ///   Looks up a localized string similar to Co-Author(s).
         /// </summary>
         public static string PubCoauthor {
             get {
@@ -124,7 +133,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Digital Copy Only.
+        ///   Looks up a localized string similar to Digital copy.
         /// </summary>
         public static string PubDigitalcopy {
             get {
@@ -151,7 +160,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hard Copy Only.
+        ///   Looks up a localized string similar to Hard copy.
         /// </summary>
         public static string PubHardcopy {
             get {
@@ -160,7 +169,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hard Copy and Digital.
+        ///   Looks up a localized string similar to Both.
         /// </summary>
         public static string PubHDcopy {
             get {
@@ -187,7 +196,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ISBN.
+        ///   Looks up a localized string similar to ISBN/ISSN/DOI.
         /// </summary>
         public static string PubISBN {
             get {
@@ -232,6 +241,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delivery Address.
+        /// </summary>
+        public static string PubPurchaseDeliveryAddress {
+            get {
+                return ResourceManager.GetString("PubPurchaseDeliveryAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string PubStatus {
@@ -250,7 +268,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Title.
+        ///   Looks up a localized string similar to Publication Title.
         /// </summary>
         public static string PubTitle {
             get {
@@ -277,6 +295,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remarks.
+        /// </summary>
+        public static string PubWithdrawalRemarks {
+            get {
+                return ResourceManager.GetString("PubWithdrawalRemarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Withdrawal Status.
         /// </summary>
         public static string PubWStatus {
@@ -286,11 +313,83 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Year.
+        ///   Looks up a localized string similar to Published Year.
         /// </summary>
         public static string PubYear {
             get {
                 return ResourceManager.GetString("PubYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify Author.
+        /// </summary>
+        public static string ValidRequiredAuthor {
+            get {
+                return ResourceManager.GetString("ValidRequiredAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Delivery Address.
+        /// </summary>
+        public static string ValidRequiredDeliveryAddress {
+            get {
+                return ResourceManager.GetString("ValidRequiredDeliveryAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Description.
+        /// </summary>
+        public static string ValidRequiredDescription {
+            get {
+                return ResourceManager.GetString("ValidRequiredDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify ISBN/ISSN/DOI.
+        /// </summary>
+        public static string ValidRequiredISBN {
+            get {
+                return ResourceManager.GetString("ValidRequiredISBN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify Language(s).
+        /// </summary>
+        public static string ValidRequiredLanguage {
+            get {
+                return ResourceManager.GetString("ValidRequiredLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Remarks.
+        /// </summary>
+        public static string ValidRequiredRemarks {
+            get {
+                return ResourceManager.GetString("ValidRequiredRemarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify Publication Title.
+        /// </summary>
+        public static string ValidRequiredTitle {
+            get {
+                return ResourceManager.GetString("ValidRequiredTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify Published Year.
+        /// </summary>
+        public static string ValidRequiredYear {
+            get {
+                return ResourceManager.GetString("ValidRequiredYear", resourceCulture);
             }
         }
     }

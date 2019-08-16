@@ -141,6 +141,8 @@
     <Compile Include="Api\eEvent\EventCategoryController.cs" />
     <Compile Include="Api\eEvent\MediaInterviewRequestController.cs" />
     <Compile Include="Api\eEvent\PublicEventController.cs" />
+    <Compile Include="Api\RnP\PublicationController.cs" />
+    <Compile Include="Api\RnP\ResearchController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -181,11 +183,12 @@
     </Compile>
     <Compile Include="Models\Auth.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\Publication.cs" />
+    <Compile Include="Models\Research.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
-    <Content Include="bin\FEP.Helper.dll" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -238,11 +241,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="bin\" />
     <Folder Include="Views\Auth\" />
     <Folder Include="Views\Client\" />
     <Folder Include="Views\EventCategory\" />
     <Folder Include="Views\MediaInterviewRequest\" />
     <Folder Include="Views\PublicEvent\" />
+    <Folder Include="Views\Publication\" />
+    <Folder Include="Views\Research\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

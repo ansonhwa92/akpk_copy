@@ -340,11 +340,19 @@ ASALocalRun/
 healthchecksdb
 
 # Exception
+!/FEP.Intranet/bin/
 /FEP.Intranet/bin/*
 !/FEP.Intranet/bin/FEP.Helper.dll
+!/FEP.WebApi/bin/
 /FEP.WebApi/bin/*
 !/FEP.WebApi/bin/FEP.Helper.dll
+!/FEP.Portal/bin/
+/FEP.Portal/bin/*
+!/FEP.Portal/bin/FEP.Helper.dll
 
 # Migration File
 /FEP.Model/Migrations/*
 !/FEP.Model/Migrations/Configuration.cs
+!/FEP.Model/Migrations/mhafeez.cs
+!/FEP.Model/Migrations/firus.cs
+!/FEP.Model/Migrations/aiman.cs

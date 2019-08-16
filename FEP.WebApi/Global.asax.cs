@@ -18,6 +18,7 @@ namespace FEP.WebApi
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //FilterConfig.RegisterHttpFilters(GlobalConfiguration.Configuration.Filters); developer can manually configured at action.
         }
     }
 }

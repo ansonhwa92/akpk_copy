@@ -106,6 +106,7 @@ namespace FEP.Model
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool Display { get; set; }
     }
 
     [Table("Department")]
@@ -114,6 +115,7 @@ namespace FEP.Model
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool Display { get; set; }
     }
 
     [Table("Sector")]
@@ -122,6 +124,7 @@ namespace FEP.Model
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool Display { get; set; }
     }
 
     [Table("State")]

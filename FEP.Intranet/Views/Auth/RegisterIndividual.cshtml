@@ -1,6 +1,5 @@
 ﻿@model  RegisterIndividualModel
 
-
 @{
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_LayoutAuth.cshtml";
@@ -10,6 +9,16 @@
 
     <a href="@Url.Action("Register", "Auth", new { area = "" })" class="btn btn-outline-secondary"><span class="align-middle"><i class="icon ion-ios-arrow-round-back">&nbsp;</i></span> Back</a>
 
+}
+
+@section ContentScript{
+    
+    <script type="text/javascript">
+
+
+
+    </script>
+    
 }
 
 <div class="login-wrapper" style="min-height: 100vh">
@@ -23,6 +32,7 @@
                 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
                 {
                     @Html.AntiForgeryToken()
+
                     <div class="form-group">
                         @Html.FEPLabelFor(m => m.Name, htmlAttributes: new { @class = "form-label" })
                         <div class="input-group">
@@ -65,12 +75,17 @@
                             @Html.ValidationMessageFor(m => m.RetypePassword)
                         </div>
                     </div>
+
                     <button type="submit" class="btn btn-secondary btn-block mt-3 mb-4">Sign Up</button>
+
                     <div class="form-group text-center mb-0">
                         <div class="custom-control custom-checkbox">
-                            <input id="terms" type="checkbox" class="custom-control-input" checked required="">
-                            <label for="terms" class="custom-control-label">I agree to the Terms of Use</label>
+                            @*<input id="terms" name="" type="checkbox" class="custom-control-input">*@
+                            @Html.EditorFor(m => m.IsTermAgreed, new { htmlAttributes = new { @class = "custom-control-input" } })
+                            <label for="IsTermAgreed" class="custom-control-label">I agree to the <a href="#">Terms of Use</a></label>
+                            
                         </div>
+                        @Html.ValidationMessageFor(m => m.IsTermAgreed)
                     </div>
                 }
             </div>

@@ -15,19 +15,18 @@
 
     @*@Styles.Render("~/core/css")*@
 
-    <link href="https://unpkg.com/ionicons@4.2.2/dist/css/ionicons.min.css" rel="stylesheet">
     <!-- Material Design Icons -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.rtl.css" rel="stylesheet">
+    <link href="@BaseURL/dist/assets/css/material-icons.css" type="text/css" rel="stylesheet">
+    <link href="@BaseURL/dist/assets/css/material-icons.rtl.css" type="text/css" rel="stylesheet">
     <!-- Font Awesome Icons -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.rtl.css" rel="stylesheet">
+    <link href="@BaseURL/dist/assets/css/fontawesome.css" type="text/css" rel="stylesheet">
+    <link href="@BaseURL/dist/assets/css/fontawesome.rtl.css" type="text/css" rel="stylesheet">
     <link href="@BaseURL/lib/line-awesome/css/line-awesome.min.css" rel="stylesheet">
     <!-- Animation Transition -->
     <link href="@BaseURL/lib/animate/animate.min.css" rel="stylesheet">
     <!-- Flatpickr -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.rtl.css" rel="stylesheet">
+    <link href="@BaseURL/dist/assets/css/flatpickr.css" type="text/css"  rel="stylesheet">
+    <link href="@BaseURL/dist/assets/css/flatpickr.rtl.css" type="text/css" rel="stylesheet">
     <!-- Slider -->
     <link href="@BaseURL/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="@BaseURL/css/slick.css" rel="stylesheet">
@@ -36,15 +35,13 @@
     <!-- Select2 form -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet">
     <!-- App CSS -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/app.css" rel="stylesheet">
+    <link href="@BaseURL/dist/assets/css/app.css" type="text/css" rel="stylesheet">
     <!-- Main Stylesheet File -->
     <link href="@BaseURL/css/base.css" rel="stylesheet">
     <link href="@BaseURL/css/style.css" rel="stylesheet">
 
 </head>
 <body>
-
-    
 
     @RenderSection("Preloader", false)
 
@@ -57,14 +54,12 @@
     <div id="modalLogin" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
     <a href="#" class="back-to-top text-white"><i class="fa fa-angle-up"></i></a>
-    <!-- jQuery -->
+   
     <script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
     <script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
     <script src="@BaseURL/lib/easing/easing.min.js"></script>
-    <!-- ion Icons -->
-    <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
     <!-- Javascript Library -->
     <script src="@BaseURL/dist/assets/vendor/flatpickr/flatpickr.min.js"></script>
     <script src="@BaseURL/dist/assets/js/flatpickr.js"></script>
@@ -81,7 +76,6 @@
     <script src="@BaseURL/js/main.js"></script>
 
     @RenderSection("ContentScript", false)
-
-
+    
 </body>
 </html>

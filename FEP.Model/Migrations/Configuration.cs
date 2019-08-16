@@ -14,7 +14,9 @@ namespace FEP.Model.Migrations
 
         protected override void Seed(DbEntities context)
         {
-            seed.Default(context);
+            mhafeez.Seed(context);
+            aiman.Seed(context);
+            firus.Seed(context);
         }
     }
 }

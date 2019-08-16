@@ -37,7 +37,7 @@ namespace FEP.WebApiModel
 		public int? ParticipantAllowed { get; set; }
 
 		[Display(Name = "Targeted Group")]
-		public EventTargetGroup TargetedGroup { get; set; }
+		public EventTargetGroup? TargetedGroup { get; set; }
 
 		[Display(Name = "External Exhibitor")]
 		public int? ExternalExhibitorId { get; set; }
@@ -76,7 +76,7 @@ namespace FEP.WebApiModel
 		public string ApprovalName4 { get; set; }
 
 		[Display(Name = "Status")]
-		public EventStatus EventStatus { get; set; }
+		public EventStatus? EventStatus { get; set; }
 
 		[Display(Name = "Reasons")]
 		public string Reasons { get; set; }

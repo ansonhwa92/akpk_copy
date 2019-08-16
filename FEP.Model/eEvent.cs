@@ -20,14 +20,14 @@ namespace FEP.Model
 		public string Venue { get; set; }
 		public float? Fee { get; set; }
 		public int? ParticipantAllowed { get; set; }
-		public EventTargetGroup TargetedGroup { get; set; }
+		public EventTargetGroup? TargetedGroup { get; set; }
 
 		public int? ApprovalId1 { get; set; }
 		public int? ApprovalId2 { get; set; }
 		public int? ApprovalId3 { get; set; }
 		public int? ApprovalId4 { get; set; }
 
-		public EventStatus EventStatus { get; set; }
+		public EventStatus? EventStatus { get; set; }
 		public string Reasons { get; set; } //Modification and Cancellation
 
 		public int? EventCategoryId { get; set; }
@@ -144,7 +144,7 @@ namespace FEP.Model
 		[Key]
 		public int Id { get; set; }
 		public string Remark { get; set; }
-		public SpeakerType SpeakerType { get; set; }
+		public SpeakerType? SpeakerType { get; set; }
 		public DateTime DateAssigned { get; set; }
 
 		public int? UserId { get; set; }

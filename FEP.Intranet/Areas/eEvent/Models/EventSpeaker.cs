@@ -21,7 +21,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string UserName { get; set; }
 
 		[Display(Name = "Speaker Type")]
-		public SpeakerType SpeakerType { get; set; }
+		public SpeakerType? SpeakerType { get; set; }
 
 		[DataType(DataType.Date)]
 		[Display(Name = "Assigned Date")]
@@ -81,7 +81,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string UserName { get; set; }
 
 		[Display(Name = "Speaker Type")]
-		public SpeakerType SpeakerType { get; set; }
+		public SpeakerType? SpeakerType { get; set; }
 
 		[DataType(DataType.Date)]
 		[Display(Name = "Assigned Date")]

@@ -28,6 +28,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				{
 					Id = i.Id,
 					EventTitle = i.EventTitle,
+					EventObjective = i.EventObjective,
 					StartDate = i.StartDate,
 					EndDate = i.EndDate,
 					Venue = i.Venue,
@@ -171,6 +172,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
+			var getcategory = db.EventCategory.Where(c => c.Display)
+				.Select(i => new
+				{
+					Id = i.Id,
+					Name = i.CategoryName
+				});
+
+			e.CategoryList = new SelectList(getcategory, "Id", "Name", 0);
+
 			return View(e);
 		}
 
@@ -208,6 +218,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				TempData["SuccessMessage"] = "Public Event successfully updated.";
 				return RedirectToAction("List");
 			}
+
+			var getcategory = db.EventCategory.Where(c => c.Display)
+				.Select(i => new
+				{
+					Id = i.Id,
+					Name = i.CategoryName
+				});
+
+			model.CategoryList = new SelectList(getcategory, "Id", "Name", model.CategoryList);
 			return View(model);
 		}
 

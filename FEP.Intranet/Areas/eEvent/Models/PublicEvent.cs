@@ -15,8 +15,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Title")]
 		public string EventTitle { get; set; }
 
-		[Required(ErrorMessage = "Please Insert Objective")]
-		[Display(Name = "Objective")]
+		[Required(ErrorMessage = "Please Insert Event Objective")]
+		[Display(Name = "Event Objective")]
 		public string EventObjective { get; set; }
 
 		[DataType(DataType.Date)]
@@ -30,14 +30,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Venue")]
 		public string Venue { get; set; }
 
-		[Display(Name = "Event Fee")]
+		[Display(Name = "Event Fee (RM)")]
 		public float? Fee { get; set; }
 
-		[Display(Name = "Participant")]
+		[Display(Name = "Number of Participant")]
 		public int? ParticipantAllowed { get; set; }
 
 		[Display(Name = "Targeted Group")]
-		public EventTargetGroup TargetedGroup { get; set; }
+		public EventTargetGroup? TargetedGroup { get; set; }
 
 		[Display(Name = "Approver Name")]
 		public int? ApprovalId1 { get; set; }
@@ -64,7 +64,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string ApprovalName4 { get; set; }
 
 		[Display(Name = "Status")]
-		public EventStatus EventStatus { get; set; }
+		public EventStatus? EventStatus { get; set; }
 
 
 
@@ -78,16 +78,31 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public IEnumerable<SelectListItem> CategoryList { get; set; }
 
 
+
 		[Display(Name = "Reasons")]
 		public string Reasons { get; set; }
 
 		[Display(Name = "Remarks")]
 		public string Remarks { get; set; }
+
 	}
 
 	public class CreatePublicEventModel : PublicEventModel
 	{
 		public CreatePublicEventModel() { }
+
+		[Display(Name = "File")]
+		public IEnumerable<HttpPostedFileBase> DocumentEvent { get; set; }
+
+		[Display(Name = "File Name")]
+		public IEnumerable<string> FileName { get; set; }
+
+		[Display(Name = "File Description")]
+		public IEnumerable<string> FileDescription { get; set; }
+
+		[Display(Name = "Uploaded Date")]
+		public IEnumerable<DateTime> UploadedDate { get; set; }
+
 	}
 
 	public class EditPublicEventModel : PublicEventModel

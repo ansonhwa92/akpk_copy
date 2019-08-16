@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+//using System.Web.Mvc;
 
 namespace FEP.WebApiModel.Auth
 {
@@ -32,6 +32,7 @@ namespace FEP.WebApiModel.Auth
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [Compare("Password")]
         [Required(ErrorMessageResourceName = "ValidRequiredRetypePassword", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldRetypePassword", ResourceType = typeof(Language.Auth))]
         [DataType(DataType.Password)]
@@ -40,6 +41,7 @@ namespace FEP.WebApiModel.Auth
         [Range(typeof(bool), "true", "true", ErrorMessage = "Please agree to Terms of Use")]
         [Display(Name = "I agree to the Terms of Use")]
         public bool IsTermAgreed { get; set; }
+
     }
 
 
@@ -53,6 +55,7 @@ namespace FEP.WebApiModel.Auth
         [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Auth))]
         public int SectorId { get; set; }
 
+        [Required(ErrorMessageResourceName = "ValidRequiredCompanyRegNo", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldCompanyRegNo", ResourceType = typeof(Language.Auth))]
         public string CompanyRegNo { get; set; }
 
@@ -90,7 +93,7 @@ namespace FEP.WebApiModel.Auth
         public string MobileNo { get; set; }
 
         [Required(ErrorMessageResourceName = "ValidRequiredEmail", ErrorMessageResourceType = typeof(Language.Auth))]
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Auth))]        
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
@@ -98,6 +101,7 @@ namespace FEP.WebApiModel.Auth
         [Display(Name = "FieldPassword", ResourceType = typeof(Language.Auth))]
         public string Password { get; set; }
 
+        [Compare("Password")]
         [Required(ErrorMessageResourceName = "ValidRequiredRetypePassword", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldRetypePassword", ResourceType = typeof(Language.Auth))]
         public string RetypePassword { get; set; }
@@ -105,7 +109,7 @@ namespace FEP.WebApiModel.Auth
         [Range(typeof(bool), "true", "true", ErrorMessage = "Please agree to Terms of Use")]
         [Display(Name = "I agree to the Terms of Use")]
         public bool IsTermAgreed { get; set; }
-        public IEnumerable<SelectListItem> States { get; set; }
-        public IEnumerable<SelectListItem> Sectors { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> States { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> Sectors { get; set; }
     }
 }

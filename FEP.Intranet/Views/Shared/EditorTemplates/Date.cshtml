@@ -1,0 +1,18 @@
+﻿@model DateTime?
+
+
+@{
+    var defaultHtmlAttributesObject = new { @data_input="flatpickr" };
+    var htmlAttributesObject = ViewData["htmlAttributes"] ?? new { };
+    var htmlAttributes = Html.MergeHtmlAttributes(htmlAttributesObject, defaultHtmlAttributesObject);
+}
+
+<div class="dateSelect">
+    @Html.TextBox("", Model != null ? Model.Value.ToString("dd/MM/yyyy") : String.Empty, htmlAttributes)    
+    <a class="input-button calendar" title="toggle" data-toggle>
+        <i class="la la-calendar"></i>
+    </a>
+    <a class="input-button clear" title="clear" data-clear>
+        <i class="la la-times"></i>
+    </a>
+</div>

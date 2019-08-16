@@ -17,16 +17,6 @@
 
     @RenderSection("ContentStyle", false)
 
-    <style>
-
-        span.field-validation-error {
-            width: 100%;
-            margin-top: .25rem;
-            font-size: .75rem;
-            color: #f44336;
-        }
-    </style>
-
 </head>
 <body class="login bg-main">
     <div class="header-login">
@@ -38,6 +28,34 @@
         </div>
     </div>
     <div class="clearfix">&nbsp;</div>
+
+    <div id="alert-message">
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-primary alert-dismissible ">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <p><i class="icon fa fa-info-circle"></i>@TempData["Message"]</p>
+            </div>
+        }
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible ">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <p><i class="icon fa fa-check"></i>@TempData["SuccessMessage"]</p>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible ">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <p><i class="icon fa fa-warning"></i>@TempData["ErrorMessage"]</p>
+            </div>
+        }
+
+    </div>
 
     @RenderBody()
 

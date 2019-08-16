@@ -120,6 +120,9 @@
   <data name="FieldSectorName" xml:space="preserve">
     <value>Sector Name</value>
   </data>
+  <data name="FieldStateName" xml:space="preserve">
+    <value>State</value>
+  </data>
   <data name="ValidRequiredSectorName" xml:space="preserve">
     <value>Please enter Sector Name</value>
   </data>

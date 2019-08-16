@@ -16,18 +16,24 @@ namespace FEP.Model
         public int ID { get; set; }
         [Display(Name = "PubCategoryID", ResourceType = typeof(Language.RnPForm))]
         public int CategoryID { get; set; }
+        [Required(ErrorMessageResourceName = "ValidRequiredAuthor", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubAuthor", ResourceType = typeof(Language.RnPForm))]
         public string Author { get; set; }
         [Display(Name = "PubCoauthor", ResourceType = typeof(Language.RnPForm))]
         public string Coauthor { get; set; }
+        [Required(ErrorMessageResourceName = "ValidRequiredTitle", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubTitle", ResourceType = typeof(Language.RnPForm))]
         public string Title { get; set; }
+        [Required(ErrorMessageResourceName = "ValidRequiredYear", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubYear", ResourceType = typeof(Language.RnPForm))]
         public int Year { get; set; }
+        [Required(ErrorMessageResourceName = "ValidRequiredDescription", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubDescription", ResourceType = typeof(Language.RnPForm))]
         public string Description { get; set; }
+        [Required(ErrorMessageResourceName = "ValidRequiredLanguage", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubLanguage", ResourceType = typeof(Language.RnPForm))]
         public string Language { get; set; }
+        [Required(ErrorMessageResourceName = "ValidRequiredISBN", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubISBN", ResourceType = typeof(Language.RnPForm))]
         public string ISBN { get; set; }
         [Display(Name = "PubFree", ResourceType = typeof(Language.RnPForm))]
@@ -92,6 +98,8 @@ namespace FEP.Model
         public int ApproverId { get; set; }
         public PublicationApprovalStatus Status { get; set; }
         public DateTime ApprovalDate { get; set; }
+        [Required(ErrorMessageResourceName = "ValidRequiredRemarks", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubApprovalRemarks", ResourceType = typeof(Language.RnPForm))]
         public string Remarks { get; set; }
         public bool RequireNext { get; set; }
 
@@ -109,6 +117,8 @@ namespace FEP.Model
         public int ApproverId { get; set; }
         public PublicationApprovalStatus Status { get; set; }
         public DateTime ApprovalDate { get; set; }
+        [Required(ErrorMessageResourceName = "ValidRequiredRemarks", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubWithdrawalRemarks", ResourceType = typeof(Language.RnPForm))]
         public string Remarks { get; set; }
         public bool RequireNext { get; set; }
 
@@ -122,6 +132,8 @@ namespace FEP.Model
         [Key]
         public int ID { get; set; }
         public int UserId { get; set; }     // also determines payment from individual/agency
+        [Required(ErrorMessageResourceName = "ValidRequiredDeliveryAddress", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubPurchaseDeliveryAddress", ResourceType = typeof(Language.RnPForm))]
         public string DeliveryAddress { get; set; }
         public string DiscountCode { get; set; }
         public string InvoiceNo { get; set; }

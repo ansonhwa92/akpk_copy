@@ -130,7 +130,7 @@
     <value>Type</value>
   </data>
   <data name="PubCoauthor" xml:space="preserve">
-    <value>Co-Authors</value>
+    <value>Co-Author(s)</value>
   </data>
   <data name="PubDateAdded" xml:space="preserve">
     <value>Date Added</value>
@@ -139,7 +139,7 @@
     <value>Description</value>
   </data>
   <data name="PubDigitalcopy" xml:space="preserve">
-    <value>Digital Copy Only</value>
+    <value>Digital copy</value>
   </data>
   <data name="PubDPrice" xml:space="preserve">
     <value>Digital Copy Price</value>
@@ -148,10 +148,10 @@
     <value>Free Publication</value>
   </data>
   <data name="PubHardcopy" xml:space="preserve">
-    <value>Hard Copy Only</value>
+    <value>Hard copy</value>
   </data>
   <data name="PubHDcopy" xml:space="preserve">
-    <value>Hard Copy and Digital</value>
+    <value>Both</value>
   </data>
   <data name="PubHDPrice" xml:space="preserve">
     <value>Combined Price</value>
@@ -160,7 +160,7 @@
     <value>Hard Copy Price</value>
   </data>
   <data name="PubISBN" xml:space="preserve">
-    <value>ISBN</value>
+    <value>ISBN/ISSN/DOI</value>
   </data>
   <data name="PubLanguage" xml:space="preserve">
     <value>Language</value>
@@ -181,7 +181,7 @@
     <value>Stock Balance</value>
   </data>
   <data name="PubTitle" xml:space="preserve">
-    <value>Title</value>
+    <value>Publication Title</value>
   </data>
   <data name="PubViewCount" xml:space="preserve">
     <value>Views</value>
@@ -193,6 +193,39 @@
     <value>Withdrawal Status</value>
   </data>
   <data name="PubYear" xml:space="preserve">
-    <value>Year</value>
+    <value>Published Year</value>
+  </data>
+  <data name="PubApprovalRemarks" xml:space="preserve">
+    <value>Remarks</value>
+  </data>
+  <data name="PubPurchaseDeliveryAddress" xml:space="preserve">
+    <value>Delivery Address</value>
+  </data>
+  <data name="PubWithdrawalRemarks" xml:space="preserve">
+    <value>Remarks</value>
+  </data>
+  <data name="ValidRequiredAuthor" xml:space="preserve">
+    <value>Please specify Author</value>
+  </data>
+  <data name="ValidRequiredDeliveryAddress" xml:space="preserve">
+    <value>Please enter Delivery Address</value>
+  </data>
+  <data name="ValidRequiredDescription" xml:space="preserve">
+    <value>Please enter Description</value>
+  </data>
+  <data name="ValidRequiredISBN" xml:space="preserve">
+    <value>Please specify ISBN/ISSN/DOI</value>
+  </data>
+  <data name="ValidRequiredLanguage" xml:space="preserve">
+    <value>Please specify Language(s)</value>
+  </data>
+  <data name="ValidRequiredRemarks" xml:space="preserve">
+    <value>Please enter Remarks</value>
+  </data>
+  <data name="ValidRequiredTitle" xml:space="preserve">
+    <value>Please specify Publication Title</value>
+  </data>
+  <data name="ValidRequiredYear" xml:space="preserve">
+    <value>Please specify Published Year</value>
   </data>
 </root>

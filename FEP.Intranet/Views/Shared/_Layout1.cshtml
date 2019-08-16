@@ -45,11 +45,11 @@
 <body class="fixed-layout">
 
     @*<div class="preloader">
-        <div class="sk-double-bounce">
-            <div class="sk-child sk-double-bounce1"></div>
-            <div class="sk-child sk-double-bounce2"></div>
-        </div>
-    </div>*@
+            <div class="sk-double-bounce">
+                <div class="sk-child sk-double-bounce1"></div>
+                <div class="sk-child sk-double-bounce2"></div>
+            </div>
+        </div>*@
 
     @RenderSection("Preloader", false)
 
@@ -327,7 +327,7 @@
         </div>
         <!-- Header Layout Content -->
         <!-- // END Header Layout Content -->
-        @RenderSection("Nav", false) 
+        @RenderSection("Nav", false)
 
         <!-- // END Header -->
     </div>
@@ -364,6 +364,9 @@
     <!-- Global Settings -->
     <script src="@BaseURL/dist/assets/js/settings.js"></script>
     <script src="@BaseURL/js/script-admin.js"></script>
+
+    @RenderSection("ContentScript", false)
+
 </body>
 
 </html>

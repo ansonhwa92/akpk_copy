@@ -11,7 +11,7 @@ namespace FEP.WebApi
         {
             // Web API configuration and services
 
-            // Web API routes
+            // attribute route
             config.MapHttpAttributeRoutes();
 
             //config.Routes.MapHttpRoute(
@@ -25,6 +25,10 @@ namespace FEP.WebApi
             //    routeTemplate: "api/Administration/{controller}/{action}/{id}",
             //    defaults: new { id = RouteParameter.Optional }
             //);
+
+
+            //config.Filters.Add(new ValidationActionFilter()); developer can manually configured at action
+            config.Filters.Add(new ExceptionFilter());
         }
     }
 }

@@ -48,7 +48,7 @@ namespace FEP.Intranet
                     if (httpVerbs == HttpVerbs.Post)
                     {
                         var content = new StringContent(payload, Encoding.UTF8, "application/json");
-                        response = await client.PostAsJsonAsync(requestURI, content);
+                        response = await client.PostAsync(requestURI, content);
                     }
                     else if (httpVerbs == HttpVerbs.Get)
                     {
@@ -57,7 +57,7 @@ namespace FEP.Intranet
                     else if (httpVerbs == HttpVerbs.Put)
                     {
                         var content = new StringContent(payload, Encoding.UTF8, "application/json");
-                        response = await client.PutAsJsonAsync(requestURI, content);
+                        response = await client.PutAsync(requestURI, content);
                     }
                     else if (httpVerbs == HttpVerbs.Delete)
                     {

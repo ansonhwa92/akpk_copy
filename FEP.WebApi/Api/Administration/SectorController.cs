@@ -27,7 +27,7 @@ namespace FEP.WebApi.Api.Administration
         }
 
         // GET: api/Sector
-        public HttpResponseMessage Get(DataTableModel dataTableModel)
+        public List<SectorModel> Get()
         {
             var sectors = db.Sector.Where(u => u.Display).Select(s => new SectorModel
             {
@@ -35,12 +35,23 @@ namespace FEP.WebApi.Api.Administration
                 Name = s.Name                
             }).ToList();
 
-            return Request.CreateResponse(HttpStatusCode.OK, sectors);
+            return sectors;
+        }
 
+        [HttpPost]
+        public List<SectorModel> GetTable(DataTableModel model)
+        {
+            var sectors = db.Sector.Where(u => u.Display).Select(s => new SectorModel
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).ToList();
+
+            return sectors;
         }
 
         // GET: api/Sector/5
-        public HttpResponseMessage Get(int id)
+        public SectorModel Get(int id)
         {
             var sector = db.Sector.Where(u => u.Display && u.Id == id).Select(s => new SectorModel
             {
@@ -48,11 +59,11 @@ namespace FEP.WebApi.Api.Administration
                 Name = s.Name
             }).FirstOrDefault();
 
-            return Request.CreateResponse(HttpStatusCode.OK, sector);            
+            return sector;          
         }
 
         // POST: api/Sector
-        public HttpResponseMessage Post([FromBody]CreateSectorModel model)
+        public int? Post([FromBody]CreateSectorModel model)
         {
             if (ModelState.IsValid)
             {
@@ -65,15 +76,15 @@ namespace FEP.WebApi.Api.Administration
                 db.Sector.Add(sector);
                 db.SaveChanges();
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
+                return sector.Id;
             }
 
-            return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
+            return null;
 
         }
 
         // PUT: api/Sector/5
-        public HttpResponseMessage Put(int id, [FromBody]EditSectorModel model)
+        public bool Put(int id, [FromBody]EditSectorModel model)
         {
 
             if (ModelState.IsValid)
@@ -89,20 +100,20 @@ namespace FEP.WebApi.Api.Administration
 
                     db.SaveChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
+                    return true;
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, new { isSuccess = false });
+                    return false;
                 }
 
             }
 
-            return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
+            return false;
         }
 
         // DELETE: api/Sector/5
-        public HttpResponseMessage Delete(int id)
+        public bool Delete(int id)
         {
             var sector = db.Sector.Where(u => u.Id == id).FirstOrDefault();
 
@@ -116,11 +127,11 @@ namespace FEP.WebApi.Api.Administration
 
                 db.SaveChanges();
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
+                return true;
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound, new { isSuccess = false });
+                return false;
             }
 
         }

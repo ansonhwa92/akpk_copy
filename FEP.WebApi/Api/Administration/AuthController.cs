@@ -26,7 +26,8 @@ namespace FEP.WebApi.Api.Administration
         }
 
         public int? Get(string LoginId, string Password)
-        {            
+        {
+
             var user = db.UserAccount.Where(u => u.LoginId == LoginId).FirstOrDefault();
 
             if (user != null)
@@ -43,9 +44,9 @@ namespace FEP.WebApi.Api.Administration
         [Route("api/Auth/RegisterIndividual")]
         [HttpPost]
         [ValidationActionFilter]
-        public string RegisterIndividual([FromBody] RegisterIndividualModel model)
+        public string RegisterIndividual(RegisterIndividualModel model)
         {
-            
+
             var password = Authentication.RandomString(10);
             Authentication.GeneratePassword(password);
 
@@ -83,16 +84,17 @@ namespace FEP.WebApi.Api.Administration
             db.ActivateAccount.Add(activateaccount);
 
             db.SaveChanges();
-            
+
             return activateaccount.UID;
+
         }
 
         [Route("api/Auth/RegisterAgency")]
         [HttpPost]
         [ValidationActionFilter]
-        public string RegisterAgency([FromBody] RegisterAgencyModel model)
+        public string RegisterAgency(RegisterAgencyModel model)
         {
-
+            
             var password = Authentication.RandomString(10);
             Authentication.GeneratePassword(password);
 
@@ -113,11 +115,11 @@ namespace FEP.WebApi.Api.Administration
                 Address1 = model.Address1,
                 Address2 = model.Address2,
                 City = model.City,
-                PostCode = model.PostCode,                
+                PostCode = model.PostCode,
                 StateId = model.StateId,
                 CompanyPhoneNo = model.CompanyPhoneNo
             };
-            
+
             var user = new User
             {
                 UserType = UserType.Individual,
@@ -146,6 +148,39 @@ namespace FEP.WebApi.Api.Administration
             db.SaveChanges();
 
             return activateaccount.UID;
+        }
+
+        [Route("api/Auth/ActivateAccount")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool ActivateAccount(string UID)
+        {
+            var activateaccount = db.ActivateAccount.Where(m => m.UID == UID && m.IsActivate == false).FirstOrDefault();
+
+            if (activateaccount != null)
+            {
+                activateaccount.IsActivate = true;
+                activateaccount.ActivateDate = DateTime.Now;
+                db.ActivateAccount.Attach(activateaccount);
+                db.Entry(activateaccount).Property(e => e.IsActivate).IsModified = true;
+                db.Entry(activateaccount).Property(e => e.ActivateDate).IsModified = true;
+
+                UserAccount userAccount = new UserAccount()
+                {
+                    UserId = activateaccount.UserId,
+                    IsEnable = true
+                };
+
+                db.UserAccount.Attach(userAccount);
+                db.Entry(userAccount).Property(e => e.IsEnable).IsModified = true;
+
+                db.Configuration.ValidateOnSaveEnabled = false;
+
+                return true;
+
+            }
+
+            return false;
         }
     }
 }

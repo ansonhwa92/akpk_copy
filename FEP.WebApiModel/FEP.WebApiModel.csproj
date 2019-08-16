@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Administration\SectorModel.cs" />
+    <Compile Include="Administration\StateModel.cs" />
     <Compile Include="Administration\User.cs" />
     <Compile Include="Auth\Registration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

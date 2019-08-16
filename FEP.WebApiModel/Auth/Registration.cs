@@ -53,6 +53,7 @@ namespace FEP.WebApiModel.Auth
         [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Auth))]
         public int SectorId { get; set; }
 
+        [Required(ErrorMessageResourceName = "ValidRequiredCompanyRegNo", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldCompanyRegNo", ResourceType = typeof(Language.Auth))]
         public string CompanyRegNo { get; set; }
 
@@ -90,7 +91,7 @@ namespace FEP.WebApiModel.Auth
         public string MobileNo { get; set; }
 
         [Required(ErrorMessageResourceName = "ValidRequiredEmail", ErrorMessageResourceType = typeof(Language.Auth))]
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Auth))]        
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 

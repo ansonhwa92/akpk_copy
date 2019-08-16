@@ -70,6 +70,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        public static string FieldStateName {
+            get {
+                return ResourceManager.GetString("FieldStateName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter Sector Name.
         /// </summary>
         public static string ValidRequiredSectorName {

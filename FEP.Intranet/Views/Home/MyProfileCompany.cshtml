@@ -1,0 +1,98 @@
+﻿@model CompanyProfileModel
+
+@{
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                @*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Profile</a></li>                                
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">My Profile</h1>
+                    <div class="header-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    
+    <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
+            <form>
+                <div class="form-container">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.CompanyName)
+                            @Html.EditorFor(m => m.CompanyName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.CompanyRegNo)
+                            @Html.EditorFor(m => m.CompanyRegNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.Sector)
+                            @Html.EditorFor(m => m.Sector, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.Address1)
+                            @Html.EditorFor(m => m.Address1, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.Address2)
+                            @Html.EditorFor(m => m.Address2, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.PostCode)
+                            @Html.EditorFor(m => m.PostCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.City)
+                            @Html.EditorFor(m => m.City, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.State)
+                            @Html.EditorFor(m => m.State, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- End Form -->
+        </div>
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">            
+            <a class="btn btn-secondary" href="@Url.Action("EditProfile", "Home", new { area = "" })">Edit</a>
+        </div>
+    </div>
+</div>
+

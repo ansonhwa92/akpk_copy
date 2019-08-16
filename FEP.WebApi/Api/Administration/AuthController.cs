@@ -43,7 +43,7 @@ namespace FEP.WebApi.Api.Administration
         [Route("api/Auth/RegisterIndividual")]
         [HttpPost]
         [ValidationActionFilter]
-        public int? RegisterIndividual([FromBody] RegisterIndividualModel model)
+        public string RegisterIndividual([FromBody] RegisterIndividualModel model)
         {
             
             var password = Authentication.RandomString(10);
@@ -84,13 +84,13 @@ namespace FEP.WebApi.Api.Administration
 
             db.SaveChanges();
             
-            return null;
+            return activateaccount.UID;
         }
 
         [Route("api/Auth/RegisterAgency")]
         [HttpPost]
         [ValidationActionFilter]
-        public int? RegisterAgency([FromBody] RegisterAgencyModel model)
+        public string RegisterAgency([FromBody] RegisterAgencyModel model)
         {
 
             var password = Authentication.RandomString(10);
@@ -145,7 +145,7 @@ namespace FEP.WebApi.Api.Administration
 
             db.SaveChanges();
 
-            return null;
+            return activateaccount.UID;
         }
     }
 }

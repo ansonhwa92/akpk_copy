@@ -56,28 +56,34 @@ namespace FEP.Intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RegisterIndividual(RegisterIndividualModel model)
         {
-            var resLogin = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Auth/RegisterIndividual", model);
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Auth/RegisterIndividual", model);
             
-            EmailAddress receiver = new EmailAddress()
+            if (response.isSuccess)
             {
-                DisplayName = model.Name,
-                Address = model.Email
-            };
 
-            StringBuilder body = new StringBuilder();
+                EmailAddress receiver = new EmailAddress()
+                {
+                    DisplayName = model.Name,
+                    Address = model.Email
+                };
 
-            body.Append("Dear " + model.Name + ",");
-            body.Append("<br />");
-            body.Append("You can activate your account <a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = activateaccount.UID }) + "' > here </a>");
-            body.Append("<br />");
-            body.Append("Your login details:");
-            body.Append("<br />");
-            body.Append("Login Id: " + model.Email);
-            body.Append("<br />");
-            body.Append("Password: " + model.Password);
+                StringBuilder body = new StringBuilder();
 
-            SendEmail("UMBI TRIMS Account Activation", body.ToString(), receiver); //email
+                body.Append("Dear " + model.Name + ",");
+                body.Append("<br />");
+                body.Append("You can activate your account <a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data }) + "' > here </a>");
+                body.Append("<br />");
+                body.Append("Your login details:");
+                body.Append("<br />");
+                body.Append("Login Id: " + model.Email);
+                body.Append("<br />");
+                body.Append("Password: " + model.Password);
 
+                SendEmail("FEP Account Activation", body.ToString(), receiver); //email
+
+                return RedirectToAction("Login", "Auth", new { area = "" });
+
+            }
 
             return View();
         }

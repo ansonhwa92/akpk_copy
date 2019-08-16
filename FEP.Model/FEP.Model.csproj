@@ -63,8 +63,10 @@
     <Compile Include="Migrations\201908151733546_a.Designer.cs">
       <DependentUpon>201908151733546_a.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Migrations\Seed.cs" />
+    <Compile Include="Migrations\firus.cs" />
+    <Compile Include="Migrations\mhafeez.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publication.cs" />

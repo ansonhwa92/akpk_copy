@@ -74,9 +74,11 @@ namespace FEP.Intranet
                     }
                     else
                     {
+                        var str = await response.Content.ReadAsStringAsync();
+
                         res.isSuccess = false;
                         res.Data = default(T);
-                        res.ErrorMessage = response.StatusCode.ToString();
+                        res.ErrorMessage = str;
                     }
 
                 }

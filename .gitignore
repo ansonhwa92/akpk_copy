@@ -353,3 +353,6 @@ healthchecksdb
 # Migration File
 /FEP.Model/Migrations/*
 !/FEP.Model/Migrations/Configuration.cs
+!/FEP.Model/Migrations/mhafeez.cs
+!/FEP.Model/Migrations/firus.cs
+!/FEP.Model/Migrations/aiman.cs

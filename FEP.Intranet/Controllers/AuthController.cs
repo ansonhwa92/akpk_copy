@@ -54,13 +54,37 @@ namespace FEP.Intranet.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult RegisterIndividual(RegisterIndividualModel model)
+        public async Task<ActionResult> RegisterIndividual(RegisterIndividualModel model)
         {
-            if (ModelState.IsValid)
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Auth/RegisterIndividual", model);
+            
+            if (response.isSuccess)
             {
 
+                EmailAddress receiver = new EmailAddress()
+                {
+                    DisplayName = model.Name,
+                    Address = model.Email
+                };
+
+                StringBuilder body = new StringBuilder();
+
+                body.Append("Dear " + model.Name + ",");
+                body.Append("<br />");
+                body.Append("You can activate your account <a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data }) + "' > here </a>");
+                body.Append("<br />");
+                body.Append("Your login details:");
+                body.Append("<br />");
+                body.Append("Login Id: " + model.Email);
+                body.Append("<br />");
+                body.Append("Password: " + model.Password);
+
+                SendEmail("FEP Account Activation", body.ToString(), receiver); //email
+
+                return RedirectToAction("Login", "Auth", new { area = "" });
+
             }
-            
+
             return View();
         }
 

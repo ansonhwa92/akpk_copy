@@ -2,113 +2,88 @@
 
 @{
 	ViewBag.Title = "Media Interview";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-@section ContentStyle{
-	@Styles.Render("~/bundles/dataTable-css")
-}
+@section Nav {
 
-@section ContentScript{
-
-	@Scripts.Render("~/bundles/dataTable-script")
-
-	<script type="text/javascript">
-		$('.menu_mediaInterview').addClass('active');
-		$('.menu_mediaInterview').parent('ul').parent('li').addClass('active');
-
-		$(document).ready(function () {
-			var t = $('.tabledata').DataTable({
-				"columnDefs": [{
-					"searchable": false,
-					"orderable": false,
-					"targets": [0, 6]
-				}],
-				"order": [[1, 'asc']],
-				"paging": true,
-				"lengthChange": true,
-				"searching": true,
-				"ordering": true,
-				"info": true,
-				"autoWidth": false,
-				"language": {
-					"emptyTable": "No record found"
-				},
-				"lengthMenu": [10, 25, 50],
-				buttons: [{
-					extend: 'csvHtml5',
-					title: 'Export Field Of Research List',
-					//fieldSeparator:'|',
-					exportOptions: {
-						columns: [1]
-					}
-				}]
-			});
-			t.on('order.dt search.dt', function () {
-				t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-					cell.innerHTML = i + 1;
-				});
-			}).draw();
-
-			$('#export').click(function () { t.button('0').trigger(); });
-
-		});
-
-	</script>
-}
-
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box box-info">
-			<div class="box-header">
-				<h3 class="box-title">Media Interview List</h3>
-				<div class="pull-right box-tools">
-
-					<a href='@Url.Action("Create")' class="btn btn-primary btn-xs" title="Add"><i class="fa fa-plus"></i> Media Interview</a>
-					<a class="btn btn-success btn-xs" title="Export" id="export"><i class="fa fa-file-excel-o"></i> Export</a>
-
+	<div class="title_header">
+		<div class="title-header-container">
+			<div class="container">
+				<!-- if have button -->
+				@*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+				<div class="header-col-left">
+					<div id="breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item"><a href="#">e-Event</a></li>
+								<li class="breadcrumb-item"><a href="#">Media Interview</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+							</ol>
+						</nav>
+					</div>
+					<h1 class="page-title text-white">Media Interview List</h1>
+					@*<div class="header-text">List of created media interview</div>*@
 				</div>
-			</div><!-- /.box-header -->
-
-
-			<div class="box-body">
-				<table class="table table-bordered table-striped tabledata table-hover">
-					<thead>
-						<tr>
-							<th>No.</th>
-							<th>@Html.DisplayNameFor(m => m.filter.MediaName)</th>
-							<th>@Html.DisplayNameFor(m => m.filter.MediaType)</th>
-							<th>@Html.DisplayNameFor(m => m.filter.ContactPerson)</th>
-							<th>@Html.DisplayNameFor(m => m.filter.Date)</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (var item in Model.MediaInterviewList)
-						{
-						<tr>
-							<td></td>
-							<td>@Html.DisplayFor(m => item.MediaName)</td>
-							<td>@Html.DisplayFor(m => item.MediaType)</td>
-							<td>@Html.DisplayFor(m => item.ContactPerson)</td>
-							<td>@Html.DisplayFor(m => item.Date)</td>
-							<td>
-								@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-								@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-								@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-							</td>
-						</tr>
-						}
-					</tbody>
-				</table>
 			</div>
-
-
 		</div>
 	</div>
-</div>
 
-<div class="row">
-	<div class="col-xs-12">
-		<a href='@Url.Action("Index", "Project" , new { area = "Projects"})' class="btn btn-warning">Back</a>
+}
+
+<div class="table-responsive" data-toggle="lists">
+	<div class="d-flex pb-4 align-items-center">
+		<div>
+			<!-- Select option -->
+			<span class="select-arrow">
+				<select name="dataTable_length" aria-controls="dataTable" class="custom-select">
+					<option value="10">10</option>
+					<option value="25">25</option>
+					<option value="50">50</option>
+					<option value="100">100</option>
+				</select>
+			</span>
+		</div>
+		<div class="showing-result px-3 py-2 mr-auto">Showing 1 - 6 of 2000 </div>
+		<div><a href='@Url.Action("Create", "MediaInterview" +
+					 "", new { area = "eEvent"})' class="btn btn-secondary"><i class="fa fa-plus font-icon" style="font-size: 1.5rem;"></i>Create Media Interview</a></div>
 	</div>
+	<!-- Table -->
+	<table class="table tableStyle1 tabledata">
+		<thead>
+			<tr>
+
+				<th>No.</th>
+				<th>@Html.DisplayNameFor(m => m.filter.MediaName)</th>
+				<th>@Html.DisplayNameFor(m => m.filter.MediaType)</th>
+				<th>@Html.DisplayNameFor(m => m.filter.ContactPerson)</th>
+				<th>@Html.DisplayNameFor(m => m.filter.Date)</th>
+				
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.MediaInterviewList)
+			{
+				<tr>
+					<td>#</td>
+					<td>@Html.DisplayFor(m => item.MediaName)</td>
+					<td>@Html.DisplayFor(m => item.MediaType)</td>
+					<td>@Html.DisplayFor(m => item.ContactPerson)</td>
+					<td>@Html.DisplayFor(m => item.Date)</td>
+					
+					<td>
+						<a href='@Url.Action("Edit", new { id=item.Id })' data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
+						<a href='@Url.Action("Details", new { id=item.Id })' data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
+						<a href='@Url.Action("Delete", new { id=item.Id })' data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></a>
+
+						@*<a href='@Url.Action("Details", new { id=item.Id })' class="btn btn-info btn-xs" title="Details"> <i class="fa fa-list-alt"> </i>Details</a>
+							<a href='@Url.Action("Edit", new { id=item.Id })' class="btn btn-info btn-xs" title="Edit"> <i class="fa fa-edit"> </i>Edit</a>
+							<a href='@Url.Action("Delete", new { id=item.Id })' class="btn btn-warning btn-xs" title="Delete"> <i class="fa fa-trash"></i>Delete</a>*@
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
 </div>

@@ -30,9 +30,12 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Email")]
 		public string Email { get; set; }
 
-		public DateTime Date { get; set; }
+		[DataType(DataType.Date)]
+		[UIHint("Date")]
+		[Display(Name = "Date")]
+		public DateTime? Date { get; set; }
 
-		public DateTime Time { get; set; }
+		public DateTime? Time { get; set; }
 
 		public string Location { get; set; }
 

@@ -125,7 +125,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				EventCategory category = new EventCategory
 				{
 					Id = model.Id,
-					CategoryName = (model.CategoryName != null) ? model.CategoryName.ToUpper() : model.CategoryName,
+					//CategoryName = (model.CategoryName != null) ? model.CategoryName.ToUpper() : model.CategoryName,
+					CategoryName = model.CategoryName,
 				};
 
 				db.Entry(category).State = EntityState.Modified;

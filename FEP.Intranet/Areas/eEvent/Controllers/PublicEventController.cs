@@ -194,7 +194,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				PublicEvent eEvent = new PublicEvent
 				{
 					Id = model.Id,
-					EventTitle = (model.EventTitle != null) ? model.EventTitle.ToUpper() : model.EventTitle,
+					//EventTitle = (model.EventTitle != null) ? model.EventTitle.ToUpper() : model.EventTitle,
+					EventTitle = model.EventTitle,
 					EventObjective = model.EventObjective,
 					StartDate = model.StartDate,
 					EndDate = model.EndDate,

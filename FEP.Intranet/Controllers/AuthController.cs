@@ -54,15 +54,6 @@ namespace FEP.Intranet.Controllers
             {
                 model.Sectors = new SelectList(sectorResponse.Data, "Id", "Name", 0);
             }
-                        
-            model.States = Enumerable.Empty<SelectListItem>();
-
-            var stateResponse = await WepApiMethod.SendApiAsync<List<StateModel>>(HttpVerbs.Get, $"Administration/State");
-
-            if (stateResponse.isSuccess)
-            {
-                model.States = new SelectList(stateResponse.Data, "Id", "Name", 0);
-            }
 
             return View(model);
         }
@@ -159,15 +150,6 @@ namespace FEP.Intranet.Controllers
             if (sectorResponse.isSuccess)
             {
                 model.Sectors = new SelectList(sectorResponse.Data, "Id", "Name", 0);
-            }
-
-            model.States = Enumerable.Empty<SelectListItem>();
-
-            var stateResponse = await WepApiMethod.SendApiAsync<List<StateModel>>(HttpVerbs.Get, $"Administration/State");
-
-            if (stateResponse.isSuccess)
-            {
-                model.States = new SelectList(stateResponse.Data, "Id", "Name", 0);
             }
 
             return View(model);
@@ -309,8 +291,92 @@ namespace FEP.Intranet.Controllers
                     TempData["SuccessMessage"] = "Your account successfully activate. Please check your registered email for login details.";
                 }
             }
-                        
+
             return RedirectToAction("LogIn");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                var response = await WepApiMethod.SendApiAsync<ResetPasswordResponseModel>(HttpVerbs.Post, $"Auth/ResetPassword", model);
+
+                if (response.Data != null)
+                {
+                    var uid = response.Data.UID;
+
+                    EmailAddress receiver = new EmailAddress()
+                    {
+                        DisplayName = response.Data.Name,
+                        Address = model.Email
+                    };
+
+                    StringBuilder body = new StringBuilder();
+                    body.Append("Dear " + response.Data.Name + ",");
+                    body.Append("<br />");
+                    body.Append("You can reset your password <a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data }) + "' > here </a>");
+
+                    SendEmail("FEP Password Reset", body.ToString(), receiver);
+                }
+
+                TempData["Message"] = "Instruction to reset password was successfully sent to your email [" + model.Email + "]. Please check your email.";
+                return RedirectToAction("Login");
+
+
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> SetPassword(string id)
+        {
+
+            var response = await WepApiMethod.SendApiAsync<SetPasswordModel>(HttpVerbs.Get, $"Auth/GetSetPassword?uid={id}");
+
+            if (response.Data != null)
+            {
+                return View(response.Data);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Click 'Forgot Password' to reset password.";
+                return RedirectToAction("Login", "Auth", new { area = "" });
+            }
+
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SetPassword(SetPasswordModel model)
+        {
+
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Auth/SetPassword", model);
+
+            if (response.Data)
+            {
+                TempData["SuccessMessage"] = "Your password successfully change. Please use new password to sign in.";                
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Fail to set new password. Click 'Forgot Password' to reset password.";
+            }
+
+            return RedirectToAction("Login", "Auth", new { area = "" });
         }
 
     }

@@ -3,6 +3,7 @@ using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.Home;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -116,50 +117,7 @@ namespace FEP.WebApi.Api.Administration
             
         }
 
-        [Route("api/Administration/User/GetCompanyProfile")]
-        [HttpGet]
-        public CompanyProfileModel GetCompanyProfile(int id)
-        {
-            var user = db.User.Where(u => u.Id == id)
-                .Select(s => new CompanyProfileModel
-                {
-                    CompanyName = s.CompanyProfile.CompanyName,
-                    CompanyRegNo = s.CompanyProfile.CompanyRegNo,
-                    SectorId = s.CompanyProfile.SectorId,
-                    StateId = s.CompanyProfile.StateId,
-                    CompanyPhoneNo = s.CompanyProfile.CompanyPhoneNo,
-                    Address1 = s.CompanyProfile.Address1,
-                    Address2 = s.CompanyProfile.Address2,
-                    City = s.CompanyProfile.City,
-                    PostCode = s.CompanyProfile.PostCode,
-                    Name = s.Name,
-                    Email = s.Email,
-                    ICNo = s.ICNo,
-                    MobileNo = s.MobileNo
-                })
-                .FirstOrDefault();
-
-            return user;
-
-        }
-
-        [Route("api/Administration/User/GetIndividualProfile")]
-        [HttpGet]
-        public IndividualProfileModel GetIndividualProfile(int id)
-        {
-            var user = db.User.Where(u => u.Id == id)
-                .Select(s => new IndividualProfileModel
-                {                    
-                    Name = s.Name,
-                    Email = s.Email,
-                    ICNo = s.ICNo,
-                    MobileNo = s.MobileNo
-                })
-                .FirstOrDefault();
-
-            return user;
-
-        }
+        
 
     }
 }

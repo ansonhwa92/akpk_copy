@@ -79,9 +79,9 @@
                             <div class="col">
                                 <div class="input-group">
                                     <span class="select-arrow">
-                                        @Html.DropDownListFor(m => m.StateId, Model.States, Language.Auth.PlaceholderStateId, htmlAttributes: new { @class = "custom-select" })
+                                        @Html.EditorFor(m => m.State, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderStateId } })
                                     </span>
-                                    @Html.ValidationMessageFor(m => m.StateId)
+                                    @Html.ValidationMessageFor(m => m.State)
                                 </div>
                             </div>
                         </div>

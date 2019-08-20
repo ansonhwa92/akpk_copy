@@ -8,26 +8,28 @@
     <title>@ViewBag.Title</title>
     <!-- Favicons -->
     <link href="@BaseURL/img/favicon.png" rel="icon">
-    <!-- Perfect Scrollbar -->
-    <link type="text/css" href="@BaseURL/dist/assets/vendor/perfect-scrollbar.css" rel="stylesheet">
-    <!-- Material Design Icons -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.rtl.css" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.rtl.css" rel="stylesheet">
-    <link href="@BaseURL/lib/line-awesome/css/line-awesome.min.css" rel="stylesheet">
-    <!-- Select 2 form -->
-    <link href="@BaseURL/css/select2.min.css" rel="stylesheet">
-    <!-- Flatpickr -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.rtl.css" rel="stylesheet">
-    <!-- App CSS -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/app.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/dist/assets/css/app.rtl.css" rel="stylesheet">
-    <!-- Main css -->
-    <link type="text/css" href="@BaseURL/css/base.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/css/custom-admin.css" rel="stylesheet">
+
+    @*<link type="text/css" href="@BaseURL/dist/assets/vendor/perfect-scrollbar.css" rel="stylesheet">
+
+        <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.css" rel="stylesheet">
+        <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.rtl.css" rel="stylesheet">
+
+        <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.css" rel="stylesheet">
+        <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.rtl.css" rel="stylesheet">
+        <link href="@BaseURL/lib/line-awesome/css/line-awesome.min.css" rel="stylesheet">
+
+        <link href="@BaseURL/css/select2.min.css" rel="stylesheet">
+
+        <link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.css" rel="stylesheet">
+        <link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.rtl.css" rel="stylesheet">
+
+        <link type="text/css" href="@BaseURL/dist/assets/css/app.css" rel="stylesheet">
+        <link type="text/css" href="@BaseURL/dist/assets/css/app.rtl.css" rel="stylesheet">
+
+        <link type="text/css" href="@BaseURL/css/base.css" rel="stylesheet">
+        <link type="text/css" href="@BaseURL/css/custom-admin.css" rel="stylesheet">*@
+
+    @Styles.Render("~/layout1/style")
 
     @RenderSection("ContentStyle", false)
 
@@ -202,35 +204,35 @@
                                             <i class="la la-book color-secondary font-icon"></i> My Courses
                                         </a>
                                         @*<a class="dropdown-item" href="#">
-                                            <i class="la la-certificate color-secondary font-icon"></i> My Certifications
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="la la-spinner color-secondary font-icon"></i> My Progress
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="la la-group color-secondary font-icon"></i> My Groups
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="la la-sitemap color-secondary font-icon"></i> My Branches
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="la la-suitcase color-secondary font-icon"></i> My Files
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="la la-calendar color-secondary font-icon"></i> My Events
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="la la-pie-chart color-secondary font-icon"></i> My Researches
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="la la-file-o color-secondary font-icon"></i> My Publications
-                                        </a>*@
+                                                <i class="la la-certificate color-secondary font-icon"></i> My Certifications
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="la la-spinner color-secondary font-icon"></i> My Progress
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="la la-group color-secondary font-icon"></i> My Groups
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="la la-sitemap color-secondary font-icon"></i> My Branches
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="la la-suitcase color-secondary font-icon"></i> My Files
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="la la-calendar color-secondary font-icon"></i> My Events
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="la la-pie-chart color-secondary font-icon"></i> My Researches
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="la la-file-o color-secondary font-icon"></i> My Publications
+                                            </a>*@
                                         <div class="dropdown-divider"></div>
                                         @*<a class="dropdown-item" href="#">
-                                            <i class="la la-life-saver color-secondary font-icon"></i> Help Center
-                                        </a>*@
+                                                <i class="la la-life-saver color-secondary font-icon"></i> Help Center
+                                            </a>*@
                                         <a class="dropdown-item" href="@Url.Action("MyProfile", "Home", new { area = "" })">
-                                            <i class="la la-edit color-secondary font-icon"></i> Edit Profile
+                                            <i class="la la-edit color-secondary font-icon"></i> My Profile
                                         </a>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth", new { area = "" })">
                                             <i class="la la-sign-out color-secondary font-icon"></i> Log out
@@ -252,12 +254,12 @@
                             <ul class="nav navbar-nav">
                                 <li class="nav-item dropdown active">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Events</a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })">Internal Event</a>
-										<a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })">Media Interview Request</a>
-										<a class="dropdown-item" href="@Url.Action("List", "EventCategory", new { area = "eEvent" })">Event Category</a>
-										@*<a class="dropdown-item" href="#">Exhibition Request</a>*@
-									</div>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })">Internal Event</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })">Media Interview Request</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "EventCategory", new { area = "eEvent" })">Event Category</a>
+                                        @*<a class="dropdown-item" href="#">Exhibition Request</a>*@
+                                    </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Research & Publications</a>
@@ -319,13 +321,41 @@
         </div>
         <!-- Header Layout Content -->
         <!-- // END Header Layout Content -->
-        @RenderSection("Nav", false) 
-		@RenderSection("Contentscript", false)
+        @RenderSection("Nav", false)
+        @RenderSection("Contentscript", false)
         <!-- // END Header -->
     </div>
     <!-- Start Content -->
     <div class="content-container">
         <div class="container">
+
+            <div id="alert-message">
+
+                @if (TempData["Message"] != null)
+                {
+                    <div class="alert alert-primary alert-dismissible ">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <p><i class="icon fa fa-info-circle"></i>@TempData["Message"]</p>
+                    </div>
+                }
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible ">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <p><i class="icon fa fa-check"></i>@TempData["SuccessMessage"]</p>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible ">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <p><i class="icon fa fa-warning"></i>@TempData["ErrorMessage"]</p>
+                    </div>
+                }
+
+            </div>
 
             @RenderBody()
 
@@ -333,33 +363,32 @@
         <!-- Wrapper -->
     </div>
     <!-- // END Header Layout -->
-    <!-- jQuery -->
-    <script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
-    <script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
-    <!-- Perfect Scrollbar -->
-    <script src="@BaseURL/dist/assets/vendor/perfect-scrollbar.min.js"></script>
-    <!-- MDK -->
-    <script src="@BaseURL/dist/assets/vendor/dom-factory.js"></script>
-    <script src="@BaseURL/dist/assets/vendor/material-design-kit.js"></script>
-    <!-- App JS -->
-    <script src="@BaseURL/dist/assets/js/app.js"></script>
-    <!-- Highlight.js -->
-    <script src="@BaseURL/dist/assets/js/hljs.js"></script>
-    <script src="@BaseURL/js/select2.min.js"></script>
+    @*<script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
 
-    <!-- Tables -->
-    <script src="@BaseURL/dist/assets/js/toggle-check-all.js"></script>
-    <script src="@BaseURL/dist/assets/js/check-selected-row.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
 
-    <script src="@BaseURL/dist/assets/vendor/flatpickr/flatpickr.min.js"></script>
-    <script src="@BaseURL/dist/assets/js/flatpickr.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/perfect-scrollbar.min.js"></script>
 
-    <!-- Global Settings -->
-    <script src="@BaseURL/dist/assets/js/settings.js"></script>
-    <script src="@BaseURL/js/script-admin.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/dom-factory.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/material-design-kit.js"></script>
 
+        <script src="@BaseURL/dist/assets/js/app.js"></script>
+
+        <script src="@BaseURL/dist/assets/js/hljs.js"></script>
+        <script src="@BaseURL/js/select2.min.js"></script>
+
+        <script src="@BaseURL/dist/assets/js/toggle-check-all.js"></script>
+        <script src="@BaseURL/dist/assets/js/check-selected-row.js"></script>
+
+        <script src="@BaseURL/dist/assets/vendor/flatpickr/flatpickr.min.js"></script>
+        <script src="@BaseURL/dist/assets/js/flatpickr.js"></script>
+
+
+        <script src="@BaseURL/dist/assets/js/settings.js"></script>
+        <script src="@BaseURL/js/script-admin.js"></script>*@
+
+    @Scripts.Render("~/layout1/script")
 
     <script type="text/javascript">
 

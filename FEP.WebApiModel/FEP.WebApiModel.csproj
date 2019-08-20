@@ -67,7 +67,7 @@
     <Compile Include="Administration\StateModel.cs" />
     <Compile Include="Administration\User.cs" />
     <Compile Include="Auth\Registration.cs" />
-    <Compile Include="Home\MyProfileModel.cs" />
+    <Compile Include="Home\ProfileModel.cs" />
     <Compile Include="eEvent\EventCategory.cs" />
     <Compile Include="eEvent\MediaInterviewRequest.cs" />
     <Compile Include="eEvent\PublicEvent.cs" />
@@ -85,9 +85,7 @@
       <Name>FEP.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="eEvent\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

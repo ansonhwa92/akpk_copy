@@ -1009,6 +1009,11 @@
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Views\Home\MyProfileCompany.cshtml" />
     <Content Include="Views\Home\MyProfileIndividual.cshtml" />
+    <Content Include="Views\Home\EditProfileIndividual.cshtml" />
+    <Content Include="Views\Home\EditProfileCompany.cshtml" />
+    <Content Include="Views\Home\ChangePassword.cshtml" />
+    <Content Include="Views\Auth\ResetPassword.cshtml" />
+    <Content Include="Views\Auth\SetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

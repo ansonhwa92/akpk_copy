@@ -87,6 +87,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Remarks")]
 		public string Remarks { get; set; }
 
+
+		
+
 	}
 
 	public class CreatePublicEventModel : PublicEventModel
@@ -111,6 +114,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 	{
 		[Required]
 		public int Id { get; set; }
+
+		public string origin { get; set; }
 	}
 
 	public class DetailsPublicEventModel : PublicEventModel

@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
 {
+	//[LogError(Modules.   )]
 	public class MediaInterviewController : FEPController
 	{
 		private DbEntities db = new DbEntities();
@@ -122,6 +123,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				db.EventMediaInterviewRequest.Add(media);
 				db.SaveChanges();
 
+				//LogActivity();
 				TempData["SuccessMessage"] = "Media Interview Request successfully created.";
 				return RedirectToAction("List");
 			}
@@ -193,6 +195,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Designation = model.Designation,
 					EventId = model.EventId,
 				};
+
 				db.Entry(media).State = EntityState.Modified;
 				db.Entry(media).Property(x => x.CreatedDate).IsModified = false;
 				db.Entry(media).Property(x => x.Display).IsModified = false;
@@ -200,6 +203,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				db.Configuration.ValidateOnSaveEnabled = true;
 				db.SaveChanges();
 
+				//LogActivity();
 				TempData["SuccessMessage"] = "Media Interview Request successfully updated.";
 				return RedirectToAction("List");
 			}
@@ -258,7 +262,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			db.Configuration.ValidateOnSaveEnabled = false;
 			db.SaveChanges();
 
-
+			//LogActivity();
 			TempData["SuccessMessage"] = "Media Interview Request successfully deleted.";
 			return RedirectToAction("List");
 		}

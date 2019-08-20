@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
 {
+	//[LogError(Modules.   )]
 	public class PublicEventController : FEPController
 	{
 		private DbEntities db = new DbEntities();
@@ -121,7 +122,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Fee = model.Fee,
 					ParticipantAllowed = model.ParticipantAllowed,
 					TargetedGroup = model.TargetedGroup,
-					
+
 					EventStatus = model.EventStatus,
 					EventCategoryId = model.EventCategoryId,
 					Reasons = model.Reasons,
@@ -134,14 +135,24 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				db.PublicEvent.Add(x);
 				db.SaveChanges();
 
+				//LogActivity();
 				TempData["SuccessMessage"] = "Public Event successfully created.";
 				return RedirectToAction("List");
 			}
+			var getcategory = db.EventCategory.Where(c => c.Display)
+				.Select(i => new
+				{
+					Id = i.Id,
+					Name = i.CategoryName
+				});
+
+			model.CategoryList = new SelectList(getcategory, "Id", "Name", 0);
+
 			return View(model);
 		}
 
 		// GET: PublicEvent/Edit/5
-		public ActionResult Edit(int? id)
+		public ActionResult Edit(int? id, string origin)
 		{
 			if (id == null)
 			{
@@ -164,7 +175,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventCategoryId = i.EventCategoryId,
 					EventCategoryName = i.EventCategory.CategoryName,
 					Reasons = i.Reasons,
-					Remarks = i.Remarks
+					Remarks = i.Remarks,
+
+					origin = origin,
 				}).FirstOrDefault();
 
 			if (e == null)
@@ -206,7 +219,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventStatus = model.EventStatus,
 					EventCategoryId = model.EventCategoryId,
 					Reasons = model.Reasons,
-					Remarks = model.Remarks
+					Remarks = model.Remarks,
+
 				};
 
 				db.Entry(eEvent).State = EntityState.Modified;
@@ -216,8 +230,17 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				db.Configuration.ValidateOnSaveEnabled = true;
 				db.SaveChanges();
 
+				//LogActivity();
 				TempData["SuccessMessage"] = "Public Event successfully updated.";
-				return RedirectToAction("List");
+
+				if (model.origin == "fromlist")
+				{
+					return RedirectToAction("List");
+				}
+				else
+				{
+					return RedirectToAction("Details", new { area = "eEvent", id = model.Id });
+				}
 			}
 
 			var getcategory = db.EventCategory.Where(c => c.Display)
@@ -290,7 +313,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			db.Configuration.ValidateOnSaveEnabled = false;
 			db.SaveChanges();
 
-
+			//LogActivity();
 			TempData["SuccessMessage"] = "Public Event successfully deleted.";
 			return RedirectToAction("List");
 		}

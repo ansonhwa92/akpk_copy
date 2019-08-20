@@ -61,7 +61,7 @@
                                 </div>
                             </div>
                             <a href="fixed-student-dashboard.html" class="navbar-brand">
-                                <a href="#" class="logo-akpk"><img src="@BaseURL/img/logo-akpk.svg" alt="logo" title="logo akpk"></a>
+                                <a href='@Url.Action("Dashboard", "Home", new { area = ""})' class="logo-akpk"><img src="@BaseURL/img/logo-akpk.svg" alt="logo" title="logo akpk"></a>
                             </a>
                             <!-- Search -->
                             <form class="search-form d-none d-md-flex mx-2 col-lg-4">
@@ -248,68 +248,66 @@
             <div class="collapse-wrapper collapse" id="menu-collapse">
                 <div class="navbar navbar-expand-sm d-none2">
                     <div class="container">
-                        <div class="navbar-collapse collapse main-menu-dropdown">
-                            <ul class="nav navbar-nav">
-                                <li class="nav-item dropdown active">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Events</a>
+						<div class="navbar-collapse collapse main-menu-dropdown">
+							<ul class="nav navbar-nav">
+								<li class="nav-item dropdown">
+									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User & Role Management</a>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" href="@Url.Action("Index", "User", new { area = "Administrator" })">User</a>
+										<a class="dropdown-item" href="#">Menu 2</a>
+										<a class="dropdown-item" href="#">Menu 3</a>
+									</div>
+								</li>
+								<li class="nav-item dropdown">
+									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Event Management</a>
 									<div class="dropdown-menu">
 										<a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })">Internal Event</a>
 										<a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })">Media Interview Request</a>
 										<a class="dropdown-item" href="@Url.Action("List", "EventCategory", new { area = "eEvent" })">Event Category</a>
-										@*<a class="dropdown-item" href="#">Exhibition Request</a>*@
 									</div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Research & Publications</a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Menu 1</a>
-                                        <a class="dropdown-item" href="#">Menu 2</a>
-                                        <a class="dropdown-item" href="#">Menu 3</a>
-                                        <a class="dropdown-item" href="#">Menu 4</a>
-                                        <a class="dropdown-item" href="#">Menu 5</a>
-                                        <a class="dropdown-item" href="#">Menu 6</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Learning</a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#"><i class="la la-search color-secondary font-icon"></i>Browse Courses</a>
-                                        <a class="dropdown-item" href="#"><i class="la la-user color-secondary font-icon"></i>Instructors</a>
-                                        <a class="dropdown-item" href="#"><i class="la la-group color-secondary font-icon"></i>Groups</a>
-                                        <a class="dropdown-item" href="#"><i class="la la-comments-o color-secondary font-icon"></i>Discussions</a>
-                                        <a class="dropdown-item" href="#"><i class="la la-calendar color-secondary font-icon"></i>Calendar</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Administration</a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="@Url.Action("Index", "User", new { area = "Administrator" })">User</a>
-                                        <a class="dropdown-item" href="#">Role Access</a>
-                                        <a class="dropdown-item" href="#">Groups</a>
-                                        <a class="dropdown-item" href="#">Parameter Setting</a>
-                                        <a class="dropdown-item" href="#">Account Setting</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Online booking System</a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Menu 1</a>
-                                        <a class="dropdown-item" href="#">Menu 2</a>
-                                        <a class="dropdown-item" href="#">Menu 3</a>
-                                        <a class="dropdown-item" href="#">Menu 4</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Get Help</a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Menu 1</a>
-                                        <a class="dropdown-item" href="#">Menu 2</a>
-                                        <a class="dropdown-item" href="#">Menu 3</a>
-                                        <a class="dropdown-item" href="#">Menu 4</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+								</li>
+								<li class="nav-item dropdown">
+									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">R&P Management</a>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" href="#">Menu 1</a>
+										<a class="dropdown-item" href="#">Menu 2</a>
+										<a class="dropdown-item" href="#">Menu 3</a>
+										<a class="dropdown-item" href="#">Menu 4</a>
+										<a class="dropdown-item" href="#">Menu 5</a>
+										<a class="dropdown-item" href="#">Menu 6</a>
+									</div>
+								</li>
+								<li class="nav-item dropdown">
+									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Learning Management</a>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" href="#"><i class="la la-search color-secondary font-icon"></i>Browse Courses</a>
+										<a class="dropdown-item" href="#"><i class="la la-user color-secondary font-icon"></i>Instructors</a>
+										<a class="dropdown-item" href="#"><i class="la la-group color-secondary font-icon"></i>Groups</a>
+										<a class="dropdown-item" href="#"><i class="la la-comments-o color-secondary font-icon"></i>Discussions</a>
+										<a class="dropdown-item" href="#"><i class="la la-calendar color-secondary font-icon"></i>Calendar</a>
+									</div>
+								</li>
+								<li class="nav-item dropdown">
+									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Reports</a>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" href="#">Menu 1</a>
+										<a class="dropdown-item" href="#">Menu 2</a>
+										<a class="dropdown-item" href="#">Menu 3</a>
+										<a class="dropdown-item" href="#">Menu 4</a>
+									</div>
+								</li>
+								<li class="nav-item dropdown">
+									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">System Settings</a>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" href="#">Menu 1</a>
+										<a class="dropdown-item" href="#">Menu 2</a>
+										<a class="dropdown-item" href="#">Menu 3</a>
+										<a class="dropdown-item" href="#">Menu 4</a>
+									</div>
+								</li>
+
+							</ul>
+						</div>
                         <button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">
                             <span class="material-icons">menu</span>
                         </button>

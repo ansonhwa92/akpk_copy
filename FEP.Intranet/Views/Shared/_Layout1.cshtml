@@ -285,7 +285,7 @@
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Administration</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="@Url.Action("Index", "User", new { area = "Administrator" })">User</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })">User</a>
                                         <a class="dropdown-item" href="#">Role Access</a>
                                         <a class="dropdown-item" href="#">Groups</a>
                                         <a class="dropdown-item" href="#">Parameter Setting</a>
@@ -322,7 +322,6 @@
         <!-- Header Layout Content -->
         <!-- // END Header Layout Content -->
         @RenderSection("Nav", false)
-        @RenderSection("Contentscript", false)
         <!-- // END Header -->
     </div>
     <!-- Start Content -->
@@ -389,6 +388,8 @@
         <script src="@BaseURL/js/script-admin.js"></script>*@
 
     @Scripts.Render("~/layout1/script")
+
+    @RenderSection("ContentScript", false)
 
     <script type="text/javascript">
 

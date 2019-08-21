@@ -10,10 +10,11 @@ namespace FEP.Model
 {
     public enum NotificationType
     {
-        [Display(Name = "NotificationTypeActivateAccount", ResourceType = typeof(Language.Enum))]
+        [Display(Name = "Activate Account")]
         ActivateAccount,
-        [Display(Name = "NotificationTypeResetPassword", ResourceType = typeof(Language.Enum))]
-        ResetPassword,
+        [Display(Name = "Reset Password")]
+        ResetPassword,       
+
     }
 
     [Table("Notification")]

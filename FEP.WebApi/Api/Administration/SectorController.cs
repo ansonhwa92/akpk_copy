@@ -39,15 +39,16 @@ namespace FEP.WebApi.Api.Administration
         }
 
         [HttpPost]
-        public List<SectorModel> GetTable(DataTableModel model)
+        public List<SectorModel> GetTable()
         {
-            var sectors = db.Sector.Where(u => u.Display).Select(s => new SectorModel
-            {
-                Id = s.Id,
-                Name = s.Name
-            }).ToList();
+            //var sectors = db.Sector.Where(u => u.Display).Select(s => new SectorModel
+            //{
+            //    Id = s.Id,
+            //    Name = s.Name
+            //}).ToList();
 
-            return sectors;
+            //return sectors;
+            return null;
         }
 
         // GET: api/Sector/5

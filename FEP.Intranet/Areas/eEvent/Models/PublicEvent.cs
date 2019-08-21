@@ -32,10 +32,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Venue")]
 		public string Venue { get; set; }
 
-		[Display(Name = "Event Fee (RM)")]
+		[Display(Name = "Event Fee (RM) per Person")]
 		public float? Fee { get; set; }
 
-		[Display(Name = "Number of Participant")]
+		[Display(Name = "No. of Participant")]
 		public int? ParticipantAllowed { get; set; }
 
 		[Display(Name = "Targeted Group")]
@@ -68,8 +68,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Status")]
 		public EventStatus? EventStatus { get; set; }
 
-
-
 		[Display(Name = "Event Category")]
 		public int? EventCategoryId { get; set; }
 
@@ -79,35 +77,35 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Category")]
 		public IEnumerable<SelectListItem> CategoryList { get; set; }
 
-
-
 		[Display(Name = "Reasons")]
 		public string Reasons { get; set; }
 
 		[Display(Name = "Remarks")]
 		public string Remarks { get; set; }
 
+		[Display(Name = "Speaker")]
+		public string SpeakerName { get; set; }
 
-		
+		[Display(Name = "External Exhibitors")]
+		public string ExhibitorName { get; set; }
 
+		[Display(Name = "Proof of Approval")]
+		public string GetFileName { get; set; }
 	}
 
 	public class CreatePublicEventModel : PublicEventModel
 	{
 		public CreatePublicEventModel() { }
 
-		[Display(Name = "File")]
-		public IEnumerable<HttpPostedFileBase> DocumentEvent { get; set; }
-
+		//File
+		[Display(Name = "Proof of Approval")]
+		public HttpPostedFileBase DocumentEvent { get; set; }
 		[Display(Name = "File Name")]
-		public IEnumerable<string> FileName { get; set; }
-
+		public string FileName { get; set; }
 		[Display(Name = "File Description")]
-		public IEnumerable<string> FileDescription { get; set; }
-
+		public string FileDescription { get; set; }
 		[Display(Name = "Uploaded Date")]
-		public IEnumerable<DateTime> UploadedDate { get; set; }
-
+		public DateTime UploadedDate { get; set; }
 	}
 
 	public class EditPublicEventModel : PublicEventModel

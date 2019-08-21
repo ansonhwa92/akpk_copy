@@ -1,4 +1,5 @@
-﻿using FEP.Model;
+﻿using FEP.Helper;
+using FEP.Model;
 using FEP.WebApiModel;
 using System;
 using System.Collections.Generic;
@@ -25,13 +26,25 @@ namespace FEP.WebApi.Api.eEvent
 
 		public List<EventCategoryApiModel> Get()
 		{
-			var model = db.EventCategory.Where(i => i.Display).Select(i => new EventCategoryApiModel
+			var category = db.EventCategory.Where(i => i.Display).Select(i => new EventCategoryApiModel
 			{
 				Id = i.Id,
 				CategoryName = i.CategoryName
 			}).ToList();
 
-			return model;
+			return category;
+		}
+
+		[HttpPost]
+		public List<EventCategoryApiModel> GetTable(DataTableModel model)
+		{
+			var category = db.EventCategory.Where(u => u.Display).Select(s => new EventCategoryApiModel
+			{
+				Id = s.Id,
+				CategoryName = s.CategoryName
+			}).ToList();
+
+			return category;
 		}
 
 		public EventCategoryApiModel Get(int id)

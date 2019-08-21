@@ -25,7 +25,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[DataType(DataType.Date)]
 		[Display(Name = "Assigned Date")]
-		public DateTime DateAssigned { get; set; }
+		public DateTime? DateAssigned { get; set; }
 	}
 
 	public class CreateEventSpeakerModel : EventSpeakerModel
@@ -47,7 +47,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Required]
 		public int Id { get; set; }
-
 		public bool Display { get; set; }
 		public int? CreatedBy { get; set; }
 		public DateTime CreatedDate { get; set; }

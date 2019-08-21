@@ -143,9 +143,10 @@ namespace FEP.Model
 	{
 		[Key]
 		public int Id { get; set; }
+		public string Name { get; set; } //Option keyin name
 		public string Remark { get; set; }
 		public SpeakerType? SpeakerType { get; set; }
-		public DateTime DateAssigned { get; set; }
+		public DateTime? DateAssigned { get; set; }
 
 		public int? UserId { get; set; }
 		[ForeignKey("UserId")]
@@ -223,8 +224,8 @@ namespace FEP.Model
 		public int ContactNo { get; set; }
 		public string Address { get; set; }
 		public string Email { get; set; }
-		public DateTime Date { get; set; }
-		public DateTime Time { get; set; }
+		public DateTime? Date { get; set; }
+		public DateTime? Time { get; set; }
 		public string Location { get; set; }
 		public string Language { get; set; }
 		public string Topic { get; set; }

@@ -594,6 +594,7 @@
     <Content Include="Areas\eEvent\Views\EventCategory\Edit.cshtml" />
     <Content Include="Areas\eEvent\Views\EventCategory\Delete.cshtml" />
     <Content Include="Areas\eEvent\Views\EventCategory\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\PublicEvent\Create_SelectCategory.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

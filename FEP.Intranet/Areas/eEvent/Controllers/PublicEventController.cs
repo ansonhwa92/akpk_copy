@@ -22,6 +22,19 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View();
 		}
 
+		public ActionResult Create_SelectCategory(FilterEventCategoryModel filter)
+		{
+			var selectCategory = db.EventCategory.Where(i => i.Display).Select(i => new DetailsEventCategoryModel()
+			{
+				Id = i.Id,
+				CategoryName = i.CategoryName
+			}).ToList();
+
+			ListEventCategoryModel model = new ListEventCategoryModel(selectCategory);
+
+			return View(model);
+		}
+
 		public ActionResult List(FilterPublicEventModel filter)
 		{
 			var e = db.PublicEvent.Where(i => i.Display && (filter.EventTitle == filter.EventTitle))
@@ -86,11 +99,12 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 		// GET: PublicEvent/Create
-		public ActionResult Create()
+		public ActionResult Create(int? ctgryId)
 		{
 			CreatePublicEventModel model = new CreatePublicEventModel
 			{
 				EventStatus = EventStatus.New,
+				EventCategoryId = ctgryId,
 			};
 
 			var getcategory = db.EventCategory.Where(c => c.Display)
@@ -129,10 +143,59 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Remarks = model.Remarks,
 					CreatedBy = CurrentUser.UserId,
 					CreatedDate = DateTime.Now,
-					Display = true
+					Display = true,
+					
+				};
+				db.PublicEvent.Add(x);
+
+				if (model.SpeakerName != null)
+				{
+					EventSpeaker eventspeaker = new EventSpeaker
+					{
+						Name = model.SpeakerName,
+						CreatedDate = DateTime.Now,
+						CreatedBy = CurrentUser.UserId,
+						Display = true,
+						EventId = x.Id,
+						DateAssigned = DateTime.Now,
+						SpeakerType = SpeakerType.FEP
+					};
+					db.EventSpeaker.Add(eventspeaker);
 				};
 
-				db.PublicEvent.Add(x);
+				if (model.ExhibitorName != null)
+				{
+					EventExternalExhibitor externalExhibitor = new EventExternalExhibitor
+					{
+						Name = model.ExhibitorName,
+						Display = true,
+						EventId = x.Id,
+						CreatedDate = DateTime.Now,
+						CreatedBy = CurrentUser.UserId,
+						
+					};
+					db.EventExternalExhibitor.Add(externalExhibitor);
+				};
+
+				string path = "FileUploaded/";
+				if (model.DocumentEvent != null)
+				{
+					EventFile eventfile = new EventFile
+					{
+						FileDescription = model.FileDescription,
+						FileName = model.FileName,
+						FilePath = path,
+						UploadedDate = DateTime.Now,
+						Display = true,
+						CreatedBy = CurrentUser.UserId,
+						Category = FileCategory.NewFile,
+						EventId = x.Id,
+						
+					};
+
+					db.EventFile.Add(eventfile);
+				};
+
 				db.SaveChanges();
 
 				//LogActivity();
@@ -158,6 +221,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
+
 			var e = db.PublicEvent.Where(i => i.Id == id)
 				.Select(i => new EditPublicEventModel()
 				{
@@ -170,14 +234,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Fee = i.Fee,
 					ParticipantAllowed = i.ParticipantAllowed,
 					TargetedGroup = i.TargetedGroup,
-
 					EventStatus = i.EventStatus,
 					EventCategoryId = i.EventCategoryId,
 					EventCategoryName = i.EventCategory.CategoryName,
 					Reasons = i.Reasons,
 					Remarks = i.Remarks,
-
 					origin = origin,
+					SpeakerName = i.EventSpeakers.Select(s => s.Name).FirstOrDefault(),
+					ExhibitorName = i.EventExternalExhibitors.Select(s => s.Name).FirstOrDefault(),
+					GetFileName = i.EventFiles.Select(s => s.FileName).FirstOrDefault(),
 				}).FirstOrDefault();
 
 			if (e == null)

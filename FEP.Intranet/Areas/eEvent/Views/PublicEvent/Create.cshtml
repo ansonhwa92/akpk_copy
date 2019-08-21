@@ -41,6 +41,7 @@
 {
 	@Html.AntiForgeryToken()
 	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+	@Html.HiddenFor(model => model.EventCategoryId)
 	<div class="row">
 		<div class="col-xl-3 col-md-3 col-sm-4 my-2">
 			<div class="sidebar-left">
@@ -50,7 +51,7 @@
 						<li class="step-item complete">
 							<a href="" class="step-link">
 								<span class="step-number">1</span>
-								<span class="step-title">Create Event</span>
+								<span class="step-title">Select Event Category</span>
 							</a>
 						</li>
 						<li class="step-item active">
@@ -66,12 +67,12 @@
 								<span class="step-title">Fill Up Event Details</span>
 							</a>
 						</li> -->
-						<li class="step-item disabled">
+						@*<li class="step-item disabled">
 							<a href="" class="step-link">
 								<span class="step-number">3</span>
 								<span class="step-title">Event Verification Approval</span>
 							</a>
-						</li>
+						</li>*@
 					</ul>
 					<!-- End Steps -->
 				</div>
@@ -86,68 +87,72 @@
 							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.EventTitle, htmlAttributes: new { @class = "control-label col-md-12" })
 								<div class="col-md-12">
-									@Html.EditorFor(model => model.EventTitle, new { htmlAttributes = new { @class = "form-control" } })
+									@Html.EditorFor(model => model.EventTitle, new { htmlAttributes = new { @class = "form-control" , @placeholder = "Be clear and descriptive"} })
 									@Html.ValidationMessageFor(model => model.EventTitle, "", new { @class = "text-danger" })
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.EventObjective, htmlAttributes: new { @class = "control-label col-md-12" })
-								<div class="col-md-12">
-									@Html.EditorFor(model => model.EventObjective, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.EventObjective, "", new { @class = "text-danger" })
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-12" })
-								<div class="col-md-12">
-									@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
 								</div>
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-12" })
-								<div class="col-md-12">
-									@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+								@Html.LabelFor(model => model.EventObjective, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="col-lg-12">
+									@Html.EditorFor(model => model.EventObjective, new { htmlAttributes = new { @class = "form-control" } })
+									@Html.ValidationMessageFor(model => model.EventObjective, "", new { @class = "text-danger" })
 								</div>
 							</div>
 						</div>
+
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Venue, htmlAttributes: new { @class = "control-label col-md-12" })
-								<div class="col-md-12">
-									@Html.EditorFor(model => model.Venue, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="row col-lg-12">
+									<div class="col-lg-6">
+										@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start" } })
+										@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+									</div>
+									<div class="col-lg-6">
+										@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End" } })
+										@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.Venue, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="col-lg-12">
+									@Html.EditorFor(model => model.Venue, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
 									@Html.ValidationMessageFor(model => model.Venue, "", new { @class = "text-danger" })
 								</div>
 							</div>
 						</div>
+
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Fee, htmlAttributes: new { @class = "control-label col-md-12" })
-								<div class="col-md-12">
+								@Html.LabelFor(model => model.Fee, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="col-lg-12">
 									@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00" } })
 									@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
 								</div>
 							</div>
-						</div>
+						</div> 
+
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.ParticipantAllowed, htmlAttributes: new { @class = "control-label col-md-12" })
-								<div class="col-md-12">
-									@Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.LabelFor(model => model.ParticipantAllowed, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="col-lg-12">
+									@Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" } })
 									@Html.ValidationMessageFor(model => model.ParticipantAllowed, "", new { @class = "text-danger" })
 								</div>
 							</div>
+						</div>
+
+						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.TargetedGroup, htmlAttributes: new { @class = "control-label col-md-12" })
-								<div class="col-md-12">
+								@Html.LabelFor(model => model.TargetedGroup, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="col-lg-12">
 									@Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
 									@Html.ValidationMessageFor(model => model.TargetedGroup, "", new { @class = "text-danger" })
 								</div>
@@ -156,24 +161,71 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.EventCategoryId, htmlAttributes: new { @class = "control-label col-md-12" })
-								<div class="col-md-12">
-									@Html.DropDownListFor(model => model.EventCategoryId, Model.CategoryList, "-Select Category-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+								@Html.LabelFor(model => model.EventCategoryId, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="col-lg-12">
+									@Html.DropDownListFor(model => model.EventCategoryId, Model.CategoryList, "-Select Category-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%", disabled = "disabled" })
 									@Html.ValidationMessageFor(model => model.EventCategoryId, "", new { @class = "text-danger" })
 								</div>
 							</div>
 						</div>
+ 
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.ExhibitorName, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="col-lg-12">
+									@Html.EditorFor(model => model.ExhibitorName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Exhibitor" } })
+									@Html.ValidationMessageFor(model => model.ExhibitorName, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.SpeakerName, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="col-lg-12">
+									@Html.EditorFor(model => model.SpeakerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Speaker" } })
+									@Html.ValidationMessageFor(model => model.SpeakerName, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.DocumentEvent, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="col-lg-12">
+									@Html.TextBoxFor(model => model.DocumentEvent, "", new { type = "file", @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.DocumentEvent, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+
 
 						@*<div class="row">
-								<div class="form-group col-lg-12">
-									<label>Proof of Approval</label>
-									<div class="custom-file">
-										<input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-										<label class="custom-file-label" for="customFile">No file choosen</label>
-									</div>
-									<div id="fileList"></div>
-								</div>
-							</div>*@
+			<div class="form-group col-lg-12">
+				<label>Proof of Approval</label>
+				<div class="custom-file">
+					<input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
+					<label class="custom-file-label" for="customFile">No file choosen</label>
+				</div>
+				<div id="fileList"></div>
+			</div>
+		</div>*@
 
 					</div>
 				</form>
@@ -185,139 +237,4 @@
 			</div>
 		</div>
 	</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	@*<div class="row">
-			<div class="col-xs-12">
-				<div class="box box-info">
-					<div class="box-header"><h3 class="box-title">Create Public Event</h3></div>
-
-					<div class="form-horizontal">
-						<div class="box-body">
-							@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.EventTitle, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
-									@Html.EditorFor(model => model.EventTitle, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.EventTitle, "", new { @class = "text-danger" })
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.EventObjective, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
-									@Html.EditorFor(model => model.EventObjective, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.EventObjective, "", new { @class = "text-danger" })
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
-									@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
-									@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.Venue, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
-									@Html.EditorFor(model => model.Venue, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.Venue, "", new { @class = "text-danger" })
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.Fee, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
-									@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.ParticipantAllowed, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
-									@Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.ParticipantAllowed, "", new { @class = "text-danger" })
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.TargetedGroup, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
-									@Html.EditorFor(model => model.TargetedGroup, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.TargetedGroup, "", new { @class = "text-danger" })
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.EventStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
-									@Html.EnumDropDownListFor(model => model.EventStatus, "-Select Status-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @id = "mygranttypeid" })
-									@Html.ValidationMessageFor(model => model.EventStatus, "", new { @class = "text-danger" })
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.EventCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-4">
-									@Html.DropDownListFor(model => model.EventCategoryId, Model.CategoryList, "-Select Category-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
-									@Html.ValidationMessageFor(model => model.EventCategoryId, "", new { @class = "text-danger" })
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.Reasons, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
-									@Html.EditorFor(model => model.Reasons, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.Reasons, "", new { @class = "text-danger" })
-								</div>
-							</div>
-
-							<div class="form-group">
-								@Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
-									@Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
-								</div>
-							</div>
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-xs-12">
-				<a href='@Url.Action("List")' class="btn btn-warning">Cancel</a>
-				<button type="submit" class="btn btn-primary">Save</button>
-			</div>
-		</div>*@
 }

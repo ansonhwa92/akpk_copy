@@ -23,9 +23,9 @@
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item"><a href="#">e-Event</a></li>
+								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
 								<li class="breadcrumb-item"><a href="#">Internal Event</a></li>
-								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#">Event List</a></li>
 							</ol>
 						</nav>
 					</div>
@@ -53,7 +53,7 @@
 			</span>
 		</div>
 		<div class="showing-result px-3 py-2 mr-auto">Showing 1 - 6 of 2000 </div>
-		<div><a href='@Url.Action("Create", "PublicEvent", new { area = "eEvent"})' class="btn btn-secondary"><i class="fa fa-plus font-icon" style="font-size: 1.5rem;"></i>Create Event</a></div>
+		<div><a href='@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent"})' class="btn btn-secondary"><i class="fa fa-plus font-icon" style="font-size: 1.5rem;"></i>Create Event</a></div>
 	</div>
 	<!-- Table -->
 	<table class="table tableStyle1 tabledata">

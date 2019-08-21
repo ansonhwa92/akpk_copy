@@ -19,7 +19,7 @@ namespace FEP.Model
 		public string FileDescription { get; set; }
 		public FileCategory? Category { get; set; }
 
-		public DateTime UploadedDate { get; set; }
+		public DateTime? UploadedDate { get; set; }
 		public int? CreatedBy { get; set; }
 		public bool Display { get; set; }
 

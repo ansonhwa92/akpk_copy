@@ -22,6 +22,7 @@ namespace FEP.Model
         //user
         public DbSet<UserAccount> UserAccount { get; set; }
         public DbSet<ActivateAccount> ActivateAccount { get; set; }
+        public DbSet<PasswordReset> PasswordReset { get; set; }
         public DbSet<User> User { get; set; }
 
         public DbSet<CompanyProfile> CompanyProfile { get; set; }

@@ -247,7 +247,7 @@
     <value>Select Sector</value>
   </data>
   <data name="PlaceholderStateId" xml:space="preserve">
-    <value>Select State</value>
+    <value>State</value>
   </data>
   <data name="TextResetPassword" xml:space="preserve">
     <value>Enter your IC No. We'll send you an email with a link to reset your password.</value>
@@ -310,6 +310,6 @@
     <value>Please select Sector</value>
   </data>
   <data name="ValidRequiredStateId" xml:space="preserve">
-    <value>Please select State</value>
+    <value>Please enter State</value>
   </data>
 </root>

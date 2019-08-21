@@ -448,7 +448,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select State.
+        ///   Looks up a localized string similar to State.
         /// </summary>
         public static string PlaceholderStateId {
             get {
@@ -637,7 +637,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select State.
+        ///   Looks up a localized string similar to Please enter State.
         /// </summary>
         public static string ValidRequiredStateId {
             get {

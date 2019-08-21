@@ -198,6 +198,7 @@
     <Content Include="css\fonts\social-share-kit.svg" />
     <Content Include="css\jssocials.css" />
     <Content Include="css\login.css" />
+    <Content Include="css\select2.customSelectionAdapter.min.css" />
     <Content Include="css\select2.min.css" />
     <Content Include="css\slick-theme.css" />
     <Content Include="css\slick.css" />
@@ -432,6 +433,7 @@
     <Content Include="js\main.js" />
     <Content Include="js\rellax.min.js" />
     <Content Include="js\script-admin.js" />
+    <Content Include="js\select2.customSelectionAdapter.min.js" />
     <Content Include="js\select2.min.js" />
     <Content Include="js\slick.min.js" />
     <Content Include="lib\animate\animate.css" />
@@ -1007,6 +1009,13 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Views\Shared\_Layout1.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Views\Home\MyProfileCompany.cshtml" />
+    <Content Include="Views\Home\MyProfileIndividual.cshtml" />
+    <Content Include="Views\Home\EditProfileIndividual.cshtml" />
+    <Content Include="Views\Home\EditProfileCompany.cshtml" />
+    <Content Include="Views\Home\ChangePassword.cshtml" />
+    <Content Include="Views\Auth\ResetPassword.cshtml" />
+    <Content Include="Views\Auth\SetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

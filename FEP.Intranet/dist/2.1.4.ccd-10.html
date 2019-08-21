@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Event View</title>
+    <title>CCD Level</title>
     <!-- Favicons -->
     <link href="../img/favicon.png" rel="icon">
     <!-- Perfect Scrollbar -->
@@ -177,7 +177,7 @@
                             </ul>
                             <!-- Menu -->
                             <ul class="nav navbar-nav flex-nowrap dropdown-profile">
-                                <span class="badge badge-profile mt-2">Learner</span>
+                                <span class="badge badge-profile mt-2">CCD</span>
                                 <!-- User dropdown -->
                                 <li class="nav-item dropdown ml-1">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"><img src="assets/images/people/50/guy-6.jpg" alt="Avatar" class="rounded-circle rounded-color" width="40"><span class="dropdown-custom"><i class="fas fa-chevron-down"></i></span></a>
@@ -185,7 +185,7 @@
                                         <div class="card__author pt-0"><a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="assets/images/people/50/guy-6.jpg" alt="image"></span>
                                                 <span class="card__name-wrap">
                                                     <span class="card__author-name">Jones Smith</span>
-                                                    <span class="card__instructby">Learner</span>
+                                                    <span class="card__instructby">CCD</span>
                                                 </span>
                                             </a>
                                         </div>
@@ -310,13 +310,13 @@
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
                                     <li class="breadcrumb-item"><a href="#">e-Events</a></li>
-                                    <li class="breadcrumb-item"><a href="#">Create an Event</a></li>
+                                    <li class="breadcrumb-item"><a href="#">Event Request List</a></li>
                                     <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                                 </ol>
                             </nav>
                         </div>
-                        <h1 class="page-title text-white">2. Fill up Event Details</h1>
-                        <div class="header-text">Fill out your event details.</div>
+                        <h1 class="page-title text-white">Request Ref No: 1908/009</h1>
+                        <div class="header-text">&nbsp;</div>
                     </div>
                 </div>
             </div>
@@ -327,161 +327,288 @@
     <div class="content-container">
         <div class="container">
             <div class="row">
+                <!-- Start content leftbar -->
                 <div class="col-xl-3 col-md-3 col-sm-4 my-2">
-                    <div class="sidebar-left">
-                        <!-- Steps -->
-                        <div class="sidebar-inner sticky">
-                            <ul class="steps steps-vertical">
-                                <li class="step-item complete">
-                                    <a href="" class="step-link">
-                                        <span class="step-number">1</span>
-                                        <span class="step-title">Select Event Category</span>
-                                    </a>
-                                </li>
-                                <li class="step-item active">
-                                    <a href="" class="step-link">
-                                        <span class="step-number">2</span>
-                                        <span class="step-title">Fill Up Event Details</span>
-                                    </a>
-                                </li>
-                                <!-- rejected -->
-                                <!-- <li class="step-item rejected">
-                                    <a href="" class="step-link">
-                                        <span class="step-number">2</span>
-                                        <span class="step-title">Fill Up Event Details</span>
-                                    </a>
-                                </li> -->
-                                <li class="step-item disabled">
-                                    <a href="" class="step-link">
-                                        <span class="step-number">3</span>
-                                        <span class="step-title">Event Verification Approval</span>
-                                    </a>
-                                </li>
-                            </ul>
-                            <!-- End Steps -->
+                    <div id="page-nav" class="sidebar-left page-nav">
+                        <div data-perfect-scrollbar>
+                            <div class="page-section">
+                                <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> Request Information</h6>
+                                <ul class="nav page-nav__menu">
+                                    <li class="nav-item">
+                                        <a href="#invitation-details" data-toggle="tab" class="nav-link active">Invitation Details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#interview-details" data-toggle="tab" class="nav-link">Interview Details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#recommended" data-toggle="tab" class="nav-link">Recommended Rep. Details</a>
+                                    </li>
+                                </ul>
+                                <p>&nbsp;</p>
+                                <p><a class="btn btn-secondary" href="#">Submit for Verification</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- end content leftbar -->
                 <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
                     <!-- Start Form -->
-                    <div class="border-form rounded-top">
+                    <div class="border-form rounded">
                         <form>
-                            <div class="form-container">
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        <label>Event Title</label>
-                                        <input class="form-control" type="text" readonly="" value="Global Investing Made Simple (Kuala Lumpur) 24 Aug 2019">
-                                    </div>
+                            <div class="action-log">
+                                <h5 class="color-darkblue mr-auto mb-0"><i class="la la-comment color-secondary"></i>&nbsp;&nbsp;Action Log</h5>
+                                <p></p>
+                                <div class="border-form rounded mg-b-10">
+                                    <p class="small text-muted">15/08/2019<span class="fl-right">02:00 pm</span></p>
+                                    <p class="small"><span class="card__author-name color-darkblue">Elizabeth Tan</span><br>CCD Approval Result<br>- Approved</p>
+                                    <p class="small"><strong>Remarks:</strong> <em>Second representative is not available on the date but please double confirm with him.</em></p>
                                 </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        <label>Event Objective</label>
-                                        <div class="row lineItem">
-                                            <div class="col-lg-12">
-                                                <input class="form-control" type="text" readonly="" value="Get insights that has made Kathlyn Toh successful in the stock market.">
-                                            </div>
-                                        </div>
-                                        <div class="row lineItem">
-                                            <div class="col-lg-12">
-                                                <input class="form-control" type="text" readonly="" value="Multiply your return by 3 to 5 times using leverage, safely.">
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="border-form rounded mg-b-10">
+                                    <p class="small text-muted">12/08/2019<span class="fl-right">01:00 pm</span></p>
+                                    <p class="small"><span class="card__author-name color-darkblue">Mohd Hafiz Bin Dahari</span><br>created an event.</p>
                                 </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label>Event Date</label>
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <label class="x-small">Start Date</label>
-                                                <input type="text" class="form-control" readonly="" value="09 Sept 2019">
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <label class="x-small">End Date</label>
-                                                <input type="text" class="form-control" readonly="" value="11 Sept 2019">
-                                            </div>
+                            </div>
+                            <div class="form-container tab-content">
+                                <div class="tab-pane active" id="invitation-details">
+                                    <div class="tab-pane" id="setting1">
+                                        <div class="d-flex align-items-center mb-4 mt-2">
+                                            <h4 class="color-darkblue mr-auto mb-0">Invitation Details<br><span class="small">View event request details below.</span></h4>
+                                            <a class="btn btn-default btn-sm mw-auto" href="#"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        <label>Event Venue</label>
-                                        <textarea class="form-control" rows="4" readonly="" placeholder="Beyond Insight Training Center 
-100.6.001 (Level 6, Unit No 11), Block J, Jaya One 
-No:72 A, Jalan Universiti, 
-46200 Petaling Jaya Selangor."></textarea>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label>Event Fee (RM) per Person</label>
-                                        <input class="form-control" type="text" readonly="" value="50.00">
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <label>Number of Participants</label>
-                                        <input class="form-control" type="text" readonly="" value="1,000">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        <label class="d-block">Targeted Group</label>
-                                        <input class="form-control" type="text" readonly="" value="Business Management">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        <label>External Exhibitors</label>
-                                        <div class="row lineItem">
-                                            <div class="col-lg-12">
-                                                <input class="form-control" type="text" readonly="" value="Alaskan Railroad Corporation">
-                                            </div>
+                                    
+                                    <div class="row">
+                                        <div class="form-group col-lg-6">
+                                            <label for="reference_no">Reference No</label>
+                                            <input class="form-control" type="text" placeholder="1908/009">
                                         </div>
-                                        <div class="row lineItem">
-                                            <div class="col-lg-12">
-                                                <input class="form-control" type="text" readonly="" value="Ashe Converting Equipment Agency">
-                                            </div>
-                                        </div>
-                                        <div class="row lineItem">
-                                            <div class="col-lg-12">
-                                                <input class="form-control" type="text" readonly="" value="Hamamatsu Photenic Europe">
-                                            </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="status">Status</label>
+                                            <input class="form-control bg-warning-ccd" type="text" placeholder="Pending for verification">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        <label>Speaker</label>
-                                        <div class="row lineItem">
-                                            <div class="col-lg-12">
-                                                <input class="form-control" type="text" readonly="" value="Speaker 1">
-                                            </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-6">
+                                            <label for="reference_no">Education Process</label>
+                                            <input class="form-control" type="text" placeholder="Self-Directed Learning">
                                         </div>
-                                        <div class="row lineItem">
-                                            <div class="col-lg-12">
-                                                <input class="form-control" type="text" readonly="" value="Speaker 2">
-                                            </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="event_title">Event Category</label>
+                                            <input class="form-control" type="text" placeholder="Media Interview">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        <label>Proof of Approval</label>
-                                        <div class="list-file-container readonly">
-                                            <div id="fileList">
-                                                <ul></ul>
-                                                <li>test.pdf</li>
-                                                <li>test2.pdf</li>
-                                            </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                                <label for="event_title">Media Name</label>
+                                                <input class="form-control" type="text" placeholder="Global Investing Made Simple (Kuala Lumpur)">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                                <label for="event_title">Media Type</label>
+                                                <input class="form-control" type="text" placeholder="Newspaper">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-6">
+                                            <label for="reference_no">Contact Person</label>
+                                            <input class="form-control" type="text" placeholder="Azli Azami">
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="status">Contact Number</label>
+                                            <input class="form-control" type="text" placeholder="013-1234567">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                                <label for="event_title">Company Address</label>
+                                                <input class="form-control" type="text" placeholder="44, Jalan Utusan">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                                <input class="form-control" type="text" placeholder="Chan Sow Lin">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <input id="posscode" type="text" required="" class="form-control" placeholder="55200">
+                                        </div>
+                                        <div class="col">
+                                            <input id="city" type="text" required="" class="form-control" placeholder="Kuala Lumpur">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                                <input class="form-control" type="text" placeholder="Wilayah Persekutuan">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                                <label for="event_title">Email</label>
+                                                <input class="form-control" type="text" placeholder="azli@utusan.com.my">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                                <label for="event_title">Supporting Document</label>
+                                                <div class="list-file-container readonly">
+                                                    <div id="fileList">
+                                                        <ul></ul>
+                                                        <li>supporting-document.pdf</li>
+                                                    </div>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="tab-pane" id="interview-details">
+                                    <div class="tab-pane" id="setting1">
+                                        <div class="d-flex align-items-center mb-4 mt-2">
+                                            <h4 class="color-darkblue mr-auto mb-0">Interview Details<br><span class="small">View event request details below.</span></h4>
+                                            <a class="btn btn-default btn-sm mw-auto" href="#"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-7">
+                                            <label>Event Date</label>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <label>Start Date</label>
+                                                    <div class="dateSelect">
+                                                        <input type="text" class="form-control flatpickr-input ta-center" placeholder="09 Sept 2019" readonly="readonly">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="dateSelect">
+                                                        <label>End Date</label>
+                                                        <input type="text" class="form-control flatpickr-input ta-center" placeholder="10 Sept 2019" readonly="readonly">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                                <label for="event_title">Time</label>
+                                                <input class="form-control" type="text" placeholder="10:30 am" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-3">
+                                            <label>Language</label>
+                                            <input type="text" class="form-control flatpickr-input ta-center" readonly="readonly" value="English">
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label>&nbsp;</label>
+                                            <input type="text" class="form-control flatpickr-input ta-center" readonly="readonly" value="Bahasa">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                                <label for="event_title">Topic</label>
+                                                <input class="form-control" type="text" placeholder="Lorem ipsum" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="recommended">
+                                    <div class="tab-pane" id="setting1">
+                                        <div class="d-flex align-items-center mb-4 mt-2">
+                                            <h4 class="color-darkblue mr-auto mb-0">Recommended Rep. Details<br><span class="small">View event request details below.</span></h4>
+                                            <a class="btn btn-default btn-sm mw-auto" href="#"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                            <div class="card mb-3 readonly">
+                                                <ul class="list-group list-group-fit mb-0">
+                                                    <li class="list-group-item">
+                                                        <div class="media align-items-top">
+                                                            <div class="media-body">
+                                                                <span class="text-muted small">10074906</span>
+                                                                <span class="card__name-wrap">
+                                                                    <span class="card__author-name">Amalina binti Saad</span>
+                                                                    <span class="card__instructby">It Developer</span>
+                                                                </span>
+                                                            </div>
+                                                            <div class="media-right text-center d-flex align-items-center">
+                                                                <span class="badge badge-success px-3 py-2">Available</span>
+                                                            </div>
+                                                            <div class="media-right text-center d-flex align-items-center">
+                                                                <a href="#"><i class="la la-question color-darkblue"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="card mb-3 readonly">
+                                                <ul class="list-group list-group-fit mb-0">
+                                                    <li class="list-group-item">
+                                                        <div class="media align-items-top">
+                                                            <div class="media-body">
+                                                                <span class="text-muted small">10074906</span>
+                                                                <span class="card__name-wrap">
+                                                                    <span class="card__author-name">Nurul Fatonah binti Mior Azmi</span>
+                                                                    <span class="card__instructby">General Manager</span>
+                                                                </span>
+                                                            </div>
+                                                            <div class="media-right text-center d-flex align-items-center">
+                                                                <span class="badge badge-danger px-3 py-2">Unavailable</span>
+                                                            </div>
+                                                            <div class="media-right text-center d-flex align-items-center">
+                                                                <a href="#"><i class="la la-question color-darkblue"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <a class="btn btn-default btn-sm mw-auto" data-toggle="modal" data-target="#confirm-email">Send Confirmation Email</a>
+                                </div>
+
+                                <div class="modal fade" id="confirm-email" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <p class="small">Would you like to send confirmation emails to<br>recommended representatives?</p>
+                                            </div>
+                                            <div class="divider-border"></div>
+                                            <div class="m-4 text-center">
+                                                <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">No, not yet</button>
+                                                <button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#confirm-email-yes">Yes, please send</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="confirm-email-yes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img src="../img/icon-noti-email.svg" alt="image">
+                                                <h4 class="color-darkblue mt-4">Confirmation Email Sent</h4>
+                                                <p class="small">Your request has been sent.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    
+                                    
+                              
                             </div>
                         </form>
                         <!-- End Form -->
-                    </div>
-                    <div class="border-left border-right border-bottom p-3 rounded-bottom">
-                        <button class="btn btn-default mr-2">Back</button>
-                        <button class="btn btn-secondary" type="submit">Next</button>
                     </div>
                 </div>
             </div>

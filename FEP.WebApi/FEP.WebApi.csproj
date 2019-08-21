@@ -141,6 +141,7 @@
     <Compile Include="Api\eEvent\EventCategoryController.cs" />
     <Compile Include="Api\eEvent\MediaInterviewRequestController.cs" />
     <Compile Include="Api\eEvent\PublicEventController.cs" />
+    <Compile Include="Api\Home\ProfileController.cs" />
     <Compile Include="Api\RnP\PublicationController.cs" />
     <Compile Include="Api\RnP\ResearchController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -246,8 +247,8 @@
     <Folder Include="Views\Client\" />
     <Folder Include="Views\EventCategory\" />
     <Folder Include="Views\MediaInterviewRequest\" />
-    <Folder Include="Views\PublicEvent\" />
     <Folder Include="Views\Publication\" />
+    <Folder Include="Views\PublicEvent\" />
     <Folder Include="Views\Research\" />
   </ItemGroup>
   <ItemGroup>

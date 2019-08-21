@@ -41,13 +41,30 @@ namespace FEP.WebApi.Api.Administration
             return null;
         }
 
+        [Route("api/Auth/AuthenticatePassword")]
+        [HttpGet]
+        [ValidationActionFilter]
+        public bool AuthenticatePassword(int id, string Password)
+        {
+            var user = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
+
+            if (user != null)
+            {
+                if (Authentication.VerifyPassword(Password, user.HashPassword, user.Salt))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         [Route("api/Auth/RegisterIndividual")]
         [HttpPost]
         [ValidationActionFilter]
         public string RegisterIndividual([FromBody] RegisterIndividualModel model)
         {
 
-            //var password = Authentication.RandomString(10);
             Authentication.GeneratePassword(model.Password);
 
             var account = new UserAccount
@@ -96,7 +113,6 @@ namespace FEP.WebApi.Api.Administration
         public string RegisterAgency([FromBody] RegisterAgencyModel model)
         {
 
-            //var password = Authentication.RandomString(10);
             Authentication.GeneratePassword(model.Password);
 
             var account = new UserAccount
@@ -117,7 +133,7 @@ namespace FEP.WebApi.Api.Administration
                 Address2 = model.Address2,
                 City = model.City,
                 PostCode = model.PostCode,
-                StateId = model.StateId,
+                State = model.State,
                 CompanyPhoneNo = model.CompanyPhoneNo
             };
 
@@ -154,51 +170,147 @@ namespace FEP.WebApi.Api.Administration
 
         [Route("api/Auth/ActivateAccount")]
         [HttpPost]
+        [ValidationActionFilter]
         public bool ActivateAccount([FromBody] string UID)
         {
 
-            if (ModelState.IsValid)
+            var activateaccount = db.ActivateAccount.Where(m => m.UID == UID && m.IsActivate == false).FirstOrDefault();
+
+            if (activateaccount != null)
+            {
+                activateaccount.IsActivate = true;
+                activateaccount.ActivateDate = DateTime.Now;
+                db.ActivateAccount.Attach(activateaccount);
+                db.Entry(activateaccount).Property(e => e.IsActivate).IsModified = true;
+                db.Entry(activateaccount).Property(e => e.ActivateDate).IsModified = true;
+
+                UserAccount userAccount = new UserAccount()
+                {
+                    UserId = activateaccount.UserId,
+                    IsEnable = true
+                };
+
+                db.UserAccount.Attach(userAccount);
+                db.Entry(userAccount).Property(e => e.IsEnable).IsModified = true;
+
+                User user = new User
+                {
+                    Id = activateaccount.UserId,
+                    Display = true
+                };
+
+                db.User.Attach(user);
+                db.Entry(user).Property(e => e.Display).IsModified = true;
+
+                db.Configuration.ValidateOnSaveEnabled = false;
+
+                db.SaveChanges();
+
+                return true;
+
+            }
+
+            return false;
+
+        }
+
+        [Route("api/Auth/ResetPassword")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public ResetPasswordResponseModel ResetPassword([FromBody] ResetPasswordModel model)
+        {
+            //check email if exist.                
+            var user = db.User.Where(u => u.Email == model.Email).FirstOrDefault();
+
+            if (user != null)
+            {
+                db.PasswordReset.RemoveRange(db.PasswordReset.Where(x => x.UserId == user.Id && x.IsReset == false));
+                db.SaveChanges();
+
+                PasswordReset pwdreset = new PasswordReset
+                {
+                    UID = Authentication.RandomString(50, true),//random alphanumeric
+                    UserId = user.Id,
+                    CreatedDate = DateTime.Now,
+                    IsReset = false
+                };
+
+                db.PasswordReset.Add(pwdreset);
+                db.SaveChanges();
+
+                return new ResetPasswordResponseModel { Name = user.Name, UID = pwdreset.UID };
+            }
+
+            return null;
+
+        }
+
+
+        [Route("api/Auth/GetSetPassword")]
+        [HttpGet]
+        public SetPasswordModel GetSetPassword(string uid)
+        {
+
+            var pwdreset = db.PasswordReset.Where(m => m.UID == uid && m.IsReset == false).FirstOrDefault();
+            if (pwdreset != null)
+            {
+                var setpwd = new SetPasswordModel() { PasswordResetId = pwdreset.Id, UID = uid };
+                return setpwd;
+
+            }
+
+            return null;
+
+
+        }
+
+        [Route("api/Auth/SetPassword")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool SetPassword([FromBody] SetPasswordModel model)
+        {
+
+            var pwdreset = db.PasswordReset.Where(m => m.Id == model.PasswordResetId && m.UID == model.UID && m.IsReset == false).FirstOrDefault();
+
+            if (pwdreset != null)
             {
 
-                var activateaccount = db.ActivateAccount.Where(m => m.UID == UID && m.IsActivate == false).FirstOrDefault();
+                var user = db.UserAccount.Where(u => u.UserId == pwdreset.UserId).FirstOrDefault();
 
-                if (activateaccount != null)
+                if (user != null)
                 {
-                    activateaccount.IsActivate = true;
-                    activateaccount.ActivateDate = DateTime.Now;
-                    db.ActivateAccount.Attach(activateaccount);
-                    db.Entry(activateaccount).Property(e => e.IsActivate).IsModified = true;
-                    db.Entry(activateaccount).Property(e => e.ActivateDate).IsModified = true;
 
-                    UserAccount userAccount = new UserAccount()
-                    {
-                        UserId = activateaccount.UserId,
-                        IsEnable = true
-                    };
+                    //set password
+                    Authentication.GeneratePassword(model.Password);
 
-                    db.UserAccount.Attach(userAccount);
-                    db.Entry(userAccount).Property(e => e.IsEnable).IsModified = true;
+                    user.HashPassword = Authentication.HashPassword;
+                    user.Salt = Authentication.Salt;
 
-                    User user = new User
-                    {
-                        Id = activateaccount.UserId,
-                        Display = true
-                    };
+                    db.UserAccount.Attach(user);
+                    db.Entry(user).Property(e => e.HashPassword).IsModified = true;
+                    db.Entry(user).Property(e => e.Salt).IsModified = true;
 
-                    db.User.Attach(user);
-                    db.Entry(user).Property(e => e.Display).IsModified = true;
+                                       
+                    //update password reset
+                    pwdreset.IsReset = true;
+                    pwdreset.ResetDate = DateTime.Now;
+                    db.PasswordReset.Attach(pwdreset);
+                    db.Entry(pwdreset).Property(e => e.IsReset).IsModified = true;
+                    db.Entry(pwdreset).Property(e => e.ResetDate).IsModified = true;
 
                     db.Configuration.ValidateOnSaveEnabled = false;
-
                     db.SaveChanges();
 
                     return true;
 
                 }
+
             }
+
             return false;
 
 
         }
+
     }
 }

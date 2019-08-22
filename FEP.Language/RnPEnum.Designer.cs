@@ -19,7 +19,7 @@ namespace Language {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class RnPEnum {
@@ -120,6 +120,186 @@ namespace Language {
         public static string PubCategoryResearchPapers {
             get {
                 return ResourceManager.GetString("PubCategoryResearchPapers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approver 1 (HoD).
+        /// </summary>
+        public static string SurveyApprovalLevelApprover1 {
+            get {
+                return ResourceManager.GetString("SurveyApprovalLevelApprover1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approver 2 (GM).
+        /// </summary>
+        public static string SurveyApprovalLevelApprover2 {
+            get {
+                return ResourceManager.GetString("SurveyApprovalLevelApprover2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approver 3 (CEO).
+        /// </summary>
+        public static string SurveyApprovalLevelApprover3 {
+            get {
+                return ResourceManager.GetString("SurveyApprovalLevelApprover3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verifier (Manager).
+        /// </summary>
+        public static string SurveyApprovalLevelVerifier {
+            get {
+                return ResourceManager.GetString("SurveyApprovalLevelVerifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approved.
+        /// </summary>
+        public static string SurveyApprovalStatusApproved {
+            get {
+                return ResourceManager.GetString("SurveyApprovalStatusApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Reviewed.
+        /// </summary>
+        public static string SurveyApprovalStatusNone {
+            get {
+                return ResourceManager.GetString("SurveyApprovalStatusNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejected.
+        /// </summary>
+        public static string SurveyApprovalStatusRejected {
+            get {
+                return ResourceManager.GetString("SurveyApprovalStatusRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to eLearning Survey.
+        /// </summary>
+        public static string SurveyCategoryeLearning {
+            get {
+                return ResourceManager.GetString("SurveyCategoryeLearning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Survey.
+        /// </summary>
+        public static string SurveyCategoryEvent {
+            get {
+                return ResourceManager.GetString("SurveyCategoryEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Research Survey.
+        /// </summary>
+        public static string SurveyCategoryResearch {
+            get {
+                return ResourceManager.GetString("SurveyCategoryResearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actual Response.
+        /// </summary>
+        public static string SurveyResponseTypeActual {
+            get {
+                return ResourceManager.GetString("SurveyResponseTypeActual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Testing Response.
+        /// </summary>
+        public static string SurveyResponseTypeTesting {
+            get {
+                return ResourceManager.GetString("SurveyResponseTypeTesting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approved.
+        /// </summary>
+        public static string SurveyStatusApproved {
+            get {
+                return ResourceManager.GetString("SurveyStatusApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string SurveyStatusNew {
+            get {
+                return ResourceManager.GetString("SurveyStatusNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Published.
+        /// </summary>
+        public static string SurveyStatusPublished {
+            get {
+                return ResourceManager.GetString("SurveyStatusPublished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submitted for Approval.
+        /// </summary>
+        public static string SurveyStatusSubmitted {
+            get {
+                return ResourceManager.GetString("SurveyStatusSubmitted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted.
+        /// </summary>
+        public static string SurveyStatusTrashed {
+            get {
+                return ResourceManager.GetString("SurveyStatusTrashed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unpublished.
+        /// </summary>
+        public static string SurveyStatusUnpublished {
+            get {
+                return ResourceManager.GetString("SurveyStatusUnpublished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Public Survey.
+        /// </summary>
+        public static string SurveyTypePublic {
+            get {
+                return ResourceManager.GetString("SurveyTypePublic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Targeted Survey.
+        /// </summary>
+        public static string SurveyTypeTargeted {
+            get {
+                return ResourceManager.GetString("SurveyTypeTargeted", resourceCulture);
             }
         }
     }

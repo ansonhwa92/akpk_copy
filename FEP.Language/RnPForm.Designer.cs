@@ -322,6 +322,195 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string SurveyActive {
+            get {
+                return ResourceManager.GetString("SurveyActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approval Date.
+        /// </summary>
+        public static string SurveyApprovalApprovalDate {
+            get {
+                return ResourceManager.GetString("SurveyApprovalApprovalDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remarks.
+        /// </summary>
+        public static string SurveyApprovalRemarks {
+            get {
+                return ResourceManager.GetString("SurveyApprovalRemarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Require Next Level Approval.
+        /// </summary>
+        public static string SurveyApprovalRequireNext {
+            get {
+                return ResourceManager.GetString("SurveyApprovalRequireNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approval Status.
+        /// </summary>
+        public static string SurveyApprovalStatus {
+            get {
+                return ResourceManager.GetString("SurveyApprovalStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Module.
+        /// </summary>
+        public static string SurveyCategory {
+            get {
+                return ResourceManager.GetString("SurveyCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Survey Questions.
+        /// </summary>
+        public static string SurveyContents {
+            get {
+                return ResourceManager.GetString("SurveyContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Survey Description.
+        /// </summary>
+        public static string SurveyDescription {
+            get {
+                return ResourceManager.GetString("SurveyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Date.
+        /// </summary>
+        public static string SurveyEndDate {
+            get {
+                return ResourceManager.GetString("SurveyEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thumbnail.
+        /// </summary>
+        public static string SurveyPictures {
+            get {
+                return ResourceManager.GetString("SurveyPictures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proof of Approval.
+        /// </summary>
+        public static string SurveyProofOfApproval {
+            get {
+                return ResourceManager.GetString("SurveyProofOfApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Survey Answers.
+        /// </summary>
+        public static string SurveyResponseContents {
+            get {
+                return ResourceManager.GetString("SurveyResponseContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string SurveyResponseResponseDate {
+            get {
+                return ResourceManager.GetString("SurveyResponseResponseDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Date.
+        /// </summary>
+        public static string SurveyStartDate {
+            get {
+                return ResourceManager.GetString("SurveyStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string SurveyStatus {
+            get {
+                return ResourceManager.GetString("SurveyStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target Group.
+        /// </summary>
+        public static string SurveyTargetGroup {
+            get {
+                return ResourceManager.GetString("SurveyTargetGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template Name.
+        /// </summary>
+        public static string SurveyTemplate {
+            get {
+                return ResourceManager.GetString("SurveyTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Survey Title.
+        /// </summary>
+        public static string SurveyTitle {
+            get {
+                return ResourceManager.GetString("SurveyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Survey Type.
+        /// </summary>
+        public static string SurveyType {
+            get {
+                return ResourceManager.GetString("SurveyType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify a valid date.
+        /// </summary>
+        public static string ValidInvalidSurveyEndDate {
+            get {
+                return ResourceManager.GetString("ValidInvalidSurveyEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify a valid date.
+        /// </summary>
+        public static string ValidInvalidSurveyStartDate {
+            get {
+                return ResourceManager.GetString("ValidInvalidSurveyStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please specify Author.
         /// </summary>
         public static string ValidRequiredAuthor {
@@ -372,6 +561,150 @@ namespace Language {
         public static string ValidRequiredRemarks {
             get {
                 return ResourceManager.GetString("ValidRequiredRemarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify approval date.
+        /// </summary>
+        public static string ValidRequiredSurveyApprovalApprovalDate {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyApprovalApprovalDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Remarks.
+        /// </summary>
+        public static string ValidRequiredSurveyApprovalRemarks {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyApprovalRemarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select Status.
+        /// </summary>
+        public static string ValidRequiredSurveyApprovalStatus {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyApprovalStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select Module.
+        /// </summary>
+        public static string ValidRequiredSurveyCategory {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify some questions.
+        /// </summary>
+        public static string ValidRequiredSurveyContents {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Survey Description.
+        /// </summary>
+        public static string ValidRequiredSurveyDescription {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify End Date.
+        /// </summary>
+        public static string ValidRequiredSurveyEndDate {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please upload Survey thumbnail.
+        /// </summary>
+        public static string ValidRequiredSurveyPictures {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyPictures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please upload Proof Of Approval.
+        /// </summary>
+        public static string ValidRequiredSurveyProofOfApproval {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyProofOfApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please complete the Survey.
+        /// </summary>
+        public static string ValidRequiredSurveyResponseContents {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyResponseContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify response date.
+        /// </summary>
+        public static string ValidRequiredSurveyResponseResponseDate {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyResponseResponseDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify Start Date.
+        /// </summary>
+        public static string ValidRequiredSurveyStartDate {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please indicate Target Group(s).
+        /// </summary>
+        public static string ValidRequiredSurveyTargetGroup {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyTargetGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify Template name.
+        /// </summary>
+        public static string ValidRequiredSurveyTemplate {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Survey Title.
+        /// </summary>
+        public static string ValidRequiredSurveyTitle {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select Survey Type.
+        /// </summary>
+        public static string ValidRequiredSurveyType {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyType", resourceCulture);
             }
         }
         

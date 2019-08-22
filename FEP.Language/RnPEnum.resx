@@ -138,4 +138,64 @@
   <data name="PubCategoryResearchPapers" xml:space="preserve">
     <value>Research Papers</value>
   </data>
+  <data name="SurveyApprovalLevelApprover1" xml:space="preserve">
+    <value>Approver 1 (HoD)</value>
+  </data>
+  <data name="SurveyApprovalLevelApprover2" xml:space="preserve">
+    <value>Approver 2 (GM)</value>
+  </data>
+  <data name="SurveyApprovalLevelApprover3" xml:space="preserve">
+    <value>Approver 3 (CEO)</value>
+  </data>
+  <data name="SurveyApprovalLevelVerifier" xml:space="preserve">
+    <value>Verifier (Manager)</value>
+  </data>
+  <data name="SurveyApprovalStatusApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="SurveyApprovalStatusNone" xml:space="preserve">
+    <value>Not Reviewed</value>
+  </data>
+  <data name="SurveyApprovalStatusRejected" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
+  <data name="SurveyCategoryeLearning" xml:space="preserve">
+    <value>eLearning Survey</value>
+  </data>
+  <data name="SurveyCategoryEvent" xml:space="preserve">
+    <value>Event Survey</value>
+  </data>
+  <data name="SurveyCategoryResearch" xml:space="preserve">
+    <value>Research Survey</value>
+  </data>
+  <data name="SurveyResponseTypeActual" xml:space="preserve">
+    <value>Actual Response</value>
+  </data>
+  <data name="SurveyResponseTypeTesting" xml:space="preserve">
+    <value>Testing Response</value>
+  </data>
+  <data name="SurveyStatusApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="SurveyStatusNew" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="SurveyStatusPublished" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="SurveyStatusSubmitted" xml:space="preserve">
+    <value>Submitted for Approval</value>
+  </data>
+  <data name="SurveyStatusTrashed" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="SurveyStatusUnpublished" xml:space="preserve">
+    <value>Unpublished</value>
+  </data>
+  <data name="SurveyTypePublic" xml:space="preserve">
+    <value>Public Survey</value>
+  </data>
+  <data name="SurveyTypeTargeted" xml:space="preserve">
+    <value>Targeted Survey</value>
+  </data>
 </root>

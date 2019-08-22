@@ -259,8 +259,16 @@
                     <div class="container">
                         <div class="navbar-collapse collapse main-menu-dropdown">
                             <ul class="nav navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User & Role Management</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item active" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                    </div>
+                                </li>
                                 <li class="nav-item dropdown active">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Events</a>
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Event Management</a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item active" href="#">Menu 1</a>
                                         <a class="dropdown-item" href="#">Menu 2</a>
@@ -268,18 +276,15 @@
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Research & Publications</a>
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">R&P Management</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Menu 1</a>
-                                        <a class="dropdown-item" href="#">Menu 2</a>
-                                        <a class="dropdown-item" href="#">Menu 3</a>
-                                        <a class="dropdown-item" href="#">Menu 4</a>
-                                        <a class="dropdown-item" href="#">Menu 5</a>
-                                        <a class="dropdown-item" href="#">Menu 6</a>
+                                        <a class="dropdown-item" href="~/RnP/Publication"><i class="la la-search color-secondary font-icon"></i>Browse Publications</a>
+                                        <a class="dropdown-item" href="~/RnP/Survey"><i class="la la-search color-secondary font-icon"></i>Browse Surveys</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-user color-secondary font-icon"></i>Financial HealthCheck</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Learning</a>
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Learning Management</a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#"><i class="la la-search color-secondary font-icon"></i>Browse Courses</a>
                                         <a class="dropdown-item" href="#"><i class="la la-user color-secondary font-icon"></i>Instructors</a>
@@ -289,7 +294,16 @@
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Administration</a>
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Reports</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                        <a class="dropdown-item" href="#">Menu 4</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">System Settings</a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="@Url.Action("Index", "User", new { area = "Administrator" })">User</a>
                                         <a class="dropdown-item" href="#">Role Access</a>
@@ -298,6 +312,7 @@
                                         <a class="dropdown-item" href="#">Account Setting</a>
                                     </div>
                                 </li>
+                                <!--
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Online booking System</a>
                                     <div class="dropdown-menu">
@@ -316,6 +331,7 @@
                                         <a class="dropdown-item" href="#">Menu 4</a>
                                     </div>
                                 </li>
+                                -->
                             </ul>
                         </div>
                         <button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">

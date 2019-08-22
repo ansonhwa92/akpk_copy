@@ -25,6 +25,7 @@ namespace FEP.WebApiModel
         public float HPrice { get; set; }
         public float DPrice { get; set; }
         public float HDPrice { get; set; }
+        //public string Pictures { get; set; }
         public string ProofOfApproval { get; set; }
         public int StockBalance { get; set; }
         public string WithdrawalReason { get; set; }

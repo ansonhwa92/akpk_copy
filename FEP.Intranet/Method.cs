@@ -15,7 +15,7 @@ namespace FEP.Intranet
 {
     public static class WepApiMethod
     {
-        
+
         public static async Task<WebApiResponse<T>> SendApiAsync<T>(HttpVerbs httpVerbs, string requestURI, object obj = null)
         {
             var url = GetWebApiUrl();
@@ -48,7 +48,7 @@ namespace FEP.Intranet
                     if (httpVerbs == HttpVerbs.Post)
                     {
                         var content = new StringContent(payload, Encoding.UTF8, "application/json");
-                        response = await client.PostAsJsonAsync(requestURI, content);
+                        response = await client.PostAsync(requestURI, content);
                     }
                     else if (httpVerbs == HttpVerbs.Get)
                     {
@@ -57,13 +57,13 @@ namespace FEP.Intranet
                     else if (httpVerbs == HttpVerbs.Put)
                     {
                         var content = new StringContent(payload, Encoding.UTF8, "application/json");
-                        response = await client.PutAsJsonAsync(requestURI, content);
+                        response = await client.PutAsync(requestURI, content);
                     }
                     else if (httpVerbs == HttpVerbs.Delete)
                     {
                         response = await client.DeleteAsync(requestURI);
                     }
-                    
+
                     if (response.IsSuccessStatusCode)
                     {
                         result = await response.Content.ReadAsAsync<T>();

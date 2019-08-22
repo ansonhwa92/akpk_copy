@@ -67,6 +67,10 @@
     <Compile Include="Migrations\201908160925101_FM2.Designer.cs">
       <DependentUpon>201908160925101_FM2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908181324313_FM.cs" />
+    <Compile Include="Migrations\201908181324313_FM.Designer.cs">
+      <DependentUpon>201908181324313_FM.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
@@ -95,6 +99,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908160925101_FM2.resx">
       <DependentUpon>201908160925101_FM2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908181324313_FM.resx">
+      <DependentUpon>201908181324313_FM.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

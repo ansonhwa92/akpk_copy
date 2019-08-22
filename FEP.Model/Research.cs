@@ -14,7 +14,7 @@ namespace FEP.Model
     {
         [Key]
         public int ID { get; set; }
-        public SurveyType Type { get; set; }
+        public SurveyType? Type { get; set; }
         public SurveyCategory Category { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -22,7 +22,9 @@ namespace FEP.Model
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Contents { get; set; }
+        public string Template { get; set; }
         public bool Active { get; set; }
+        public string Pictures { get; set; }
         public string ProofOfApproval { get; set; }         // uploaded proof of approval
         // non-key in data
         public DateTime DateAdded { get; set; }
@@ -65,45 +67,65 @@ namespace FEP.Model
 
     public enum SurveyType
     {
+        [Display(Name = "SurveyTypePublic", ResourceType = typeof(Language.RnPEnum))]
         Public,
+        [Display(Name = "SurveyTypeTargeted", ResourceType = typeof(Language.RnPEnum))]
         Targeted
     }
 
     public enum SurveyCategory
     {
+        [Display(Name = "SurveyCategoryResearch", ResourceType = typeof(Language.RnPEnum))]
         Research,
+        [Display(Name = "SurveyCategoryeLearning", ResourceType = typeof(Language.RnPEnum))]
         eLearning,
+        [Display(Name = "SurveyCategoryEvent", ResourceType = typeof(Language.RnPEnum))]
         Event
     }
 
     public enum SurveyStatus
     {
+        [Display(Name = "SurveyStatusNew", ResourceType = typeof(Language.RnPEnum))]
         New,
+        [Display(Name = "SurveyStatusSubmitted", ResourceType = typeof(Language.RnPEnum))]
         Submitted,
+        [Display(Name = "SurveyStatusApproved", ResourceType = typeof(Language.RnPEnum))]
         Approved,
+        [Display(Name = "SurveyStatusPublished", ResourceType = typeof(Language.RnPEnum))]
         Published,
+        [Display(Name = "SurveyStatusUnpublished", ResourceType = typeof(Language.RnPEnum))]
         Unpublished,
+        [Display(Name = "SurveyStatusTrashed", ResourceType = typeof(Language.RnPEnum))]
         Trashed
     }
 
     public enum SurveyApprovalLevels
     {
+        [Display(Name = "SurveyApprovalLevelVerifier", ResourceType = typeof(Language.RnPEnum))]
         Verifier,
+        [Display(Name = "SurveyApprovalLevelApprover1", ResourceType = typeof(Language.RnPEnum))]
         Approver1,
+        [Display(Name = "SurveyApprovalLevelApprover2", ResourceType = typeof(Language.RnPEnum))]
         Approver2,
+        [Display(Name = "SurveyApprovalLevelApprover3", ResourceType = typeof(Language.RnPEnum))]
         Approver3
     }
 
     public enum SurveyApprovalStatus
     {
+        [Display(Name = "SurveyApprovalStatusNone", ResourceType = typeof(Language.RnPEnum))]
         None,
+        [Display(Name = "SurveyApprovalStatusApproved", ResourceType = typeof(Language.RnPEnum))]
         Approved,
+        [Display(Name = "SurveyApprovalStatusRejected", ResourceType = typeof(Language.RnPEnum))]
         Rejected
     }
 
     public enum SurveyResponseTypes
     {
+        [Display(Name = "SurveyResponseTypeActual", ResourceType = typeof(Language.RnPEnum))]
         Actual,
+        [Display(Name = "SurveyResponseTypeTesting", ResourceType = typeof(Language.RnPEnum))]
         Testing
     }
 

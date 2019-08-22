@@ -50,6 +50,7 @@ namespace FEP.Model
         public float DPrice { get; set; }
         [Display(Name = "PubHDPrice", ResourceType = typeof(Language.RnPForm))]
         public float HDPrice { get; set; }
+        //public string Pictures { get; set; }
         [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
         public string ProofOfApproval { get; set; }         // uploaded proof of approval
         [Display(Name = "PubStockBalance", ResourceType = typeof(Language.RnPForm))]

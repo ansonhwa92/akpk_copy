@@ -131,6 +131,12 @@
                     dateFormat: "j M y",
                     wrap: true
                 });
+
+                $(".timeSelect").flatpickr({
+                    enableTime: true,
+                    noCalendar: true,
+                    dateFormat: "H:i"
+                });
             },
 
             //for add more event objective
@@ -184,6 +190,23 @@
 
             },
 
+            addLanguage: function() {
+                var languagehtml = $("#addlanguage").html();
+                var btnAddLanguage = $('#btnAddlanguage');
+
+                btnAddLanguage.click(function() {
+                    $("#addlanguage").append(languagehtml);
+                });
+
+                $("#addlanguage .lineItem").remove();
+                $('#addlanguage').on("click", ".deleteItem", function() {
+                    $(this).closest(".lineItem").remove();
+                    // console.log($(this));
+                    return;
+                });
+
+            },
+
             //list file browse input
             updateList: function() {
                 var input = document.getElementById('inputfile');
@@ -209,7 +232,20 @@
                         $('.filter.dropdown').removeClass('open');
                     }
                 });
+            },
+
+            //select event category list
+            selectCategoryEvent: function() {
+                var boxEvent = $("#selecteventcategory .card");
+
+                boxEvent.click(function() {
+                    $("#selecteventcategory .box-contain .card").removeClass('active');
+                    $(this).addClass('active');
+                }); 
+
             }
+
+           
 
 
         };
@@ -223,12 +259,13 @@
         akpk.addButton();
         akpk.addEe();
         akpk.addSpeaker();
+        akpk.addLanguage();
         akpk.updateList();
         akpk.filter();
+        akpk.selectCategoryEvent();
+       
 
     });
-
-
 
 
 })(jQuery);

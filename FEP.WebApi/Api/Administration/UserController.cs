@@ -1,7 +1,9 @@
 ﻿using FEP.Model;
 using FEP.WebApiModel.Administration;
+using FEP.WebApiModel.Home;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -79,8 +81,6 @@ namespace FEP.WebApi.Api.Administration
         public HttpResponseMessage Post([FromBody]string value)
         {
 
-
-
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
             return response;
         }
@@ -114,5 +114,8 @@ namespace FEP.WebApi.Api.Administration
             return false;
             
         }
+
+        
+
     }
 }

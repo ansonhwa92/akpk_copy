@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using FEP.Helper;
 
-
 namespace FEP.WebApi.Controllers
 {
     public class AuthController : FEPController

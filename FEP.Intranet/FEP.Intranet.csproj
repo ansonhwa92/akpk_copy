@@ -151,19 +151,20 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
     <Compile Include="Areas\Administrator\Controllers\CompanyController.cs" />
+    <Compile Include="Areas\Administrator\Controllers\IndividualController.cs" />
     <Compile Include="Areas\Administrator\Controllers\SectorController.cs" />
     <Compile Include="Areas\Administrator\Controllers\StaffController.cs" />
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
     <Compile Include="Areas\Administrator\Models\Company.cs" />
     <Compile Include="Areas\Administrator\Models\Staff.cs" />
     <Compile Include="Areas\Administrator\Models\User.cs" />
+    <Compile Include="Areas\eEvent\Controllers\EventCategoryController.cs" />
     <Compile Include="Areas\eEvent\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\eEventAreaRegisteration.cs" />
+    <Compile Include="Areas\eEvent\Models\EventCategory.cs" />
     <Compile Include="Areas\eLearning\Controllers\HomeController.cs" />
-    <Compile Include="Areas\eEvent\Controllers\EventObjectiveController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventSpeakerController.cs" />
     <Compile Include="Areas\eEvent\Controllers\ExternalExhibitorController.cs" />
-    <Compile Include="Areas\eEvent\Models\EventObjective.cs" />
     <Compile Include="Areas\eEvent\Models\EventSpeaker.cs" />
     <Compile Include="Areas\eEvent\Models\ExternalExhibitor.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
@@ -199,6 +200,7 @@
     <Content Include="css\fonts\social-share-kit.svg" />
     <Content Include="css\jssocials.css" />
     <Content Include="css\login.css" />
+    <Content Include="css\select2.customSelectionAdapter.min.css" />
     <Content Include="css\select2.min.css" />
     <Content Include="css\slick-theme.css" />
     <Content Include="css\slick.css" />
@@ -337,6 +339,10 @@
     <Content Include="dist\assets\js\vector-maps.js" />
     <Content Include="dist\assets\vendor\bootstrap.min.js" />
     <Content Include="dist\assets\vendor\Chart.min.js" />
+    <Content Include="dist\assets\vendor\datatables.css" />
+    <Content Include="dist\assets\vendor\datatables.js" />
+    <Content Include="dist\assets\vendor\datatables.min.css" />
+    <Content Include="dist\assets\vendor\datatables.min.js" />
     <Content Include="dist\assets\vendor\dom-factory.js" />
     <Content Include="dist\assets\vendor\dragula\dragula.min.css" />
     <Content Include="dist\assets\vendor\dragula\dragula.min.js" />
@@ -433,6 +439,7 @@
     <Content Include="js\main.js" />
     <Content Include="js\rellax.min.js" />
     <Content Include="js\script-admin.js" />
+    <Content Include="js\select2.customSelectionAdapter.min.js" />
     <Content Include="js\select2.min.js" />
     <Content Include="js\slick.min.js" />
     <Content Include="lib\animate\animate.css" />
@@ -566,16 +573,11 @@
     <Content Include="lib\typeahead.js-master\test\ci" />
     <Content Include="lib\typeahead.js-master\typeahead.js.jquery.json" />
     <Content Include="Areas\eEvent\Views\Home\Index.cshtml" />
-    <Content Include="Areas\eEvent\Views\EventObjective\List.cshtml" />
     <Content Include="Areas\eEvent\Views\EventSpeaker\List.cshtml" />
     <Content Include="Areas\eEvent\Views\EventSpeaker\Details.cshtml" />
     <Content Include="Areas\eEvent\Views\EventSpeaker\Create.cshtml" />
     <Content Include="Areas\eEvent\Views\EventSpeaker\Edit.cshtml" />
     <Content Include="Areas\eEvent\Views\EventSpeaker\Delete.cshtml" />
-    <Content Include="Areas\eEvent\Views\EventObjective\Details.cshtml" />
-    <Content Include="Areas\eEvent\Views\EventObjective\Create.cshtml" />
-    <Content Include="Areas\eEvent\Views\EventObjective\Edit.cshtml" />
-    <Content Include="Areas\eEvent\Views\EventObjective\Delete.cshtml" />
     <Content Include="Areas\RnP\Views\web.config" />
     <Content Include="Areas\RnP\Views\_ViewStart.cshtml" />
     <Content Include="Areas\RnP\Views\Shared\_Layout.cshtml" />
@@ -588,6 +590,17 @@
     <Content Include="Areas\RnP\Views\Survey\Details.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Create.cshtml" />
     <Content Include="Areas\RnP\Views\Home\Index.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExternalExhibitor\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExternalExhibitor\Details.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExternalExhibitor\Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExternalExhibitor\Edit.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExternalExhibitor\Delete.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventCategory\Details.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventCategory\Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventCategory\Edit.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventCategory\Delete.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventCategory\List.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\List.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Edit.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Delete.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
@@ -1004,6 +1017,14 @@
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Views\Shared\_Layout1.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Views\Home\MyProfileCompany.cshtml" />
+    <Content Include="Views\Home\MyProfileIndividual.cshtml" />
+    <Content Include="Views\Home\EditProfileIndividual.cshtml" />
+    <Content Include="Views\Home\EditProfileCompany.cshtml" />
+    <Content Include="Views\Home\ChangePassword.cshtml" />
+    <Content Include="Views\Auth\ResetPassword.cshtml" />
+    <Content Include="Views\Auth\SetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1011,11 +1032,11 @@
     <Folder Include="Areas\Administrator\Views\Sector\" />
     <Folder Include="Areas\Administrator\Views\Staff\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
-    <Folder Include="Areas\eEvent\Views\ExternalExhibitor\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Areas\eLearning\Models\" />
     <Folder Include="Areas\eLearning\Views\Shared\" />
     <Folder Include="bin\" />
+    <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -21,21 +21,21 @@ namespace FEP.Model
 		Public
 	}
 
-	public enum EventCategory
-	{
-		[Display(Name = "")]
-		Workshop,
-		[Display(Name = "")]
-		Seminar,
-		[Display(Name = "")]
-		Dialogue,
-		[Display(Name = "")]
-		Conference,
-		[Display(Name = "")]
-		Symposium,
-		[Display(Name = "")]
-		Convention
-	}
+	//public enum EventCategory
+	//{
+	//	[Display(Name = "")]
+	//	Workshop,
+	//	[Display(Name = "")]
+	//	Seminar,
+	//	[Display(Name = "")]
+	//	Dialogue,
+	//	[Display(Name = "")]
+	//	Conference,
+	//	[Display(Name = "")]
+	//	Symposium,
+	//	[Display(Name = "")]
+	//	Convention
+	//}
 
 	public enum EventStatus
 	{

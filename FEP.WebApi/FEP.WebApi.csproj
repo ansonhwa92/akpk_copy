@@ -134,9 +134,15 @@
   <ItemGroup>
     <Compile Include="Api\Administration\AuthController.cs" />
     <Compile Include="Api\Administration\CompanyController.cs" />
+    <Compile Include="Api\Administration\IndividualController.cs" />
     <Compile Include="Api\Administration\SectorController.cs" />
     <Compile Include="Api\Administration\StaffController.cs" />
+    <Compile Include="Api\Administration\StateController.cs" />
     <Compile Include="Api\Administration\UserController.cs" />
+    <Compile Include="Api\eEvent\EventCategoryController.cs" />
+    <Compile Include="Api\eEvent\MediaInterviewRequestController.cs" />
+    <Compile Include="Api\eEvent\PublicEventController.cs" />
+    <Compile Include="Api\Home\ProfileController.cs" />
     <Compile Include="Api\RnP\PublicationController.cs" />
     <Compile Include="Api\RnP\SurveyController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -171,7 +177,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="ActionFilter.cs" />
+    <Compile Include="Filter.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -236,12 +242,14 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Api\eEvent\" />
     <Folder Include="App_Data\" />
     <Folder Include="bin\" />
     <Folder Include="Views\Auth\" />
     <Folder Include="Views\Client\" />
+    <Folder Include="Views\EventCategory\" />
+    <Folder Include="Views\MediaInterviewRequest\" />
     <Folder Include="Views\Publication\" />
+    <Folder Include="Views\PublicEvent\" />
     <Folder Include="Views\Research\" />
     <Folder Include="Views\Survey\" />
   </ItemGroup>

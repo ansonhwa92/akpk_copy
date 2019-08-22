@@ -22,6 +22,7 @@ namespace FEP.Model
         //user
         public DbSet<UserAccount> UserAccount { get; set; }
         public DbSet<ActivateAccount> ActivateAccount { get; set; }
+        public DbSet<PasswordReset> PasswordReset { get; set; }
         public DbSet<User> User { get; set; }
 
         public DbSet<CompanyProfile> CompanyProfile { get; set; }
@@ -107,7 +108,7 @@ namespace FEP.Model
         public DbSet<SurveyApproval> SurveyApproval { get; set; }
         public DbSet<SurveyResponse> SurveyResponse { get; set; }
 		//eEvent
-		public DbSet<PublicEvent> PublicEvent { get; set; }
+		public DbSet<PublicEvent> PublicEvent { get; set; } 
 		public DbSet<EventCalendar> EventCalendar { get; set; }
 		public DbSet<EventAgenda> EventAgenda { get; set; }
 		public DbSet<EventSpeaker> EventSpeaker { get; set; }
@@ -124,7 +125,8 @@ namespace FEP.Model
 		public DbSet<EventExhibitionRequest> EventExhibitionRequest { get; set; }
 		public DbSet<EventFile> EventFile { get; set; }
 		public DbSet<EventExternalExhibitor> EventExternalExhibitor { get; set; }
-		public DbSet<EventObjective> EventObjective { get; set; }
+		//public DbSet<EventObjective> EventObjective { get; set; }
+		public DbSet<EventCategory> EventCategory { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

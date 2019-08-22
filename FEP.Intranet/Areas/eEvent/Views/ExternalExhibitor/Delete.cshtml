@@ -1,7 +1,7 @@
-﻿@model FEP.Intranet.Areas.eEvent.Models.DeleteEventObjectiveModel
+﻿@model FEP.Intranet.Areas.eEvent.Models.DeleteExternalExhibitorModel
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Event External Exhibitor";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,12 +9,11 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>DeleteEventObjectiveModel</h4>
+    <h4>DeleteExternalExhibitorModel</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>@Html.DisplayNameFor(model => model.ObjectiveTitle)</dt>
-        <dd>@Html.DisplayFor(model => model.ObjectiveTitle)</dd>
-
+        <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd>@Html.DisplayFor(model => model.Name)</dd>
     </dl>
 
     @using (Html.BeginForm()) {
@@ -22,7 +21,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to List", "List")
         </div>
     }
 </div>

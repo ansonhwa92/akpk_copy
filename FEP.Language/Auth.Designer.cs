@@ -187,7 +187,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Company Phne No.
+        ///   Looks up a localized string similar to Company Phone No.
         /// </summary>
         public static string FieldCompanyPhoneNo {
             get {
@@ -196,7 +196,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Company Regstration No.
+        ///   Looks up a localized string similar to Company Registration No.
         /// </summary>
         public static string FieldCompanyRegNo {
             get {
@@ -448,7 +448,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select State.
+        ///   Looks up a localized string similar to State.
         /// </summary>
         public static string PlaceholderStateId {
             get {
@@ -547,6 +547,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter Company Regstration No.
+        /// </summary>
+        public static string ValidRequiredCompanyRegNo {
+            get {
+                return ResourceManager.GetString("ValidRequiredCompanyRegNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter Email.
         /// </summary>
         public static string ValidRequiredEmail {
@@ -610,7 +619,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter Retype Password.
+        ///   Looks up a localized string similar to Please Retype Password.
         /// </summary>
         public static string ValidRequiredRetypePassword {
             get {
@@ -628,7 +637,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select State.
+        ///   Looks up a localized string similar to Please enter State.
         /// </summary>
         public static string ValidRequiredStateId {
             get {

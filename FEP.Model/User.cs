@@ -60,6 +60,21 @@ namespace FEP.Model
         public virtual User User { get; set; }
     }
 
+    [Table("PasswordReset")]
+    public class PasswordReset
+    {
+        [Key]
+        public int Id { get; set; }
+        public string UID { get; set; }
+        public int UserId { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public bool IsReset { get; set; }
+        public DateTime? ResetDate { get; set; }
+
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
+    }
+
     [Table("CompanyProfile")]
     public class CompanyProfile
     {
@@ -72,13 +87,13 @@ namespace FEP.Model
         public string Address2 { get; set; }
         public string PostCode { get; set; }
         public string City { get; set; }
-        public int StateId { get; set; }
+        public string State { get; set; }
         public string CompanyPhoneNo { get; set; }
 
         public virtual User User { get; set; }
 
-        [ForeignKey("StateId")]
-        public virtual State State { get; set; }
+        //[ForeignKey("StateId")]
+        //public virtual State State { get; set; }
 
         [ForeignKey("SectorId")]
         public virtual Sector Sector { get; set; }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eEvent.Models
 {
@@ -14,38 +15,31 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Title")]
 		public string EventTitle { get; set; }
 
-		[Required(ErrorMessage = "Please Select Objective")]
-		[Display(Name = "Objective")]
-		public int? EventObjectiveId { get; set; }
-
-		[Display(Name = "Objective")]
-		public string EventObjectiveTitle { get; set; }
+		[Required(ErrorMessage = "Please Insert Event Objective")]
+		[Display(Name = "Event Objective")]
+		public string EventObjective { get; set; }
 
 		[DataType(DataType.Date)]
+		[UIHint("Date")]
 		[Display(Name = "Event Date")]
-		public DateTime StartDate { get; set; }
+		public DateTime? StartDate { get; set; }
 
 		[DataType(DataType.Date)]
+		[UIHint("Date")]
 		[Display(Name = "Event Date")]
-		public DateTime EndDate { get; set; }
+		public DateTime? EndDate { get; set; }
 
 		[Display(Name = "Event Venue")]
 		public string Venue { get; set; }
 
-		[Display(Name = "Event Fee")]
+		[Display(Name = "Event Fee (RM)")]
 		public float? Fee { get; set; }
 
-		[Display(Name = "Participant")]
+		[Display(Name = "Number of Participant")]
 		public int? ParticipantAllowed { get; set; }
 
 		[Display(Name = "Targeted Group")]
-		public EventTargetGroup TargetedGroup { get; set; }
-
-		[Display(Name = "External Exhibitor")]
-		public int? ExternalExhibitorId { get; set; }
-
-		[Display(Name = "External Exhibitor")]
-		public string ExternalExhibitorName { get; set; }
+		public EventTargetGroup? TargetedGroup { get; set; }
 
 		[Display(Name = "Approver Name")]
 		public int? ApprovalId1 { get; set; }
@@ -72,21 +66,45 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string ApprovalName4 { get; set; }
 
 		[Display(Name = "Status")]
-		public EventStatus EventStatus { get; set; }
+		public EventStatus? EventStatus { get; set; }
 
-		[Display(Name = "Category")]
-		public EventCategory EventCategory { get; set; }
+
+
+		[Display(Name = "Event Category")]
+		public int? EventCategoryId { get; set; }
+
+		[Display(Name = "Event Category")]
+		public string EventCategoryName { get; set; }
+
+		[Display(Name = "Event Category")]
+		public IEnumerable<SelectListItem> CategoryList { get; set; }
+
+
 
 		[Display(Name = "Reasons")]
 		public string Reasons { get; set; }
 
 		[Display(Name = "Remarks")]
 		public string Remarks { get; set; }
+
 	}
 
 	public class CreatePublicEventModel : PublicEventModel
 	{
 		public CreatePublicEventModel() { }
+
+		[Display(Name = "File")]
+		public IEnumerable<HttpPostedFileBase> DocumentEvent { get; set; }
+
+		[Display(Name = "File Name")]
+		public IEnumerable<string> FileName { get; set; }
+
+		[Display(Name = "File Description")]
+		public IEnumerable<string> FileDescription { get; set; }
+
+		[Display(Name = "Uploaded Date")]
+		public IEnumerable<DateTime> UploadedDate { get; set; }
+
 	}
 
 	public class EditPublicEventModel : PublicEventModel
@@ -133,7 +151,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string EventTitle { get; set; }
 
 		[Display(Name = "Objective")]
-		public string EventObjectiveTitle { get; set; }
+		public string EventObjective { get; set; }
+
 
 		[DataType(DataType.Date)]
 		[Display(Name = "Start Date")]

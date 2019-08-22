@@ -1,0 +1,76 @@
+﻿@model FEP.Intranet.Areas.eEvent.Models.ListEventCategoryModel
+
+@{
+	ViewBag.Title = "Event Category";
+	Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav {
+
+	<div class="title_header">
+		<div class="title-header-container">
+			<div class="container">
+				<!-- if have button -->
+				@*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+				<div class="header-col-left">
+					<div id="breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item"><a href="#">e-Event</a></li>
+								<li class="breadcrumb-item"><a href="#">Event Category</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+							</ol>
+						</nav>
+					</div>
+					<h1 class="page-title text-white">Event Category List</h1>
+					<div class="header-text">List of created event category</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+}
+
+<div class="table-responsive" data-toggle="lists">
+	<div class="d-flex pb-4 align-items-center">
+		<div>
+			<!-- Select option -->
+			<span class="select-arrow">
+				<select name="dataTable_length" aria-controls="dataTable" class="custom-select">
+					<option value="10">10</option>
+					<option value="25">25</option>
+					<option value="50">50</option>
+					<option value="100">100</option>
+				</select>
+			</span>
+		</div>
+		<div class="showing-result px-3 py-2 mr-auto">Showing 1 - 6 of 2000 </div>
+		<div><a href='@Url.Action("Create", "EventCategory", new { area = "eEvent"})' class="btn btn-secondary"><i class="fa fa-plus font-icon" style="font-size: 1.5rem;"></i>Create Category</a></div>
+	</div>
+	<!-- Table -->
+	<table class="table tableStyle1 tabledata">
+		<thead>
+			<tr>
+
+				<th width="5%">No.</th>
+				<th>@Html.DisplayNameFor(m => m.filter.CategoryName)</th>
+				<th width="20%">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.CategoryList)
+			{
+				<tr>
+					<td>#</td>
+					<td>@Html.DisplayFor(m => item.CategoryName)</td>
+					<td>
+						<a href='@Url.Action("Edit", new { id=item.Id })' data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
+						<a href='@Url.Action("Details", new { id=item.Id })' data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
+						<a href='@Url.Action("Delete", new { id=item.Id })' data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

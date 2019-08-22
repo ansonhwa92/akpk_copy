@@ -128,29 +128,33 @@ namespace FEP.Model.Migrations
             if (!db.Sector.Any())
             {
                 db.Sector.AddOrUpdate(s => s.Name,
-                    new Sector { Name = "Aerospace" },
-                    new Sector { Name = "Transport" },
-                    new Sector { Name = "Computer" },
-                    new Sector { Name = "Telecommunication" },
-                    new Sector { Name = "Agriculture" },
-                    new Sector { Name = "Construction" },
-                    new Sector { Name = "Education" },
-                    new Sector { Name = "Pharmaceutical" },
-                    new Sector { Name = "Food" },
-                    new Sector { Name = "HealthCare" },
-                    new Sector { Name = "Hospitality" },
-                    new Sector { Name = "Entertainment" },
-                    new Sector { Name = "News Media" },
-                    new Sector { Name = "Energy" },
-                    new Sector { Name = "Manufacturing" },
-                    new Sector { Name = "Music" },
-                    new Sector { Name = "Mining" },
-                    new Sector { Name = "Worldwide Web" },
-                    new Sector { Name = "Electronic" }
+                    new Sector { Name = "Aerospace", Display = true },
+                    new Sector { Name = "Transport", Display = true },
+                    new Sector { Name = "Computer", Display = true },
+                    new Sector { Name = "Telecommunication", Display = true },
+                    new Sector { Name = "Agriculture", Display = true },
+                    new Sector { Name = "Construction", Display = true },
+                    new Sector { Name = "Education", Display = true },
+                    new Sector { Name = "Pharmaceutical", Display = true },
+                    new Sector { Name = "Food", Display = true },
+                    new Sector { Name = "HealthCare", Display = true },
+                    new Sector { Name = "Hospitality", Display = true },
+                    new Sector { Name = "Entertainment", Display = true },
+                    new Sector { Name = "News Media", Display = true },
+                    new Sector { Name = "Energy", Display = true },
+                    new Sector { Name = "Manufacturing", Display = true },
+                    new Sector { Name = "Music", Display = true },
+                    new Sector { Name = "Mining", Display = true },
+                    new Sector { Name = "Worldwide Web", Display = true },
+                    new Sector { Name = "Electronic", Display = true }
                 );
             }
 
-        }
+			
 
+
+
+
+        }
     }
 }

@@ -160,10 +160,10 @@
     <value>Company Name</value>
   </data>
   <data name="FieldCompanyPhoneNo" xml:space="preserve">
-    <value>Company Phne No</value>
+    <value>Company Phone No</value>
   </data>
   <data name="FieldCompanyRegNo" xml:space="preserve">
-    <value>Company Regstration No</value>
+    <value>Company Registration No</value>
   </data>
   <data name="FieldConfirmPassword" xml:space="preserve">
     <value>Confirm Password</value>
@@ -247,7 +247,7 @@
     <value>Select Sector</value>
   </data>
   <data name="PlaceholderStateId" xml:space="preserve">
-    <value>Select State</value>
+    <value>State</value>
   </data>
   <data name="TextResetPassword" xml:space="preserve">
     <value>Enter your IC No. We'll send you an email with a link to reset your password.</value>
@@ -279,6 +279,9 @@
   <data name="ValidRequiredCompanyPhoneNo" xml:space="preserve">
     <value>Please enter Company Phone No</value>
   </data>
+  <data name="ValidRequiredCompanyRegNo" xml:space="preserve">
+    <value>Please enter Company Regstration No</value>
+  </data>
   <data name="ValidRequiredEmail" xml:space="preserve">
     <value>Please enter Email</value>
   </data>
@@ -301,12 +304,12 @@
     <value>Please enter Postcode</value>
   </data>
   <data name="ValidRequiredRetypePassword" xml:space="preserve">
-    <value>Please enter Retype Password</value>
+    <value>Please Retype Password</value>
   </data>
   <data name="ValidRequiredSectorId" xml:space="preserve">
     <value>Please select Sector</value>
   </data>
   <data name="ValidRequiredStateId" xml:space="preserve">
-    <value>Please select State</value>
+    <value>Please enter State</value>
   </data>
 </root>

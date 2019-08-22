@@ -21,7 +21,7 @@ namespace FEP.Intranet.Controllers
 {
     public class AuthController : FEPController
     {
-        
+
         [AllowAnonymous]
         public ActionResult Login()
         {
@@ -42,11 +42,18 @@ namespace FEP.Intranet.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult RegisterAgency()
+        public async Task<ActionResult> RegisterAgency()
         {
             var model = new RegisterAgencyModel();
+
             model.Sectors = Enumerable.Empty<SelectListItem>();
-            model.States = Enumerable.Empty<SelectListItem>();
+
+            var sectorResponse = await WepApiMethod.SendApiAsync<List<SectorModel>>(HttpVerbs.Get, $"Administration/Sector");
+
+            if (sectorResponse.isSuccess)
+            {
+                model.Sectors = new SelectList(sectorResponse.Data, "Id", "Name", 0);
+            }
 
             return View(model);
         }
@@ -56,51 +63,94 @@ namespace FEP.Intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RegisterIndividual(RegisterIndividualModel model)
         {
-            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Auth/RegisterIndividual", model);
-            
-            if (response.isSuccess)
+
+            if (ModelState.IsValid)
             {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Auth/RegisterIndividual", model);
 
-                EmailAddress receiver = new EmailAddress()
+                if (response.isSuccess)
                 {
-                    DisplayName = model.Name,
-                    Address = model.Email
-                };
 
-                StringBuilder body = new StringBuilder();
+                    EmailAddress receiver = new EmailAddress()
+                    {
+                        DisplayName = model.Name,
+                        Address = model.Email
+                    };
 
-                body.Append("Dear " + model.Name + ",");
-                body.Append("<br />");
-                body.Append("You can activate your account <a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data }) + "' > here </a>");
-                body.Append("<br />");
-                body.Append("Your login details:");
-                body.Append("<br />");
-                body.Append("Login Id: " + model.Email);
-                body.Append("<br />");
-                body.Append("Password: " + model.Password);
+                    StringBuilder body = new StringBuilder();
 
-                SendEmail("FEP Account Activation", body.ToString(), receiver); //email
+                    body.Append("Dear " + model.Name + ",");
+                    body.Append("<br />");
+                    body.Append("You can activate your account <a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data }) + "' > here </a>");
+                    body.Append("<br />");
+                    body.Append("Your login details:");
+                    body.Append("<br />");
+                    body.Append("Login Id: " + model.Email);
+                    body.Append("<br />");
+                    body.Append("Password: " + model.Password);
 
-                return RedirectToAction("Login", "Auth", new { area = "" });
+                    SendEmail("FEP Account Activation", body.ToString(), receiver); //email
+
+                    TempData["SuccessMessage"] = "Your account successfully created. Please check your registered email for login details.";
+
+                    return RedirectToAction("Login", "Auth", new { area = "" });
+
+                }
 
             }
 
             return View();
         }
 
-        
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult RegisterAgency(RegisterAgencyModel model)
+        public async Task<ActionResult> RegisterAgency(RegisterAgencyModel model)
         {
             if (ModelState.IsValid)
             {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Auth/RegisterAgency", model);
+
+                if (response.isSuccess)
+                {
+
+                    EmailAddress receiver = new EmailAddress()
+                    {
+                        DisplayName = model.Name,
+                        Address = model.Email
+                    };
+
+                    StringBuilder body = new StringBuilder();
+
+                    body.Append("Dear " + model.Name + ",");
+                    body.Append("<br />");
+                    body.Append("You can activate your account <a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data }) + "' > here </a>");
+                    body.Append("<br />");
+                    body.Append("Your login details:");
+                    body.Append("<br />");
+                    body.Append("Login Id: " + model.Email);
+                    body.Append("<br />");
+                    body.Append("Password: " + model.Password);
+
+                    SendEmail("FEP Account Activation", body.ToString(), receiver); //email
+
+                    TempData["SuccessMessage"] = "Your account successfully created. Please check your registered email for login details.";
+
+                    return RedirectToAction("Login", "Auth", new { area = "" });
+
+                }
 
             }
 
             model.Sectors = Enumerable.Empty<SelectListItem>();
-            model.States = Enumerable.Empty<SelectListItem>();
+
+            var sectorResponse = await WepApiMethod.SendApiAsync<List<SectorModel>>(HttpVerbs.Get, $"Administration/Sector");
+
+            if (sectorResponse.isSuccess)
+            {
+                model.Sectors = new SelectList(sectorResponse.Data, "Id", "Name", 0);
+            }
 
             return View(model);
         }
@@ -140,10 +190,10 @@ namespace FEP.Intranet.Controllers
                                         isenable = user.IsEnable,
                                         validfrom = user.ValidFrom,
                                         validto = user.ValidTo,
-                                        access = user.UserAccesses.Select(s => ((int)s).ToString()).ToList()                                                                        
+                                        access = user.UserAccesses.Select(s => ((int)s).ToString()).ToList()
                                     }
                                 );
-                                
+
                             }
                         }
 
@@ -152,15 +202,23 @@ namespace FEP.Intranet.Controllers
                         return Redirect(GetRedirectUrl(model.ReturnUrl));
 
                     }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Sign in fail. Please use your email and correct password.";
+                    }
 
                 }
-                
+                else
+                {
+                    TempData["ErrorMessage"] = "Sign in fail. Please use your email and correct password.";
+                }
+
             }
 
             return View(model);
         }
 
-        
+
         [NonAction]
         private void SignInUser(CurrentUserModel usermodel)
         {
@@ -170,7 +228,7 @@ namespace FEP.Intranet.Controllers
                 new Claim("UserId", usermodel.userid.ToString()),
                 new Claim("Name", usermodel.name != null ? usermodel.name.ToString() : ""),
                 new Claim("Email", usermodel.email != null ? usermodel.email.ToString() : ""),
-                new Claim("UserType", usermodel.usertype != null ? usermodel.usertype.ToString() : ""),               
+                new Claim("UserType", usermodel.usertype != null ? usermodel.usertype.ToString() : ""),
             }, "FEPCookie");
 
             foreach (string access in usermodel.access)
@@ -196,7 +254,7 @@ namespace FEP.Intranet.Controllers
 
             //LogActivity("Logout System", );
 
-            return RedirectToAction("Index", "Home", routeValues : null);
+            return RedirectToAction("Index", "Home", routeValues: null);
 
         }
 
@@ -218,6 +276,107 @@ namespace FEP.Intranet.Controllers
             //by pass
             return true;
 
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> ActivateAccount(string id)
+        {
+
+            if (id != null)
+            {
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Auth/ActivateAccount", id);
+
+                if (response.isSuccess)
+                {
+                    TempData["SuccessMessage"] = "Your account successfully activate. Please check your registered email for login details.";
+                }
+            }
+
+            return RedirectToAction("LogIn");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                var response = await WepApiMethod.SendApiAsync<ResetPasswordResponseModel>(HttpVerbs.Post, $"Auth/ResetPassword", model);
+
+                if (response.Data != null)
+                {
+                    var uid = response.Data.UID;
+
+                    EmailAddress receiver = new EmailAddress()
+                    {
+                        DisplayName = response.Data.Name,
+                        Address = model.Email
+                    };
+
+                    StringBuilder body = new StringBuilder();
+                    body.Append("Dear " + response.Data.Name + ",");
+                    body.Append("<br />");
+                    body.Append("You can reset your password <a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data }) + "' > here </a>");
+
+                    SendEmail("FEP Password Reset", body.ToString(), receiver);
+                }
+
+                TempData["Message"] = "Instruction to reset password was successfully sent to your email [" + model.Email + "]. Please check your email.";
+                return RedirectToAction("Login");
+
+
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> SetPassword(string id)
+        {
+
+            var response = await WepApiMethod.SendApiAsync<SetPasswordModel>(HttpVerbs.Get, $"Auth/GetSetPassword?uid={id}");
+
+            if (response.Data != null)
+            {
+                return View(response.Data);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Click 'Forgot Password' to reset password.";
+                return RedirectToAction("Login", "Auth", new { area = "" });
+            }
+
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SetPassword(SetPasswordModel model)
+        {
+
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Auth/SetPassword", model);
+
+            if (response.Data)
+            {
+                TempData["SuccessMessage"] = "Your password successfully change. Please use new password to sign in.";                
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Fail to set new password. Click 'Forgot Password' to reset password.";
+            }
+
+            return RedirectToAction("Login", "Auth", new { area = "" });
         }
 
     }

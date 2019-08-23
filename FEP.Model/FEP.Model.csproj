@@ -75,6 +75,22 @@
     <Compile Include="Migrations\201908210928518_a3.Designer.cs">
       <DependentUpon>201908210928518_a3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908220630196_a4.cs" />
+    <Compile Include="Migrations\201908220630196_a4.Designer.cs">
+      <DependentUpon>201908220630196_a4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908220711196_a5.cs" />
+    <Compile Include="Migrations\201908220711196_a5.Designer.cs">
+      <DependentUpon>201908220711196_a5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908220901045_a6.cs" />
+    <Compile Include="Migrations\201908220901045_a6.Designer.cs">
+      <DependentUpon>201908220901045_a6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908220925517_a7.cs" />
+    <Compile Include="Migrations\201908220925517_a7.Designer.cs">
+      <DependentUpon>201908220925517_a7.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
@@ -109,6 +125,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908210928518_a3.resx">
       <DependentUpon>201908210928518_a3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908220630196_a4.resx">
+      <DependentUpon>201908220630196_a4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908220711196_a5.resx">
+      <DependentUpon>201908220711196_a5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908220901045_a6.resx">
+      <DependentUpon>201908220901045_a6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908220925517_a7.resx">
+      <DependentUpon>201908220925517_a7.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

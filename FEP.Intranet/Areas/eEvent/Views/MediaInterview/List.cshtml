@@ -58,7 +58,7 @@
 				<th>@Html.DisplayNameFor(m => m.filter.MediaName)</th>
 				<th>@Html.DisplayNameFor(m => m.filter.MediaType)</th>
 				<th>@Html.DisplayNameFor(m => m.filter.ContactPerson)</th>
-				<th>@Html.DisplayNameFor(m => m.filter.Date)</th>
+				<th>@Html.DisplayNameFor(m => m.filter.DateStart)</th>
 				
 				<th>Action</th>
 			</tr>
@@ -71,10 +71,10 @@
 					<td>@Html.DisplayFor(m => item.MediaName)</td>
 					<td>@Html.DisplayFor(m => item.MediaType)</td>
 					<td>@Html.DisplayFor(m => item.ContactPerson)</td>
-					<td>@Html.DisplayFor(m => item.Date)</td>
+					<td>@Html.DisplayFor(m => item.DateStart)</td>
 					
 					<td>
-						<a href='@Url.Action("Edit", new { id=item.Id })' data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
+						<a href='@Url.Action("Edit", new { id=item.Id  , origin = "fromlist"})' data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
 						<a href='@Url.Action("Details", new { id=item.Id })' data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
 						<a href='@Url.Action("Delete", new { id=item.Id })' data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></a>
 

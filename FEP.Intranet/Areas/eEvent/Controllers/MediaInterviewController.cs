@@ -32,18 +32,21 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					MediaType = i.MediaType,
 					ContactPerson = i.ContactPerson,
 					ContactNo = i.ContactNo,
-					Address = i.Address,
+					AddressStreet1 = i.AddressStreet1,
+					AddressStreet2 = i.AddressStreet2,
+					AddressPoscode = i.AddressPoscode,
+					AddressCity = i.AddressCity,
+					State = i.State,
 					Email = i.Email,
-					Date = i.Date,
+					DateStart = i.DateStart,
+					DateEnd = i.DateEnd,
 					Time = i.Time,
-					Location = i.Location,
 					Language = i.Language,
 					Topic = i.Topic,
-					UserId = i.UserId,
-					UserName = i.User.Name,
-					Designation = i.Designation,
-					EventId = i.EventId,
-					EventTitle = i.Event.EventTitle
+					RepUserId = i.UserId,
+					RepUserName = i.User.Name,
+					RepDesignation = i.Designation,
+
 				}).ToList();
 
 			ListMediaInterviewModel model = new ListMediaInterviewModel(media);
@@ -62,18 +65,21 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					MediaType = i.MediaType,
 					ContactPerson = i.ContactPerson,
 					ContactNo = i.ContactNo,
-					Address = i.Address,
+					AddressStreet1 = i.AddressStreet1,
+					AddressStreet2 = i.AddressStreet2,
+					AddressPoscode = i.AddressPoscode,
+					AddressCity = i.AddressCity,
+					State = i.State,
 					Email = i.Email,
-					Date = i.Date,
+					DateStart = i.DateStart,
+					DateEnd = i.DateEnd,
 					Time = i.Time,
-					Location = i.Location,
 					Language = i.Language,
 					Topic = i.Topic,
-					UserId = i.UserId,
-					UserName = i.User.Name,
-					Designation = i.Designation,
-					EventId = i.EventId,
-					EventTitle = i.Event.EventTitle
+					RepUserId = i.UserId,
+					RepUserName = i.User.Name,
+					RepDesignation = i.Designation,
+					GetFileName = i.EventMediaFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 				}).FirstOrDefault();
 
 			if (media == null)
@@ -87,10 +93,19 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		// GET: eEventMediaInterview/MediaInterview/Create
 		public ActionResult Create()
 		{
-			ViewBag.EventId = new SelectList(db.PublicEvent.Where(p => p.Display).OrderBy(o => o.EventTitle), "Id", "EventTitle");
-			ViewBag.UserId = new SelectList(db.User.Where(p => p.Display).OrderBy(o => o.Name), "Id", "Name");
+			CreateMediaInterviewModel model = new CreateMediaInterviewModel() { };
 
-			return View("Create");
+			//var getuser = db.User.Where(c => c.Display && c.UserType == UserType.Staff)
+			var getuser = db.User.Where(c => c.Display) //temporary boleh select admin
+				.Select(i => new
+				{
+					Id = i.Id,
+					Name = i.Name
+				});
+
+			model.RepresentativeList = new SelectList(getuser, "Id", "Name", 0);
+
+			return View(model);
 		}
 
 		// POST: eEventMediaInterview/MediaInterview/Create
@@ -106,16 +121,19 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					MediaType = model.MediaType,
 					ContactPerson = model.ContactPerson,
 					ContactNo = model.ContactNo,
-					Address = model.Address,
+					AddressStreet1 = model.AddressStreet1,
+					AddressStreet2 = model.AddressStreet2,
+					AddressPoscode = model.AddressPoscode,
+					AddressCity = model.AddressCity,
+					State = model.State,
 					Email = model.Email,
-					Date = model.Date.Value,
-					Time = model.Time.Value,
-					Location = model.Location,
+					DateStart = model.DateStart,
+					DateEnd = model.DateEnd,
+					Time = model.Time,
 					Language = model.Language,
 					Topic = model.Topic,
-					UserId = model.UserId,
-					Designation = model.Designation,
-					EventId = model.EventId,
+					UserId = model.RepUserId,
+					Designation = model.RepDesignation,
 					CreatedBy = null,
 					CreatedDate = DateTime.Now,
 					Display = true
@@ -127,11 +145,21 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				TempData["SuccessMessage"] = "Media Interview Request successfully created.";
 				return RedirectToAction("List");
 			}
+
+			var getuser = db.User.Where(c => c.Display) //temporary boleh select admin
+				.Select(i => new
+				{
+					Id = i.Id,
+					Name = i.Name
+				});
+
+			model.RepresentativeList = new SelectList(getuser, "Id", "Name", 0);
+
 			return View(model);
 		}
 
 		// GET: eEventMediaInterview/MediaInterview/Edit/5
-		public ActionResult Edit(int? id)
+		public ActionResult Edit(int? id, string origin)
 		{
 			if (id == null)
 			{
@@ -146,18 +174,22 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					MediaType = i.MediaType,
 					ContactPerson = i.ContactPerson,
 					ContactNo = i.ContactNo,
-					Address = i.Address,
+					AddressStreet1 = i.AddressStreet1,
+					AddressStreet2 = i.AddressStreet2,
+					AddressPoscode = i.AddressPoscode,
+					AddressCity = i.AddressCity,
+					State = i.State,
 					Email = i.Email,
-					Date = i.Date,
+					DateStart = i.DateStart,
+					DateEnd = i.DateEnd,
 					Time = i.Time,
-					Location = i.Location,
 					Language = i.Language,
 					Topic = i.Topic,
-					UserId = i.UserId,
-					UserName = i.User.Name,
-					Designation = i.Designation,
-					EventId = i.EventId,
-					EventTitle = i.Event.EventTitle
+					origin = origin,
+					RepUserId = i.UserId,
+					RepUserName = i.User.Name,
+					RepDesignation = i.Designation,
+					GetFileName = i.EventMediaFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 				}).FirstOrDefault();
 
 			if (media == null)
@@ -165,10 +197,16 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			ViewBag.EventId = new SelectList(db.PublicEvent.Where(p => p.Display).OrderBy(o => o.EventTitle), "Id", "EventTitle");
-			ViewBag.UserId = new SelectList(db.User.Where(p => p.Display).OrderBy(o => o.Name), "Id", "Name");
+			var getuser = db.User.Where(c => c.Display) //temporary boleh select admin
+				.Select(i => new
+				{
+					Id = i.Id,
+					Name = i.Name
+				});
 
-			return View("Edit", media);
+			media.RepresentativeList = new SelectList(getuser, "Id", "Name", 0);
+
+			return View(media);
 		}
 
 		// POST: eEventMediaInterview/MediaInterview/Edit/5
@@ -180,34 +218,81 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				EventMediaInterviewRequest media = new EventMediaInterviewRequest
 				{
+					Id = model.Id,
 					MediaName = model.MediaName,
 					MediaType = model.MediaType,
 					ContactPerson = model.ContactPerson,
 					ContactNo = model.ContactNo,
-					Address = model.Address,
+					AddressStreet1 = model.AddressStreet1,
+					AddressStreet2 = model.AddressStreet2,
+					AddressPoscode = model.AddressPoscode,
+					AddressCity = model.AddressCity,
+					State = model.State,
 					Email = model.Email,
-					Date = model.Date.Value,
-					Time = model.Time.Value,
-					Location = model.Location,
+					DateStart = model.DateStart,
+					DateEnd = model.DateEnd,
+					Time = model.Time,
 					Language = model.Language,
 					Topic = model.Topic,
-					UserId = model.UserId,
-					Designation = model.Designation,
-					EventId = model.EventId,
+					UserId = model.RepUserId,
+					Designation = model.RepDesignation,
+
 				};
 
 				db.Entry(media).State = EntityState.Modified;
 				db.Entry(media).Property(x => x.CreatedDate).IsModified = false;
 				db.Entry(media).Property(x => x.Display).IsModified = false;
-
 				db.Configuration.ValidateOnSaveEnabled = true;
+
+
+				string path = "FileUploaded/";
+				if (model.DocumentMedia != null)
+				{
+					var getIdFile = db.MediaFile.Where(s => s.EventId == model.Id).FirstOrDefault();
+
+					if (getIdFile != null)
+					{
+						db.MediaFile.Remove(getIdFile);
+					}
+
+					EventFile eventfile = new EventFile
+					{
+						FileDescription = model.FileDescription,
+						FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.DocumentMedia.FileName,
+						FilePath = path,
+						UploadedDate = DateTime.Now,
+						Display = true,
+						CreatedBy = CurrentUser.UserId,
+						Category = FileCategory.NewFile,
+						EventId = model.Id,
+						Id = getIdFile.Id
+					};
+
+					db.EventFile.Add(eventfile);
+				};
 				db.SaveChanges();
 
 				//LogActivity();
 				TempData["SuccessMessage"] = "Media Interview Request successfully updated.";
-				return RedirectToAction("List");
+				if (model.origin == "fromlist")
+				{
+					return RedirectToAction("List");
+				}
+				else
+				{
+					return RedirectToAction("Details", new { area = "eEvent", id = model.Id });
+				}
 			}
-			return View("Edit", model);
+
+			var getuser = db.User.Where(c => c.Display) //temporary boleh select admin
+			.Select(i => new
+			{
+				Id = i.Id,
+				Name = i.Name
+			});
+
+			model.RepresentativeList = new SelectList(getuser, "Id", "Name", 0);
+			return View(model);
 		}
 
 		// GET: eEventMediaInterview/MediaInterview/Delete/5
@@ -226,18 +311,21 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					MediaType = i.MediaType,
 					ContactPerson = i.ContactPerson,
 					ContactNo = i.ContactNo,
-					Address = i.Address,
+					AddressStreet1 = i.AddressStreet1,
+					AddressStreet2 = i.AddressStreet2,
+					AddressPoscode = i.AddressPoscode,
+					AddressCity = i.AddressCity,
+					State = i.State,
 					Email = i.Email,
-					Date = i.Date,
+					DateStart = i.DateStart,
+					DateEnd = i.DateEnd,
 					Time = i.Time,
-					Location = i.Location,
 					Language = i.Language,
 					Topic = i.Topic,
-					UserId = i.UserId,
-					UserName = i.User.Name,
-					Designation = i.Designation,
-					EventId = i.EventId,
-					EventTitle = i.Event.EventTitle
+					RepUserId = i.UserId,
+					RepUserName = i.User.Name,
+					RepDesignation = i.Designation,
+					GetFileName = i.EventMediaFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 				}).FirstOrDefault();
 
 			if (media == null)
@@ -254,7 +342,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		public ActionResult DeleteConfirmed(DeleteMediaInterviewModel model)
 		{
 			EventMediaInterviewRequest media = new EventMediaInterviewRequest() { Id = model.Id };
+			MediaFile file = new MediaFile() { EventId = model.Id };
 			media.Display = false;
+			file.Display = false;
 
 			db.EventMediaInterviewRequest.Attach(media);
 			db.Entry(media).Property(m => m.Display).IsModified = true;

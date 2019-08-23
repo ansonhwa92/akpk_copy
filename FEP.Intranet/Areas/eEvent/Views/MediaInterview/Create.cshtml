@@ -12,7 +12,7 @@
 		<div class="title-header-container">
 			<div class="container">
 				<!-- if have button -->
-				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "PublicEvent", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "MediaInterview", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
 				<div class="header-col-left">
 					<div id="breadcrumb">
 						<nav aria-label="breadcrumb">
@@ -40,14 +40,60 @@
 	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 	<div class="row">
+
+		<div class="col-xl-3 col-md-3 col-sm-4 my-2">
+			<div id="page-nav" class="sidebar-left page-nav">
+				<div data-perfect-scrollbar>
+					<div class="sidebar-inner">
+						<ul class="steps steps-vertical nav">
+							<li class="step-item complete">
+								<a href="#step1" class="step-link" data-toggle="tab">
+									<span class="step-number">1</span>
+									<span class="step-title">Select Event Category</span>
+								</a>
+							</li>
+							<li class="step-item active">
+								<a href="#step2" class="step-link" data-toggle="tab">
+									<span class="step-number">2</span>
+									<span class="step-title">Fill Up Invitation Details</span>
+								</a>
+							</li>
+							<li class="step-item active">
+								<a href="#step3" class="step-link" data-toggle="tab">
+									<span class="step-number">3</span>
+									<span class="step-title">Fill Up Interview Details</span>
+								</a>
+							</li>
+							<li class="step-item active">
+								<a href="#step4" class="step-link" data-toggle="tab">
+									<span class="step-number">4</span>
+									<span class="step-title">Fill Up Recommended Rep. Details</span>
+								</a>
+							</li>
+							@*<li class="step-item disabled">
+								<a href="#step5" class="step-link" data-toggle="tab">
+									<span class="step-number">5</span>
+									<span class="step-title">Review & Submission</span>
+								</a>
+							</li>*@
+						</ul>
+						<!-- End Steps -->
+					</div>
+				</div>
+			</div>
+		</div>
+		@* ----------------------------------------------------------------------------- *@
 		<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 			<!-- Start Form -->
 			<div class="border-form rounded-top">
 				<form>
 					<div class="form-container">
-
+						<div class="mt-2 mb-4 pb-1">
+							<h4 class="color-darkblue mb-0">Invitation Details</h4>
+							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						</div>
 						<div class="row">
-							<div class="form-group">
+							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.MediaName, htmlAttributes: new { @class = "control-label col-lg-12" })
 								<div class="col-lg-12">
 									@Html.EditorFor(model => model.MediaName, new { htmlAttributes = new { @class = "form-control" } })
@@ -60,7 +106,7 @@
 							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.MediaType, htmlAttributes: new { @class = "control-label col-lg-12" })
 								<div class="col-lg-12">
-									@Html.EditorFor(model => model.MediaType, new { htmlAttributes = new { @class = "form-control" } })
+									@Html.EnumDropDownListFor(model => model.MediaType, "-Select Media Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
 									@Html.ValidationMessageFor(model => model.MediaType, "", new { @class = "text-danger" })
 								</div>
 							</div>
@@ -88,10 +134,44 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-lg-12" })
+								@Html.LabelFor(model => model.AddressStreet1, htmlAttributes: new { @class = "control-label col-lg-12" })
 								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+									@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
+									@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								<div class="col-lg-12">
+									@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
+									@Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								<div class="row col-lg-12">
+									<div class="col-lg-6">
+										@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode" } })
+										@Html.ValidationMessageFor(model => model.AddressPoscode, "", new { @class = "text-danger" })
+									</div>
+									<div class="col-lg-6">
+										@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
+										@Html.ValidationMessageFor(model => model.AddressCity, "", new { @class = "text-danger" })
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="col-lg-12">
+									@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+									@Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
 								</div>
 							</div>
 						</div>
@@ -108,10 +188,30 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-lg-12" })
+								@Html.LabelFor(model => model.DocumentMedia, htmlAttributes: new { @class = "control-label col-lg-12" })
 								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+									@Html.TextBoxFor(model => model.DocumentMedia, "", new { type = "file", @class = "form-control" })
+									@Html.ValidationMessageFor(model => model.DocumentMedia, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+
+						<hr />
+						<h4 class="color-darkblue mb-0">Interview Details</h4>
+						<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.DateStart, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="row col-lg-12">
+									<div class="col-lg-6">
+										@Html.EditorFor(model => model.DateStart, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start" } })
+										@Html.ValidationMessageFor(model => model.DateStart, "", new { @class = "text-danger" })
+									</div>
+									<div class="col-lg-6">
+										@Html.EditorFor(model => model.DateEnd, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End" } })
+										@Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
+									</div>
 								</div>
 							</div>
 						</div>
@@ -120,18 +220,8 @@
 							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.Time, htmlAttributes: new { @class = "control-label col-lg-12" })
 								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control" } })
+									@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect" } })
 									@Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
-								</div>
-							</div>
-						</div>
-
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
 								</div>
 							</div>
 						</div>
@@ -140,7 +230,7 @@
 							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label col-lg-12" })
 								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Language, new { htmlAttributes = new { @class = "form-control" } })
+									@Html.EditorFor(model => model.Language, new { htmlAttributes = new { @class = "form-control", @placeholder = "- Language -" } })
 									@Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
 								</div>
 							</div>
@@ -150,21 +240,40 @@
 							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.Topic, htmlAttributes: new { @class = "control-label col-lg-12" })
 								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Topic, new { htmlAttributes = new { @class = "form-control" } })
+									@Html.EditorFor(model => model.Topic, new { htmlAttributes = new { @class = "form-control" , @placeholder = "Be clear and descriptive"} })
 									@Html.ValidationMessageFor(model => model.Topic, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+
+						<hr />
+						<div class="mt-2 mb-4 pb-1">
+							<h4 class="color-darkblue mb-0">Recommended Rep. Details</h4>
+							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.RepUserId, htmlAttributes: new { @class = "control-label col-lg-12" })
+								<div class="col-lg-12">
+									@Html.DropDownListFor(model => model.RepUserId, Model.RepresentativeList, "-Select Representative-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+									@Html.ValidationMessageFor(model => model.RepUserId, "", new { @class = "text-danger" })
 								</div>
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "control-label col-lg-12" })
+								@Html.LabelFor(model => model.RepDesignation, htmlAttributes: new { @class = "control-label col-lg-12" })
 								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+									@Html.EditorFor(model => model.RepDesignation, new { htmlAttributes = new { @class = "form-control" , @placeholder = "Be clear and descriptive"} })
+									@Html.ValidationMessageFor(model => model.RepDesignation, "", new { @class = "text-danger" })
 								</div>
 							</div>
 						</div>
+
+
+
 
 					</div>
 				</form>
@@ -175,5 +284,6 @@
 				<button class="btn btn-secondary" type="submit">Save</button>
 			</div>
 		</div>
-	</div>
+
+	</div> @*//class = "row"*@
 }

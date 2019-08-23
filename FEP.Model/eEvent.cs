@@ -219,12 +219,17 @@ namespace FEP.Model
 		[Key]
 		public int Id { get; set; }
 		public string MediaName { get; set; }
-		public string MediaType { get; set; }
+		public MediaType? MediaType { get; set; }
 		public string ContactPerson { get; set; }
-		public int ContactNo { get; set; }
-		public string Address { get; set; }
+		public int? ContactNo { get; set; }
+		public string AddressStreet1 { get; set; }
+		public string AddressStreet2 { get; set; }
+		public string AddressPoscode { get; set; }
+		public string AddressCity { get; set; }
+		public MediaState? State { get; set; }
 		public string Email { get; set; }
-		public DateTime? Date { get; set; }
+		public DateTime? DateStart { get; set; }
+		public DateTime? DateEnd { get; set; }
 		public DateTime? Time { get; set; }
 		public string Location { get; set; }
 		public string Language { get; set; }
@@ -234,19 +239,18 @@ namespace FEP.Model
 		public int? UserId { get; set; }
 		[ForeignKey("UserId")]
 		public virtual User User { get; set; }
-
-		public int? EventId { get; set; }
-		[ForeignKey("EventId")]
-		public virtual PublicEvent Event { get; set; }
-
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
 		public int? CreatedBy { get; set; }
 		public DateTime? CreatedDate { get; set; }
 		public bool Display { get; set; }
+
+		public virtual ICollection<MediaFile> EventMediaFiles { get; set; }
+		public virtual ICollection<User> Representatives { get; set; }
 	}
 
-	[Table("EventAttendance")]
+
+	[Table("EventAttendance")] 
 	public class EventAttendance
 	{
 		[Key]

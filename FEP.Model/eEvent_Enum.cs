@@ -13,7 +13,7 @@ namespace FEP.Model
 		Student,
 		[Display(Name = "Goverment")]
 		Goverment,
-		[Display(Name = "PrivateAgency")]
+		[Display(Name = "Private Agency")]
 		PrivateAgency,
 		[Display(Name = "NGO")]
 		NGO,
@@ -21,21 +21,18 @@ namespace FEP.Model
 		Public
 	}
 
-	//public enum EventCategory
-	//{
-	//	[Display(Name = "")]
-	//	Workshop,
-	//	[Display(Name = "")]
-	//	Seminar,
-	//	[Display(Name = "")]
-	//	Dialogue,
-	//	[Display(Name = "")]
-	//	Conference,
-	//	[Display(Name = "")]
-	//	Symposium,
-	//	[Display(Name = "")]
-	//	Convention
-	//}
+	public enum MediaType
+	{
+		[Display(Name = "Panel Interview")]
+		PanelInterview,
+		[Display(Name = "Group Interview")]
+		GroupInterview,
+		[Display(Name = "Sequential Interview")]
+		SequentialInterview,
+		[Display(Name = "Formal / Informal Interview")]
+		FormalInformalInterview,
+		
+	}
 
 	public enum EventStatus
 	{
@@ -81,5 +78,26 @@ namespace FEP.Model
 	{
 		FEP,
 		OBS
+	}
+
+	public enum MediaState
+	{
+		Selangor,
+		[Display(Name = "Wilayah Persekutuan Kuala Lumpur")]
+		WilayahPersekutuanKualaLumpur,
+		[Display(Name = "Negeri Sembilan")]
+		NegeriSembilan,
+		Melaka,
+		Pahang,
+		Terengganu,
+		Kelantan,
+		Perak,
+		[Display(Name = "Pulau Pinang")]
+		PulauPinang,
+		Johor,
+		Sabah,
+		Sarawak,
+		Perlis,
+		Kedah
 	}
 }

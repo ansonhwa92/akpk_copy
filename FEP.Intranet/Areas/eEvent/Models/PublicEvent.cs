@@ -91,11 +91,11 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Display(Name = "Proof of Approval")]
 		public string GetFileName { get; set; }
-	}
 
-	public class CreatePublicEventModel : PublicEventModel
-	{
-		public CreatePublicEventModel() { }
+
+
+
+
 
 		//File
 		[Display(Name = "Proof of Approval")]
@@ -106,6 +106,11 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string FileDescription { get; set; }
 		[Display(Name = "Uploaded Date")]
 		public DateTime UploadedDate { get; set; }
+	}
+
+	public class CreatePublicEventModel : PublicEventModel
+	{
+		public CreatePublicEventModel() { }
 	}
 
 	public class EditPublicEventModel : PublicEventModel
@@ -170,5 +175,11 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Display(Name = "Event Fee")]
 		public decimal? Fee { get; set; }
+
+		[Display(Name = "Event Category")]
+		public int? EventCategoryId { get; set; }
+
+		[Display(Name = "Event Category")]
+		public string EventCategoryName { get; set; }
 	}
 }

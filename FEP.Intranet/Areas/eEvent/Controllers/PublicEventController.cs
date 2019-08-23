@@ -43,6 +43,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Id = i.Id,
 					EventTitle = i.EventTitle,
 					EventObjective = i.EventObjective,
+					EventCategoryId = i.EventCategoryId,
+					EventCategoryName = i.EventCategory.CategoryName,
 					StartDate = i.StartDate,
 					EndDate = i.EndDate,
 					Venue = i.Venue,
@@ -61,7 +63,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-
+			var eventfile = db.EventFile.Where(w => w.EventId == id).FirstOrDefault();
 
 			var e = db.PublicEvent.Where(i => i.Id == id)
 				.Select(i => new DetailsPublicEventModel()
@@ -87,7 +89,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventCategoryId = i.EventCategoryId,
 					EventCategoryName = i.EventCategory.CategoryName,
 					Reasons = i.Reasons,
-					Remarks = i.Remarks
+					Remarks = i.Remarks,
+					SpeakerName = i.EventSpeakers.Select(s => s.Name).FirstOrDefault(),
+					ExhibitorName = i.EventExternalExhibitors.Select(s => s.Name).FirstOrDefault(),
+					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
+					//GetFileName = eventfile.FileName
 				}).FirstOrDefault();
 
 			if (e == null)
@@ -144,7 +150,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					CreatedBy = CurrentUser.UserId,
 					CreatedDate = DateTime.Now,
 					Display = true,
-					
+
 				};
 				db.PublicEvent.Add(x);
 
@@ -172,7 +178,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						EventId = x.Id,
 						CreatedDate = DateTime.Now,
 						CreatedBy = CurrentUser.UserId,
-						
+
 					};
 					db.EventExternalExhibitor.Add(externalExhibitor);
 				};
@@ -183,14 +189,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventFile eventfile = new EventFile
 					{
 						FileDescription = model.FileDescription,
-						FileName = model.FileName,
+						FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.DocumentEvent.FileName,
 						FilePath = path,
 						UploadedDate = DateTime.Now,
 						Display = true,
 						CreatedBy = CurrentUser.UserId,
 						Category = FileCategory.NewFile,
 						EventId = x.Id,
-						
+
 					};
 
 					db.EventFile.Add(eventfile);
@@ -221,6 +227,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
+			var eventfile = db.EventFile.Where(w => w.EventId == id).FirstOrDefault();
 
 			var e = db.PublicEvent.Where(i => i.Id == id)
 				.Select(i => new EditPublicEventModel()
@@ -242,7 +249,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					origin = origin,
 					SpeakerName = i.EventSpeakers.Select(s => s.Name).FirstOrDefault(),
 					ExhibitorName = i.EventExternalExhibitors.Select(s => s.Name).FirstOrDefault(),
-					GetFileName = i.EventFiles.Select(s => s.FileName).FirstOrDefault(),
+					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
+					//GetFileName = eventfile.FileName
+					
 				}).FirstOrDefault();
 
 			if (e == null)
@@ -291,8 +300,77 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				db.Entry(eEvent).State = EntityState.Modified;
 				db.Entry(eEvent).Property(x => x.CreatedDate).IsModified = false;
 				db.Entry(eEvent).Property(x => x.Display).IsModified = false;
-
 				db.Configuration.ValidateOnSaveEnabled = true;
+
+				if (model.SpeakerName != null)
+				{
+					var getIdSpeaker = db.EventSpeaker.Where(s => s.EventId == model.Id).FirstOrDefault();
+
+					if (getIdSpeaker != null)
+					{
+						db.EventSpeaker.Remove(getIdSpeaker);
+					}
+
+					EventSpeaker eventspeaker = new EventSpeaker
+					{
+						Name = model.SpeakerName,
+						CreatedDate = DateTime.Now,
+						CreatedBy = CurrentUser.UserId,
+						Display = true,
+						EventId = model.Id,
+						DateAssigned = DateTime.Now,
+						SpeakerType = SpeakerType.FEP,
+						Id = getIdSpeaker.Id
+					};
+					db.EventSpeaker.Add(eventspeaker);
+				};
+
+				if (model.ExhibitorName != null)
+				{
+					var getIdExhibitor = db.EventExternalExhibitor.Where(s => s.EventId == model.Id).FirstOrDefault();
+
+					if (getIdExhibitor != null)
+					{
+						db.EventExternalExhibitor.Remove(getIdExhibitor);
+					}
+
+					EventExternalExhibitor externalExhibitor = new EventExternalExhibitor
+					{
+						Name = model.ExhibitorName,
+						Display = true,
+						EventId = model.Id,
+						CreatedDate = DateTime.Now,
+						CreatedBy = CurrentUser.UserId,
+						Id = getIdExhibitor.Id
+					};
+					db.EventExternalExhibitor.Add(externalExhibitor);
+				};
+
+				string path = "FileUploaded/";
+				if (model.DocumentEvent != null)
+				{
+					var getIdFile = db.EventFile.Where(s => s.EventId == model.Id).FirstOrDefault();
+
+					if (getIdFile != null)
+					{
+						db.EventFile.Remove(getIdFile);
+					}
+
+					EventFile eventfile = new EventFile
+					{
+						FileDescription = model.FileDescription,
+						FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.DocumentEvent.FileName,
+						FilePath = path,
+						UploadedDate = DateTime.Now,
+						Display = true,
+						CreatedBy = CurrentUser.UserId,
+						Category = FileCategory.NewFile,
+						EventId = model.Id,
+						Id = getIdFile.Id
+					};
+
+					db.EventFile.Add(eventfile);
+				};
 				db.SaveChanges();
 
 				//LogActivity();
@@ -326,6 +404,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
+			var eventfile = db.EventFile.Where(w => w.EventId == id).FirstOrDefault();
 
 			var e = db.PublicEvent.Where(i => i.Id == id)
 				.Select(i => new DeletePublicEventModel()
@@ -353,7 +432,12 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventCategoryId = i.EventCategoryId,
 					EventCategoryName = i.EventCategory.CategoryName,
 					Reasons = i.Reasons,
-					Remarks = i.Remarks
+					Remarks = i.Remarks,
+
+					SpeakerName = i.EventSpeakers.Select(s => s.Name).FirstOrDefault(),
+					ExhibitorName = i.EventExternalExhibitors.Select(s => s.Name).FirstOrDefault(),
+					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
+					//GetFileName = eventfile.FileName
 				}).FirstOrDefault();
 
 			if (e == null)

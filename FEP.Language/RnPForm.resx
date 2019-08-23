@@ -228,4 +228,178 @@
   <data name="ValidRequiredYear" xml:space="preserve">
     <value>Please specify Published Year</value>
   </data>
+  <data name="SurveyActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="SurveyApprovalApprovalDate" xml:space="preserve">
+    <value>Approval Date</value>
+  </data>
+  <data name="SurveyApprovalRemarks" xml:space="preserve">
+    <value>Remarks</value>
+  </data>
+  <data name="SurveyApprovalRequireNext" xml:space="preserve">
+    <value>Require Next Level Approval</value>
+  </data>
+  <data name="SurveyApprovalStatus" xml:space="preserve">
+    <value>Approval Status</value>
+  </data>
+  <data name="SurveyCategory" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="SurveyContents" xml:space="preserve">
+    <value>Survey Questions</value>
+  </data>
+  <data name="SurveyDescription" xml:space="preserve">
+    <value>Survey Description</value>
+  </data>
+  <data name="SurveyEndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="SurveyPictures" xml:space="preserve">
+    <value>Thumbnail</value>
+  </data>
+  <data name="SurveyProofOfApproval" xml:space="preserve">
+    <value>Proof of Approval</value>
+  </data>
+  <data name="SurveyResponseContents" xml:space="preserve">
+    <value>Survey Answers</value>
+  </data>
+  <data name="SurveyResponseResponseDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="SurveyStartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="SurveyTargetGroup" xml:space="preserve">
+    <value>Target Group</value>
+  </data>
+  <data name="SurveyTitle" xml:space="preserve">
+    <value>Survey Title</value>
+  </data>
+  <data name="SurveyType" xml:space="preserve">
+    <value>Survey Type</value>
+  </data>
+  <data name="ValidRequiredSurveyApprovalRemarks" xml:space="preserve">
+    <value>Please enter Remarks</value>
+  </data>
+  <data name="ValidRequiredSurveyApprovalStatus" xml:space="preserve">
+    <value>Please select Status</value>
+  </data>
+  <data name="ValidRequiredSurveyCategory" xml:space="preserve">
+    <value>Please select Module</value>
+  </data>
+  <data name="ValidRequiredSurveyContents" xml:space="preserve">
+    <value>Please specify some questions</value>
+  </data>
+  <data name="ValidRequiredSurveyDescription" xml:space="preserve">
+    <value>Please enter Survey Description</value>
+  </data>
+  <data name="ValidRequiredSurveyEndDate" xml:space="preserve">
+    <value>Please specify End Date</value>
+  </data>
+  <data name="ValidRequiredSurveyPictures" xml:space="preserve">
+    <value>Please upload Survey thumbnail</value>
+  </data>
+  <data name="ValidRequiredSurveyProofOfApproval" xml:space="preserve">
+    <value>Please upload Proof Of Approval</value>
+  </data>
+  <data name="ValidRequiredSurveyResponseContents" xml:space="preserve">
+    <value>Please complete the Survey</value>
+  </data>
+  <data name="ValidRequiredSurveyStartDate" xml:space="preserve">
+    <value>Please specify Start Date</value>
+  </data>
+  <data name="ValidRequiredSurveyTargetGroup" xml:space="preserve">
+    <value>Please indicate Target Group(s)</value>
+  </data>
+  <data name="ValidRequiredSurveyTitle" xml:space="preserve">
+    <value>Please enter Survey Title</value>
+  </data>
+  <data name="ValidRequiredSurveyType" xml:space="preserve">
+    <value>Please select Survey Type</value>
+  </data>
+  <data name="SurveyStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ValidInvalidSurveyEndDate" xml:space="preserve">
+    <value>Please specify a valid date</value>
+  </data>
+  <data name="ValidInvalidSurveyStartDate" xml:space="preserve">
+    <value>Please specify a valid date</value>
+  </data>
+  <data name="SurveyTemplate" xml:space="preserve">
+    <value>Template Name</value>
+  </data>
+  <data name="ValidRequiredSurveyApprovalApprovalDate" xml:space="preserve">
+    <value>Please specify approval date</value>
+  </data>
+  <data name="ValidRequiredSurveyResponseResponseDate" xml:space="preserve">
+    <value>Please specify response date</value>
+  </data>
+  <data name="ValidRequiredSurveyTemplate" xml:space="preserve">
+    <value>Please specify Template name</value>
+  </data>
+  <data name="PubApprovalApprovalDate" xml:space="preserve">
+    <value>Approval Date</value>
+  </data>
+  <data name="PubApprovalDate" xml:space="preserve">
+    <value>Approval Date</value>
+  </data>
+  <data name="PubApprovalRequireNext" xml:space="preserve">
+    <value>Require Next Level Approval</value>
+  </data>
+  <data name="PubApprovalStatus" xml:space="preserve">
+    <value>Approval Status</value>
+  </data>
+  <data name="PubWithdrawalApprovalDate" xml:space="preserve">
+    <value>Approval Date</value>
+  </data>
+  <data name="PubWithdrawalApprovalStatus" xml:space="preserve">
+    <value>Approval Status</value>
+  </data>
+  <data name="ValidRequiredApprovalApprovalDate" xml:space="preserve">
+    <value>Please specify Approval Date</value>
+  </data>
+  <data name="ValidRequiredApprovalDate" xml:space="preserve">
+    <value>Please specify Approval Date</value>
+  </data>
+  <data name="ValidRequiredApprovalStatus" xml:space="preserve">
+    <value>Please select Approval Status</value>
+  </data>
+  <data name="ValidRequiredCategory" xml:space="preserve">
+    <value>Please select Category</value>
+  </data>
+  <data name="ValidRequiredPictures" xml:space="preserve">
+    <value>Please upload at least one picture</value>
+  </data>
+  <data name="ValidRequiredProofOfApproval" xml:space="preserve">
+    <value>Please upload Proof of Approval</value>
+  </data>
+  <data name="ValidRequiredProofOfWithdrawal" xml:space="preserve">
+    <value>Please upload Proof of Approval of withdrawal</value>
+  </data>
+  <data name="ValidRequiredStockBalance" xml:space="preserve">
+    <value>Please specify Stock Balance</value>
+  </data>
+  <data name="ValidRequiredWithdrawalApprovalDate" xml:space="preserve">
+    <value>Please specify Approval Date</value>
+  </data>
+  <data name="ValidRequiredWithdrawalApprovalStatus" xml:space="preserve">
+    <value>Please select Approval Status</value>
+  </data>
+  <data name="ValidRequiredWithdrawalReason" xml:space="preserve">
+    <value>Please specify reasons for withdrawal</value>
+  </data>
+  <data name="ValidInvalidStockBalance" xml:space="preserve">
+    <value>Stock Balance is invalid</value>
+  </data>
+  <data name="ValidInvalidStockBalanceOutOfRange" xml:space="preserve">
+    <value>Please enter between 0 to 9999 for Stock Balance</value>
+  </data>
+  <data name="ValidInvalidYear" xml:space="preserve">
+    <value>Year is invalid</value>
+  </data>
+  <data name="ValidInvalidYearOutOfRange" xml:space="preserve">
+    <value>Please enter a year between 1900 to 3000</value>
+  </data>
 </root>

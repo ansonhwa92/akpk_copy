@@ -144,7 +144,7 @@
     <Compile Include="Api\eEvent\PublicEventController.cs" />
     <Compile Include="Api\Home\ProfileController.cs" />
     <Compile Include="Api\RnP\PublicationController.cs" />
-    <Compile Include="Api\RnP\ResearchController.cs" />
+    <Compile Include="Api\RnP\SurveyController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -251,6 +251,7 @@
     <Folder Include="Views\Publication\" />
     <Folder Include="Views\PublicEvent\" />
     <Folder Include="Views\Research\" />
+    <Folder Include="Views\Survey\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

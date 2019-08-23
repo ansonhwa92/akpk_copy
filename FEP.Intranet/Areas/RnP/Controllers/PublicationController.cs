@@ -6,8 +6,11 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using FEP.Model;
+using FEP.WebApiModel.RnP;
+
 
 namespace FEP.Intranet.Areas.RnP.Controllers
 {
@@ -16,34 +19,29 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         private DbEntities db = new DbEntities();
 
         // GET: RnP/Publication
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            //return View();
-            var publications = db.Publication.Include(p => p.Category);
-            //publications = db.Publication.Where()
-            return View(publications.ToList());
+            var resPubs = await WepApiMethod.SendApiAsync<IEnumerable<ReturnPublicationModel>>(HttpVerbs.Get, $"RnP/Publication");
+
+            if (resPubs.isSuccess)
+            {
+                var publications = resPubs.Data;
+                if (publications == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(publications);
+            }
+            return View();
         }
 
-        // GET: RnP/Publication/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Publication publication = db.Publication.Find(id);
-            if (publication == null)
-            {
-                return HttpNotFound();
-            }
-            return View(publication);
-        }
-
+        // Show create form
         // GET: RnP/Publication/Create
         public ActionResult Create()
         {
             ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name");
-            return View();
+            var model = new UpdatePublicationModel();
+            return View(model);
         }
 
         // POST: RnP/Publication/Create
@@ -51,124 +49,170 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CategoryId,Author,Coauthor,Title,Year,Description,Language,ISBN,Free,Hardcopy,Digitalcopy,HDcopy,HPrice,DPrice,HDPrice,ProofOfApproval,StockBalance,WithdrawalReason,ProofOfWithdrawal,DateAdded,Status,Withdrawal,ViewCount,PurchaseCount")] Publication publication, string Submittype)
+        public async Task<ActionResult> Create(UpdatePublicationModel model)
         {
             if (ModelState.IsValid)
             {
-                ModelState.Remove("WithdrawalReason");
-                ModelState.Remove("ProofOfWithdrawal");
-                ModelState.Remove("DateAdded");
-                ModelState.Remove("Status");
-                ModelState.Remove("WStatus");
-                ModelState.Remove("ViewCount");
-                ModelState.Remove("PurchaseCount");
-                publication.WithdrawalReason = "";
-                publication.ProofOfWithdrawal = "";
-                publication.DateAdded = DateTime.Today;
-                publication.WStatus = PublicationWithdrawalStatus.None;
-                publication.ViewCount = 0;
-                publication.PurchaseCount = 0;
-                switch (Submittype)
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/CreatePublication", model);
+
+                if (response.isSuccess)
                 {
-                    case "Save":
-                        publication.Status = PublicationStatus.New;
-                        break;
-                    case "Submit":
-                        publication.Status = PublicationStatus.Submitted;
-                        break;
+
+                    // success notification
+                    // email/sms/system notification to others upon submission
+
+                    return RedirectToAction("Index", "Publication", new { area = "RnP" });
+
                 }
-                //publication.Status = PublicationStatus.New;
-                db.Publication.Add(publication);
-                db.SaveChanges();
-                return RedirectToAction("Index");
             }
 
-            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", publication.CategoryID);
-            return View(publication);
+            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
+            return View(model);
         }
 
-        // GET: Publication/Edit/5
-        public ActionResult Edit(int? id)
+        // Show edit form
+        // GET: RnP/Publication/Edit/5
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Publication publication = db.Publication.Find(id);
-            if (publication == null)
+            var resPub = await WepApiMethod.SendApiAsync<ReturnPublicationModel>(HttpVerbs.Get, $"RnP/Publication?id={id}");
+
+            if (resPub.isSuccess)
             {
-                return HttpNotFound();
+                var publication = resPub.Data;
+                if (publication == null)
+                {
+                    return HttpNotFound();
+                }
+                var vmpublication = new UpdatePublicationModel
+                {
+                    ID = publication.ID,
+                    CategoryID = publication.CategoryID,
+                    Author = publication.Author,
+                    Coauthor = publication.Coauthor,
+                    Title = publication.Title,
+                    Year = publication.Year,
+                    Description = publication.Description,
+                    Language = publication.Language,
+                    ISBN = publication.ISBN,
+                    Free = publication.Free,
+                    Hardcopy = publication.Hardcopy,
+                    Digitalcopy = publication.Digitalcopy,
+                    HDcopy = publication.HDcopy,
+                    HPrice = publication.HPrice,
+                    DPrice = publication.DPrice,
+                    HDPrice = publication.HDPrice,
+                    Pictures = publication.Pictures,
+                    ProofOfApproval = publication.ProofOfApproval,
+                    StockBalance = publication.StockBalance
+                };
+                ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", vmpublication.CategoryID);
+                return View(vmpublication);
             }
-            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", publication.CategoryID);
-            return View(publication);
+            return View();
         }
 
+        // Process edit form
         // POST: Publication/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CategoryId,Author,Coauthor,Title,Year,Description,Language,ISBN,Free,Hardcopy,Digitalcopy,HDcopy,HPrice,DPrice,HDPrice,ProofOfApproval,StockBalance,WithdrawalReason,ProofOfWithdrawal,DateAdded,Status,Withdrawal,ViewCount,PurchaseCount")] Publication publication, string Submittype)
+        public async Task<ActionResult> Edit(UpdatePublicationModel model)
         {
-            // ,WithdrawalReason,ProofOfWithdrawal,DateAdded,Status,Withdrawal,ViewCount,PurchaseCount
             if (ModelState.IsValid)
             {
-                ModelState.Remove("WithdrawalReason");
-                ModelState.Remove("ProofOfWithdrawal");
-                ModelState.Remove("DateAdded");
-                ModelState.Remove("Status");
-                ModelState.Remove("WStatus");
-                ModelState.Remove("ViewCount");
-                ModelState.Remove("PurchaseCount");
-                publication.WithdrawalReason = "";
-                publication.ProofOfWithdrawal = "";
-                publication.DateAdded = DateTime.Today;
-                publication.WStatus = PublicationWithdrawalStatus.None;
-                publication.ViewCount = 0;
-                publication.PurchaseCount = 0;
-                switch (Submittype)
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/EditPublication", model);
+
+                if (response.isSuccess)
                 {
-                    case "Save":
-                        publication.Status = PublicationStatus.New;
-                        break;
-                    case "Submit":
-                        publication.Status = PublicationStatus.Submitted;
-                        break;
+
+                    // success notification
+                    // email/sms/system notification to others upon submission
+
+                    return RedirectToAction("Index", "Publication", new { area = "RnP" });
+
                 }
-                db.Entry(publication).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
             }
-            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", publication.CategoryID);
-            return View(publication);
+
+            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
+            return View(model);
         }
 
-        // GET: Publication/Delete/5
-        public ActionResult Delete(int? id)
+        // Show view form
+        // GET: RnP/Publication/Details/5
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Publication publication = db.Publication.Find(id);
-            if (publication == null)
+            var resPub = await WepApiMethod.SendApiAsync<ReturnPublicationModel>(HttpVerbs.Get, $"RnP/Publication?id={id}");
+
+            if (resPub.isSuccess)
             {
-                return HttpNotFound();
+                var publication = resPub.Data;
+                if (publication == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(publication);
             }
-            return View(publication);
+            return View();
         }
 
-        // POST: Publication/Delete/5
+        // Show delete form
+        // GET: RnP/Publication/Delete/5
+        public async Task<ActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var resPub = await WepApiMethod.SendApiAsync<ReturnPublicationModel>(HttpVerbs.Get, $"RnP/Publication?id={id}");
+
+            if (resPub.isSuccess)
+            {
+                var publication = resPub.Data;
+                if (publication == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(publication);
+            }
+            return View();
+        }
+
+        // Process delete form
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Delete(UpdateSurveyModel model)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Publication publication = db.Publication.Find(id);
-            db.Publication.Remove(publication);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/DeletePublication?id={id}");
+
+                if (response.isSuccess)
+                {
+
+                    // success notification
+                    // email/sms/system notification
+
+                    return RedirectToAction("Index", "Publication", new { area = "RnP" });
+
+                }
+            }
+
+            return View();
         }
 
+        /*
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -177,6 +221,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
             base.Dispose(disposing);
         }
+        */
     }
 }
 

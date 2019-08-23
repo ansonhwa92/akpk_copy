@@ -14,66 +14,36 @@ namespace FEP.Model
     {
         [Key]
         public int ID { get; set; }
-        [Display(Name = "PubCategoryID", ResourceType = typeof(Language.RnPForm))]
         public int CategoryID { get; set; }
-        [Required(ErrorMessageResourceName = "ValidRequiredAuthor", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [Display(Name = "PubAuthor", ResourceType = typeof(Language.RnPForm))]
         public string Author { get; set; }
-        [Display(Name = "PubCoauthor", ResourceType = typeof(Language.RnPForm))]
         public string Coauthor { get; set; }
-        [Required(ErrorMessageResourceName = "ValidRequiredTitle", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [Display(Name = "PubTitle", ResourceType = typeof(Language.RnPForm))]
         public string Title { get; set; }
-        [Required(ErrorMessageResourceName = "ValidRequiredYear", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [Display(Name = "PubYear", ResourceType = typeof(Language.RnPForm))]
-        public int Year { get; set; }
-        [Required(ErrorMessageResourceName = "ValidRequiredDescription", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [Display(Name = "PubDescription", ResourceType = typeof(Language.RnPForm))]
+        public int? Year { get; set; }
         public string Description { get; set; }
-        [Required(ErrorMessageResourceName = "ValidRequiredLanguage", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [Display(Name = "PubLanguage", ResourceType = typeof(Language.RnPForm))]
         public string Language { get; set; }
-        [Required(ErrorMessageResourceName = "ValidRequiredISBN", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [Display(Name = "PubISBN", ResourceType = typeof(Language.RnPForm))]
         public string ISBN { get; set; }
-        [Display(Name = "PubFree", ResourceType = typeof(Language.RnPForm))]
-        public bool Free { get; set; }              // Free publication if True
-        [Display(Name = "PubHardcopy", ResourceType = typeof(Language.RnPForm))]
+        public bool Free { get; set; }
         public bool Hardcopy { get; set; }
-        [Display(Name = "PubDigitalcopy", ResourceType = typeof(Language.RnPForm))]
         public bool Digitalcopy { get; set; }
-        [Display(Name = "PubHDcopy", ResourceType = typeof(Language.RnPForm))]
         public bool HDcopy { get; set; }
-        [Display(Name = "PubHPrice", ResourceType = typeof(Language.RnPForm))]
         public float HPrice { get; set; }
-        [Display(Name = "PubDPrice", ResourceType = typeof(Language.RnPForm))]
         public float DPrice { get; set; }
-        [Display(Name = "PubHDPrice", ResourceType = typeof(Language.RnPForm))]
         public float HDPrice { get; set; }
-        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
-        public string ProofOfApproval { get; set; }         // uploaded proof of approval
-        [Display(Name = "PubStockBalance", ResourceType = typeof(Language.RnPForm))]
-        public int StockBalance { get; set; }
+        public string Pictures { get; set; }
+        public string ProofOfApproval { get; set; }
+        public int? StockBalance { get; set; }
         // withdrawal use
-        [Display(Name = "PubWithdrawalReason", ResourceType = typeof(Language.RnPForm))]
         public string WithdrawalReason { get; set; }
-        [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
-        public string ProofOfWithdrawal { get; set; }       // uploaded proof of approval of withdrawal
+        public string ProofOfWithdrawal { get; set; }
         // non-key in data
-        [Display(Name = "PubDateAdded", ResourceType = typeof(Language.RnPForm))]
         public DateTime DateAdded { get; set; }
-        [Display(Name = "PubStatus", ResourceType = typeof(Language.RnPForm))]
         public PublicationStatus Status { get; set; }
-        [Display(Name = "PubWStatus", ResourceType = typeof(Language.RnPForm))]
         public PublicationWithdrawalStatus WStatus { get; set; }
-        [Display(Name = "PubViewCount", ResourceType = typeof(Language.RnPForm))]
         public int ViewCount { get; set; }
-        [Display(Name = "PubPurchaseCount", ResourceType = typeof(Language.RnPForm))]
         public int PurchaseCount { get; set; }
         // DMS integration (TODO)
         // nav
         [ForeignKey("CategoryID")]
-        [Display(Name = "PubCategoryName", ResourceType = typeof(Language.RnPForm))]
         public virtual PublicationCategory Category { get; set; }
         public virtual ICollection<PublicationApproval> Approvals { get; set; }
         public virtual ICollection<PublicationWithdrawal> Withdrawals { get; set; }
@@ -84,7 +54,6 @@ namespace FEP.Model
     {
         [Key]
         public int ID { get; set; }
-        [Display(Name = "PubCategoryNameList", ResourceType = typeof(Language.RnPForm))]
         public string Name { get; set; }
     }
 
@@ -98,8 +67,6 @@ namespace FEP.Model
         public int ApproverId { get; set; }
         public PublicationApprovalStatus Status { get; set; }
         public DateTime ApprovalDate { get; set; }
-        [Required(ErrorMessageResourceName = "ValidRequiredRemarks", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [Display(Name = "PubApprovalRemarks", ResourceType = typeof(Language.RnPForm))]
         public string Remarks { get; set; }
         public bool RequireNext { get; set; }
 
@@ -117,8 +84,6 @@ namespace FEP.Model
         public int ApproverId { get; set; }
         public PublicationApprovalStatus Status { get; set; }
         public DateTime ApprovalDate { get; set; }
-        [Required(ErrorMessageResourceName = "ValidRequiredRemarks", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [Display(Name = "PubWithdrawalRemarks", ResourceType = typeof(Language.RnPForm))]
         public string Remarks { get; set; }
         public bool RequireNext { get; set; }
 
@@ -132,8 +97,8 @@ namespace FEP.Model
         [Key]
         public int ID { get; set; }
         public int UserId { get; set; }     // also determines payment from individual/agency
-        [Required(ErrorMessageResourceName = "ValidRequiredDeliveryAddress", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [Display(Name = "PubPurchaseDeliveryAddress", ResourceType = typeof(Language.RnPForm))]
+        //[Required(ErrorMessageResourceName = "ValidRequiredDeliveryAddress", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        //[Display(Name = "PubPurchaseDeliveryAddress", ResourceType = typeof(Language.RnPForm))]
         public string DeliveryAddress { get; set; }
         public string DiscountCode { get; set; }
         public string InvoiceNo { get; set; }
@@ -198,50 +163,71 @@ namespace FEP.Model
 
     public enum PublicationStatus
     {
+        [Display(Name = "PubStatusNew", ResourceType = typeof(Language.RnPEnum))]
         New,
+        [Display(Name = "PubStatusSubmitted", ResourceType = typeof(Language.RnPEnum))]
         Submitted,
+        [Display(Name = "PubStatusPublished", ResourceType = typeof(Language.RnPEnum))]
         Published,
+        [Display(Name = "PubStatusTrashed", ResourceType = typeof(Language.RnPEnum))]
         Trashed
     }
 
     public enum PublicationWithdrawalStatus
     {
+        [Display(Name = "PubWithdrawalStatusNone", ResourceType = typeof(Language.RnPEnum))]
         None,
+        [Display(Name = "PubWithdrawalStatusSubmitted", ResourceType = typeof(Language.RnPEnum))]
         Submitted,
+        [Display(Name = "PubWithdrawalStatusWithdrawn", ResourceType = typeof(Language.RnPEnum))]
         Withdrawn
     }
 
     public enum PublicationApprovalLevels
     {
+        [Display(Name = "PubApprovalLevelVerifier", ResourceType = typeof(Language.RnPEnum))]
         Verifier,
+        [Display(Name = "PubApprovalLevelApprover1", ResourceType = typeof(Language.RnPEnum))]
         Approver1,
+        [Display(Name = "PubApprovalLevelApprover2", ResourceType = typeof(Language.RnPEnum))]
         Approver2,
+        [Display(Name = "PubApprovalLevelApprover3", ResourceType = typeof(Language.RnPEnum))]
         Approver3
     }
 
     public enum PublicationApprovalStatus
     {
+        [Display(Name = "PubApprovalStatusNone", ResourceType = typeof(Language.RnPEnum))]
         None,
+        [Display(Name = "PubApprovalStatusApproved", ResourceType = typeof(Language.RnPEnum))]
         Approved,
+        [Display(Name = "PubApprovalStatusRejected", ResourceType = typeof(Language.RnPEnum))]
         Rejected
     }
 
     public enum PublicationPaymentModes
     {
+        [Display(Name = "PubPaymentModeOnline", ResourceType = typeof(Language.RnPEnum))]
         Online,
+        [Display(Name = "PubPaymentModeOffline", ResourceType = typeof(Language.RnPEnum))]
         Offline
     }
 
     public enum PublicationFormats
     {
+        [Display(Name = "PubFormatHardcopy", ResourceType = typeof(Language.RnPEnum))]
         Hardcopy,
+        [Display(Name = "PubFormatDigital", ResourceType = typeof(Language.RnPEnum))]
         Digital,
+        [Display(Name = "PubFormatBoth", ResourceType = typeof(Language.RnPEnum))]
         Both
     }
 
     public enum PublicationRefundStatus
     {
+        [Display(Name = "PubRefundStatusIncomplete", ResourceType = typeof(Language.RnPEnum))]
         Incomplete,
+        [Display(Name = "PubRefundStatusComplete", ResourceType = typeof(Language.RnPEnum))]
         Complete
     }
 }

@@ -1,45 +1,295 @@
-﻿using System;
+﻿using FEP.Helper;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FEP.Model;
 
-namespace FEP.WebApiModel
+namespace FEP.WebApiModel.RnP
 {
-    public class PublicationApiModel
+    // class for returning publication category
+    public class ReturnPublicationCategory
     {
         public int ID { get; set; }
-        public int CategoryID { get; set; }
-        public string Author { get; set; }
-        public string Coauthor { get; set; }
-        public string Title { get; set; }
-        public int Year { get; set; }
-        public string Description { get; set; }
-        public string Language { get; set; }
-        public string ISBN { get; set; }
-        public bool Free { get; set; }
-        public bool Hardcopy { get; set; }
-        public bool Digitalcopy { get; set; }
-        public bool HDcopy { get; set; }
-        public float HPrice { get; set; }
-        public float DPrice { get; set; }
-        public float HDPrice { get; set; }
-        public string ProofOfApproval { get; set; }
-        public int StockBalance { get; set; }
-        public string WithdrawalReason { get; set; }
-        public string ProofOfWithdrawal { get; set; }
-        public DateTime? DateAdded { get; set; }
-        public PublicationStatus Status { get; set; }
-        public PublicationWithdrawalStatus WStatus { get; set; }
-        public int ViewCount { get; set; }
-        public int PurchaseCount { get; set; }
-        public List<PublicationApproval> Approvals { get; set; }
-        public List<PublicationWithdrawal> Withdrawals { get; set; }
+        [Display(Name = "PubCategoryNameList", ResourceType = typeof(Language.RnPForm))]
+        public string Name { get; set; }
     }
 
-    public class PublicationCategoryApiModel
+    // class for returning publication information to client app
+    // returned whenever the client requests for information on a single publication
+    public class ReturnPublicationModel
     {
+        public int ID { get; set; }
+        [Display(Name = "PubCategoryID", ResourceType = typeof(Language.RnPForm))]
+        public int CategoryID { get; set; }
+        [Display(Name = "PubAuthor", ResourceType = typeof(Language.RnPForm))]
+        public string Author { get; set; }
+        [Display(Name = "PubCoauthor", ResourceType = typeof(Language.RnPForm))]
+        public string Coauthor { get; set; }
+        [Display(Name = "PubTitle", ResourceType = typeof(Language.RnPForm))]
+        public string Title { get; set; }
+        [Display(Name = "PubYear", ResourceType = typeof(Language.RnPForm))]
+        public int? Year { get; set; }
+        [Display(Name = "PubDescription", ResourceType = typeof(Language.RnPForm))]
+        public string Description { get; set; }
+        [Display(Name = "PubLanguage", ResourceType = typeof(Language.RnPForm))]
+        public string Language { get; set; }
+        [Display(Name = "PubISBN", ResourceType = typeof(Language.RnPForm))]
+        public string ISBN { get; set; }
+        [Display(Name = "PubFree", ResourceType = typeof(Language.RnPForm))]
+        public bool Free { get; set; }
+        [Display(Name = "PubHardcopy", ResourceType = typeof(Language.RnPForm))]
+        public bool Hardcopy { get; set; }
+        [Display(Name = "PubDigitalcopy", ResourceType = typeof(Language.RnPForm))]
+        public bool Digitalcopy { get; set; }
+        [Display(Name = "PubHDcopy", ResourceType = typeof(Language.RnPForm))]
+        public bool HDcopy { get; set; }
+        [Display(Name = "PubHPrice", ResourceType = typeof(Language.RnPForm))]
+        public float HPrice { get; set; }
+        [Display(Name = "PubDPrice", ResourceType = typeof(Language.RnPForm))]
+        public float DPrice { get; set; }
+        [Display(Name = "PubHDPrice", ResourceType = typeof(Language.RnPForm))]
+        public float HDPrice { get; set; }
+        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        public string Pictures { get; set; }
+        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public string ProofOfApproval { get; set; }
+        [Display(Name = "PubStockBalance", ResourceType = typeof(Language.RnPForm))]
+        public int? StockBalance { get; set; }
+        [Display(Name = "PubWithdrawalReason", ResourceType = typeof(Language.RnPForm))]
+        public string WithdrawalReason { get; set; }
+        [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
+        public DateTime DateAdded { get; set; }
+        public string ProofOfWithdrawal { get; set; }
+        [Display(Name = "PubStatus", ResourceType = typeof(Language.RnPForm))]
+        public PublicationStatus Status { get; set; }
+        [Display(Name = "PubWStatus", ResourceType = typeof(Language.RnPForm))]
+        public PublicationWithdrawalStatus WStatus { get; set; }
+        [Display(Name = "PubViewCount", ResourceType = typeof(Language.RnPForm))]
+        public int ViewCount { get; set; }
+        [Display(Name = "PubPurchaseCount", ResourceType = typeof(Language.RnPForm))]
+        public int PurchaseCount { get; set; }
+        //public List<PublicationApproval> Approvals { get; set; }
+        //public List<PublicationWithdrawal> Withdrawals { get; set; }
+        [Display(Name = "PubCategoryNameList", ResourceType = typeof(Language.RnPForm))]
+        public string Category { get; set; }
+    }
 
+    public class FilterPublicationModel : DataTableModel
+    {
+        [Display(Name = "PubCategoryNameList", ResourceType = typeof(Language.RnPForm))]
+        public string Type { get; set; }
+
+        [Display(Name = "PubAuthor", ResourceType = typeof(Language.RnPForm))]
+        public string Author { get; set; }
+
+        [Display(Name = "PubTitle", ResourceType = typeof(Language.RnPForm))]
+        public string Title { get; set; }
+
+        [Display(Name = "PubISBN", ResourceType = typeof(Language.RnPForm))]
+        public string ISBN { get; set; }
+    }
+
+    // class for returning list of filtered publication information to client app
+    public class ReturnListPublicationModel
+    {
+        public FilterPublicationModel Filters { get; set; }
+        public ReturnPublicationModel Pubs { get; set; }
+    }
+
+    // class for updating of publication information by client app
+    // used to create and edit publication information
+    public class UpdatePublicationModel
+    {
+        public int ID { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredCategory", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubCategoryID", ResourceType = typeof(Language.RnPForm))]
+        public int CategoryID { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredAuthor", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubAuthor", ResourceType = typeof(Language.RnPForm))]
+        public string Author { get; set; }
+
+        [Display(Name = "PubCoauthor", ResourceType = typeof(Language.RnPForm))]
+        public string Coauthor { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredTitle", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubTitle", ResourceType = typeof(Language.RnPForm))]
+        public string Title { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredYear", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubYear", ResourceType = typeof(Language.RnPForm))]
+        //[MaxLength(4)]
+        //[MinLength(4)]
+        //[Range(1900, 3000, ErrorMessage = "Please enter a valid year")]
+        //[RegularExpression("^[0-9]*$", ErrorMessage = "UPRN must be numeric")]
+        public int? Year { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredDescription", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubDescription", ResourceType = typeof(Language.RnPForm))]
+        public string Description { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredLanguage", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubLanguage", ResourceType = typeof(Language.RnPForm))]
+        public string Language { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredISBN", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubISBN", ResourceType = typeof(Language.RnPForm))]
+        public string ISBN { get; set; }
+
+        [Display(Name = "PubFree", ResourceType = typeof(Language.RnPForm))]
+        public bool Free { get; set; }
+
+        [Display(Name = "PubHardcopy", ResourceType = typeof(Language.RnPForm))]
+        public bool Hardcopy { get; set; }
+
+        [Display(Name = "PubDigitalcopy", ResourceType = typeof(Language.RnPForm))]
+        public bool Digitalcopy { get; set; }
+
+        [Display(Name = "PubHDcopy", ResourceType = typeof(Language.RnPForm))]
+        public bool HDcopy { get; set; }
+
+        [Display(Name = "PubHPrice", ResourceType = typeof(Language.RnPForm))]
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+        public float HPrice { get; set; }
+
+        [Display(Name = "PubDPrice", ResourceType = typeof(Language.RnPForm))]
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+        public float DPrice { get; set; }
+
+        [Display(Name = "PubHDPrice", ResourceType = typeof(Language.RnPForm))]
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+        public float HDPrice { get; set; }
+
+        //[Required(ErrorMessageResourceName = "ValidRequiredPictures", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        public string Pictures { get; set; }
+
+        //[Required(ErrorMessageResourceName = "ValidRequiredProofOfApproval", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public string ProofOfApproval { get; set; }         // uploaded proof of approval
+
+        [Required(ErrorMessageResourceName = "ValidRequiredStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubStockBalance", ResourceType = typeof(Language.RnPForm))]
+        //[MaxLength(4)]
+        //[MinLength(1)]
+        //[Range(0, 9999, ErrorMessage = "Please enter a valid year")]
+        public int? StockBalance { get; set; }
+
+        // hidden field, comes from which button (Save or Submit) is pushed (not part of actual model)
+        //[Required]
+        public string HiddenPubStatus { get; set; }
+    }
+
+    // class for updating of publication withdrawal information by client app
+    // used to create and edit publication withdrawal information
+    public class UpdatePublicationWithdrawalModel
+    {
+        public int ID { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredWithdrawalReason", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubWithdrawalReason", ResourceType = typeof(Language.RnPForm))]
+        public string WithdrawalReason { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredProofOfWithdrawal", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
+        public string ProofOfWithdrawal { get; set; }
+
+        // comes from which button (Save or Submit) is pushed
+        [Required]
+        public PublicationWithdrawalStatus WStatus { get; set; }
+    }
+
+    // class for creation of publication approval record by client app
+    // used to create approval record for later filling in by approvers
+    // this function is called appropriately depending on approval stage, and is not apparent to user so
+    // no user-accessible error messages are necessary
+    public class CreatePublicationApprovalModel
+    {
+        [Required]
+        public int SurveyID { get; set; }
+
+        [Required]
+        public PublicationApprovalLevels Level { get; set; }
+
+        // always None at this point
+        [Required]
+        public PublicationApprovalStatus Status { get; set; }
+    }
+
+    // class for updating of publication approval by client app
+    // used to update approval record with approver's remarks
+    // approver ID is automatic based on who's doing the review
+    public class UpdatePublicationApprovalModel
+    {
+        [Required]
+        public int ID { get; set; }
+
+        [Required]
+        public int ApproverId { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredApprovalStatus", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubApprovalStatus", ResourceType = typeof(Language.RnPForm))]
+        public PublicationApprovalStatus Status { get; set; }
+
+        // might be automatic (right now comes from a disabled date field anyway)
+        //[Required(ErrorMessageResourceName = "ValidRequiredApprovalApprovalDate", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        //[Display(Name = "PubApprovalApprovalDate", ResourceType = typeof(Language.RnPForm))]
+        //public DateTime ApprovalDate { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredRemarks", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubApprovalRemarks", ResourceType = typeof(Language.RnPForm))]
+        public string Remarks { get; set; }
+
+        [Display(Name = "PubApprovalRequireNext", ResourceType = typeof(Language.RnPForm))]
+        public bool RequireNext { get; set; }
+    }
+
+    // class for creation of publication withdrawal approval record by client app
+    // used to create approval record for later filling in by approvers
+    // this function is called appropriately depending on approval stage, and is not apparent to user so
+    // no user-accessible error messages are necessary
+    public class CreatePublicationWithdrawalApprovalModel
+    {
+        [Required]
+        public int SurveyID { get; set; }
+
+        [Required]
+        public PublicationApprovalLevels Level { get; set; }
+
+        // always None at this point
+        [Required]
+        public PublicationWithdrawalStatus Status { get; set; }
+    }
+
+    // class for updating of publication withdrawal approval by client app
+    // used to update withdrawal approval record with approver's remarks
+    // approver ID is automatic based on who's doing the review
+    public class UpdatePublicationWithdrawalApprovalModel
+    {
+        [Required]
+        public int ID { get; set; }
+
+        [Required]
+        public int ApproverId { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredWithdrawalApprovalStatus", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubWithdrawalApprovalStatus", ResourceType = typeof(Language.RnPForm))]
+        public PublicationApprovalStatus Status { get; set; }
+
+        // might be automatic (right now comes from a disabled date field anyway)
+        //[Required(ErrorMessageResourceName = "ValidRequiredWithdrawalApprovalDate", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        //[Display(Name = "PubWithdrawalApprovalDate", ResourceType = typeof(Language.RnPForm))]
+        //public DateTime ApprovalDate { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredRemarks", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubApprovalRemarks", ResourceType = typeof(Language.RnPForm))]
+        public string Remarks { get; set; }
+
+        [Display(Name = "PubApprovalRequireNext", ResourceType = typeof(Language.RnPForm))]
+        public bool RequireNext { get; set; }
     }
 }

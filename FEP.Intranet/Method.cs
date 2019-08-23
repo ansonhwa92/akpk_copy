@@ -15,7 +15,7 @@ namespace FEP.Intranet
 {
     public static class WepApiMethod
     {
-        
+
         public static async Task<WebApiResponse<T>> SendApiAsync<T>(HttpVerbs httpVerbs, string requestURI, object obj = null)
         {
             var url = GetWebApiUrl();
@@ -63,7 +63,7 @@ namespace FEP.Intranet
                     {
                         response = await client.DeleteAsync(requestURI);
                     }
-                    
+
                     if (response.IsSuccessStatusCode)
                     {
                         result = await response.Content.ReadAsAsync<T>();

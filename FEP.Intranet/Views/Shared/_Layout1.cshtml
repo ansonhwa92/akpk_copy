@@ -268,12 +268,9 @@
 								<li class="nav-item dropdown">
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">R&P Management</a>
 									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Menu 1</a>
-										<a class="dropdown-item" href="#">Menu 2</a>
-										<a class="dropdown-item" href="#">Menu 3</a>
-										<a class="dropdown-item" href="#">Menu 4</a>
-										<a class="dropdown-item" href="#">Menu 5</a>
-										<a class="dropdown-item" href="#">Menu 6</a>
+										 <a class="dropdown-item" href="~/RnP/Publication"><i class="la la-search color-secondary font-icon"></i>Browse Publications</a>
+                                        <a class="dropdown-item" href="~/RnP/Survey"><i class="la la-search color-secondary font-icon"></i>Browse Surveys</a>
+                                        
 									</div>
 								</li>
 								<li class="nav-item dropdown">
@@ -299,7 +296,7 @@
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">System Settings</a>
 									<div class="dropdown-menu">
 										<a class="dropdown-item" href="@Url.Action("List", "EventCategory", new { area = "eEvent" })">Event Category</a>
-										<a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })">User</a>
 										<a class="dropdown-item" href="#">Menu 3</a>
 										<a class="dropdown-item" href="#">Menu 4</a>
 									</div>

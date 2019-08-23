@@ -42,7 +42,7 @@ namespace FEP.WebApiModel.Home
         [Display(Name = "FieldCompanyPhoneNo", ResourceType = typeof(Language.Auth))]
         public string CompanyPhoneNo { get; set; }
                 
-        [Display(Name = "FieldName", ResourceType = typeof(Language.Auth))]
+        [Display(Name = "Representative Name")]
         public string Name { get; set; }
                 
         [Display(Name = "FieldICNo", ResourceType = typeof(Language.Auth))]
@@ -126,7 +126,7 @@ namespace FEP.WebApiModel.Home
         public string CompanyPhoneNo { get; set; }
 
         [Required]
-        [Display(Name = "FieldName", ResourceType = typeof(Language.Auth))]
+        [Display(Name = "Representative Name")]
         public string Name { get; set; }
 
         [Required]

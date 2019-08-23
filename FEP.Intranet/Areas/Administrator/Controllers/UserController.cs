@@ -18,12 +18,5 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             return View();
         }
 
-        public async Task<ActionResult> List()
-        {
-            var users = await WepApiMethod.SendApiAsync<List<IndividualModel>>(HttpVerbs.Get, $"Administration/Individual");
-
-            return View(users);
-        }
-
     }
 }

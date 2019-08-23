@@ -16,8 +16,7 @@
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Profile</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = ""})">Home</a></li>                                
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
@@ -34,7 +33,27 @@
 <div class="row">
 
 
-    <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue">My Profile</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("MyProfile", "Home", new { area = "" })" class="active nav-link">View</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("EditProfile", "Home", new { area = "" })" class="nav-link">Update Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("ChangePassword", "Home", new { area = "" })" class="nav-link">Change Password</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
         <!-- Start Form -->
         <div class="border-form rounded-top">
             <form>
@@ -68,8 +87,7 @@
             <!-- End Form -->
         </div>
         <div class="border-left border-right border-bottom p-3 rounded-bottom">
-            <a class="btn btn-secondary" href="@Url.Action("EditProfile", "Home", new { area = "" })">Edit</a>
-            <a class="btn btn-warning" href="@Url.Action("ChangePassword", "Home", new { area = "" })">Change Password</a>
+            <a class="btn btn-secondary" href="@Url.Action("EditProfile", "Home", new { area = "" })">Edit</a>            
         </div>
     </div>
 </div>

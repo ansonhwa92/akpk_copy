@@ -285,7 +285,9 @@
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Administration</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })">User</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })">Individual</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Company", new { area = "Administrator" })">Agency</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Staff", new { area = "Administrator" })">Staff</a>
                                         <a class="dropdown-item" href="#">Role Access</a>
                                         <a class="dropdown-item" href="#">Groups</a>
                                         <a class="dropdown-item" href="#">Parameter Setting</a>

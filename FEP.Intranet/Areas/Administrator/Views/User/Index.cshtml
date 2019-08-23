@@ -5,7 +5,7 @@
 }
 
 @section ContentScript{
-    
+
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -13,7 +13,7 @@
 
             var t = $('.tabledata').DataTable({
                 serverSide: false,
-                processing: true,   
+                processing: true,
                 paging: true,
                 lengthChange: true,
                 searching: true,
@@ -64,7 +64,7 @@
 
 
     </script>
-    
+
 }
 
 
@@ -86,8 +86,8 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">User List</h1>
-                    <div class="header-text">List of registered user</div>
+                    <h1 class="page-title text-white">User Type</h1>
+                    <div class="header-text">Select User Types</div>
                 </div>
             </div>
         </div>
@@ -95,218 +95,73 @@
 
 }
 
-<div class="d-flex align-items-center">
-    <div class="filter">
-        <button class="btn btn-default btn-rounded color-grey font-weight-normal"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
-    </div>
-    <div class="divider-vertical">&nbsp;</div>
-    <!-- Search -->
-    <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
-        <input type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
-        <div class="input-group-append">
-            <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+<div class="row">
+    <!-- Start content leftbar -->
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="sidebar-inner">
+                    <ul class="steps steps-vertical nav">
+                        <li class="step-item active">
+                            <a href="#step1" class="step-link" data-toggle="tab">
+                                <span class="step-number">1</span>
+                                <span class="step-title">Select Event Category</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- End Steps -->
+                </div>
+            </div>
         </div>
     </div>
-    <div class="sorting-wrap">
-        <div class="sorting-dropdown">
-            <select class="select2 form-control small" name="sorting">
-                <option value="Default Sorting">Default Sorting</option>
-                <option value="sorting 1">Sorting 1</option>
-                <option value="sorting 2">Sorting 2</option>
-            </select>
+    <!-- End content leftbar -->
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Tab Content -->
+        <div class="border-form rounded-top">
+            <div class="tab-content">
+                <div class="tab-pane active" id="step1">
+                    <form>
+                        <div class="form-container form-container-w100">
+                            <div class="mt-2 mb-4 pb-1">
+                                <h4 class="color-darkblue mb-0">Event Category List</h4>
+                                <h6 class="font-weight-normal">Select Event Category</h6>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge badge-light px-3 py-1 mr-2">A</span><span class="sub-Title color-darkblue">User Type</span>
+                            </div>
+                            <div id="selecteventcategory">
+                                <div class="mxw-660">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="box-contain">
+                                                <div class="card text-center">
+                                                    <span>Individual</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="box-contain">
+                                                <div class="card text-center">
+                                                    <span>Agency</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="box-contain">
+                                                <div class="card text-center">
+                                                    <span>Staff</span>
+                                                </div>
+                                            </div>
+                                        </div>                                      
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </form>
+                    <!-- End Form -->
+                   
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<hr>
-<div class="table-responsive" data-toggle="lists">
-    <div class="d-flex pb-4 align-items-center">
-        <div>
-            <!-- Select option -->
-            <span class="select-arrow">
-                <select name="dataTable_length" aria-controls="dataTable" class="custom-select">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </span>
-        </div>
-        <div class="showing-result px-3 py-2 mr-auto">Showing 1 - 6 of 2000 attendees</div>
-        <div><a href="#" class="btn btn-secondary"><i class="la la-search font-icon" style="font-size: 1.5rem;"></i>Scan Attendee</a></div>
-    </div>
-    <!-- Table -->
-    <table class="table tableStyle1 tabledata">
-        <thead>
-            <tr>
-                <th>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#table01" id="customCheckAll">
-                        <label class="custom-control-label" for="customCheckAll">
-                            <span class="text-hide">Toggle all</span>
-                        </label>
-                    </div>
-                </th>
-                <th>ID</th>
-                <th>Attendee Name</th>
-                <th>Type</th>
-                <th>Company Name</th>
-                <th>Booking Number</th>
-                <th>MyKad Number</th>
-                <th>Check-in Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody class="list" id="table01">
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input id="customCheck1" type="checkbox" class="custom-control-input js-check-selected-row">
-                        <label class="custom-control-label" for="customCheck1">
-                            <span class="text-hide">Check</span>
-                        </label>
-                    </div>
-                </td>
-                <td>1</td>
-                <td>Nurul Husna Che Mat</td>
-                <td>Individual</td>
-                <td>N/A</td>
-                <td>#01234567</td>
-                <td>811211-08-5444</td>
-                <td><span class="color-green font-weight-bold">Checked-in</span></td>
-                <td>
-                    <div class="icon-action">
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Search"><i class="la la-search text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input id="customCheck1_2" type="checkbox" class="custom-control-input js-check-selected-row">
-                        <label class="custom-control-label" for="customCheck1_2">
-                            <span class="text-hide">Check</span>
-                        </label>
-                    </div>
-                </td>
-                <td>2</td>
-                <td>Nurul Husna Che Mat</td>
-                <td>Individual</td>
-                <td>N/A</td>
-                <td>#01234567</td>
-                <td>811211-08-5444</td>
-                <td><span class="color-green font-weight-bold">Checked-in</span></td>
-                <td>
-                    <div class="icon-action">
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Search"><i class="la la-search text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input id="customCheck1_3" type="checkbox" class="custom-control-input js-check-selected-row">
-                        <label class="custom-control-label" for="customCheck1_3">
-                            <span class="text-hide">Check</span>
-                        </label>
-                    </div>
-                </td>
-                <td>3</td>
-                <td>Mohd Hasbullah Awang</td>
-                <td>Agency</td>
-                <td>Primus Core Sdn Bhd</td>
-                <td>#01234567</td>
-                <td>811211-08-5444</td>
-                <td><span class="color-grey font-weight-bold">Not Yet</span></td>
-                <td>
-                    <div class="icon-action">
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Search"><i class="la la-search text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input id="customCheck1_4" type="checkbox" class="custom-control-input js-check-selected-row">
-                        <label class="custom-control-label" for="customCheck1_4">
-                            <span class="text-hide">Check</span>
-                        </label>
-                    </div>
-                </td>
-                <td>4</td>
-                <td>Hasanah Hassan</td>
-                <td>Agency</td>
-                <td>Primus Core Sdn Bhd</td>
-                <td>#01234567</td>
-                <td>811211-08-5444</td>
-                <td><span class="color-grey font-weight-bold">Not Yet</span></td>
-                <td>
-                    <div class="icon-action">
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Search"><i class="la la-search text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input id="customCheck1_4" type="checkbox" class="custom-control-input js-check-selected-row">
-                        <label class="custom-control-label" for="customCheck1_4">
-                            <span class="text-hide">Check</span>
-                        </label>
-                    </div>
-                </td>
-                <td>5</td>
-                <td>Hasanah Hassan</td>
-                <td>Agency</td>
-                <td>Primus Core Sdn Bhd</td>
-                <td>#01234567</td>
-                <td>811211-08-5444</td>
-                <td><span class="color-grey font-weight-bold">Not Yet</span></td>
-                <td>
-                    <div class="icon-action">
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Search"><i class="la la-search text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input id="customCheck1_4" type="checkbox" class="custom-control-input js-check-selected-row">
-                        <label class="custom-control-label" for="customCheck1_4">
-                            <span class="text-hide">Check</span>
-                        </label>
-                    </div>
-                </td>
-                <td>6</td>
-                <td>Hassan Abdullah</td>
-                <td>Agency</td>
-                <td>Primus Core Sdn Bhd</td>
-                <td>#01234567</td>
-                <td>811211-08-5444</td>
-                <td><span class="color-grey font-weight-bold">Not Yet</span></td>
-                <td>
-                    <div class="icon-action">
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Search"><i class="la la-search text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </div>

@@ -30,6 +30,7 @@ namespace FEP.WebApiModel.User
         [Display(Name = "Mobile No")]
         public string MobileNo { get; set; }
 
+
     }
 
     public class IndividualModel
@@ -48,6 +49,9 @@ namespace FEP.WebApiModel.User
         [Display(Name = "Mobile No")]
         public string MobileNo { get; set; }
 
+        [Display(Name = "Status")]
+        public bool Status { get; set; }
+
     }
 
     public class CreateIndividualModel
@@ -63,6 +67,7 @@ namespace FEP.WebApiModel.User
 
         [Display(Name = "Email")]
         [Required]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [Display(Name = "Mobile No")]
@@ -77,80 +82,11 @@ namespace FEP.WebApiModel.User
         public string UID { get; set; }
 
     }
-
-
+    
     public class EditIndividualModel
     {
-
-        [Display(Name = "Name")]
-        [Required]
-        public string Name { get; set; }
-
-        [Display(Name = "IC No/Passport No")]
-        [Required]
-        public string ICNo { get; set; }
-
-        [Display(Name = "Email")]
-        [Required]
-        public string Email { get; set; }
-
-        [Display(Name = "Mobile No")]
-        [Required]
-        public string MobileNo { get; set; }
-
-    }
-
-    public class CompanyModel
-    {
-
         public int Id { get; set; }
 
-        [Display(Name = "Company Name")]
-        public string CompanyName { get; set; }
-
-        [Display(Name = "Company Registration No")]
-        public string CompanyRegNo { get; set; }
-
-        [Display(Name = "Sector")]
-        public string Sector { get; set; }
-
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-    }
-
-    public class CreateCompanyModel
-    {
-                
-        [Display(Name = "Company Name")]
-        [Required]
-        public string CompanyName { get; set; }
-
-        [Display(Name = "Company Registration No")]
-        [Required]
-        public string CompanyRegNo { get; set; }
-
-        [Display(Name = "Sector")]
-        [Required]
-        public int SectorId { get; set; }
-
-        [Display(Name = "Address")]
-        [Required]
-        public string Address1 { get; set; }
-        public string Address2 { get; set; }
-
-        [Display(Name = "State")]
-        [Required]
-        public string State { get; set; }
-
-        [Display(Name = "City")]
-        [Required]
-        public string City { get; set; }
-
-        [Display(Name = "Postcode")]
-        [Required]
-        public string Postcode { get; set; }
-
         [Display(Name = "Name")]
         [Required]
         public string Name { get; set; }
@@ -166,6 +102,31 @@ namespace FEP.WebApiModel.User
         [Display(Name = "Mobile No")]
         [Required]
         public string MobileNo { get; set; }
+
+        [Display(Name = "Status")]
+        public bool Status { get; set; }
+
+
+    }
+
+    public class DetailsIndividualModel
+    {
+        public int Id { get; set; }
+
+        [Display(Name = "Name")]       
+        public string Name { get; set; }
+
+        [Display(Name = "IC No/Passport No")]      
+        public string ICNo { get; set; }
+
+        [Display(Name = "Email")]      
+        public string Email { get; set; }
+
+        [Display(Name = "Mobile No")]      
+        public string MobileNo { get; set; }
+
+        [Display(Name = "Status")]
+        public bool Status { get; set; }
 
     }
 

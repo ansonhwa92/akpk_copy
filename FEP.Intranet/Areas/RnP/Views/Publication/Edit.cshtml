@@ -1,10 +1,8 @@
-﻿@model FEP.Model.Publication
+﻿@model FEP.WebApiModel.RnP.UpdatePublicationModel
 
 @{
-                /**/
-
-                ViewBag.Title = "Edit Publication";
-                Layout = "~/Views/Shared/_Layout1.cshtml";
+    ViewBag.Title = "Edit Publication";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
 @section Nav{
@@ -33,7 +31,7 @@
     </div>
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myform" }))
 {
     @Html.AntiForgeryToken()
 
@@ -77,6 +75,7 @@
                         <div class="row">
                             <div class="form-group col-lg-12">
                                 @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label" })
+                                @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
                             </div>
@@ -230,8 +229,10 @@
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
                 <!--input type="submit" value="Create" class="btn btn-default" /-->
-                <button type="submit" class="btn btn-secondary" id="btnSave" name="Submittype" value="Save">Save</button>
-                <button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Submit</button>
+                @Html.HiddenFor(model => model.HiddenPubStatus, new { htmlAttributes = new { @class = "form-control" } })
+                <a class="btn btn-default" href="@Url.Action("Index", "Publication", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
+                <button type="button" class="btn btn-secondary" id="btnSave" name="Submittype" value="Save">Save</button>
+                <button type="button" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Submit for Approval</button>
             </div>
         </div>
     </div>
@@ -282,6 +283,16 @@
                     $('#DPrice').prop('readonly', false);
                     $('#HDPrice').prop('readonly', false);
                 }
+            });
+            $('#btnSave').click(function (event) {
+                $('#HiddenPubStatus').val("save")
+                $("#myform").submit();
+                event.stopPropagation();
+            });
+            $('#btnSubmit').click(function (event) {
+                $('#HiddenPubStatus').val("submit")
+                $("#myform").submit();
+                event.stopPropagation();
             });
         });
     </script>

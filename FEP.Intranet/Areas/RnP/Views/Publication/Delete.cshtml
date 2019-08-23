@@ -1,4 +1,4 @@
-﻿@model FEP.Model.Publication
+﻿@model FEP.WebApiModel.RnP.ReturnPublicationModel
 
 @{
     ViewBag.Title = "Delete Publication";
@@ -70,7 +70,7 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Category.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         </div>
                     </div>
                     <div class="row">
@@ -207,10 +207,10 @@
         {
             @Html.AntiForgeryToken()
 
-            <div class="border-left border-right border-bottom p-3 rounded-bottom">
-                <button type="submit" class="btn btn-secondary" value="Delete">Delete</button>
-                <a class="btn btn-secondary" href="@Url.Action("Index", "Publication", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
-            </div>
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+            <a class="btn btn-default" href="@Url.Action("Index", "Publication", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
+            <button type="submit" class="btn btn-secondary" value="Delete">Delete</button>
+        </div>
         }
     </div>
 

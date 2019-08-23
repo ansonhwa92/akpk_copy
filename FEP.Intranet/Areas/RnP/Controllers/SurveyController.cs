@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 using FEP.Model;
 using FEP.WebApiModel.Auth;
 using FEP.WebApiModel.RnP;
-//using System.Net;
+using System.Net;
 
 namespace FEP.Intranet.Areas.RnP.Controllers
 {
@@ -48,6 +48,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View(model);
         }
 
+        // Process create form
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(UpdateSurveyModel model)
@@ -72,8 +73,12 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Show edit form
         // GET: RnP/Survey/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        public async Task<ActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey?id={id}");
 
             if (resSurvey.isSuccess)
@@ -101,6 +106,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View();
         }
 
+        // Process edit form
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(UpdateSurveyModel model)
@@ -125,8 +131,12 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Show view form
         // GET: RnP/Survey/Details/5
-        public async Task<ActionResult> Details(int id)
+        public async Task<ActionResult> Details(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey?id={id}");
 
             if (resSurvey.isSuccess)
@@ -143,8 +153,12 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Show delete form
         // GET: RnP/Survey/Delete/5
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey?id={id}");
 
             if (resSurvey.isSuccess)
@@ -159,6 +173,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View();
         }
 
+        // Process delete form
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public async Task<ActionResult> Delete(UpdateSurveyModel model)

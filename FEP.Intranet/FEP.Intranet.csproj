@@ -603,6 +603,7 @@
     <Content Include="Areas\Administrator\Views\Individual\List.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Edit.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Delete.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Index_datatable.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

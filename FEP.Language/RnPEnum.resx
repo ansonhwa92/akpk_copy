@@ -198,4 +198,67 @@
   <data name="SurveyTypeTargeted" xml:space="preserve">
     <value>Targeted Survey</value>
   </data>
+  <data name="PubApprovalLevelApprover1" xml:space="preserve">
+    <value>Approver 1 (HoD)</value>
+  </data>
+  <data name="PubApprovalLevelApprover2" xml:space="preserve">
+    <value>Approver 2 (GM)</value>
+  </data>
+  <data name="PubApprovalLevelApprover3" xml:space="preserve">
+    <value>Approver 3 (CEO)</value>
+  </data>
+  <data name="PubApprovalLevelVerifier" xml:space="preserve">
+    <value>Verifier (Manager)</value>
+  </data>
+  <data name="PubApprovalStatusApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="PubApprovalStatusNone" xml:space="preserve">
+    <value>Not Reviewed</value>
+  </data>
+  <data name="PubApprovalStatusRejected" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
+  <data name="PubFormatBoth" xml:space="preserve">
+    <value>Hard &amp; Digital Copy</value>
+  </data>
+  <data name="PubFormatDigital" xml:space="preserve">
+    <value>Digital Copy</value>
+  </data>
+  <data name="PubFormatHardcopy" xml:space="preserve">
+    <value>Hard Copy</value>
+  </data>
+  <data name="PubPaymentModeOffline" xml:space="preserve">
+    <value>Offline Payment</value>
+  </data>
+  <data name="PubPaymentModeOnline" xml:space="preserve">
+    <value>Online Payment</value>
+  </data>
+  <data name="PubRefundStatusComplete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="PubRefundStatusIncomplete" xml:space="preserve">
+    <value>Incomplete</value>
+  </data>
+  <data name="PubStatusNew" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="PubStatusPublished" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="PubStatusSubmitted" xml:space="preserve">
+    <value>Submitted for Approval</value>
+  </data>
+  <data name="PubStatusTrashed" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="PubWithdrawalStatusNone" xml:space="preserve">
+    <value>N/A</value>
+  </data>
+  <data name="PubWithdrawalStatusSubmitted" xml:space="preserve">
+    <value>Submitted for Approval</value>
+  </data>
+  <data name="PubWithdrawalStatusWithdrawn" xml:space="preserve">
+    <value>Wiithdrawn</value>
+  </data>
 </root>

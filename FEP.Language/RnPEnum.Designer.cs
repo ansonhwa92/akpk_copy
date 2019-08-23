@@ -61,6 +61,69 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approver 1 (HoD).
+        /// </summary>
+        public static string PubApprovalLevelApprover1 {
+            get {
+                return ResourceManager.GetString("PubApprovalLevelApprover1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approver 2 (GM).
+        /// </summary>
+        public static string PubApprovalLevelApprover2 {
+            get {
+                return ResourceManager.GetString("PubApprovalLevelApprover2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approver 3 (CEO).
+        /// </summary>
+        public static string PubApprovalLevelApprover3 {
+            get {
+                return ResourceManager.GetString("PubApprovalLevelApprover3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verifier (Manager).
+        /// </summary>
+        public static string PubApprovalLevelVerifier {
+            get {
+                return ResourceManager.GetString("PubApprovalLevelVerifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approved.
+        /// </summary>
+        public static string PubApprovalStatusApproved {
+            get {
+                return ResourceManager.GetString("PubApprovalStatusApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Reviewed.
+        /// </summary>
+        public static string PubApprovalStatusNone {
+            get {
+                return ResourceManager.GetString("PubApprovalStatusNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejected.
+        /// </summary>
+        public static string PubApprovalStatusRejected {
+            get {
+                return ResourceManager.GetString("PubApprovalStatusRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Articles.
         /// </summary>
         public static string PubCategoryArticles {
@@ -120,6 +183,132 @@ namespace Language {
         public static string PubCategoryResearchPapers {
             get {
                 return ResourceManager.GetString("PubCategoryResearchPapers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hard &amp; Digital Copy.
+        /// </summary>
+        public static string PubFormatBoth {
+            get {
+                return ResourceManager.GetString("PubFormatBoth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Digital Copy.
+        /// </summary>
+        public static string PubFormatDigital {
+            get {
+                return ResourceManager.GetString("PubFormatDigital", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hard Copy.
+        /// </summary>
+        public static string PubFormatHardcopy {
+            get {
+                return ResourceManager.GetString("PubFormatHardcopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline Payment.
+        /// </summary>
+        public static string PubPaymentModeOffline {
+            get {
+                return ResourceManager.GetString("PubPaymentModeOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online Payment.
+        /// </summary>
+        public static string PubPaymentModeOnline {
+            get {
+                return ResourceManager.GetString("PubPaymentModeOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complete.
+        /// </summary>
+        public static string PubRefundStatusComplete {
+            get {
+                return ResourceManager.GetString("PubRefundStatusComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incomplete.
+        /// </summary>
+        public static string PubRefundStatusIncomplete {
+            get {
+                return ResourceManager.GetString("PubRefundStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string PubStatusNew {
+            get {
+                return ResourceManager.GetString("PubStatusNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Published.
+        /// </summary>
+        public static string PubStatusPublished {
+            get {
+                return ResourceManager.GetString("PubStatusPublished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submitted for Approval.
+        /// </summary>
+        public static string PubStatusSubmitted {
+            get {
+                return ResourceManager.GetString("PubStatusSubmitted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted.
+        /// </summary>
+        public static string PubStatusTrashed {
+            get {
+                return ResourceManager.GetString("PubStatusTrashed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to N/A.
+        /// </summary>
+        public static string PubWithdrawalStatusNone {
+            get {
+                return ResourceManager.GetString("PubWithdrawalStatusNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submitted for Approval.
+        /// </summary>
+        public static string PubWithdrawalStatusSubmitted {
+            get {
+                return ResourceManager.GetString("PubWithdrawalStatusSubmitted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wiithdrawn.
+        /// </summary>
+        public static string PubWithdrawalStatusWithdrawn {
+            get {
+                return ResourceManager.GetString("PubWithdrawalStatusWithdrawn", resourceCulture);
             }
         }
         

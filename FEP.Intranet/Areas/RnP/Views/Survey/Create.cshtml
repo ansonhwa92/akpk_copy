@@ -107,7 +107,7 @@
                                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" id="row_targetgroup">
                             <div class="form-group col-lg-12">
                                 @Html.LabelFor(model => model.TargetGroup, htmlAttributes: new { @class = "control-label" })
                                 <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" placeholder="Select group(s)">
@@ -124,16 +124,8 @@
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label", @title = "The start date of the Survey duration" })
-                                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Start Date" } })
-                                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-6">
-                                @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label", @title = "The end date of the Survey duration" })
                                 <div class="dateSelect">
-                                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "End Date", data_input = "flatpickr" } })
-                                    <!--input type="text" class="form-control" placeholder="Date Start" data-input="flatpickr"-->
+                                    <input type="text" id="date_start" class="form-control" placeholder="Date Start" data-input="flatpickr">
                                     <a class="input-button calendar" title="toggle" data-toggle>
                                         <i class="la la-calendar"></i>
                                     </a>
@@ -141,10 +133,22 @@
                                         <i class="la la-times"></i>
                                     </a>
                                 </div>
-                                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-lg-6">
-                                &nbsp;
+                                @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label", @title = "The end date of the Survey duration" })
+                                <div class="dateSelect">
+                                    <input type="text" id="date_end" class="form-control" placeholder="Date End" data-input="flatpickr">
+                                    <a class="input-button calendar" title="toggle" data-toggle>
+                                        <i class="la la-calendar"></i>
+                                    </a>
+                                    <a class="input-button clear" title="clear" data-clear>
+                                        <i class="la la-times"></i>
+                                    </a>
+                                </div>
+                                @Html.HiddenFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <!--
@@ -195,6 +199,7 @@
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
                 <!--input type="submit" value="Create" class="btn btn-default" /-->
+                <a class="btn btn-default" href="@Url.Action("Index", "Survey", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
                 <button type="submit" class="btn btn-secondary" id="btnSave" name="Submittype" value="Save">Save</button>
             </div>
         </div>
@@ -209,16 +214,34 @@
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#Type').trigger('change');
+            $("#date_start").flatpickr({
+                dateFormat: "d-m-Y",
+                minDate: "today",
+                maxDate: "31-01-3000",
+                onChange: function (selectedDates, dateStr, instance) {
+                    $("#StartDate").val(dateStr);
+                },
+            });
+            $("#date_end").flatpickr({
+                dateFormat: "d-m-Y",
+                minDate: "today",
+                maxDate: "31-01-3000",
+                onChange: function (selectedDates, dateStr, instance) {
+                    $("#EndDate").val(dateStr);
+                },
+            });
+            //$('#Type').trigger('change');
             $('#Type').change(function () {
                 var selectedType = $('#Type option:selected').text();
                 if (selectedType == "Public Survey") {
+                    //$('#row_targetgroup').hide();
                     $('#survey_group').val("");
                     $('#survey_group').select2("destroy");
                     $('#survey_group').prop("disabled", true);
                     $('#survey_group').select2();
                     $('#TargetGroup').val("");
                 } else {
+                    //$('#row_targetgroup').show();
                     $('#survey_group').val("");
                     $('#survey_group').select2("destroy");
                     $('#survey_group').prop("disabled", false);

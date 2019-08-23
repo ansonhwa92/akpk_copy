@@ -81,8 +81,6 @@ namespace FEP.WebApi.Api.Administration
         public HttpResponseMessage Post([FromBody]string value)
         {
 
-
-
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
             return response;
         }

@@ -256,8 +256,7 @@
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User & Role Management</a>
 									<div class="dropdown-menu">
 										<a class="dropdown-item" href="@Url.Action("Index", "User", new { area = "Administrator" })">User</a>
-										<a class="dropdown-item" href="#">Menu 2</a>
-										<a class="dropdown-item" href="#">Menu 3</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })">User</a>
 									</div>
 								</li>
 								<li class="nav-item dropdown">
@@ -318,7 +317,6 @@
         <!-- Header Layout Content -->
         <!-- // END Header Layout Content -->
         @RenderSection("Nav", false)
-        @RenderSection("Contentscript", false)
         <!-- // END Header -->
     </div>
     <!-- Start Content -->

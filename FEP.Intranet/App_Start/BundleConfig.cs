@@ -25,8 +25,7 @@ namespace FEP.Intranet
             //   .Include("~/css/base.css", new CssRewriteUrlTransform())
             //   .Include("~/css/style.css", new CssRewriteUrlTransform())
             //   ;
-
-
+            
             //stylebundle.Orderer = new NonOrderingBundleOrderer();
             //bundles.Add(stylebundle);
 
@@ -36,6 +35,7 @@ namespace FEP.Intranet
                .Include("~/dist/assets/css/material-icons.rtl.css", new CssRewriteUrlTransform())
                .Include("~/dist/assets/css/fontawesome.css", new CssRewriteUrlTransform())
                .Include("~/dist/assets/css/fontawesome.rtl.css", new CssRewriteUrlTransform())
+               .Include("~/lib/line-awesome/css/line-awesome.min.css", new CssRewriteUrlTransform())
                .Include("~/dist/assets/css/app.css", new CssRewriteUrlTransform())
                .Include("~/css/select2.min.css", new CssRewriteUrlTransform())
                .Include("~/css/base.css", new CssRewriteUrlTransform())
@@ -66,9 +66,10 @@ namespace FEP.Intranet
                .Include("~/dist/assets/css/app.css", new CssRewriteUrlTransform())
                .Include("~/dist/assets/css/app.rtl.css", new CssRewriteUrlTransform())
 
+               .Include("~/dist/assets/vendor/datatables.css", new CssRewriteUrlTransform())
+
                .Include("~/css/base.css", new CssRewriteUrlTransform())
-               .Include("~/css/custom-admin.css", new CssRewriteUrlTransform())
-               
+               .Include("~/css/custom-admin.css", new CssRewriteUrlTransform())               
                ;
 
             stylebundle.Orderer = new NonOrderingBundleOrderer();
@@ -118,7 +119,7 @@ namespace FEP.Intranet
             scriptbundle.Orderer = new NonOrderingBundleOrderer();
             bundles.Add(scriptbundle);
             
-            scriptbundle = new ScriptBundle("~/layout1/script")
+            scriptbundle = new Bundle("~/layout1/script")
                 .Include("~/dist/assets/vendor/jquery.min.js")
 
                 .Include("~/dist/assets/vendor/popper.min.js")
@@ -139,8 +140,9 @@ namespace FEP.Intranet
 
                 .Include("~/dist/assets/vendor/flatpickr/flatpickr.min.js")
                 .Include("~/dist/assets/js/flatpickr.js")
-
-                .Include("~/dist/assets/js/settings.js")
+                
+                .Include("~/dist/assets/vendor/datatables.js")
+                
                 .Include("~/js/script-admin.js")
 
                 .Include("~/Scripts/jquery.validate.min.js")

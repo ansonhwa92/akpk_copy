@@ -1,5 +1,7 @@
-﻿using FEP.Model;
+﻿using FEP.Helper;
+using FEP.Model;
 using FEP.WebApiModel;
+using FEP.WebApiModel.PublicEvent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +25,131 @@ namespace FEP.WebApi.Api.eEvent
 			base.Dispose(disposing);
 		}
 
-		//List
-		public List<PublicEventApiModel> Get()
+		[Route("api/eEvent/PublicEvent/GetEventList")]
+		public IHttpActionResult Post(FilterPublicEventModel request)
 		{
-			var model = db.PublicEvent.Where(i => i.Display).Select(i => new PublicEventApiModel
+
+			var query = db.PublicEvent.Where(u => u.Display);
+
+			var totalCount = query.Count();
+
+			//advance search
+			query = query.Where(s => (request.EventTitle == null || s.EventTitle.Contains(request.EventTitle))
+			   && (request.EventCategoryId == null || s.EventCategoryId == request.EventCategoryId)
+			   && (request.TargetedGroup == null || s.TargetedGroup == request.TargetedGroup)
+			   && (request.EventStatus == null || s.EventStatus == request.EventStatus)
+			   );
+
+			//quick search 
+			if (!string.IsNullOrEmpty(request.search.value))
+			{
+				var value = request.search.value.Trim();
+
+				query = query.Where(p => p.EventTitle.Contains(value)
+				 || p.EventCategory.CategoryName.Contains(value)
+				|| p.TargetedGroup.GetDisplayName().Contains(value)
+				|| p.EventStatus.GetDisplayName().Contains(value)
+				);
+			}
+
+			var filteredCount = query.Count();
+
+			//order
+			if (request.order != null)
+			{
+				string sortBy = request.columns[request.order[0].column].data;
+				bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+				switch (sortBy)
+				{
+					case "EventTitle":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.EventTitle);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.EventTitle);
+						}
+
+						break;
+
+					case "EventCategoryId":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.EventCategory.CategoryName);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.EventCategory.CategoryName);
+						}
+
+						break;
+
+					case "TargetedGroup":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.TargetedGroup.ToString());
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.TargetedGroup.ToString());
+						}
+
+						break;
+
+					case "EventStatus":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.EventStatus);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.EventStatus);
+						}
+
+						break;
+
+					default:
+						query = query.OrderByDescending(o => o.EventTitle);
+						break;
+				}
+
+			}
+			else
+			{
+				query = query.OrderByDescending(o => o.EventTitle);
+			}
+
+			var data = query.Skip(request.start).Take(request.length)
+				.Select(s => new PublicEventModel
+				{
+					Id = s.Id,
+					EventTitle = s.EventTitle,
+					EventCategoryId = s.EventCategoryId,
+					EventCategoryName = s.EventCategory.CategoryName,
+					TargetedGroup = s.TargetedGroup,
+					EventStatus = s.EventStatus
+				}).ToList();
+
+			return Ok(new DataTableResponse
+			{
+				draw = request.draw,
+				recordsTotal = totalCount,
+				recordsFiltered = filteredCount,
+				data = data.ToArray()
+			});
+
+		}
+
+		//List
+		public List<PublicEventModel> Get()
+		{
+			var model = db.PublicEvent.Where(i => i.Display).Select(i => new PublicEventModel
 			{
 				Id = i.Id,
 				EventTitle = i.EventTitle,
@@ -48,9 +171,9 @@ namespace FEP.WebApi.Api.eEvent
 		}
 
 		//Details
-		public PublicEventApiModel Get(int id)
+		public PublicEventModel Get(int id)
 		{
-			var model = db.PublicEvent.Where(i => i.Display && i.Id == id).Select(i => new PublicEventApiModel
+			var model = db.PublicEvent.Where(i => i.Display && i.Id == id).Select(i => new PublicEventModel
 			{
 				Id = i.Id,
 				EventTitle = i.EventTitle,

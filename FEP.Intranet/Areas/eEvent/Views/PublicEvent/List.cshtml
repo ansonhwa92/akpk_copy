@@ -38,6 +38,61 @@
 
 }
 
+<div class="d-flex align-items-center">
+    <div class="filter dropdown">
+        <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+        <div class="dropdown-menu">
+            <div class="filter-head">Filters</div>
+            <div class="filter-body">
+                <div>@Html.DisplayNameFor(m => m.filter.EventTitle)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.filter.EventTitle)
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.filter.EventObjective)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.filter.EventObjective)
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.filter.EventCategoryId)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.filter.EventCategoryName)
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.filter.Venue)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.filter.Venue)
+                    </div>
+                </div>               
+                <div>
+                    <button id="btnSearch" class="btn btn-secondary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider-vertical">&nbsp;</div>
+    <!-- Search -->
+    <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+        <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+        <div class="input-group-append">
+            <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+        </div>
+    </div>
+    @*<div class="sorting-wrap">
+            <div class="sorting-dropdown">
+                <select class="select2 form-control small" name="sorting">
+                    <option value="Default Sorting">Default Sorting</option>
+                    <option value="sorting 1">Sorting 1</option>
+                    <option value="sorting 2">Sorting 2</option>
+                </select>
+            </div>
+        </div>*@
+</div>
+<hr>
 
 <div class="table-responsive" data-toggle="lists">
 	<div class="d-flex pb-4 align-items-center">

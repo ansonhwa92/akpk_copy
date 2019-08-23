@@ -56,6 +56,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View(model);
 		}
 
+		//public ActionResult List()
+		//{
+		//	return View();
+		//}
+
 		// GET: PublicEvent/Details/5
 		public ActionResult Details(int? id)
 		{

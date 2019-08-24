@@ -385,7 +385,11 @@
 
 	<script type="text/javascript">
 
-
+        $.validator.methods.date = function (value, element) {
+            debugger
+                var y = moment(value, 'DD/MM/YYYY', true);
+                return this.optional(element) || moment(value, 'DD/MM/YYYY', true).isValid() || moment(value, 'HH:mm', true).isValid();
+        };
 
 	</script>
 

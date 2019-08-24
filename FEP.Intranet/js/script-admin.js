@@ -128,7 +128,7 @@
             dateSelect: function() {
                 $(".dateSelect").flatpickr({
                     // mode: "range",
-                    dateFormat: "j M y",
+                    dateFormat: "d/m/Y",
                     wrap: true
                 });
 

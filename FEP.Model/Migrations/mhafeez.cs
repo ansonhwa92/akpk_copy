@@ -84,13 +84,13 @@ namespace FEP.Model.Migrations
                     new User
                     {
                         Name = "System Admin",
-                        Email = "mhafeez@primuscore.com",                       
+                        Email = "admin@fep.com",                       
                         UserType = UserType.SystemAdmin,                        
                         CreatedDate = DateTime.Now,
                         Display = true,
                         UserAccount = new UserAccount
                         {
-                            LoginId = "admin",
+                            LoginId = "admin@fep.com",
                             HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==", //default abc123
                             Salt = "/ZCqmg==",
                             IsEnable = true,

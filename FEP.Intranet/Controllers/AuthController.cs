@@ -64,8 +64,23 @@ namespace FEP.Intranet.Controllers
         public async Task<ActionResult> RegisterIndividual(RegisterIndividualModel model)
         {
 
+            var emailResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsEmailExist?id={null}&email={model.Email}");
+
+            if (emailResponse.Data)
+            {
+                ModelState.AddModelError("Email", "Email already registered in the system");
+            }
+
+            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={model.ICNo}");
+
+            if (icnoResponse.Data)
+            {
+                ModelState.AddModelError("ICNo", "IC No/Passport No already registered in the system");
+            }
+
             if (ModelState.IsValid)
             {
+
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Auth/RegisterIndividual", model);
 
                 if (response.isSuccess)
@@ -91,7 +106,7 @@ namespace FEP.Intranet.Controllers
 
                     SendEmail("FEP Account Activation", body.ToString(), receiver); //email
 
-                    TempData["SuccessMessage"] = "Your account successfully created. Please check your registered email for login details.";
+                    TempData["SuccessMessage"] = "Your account successfully created. Please check your registered email for sign in details.";
 
                     return RedirectToAction("Login", "Auth", new { area = "" });
 
@@ -99,15 +114,29 @@ namespace FEP.Intranet.Controllers
 
             }
 
-            return View();
+            return View(model);
         }
 
-
-        [HttpPost]
         [AllowAnonymous]
+        [HttpPost]        
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RegisterAgency(RegisterAgencyModel model)
         {
+
+            var emailResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsEmailExist?id={null}&email={model.Email}");
+
+            if (emailResponse.Data)
+            {
+                ModelState.AddModelError("Email", "Email already registered in the system");
+            }
+
+            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={model.ICNo}");
+
+            if (icnoResponse.Data)
+            {
+                ModelState.AddModelError("ICNo", "IC No/Passport No already registered in the system");
+            }
+
             if (ModelState.IsValid)
             {
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Auth/RegisterAgency", model);
@@ -135,7 +164,7 @@ namespace FEP.Intranet.Controllers
 
                     SendEmail("FEP Account Activation", body.ToString(), receiver); //email
 
-                    TempData["SuccessMessage"] = "Your account successfully created. Please check your registered email for login details.";
+                    TempData["SuccessMessage"] = "Your account successfully created. Please check your registered email for sign in details.";
 
                     return RedirectToAction("Login", "Auth", new { area = "" });
 
@@ -334,7 +363,6 @@ namespace FEP.Intranet.Controllers
                 TempData["Message"] = "Instruction to reset password was successfully sent to your email [" + model.Email + "]. Please check your email.";
                 return RedirectToAction("Login");
 
-
             }
 
             return View();
@@ -369,7 +397,7 @@ namespace FEP.Intranet.Controllers
 
             if (response.Data)
             {
-                TempData["SuccessMessage"] = "Your password successfully change. Please use new password to sign in.";                
+                TempData["SuccessMessage"] = "Your password successfully change. Please use new password to sign in.";
             }
             else
             {

@@ -83,7 +83,7 @@ namespace FEP.WebApi.Api.Administration
                 Email = model.Email,
                 ICNo = model.ICNo,
                 MobileNo = model.MobileNo,
-                Display = false,
+                Display = true,
                 CreatedBy = null,
                 CreatedDate = DateTime.Now,
                 UserAccount = account
@@ -144,7 +144,7 @@ namespace FEP.WebApi.Api.Administration
                 Email = model.Email,
                 ICNo = model.ICNo,
                 MobileNo = model.MobileNo,
-                Display = false,
+                Display = true,
                 CreatedBy = null,
                 CreatedDate = DateTime.Now,
                 UserAccount = account,
@@ -193,14 +193,14 @@ namespace FEP.WebApi.Api.Administration
                 db.UserAccount.Attach(userAccount);
                 db.Entry(userAccount).Property(e => e.IsEnable).IsModified = true;
 
-                User user = new User
-                {
-                    Id = activateaccount.UserId,
-                    Display = true
-                };
+                //User user = new User
+                //{
+                //    Id = activateaccount.UserId,
+                //    Display = true
+                //};
 
-                db.User.Attach(user);
-                db.Entry(user).Property(e => e.Display).IsModified = true;
+                //db.User.Attach(user);
+                //db.Entry(user).Property(e => e.Display).IsModified = true;
 
                 db.Configuration.ValidateOnSaveEnabled = false;
 

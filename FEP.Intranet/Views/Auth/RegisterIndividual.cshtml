@@ -7,7 +7,7 @@
 
 @section ButtonBack{
 
-    <a href="@Url.Action("Register", "Auth", new { area = "" })" class="btn btn-outline-secondary"><span class="align-middle"><i class="icon ion-ios-arrow-round-back">&nbsp;</i></span> Back</a>
+    <a href="@Url.Action("Register", "Auth", new { area = "" })" class="btn btn-outline-secondary"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a>
 
 }
 
@@ -79,8 +79,7 @@
                     <button type="submit" class="btn btn-secondary btn-block mt-3 mb-4">Sign Up</button>
 
                     <div class="form-group text-center mb-0">
-                        <div class="custom-control custom-checkbox">
-                            @*<input id="terms" name="" type="checkbox" class="custom-control-input">*@
+                        <div class="custom-control custom-checkbox">                            
                             @Html.EditorFor(m => m.IsTermAgreed, new { htmlAttributes = new { @class = "custom-control-input" } })
                             <label for="IsTermAgreed" class="custom-control-label">I agree to the <a href="#">Terms of Use</a></label>
                             
@@ -106,7 +105,7 @@
                         </div>
                         <div class="divider-border"></div>
                         <div class="m-4">
-                            <a href="login.html" class="btn btn-outline-primary float-right">Log in</a>
+                            <a href="@Url.Action("","")" class="btn btn-outline-primary float-right">Log in</a>
                             <div class="small py-2">Already have an AKPK account?</div>
                         </div>
                     </div>

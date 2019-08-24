@@ -1,9 +1,10 @@
-﻿@model EditIndividualProfileModel
+﻿@model CreateIndividualModel
 
 @{
-    ViewBag.Title = "Edit Profile";
+    ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
+
 
 @section Nav {
 
@@ -11,19 +12,20 @@
         <div class="title-header-container">
             <div class="container">
                 <!-- if have button -->
-                <div class="header-col-right float-right mt-5"><a href="@Url.Action("MyProfile", "Home", new { area = "" })" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-right float-right mt-5"><a href="@Url.Action("List", "Individual", new { area = "Administrator"})" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>       
-                                <li class="breadcrumb-item"><a href="@Url.Action("MyProfile", "Home", new { area = ""})">My Profile</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Administration</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "Individual", new { area = "Administrator" })">User</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Update Profile</h1>
-                    <div class="header-text"></div>
+                    <h1 class="page-title text-white">Register User</h1>
+                    @*<div class="header-text">Register new individual user</div>*@
                 </div>
             </div>
         </div>
@@ -32,21 +34,14 @@
 }
 
 <div class="row">
-
     <div class="col-xl-3 col-md-3 col-sm-4 my-2">
         <div id="page-nav" class="sidebar-left page-nav">
             <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue">My Profile</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> User</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="@Url.Action("MyProfile", "Home", new { area = "" })" class="nav-link">View</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("EditProfile", "Home", new { area = "" })" class="active nav-link">Update Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("ChangePassword", "Home", new { area = "" })" class="nav-link">Change Password</a>
+                            <a href="#" data-toggle="tab" class="active nav-link">Register</a>
                         </li>
                     </ul>
                 </div>
@@ -55,27 +50,13 @@
     </div>
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 
-        @using (Html.BeginForm("EditProfile", "Home", FormMethod.Post))
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
         {
             <div class="border-form rounded-top">
 
                 @Html.AntiForgeryToken()
 
                 <div class="form-container">
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.ICNo)
-                            @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(m => m.ICNo)
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.Email)
-                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(m => m.Email)
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.Name)
@@ -85,22 +66,37 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.ICNo)
+                            @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(m => m.ICNo)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.Email)
+                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.MobileNo)
                             @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(m => m.MobileNo)
                         </div>
                     </div>
+
                 </div>
 
             </div>
-
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
-                <a class="btn btn-default mr-2" href="@Url.Action("MyProfile", "Home", new { area = "" })">Cancel</a>
+                <a href="@Url.Action("List")" class="btn btn-default mr-2" >Back</a>
                 <button class="btn btn-secondary" type="submit">Save</button>
             </div>
+
         }
+
     </div>
+
 </div>
-
-
 

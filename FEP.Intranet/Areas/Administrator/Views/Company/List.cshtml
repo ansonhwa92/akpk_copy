@@ -1,8 +1,8 @@
-﻿@model ListIndividualModel
+﻿@model ListCompanyModel
 
 @{
     Layout = "~/Views/Shared/_Layout1.cshtml";
-    ViewBag.Title = "Individual";
+    ViewBag.Title = "Agency";
 }
 
 @section ContentScript{
@@ -16,11 +16,11 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)Administration/Individual/GetAll',
+                    "url": '@(WebApiURL)Administration/Company/GetAll',
                     "data": function (filter) {
-                        filter.Name = $('#Filter_Name').val();
-                        filter.ICNo = $('#Filter_ICNo').val();
-                        filter.MobileNo = $('#Filter_MobileNo').val();
+                        filter.CompanyName = $('#Filter_CompanyName').val();
+                        filter.CompanyRegNo = $('#Filter_CompanyRegNo').val();
+                        filter.SectorId = $('#Filter_SectorId').val();
                         filter.Email = $('#Filter_Email').val();
                     }
                 },
@@ -49,19 +49,19 @@
                         }
                     },
                     {
-                        data: 'Name',
+                        data: 'CompanyName',
                         sortable: true
                     },
                     {
-                        data: 'ICNo',
+                        data: 'CompanyRegNo',
+                        sortable: true
+                    },
+                    {
+                        data: 'Sector',
                         sortable: true
                     },
                     {
                         data: 'Email',
-                        sortable: true
-                    },
-                    {
-                        data: 'MobileNo',
                         sortable: true
                     },
                     {
@@ -84,9 +84,9 @@
                             var action = "";
 
                             action = '<div class="icon-action">'
-                                    +   '<a href="@Url.Action("Edit", "Individual", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Details", "Individual", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Delete", "Individual", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+                                    +   '<a href="@Url.Action("Edit", "Company", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+                                    +   '<a href="@Url.Action("Details", "Company", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+                                    +   '<a href="@Url.Action("Delete", "Company", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
                                     + '</div>';
 
                             return action;
@@ -154,7 +154,7 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Individual User List</h1>
+                    <h1 class="page-title text-white">Agency User List</h1>
                     @*<div class="header-text">List of registered user as individual</div>*@
                 </div>
             </div>
@@ -169,16 +169,16 @@
         <div class="dropdown-menu">
             <div class="filter-head">Filters</div>
             <div class="filter-body">
-                <div>@Html.DisplayNameFor(m => m.Filter.Name)</div>
+                <div>@Html.DisplayNameFor(m => m.Filter.CompanyName)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        @Html.EditorFor(m => m.Filter.Name, new { htmlAttributes = new { @class = "form-control small" } })
+                        @Html.EditorFor(m => m.Filter.CompanyName, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
-                <div>@Html.DisplayNameFor(m => m.Filter.ICNo)</div>
+                <div>@Html.DisplayNameFor(m => m.Filter.CompanyRegNo)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        @Html.EditorFor(m => m.Filter.ICNo, new { htmlAttributes = new { @class = "form-control small" } })
+                        @Html.EditorFor(m => m.Filter.CompanyRegNo, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
                 <div>@Html.DisplayNameFor(m => m.Filter.Email)</div>
@@ -187,10 +187,10 @@
                         @Html.EditorFor(m => m.Filter.Email, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
-                <div>@Html.DisplayNameFor(m => m.Filter.MobileNo)</div>
+                <div>@Html.DisplayNameFor(m => m.Filter.SectorId)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        @Html.EditorFor(m => m.Filter.MobileNo, new { htmlAttributes = new { @class = "form-control small" } })
+                        @Html.DropDownListFor(m => m.Filter.SectorId, Model.Filter.Sectors, "Select All", htmlAttributes: new { @class = "select2 form-control small" })
                     </div>
                 </div>               
                 <div>
@@ -232,7 +232,7 @@
             </span>
         </div>
         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-        <div><a href="@Url.Action("Create", "Individual", new { area = "Administrator" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
+        <div><a href="@Url.Action("Create", "Company", new { area = "Administrator" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
     </div>
     <!-- Table -->
     <table class="table tableStyle1 tabledata">
@@ -247,10 +247,10 @@
             </div>
         </th>*@
                 <th>#</th>
-                <th>@Html.DisplayNameFor(model => model.List.Name)</th>
-                <th>@Html.DisplayNameFor(model => model.List.ICNo)</th>
+                <th>@Html.DisplayNameFor(model => model.List.CompanyName)</th>
+                <th>@Html.DisplayNameFor(model => model.List.CompanyRegNo)</th>
+                <th>@Html.DisplayNameFor(model => model.List.Sector)</th>
                 <th>@Html.DisplayNameFor(model => model.List.Email)</th>
-                <th>@Html.DisplayNameFor(model => model.List.MobileNo)</th>
                 <th>@Html.DisplayNameFor(model => model.List.Status)</th>
                 <th>Action</th>
             </tr>

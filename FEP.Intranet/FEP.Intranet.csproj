@@ -602,6 +602,21 @@
     <Content Include="Areas\eEvent\Views\EventCategory\List.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Create_SelectCategory.cshtml" />
     <Content Include="Areas\Administrator\Views\Individual\List.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\Create.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\Edit.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\Details.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\Activate.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\Deactivate.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\ResetPassword.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\Delete.cshtml" />
+    <Content Include="Areas\Administrator\Views\Company\Activate.cshtml" />
+    <Content Include="Areas\Administrator\Views\Company\Create.cshtml" />
+    <Content Include="Areas\Administrator\Views\Company\Deactivate.cshtml" />
+    <Content Include="Areas\Administrator\Views\Company\Delete.cshtml" />
+    <Content Include="Areas\Administrator\Views\Company\Details.cshtml" />
+    <Content Include="Areas\Administrator\Views\Company\Edit.cshtml" />
+    <Content Include="Areas\Administrator\Views\Company\List.cshtml" />
+    <Content Include="Areas\Administrator\Views\Company\ResetPassword.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Edit.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Delete.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\Index_datatable.cshtml" />
@@ -1030,7 +1045,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Administrator\Views\Company\" />
     <Folder Include="Areas\Administrator\Views\Sector\" />
     <Folder Include="Areas\Administrator\Views\Staff\" />
     <Folder Include="Areas\eEvent\Views\Default\" />

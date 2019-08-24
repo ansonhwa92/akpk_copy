@@ -28,6 +28,7 @@ namespace FEP.WebApi.Api.Administration
         }
 
         [Route("api/Administration/Individual/GetAll")]
+        [HttpPost]
         public IHttpActionResult Post(FilterIndividualModel request)
         {
 
@@ -115,7 +116,7 @@ namespace FEP.WebApi.Api.Administration
                         }
 
                         break;
-                        
+
                     default:
                         query = query.OrderByDescending(o => o.Name);
                         break;
@@ -134,7 +135,8 @@ namespace FEP.WebApi.Api.Administration
                     Name = s.Name,
                     Email = s.Email,
                     ICNo = s.ICNo,
-                    MobileNo = s.MobileNo
+                    MobileNo = s.MobileNo,
+                    Status = s.UserAccount.IsEnable
                 }).ToList();
 
             return Ok(new DataTableResponse
@@ -147,9 +149,33 @@ namespace FEP.WebApi.Api.Administration
 
         }
 
+
+        public IHttpActionResult Get(int id)
+        {
+            var user = db.User.Where(u => u.Id == id)
+                .Select(s => new DetailsIndividualModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Email = s.Email,
+                    MobileNo = s.MobileNo,
+                    ICNo = s.ICNo,
+                    Status = s.UserAccount.IsEnable
+                })
+                .FirstOrDefault();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+
+        [HttpPost]
         public IHttpActionResult Post([FromBody] CreateIndividualModel model)
         {
-            
+
             var password = Authentication.RandomString(10, true);
 
             Authentication.GeneratePassword(password);
@@ -170,7 +196,7 @@ namespace FEP.WebApi.Api.Administration
                 Email = model.Email,
                 ICNo = model.ICNo,
                 MobileNo = model.MobileNo,
-                Display = false,
+                Display = true,
                 CreatedBy = null,
                 CreatedDate = DateTime.Now,
                 UserAccount = account
@@ -210,17 +236,18 @@ namespace FEP.WebApi.Api.Administration
             user.MobileNo = model.MobileNo;
 
             db.User.Attach(user);
-            db.Entry(user).Property(x => x.UserType).IsModified = false;
-            db.Entry(user).Property(x => x.Display).IsModified = false;
-            db.Entry(user).Property(x => x.CreatedDate).IsModified = false;
-            db.Entry(user).Property(x => x.Display).IsModified = false;
+            db.Entry(user).Property(x => x.Name).IsModified = true;
+            db.Entry(user).Property(x => x.ICNo).IsModified = true;
+            db.Entry(user).Property(x => x.Email).IsModified = true;
+            db.Entry(user).Property(x => x.MobileNo).IsModified = true;
 
             db.Configuration.ValidateOnSaveEnabled = true;
             db.SaveChanges();
 
-            return Ok();
+            return Ok(true);
         }
 
+        
 
     }
 }

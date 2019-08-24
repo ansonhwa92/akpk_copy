@@ -26,7 +26,7 @@ namespace FEP.WebApi.Api.Administration
             base.Dispose(disposing);
         }
 
-        // GET: api/User
+        [HttpGet]
         public List<UserApiModel> Get()
         {
             var users = db.User.Where(u => u.Display).Select(s => new UserApiModel
@@ -49,7 +49,7 @@ namespace FEP.WebApi.Api.Administration
             return users;
         }
 
-        // GET: api/User/5
+        [HttpGet]
         public UserApiModel Get(int id)
         {
             var user = db.User.Where(u => u.Display && u.Id == id).Select(s => new UserApiModel
@@ -76,46 +76,134 @@ namespace FEP.WebApi.Api.Administration
 
             return user;
         }
-                
-        // POST: api/User
-        public HttpResponseMessage Post([FromBody]string value)
-        {
 
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
-            return response;
-        }
-
-        // PUT: api/User/5
-        public HttpResponseMessage Put(int id, [FromBody]string value)
-        {
-
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
-            return response;
-        }
-
-        // DELETE: api/User/5
-        public bool Delete(int id)
-        {
-            var user = db.User.Where(u => u.Id == id).FirstOrDefault();
-
-            if (user != null)
+        [Route("api/Administration/User/IsEmailExist")]
+        [HttpGet]
+        public bool IsEmailExist(int? id, string email)
+        {            
+            if (id == null)
             {
-                user.Display = false;
+                if (db.User.Any(u => u.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase) && u.Display))
+                    return true;
+            }
+            else
+            {
+                if (db.User.Any(u => u.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
+                    return true;
+            }
+            
+            return false;
+        }
 
-                db.User.Attach(user);
-                db.Entry(user).Property(m => m.Display).IsModified = true;
-                db.Configuration.ValidateOnSaveEnabled = false;
-
-                db.SaveChanges();
-
-                return true;
+        [Route("api/Administration/User/IsICNoExist")]
+        [HttpGet]
+        public bool IsICNoExist(int? id, string icno)
+        {
+            if (id == null)
+            {
+                if (db.User.Any(u => u.ICNo.Equals(icno, StringComparison.CurrentCultureIgnoreCase) && u.Display))
+                    return true;
+            }
+            else
+            {
+                if (db.User.Any(u => u.ICNo.Equals(icno, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
+                    return true;
             }
 
             return false;
-            
         }
 
-        
+        [Route("api/Administration/User/Activate")]
+        [HttpPut]
+        public IHttpActionResult Activate(int id)
+        {
+            var user = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
+
+            if (user == null)
+            {
+                //return Content(HttpStatusCode.BadRequest, "Any object");
+                return NotFound();
+            }
+
+            user.IsEnable = true;
+
+            db.UserAccount.Attach(user);
+            db.Entry(user).Property(x => x.IsEnable).IsModified = true;
+
+            db.Configuration.ValidateOnSaveEnabled = true;
+            db.SaveChanges();
+
+            return Ok(true);
+        }
+
+        [Route("api/Administration/User/Deactivate")]
+        [HttpPut]
+        public IHttpActionResult Deactivate(int id)
+        {
+            var user = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
+
+            if (user == null)
+            {
+                //return Content(HttpStatusCode.BadRequest, "Any object");
+                return NotFound();
+            }
+
+            user.IsEnable = false;
+
+            db.UserAccount.Attach(user);
+            db.Entry(user).Property(x => x.IsEnable).IsModified = true;
+
+            db.Configuration.ValidateOnSaveEnabled = true;
+            db.SaveChanges();
+
+            return Ok(true);
+        }
+
+        [Route("api/Administration/User/ResetPassword")]
+        [HttpPut]
+        public IHttpActionResult ResetPassword(int id)
+        {
+            var user = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
+
+            if (user == null)
+            {
+                //return Content(HttpStatusCode.BadRequest, "Any object");
+                return NotFound();
+            }
+
+            user.IsEnable = false;
+
+            db.UserAccount.Attach(user);
+            db.Entry(user).Property(x => x.IsEnable).IsModified = true;
+
+            db.Configuration.ValidateOnSaveEnabled = true;
+            db.SaveChanges();
+
+            return Ok(true);
+        }
+
+        [Route("api/Administration/User/Delete")]
+        [HttpPut]
+        public IHttpActionResult Delete(int id)
+        {
+            var user = db.User.Where(u => u.Id == id).FirstOrDefault();
+
+            if (user == null)
+            {
+                //return Content(HttpStatusCode.BadRequest, "Any object");
+                return NotFound();
+            }
+
+            user.Display = false;
+
+            db.User.Attach(user);
+            db.Entry(user).Property(x => x.Display).IsModified = true;
+
+            db.Configuration.ValidateOnSaveEnabled = true;
+            db.SaveChanges();
+
+            return Ok(true);
+        }
 
     }
 }

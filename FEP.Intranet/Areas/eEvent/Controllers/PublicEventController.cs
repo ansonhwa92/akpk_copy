@@ -46,7 +46,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					StartDate = i.StartDate,
 					EndDate = i.EndDate,
 					Venue = i.Venue,
-					Fee = i.Fee
+					Fee = i.Fee,
+					EventStatus = i.EventStatus
 				}).ToList();
 
 			ListPublicEventModel model = new ListPublicEventModel(e);
@@ -146,7 +147,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ParticipantAllowed = model.ParticipantAllowed,
 					TargetedGroup = model.TargetedGroup,
 
-					EventStatus = model.EventStatus,
+					EventStatus = EventStatus.New,
 					EventCategoryId = model.EventCategoryId,
 					Reasons = model.Reasons,
 					Remarks = model.Remarks,

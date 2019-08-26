@@ -100,4 +100,14 @@ namespace FEP.Model
 		Perlis,
 		Kedah
 	}
+
+	public enum MediaStatus
+	{
+		New,
+		[Display(Name = "Representative Available")]
+		RepAvailable,
+		[Display(Name = "Representative Not Available")]
+		RepNotAvailable,
+
+	}
 }

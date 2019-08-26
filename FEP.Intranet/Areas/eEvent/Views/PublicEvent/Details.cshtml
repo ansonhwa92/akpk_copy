@@ -189,7 +189,7 @@
 							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.GetFileName, htmlAttributes: new { @class = "control-label col-lg-12" })
 								<div class="col-lg-12">
-									@Html.EditorFor(model => model.GetFileName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									@Html.EditorFor(model => model.GetFileName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" , @placeholder = "No Attachment"} })
 									@*@Html.TextBoxFor(model => model.GetFileName, "", new { type = "file", @class = "form-control" })*@
 									@*@Html.DisplayFor(model => model.GetFileName)*@
 									@Html.ValidationMessageFor(model => model.GetFileName, "", new { @class = "text-danger" })

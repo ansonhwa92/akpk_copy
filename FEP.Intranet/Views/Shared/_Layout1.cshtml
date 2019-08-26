@@ -262,7 +262,10 @@
 								<li class="nav-item dropdown">
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Event Management</a>
 									<div class="dropdown-menu">
-										<a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })">Internal Event</a>
+										<a class="dropdown-item" href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })"><i class="la la-calendar color-secondary font-icon"></i>Create Event</a>
+										<a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Public Event</a>
+										<a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Media Interview</a>
+										<a class="dropdown-item" href="#"><i class="la la-comments-o color-secondary font-icon"></i>Manage Exhibition/Roadshow Request</a>
 									</div>
 								</li>
 								<li class="nav-item dropdown">

@@ -235,6 +235,7 @@ namespace FEP.Model
 		public string Language { get; set; }
 		public string Topic { get; set; }
 		public string Designation { get; set; }
+		public MediaStatus? MediaStatus { get; set; }
 
 		public int? UserId { get; set; }
 		[ForeignKey("UserId")]

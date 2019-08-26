@@ -80,6 +80,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Name")]
 		public string RepUserName { get; set; }
 
+		[Display(Name = "Status")]
+		public MediaStatus? MediaStatus { get; set; }
+
 		public IEnumerable<SelectListItem> RepresentativeList { get; set; }
 
 		[Display(Name = "Supporting Document")]
@@ -145,8 +148,15 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string ContactPerson { get; set; }
 
 		[DataType(DataType.Date)]
-		[Display(Name = "Date")]
+		[Display(Name = "Start Date")]
 		public DateTime? DateStart { get; set; }
+
+		[DataType(DataType.Date)]
+		[Display(Name = "End Date")]
+		public DateTime? DateEnd { get; set; }
+
+		[Display(Name = "Status")]
+		public MediaStatus? MediaStatus { get; set; }
 	}
 
 	public class ListMediaInterviewModel 

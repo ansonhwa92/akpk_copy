@@ -123,6 +123,7 @@
 				<th>@Html.DisplayNameFor(m => m.filter.EndDate)</th>
 				<th>@Html.DisplayNameFor(m => m.filter.Venue)</th>
 				<th>@Html.DisplayNameFor(m => m.filter.Fee)</th>
+				<th>@Html.DisplayNameFor(m => m.filter.EventStatus)</th>
 				<th>Action</th>
 			</tr>
 		</thead>
@@ -138,6 +139,7 @@
 				<td>@Html.DisplayFor(m => item.EndDate)</td>
 				<td>@Html.DisplayFor(m => item.Venue)</td>
 				<td>@Html.DisplayFor(m => item.Fee)</td>
+				<td>@Html.DisplayFor(m => item.EventStatus)</td>
 				<td>
 					<a href='@Url.Action("Edit", new { id=item.Id , origin = "fromlist"})' data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
 					<a href='@Url.Action("Details", new { id=item.Id })' data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>

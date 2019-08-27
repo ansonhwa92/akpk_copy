@@ -7,7 +7,7 @@ using FEP.Model;
 
 namespace FEP.WebApiModel.Administration
 {
-    public class UserApiModel
+    public class UserModel
     {
         public int Id { get; set; }
         public string LoginId { get; set; }
@@ -26,8 +26,5 @@ namespace FEP.WebApiModel.Administration
         public List<UserAccess> UserAccesses { get; set; }
     }
 
-    public class CompanyApiModel
-    {
-
-    }
+   
 }

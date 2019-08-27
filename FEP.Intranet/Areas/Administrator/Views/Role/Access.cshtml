@@ -1,0 +1,122 @@
+﻿@model AccessModel
+
+
+@{
+    ViewBag.Title = "Access";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section ContentScript{
+
+
+
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="@Url.Action("List")" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Administration</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Role Access</h1>
+                    @*<div class="header-text">List of registered user as individual</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Role Access</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Access", new { id = Model.RoleId })" class=" @if (Model.Module == null) { @Html.Raw("active")} nav-link">All</a>
+                        </li>
+                        @foreach (Modules type in (Modules[])Enum.GetValues(typeof(Modules)))
+                        {
+                            <li class="nav-item">
+                                <a href="@Url.Action("Access", new { id = Model.RoleId, module = type })" class=" @if (type == Model.Module) { @Html.Raw("active") } nav-link">@type.GetDisplayName()</a>
+                            </li>
+
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+
+        <div class="border-form rounded-top">
+            @Html.ValidationSummary()
+            <div class="form-container form-container-w100">
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.RoleId)
+                    <div class="">
+                        <h4 class="color-darkblue mb-4 mt-2">Role: @Html.DisplayFor(m => m.RoleName)</h4>
+                        <div class="divtableStyle1">
+                            <div class="row no-gutters">
+                                <div class="col-lg-12 divTableWrap">
+                                    <div class="divtableheader">
+                                        <div class="row">
+                                            <div class="col-2 text-center">No</div>
+                                            <div class="col">Access</div>
+                                            <div class="col-2">&nbsp;</div>
+                                        </div>
+                                    </div>
+                                    <div class="divtableBody">
+                                        @{ var i = 1; }
+                                        @foreach (var item in Model.Access)
+                                        {
+
+                                            <div class="row divTd">
+                                                <div class="col-2 text-center">@i</div>
+                                                <div class="col">@Html.Raw(item.Key.GetDisplayName())</div>
+                                                <div class="col-2">
+                                                    @Html.Raw(item.Value)
+                                                </div>
+                                            </div>
+
+                                            { i++; }
+
+                                        }
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                            <a class="btn btn-default mr-2" href="@Url.Action("List")">Back</a>
+                            <button type="submit" class="btn btn-secondary">Save Setting</button>
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+

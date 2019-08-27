@@ -132,12 +132,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Administration\AccessController.cs" />
     <Compile Include="Api\Administration\AuthController.cs" />
+    <Compile Include="Api\Administration\BranchController.cs" />
     <Compile Include="Api\Administration\CompanyController.cs" />
+    <Compile Include="Api\Administration\DepartmentController.cs" />
     <Compile Include="Api\Administration\IndividualController.cs" />
+    <Compile Include="Api\Administration\RoleController.cs" />
     <Compile Include="Api\Administration\SectorController.cs" />
     <Compile Include="Api\Administration\StaffController.cs" />
-    <Compile Include="Api\Administration\StateController.cs" />
     <Compile Include="Api\Administration\UserController.cs" />
     <Compile Include="Api\eEvent\EventCategoryController.cs" />
     <Compile Include="Api\eEvent\MediaInterviewRequestController.cs" />
@@ -145,6 +148,8 @@
     <Compile Include="Api\Home\ProfileController.cs" />
     <Compile Include="Api\RnP\PublicationController.cs" />
     <Compile Include="Api\RnP\SurveyController.cs" />
+    <Compile Include="Api\Notification\EmailController.cs" />
+    <Compile Include="Api\Notification\NotificationController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

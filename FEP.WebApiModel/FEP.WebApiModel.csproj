@@ -66,6 +66,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Administration\Department.cs" />
+    <Compile Include="Administration\Role.cs" />
     <Compile Include="Administration\SectorModel.cs" />
     <Compile Include="Administration\StateModel.cs" />
     <Compile Include="Administration\User.cs" />
@@ -77,8 +79,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RnP\Publication.cs" />
     <Compile Include="RnP\Research.cs" />
-    <Compile Include="User\Company.cs" />
-    <Compile Include="User\Individual.cs" />
+    <Compile Include="Notification\Email.cs" />
+    <Compile Include="Administration\Company.cs" />
+    <Compile Include="Administration\Individual.cs" />
+    <Compile Include="Administration\Staff.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FEP.Language\FEP.Language.csproj">
@@ -90,7 +94,9 @@
       <Name>FEP.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="User\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

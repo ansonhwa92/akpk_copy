@@ -254,10 +254,11 @@
 							<ul class="nav navbar-nav">
 								<li class="nav-item dropdown">
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User & Role Management</a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })">Individual</a>
-										<a class="dropdown-item" href="@Url.Action("List", "Company", new { area = "Administrator" })">Agency</a>
-									</div>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })">Individual</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Company", new { area = "Administrator" })">Agency</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Role", new { area = "Administrator" })">Role</a>
+                                    </div>
 								</li>
 								<li class="nav-item dropdown">
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Event Management</a>
@@ -268,9 +269,8 @@
 								<li class="nav-item dropdown">
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">R&P Management</a>
 									<div class="dropdown-menu">
-										 <a class="dropdown-item" href="~/RnP/Publication"><i class="la la-search color-secondary font-icon"></i>Browse Publications</a>
-                                        <a class="dropdown-item" href="~/RnP/Survey"><i class="la la-search color-secondary font-icon"></i>Browse Surveys</a>
-                                        
+										<a class="dropdown-item" href="~/RnP/Publication"><i class="la la-search color-secondary font-icon"></i>Browse Publications</a>
+                                        <a class="dropdown-item" href="~/RnP/Survey"><i class="la la-search color-secondary font-icon"></i>Browse Surveys</a>                                        
 									</div>
 								</li>
 								<li class="nav-item dropdown">
@@ -390,6 +390,20 @@
                 var y = moment(value, 'DD/MM/YYYY', true);
                 return this.optional(element) || moment(value, 'DD/MM/YYYY', true).isValid() || moment(value, 'HH:mm', true).isValid();
         };
+
+        function resetValidations() {
+            //Removes validation from input-fields
+            $('.input-validation-error').addClass('input-validation-valid');
+            $('.input-validation-error').removeClass('input-validation-error');
+            //Removes validation message after input-fields
+            $('.field-validation-error').html('');
+            $('.field-validation-error').addClass('field-validation-valid');
+            $('.field-validation-error').removeClass('field-validation-error');
+            //Removes validation summary 
+            $('.validation-summary-errors').addClass('validation-summary-valid');
+            $('.validation-summary-errors').removeClass('validation-summary-errors');
+
+        }
 
 	</script>
 

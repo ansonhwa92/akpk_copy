@@ -21,7 +21,7 @@ namespace FEP.Model
         public DateTime SendDate { get; set; }
         public bool IsSent { get; set; }
         public DateTime? SentDate { get; set; }
-
+        public int Retry { get; set; }
         public virtual ICollection<EmailToSendAddress> EmailAddress { get; set; }
 
     }

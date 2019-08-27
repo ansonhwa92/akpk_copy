@@ -25,7 +25,7 @@ namespace FEP.WebApi.Api.Administration
             base.Dispose(disposing);
         }
 
-        public int? Get(string LoginId, string Password)
+        public IHttpActionResult Get(string LoginId, string Password)
         {
 
             var user = db.UserAccount.Where(u => u.LoginId == LoginId).FirstOrDefault();
@@ -34,17 +34,17 @@ namespace FEP.WebApi.Api.Administration
             {
                 if (Authentication.VerifyPassword(Password, user.HashPassword, user.Salt))
                 {
-                    return user.UserId;
+                    return Ok(user.UserId);
                 }
             }
 
-            return null;
+            return NotFound();
         }
 
         [Route("api/Auth/AuthenticatePassword")]
         [HttpGet]
         [ValidationActionFilter]
-        public bool AuthenticatePassword(int id, string Password)
+        public IHttpActionResult AuthenticatePassword(int id, string Password)
         {
             var user = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
 
@@ -52,17 +52,17 @@ namespace FEP.WebApi.Api.Administration
             {
                 if (Authentication.VerifyPassword(Password, user.HashPassword, user.Salt))
                 {
-                    return true;
+                    return Ok(true);
                 }
             }
 
-            return false;
+            return NotFound();
         }
 
         [Route("api/Auth/RegisterIndividual")]
         [HttpPost]
         [ValidationActionFilter]
-        public string RegisterIndividual([FromBody] RegisterIndividualModel model)
+        public IHttpActionResult RegisterIndividual([FromBody] RegisterIndividualModel model)
         {
 
             Authentication.GeneratePassword(model.Password);
@@ -103,14 +103,14 @@ namespace FEP.WebApi.Api.Administration
 
             db.SaveChanges();
 
-            return activateaccount.UID;
+            return Ok(activateaccount.UID);
 
         }
 
         [Route("api/Auth/RegisterAgency")]
         [HttpPost]
         [ValidationActionFilter]
-        public string RegisterAgency([FromBody] RegisterAgencyModel model)
+        public IHttpActionResult RegisterAgency([FromBody] RegisterAgencyModel model)
         {
 
             Authentication.GeneratePassword(model.Password);
@@ -165,13 +165,13 @@ namespace FEP.WebApi.Api.Administration
 
             db.SaveChanges();
 
-            return activateaccount.UID;
+            return Ok(activateaccount.UID);
         }
 
         [Route("api/Auth/ActivateAccount")]
         [HttpPost]
         [ValidationActionFilter]
-        public bool ActivateAccount([FromBody] string UID)
+        public IHttpActionResult ActivateAccount([FromBody] string UID)
         {
 
             var activateaccount = db.ActivateAccount.Where(m => m.UID == UID && m.IsActivate == false).FirstOrDefault();
@@ -193,31 +193,22 @@ namespace FEP.WebApi.Api.Administration
                 db.UserAccount.Attach(userAccount);
                 db.Entry(userAccount).Property(e => e.IsEnable).IsModified = true;
 
-                //User user = new User
-                //{
-                //    Id = activateaccount.UserId,
-                //    Display = true
-                //};
-
-                //db.User.Attach(user);
-                //db.Entry(user).Property(e => e.Display).IsModified = true;
-
                 db.Configuration.ValidateOnSaveEnabled = false;
 
                 db.SaveChanges();
 
-                return true;
+                return Ok(true);
 
             }
 
-            return false;
+            return NotFound();
 
         }
 
         [Route("api/Auth/ResetPassword")]
         [HttpPost]
         [ValidationActionFilter]
-        public ResetPasswordResponseModel ResetPassword([FromBody] ResetPasswordModel model)
+        public IHttpActionResult ResetPassword([FromBody] ResetPasswordModel model)
         {
             //check email if exist.                
             var user = db.User.Where(u => u.Email == model.Email).FirstOrDefault();
@@ -238,36 +229,34 @@ namespace FEP.WebApi.Api.Administration
                 db.PasswordReset.Add(pwdreset);
                 db.SaveChanges();
 
-                return new ResetPasswordResponseModel { Name = user.Name, UID = pwdreset.UID };
+                return Ok(new ResetPasswordResponseModel { Name = user.Name, UID = pwdreset.UID });
             }
 
-            return null;
+            return NotFound();
 
         }
 
 
         [Route("api/Auth/GetSetPassword")]
         [HttpGet]
-        public SetPasswordModel GetSetPassword(string uid)
+        public IHttpActionResult GetSetPassword(string uid)
         {
 
             var pwdreset = db.PasswordReset.Where(m => m.UID == uid && m.IsReset == false).FirstOrDefault();
             if (pwdreset != null)
             {
                 var setpwd = new SetPasswordModel() { PasswordResetId = pwdreset.Id, UID = uid };
-                return setpwd;
-
+                return Ok(setpwd);
             }
 
-            return null;
-
+            return NotFound();
 
         }
 
         [Route("api/Auth/SetPassword")]
         [HttpPost]
         [ValidationActionFilter]
-        public bool SetPassword([FromBody] SetPasswordModel model)
+        public IHttpActionResult SetPassword([FromBody] SetPasswordModel model)
         {
 
             var pwdreset = db.PasswordReset.Where(m => m.Id == model.PasswordResetId && m.UID == model.UID && m.IsReset == false).FirstOrDefault();
@@ -301,13 +290,13 @@ namespace FEP.WebApi.Api.Administration
                     db.Configuration.ValidateOnSaveEnabled = false;
                     db.SaveChanges();
 
-                    return true;
+                    return Ok(true);
 
                 }
 
             }
 
-            return false;
+            return NotFound();
 
 
         }

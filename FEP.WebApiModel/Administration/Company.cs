@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace FEP.WebApiModel.User
+namespace FEP.WebApiModel.Administration
 {
 
     public class ListCompanyModel 
@@ -115,6 +115,12 @@ namespace FEP.WebApiModel.User
 
         public IEnumerable<SelectListItem> Sectors { get; set; }
 
+        [Display(Name = "Role")]
+        [Required]
+        public int[] RoleIds { get; set; }
+
+        public IEnumerable<SelectListItem> Roles { get; set; }
+
     }
 
 
@@ -176,6 +182,12 @@ namespace FEP.WebApiModel.User
 
         public IEnumerable<SelectListItem> Sectors { get; set; }
 
+        [Display(Name = "Role")]
+        [Required]
+        public int[] RoleIds { get; set; }
+
+        public IEnumerable<SelectListItem> Roles { get; set; }
+
     }
 
     public class DetailsCompanyModel
@@ -224,6 +236,11 @@ namespace FEP.WebApiModel.User
 
         [Display(Name = "Status")]
         public bool Status { get; set; }
+
+        [Display(Name = "Role")]
+        public int[] RoleIds { get; set; }
+
+        public IEnumerable<SelectListItem> Roles { get; set; }
 
     }
 }

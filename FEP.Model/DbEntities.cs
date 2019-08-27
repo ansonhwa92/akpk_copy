@@ -34,10 +34,14 @@ namespace FEP.Model
         public DbSet<Department> Department { get; set; }
         public DbSet<Branch> Branch { get; set; }
 
+        //access
+        public DbSet<Access> Access { get; set; }
+
         //role
         public DbSet<Role> Role { get; set; }
         public DbSet<RoleAccess> RoleAccess { get; set; }
         public DbSet<UserRole> UserRole { get; set; }
+        public DbSet<RoleDefault> RoleDefault { get; set; }
 
         //setting
         public DbSet<SystemSetting> SystemSetting { get; set; }

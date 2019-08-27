@@ -125,7 +125,13 @@
 
             table.on('order.dt search.dt', function () {
                 var info = table.page.info();
-                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' user');
+
+                var start = 0;
+                if (info.recordsTotal != 0) {
+                    start = info.start + 1;
+                }               
+
+                $('#pageInfo').html('Showing ' + start + ' - ' + info.end + ' of ' + info.recordsTotal + ' user');
                 $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
             }).draw();
 

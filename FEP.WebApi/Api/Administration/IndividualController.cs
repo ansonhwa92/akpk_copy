@@ -1,6 +1,6 @@
 ﻿using FEP.Helper;
 using FEP.Model;
-using FEP.WebApiModel.User;
+using FEP.WebApiModel.Administration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -169,6 +169,9 @@ namespace FEP.WebApi.Api.Administration
                 return NotFound();
             }
 
+            user.RoleIds = db.UserRole.Where(u => u.UserId == id).Select(s => s.RoleId).ToArray();
+
+
             return Ok(user);
         }
 
@@ -202,6 +205,17 @@ namespace FEP.WebApi.Api.Administration
                 UserAccount = account
             };
 
+            foreach (var roleid in model.RoleIds)
+            {
+                var userrole = new UserRole
+                {
+                    RoleId = roleid,
+                    User = user,
+                };
+
+                db.UserRole.Add(userrole);
+            }
+            
             db.User.Add(user);
 
             ActivateAccount activateaccount = new ActivateAccount
@@ -241,13 +255,25 @@ namespace FEP.WebApi.Api.Administration
             db.Entry(user).Property(x => x.Email).IsModified = true;
             db.Entry(user).Property(x => x.MobileNo).IsModified = true;
 
+            db.UserRole.RemoveRange(db.UserRole.Where(u => u.UserId == id));//remove all
+            foreach (var roleid in model.RoleIds)
+            {
+                var userrole = new UserRole
+                {
+                    RoleId = roleid,
+                    UserId = id,
+                };
+
+                db.UserRole.Add(userrole);
+            }
+            
             db.Configuration.ValidateOnSaveEnabled = true;
             db.SaveChanges();
 
             return Ok(true);
         }
 
-        
+
 
     }
 }

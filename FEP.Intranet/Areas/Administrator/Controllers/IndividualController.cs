@@ -1,6 +1,7 @@
 ﻿using FEP.Helper;
 using FEP.WebApiModel.Auth;
-using FEP.WebApiModel.User;
+using FEP.WebApiModel.Notification;
+using FEP.WebApiModel.Administration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
     {
         // GET: Administrator/Individual
         public ActionResult List()
-        {            
+        {
             return View();
         }
 
@@ -35,13 +36,21 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            return View(response.Data);
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            return View();
+            var model = new CreateIndividualModel();
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpPost]
@@ -50,14 +59,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var emailResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsEmailExist?id={null}&email={model.Email}");
 
-            if (emailResponse.Data)
+            if (emailResponse.isSuccess)
             {
                 ModelState.AddModelError("Email", "Email already registered in the system");
             }
 
             var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={model.ICNo}");
 
-            if (icnoResponse.Data)
+            if (icnoResponse.isSuccess)
             {
                 ModelState.AddModelError("ICNo", "IC No already registered in the system");
             }
@@ -66,10 +75,15 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 var response = await WepApiMethod.SendApiAsync<CreateUserResponse>(HttpVerbs.Post, $"Administration/Individual", model);
 
-                if (response != null)
+                if (response.isSuccess)
                 {
 
-                    SendEmail("New FEP Account Created", "Sign in Id: " + model.Email + "\n" + "Password: " + response.Data.Password, new EmailAddress() { Address = model.Email, DisplayName = model.Name });
+                    StringBuilder body = new StringBuilder();
+                    body.Append("Dear " + model.Name + ",");
+                    body.Append("<br />");
+                    body.Append("You can sign to FEP Portal <a href = '" + BaseURL + Url.Action("Login", "Auth", new { area = "" }) + "' > here </a>. Sign in Id: " + model.Email + "\n" + "Password: " + response.Data.Password);
+
+                    await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), new EmailAddress { DisplayName = model.Name, Address = model.Email });
 
                     LogActivity("Create Individual User");
 
@@ -86,6 +100,8 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 }
 
             }
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
 
             return View(model);
         }
@@ -106,7 +122,11 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            return View(response.Data);
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpPost]
@@ -114,14 +134,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         {
             var emailResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsEmailExist?id={model.Id}&email={model.Email}");
 
-            if (emailResponse.Data)
+            if (emailResponse.isSuccess)
             {
                 ModelState.AddModelError("Email", "Email already registered in the system");
             }
 
             var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={model.Id}&icno={model.ICNo}");
 
-            if (icnoResponse.Data)
+            if (icnoResponse.isSuccess)
             {
                 ModelState.AddModelError("ICNo", "IC No already registered in the system");
             }
@@ -130,7 +150,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Administration/Individual?id={model.Id}", model);
 
-                if (response.Data)
+                if (response.isSuccess)
                 {
                     LogActivity("Update Individual User", model);
 
@@ -146,6 +166,8 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 }
 
             }
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
 
             return View(model);
         }
@@ -165,7 +187,11 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            return View(response.Data);
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpPost, ActionName("Activate")]
@@ -179,7 +205,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Administration/User/Activate/?id={id}");
 
-            if (response.Data)
+            if (response.isSuccess)
             {
                 LogActivity("Activate Individual User Account");
 
@@ -189,7 +215,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             }
             else
             {
-                
+
                 TempData["ErrorMessage"] = "Fail to activate user account.";
 
                 return RedirectToAction("Details", "Individual", new { area = "Administrator", @id = id });
@@ -212,7 +238,11 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            return View(response.Data);
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpPost, ActionName("Deactivate")]
@@ -226,7 +256,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Administration/User/Deactivate/?id={id}");
 
-            if (response.Data)
+            if (response.isSuccess)
             {
                 LogActivity("Disable Individual User Account");
 
@@ -236,7 +266,6 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             }
             else
             {
-
                 TempData["ErrorMessage"] = "Fail to disable user account.";
 
                 return RedirectToAction("Details", "Individual", new { area = "Administrator", @id = id });
@@ -259,7 +288,11 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            return View(response.Data);
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpPost, ActionName("ResetPassword")]
@@ -273,21 +306,15 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var response = await WepApiMethod.SendApiAsync<ResetPasswordResponseModel>(HttpVerbs.Post, $"Auth/ResetPassword", new { Email = Email });
 
-            if (response.Data != null)
+            if (response.isSuccess)
             {
-                
-                EmailAddress receiver = new EmailAddress()
-                {
-                    DisplayName = response.Data.Name,
-                    Address = Email
-                };
 
                 StringBuilder body = new StringBuilder();
                 body.Append("Dear " + response.Data.Name + ",");
                 body.Append("<br />");
                 body.Append("You can reset your password <a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data }) + "' > here </a>");
 
-                SendEmail("FEP Password Reset", body.ToString(), receiver);
+                await EmailMethod.SendEmail("FE Portal Password Reset by Admin", body.ToString(), new EmailAddress { DisplayName = response.Data.Name, Address = Email });
 
                 LogActivity("Reset Individual User Account Password");
 
@@ -320,7 +347,11 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            return View(response.Data);
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -334,7 +365,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Administration/User/Delete/?id={id}");
 
-            if (response.Data)
+            if (response.isSuccess)
             {
                 LogActivity("Delete Individual User");
 
@@ -352,5 +383,23 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
         }
 
+
+        [NonAction]
+        private async Task<IEnumerable<RoleModel>> GetRoles()
+        {
+
+            var roles = Enumerable.Empty<RoleModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<RoleModel>>(HttpVerbs.Get, $"Administration/Role");
+
+            if (response.isSuccess)
+            {
+                roles = response.Data.OrderBy(o => o.Name);
+            }
+
+            return roles;
+
+        }
     }
+
 }

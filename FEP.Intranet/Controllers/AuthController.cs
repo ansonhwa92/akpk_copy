@@ -12,10 +12,9 @@ using FEP.Helper;
 using FEP.Intranet.Models;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json;
-//using FEP.WebApiModel;
-using FEP.Model;
 using FEP.WebApiModel.Auth;
 using FEP.WebApiModel.Administration;
+
 
 namespace FEP.Intranet.Controllers
 {
@@ -104,7 +103,7 @@ namespace FEP.Intranet.Controllers
                     body.Append("<br />");
                     body.Append("Password: " + model.Password);
 
-                    SendEmail("FEP Account Activation", body.ToString(), receiver); //email
+                    await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), receiver);
 
                     TempData["SuccessMessage"] = "Your account successfully created. Please check your registered email for sign in details.";
 
@@ -161,8 +160,8 @@ namespace FEP.Intranet.Controllers
                     body.Append("Login Id: " + model.Email);
                     body.Append("<br />");
                     body.Append("Password: " + model.Password);
-
-                    SendEmail("FEP Account Activation", body.ToString(), receiver); //email
+                 
+                    await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), receiver);
 
                     TempData["SuccessMessage"] = "Your account successfully created. Please check your registered email for sign in details.";
 
@@ -200,7 +199,7 @@ namespace FEP.Intranet.Controllers
 
                     if (userId != null)
                     {
-                        var resUser = await WepApiMethod.SendApiAsync<UserApiModel>(HttpVerbs.Get, $"Administration/User?id={userId}");
+                        var resUser = await WepApiMethod.SendApiAsync<UserModel>(HttpVerbs.Get, $"Administration/User?id={userId}");
 
                         if (resUser.isSuccess)
                         {
@@ -346,18 +345,12 @@ namespace FEP.Intranet.Controllers
                 {
                     var uid = response.Data.UID;
 
-                    EmailAddress receiver = new EmailAddress()
-                    {
-                        DisplayName = response.Data.Name,
-                        Address = model.Email
-                    };
-
                     StringBuilder body = new StringBuilder();
                     body.Append("Dear " + response.Data.Name + ",");
                     body.Append("<br />");
                     body.Append("You can reset your password <a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data }) + "' > here </a>");
 
-                    SendEmail("FEP Password Reset", body.ToString(), receiver);
+                    await EmailMethod.SendEmail("FE Portal Account Password Reset", body.ToString(), new EmailAddress { DisplayName = response.Data.Name, Address = model.Email });
                 }
 
                 TempData["Message"] = "Instruction to reset password was successfully sent to your email [" + model.Email + "]. Please check your email.";

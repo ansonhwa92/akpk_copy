@@ -5,8 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
-namespace FEP.WebApiModel.User
+namespace FEP.WebApiModel.Administration
 {
 
     public class ListIndividualModel
@@ -17,7 +18,7 @@ namespace FEP.WebApiModel.User
 
     public class FilterIndividualModel : DataTableModel
     {
-       
+
         [Display(Name = "Name")]
         public string Name { get; set; }
 
@@ -56,7 +57,7 @@ namespace FEP.WebApiModel.User
 
     public class CreateIndividualModel
     {
-        
+
         [Display(Name = "Name")]
         [Required]
         public string Name { get; set; }
@@ -74,6 +75,13 @@ namespace FEP.WebApiModel.User
         [Required]
         public string MobileNo { get; set; }
 
+        [Display(Name = "Role")]
+        [Required]
+        public int[] RoleIds { get; set; }
+
+        public IEnumerable<SelectListItem> Roles { get; set; }
+
+
     }
 
     public class CreateUserResponse
@@ -82,7 +90,7 @@ namespace FEP.WebApiModel.User
         public string UID { get; set; }
 
     }
-    
+
     public class EditIndividualModel
     {
         public int Id { get; set; }
@@ -106,6 +114,12 @@ namespace FEP.WebApiModel.User
         [Display(Name = "Status")]
         public bool Status { get; set; }
 
+        [Display(Name = "Role")]
+        [Required]
+        public int[] RoleIds { get; set; }
+
+        public IEnumerable<SelectListItem> Roles { get; set; }
+
 
     }
 
@@ -113,42 +127,27 @@ namespace FEP.WebApiModel.User
     {
         public int Id { get; set; }
 
-        [Display(Name = "Name")]       
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Display(Name = "IC No/Passport No")]      
+        [Display(Name = "IC No/Passport No")]
         public string ICNo { get; set; }
 
-        [Display(Name = "Email")]      
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Display(Name = "Mobile No")]      
+        [Display(Name = "Mobile No")]
         public string MobileNo { get; set; }
 
         [Display(Name = "Status")]
         public bool Status { get; set; }
 
-    }
+        [Display(Name = "Role")]
+        public int[] RoleIds { get; set; }
 
-    public class StaffModel
-    {
-        public int Id { get; set; }
-
-        [Display(Name = "Name")]
-        public string Name { get; set; }
-
-        [Display(Name = "Department")]
-        public string Department { get; set; }
-
-        [Display(Name = "Branch")]
-        public string Branch { get; set; }
-
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+        public IEnumerable<SelectListItem> Roles { get; set; }
 
     }
 
-
-    
 
 }

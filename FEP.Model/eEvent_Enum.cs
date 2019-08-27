@@ -110,4 +110,11 @@ namespace FEP.Model
 		RepNotAvailable,
 
 	}
+
+	public enum ExhibitionStatus
+	{
+		New,
+		Cancelled,
+		Approved
+	}
 }

@@ -140,6 +140,7 @@
     <Compile Include="Api\Administration\StateController.cs" />
     <Compile Include="Api\Administration\UserController.cs" />
     <Compile Include="Api\eEvent\EventCategoryController.cs" />
+    <Compile Include="Api\eEvent\ExhibitionRoadshowRequestController.cs" />
     <Compile Include="Api\eEvent\MediaInterviewRequestController.cs" />
     <Compile Include="Api\eEvent\PublicEventController.cs" />
     <Compile Include="Api\Home\ProfileController.cs" />

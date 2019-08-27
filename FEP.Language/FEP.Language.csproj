@@ -41,6 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Event.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Event.resx</DependentUpon>
+    </Compile>
     <Compile Include="RnPForm.Designer.cs">
       <DependentUpon>RnPForm.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -74,6 +79,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Event.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Event.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="RnPForm.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RnPForm.Designer.cs</LastGenOutput>

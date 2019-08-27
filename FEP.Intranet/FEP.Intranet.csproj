@@ -159,6 +159,7 @@
     <Compile Include="Areas\Administrator\Models\Staff.cs" />
     <Compile Include="Areas\Administrator\Models\User.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventCategoryController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\ExhibitionRoadshowRequestController.cs" />
     <Compile Include="Areas\eEvent\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\eEventAreaRegisteration.cs" />
     <Compile Include="Areas\eEvent\Models\EventCategory.cs" />
@@ -1078,6 +1079,7 @@
     <Folder Include="Areas\Administrator\Views\Sector\" />
     <Folder Include="Areas\Administrator\Views\Staff\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
+    <Folder Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Areas\eLearning\Models\" />
     <Folder Include="Areas\eLearning\Views\Shared\" />

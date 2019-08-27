@@ -70,6 +70,7 @@
     <Compile Include="Administration\StateModel.cs" />
     <Compile Include="Administration\User.cs" />
     <Compile Include="Auth\Registration.cs" />
+    <Compile Include="eEvent\ExhibitionRoadshowRequest.cs" />
     <Compile Include="Home\ProfileModel.cs" />
     <Compile Include="eEvent\EventCategory.cs" />
     <Compile Include="eEvent\MediaInterviewRequest.cs" />

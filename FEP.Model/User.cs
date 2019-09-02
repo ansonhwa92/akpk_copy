@@ -155,13 +155,13 @@ namespace FEP.Model
         
     public enum UserType
     {
-        [Display(Name = "UserTypeSystemAdmin", ResourceType = typeof(Language.Enum))]
+        [Display(Name = "System Admin")]
         SystemAdmin = 0,
-        [Display(Name = "UserTypeIndividual", ResourceType = typeof(Language.Enum))]
+        [Display(Name = "Individual")]
         Individual = 1,
-        [Display(Name = "UserTypeCompany", ResourceType = typeof(Language.Enum))]
+        [Display(Name = "Agency")]
         Company = 2,
-        [Display(Name = "UserTypeStaff", ResourceType = typeof(Language.Enum))]
+        [Display(Name = "Staff")]
         Staff = 3,
     }
 }

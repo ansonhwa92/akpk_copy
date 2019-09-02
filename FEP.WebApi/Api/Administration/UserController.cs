@@ -31,19 +31,10 @@ namespace FEP.WebApi.Api.Administration
         {
             var users = db.User.Where(u => u.Display).Select(s => new UserModel
             {
-                Id = s.Id,
-                LoginId = s.UserAccount.LoginId,
+                Id = s.Id,                
                 Name = s.Name,
                 Email = s.Email,
-                UserType = s.UserType,               
-                IsEnable = s.UserAccount.IsEnable,
-                ValidFrom = s.UserAccount.ValidFrom,
-                ValidTo = s.UserAccount.ValidTo,
-                LastLogin = s.UserAccount.LastLogin,
-                LoginAttempt = s.UserAccount.LoginAttempt,
-                LastPasswordChange = s.UserAccount.LastPasswordChange,
-                CreatedBy = s.CreatedBy,
-                CreatedDate = s.CreatedDate
+                UserType = s.UserType,   
             }).ToList();
                         
             return Ok(users);
@@ -52,7 +43,7 @@ namespace FEP.WebApi.Api.Administration
         [HttpGet]
         public IHttpActionResult Get(int id)
         {
-            var user = db.User.Where(u => u.Display && u.Id == id).Select(s => new UserModel
+            var user = db.User.Where(u => u.Display && u.Id == id).Select(s => new DetailsUserModel
             {
                 Id = s.Id,
                 LoginId = s.UserAccount.LoginId,
@@ -83,42 +74,7 @@ namespace FEP.WebApi.Api.Administration
         }
 
 
-        [HttpPost]
-        [Route("api/Administration/User/GetUsers")]
-        public IHttpActionResult Get(List<int> ids)
-        {
-
-            var users = new List<UserModel>();
-
-            foreach (var id in ids)
-            {
-                var user = db.User.Where(u => u.Display && u.Id == id).Select(s => new UserModel
-                {
-                    Id = s.Id,
-                    LoginId = s.UserAccount.LoginId,
-                    Name = s.Name,
-                    Email = s.Email,
-                    UserType = s.UserType,
-                    IsEnable = s.UserAccount.IsEnable,
-                    ValidFrom = s.UserAccount.ValidFrom,
-                    ValidTo = s.UserAccount.ValidTo,
-                    LastLogin = s.UserAccount.LastLogin,
-                    LoginAttempt = s.UserAccount.LoginAttempt,
-                    LastPasswordChange = s.UserAccount.LastPasswordChange,
-                    CreatedBy = s.CreatedBy,
-                    CreatedDate = s.CreatedDate
-                }).FirstOrDefault();
-
-                if (user != null)
-                {
-                    users.Add(user);
-                }
-                
-            }
-            
-            return Ok(users);
-        }
-
+        
 
         [Route("api/Administration/User/IsEmailExist")]
         [HttpGet]

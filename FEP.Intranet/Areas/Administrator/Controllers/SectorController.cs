@@ -9,6 +9,9 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 {
     public class SectorController : FEPController
     {        
+
+
+
         public ActionResult Index()
         {
 

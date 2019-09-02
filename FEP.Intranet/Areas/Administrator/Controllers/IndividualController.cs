@@ -383,6 +383,12 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
         }
 
+        [HttpGet]
+        public ActionResult _Add()
+        {
+            return View();
+        }
+
 
         [NonAction]
         private async Task<IEnumerable<RoleModel>> GetRoles()

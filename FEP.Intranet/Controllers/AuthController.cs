@@ -199,7 +199,7 @@ namespace FEP.Intranet.Controllers
 
                     if (userId != null)
                     {
-                        var resUser = await WepApiMethod.SendApiAsync<UserModel>(HttpVerbs.Get, $"Administration/User?id={userId}");
+                        var resUser = await WepApiMethod.SendApiAsync<DetailsUserModel>(HttpVerbs.Get, $"Administration/User?id={userId}");
 
                         if (resUser.isSuccess)
                         {

@@ -657,6 +657,9 @@
     <Content Include="Areas\Administrator\Views\Role\_Edit.cshtml" />
     <Content Include="Areas\Administrator\Views\Role\_Delete.cshtml" />
     <Content Include="Areas\Administrator\Views\Role\Access.cshtml" />
+    <Content Include="Areas\Administrator\Views\Role\UserRole.cshtml" />
+    <Content Include="Areas\Administrator\Views\User\_AddUser.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\_Add.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

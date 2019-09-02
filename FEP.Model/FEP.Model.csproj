@@ -58,10 +58,11 @@
     <Compile Include="eLearning.cs" />
     <Compile Include="eEvent.cs" />
     <Compile Include="Email.cs" />
+    <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
-    <Compile Include="Migrations\201908271258174_x.cs" />
-    <Compile Include="Migrations\201908271258174_x.Designer.cs">
-      <DependentUpon>201908271258174_x.cs</DependentUpon>
+    <Compile Include="Migrations\201909021324597_tajul.cs" />
+    <Compile Include="Migrations\201909021324597_tajul.Designer.cs">
+      <DependentUpon>201909021324597_tajul.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -86,8 +87,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201908271258174_x.resx">
-      <DependentUpon>201908271258174_x.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909021324597_tajul.resx">
+      <DependentUpon>201909021324597_tajul.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,11 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEP.Portal", "FEP.Portal\FE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEP.Intranet", "FEP.Intranet\FEP.Intranet.csproj", "{4079286E-AE06-46A4-AD44-02DBB01D8666}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEP.WebApi", "FEP.WebApi\FEP.WebApi.csproj", "{A965F499-E035-4045-B955-F7A870B45862}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEP.Language", "FEP.Language\FEP.Language.csproj", "{511BA85D-13B0-4657-9583-892D70535AB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEP.WebApiModel", "FEP.WebApiModel\FEP.WebApiModel.csproj", "{91AF142D-C57F-4296-A485-D17A80CDC57E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEP.WebApi", "FEP.WebApi\FEP.WebApi.csproj", "{A965F499-E035-4045-B955-F7A870B45862}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +33,6 @@ Global
 		{4079286E-AE06-46A4-AD44-02DBB01D8666}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4079286E-AE06-46A4-AD44-02DBB01D8666}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4079286E-AE06-46A4-AD44-02DBB01D8666}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A965F499-E035-4045-B955-F7A870B45862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A965F499-E035-4045-B955-F7A870B45862}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A965F499-E035-4045-B955-F7A870B45862}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A965F499-E035-4045-B955-F7A870B45862}.Release|Any CPU.Build.0 = Release|Any CPU
 		{511BA85D-13B0-4657-9583-892D70535AB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{511BA85D-13B0-4657-9583-892D70535AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{511BA85D-13B0-4657-9583-892D70535AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{91AF142D-C57F-4296-A485-D17A80CDC57E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91AF142D-C57F-4296-A485-D17A80CDC57E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91AF142D-C57F-4296-A485-D17A80CDC57E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A965F499-E035-4045-B955-F7A870B45862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A965F499-E035-4045-B955-F7A870B45862}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A965F499-E035-4045-B955-F7A870B45862}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A965F499-E035-4045-B955-F7A870B45862}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

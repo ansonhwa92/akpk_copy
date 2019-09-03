@@ -3,6 +3,7 @@ using FEP.Model;
 using FEP.WebApiModel.Template;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -35,6 +36,7 @@ namespace FEP.WebApi.Api.Template
             //advanceSearch
             query = query.Where(s => 
             (request.TemplateName == null || s.TemplateName.Contains(request.TemplateName))
+            && (request.CreatedByName == null || s.User.Name.Contains(request.CreatedByName))
             );
 
             //quick search
@@ -44,6 +46,8 @@ namespace FEP.WebApi.Api.Template
 
                 query = query.Where(p => 
                 p.TemplateName.Contains(value)
+                || p.User.Name.Contains(value)
+                || p.CreatedDate.ToString().Contains(value)
                 );
             }
             var filteredCount = query.Count();
@@ -68,6 +72,42 @@ namespace FEP.WebApi.Api.Template
                         }
 
                         break;
+                    case "CreatedByName":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.User.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.User.Name);
+                        }
+
+                        break;
+                    case "CreatedDate":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.CreatedDate);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.CreatedDate);
+                        }
+
+                        break;
+                    case "LastModified":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.LastModified);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.LastModified);
+                        }
+
+                        break;
                 }
             }
             else
@@ -82,7 +122,8 @@ namespace FEP.WebApi.Api.Template
                     TemplateName = s.TemplateName,
                     CreatedDate = s.CreatedDate,
                     LastModified = s.LastModified,
-                    CreatedBy = s.CreatedBy
+                    CreatedBy = s.CreatedBy,
+                    CreatedByName = s.User.Name
                 }).ToList();
 
             return Ok(new DataTableResponse
@@ -105,7 +146,8 @@ namespace FEP.WebApi.Api.Template
                 TemplateMessage = s.TemplateMessage,
                 CreatedDate = s.CreatedDate,
                 LastModified = s.LastModified,
-                CreatedBy = s.CreatedBy
+                CreatedBy = s.CreatedBy,
+                CreatedByName = s.User.Name
             }).FirstOrDefault();
 
             if(emailTemplate == null)
@@ -125,11 +167,13 @@ namespace FEP.WebApi.Api.Template
                 return BadRequest();
             }
 
+            var timeNow = DateTime.Now;
             var EmailTemplate = new EmailTemplate
             {
                 TemplateName = model.TemplateName,
                 TemplateMessage = model.TemplateMessage,
-                CreatedDate = DateTime.Now,
+                CreatedDate = timeNow,
+                LastModified = timeNow,
                 CreatedBy = model.CreatedBy,
                 Display = true
             };
@@ -140,14 +184,55 @@ namespace FEP.WebApi.Api.Template
             return Ok(EmailTemplate);
         }
 
+        [HttpPut]
         // PUT: api/EmailTemplate/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(int id, EditEmailTemplateModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if (id != model.Id)
+            {
+                return BadRequest();
+            }
+
+            EmailTemplate template = db.EmailTemplates.Where(t => t.Id == id).FirstOrDefault();
+            template.TemplateName = model.TemplateName;
+            template.TemplateMessage = model.TemplateMessage;
+            template.LastModified = DateTime.Now;
+
+            db.Entry(template).State = EntityState.Modified;
+            db.Entry(template).Property(x => x.TemplateName).IsModified = true;
+            db.Entry(template).Property(x => x.TemplateMessage).IsModified = true;
+            db.Entry(template).Property(x => x.LastModified).IsModified = true;
+            db.Entry(template).Property(x => x.CreatedBy).IsModified = false;
+
+            db.Configuration.ValidateOnSaveEnabled = true;
+            db.SaveChanges();
+
+            return Ok();
+
         }
 
         // DELETE: api/EmailTemplate/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            EmailTemplate tmp = db.EmailTemplates.Find(id);
+            if(tmp == null)
+            {
+                return BadRequest();
+            }
+
+            tmp.Display = false;
+            db.EmailTemplates.Attach(tmp);
+            db.Entry(tmp).Property(x => x.Display).IsModified = true;
+            db.Configuration.ValidateOnSaveEnabled = true;
+            db.SaveChanges();
+
+            return Ok();
+
         }
     }
 }

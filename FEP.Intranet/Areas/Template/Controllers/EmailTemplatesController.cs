@@ -30,19 +30,22 @@ namespace FEP.Intranet.Areas.Template.Controllers
             return View(new ListEmailTemplateModel {});
         }
 
+        [HttpGet]
         // GET: Template/EmailTemplates/Details/5
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return HttpNotFound();
             }
-            EmailTemplate emailTemplate = db.EmailTemplates.Find(id);
-            if (emailTemplate == null)
+
+            var response = await WepApiMethod.SendApiAsync<DetailsEmailTemplateModel>(HttpVerbs.Get, $"Template/Email?id={id}");
+            if (!response.isSuccess)
             {
                 return HttpNotFound();
             }
-            return View(emailTemplate);
+
+            return View(response.Data);
         }
 
         // GET: Template/EmailTemplates/Create
@@ -94,20 +97,29 @@ namespace FEP.Intranet.Areas.Template.Controllers
 
         }
 
+        [HttpGet]
         // GET: Template/EmailTemplates/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return HttpNotFound();
             }
-            EmailTemplate emailTemplate = db.EmailTemplates.Find(id);
-            if (emailTemplate == null)
+
+            var response = await WepApiMethod.SendApiAsync<DetailsEmailTemplateModel>(HttpVerbs.Get, $"Template/Email?id={id}");
+            if (!response.isSuccess)
             {
                 return HttpNotFound();
             }
-            //ViewBag.CreatedBy = new SelectList(db.Users, "Id", "Name", emailTemplate.CreatedBy);
-            return View(emailTemplate);
+
+            EditEmailTemplateModel model = new EditEmailTemplateModel
+            {
+                Id = response.Data.Id,
+                TemplateName = response.Data.TemplateName,
+                TemplateMessage = response.Data.TemplateMessage,
+            };
+
+            return View(model);
         }
 
         // POST: Template/EmailTemplates/Edit/5
@@ -115,42 +127,79 @@ namespace FEP.Intranet.Areas.Template.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TemplateName,TemplateMessage,CreatedDate,CreatedBy,Display")] EmailTemplate emailTemplate)
+        public async Task<ActionResult> Edit(EditEmailTemplateModel model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(emailTemplate).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var response = await WepApiMethod.SendApiAsync<EditEmailTemplateModel>(HttpVerbs.Put, $"Template/Email?id={model.Id}", model);
+                if (response.isSuccess)
+                {
+                    LogActivity("Update Email Template");
+                    TempData["SuccessMessage"] = "Email Template updated successfully";
+
+                    return RedirectToAction("Details", "EmailTemplates", new { area = "Template", @id = model.Id });
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to update Email Template";
+                    return RedirectToAction("Details", "EmailTemplates", new { area = "Template", @id = model.Id });
+                }
             }
-            //ViewBag.CreatedBy = new SelectList(db.Users, "Id", "Name", emailTemplate.CreatedBy);
-            return View(emailTemplate);
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to update Email Template";
+                return RedirectToAction("Details", "EmailTemplates", new { area = "Template", @id = model.Id });
+            }
         }
 
         // GET: Template/EmailTemplates/Delete/5
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return HttpNotFound();
             }
-            EmailTemplate emailTemplate = db.EmailTemplates.Find(id);
-            if (emailTemplate == null)
+
+            var response = await WepApiMethod.SendApiAsync<DetailsEmailTemplateModel>(HttpVerbs.Get, $"Template/Email?id={id}");
+            if (!response.isSuccess)
             {
                 return HttpNotFound();
             }
-            return View(emailTemplate);
+
+            DeleteEmailTemplateModel model = new DeleteEmailTemplateModel
+            {
+                Id = response.Data.Id,
+                TemplateName = response.Data.TemplateName,
+                TemplateMessage = response.Data.TemplateMessage,
+                CreatedByName = response.Data.CreatedByName,
+                CreatedDate = response.Data.CreatedDate,
+                LastModified = response.Data.LastModified,
+
+            };
+
+            return View(model);
         }
 
         // POST: Template/EmailTemplates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            EmailTemplate emailTemplate = db.EmailTemplates.Find(id);
-            db.EmailTemplates.Remove(emailTemplate);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Delete, $"Template/Email?id={id}");
+            if (response.isSuccess)
+            {
+                LogActivity("Delete Email Template");
+
+                TempData["SuccessMessage"] = "Email Template successfully deleted.";
+                return RedirectToAction("List");
+            }
+            else
+            {
+
+                TempData["ErrorMessage"] = "Failed to delete Email Template.";
+                return RedirectToAction("List");
+            }
+
         }
 
         protected override void Dispose(bool disposing)

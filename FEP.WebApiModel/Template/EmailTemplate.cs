@@ -27,6 +27,9 @@ namespace FEP.WebApiModel.Template
 
         [Display(Name = "Created By")]
         public int CreatedBy { get; set; }
+
+        [Display(Name = "Created By")]
+        public string CreatedByName { get; set; }
     }
     public class EmailTemplateModel
     {
@@ -46,7 +49,32 @@ namespace FEP.WebApiModel.Template
 
         [Display(Name = "Created By")]
         public int CreatedBy { get; set; }
+        
+        [Display(Name = "Created By")]
+        public string CreatedByName { get; set; }
         public bool Display { get; set; }
+    }
+
+    public class DetailsEmailTemplateModel : EmailTemplateModel
+    {
+        public DetailsEmailTemplateModel() { }
+    }
+
+    public class DeleteEmailTemplateModel : EmailTemplateModel
+    {
+        public DeleteEmailTemplateModel() { }
+    }
+
+    public class EditEmailTemplateModel
+    {
+        public int Id { get; set; }
+
+        [Display(Name = "Template Name")]
+        public string TemplateName { get; set; }
+
+        [Display(Name = "Template Message")]
+        public string TemplateMessage { get; set; }
+
     }
 
     public class CreateEmailTemplateModel

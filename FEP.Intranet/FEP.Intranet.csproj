@@ -666,6 +666,9 @@
     <Content Include="Areas\Template\Views\web.config" />
     <Content Include="Areas\Template\Views\EmailTemplates\Create.cshtml" />
     <Content Include="Areas\Template\Views\EmailTemplates\List.cshtml" />
+    <Content Include="Areas\Template\Views\EmailTemplates\Details.cshtml" />
+    <Content Include="Areas\Template\Views\EmailTemplates\Edit.cshtml" />
+    <Content Include="Areas\Template\Views\EmailTemplates\Delete.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

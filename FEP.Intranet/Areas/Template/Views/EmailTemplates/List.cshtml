@@ -36,7 +36,7 @@
                         sortable: true
                     },
                     {
-                        data: 'CreatedBy',
+                        data: 'CreatedByName',
                         sortable: true
                     },
                     {
@@ -54,7 +54,7 @@
                             var action = "";
 
                             action = '<div class="icon-action">'
-                                    +   '<a href="@Url.Action("Details", "EmailTemplate", new { area = "Template" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+                                    +   '<a href="@Url.Action("Details", "EmailTemplates", new { area = "Template" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
                                     + '</div>';
 
                             return action;
@@ -115,8 +115,8 @@
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Template</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Template</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
@@ -142,7 +142,14 @@
                         @Html.EditorFor(m => m.Filter.TemplateName, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
-                
+
+                <div>@Html.DisplayNameFor(m => m.Filter.CreatedByName)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filter.CreatedByName, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+
                 <div>
                     <button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
                 </div>
@@ -174,6 +181,10 @@
             </span>
         </div>
         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+        <div>
+            <a href="@Url.Action("Create", "EmailTemplates", new { area = "Template" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a>
+        </div>
+        </div>
     </div>
     <!-- Table -->
     <table class="table tableStyle1 tabledata">

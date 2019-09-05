@@ -1,0 +1,256 @@
+﻿@model ListUserLogModel
+
+@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+    ViewBag.Title = "User Log";
+}
+
+@section ContentScript{
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var table = $('.tabledata').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    "type": "post",
+                    "url": '@(WebApiURL)Logs/UserLog/GetAll',
+                    "data": function (filter) {
+                        filter.Module = $('#Filter_Module').val();
+                        filter.Username = $('#Filter_Username').val();
+                        filter.Activity = $('#Filter_Activity').val();
+                        filter.LogDateFrom = $('#Filter_LogDateFrom').val();
+                        filter.LogDateTo = $('#Filter_LogDateTo').val();
+                        filter.IPAddress = $('#Filter_IPAddress').val();
+                    }
+                },
+                columns: [
+                    //{
+                    //    sortable: false,
+                    //    render: function () {
+
+                    //        var action = "";
+
+                    //        action = '<div class="custom-control custom-checkbox">'
+                    //                    +'<input id="customCheck1_2" type="checkbox" class="custom-control-input js-check-selected-row">'
+                    //                    +'<label class="custom-control-label" for="customCheck1_2">'
+                    //                     +   '<span class="text-hide">Check</span>'
+                    //                    +'</label>'
+                    //                +'</div>';
+
+                    //        return action;
+                    //    }
+
+                    //},
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'LogDate',
+                        sortable: true,                        
+                        render: function (data, type, row, meta) {
+                            return moment(data).format("DD/MM/YYYY hh:mm A");
+                        }
+                    },
+                    {
+                        data: 'UserName',
+                        sortable: true
+                    },
+                    {
+                        data: 'ModuleDesc',
+                        sortable: true
+                    },
+                    {
+                        data: 'Activity',
+                        sortable: true
+                    },
+                    {
+                        data: 'IPAddress',
+                        sortable: true
+                    },
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+
+                            var action = "";
+
+                            action = '<div class="icon-action">'
+                                    +   '<a href="@Url.Action("Details", "UserLog", new { area = "Logs" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+                                    +   '<a href="@Url.Action("Delete", "UserLog", new { area = "Logs" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+                                    + '</div>';
+
+                            return action;
+                        }
+                    }
+                ],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'desc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_ user"
+                },
+                dom: 'rtip'
+            });
+
+            $('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup( function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change( function() {
+                table.page.len($(this).val()).draw();
+            });
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt page.dt', function () {
+                var info = table.page.info();
+
+                var start = 0;
+                if (info.recordsTotal != 0) {
+                    start = info.start + 1;
+                }
+
+                $('#pageInfo').html('Showing ' + start + ' - ' + info.end + ' of ' + info.recordsTotal + ' user');
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            }).draw();
+
+
+        });
+
+    </script>
+
+}
+
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                @*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">System Setting</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@Language.UserLog.TitleList</h1>
+                    <div class="header-text">@Language.UserLog.TitleDescriptionList</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="d-flex align-items-center">
+    <div class="filter dropdown">
+        <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+        <div class="dropdown-menu">
+            <div class="filter-head">Filters</div>
+            <div class="filter-body">
+                <div>@Html.DisplayNameFor(m => m.Filter.UserName)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filter.UserName, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.Filter.Module)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EnumDropDownListFor(m => m.Filter.Module, Language.General.PlaceholderSelectAll, htmlAttributes: new { @class = "select2 form-control small" })
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.Filter.Activity)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filter.Activity, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.Filter.IPAddress)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filter.IPAddress, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.Filter.LogDateFrom)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filter.LogDateFrom, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.Filter.LogDateTo)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filter.LogDateTo, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>
+                    <button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider-vertical">&nbsp;</div>
+    <!-- Search -->
+    <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+        <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+        <div class="input-group-append">
+            <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+        </div>
+    </div>
+
+</div>
+<hr>
+<div class="table-responsive" data-toggle="lists">
+    <div class="d-flex pb-4 align-items-center">
+        <div>
+            <!-- Select option -->
+            <span class="select-arrow">
+                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </span>
+        </div>
+        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+    </div>
+    <!-- Table -->
+    <table class="table tableStyle1 tabledata">
+        <thead>
+            <tr>
+                <th>@Language.General.ListNo</th>
+                <th>@Html.DisplayNameFor(model => model.List.LogDate)</th>
+                <th>@Html.DisplayNameFor(model => model.List.UserName)</th>
+                <th>@Html.DisplayNameFor(model => model.List.ModuleDesc)</th>
+                <th>@Html.DisplayNameFor(model => model.List.Activity)</th>
+                <th>@Html.DisplayNameFor(model => model.List.IPAddress)</th>
+                <th>@Language.General.Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+

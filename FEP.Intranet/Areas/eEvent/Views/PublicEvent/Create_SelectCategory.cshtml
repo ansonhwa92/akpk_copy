@@ -1,4 +1,4 @@
-﻿@model FEP.Intranet.Areas.eEvent.Models.ListEventCategoryModel
+﻿@model List<EventCategoryModel>
 
 @{
 	ViewBag.Title = "Select Category";
@@ -76,12 +76,12 @@
 
 										<div class="mxw-660">
 											<div class="row">
-												@foreach (var item in Model.CategoryList)
+												@foreach (var item in Model)
 												{
 													<div class="col-lg-4">
 														<div class="box-contain">
 															<div class="card text-center">
-																<span>@Html.DisplayFor(m => item.CategoryName)</span>
+																<span>@Html.DisplayFor(m => item.Name)</span>
 																<div>
 																	<a href='@Url.Action("Create", "PublicEvent", new { area = "eEvent", ctgryId = item.Id})'></a>
 																</div>

@@ -136,14 +136,15 @@
 
             table.$('input[type="checkbox"][name="select"]').each(function () {
 
-                if (this.checked) {
-                    debugger
+                if (this.checked) {                    
                     userids.push(this.value);
-
                 }
             });
 
-            addUser(userids);//pass to main page
+            if (userids.length > 0) {
+                addUser(userids);//pass to main page
+            }
+                        
 
         };
 
@@ -153,7 +154,7 @@
 </script>
 
 
-<div class="modal fade" id="myModal">
+<div class="modal fade">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
 

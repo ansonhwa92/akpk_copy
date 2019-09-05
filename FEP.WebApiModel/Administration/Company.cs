@@ -104,6 +104,7 @@ namespace FEP.WebApiModel.Administration
 
         [Display(Name = "Email")]
         [Required]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [Display(Name = "Mobile No")]
@@ -170,6 +171,7 @@ namespace FEP.WebApiModel.Administration
         public string ICNo { get; set; }
 
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress)]
         [Required]
         public string Email { get; set; }
 

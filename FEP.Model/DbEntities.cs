@@ -70,9 +70,12 @@ namespace FEP.Model
 		public DbSet<PurchaseOrder> PurchaseOrder { get; set; }
 		public DbSet<PurchaseOrderItem> PurchaseOrderItem { get; set; }
 
+        //logs
+        public DbSet<UserLog> UserLog { get; set; }
+        public DbSet<ErrorLog> ErrorLog { get; set; }
 
-		//elearning
-		public DbSet<LearningCourse> LearningCourse { get; set; }
+        //elearning
+        public DbSet<LearningCourse> LearningCourse { get; set; }
 		public DbSet<LearningCourseCertificate> LearningCourseCertificate { get; set; }
 		public DbSet<LearningCourseCategory> LearningCourseCategory { get; set; }
 		public DbSet<Learner> Learner { get; set; }

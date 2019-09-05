@@ -1,8 +1,9 @@
 ﻿using FEP.Helper;
 using FEP.Model;
-using FEP.WebApiModel;
+using FEP.WebApiModel.eEvent;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -24,72 +25,117 @@ namespace FEP.WebApi.Api.eEvent
 			base.Dispose(disposing);
 		}
 
-		public List<EventCategoryApiModel> Get()
-		{
-			var category = db.EventCategory.Where(i => i.Display).Select(i => new EventCategoryApiModel
-			{
-				Id = i.Id,
-				CategoryName = i.CategoryName
-			}).ToList();
+        public IHttpActionResult Get()
+        {
+            var categories = db.EventCategory.Where(u => u.Display).Select(s => new EventCategoryModel
+            {
+                Id = s.Id,
+                Name = s.CategoryName
+            }).ToList();
 
-			return category;
-		}
+            return Ok(categories);
+        }
 
-		[HttpPost]
-		public List<EventCategoryApiModel> GetTable(DataTableModel model)
-		{
-			var category = db.EventCategory.Where(u => u.Display).Select(s => new EventCategoryApiModel
-			{
-				Id = s.Id,
-				CategoryName = s.CategoryName
-			}).ToList();
 
-			return category;
-		}
+        public IHttpActionResult Get(int id)
+        {
+            var category = db.EventCategory.Where(u => u.Display && u.Id == id).Select(s => new EventCategoryModel
+            {
+                Id = s.Id,
+                Name = s.CategoryName
+            }).FirstOrDefault();
 
-		public EventCategoryApiModel Get(int id)
-		{
-			var model = db.EventCategory.Where(i => i.Display && i.Id == id).Select(i => new EventCategoryApiModel
-			{
-				Id = i.Id,
-				CategoryName = i.CategoryName
-			}).FirstOrDefault();
+            if (category != null)
+            {
+                return Ok(category);
+            }
 
-			return model;
-		}
+            return NotFound();
+        }
 
-		public HttpResponseMessage Post([FromBody]string value)
-		{
-			HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
-			return response;
-		}
 
-		public HttpResponseMessage Put(int id, [FromBody]string value)
-		{
-			HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
+        [ValidationActionFilter]
+        public IHttpActionResult Post([FromBody]CreateEventCategoryModel model)
+        {
 
-			return response;
-		}
+            var category = new EventCategory
+            {
+                CategoryName = model.Name,
+                Display = true
+            };
 
-		public bool Delete(int id)
-		{
-			var model = db.EventCategory.Where(u => u.Id == id).FirstOrDefault();
+            db.EventCategory.Add(category);
+            db.SaveChanges();
 
-			if (model != null)
-			{
-				model.Display = false;
+            return Ok(category.Id);
 
-				db.EventCategory.Attach(model);
-				db.Entry(model).Property(m => m.Display).IsModified = true;
-				db.Configuration.ValidateOnSaveEnabled = false;
+        }
 
-				db.SaveChanges();
 
-				return true;
-			}
+        [ValidationActionFilter]
+        public IHttpActionResult Put(int id, [FromBody]EditEventCategoryModel model)
+        {
 
-			return false;
+            var category = db.EventCategory.Where(s => s.Id == id).FirstOrDefault();
 
-		}
-	}
+            if (category != null)
+            {
+                category.CategoryName = model.Name;
+
+                db.Entry(category).State = EntityState.Modified;
+                db.Entry(category).Property(x => x.Display).IsModified = false;
+
+                db.SaveChanges();
+
+                return Ok(true);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
+
+        public IHttpActionResult Delete(int id)
+        {
+            var category = db.EventCategory.Where(u => u.Id == id).FirstOrDefault();
+
+            if (category != null)
+            {
+                category.Display = false;
+
+                db.EventCategory.Attach(category);
+                db.Entry(category).Property(m => m.Display).IsModified = true;
+                db.Configuration.ValidateOnSaveEnabled = false;
+
+                db.SaveChanges();
+
+                return Ok(true);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
+        [Route("api/eEvent/EventCategory/IsNameExist")]
+        [HttpGet]
+        public IHttpActionResult IsNameExist(int? id, string name)
+        {
+            if (id == null)
+            {
+                if (db.EventCategory.Any(u => u.CategoryName.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Display))
+                    return Ok(true);
+            }
+            else
+            {
+                if (db.EventCategory.Any(u => u.CategoryName.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
+                    return Ok(true);
+            }
+
+            return NotFound();
+        }
+    }
 }

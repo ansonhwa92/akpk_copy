@@ -13,7 +13,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 {
     public class RoleController : FEPController
     {
-        // GET: Administrator/Role
+        
         public async Task<ActionResult> List()
         {
             var response = await WepApiMethod.SendApiAsync<List<RoleModel>>(HttpVerbs.Get, $"Administration/Role");
@@ -50,6 +50,8 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 if (response.isSuccess)
                 {
                     TempData["SuccessMessage"] = "Role successfully added";
+
+                    LogActivity(Modules.Admin, "Create Role", model);
 
                     return RedirectToAction("List");
                 }
@@ -96,6 +98,8 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 {
                     TempData["SuccessMessage"] = "Role successfully updated";
 
+                    LogActivity(Modules.Admin, "Update Role", model);
+
                     return RedirectToAction("List");
                 }
             }
@@ -129,6 +133,8 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             if (response.isSuccess)
             {
                 TempData["SuccessMessage"] = "Role successfully deleted";
+
+                LogActivity(Modules.Admin, "Delete Role", new { id = id });
 
                 return RedirectToAction("List");
             }
@@ -197,6 +203,9 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             if (response.isSuccess)
             {
                 TempData["SuccessMessage"] = "Role access successfully updated.";
+
+                LogActivity(Modules.Admin, "Update Role Access", model);
+
                 return RedirectToAction("Access", new { id = model.RoleId });
             }
             
@@ -245,6 +254,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             if (response.isSuccess)
             {
                 TempData["SuccessMessage"] = "User successfully added to the role.";
+                LogActivity(Modules.Admin, "Add User To Role", model);
             }
             else
             {
@@ -271,6 +281,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             if (response.isSuccess)
             {
                 TempData["SuccessMessage"] = "User successfully remove from role.";
+                LogActivity(Modules.Admin, "Remove User From Role", model);
             }
             else
             {

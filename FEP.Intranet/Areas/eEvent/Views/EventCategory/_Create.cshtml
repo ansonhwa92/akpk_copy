@@ -1,0 +1,23 @@
+﻿@model CreateEventCategoryModel
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formAdd" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row divTd">
+        <div class="col-1 text-center"></div>
+        <div class="col px-0">
+            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.EventCategory.PlaceholderName } })
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+        <div class="col-3 pl-0 text-right">
+            <div class="icon-action">
+                <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">@Language.General.ButtonAdd</button>
+                <button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">@Language.General.ButtonCancel</button>
+            </div>
+        </div>
+    </div>
+}

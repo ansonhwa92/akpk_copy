@@ -1,4 +1,5 @@
 ﻿using FEP.Helper;
+using FEP.Model;
 using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.Auth;
 using FEP.WebApiModel.Notification;
@@ -92,7 +93,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                     await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), new EmailAddress { DisplayName = model.Name, Address = model.Email });
 
-                    LogActivity("Create Agency User");
+                    LogActivity(Modules.Admin, "Create Agency User", model);
 
                     TempData["SuccessMessage"] = "User successfully registered. User will receive email with sign in details and link to activate the account.";
 
@@ -162,7 +163,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 if (response.Data)
                 {
-                    LogActivity("Update Agency User", model);
+                    LogActivity(Modules.Admin, "Update Agency User", model);
 
                     TempData["SuccessMessage"] = "User record successfully updated.";
 
@@ -220,7 +221,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.Data)
             {
-                LogActivity("Activate Agency User Account");
+                LogActivity(Modules.Admin, "Activate Agency User Account", new { id = id });
 
                 TempData["SuccessMessage"] = "User account successfully activate.";
 
@@ -271,7 +272,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                LogActivity("Disable Agency User Account");
+                LogActivity(Modules.Admin, "Disable Agency User Account", new { id = id});
 
                 TempData["SuccessMessage"] = "User account successfully disable.";
 
@@ -330,7 +331,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                                
                 await EmailMethod.SendEmail("FE Portal Password Reset By Admin", body.ToString(), new EmailAddress { DisplayName = response.Data.Name, Address = Email });
 
-                LogActivity("Reset Agency User Account Password");
+                LogActivity(Modules.Admin, "Reset Agency User Account Password", new { id = id });
 
                 TempData["SuccessMessage"] = "User account password successfully reset. User will receive email with link to reset account password.";
 
@@ -381,7 +382,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                LogActivity("Delete Agency User");
+                LogActivity(Modules.Admin, "Delete Agency User", new { id = id });
 
                 TempData["SuccessMessage"] = "User account successfully delete.";
 
@@ -394,6 +395,39 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _Add()
+        {
+            var filter = new FilterCompanyModel();
+
+            filter.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+
+            return View(new ListCompanyModel { Filter = filter });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _Details(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<DetailsCompanyModel>(HttpVerbs.Get, $"Administration/Company?id={id}");
+
+            if (!response.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
 
         }
 

@@ -38,19 +38,7 @@ namespace FEP.WebApi.Api.Administration
             return Ok(sectors);
         }
 
-        [HttpPost]
-        public List<SectorModel> GetTable()
-        {
-            //var sectors = db.Sector.Where(u => u.Display).Select(s => new SectorModel
-            //{
-            //    Id = s.Id,
-            //    Name = s.Name
-            //}).ToList();
-
-            //return sectors;
-            return null;
-        }
-
+        
         // GET: api/Sector/5
         public IHttpActionResult Get(int id)
         {
@@ -133,6 +121,24 @@ namespace FEP.WebApi.Api.Administration
                 return NotFound();
             }
 
+        }
+
+        [Route("api/Administration/Sector/IsNameExist")]
+        [HttpGet]
+        public IHttpActionResult IsNameExist(int? id, string name)
+        {
+            if (id == null)
+            {
+                if (db.Sector.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Display))
+                    return Ok(true);
+            }
+            else
+            {
+                if (db.Sector.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
+                    return Ok(true);
+            }
+
+            return NotFound();
         }
 
     }

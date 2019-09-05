@@ -147,7 +147,7 @@ namespace FEP.Intranet.Controllers
 
                     if (response.Data)
                     {
-                        LogActivity("Update Profile", model);
+                        LogActivity(Modules.Admin, "Update Profile", model);
 
                         TempData["SuccessMessage"] = "Profile successfully updated.";
 
@@ -170,7 +170,7 @@ namespace FEP.Intranet.Controllers
 
                     if (response.Data)
                     {
-                        LogActivity("Update Profile", model);
+                        LogActivity(Modules.Admin, "Update Profile", model);
 
                         TempData["SuccessMessage"] = "Profile successfully updated.";
 
@@ -208,7 +208,7 @@ namespace FEP.Intranet.Controllers
 
                 if (response.Data)
                 {
-                    LogActivity("Change Password");
+                    LogActivity(Modules.Admin, "Change Password");
 
                     TempData["SuccessMessage"] = "Password successfully updated.";
 

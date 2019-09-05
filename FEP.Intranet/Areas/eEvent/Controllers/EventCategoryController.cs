@@ -1,11 +1,12 @@
 ﻿using FEP.Helper;
-using FEP.Intranet.Areas.eEvent.Models;
 using FEP.Model;
+using FEP.WebApiModel.eEvent;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,174 +15,136 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 	public class EventCategoryController : FEPController
 	{
 
-		private DbEntities db = new DbEntities();
+        public async Task<ActionResult> List()
+        {
+            var response = await WepApiMethod.SendApiAsync<List<EventCategoryModel>>(HttpVerbs.Get, $"eEvent/EventCategory");
 
-		// GET: eEvent/EventCategory
-		public ActionResult Index()
-		{
-			return View();
-		}
+            if (response.isSuccess)
+                return View(response.Data);
 
-		public ActionResult List(FilterEventCategoryModel filter)
-		{
-			var e = db.EventCategory.Where(i => i.Display && (filter.CategoryName == filter.CategoryName))
-				.Select(i => new DetailsEventCategoryModel()
-				{
-					Id = i.Id,
-					CategoryName = i.CategoryName,
-				}).ToList();
+            return View(new List<EventCategoryModel>());
+        }
 
-			ListEventCategoryModel model = new ListEventCategoryModel(e);
+        public ActionResult _Create()
+        {
+            return View();
+        }
 
-			return View(model);
-		}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> _Create(CreateEventCategoryModel model)
+        {
 
-		// GET: eEvent/EventCategory/Details/5
-		public ActionResult Details(int? id)
-		{
-			if (id == null)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
+            var nameResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"eEvent/EventCategory/IsNameExist?id={null}&name={model.Name}");
 
+            if (nameResponse.isSuccess)
+            {
+                TempData["ErrorMessage"] = Language.EventCategory.ValidExistName;
+                return RedirectToAction("List");
+            }
 
-			var model = db.EventCategory.Where(i => i.Id == id)
-				.Select(i => new DetailsEventCategoryModel()
-				{
-					Id = i.Id,
-					CategoryName = i.CategoryName
-				}).FirstOrDefault();
+            if (ModelState.IsValid)
+            {
 
-			if (model == null)
-			{
-				return HttpNotFound();
-			}
+                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eEvent/EventCategory", model);
 
-			return View(model);
-		}
+                if (response.isSuccess)
+                {
+                    TempData["SuccessMessage"] = Language.EventCategory.AlertSuccessCreate;
 
-		// GET: eEvent/EventCategory/Create
-		public ActionResult Create()
-		{
-			CreateEventCategoryModel model = new CreateEventCategoryModel { };
+                    LogActivity(Modules.Setting, "Create Parameter Event Category", model);
 
-			return View(model);
-		}
+                    return RedirectToAction("List");
+                }
+            }
 
-		// POST: eEvent/EventCategory/Create
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Create(CreateEventCategoryModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				EventCategory category = new EventCategory
-				{
-					CategoryName = model.CategoryName,
-					CreatedBy = CurrentUser.UserId,
-					CreatedDate = DateTime.Now,
-					Display = true
-				};
+            TempData["ErrorMessage"] = Language.EventCategory.AlertFailCreate;
 
-				db.EventCategory.Add(category);
-				db.SaveChanges();
+            return RedirectToAction("List");
 
-				TempData["SuccessMessage"] = "Event Category successfully created.";
-				return RedirectToAction("List");
-			}
-			return View(model);
-		}
+        }
 
-		// GET: eEvent/EventCategory/Edit/5
-		public ActionResult Edit(int? id)
-		{
-			if (id == null)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
-			var model = db.EventCategory.Where(i => i.Id == id)
-				.Select(i => new EditEventCategoryModel()
-				{
-					Id = i.Id,
-					CategoryName = i.CategoryName,
+        public ActionResult _Edit(int id, string No, string Name)
+        {
 
-				}).FirstOrDefault();
+            var model = new EditEventCategoryModel
+            {
+                Id = id,
+                No = No,
+                Name = Name
+            };
 
-			if (model == null)
-			{
-				return HttpNotFound();
-			}
+            return View(model);
+        }
 
-			return View(model);
-		}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> _Edit(EditEventCategoryModel model)
+        {
 
-		// POST: eEvent/EventCategory/Edit/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Edit(EditEventCategoryModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				EventCategory category = new EventCategory
-				{
-					Id = model.Id,
-					//CategoryName = (model.CategoryName != null) ? model.CategoryName.ToUpper() : model.CategoryName,
-					CategoryName = model.CategoryName,
-				};
+            var nameResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"eEvent/EventCategory/IsNameExist?id={model.Id}&name={model.Name}");
 
-				db.Entry(category).State = EntityState.Modified;
-				db.Entry(category).Property(x => x.CreatedDate).IsModified = false;
-				db.Entry(category).Property(x => x.Display).IsModified = false;
+            if (nameResponse.isSuccess)
+            {
+                TempData["ErrorMessage"] = Language.EventCategory.ValidExistName;
 
-				db.Configuration.ValidateOnSaveEnabled = true;
-				db.SaveChanges();
+                return RedirectToAction("List");
+            }
 
-				TempData["SuccessMessage"] = "Event Category successfully updated.";
-				return RedirectToAction("List");
-			}
-			return View(model);
-		}
+            if (ModelState.IsValid)
+            {
 
-		// GET: eEvent/EventCategory/Delete/5
-		public ActionResult Delete(int? id)
-		{
-			if (id == null)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/EventCategory?id={model.Id}", model);
 
-			var model = db.EventCategory.Where(i => i.Id == id)
-				.Select(i => new DeleteEventCategoryModel()
-				{
-					Id = i.Id,
-					CategoryName = i.CategoryName,
-				}).FirstOrDefault();
+                if (response.isSuccess)
+                {
+                    TempData["SuccessMessage"] = Language.EventCategory.AlertSuccessUpdate;
 
-			if (model == null)
-			{
-				return HttpNotFound();
-			}
+                    LogActivity(Modules.Setting, "Update Parameter Event Category", model);
 
-			return View(model);
-		}
+                    return RedirectToAction("List");
+                }
+            }
 
-		// POST: eEvent/EventCategory/Delete/5
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		public ActionResult DeleteConfirmed(DeleteEventCategoryModel model)
-		{
-			EventCategory category = new EventCategory() { Id = model.Id };
-			category.Display = false;
+            TempData["ErrorMessage"] = Language.EventCategory.AlertFailUpdate;
 
-			db.EventCategory.Attach(category);
-			db.Entry(category).Property(m => m.Display).IsModified = true;
+            return RedirectToAction("List");
 
-			db.Configuration.ValidateOnSaveEnabled = false;
-			db.SaveChanges();
+        }
 
+        public ActionResult _Delete(int id, string No, string Name)
+        {
 
-			TempData["SuccessMessage"] = "Event Category successfully deleted.";
-			return RedirectToAction("List");
-		}
-	}
+            var model = new DeleteEventCategoryModel
+            {
+                Id = id,
+                No = No,
+                Name = Name
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> _Delete(int id)
+        {
+
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Delete, $"eEvent/EventCategory?id={id}");
+
+            if (response.isSuccess)
+            {
+                TempData["SuccessMessage"] = Language.EventCategory.AlertSuccessDelete;
+
+                LogActivity(Modules.Setting, "Delete Parameter Event Category", new { id = id });
+
+                return RedirectToAction("List");
+            }
+
+            TempData["ErrorMessage"] = Language.EventCategory.AlertFailDelete;
+
+            return RedirectToAction("List");
+
+        }
+    }
 }

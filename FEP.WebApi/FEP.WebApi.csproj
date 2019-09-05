@@ -146,7 +146,10 @@
     <Compile Include="Api\eEvent\ExhibitionRoadshowRequestController.cs" />
     <Compile Include="Api\eEvent\MediaInterviewRequestController.cs" />
     <Compile Include="Api\eEvent\PublicEventController.cs" />
+    <Compile Include="Api\eLearning\CourseCategoryController.cs" />
     <Compile Include="Api\Home\ProfileController.cs" />
+    <Compile Include="Api\Logs\ErrorLogController.cs" />
+    <Compile Include="Api\Logs\UserLogController.cs" />
     <Compile Include="Api\RnP\PublicationController.cs" />
     <Compile Include="Api\RnP\SurveyController.cs" />
     <Compile Include="Api\Notification\EmailController.cs" />

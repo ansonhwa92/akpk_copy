@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Create a Survey</title>
+    <!-- Favicons -->
+    <link href="../img/favicon.png" rel="icon">
+    <!-- Perfect Scrollbar -->
+    <link type="text/css" href="assets/vendor/perfect-scrollbar.css" rel="stylesheet">
+    <!-- Material Design Icons -->
+    <link type="text/css" href="assets/css/material-icons.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/material-icons.rtl.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link type="text/css" href="assets/css/fontawesome.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/fontawesome.rtl.css" rel="stylesheet">
+    <link href="../lib/line-awesome/css/line-awesome.min.css" rel="stylesheet">
+    <!-- Select 2 form -->
+    <link href="../css/select2.min.css" rel="stylesheet">
+    <!-- Flatpickr -->
+    <link type="text/css" href="assets/css/flatpickr.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/flatpickr.rtl.css" rel="stylesheet">
+    <link href="https://surveyjs.azureedge.net/1.1.6/survey-creator.css" type="text/css" rel="stylesheet" />
+    <!-- App CSS -->
+    <link type="text/css" href="assets/css/app.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/app.rtl.css" rel="stylesheet">
+    <!-- Main css -->
+    <link type="text/css" href="../css/base.css" rel="stylesheet">
+    <link type="text/css" href="../css/custom-admin.css" rel="stylesheet">
+</head>
+
+<body class="fixed-layout">
+    <div class="preloader">
+        <div class="sk-double-bounce">
+            <div class="sk-child sk-double-bounce1"></div>
+            <div class="sk-child sk-double-bounce2"></div>
+        </div>
+    </div>
+    <!-- Header Layout -->
+    <div class="bg-gradient">
+        <!-- Header -->
+        <div class="header-container">
+            <div id="header" class="mdk-header m-0" data-fixed data-effects="waterfall">
+                <div class="header__content">
+                    <!-- Navbar -->
+                    <nav id="default-navbar" class="navbar navbar-expand m-0">
+                        <div class="container">
+                            <div class="menu-admin">
+                                <div class="wrapper-menu" data-toggle="collapse" href="#menu-collapse">
+                                    <div class="line-menu half end"></div>
+                                    <div class="line-menu"></div>
+                                    <div class="line-menu short end"></div>
+                                </div>
+                            </div>
+                            <a href="fixed-student-dashboard.html" class="navbar-brand">
+                                <a href="#" class="logo-akpk"><img src="../img/logo-akpk.svg" alt="logo" title="logo akpk"></a>
+                            </a>
+                            <!-- Search -->
+                            <form class="search-form d-none d-md-flex mx-2 col-lg-4">
+                                <input type="search" class="form-control" placeholder="Search for online courses, event, etc..">
+                                <button class="btn mw-auto" type="button"><i class="fas fa-search"></i></button>
+                            </form>
+                            <!-- // END Search -->
+                            <div class="flex"></div>
+                            <!-- Menu -->
+                            <ul class="nav navbar-nav flex-nowrap d-none d-lg-flex">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <span class="icon-top"><i class="la la-shopping-cart"></i></span>
+                                        <span class="badge badge-notifications point"> </span>
+                                    </a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="la la-heart-o"></i></a>
+                                </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <span class="icon-top"><i class="la la-inbox"></i></span>
+                                        <span class="badge badge-notifications point"> </span>
+                                    </a>
+                                </li>
+                                <!-- Notifications dropdown -->
+                                <li class="nav-item dropdown dropdown-notifications dropdown-menu-sm-full">
+                                    <button class="nav-link btn-flush dropdown-toggle" type="button" data-toggle="dropdown" data-dropdown-disable-document-scroll data-caret="false">
+                                        <span class="icon-top"><i class="la la-bell-o"></i></span>
+                                        <span class="badge badge-notifications point"> </span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <div data-perfect-scrollbar class="position-relative">
+                                            <div class="dropdown-header"><strong>Messages</strong></div>
+                                            <div class="list-group list-group-flush mb-0">
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action unread">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">5 minutes ago</small>
+                                                        <span class="ml-auto unread-indicator bg-primary"></span>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <img src="assets/images/people/110/woman-5.jpg" alt="people" class="avatar-img rounded-circle">
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <strong>Michelle</strong>
+                                                            <span class="text-black-70">Clients loved the new design.</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action unread">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">5 minutes ago</small>
+                                                        <span class="ml-auto unread-indicator bg-primary"></span>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <img src="assets/images/people/110/woman-5.jpg" alt="people" class="avatar-img rounded-circle">
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <strong>Michelle</strong>
+                                                            <span class="text-black-70">🔥 Superb job..</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <div class="dropdown-header"><strong>System notifications</strong></div>
+                                            <div class="list-group list-group-flush mb-0">
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action border-left-3 border-left-danger">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">3 minutes ago</small>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <span class="avatar-title rounded-circle bg-light">
+                                                                <i class="material-icons font-size-16pt text-danger">account_circle</i>
+                                                            </span>
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <span class="text-black-70">Your profile information has not been synced correctly.</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">5 hours ago</small>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <span class="avatar-title rounded-circle bg-light">
+                                                                <i class="material-icons font-size-16pt text-success">group_add</i>
+                                                            </span>
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <strong>Adrian. D</strong>
+                                                            <span class="text-black-70">Wants to join your private group.</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">1 day ago</small>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <span class="avatar-title rounded-circle bg-light">
+                                                                <i class="material-icons font-size-16pt text-warning">storage</i>
+                                                            </span>
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <span class="text-black-70">Your deploy was successful.</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- // END Notifications dropdown -->
+                            </ul>
+                            <!-- Menu -->
+                            <ul class="nav navbar-nav flex-nowrap dropdown-profile">
+                                <span class="badge badge-profile mt-2">Learner</span>
+                                <!-- User dropdown -->
+                                <li class="nav-item dropdown ml-1">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"><img src="assets/images/people/50/guy-6.jpg" alt="Avatar" class="rounded-circle rounded-color" width="40"><span class="dropdown-custom"><i class="fas fa-chevron-down"></i></span></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <div class="card__author pt-0"><a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="assets/images/people/50/guy-6.jpg" alt="image"></span>
+                                                <span class="card__name-wrap">
+                                                    <span class="card__author-name">Jones Smith</span>
+                                                    <span class="card__instructby">Learner</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-book color-secondary font-icon"></i> My Courses
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-certificate color-secondary font-icon"></i> My Certifications
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-spinner color-secondary font-icon"></i> My Progress
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-group color-secondary font-icon"></i> My Groups
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-sitemap color-secondary font-icon"></i> My Branches
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-suitcase color-secondary font-icon"></i> My Files
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-calendar color-secondary font-icon"></i> My Events
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-pie-chart color-secondary font-icon"></i> My Researches
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-file-o color-secondary font-icon"></i> My Publications
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-life-saver color-secondary font-icon"></i> Help Center
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-edit color-secondary font-icon"></i> Edit Profile
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-sign-out color-secondary font-icon"></i> Log out
+                                        </a>
+                                    </div>
+                                </li>
+                                <!-- // END User dropdown -->
+                            </ul>
+                            <!-- // END Menu -->
+                        </div>
+                    </nav>
+                    <!-- // END Navbar -->
+                </div>
+            </div>
+            <div class="collapse-wrapper collapse" id="menu-collapse">
+                <div class="navbar navbar-expand-sm d-none2">
+                    <div class="container">
+                        <div class="navbar-collapse collapse main-menu-dropdown">
+                            <ul class="nav navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User & Role Management</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown active">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Event Management</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">R&P Management</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                        <a class="dropdown-item" href="#">Menu 4</a>
+                                        <a class="dropdown-item" href="#">Menu 5</a>
+                                        <a class="dropdown-item" href="#">Menu 6</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Learning Management</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#"><i class="la la-search color-secondary font-icon"></i>Browse Courses</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-user color-secondary font-icon"></i>Instructors</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-group color-secondary font-icon"></i>Groups</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-comments-o color-secondary font-icon"></i>Discussions</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-calendar color-secondary font-icon"></i>Calendar</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Reports</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                        <a class="dropdown-item" href="#">Menu 4</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">System Settings</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Gamification</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                        <a class="dropdown-item" href="#">Menu 4</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- <button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">
+                            <span class="material-icons">menu</span>
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Header Layout Content -->
+        <!-- // END Header Layout Content -->
+        <div class="title_header">
+            <div class="title-header-container">
+                <div class="container">
+                    <!-- if have button -->
+                    <!--  <div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div> -->
+                    <div class="header-col-left">
+                        <div id="breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="#">e-Events</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <h1 class="page-title text-white">Create New Survey</h1>
+                        <div class="header-text">Create a questionnaire, conduct the survey and analyze the collected responses.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- // END Header -->
+    </div>
+    <!-- Start Content -->
+    <div class="content-container">
+        <div class="container">
+            <div class="row">
+                <!-- Start content leftbar -->
+                <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+                    <div id="page-nav" class="sidebar-left page-nav">
+                        <div data-perfect-scrollbar>
+                            <div class="sidebar-inner">
+                                <ul class="steps steps-vertical nav">
+                                    <li class="step-item complete">
+                                        <a href="#step1" class="step-link" data-toggle="tab">
+                                            <span class="step-number">1</span>
+                                            <span class="step-title">Select Survey Type</span>
+                                        </a>
+                                    </li>
+                                    <li class="step-item complete">
+                                        <a href="#step2" class="step-link" data-toggle="tab">
+                                            <span class="step-number">2</span>
+                                            <span class="step-title">Survey Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="step-item complete">
+                                        <a href="#step3" class="step-link" data-toggle="tab">
+                                            <span class="step-number">3</span>
+                                            <span class="step-title">Create Survey</span>
+                                        </a>
+                                    </li>
+                                    <li class="step-item active">
+                                        <a href="#step4" class="step-link" data-toggle="tab">
+                                            <span class="step-number">4</span>
+                                            <span class="step-title">Review & Submission</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- End Steps -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End content leftbar -->
+                <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+                    <!-- Start Tab Content -->
+                    <div class="border-form rounded-top">
+                        <div class="tab-content">
+                            <div class="tab-pane" id="step1">
+                                <form>
+                                    <div class="form-container form-container-w100">
+                                        <div class="mt-2 mb-4 pb-1">
+                                            <h4 class="color-darkblue mb-0">Select Survey Type</h4>
+                                            <h6 class="font-weight-normal">Pick your desired survey type below</h6>
+                                        </div>
+                                        <div id="selectsurveytype">
+                                            <div class="mxw-660">
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div class="box-contain">
+                                                            <div class="card text-center">
+                                                                <span>Survey Type 01</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="box-contain">
+                                                            <div class="card text-center">
+                                                                <span>Survey Type 02</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="box-contain">
+                                                            <div class="card text-center">
+                                                                <span>Survey Type 03</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="box-contain">
+                                                            <div class="card text-center">
+                                                                <span>Survey Type 04</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="box-contain">
+                                                            <div class="card text-center">
+                                                                <span>Survey Type 05</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="box-contain">
+                                                            <div class="card text-center">
+                                                                <span>Survey Type 06</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="box-contain">
+                                                            <div class="card text-center">
+                                                                <span>Survey Type 07</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="box-contain">
+                                                            <div class="card text-center">
+                                                                <span>Survey Type 08</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- End Form -->
+                                <!-- Action Button -->
+                                <div class="border-top p-3 rounded-bottom">
+                                    <a class="btn btn-default font-weight-normal mr-2" href="#">Back</a>
+                                    <a class="btn btn-secondary" href="2.invitation-details.html">Next</a>
+                                </div>
+                                <!-- End Action Button -->
+                            </div>
+                            <div class="tab-pane" id="step2">
+                                <form>
+                                    <div class="form-container">
+                                        <div class="mt-2 mb-4 pb-1">
+                                            <h4 class="color-darkblue mb-0">Survey Details</h4>
+                                            <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-lg-12">
+                                                <label>Survey Type</label>
+                                                <input class="form-control" type="text" value="Survey Type 02" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-lg-12">
+                                                <label>Survey Title <span class="text-danger">*</span></label>
+                                                <input class="form-control" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-lg-12">
+                                                <label>Targeted Group</label>
+                                                <select class="js-example-basic-multiple" name="group[]" multiple="multiple" style="width: 100%;">
+                                                    <option value="group1">Group 1</option>
+                                                    <option value="group2">Group 2</option>
+                                                    <option value="group3">Group 3</option>
+                                                    <option value="group4">Group 4</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-lg-7">
+                                                <label>Duration</label>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="dateSelect">
+                                                            <input type="text" class="form-control" placeholder="Date Start" data-input="flatpickr">
+                                                            <a class="input-button calendar" title="toggle" data-toggle>
+                                                                <i class="la la-calendar"></i>
+                                                            </a>
+                                                            <a class="input-button clear" title="clear" data-clear>
+                                                                <i class="la la-times"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="dateSelect">
+                                                            <input type="text" class="form-control" placeholder="Date End" data-input="flatpickr">
+                                                            <a class="input-button calendar" title="toggle" data-toggle>
+                                                                <i class="la la-calendar"></i>
+                                                            </a>
+                                                            <a class="input-button clear" title="clear" data-clear>
+                                                                <i class="la la-times"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-lg-12">
+                                                <label>User Requirement Login <span class="text-danger">*</span></label>
+                                                <div class="form-inline">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                                        <label class="custom-control-label mr-3" for="customCheck1">Yes</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                                        <label class="custom-control-label" for="customCheck2">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- End Form -->
+                                <!-- Action Button -->
+                                <div class="border-top p-3 rounded-bottom">
+                                    <a class="btn btn-default font-weight-normal mr-2" href="#">Back</a>
+                                    <a class="btn btn-secondary mr-2" href="#">Create a Survey</a>
+                                    <a class="btn btn-link font-weight-normal" href="#">Discard</a>
+                                </div>
+                                <!-- End Action Button -->
+                            </div>
+                            <div class="tab-pane" id="step3">
+                                <form>
+                                    <div class="form-container">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane active" id="step4">
+                                <div class="mt-2 mb-4 px-3 pt-4">
+                                    <h4 class="color-darkblue mb-0">Review &amp; Submission</h4>
+                                    <h6 class="font-weight-normal">Review your request before submitting</h6>
+                                </div>
+                                <div class="custom-tab px-3">
+                                    <ul class="nav nav-line">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" href="#surveydetails" data-toggle="tab">Survey Details</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" data-toggle="tab">Test Survey</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <form>
+                                    <div class="form-container">
+                                        <div class="sub-Title my-4">
+                                            Survey Details
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-lg-12">
+                                                <label>Survey Type</label>
+                                                <input class="form-control" type="text" value="Public Mass" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-lg-12">
+                                                <label>Survey Title</label>
+                                                <input class="form-control" type="text" value="Financial Behavior Survey" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-lg-7">
+                                                <label>Duration</label>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label class="x-small">Start Date</label>
+                                                        <input type="text" class="form-control" readonly="" value="09 Sept 2019">
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label class="x-small">End Date</label>
+                                                        <input type="text" class="form-control" readonly="" value="11 Sept 2019">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-lg-12">
+                                                <label>User Requirement Login</label>
+                                                <div class="form-inline">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck1" checked>
+                                                        <label class="custom-control-label mr-3" for="customCheck1">Yes</label>
+                                                    </div>
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Form -->
+                                    <!-- Action Button -->
+                                    <div class="border-top p-3 rounded-bottom">
+                                        <a class="btn btn-default font-weight-normal mr-2" href="#">Back</a>
+                                        <a class="btn btn-secondary" href="#">Submit Request</a>
+                                        <a class="btn font-weight-normal" href="#">Discard</a>
+                                    </div>
+                                    <!-- End Action Button -->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Wrapper -->
+    </div>
+    <!-- // END Header Layout -->
+    <!-- jQuery -->
+    <script src="assets/vendor/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="assets/vendor/popper.min.js"></script>
+    <script src="assets/vendor/bootstrap.min.js"></script>
+    <!-- Perfect Scrollbar -->
+    <script src="assets/vendor/perfect-scrollbar.min.js"></script>
+    <!-- MDK -->
+    <script src="assets/vendor/dom-factory.js"></script>
+    <script src="assets/vendor/material-design-kit.js"></script>
+    <!-- App JS -->
+    <script src="assets/js/app.js"></script>
+    <script src="../js/select2.min.js"></script>
+    <!-- Tables -->
+    <script src="assets/js/toggle-check-all.js"></script>
+    <script src="assets/js/check-selected-row.js"></script>
+    <!-- Date Flatpickr -->
+    <script src="https://surveyjs.azureedge.net/1.1.6/survey.jquery.min.js"></script>
+    <script src="assets/vendor/flatpickr/flatpickr.min.js"></script>
+    <script src="assets/js/flatpickr.js"></script>
+    <!-- Global Settings -->
+    <script src="../js/script-admin.js"></script>
+</body>
+
+</html>

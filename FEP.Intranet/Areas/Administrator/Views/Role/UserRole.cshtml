@@ -68,8 +68,8 @@
                             var action = "";
 
                             action = '<div class="icon-action">'
-                                    +   '<a href="@Url.Action("Details", "Company", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Delete", "Company", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+                                    +   '<a href="javascript:void(0)" class="btnDetail" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+                                    +   '<a href="javascript:void(0)" class="btnDelete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
                                     + '</div>';
 
                             return action;
@@ -90,6 +90,25 @@
                     info: "Showing _START_ - _END_ of _TOTAL_ user"
                 },
                 dom: 'rtip'
+            });
+
+
+            table.on('click', '.btnDelete', function () {
+
+                var data = table.row($(this).parents('tr')).data();
+
+                var userids = [];
+                userids.push(data.Id);
+
+                deleteUser(userids);
+
+            });
+
+            table.on('click', '.btnDetail', function () {
+
+                var data = table.row($(this).parents('tr')).data();
+                showUser(data.Id, data.UserType);
+
             });
 
             $('#lengthChange').val(table.page.len());
@@ -122,35 +141,79 @@
 
         });
 
+        function showUser(id, usertype) {
+
+            var url = '';
+
+            if (usertype == 0) {
+                url = '@Url.Action("_Details", "Individual", new { area = "Administrator" })/' + id;
+            }
+            else if (usertype == 1) {
+                url = '@Url.Action("_Details", "Individual", new { area = "Administrator" })/' + id;
+            }
+            else if (usertype == 2) {
+                url = '@Url.Action("_Details", "Company", new { area = "Administrator" })/' + id;
+            }
+            else if (usertype == 3) {
+                url = '@Url.Action("_Details", "Staff", new { area = "Administrator" })/' + id;
+            }
+
+            if (url != '') {
+
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    success: function (data) {
+
+                        $('#modalUser').html(data);
+                        $('.js-example-basic-multiple').select2({
+                            placeholder: 'Select an option'
+                        });
+                        $('#modalUser').children('.modal').first().modal('show');
+
+                    },
+                    error: function (xhr, status, error) {
+                        $('#modalUser').html('');
+                    }
+                });
+
+            }
+
+        }
+
+
         function showAdd(usertype) {
 
             var url = '';
 
-            if (usertype == 'individual') {
+            if (usertype == 1) {
                 url = '@Url.Action("_Add", "Individual", new { area = "Administrator" })';
             }
-            else if (usertype == 'company') {
+            else if (usertype == 2) {
                 url = '@Url.Action("_Add", "Company", new { area = "Administrator" })';
             }
-            else if (usertype == 'staff') {
+            else if (usertype == 3) {
                 url = '@Url.Action("_Add", "Staff", new { area = "Administrator" })';
             }
 
+            if (url != '') {
 
-            $.ajax({
-                type: 'get',
-                url: url,
-                success: function (data) {
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    success: function (data) {
 
-                    $('#modalAdd').html(data);
-                    initTable();
-                    $('#myModal').modal('show');
+                        $('#modalUser').html(data);
+                        initTable();
+                        debugger
+                        $('#modalUser').children('.modal').first().modal('show');
 
-                },
-                error: function (xhr, status, error) {
-                    $('#detail').html('');
-                }
-            });
+                    },
+                    error: function (xhr, status, error) {
+                        $('#modalUser').html('');
+                    }
+                });
+            }
 
         }
 
@@ -158,6 +221,28 @@
         function addUser(userids) {
 
             var form = $('#formAddUser');
+            var i = 0;
+
+            userids.forEach(function (item, index) {
+
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', '[' + i + ']')
+                        .val(item)
+                );
+
+                i++;
+
+            });
+
+            form.submit();
+
+        }
+
+        function deleteUser(userids) {
+
+            var form = $('#formDeleteUser');
             var i = 0;
 
             userids.forEach(function (item, index) {
@@ -300,9 +385,9 @@
                             <button class="btn btn-secondary" data-toggle="dropdown"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Add User</button>
                             <div class="dropdown-menu">
 
-                                <a style="margin-top:10px" class="dropdown-item" href="javascript:void(0);" onclick="showAdd('individual')">Individual</a>
-                                <a style="margin-top:10px" class="dropdown-item" href="javascript:void(0);" onclick="showAdd('company')">Agency</a>
-                                <a style="margin-top:10px" class="dropdown-item" href="javascript:void(0);" onclick="showAdd('staff')">Staff</a>
+                                <a style="margin-top:10px" class="dropdown-item" href="javascript:void(0);" onclick="showAdd(1)">Individual</a>
+                                <a style="margin-top:10px" class="dropdown-item" href="javascript:void(0);" onclick="showAdd(2)">Agency</a>
+                                <a style="margin-top:10px" class="dropdown-item" href="javascript:void(0);" onclick="showAdd(3)">Staff</a>
 
                             </div>
                         </div>
@@ -346,13 +431,15 @@
     @Html.HiddenFor(m => m.RoleId)
 }
 
-@using (Html.BeginForm("DeleteUser", "Role", new { area = "Administrator" }, FormMethod.Post, new { id = "formAddUser" }))
+@using (Html.BeginForm("DeleteUser", "Role", new { area = "Administrator" }, FormMethod.Post, new { id = "formDeleteUser" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.RoleId)
 }
 
-<div id="modalAdd"></div>
+<div id="modalUser"></div>
+
+
 
 
 

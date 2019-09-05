@@ -1,4 +1,5 @@
 ﻿using FEP.Helper;
+using FEP.Model;
 using FEP.WebApiModel.Administration;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                LogActivity("Activate Staff Account");
+                LogActivity(Modules.Admin, "Activate Staff Account", new { id = id });
 
                 TempData["SuccessMessage"] = "User account successfully activate.";
 
@@ -119,7 +120,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                LogActivity("Disable Staff Account");
+                LogActivity(Modules.Admin, "Disable Staff Account", new { id = id });
 
                 TempData["SuccessMessage"] = "User account successfully disable.";
 

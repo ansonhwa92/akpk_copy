@@ -271,7 +271,7 @@ namespace FEP.WebApi.Api.Administration
             var data = query.Skip(request.start).Take(request.length)
                 .Select(s => new UserModel
                 {
-                    Id = s.Id,
+                    Id = s.UserId,
                     Name = s.User.Name,
                     Email = s.User.Email,
                     UserType = s.User.UserType

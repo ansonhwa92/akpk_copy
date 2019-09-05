@@ -162,6 +162,6 @@ namespace FEP.Model
         [Display(Name = "Agency")]
         Company = 2,
         [Display(Name = "Staff")]
-        Staff = 3,
+        Staff = 3
     }
 }

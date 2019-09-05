@@ -14,10 +14,12 @@ using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using FEP.WebApiModel.Auth;
 using FEP.WebApiModel.Administration;
-
+using FEP.Model;
 
 namespace FEP.Intranet.Controllers
 {
+
+    [LogError(Modules.Admin)]
     public class AuthController : FEPController
     {
 
@@ -223,11 +225,12 @@ namespace FEP.Intranet.Controllers
                                 );
 
                             }
+
+                            LogActivity(Modules.Admin, "User Sign In", new { UserId = user.Id, Name = user.Name }, user.Id);
+
+                            return Redirect(GetRedirectUrl(model.ReturnUrl));
+
                         }
-
-                        //LogActivity();
-
-                        return Redirect(GetRedirectUrl(model.ReturnUrl));
 
                     }
                     else
@@ -280,7 +283,7 @@ namespace FEP.Intranet.Controllers
 
             authManager.SignOut("FEPCookie");
 
-            //LogActivity("Logout System", );
+            LogActivity(Modules.Admin, "User Sign Out");
 
             return RedirectToAction("Index", "Home", routeValues: null);
 

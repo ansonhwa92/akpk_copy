@@ -344,9 +344,8 @@
                                         <a href="#recommended" data-toggle="tab" class="nav-link">Recommended Rep. Details</a>
                                     </li>
                                 </ul>
-                                <p>&nbsp;</p>
-                                <p><a class="btn btn-secondary" href="#">Submit for Verification</a></p>
                             </div>
+                            <div><a class="btn btn-secondary" href="#">Submit for Verification</a></div>
                         </div>
                     </div>
                 </div>
@@ -355,119 +354,98 @@
                     <!-- Start Form -->
                     <div class="border-form rounded">
                         <form>
-                            <div class="action-log">
-                                <h5 class="color-darkblue mr-auto mb-0"><i class="la la-comment color-secondary"></i>&nbsp;&nbsp;Action Log</h5>
-                                <p></p>
-                                <div class="border-form rounded mg-b-10">
-                                    <p class="small text-muted">15/08/2019<span class="fl-right">02:00 pm</span></p>
-                                    <p class="small"><span class="card__author-name color-darkblue">Elizabeth Tan</span><br>CCD Approval Result<br>- Approved</p>
-                                    <p class="small"><strong>Remarks:</strong> <em>Second representative is not available on the date but please double confirm with him.</em></p>
-                                </div>
-                                <div class="border-form rounded mg-b-10">
-                                    <p class="small text-muted">12/08/2019<span class="fl-right">01:00 pm</span></p>
-                                    <p class="small"><span class="card__author-name color-darkblue">Mohd Hafiz Bin Dahari</span><br>created an event.</p>
-                                </div>
-                            </div>
                             <div class="form-container tab-content">
                                 <div class="tab-pane active" id="invitation-details">
-                                    <div class="tab-pane" id="setting1">
-                                        <div class="d-flex align-items-center mb-4 mt-2">
-                                            <h4 class="color-darkblue mr-auto mb-0">Invitation Details<br><span class="small">View event request details below.</span></h4>
-                                            <a class="btn btn-default btn-sm mw-auto" href="#"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
-                                        </div>
+                                    <div class="mb-4 mt-2 mr-auto">
+                                        <a class="btn btn-default btn-sm mw-auto float-right my-2" href="#"><span class="align-middle"><i class="la la-edit color-secondary font-icon"></i></span>Edit</a>
+                                        <h4 class="color-darkblue mb-0">Invitation Details</h4>
+                                        <h6 class="font-weight-normal">View event request details below.</h6>
                                     </div>
-                                    
                                     <div class="row">
                                         <div class="form-group col-lg-6">
                                             <label for="reference_no">Reference No</label>
-                                            <input class="form-control" type="text" placeholder="1908/009">
+                                            <input class="form-control" type="text" value="1908/009" readonly>
                                         </div>
                                         <div class="form-group col-lg-6">
                                             <label for="status">Status</label>
-                                            <input class="form-control bg-warning-ccd" type="text" placeholder="Pending for verification">
+                                            <input class="form-control bg-warning-ccd" type="text" value="Pending for acceptance" readonly>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-lg-6">
-                                            <label for="reference_no">Education Process</label>
-                                            <input class="form-control" type="text" placeholder="Self-Directed Learning">
-                                        </div>
-                                        <div class="form-group col-lg-6">
+                                        <div class="form-group col-lg-12">
                                             <label for="event_title">Event Category</label>
-                                            <input class="form-control" type="text" placeholder="Media Interview">
+                                            <input class="form-control" type="text" value="Media interview" readonly>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-lg-12">
-                                                <label for="event_title">Media Name</label>
-                                                <input class="form-control" type="text" placeholder="Global Investing Made Simple (Kuala Lumpur)">
+                                            <label for="event_title">Media Name</label>
+                                            <input class="form-control" type="text" value="Global Investing Made Simple (Kuala Lumpur)" readonly>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-lg-12">
-                                                <label for="event_title">Media Type</label>
-                                                <input class="form-control" type="text" placeholder="Newspaper">
+                                            <label for="event_title">Media Type</label>
+                                            <input class="form-control" type="text" value="Newspaper" readonly>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-lg-6">
                                             <label for="reference_no">Contact Person</label>
-                                            <input class="form-control" type="text" placeholder="Azli Azami">
+                                            <input class="form-control" type="text" value="Azli Azami" readonly>
                                         </div>
                                         <div class="form-group col-lg-6">
                                             <label for="status">Contact Number</label>
-                                            <input class="form-control" type="text" placeholder="013-1234567">
+                                            <input class="form-control" type="text" value="013-1234567" readonly>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-lg-12">
-                                                <label for="event_title">Company Address</label>
-                                                <input class="form-control" type="text" placeholder="44, Jalan Utusan">
+                                            <label for="event_title">Company Address</label>
+                                            <input class="form-control" type="text" value="44, Jalan Utusan" readonly>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-lg-12">
-                                                <input class="form-control" type="text" placeholder="Chan Sow Lin">
+                                            <input class="form-control" type="text" value="Chan Sow Lin" readonly>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col">
-                                            <input id="posscode" type="text" required="" class="form-control" placeholder="55200">
+                                            <input class="form-control" value="55200" readonly>
                                         </div>
                                         <div class="col">
-                                            <input id="city" type="text" required="" class="form-control" placeholder="Kuala Lumpur">
+                                            <input class="form-control" value="Kuala Lumpur" readonly>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-lg-12">
-                                                <input class="form-control" type="text" placeholder="Wilayah Persekutuan">
+                                            <input class="form-control" type="text" value="Wilayah Persekutuan" readonly>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-lg-12">
-                                                <label for="event_title">Email</label>
-                                                <input class="form-control" type="text" placeholder="azli@utusan.com.my">
+                                            <label for="event_title">Email</label>
+                                            <input class="form-control" type="text" value="azli@utusan.com.my" readonly>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-lg-12">
-                                                <label for="event_title">Supporting Document</label>
-                                                <div class="list-file-container readonly">
-                                                    <div id="fileList">
-                                                        <ul></ul>
-                                                        <li>supporting-document.pdf</li>
-                                                    </div>
+                                            <label for="event_title">Supporting Document</label>
+                                            <div class="list-file-container readonly">
+                                                <div id="fileList">
+                                                    <ul></ul>
+                                                    <li>supporting-document.pdf</li>
                                                 </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="tab-pane" id="interview-details">
-                                    <div class="tab-pane" id="setting1">
-                                        <div class="d-flex align-items-center mb-4 mt-2">
-                                            <h4 class="color-darkblue mr-auto mb-0">Interview Details<br><span class="small">View event request details below.</span></h4>
-                                            <a class="btn btn-default btn-sm mw-auto" href="#"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
-                                        </div>
+                                    <div class="mb-4 mt-2 mr-auto">
+                                        <a class="btn btn-default btn-sm mw-auto float-right my-2" href="#"><span class="align-middle"><i class="la la-edit color-secondary font-icon"></i></span>Edit</a>
+                                        <h4 class="color-darkblue mb-0">Interview Details</h4>
+                                        <h6 class="font-weight-normal">View event request details below.</h6>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-lg-7">
@@ -476,13 +454,13 @@
                                                 <div class="col-lg-6">
                                                     <label>Start Date</label>
                                                     <div class="dateSelect">
-                                                        <input type="text" class="form-control flatpickr-input ta-center" placeholder="09 Sept 2019" readonly="readonly">
+                                                        <input type="text" class="form-control flatpickr-input text-center" value="09 Sept 2019" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="dateSelect">
                                                         <label>End Date</label>
-                                                        <input type="text" class="form-control flatpickr-input ta-center" placeholder="10 Sept 2019" readonly="readonly">
+                                                        <input type="text" class="form-control flatpickr-input text-center" value="10 Sept 2019" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -490,33 +468,31 @@
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-lg-12">
-                                                <label for="event_title">Time</label>
-                                                <input class="form-control" type="text" placeholder="10:30 am" disabled>
+                                            <label for="event_title">Time</label>
+                                            <input class="form-control" type="text" value="10:30 am" disabled>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-3">
+                                        <div class="form-group col-lg-7">
                                             <label>Language</label>
-                                            <input type="text" class="form-control flatpickr-input ta-center" readonly="readonly" value="English">
-                                        </div>
-                                        <div class="form-group col-3">
-                                            <label>&nbsp;</label>
-                                            <input type="text" class="form-control flatpickr-input ta-center" readonly="readonly" value="Bahasa">
+                                            <div class="row">
+                                                <div class="col"><input type="text" class="form-control flatpickr-input text-center" readonly value="English"></div>
+                                                <div class="col"><input type="text" class="form-control flatpickr-input text-center" readonly value="Bahasa"></div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-lg-12">
-                                                <label for="event_title">Topic</label>
-                                                <input class="form-control" type="text" placeholder="Lorem ipsum" disabled>
+                                            <label for="event_title">Topic</label>
+                                            <input class="form-control" type="text" value="Lorem ipsum" disabled>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="recommended">
-                                    <div class="tab-pane" id="setting1">
-                                        <div class="d-flex align-items-center mb-4 mt-2">
-                                            <h4 class="color-darkblue mr-auto mb-0">Recommended Rep. Details<br><span class="small">View event request details below.</span></h4>
-                                            <a class="btn btn-default btn-sm mw-auto" href="#"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
-                                        </div>
+                                    <div class="mb-4 mt-2 mr-auto">
+                                        <a class="btn btn-default btn-sm mw-auto float-right my-2" href="#"><span class="align-middle"><i class="la la-edit color-secondary font-icon"></i></span>Edit</a>
+                                        <h4 class="color-darkblue mb-0">Recommended Rep. Details</h4>
+                                        <h6 class="font-weight-normal">View event request details below.</h6>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-lg-12">
@@ -535,7 +511,7 @@
                                                                 <span class="badge badge-success px-3 py-2">Available</span>
                                                             </div>
                                                             <div class="media-right text-center d-flex align-items-center">
-                                                                <a href="#"><i class="la la-question color-darkblue"></i></a>
+                                                                <span data-toggle="tooltip" data-placement="top" title="Unknown"><i class="fas fa-question color-darkgrey font-icon"></i></span>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -556,7 +532,7 @@
                                                                 <span class="badge badge-danger px-3 py-2">Unavailable</span>
                                                             </div>
                                                             <div class="media-right text-center d-flex align-items-center">
-                                                                <a href="#"><i class="la la-question color-darkblue"></i></a>
+                                                                <span data-toggle="tooltip" data-placement="top" title="Unknown"><i class="fas fa-question color-darkgrey font-icon"></i></span>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -565,9 +541,9 @@
                                         </div>
                                     </div>
                                     <hr>
-                                    <a class="btn btn-default btn-sm mw-auto" data-toggle="modal" data-target="#confirm-email">Send Confirmation Email</a>
+                                    <a class="btn btn-default btn-sm mw-auto mb-5" data-toggle="modal" data-target="#confirm-email">Send Confirmation Email</a>
                                 </div>
-
+                                <!-- Start popup -->
                                 <div class="modal fade" id="confirm-email" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -600,13 +576,30 @@
                                                 <h4 class="color-darkblue mt-4">Confirmation Email Sent</h4>
                                                 <p class="small">Your request has been sent.</p>
                                             </div>
+                                            <!-- Bila xde modal footer -->
+                                            <div class="modal-footer py-0">&nbsp;</div>
                                         </div>
                                     </div>
                                 </div>
-                                    
-                                    
-                              
+                                <!-- End Popup -->
                             </div>
+                            <!--  Start Action Log -->
+                            <div class="action-log">
+                                <h6 class="color-darkblue px-3"><i class="la la-comment color-secondary font-icon align-top"></i>Action Log</h6>
+                                <!-- Kalau banyak action log akan jd scroll ke bwh -->
+                                <div data-perfect-scrollbar class="position-relative">
+                                    <div class="border-form rounded mb-2">
+                                        <div class="small text-muted">15/08/2019<span class="float-right">02:00 pm</span></div>
+                                        <div class="small"><span class="card__author-name color-darkblue">Elizabeth Tan</span><br><strong>CCD Approval Result</strong><br>— Approved</div>
+                                        <div class="small mt-2"><strong>Remark:</strong> <em>Second representative is not available on the date but please double confirm with him.</em></div>
+                                    </div>
+                                    <div class="border-form rounded mb-2">
+                                        <div class="small text-muted">12/08/2019<span class="float-right">01:00 pm</span></div>
+                                        <div class="small"><span class="card__author-name color-darkblue">Mohd Hafiz Bin Dahari</span><br>created an event.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  End Action Log -->
                         </form>
                         <!-- End Form -->
                     </div>

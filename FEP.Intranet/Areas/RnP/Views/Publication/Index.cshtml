@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FEP.WebApiModel.RnP.ReturnPublicationModel>
+﻿@model FEP.WebApiModel.RnP.ReturnListPublicationModel
 
 @{
     ViewBag.Title = "Publication";
@@ -36,32 +36,43 @@
         <div class="dropdown-menu">
             <div class="filter-head">Filters</div>
             <div class="filter-body">
-                <div>Publication Type</div>
+                <!--
+    <div>@*Html.DisplayNameFor(m => m.Filters.Type)*@</div>
+        -->
+                <!--
+    <div class="sorting-wrap">
+        <div class="sorting-dropdown">
+            <select class="select2 form-control small" name="filter">
+                <option value="all">All</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        </div>
+    </div>
+    -->
+                <!--
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        <select class="select2 form-control small" name="filter">
-                            <option value="all">All</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select>
+                        @*Html.EditorFor(m => m.Filters.Type, new { htmlAttributes = new { @class = "form-control small" } })*@
                     </div>
                 </div>
-                <div>Author</div>
+                    -->
+                <div>@Html.DisplayNameFor(m => m.Filters.Author)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        <input id="Author" type="text" class="form-control form-control-rounded" name="Author">
+                        @Html.EditorFor(m => m.Filters.Author, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
-                <div>Publication Title</div>
+                <div>@Html.DisplayNameFor(m => m.Filters.Title)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        <input id="Title" type="text" class="form-control form-control-rounded" name="Title">
+                        @Html.EditorFor(m => m.Filters.Title, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
-                <div>ISBN/ISS/DOI</div>
+                <div>@Html.DisplayNameFor(m => m.Filters.ISBN)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        <input id="ISBN" type="text" class="form-control form-control-rounded" name="ISBN">
+                        @Html.EditorFor(m => m.Filters.ISBN, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
                 <div>
@@ -75,18 +86,18 @@
     <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
         <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
         <div class="input-group-append">
-            <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+            <button id="quickSearchBtn" class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
         </div>
     </div>
-    <div class="sorting-wrap">
-        <div class="sorting-dropdown">
-            <select class="select2 form-control small" name="sorting">
-                <option value="Default Sorting">Default Sorting</option>
-                <option value="sorting 1">Sorting 1</option>
-                <option value="sorting 2">Sorting 2</option>
-            </select>
-        </div>
-    </div>
+    @*<div class="sorting-wrap">
+            <div class="sorting-dropdown">
+                <select class="select2 form-control small" name="sorting">
+                    <option value="Default Sorting">Default Sorting</option>
+                    <option value="sorting 1">Sorting 1</option>
+                    <option value="sorting 2">Sorting 2</option>
+                </select>
+            </div>
+        </div>*@
 </div>
 <hr>
 <div class="table-responsive" data-toggle="lists">
@@ -102,136 +113,30 @@
                 </select>
             </span>
         </div>
-        <div class="showing-result px-3 py-2 mr-auto">Showing 1 - 6 of 2000 publications</div>
-        <div><a href="~/RnP/Publication/Create" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Publication</a></div>
+        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+        <div><a href="@Url.Action("SelectCategory", "Publication", new { area = "RnP" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Publication</a></div>
     </div>
     <!-- Table -->
-    <table class="table tableStyle1 mb-4">
+    <table class="table tableStyle1 tabledata">
         <thead>
             <tr>
-                <!--
-                <th>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#table01" id="customCheckAll">
-                        <label class="custom-control-label" for="customCheckAll">
-                            <span class="text-hide">Toggle all</span>
-                        </label>
-                    </div>
-                </th>
-                -->
-                <th>No</th>
-                <th>@Html.DisplayNameFor(model => model.Category)</th>
-                <th>@Html.DisplayNameFor(model => model.Author)</th>
-                <th>@Html.DisplayNameFor(model => model.Title)</th>
-                <th>@Html.DisplayNameFor(model => model.Year)</th>
-                <th>@Html.DisplayNameFor(model => model.ISBN)</th>
-                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.Pubs.Category)</th>
+                <th>@Html.DisplayNameFor(model => model.Pubs.Author)</th>
+                <th>@Html.DisplayNameFor(model => model.Pubs.Title)</th>
+                <!--<th>@*Html.DisplayNameFor(model => model.Pubs.Year)*@</th>-->
+                <th>@Html.DisplayNameFor(model => model.Pubs.ISBN)</th>
+                <th>@Html.DisplayNameFor(model => model.Pubs.Status)</th>
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody class="list" id="table01">
-            @{ var icount = 0; }
-            @foreach (var item in Model)
-            {
-                icount++;
-                <tr>
-                    <!--
-                    <td>
-                        <div class="custom-control custom-checkbox">
-                            <input id="customCheck1" type="checkbox" class="custom-control-input js-check-selected-row">
-                            <label class="custom-control-label" for="customCheck1">
-                                <span class="text-hide">Check</span>
-                            </label>
-                        </div>
-                    </td>
-                    -->
-                    <td>@icount</td>
-                    <td>@Html.DisplayFor(modelItem => item.Category)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Author)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Year)</td>
-                    <td>@Html.DisplayFor(modelItem => item.ISBN)</td>
-                    <td>
-                        @if (item.WStatus == FEP.Model.PublicationWithdrawalStatus.None)
-                        {
-                            @Html.DisplayFor(modelItem => item.Status)
-                        }
-                        else if (item.WStatus == FEP.Model.PublicationWithdrawalStatus.Submitted)
-                        {
-                            @Html.Display("Withdrawal Submitted")
-                        }
-                        else if (item.WStatus == FEP.Model.PublicationWithdrawalStatus.Withdrawn)
-                        {
-                            @Html.Display("Withdrawn")
-                        }
-                    </td>
-                    @if (item.Status == FEP.Model.PublicationStatus.New)
-                    {
-                        <td>
-                            <div class="icon-action">
-                                <!--<a href="#" data-toggle="tooltip" data-placement="top" title="Search"><i class="la la-search text-muted"></i></a>-->
-                                <a href="@Url.Action("Edit", "Publication", new { area = "RnP", @id = item.ID })" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
-                                <a href="@Url.Action("Details", "Publication", new { area = "RnP", @id = item.ID })" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
-                                <a href="@Url.Action("Delete", "Publication", new { area = "RnP", @id = item.ID })" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></a>
-                            </div>
-                        </td>
-                    }
-                    else
-                    {
-                        <td>
-                            <div class="icon-action">
-                                <a href="@Url.Action("Details", "Publication", new { area = "RnP", @id = item.ID })" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
-                            </div>
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
     </table>
-    <!-- Pagination -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination pagination-sm float-right">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true" class="material-icons">chevron_left</span>
-                </a>
-            </li>
-            <li class="page-item active">
-                <a class="page-link" href="#" aria-label="1">
-                    <span>1</span>
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="2">
-                    <span>2</span>
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="3">
-                    <span>3</span>
-                </a>
-            </li>
-            <li class="page-iteme">
-                <a class="page-link" href="#" aria-label="4">
-                    <span>4</span>
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true" class="material-icons">chevron_right</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <div class="showing-result py-2">Showing 1 - 6 of 2000 publications</div>
 </div>
 
 @section ContentScript{
 
     <script type="text/javascript">
-
         $(document).ready(function () {
-
             var table = $('.tabledata').DataTable({
                 serverSide: true,
                 processing: true,
@@ -239,30 +144,21 @@
                     "type": "post",
                     "url": '@(WebApiURL)RnP/Publication/GetAll',
                     "data": function (filter) {
-                        filter.Type = $('#Filter_Type').val();
-                        filter.Author = $('#Filter_Author').val();
-                        filter.Title = $('#Filter_Title').val();
-                        filter.ISBN = $('#Filter_ISBN').val();
+                        //filter.Type = $('#Filters_Type').val();
+                        filter.Author = $('#Filters_Author').val();
+                        filter.Title = $('#Filters_Title').val();
+                        filter.ISBN = $('#Filters_ISBN').val();
+                    },
+                    dataFilter: function (res) {
+                        // do what you need to the data before it loads to the table
+                        // for debugging only for now
+                        return res;
+                    },
+                    error: function (x, y) {
+                        console.log(x);
                     }
                 },
                 columns: [
-                    //{
-                    //    sortable: false,
-                    //    render: function () {
-
-                    //        var action = "";
-
-                    //        action = '<div class="custom-control custom-checkbox">'
-                    //                    +'<input id="customCheck1_2" type="checkbox" class="custom-control-input js-check-selected-row">'
-                    //                    +'<label class="custom-control-label" for="customCheck1_2">'
-                    //                     +   '<span class="text-hide">Check</span>'
-                    //                    +'</label>'
-                    //                +'</div>';
-
-                    //        return action;
-                    //    }
-
-                    //},
                     {
                         sortable: false,
                         render: function (data, type, row, meta) {
@@ -270,33 +166,107 @@
                         }
                     },
                     {
-                        data: 'Name',
+                        data: 'Category',
                         sortable: true
                     },
                     {
-                        data: 'ICNo',
+                        data: 'Author',
                         sortable: true
                     },
                     {
-                        data: 'Email',
+                        data: 'Title',
+                        sortable: true
+                    },
+                    /*
+                    {
+                        data: 'Year',
+                        sortable: true
+                    },
+                    */
+                    {
+                        data: 'ISBN',
                         sortable: true
                     },
                     {
-                        data: 'MobileNo',
-                        sortable: true
+                        data: 'Status',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+                            if (row.Status == 0) {
+                                return "<span class='color-grey font-weight-bold'>Draft</span>";
+                            }
+                            else if (row.Status == 1) {
+                                return "<span class='color-yellow font-weight-bold'>Pending Verification</span>";
+                            }
+                            else if (row.Status == 2) {
+                                return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
+                            }
+                            else if (row.Status == 3) {
+                                return "<span class='color-yellow font-weight-bold'>Pending Approval</span>";
+                            }
+                            else if (row.Status == 4) {
+                                return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
+                            }
+                            else if (row.Status == 5) {
+                                return "<span class='color-green font-weight-bold'>Approved</span>";
+                            }
+                            else if (row.Status == 6) {
+                                return "<span class='color-green font-weight-bold'>Published</span>";
+                            }
+                            else if (row.Status == 7) {
+                                return "<span class='color-grey font-weight-bold'>Unpublished</span>";
+                            }
+                            else if (row.Status == 8) {
+                                return "<span class='color-grey font-weight-bold'>Cancelled</span>";
+                            }
+                            else if (row.Status == 9) {
+                                return "<span class='color-grey font-weight-bold'>Draft Withdrawal</span>";
+                            }
+                            else if (row.Status == 10) {
+                                return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Verification</span>";
+                            }
+                            else if (row.Status == 11) {
+                                return "<span class='color-red font-weight-bold'>Withdrawal Pending Amendment</span>";
+                            }
+                            else if (row.Status == 12) {
+                                return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Approval</span>";
+                            }
+                            else if (row.Status == 13) {
+                                return "<span class='color-red font-weight-bold'>Withdrawal Pending Amendment</span>";
+                            }
+                            else if (row.Status == 14) {
+                                return "<span class='color-green font-weight-bold'>Withdrawal Approved</span>";
+                            }
+                            else if (row.Status == 15) {
+                                return "<span class='color-green font-weight-bold'>Withdrawn</span>";
+                            }
+                            else if (row.Status == 16) {
+                                return "<span class='color-grey font-weight-bold'>Withdrawal Cancelled</span>";
+                            }
+                        }
                     },
                     {
                         sortable: false,
-                        render: function () {
+                        render: function (data, type, row, meta) {
 
                             var action = "";
 
-                            action = '<div class="icon-action">'
-                                    +   '<a href="#" data-toggle="tooltip" data-placement="top" title="Search"><i class="la la-search text-muted"></i></a>'
-                                    +   '<a href="#" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                                    +   '<a href="#" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-                                    +   '<a href="#" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+                            if (row.Status == 0) {
+                                action = '<div class="icon-action">'
+                                    + '<a href="@Url.Action("Details", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;'
+                                    + '<a href="@Url.Action("Edit", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+                                    + '<a href="@Url.Action("Delete", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
                                     + '</div>';
+                            }
+                            else if (row.Status == 1) {
+                                action = '<div class="icon-action">'
+                                    + '<a href="@Url.Action("Evaluate", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>'
+                                    + '</div>';
+                            }
+                            else {
+                                action = '<div class="icon-action">'
+                                    + '<a href="@Url.Action("Details", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+                                    + '</div>';
+                            }
 
                             return action;
                         }
@@ -309,22 +279,26 @@
                 orderMulti: false,
                 info: true,
                 autoWidth: false,
-                order: [[2, 'desc']],
+                order: [[1, 'asc']],
                 language: {
                     processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
                     emptyTable: "No Record Found",
-                    info: "Showing _START_ - _END_ of _TOTAL_ user"
+                    info: "Showing _START_ - _END_ of _TOTAL_ publications"
                 },
-                dom: 'tip'
+                dom: 'rtip'
             });
 
             $('#lengthChange').val(table.page.len());
 
-            $('#quickSearch').keyup( function () {
+            $('#quickSearch').keyup(function () {
                 table.search($(this).val()).draw();
             });
 
-            $('#lengthChange').change( function() {
+            $('#quickSearchBtn').click(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change(function () {
                 table.page.len($(this).val()).draw();
             });
 
@@ -334,9 +308,9 @@
 
             table.on('order.dt search.dt', function () {
                 var info = table.page.info();
-                $('#pageInfo').html('Showing ' + (info.start+1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' user') ;
+                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' publications');
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
             }).draw();
-
 
         });
 

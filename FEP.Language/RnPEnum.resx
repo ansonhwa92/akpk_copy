@@ -154,7 +154,7 @@
     <value>Approved</value>
   </data>
   <data name="SurveyApprovalStatusNone" xml:space="preserve">
-    <value>Not Reviewed</value>
+    <value>Please select Status</value>
   </data>
   <data name="SurveyApprovalStatusRejected" xml:space="preserve">
     <value>Rejected</value>
@@ -178,25 +178,25 @@
     <value>Approved</value>
   </data>
   <data name="SurveyStatusNew" xml:space="preserve">
-    <value>New</value>
+    <value>Draft</value>
   </data>
   <data name="SurveyStatusPublished" xml:space="preserve">
     <value>Published</value>
   </data>
   <data name="SurveyStatusSubmitted" xml:space="preserve">
-    <value>Submitted for Approval</value>
+    <value>Pending Verification</value>
   </data>
   <data name="SurveyStatusTrashed" xml:space="preserve">
-    <value>Deleted</value>
+    <value>Cancelled</value>
   </data>
   <data name="SurveyStatusUnpublished" xml:space="preserve">
     <value>Unpublished</value>
   </data>
   <data name="SurveyTypePublic" xml:space="preserve">
-    <value>Public Survey</value>
+    <value>Public Mass</value>
   </data>
   <data name="SurveyTypeTargeted" xml:space="preserve">
-    <value>Targeted Survey</value>
+    <value>Targeted Groups</value>
   </data>
   <data name="PubApprovalLevelApprover1" xml:space="preserve">
     <value>Approver 1 (HoD)</value>
@@ -214,7 +214,7 @@
     <value>Approved</value>
   </data>
   <data name="PubApprovalStatusNone" xml:space="preserve">
-    <value>Not Reviewed</value>
+    <value>Please select Status</value>
   </data>
   <data name="PubApprovalStatusRejected" xml:space="preserve">
     <value>Rejected</value>
@@ -241,24 +241,75 @@
     <value>Incomplete</value>
   </data>
   <data name="PubStatusNew" xml:space="preserve">
-    <value>New</value>
+    <value>Draft</value>
   </data>
   <data name="PubStatusPublished" xml:space="preserve">
     <value>Published</value>
   </data>
   <data name="PubStatusSubmitted" xml:space="preserve">
-    <value>Submitted for Approval</value>
+    <value>Pending Verification</value>
   </data>
   <data name="PubStatusTrashed" xml:space="preserve">
-    <value>Deleted</value>
+    <value>Cancelled</value>
   </data>
   <data name="PubWithdrawalStatusNone" xml:space="preserve">
-    <value>N/A</value>
+    <value>Please select Status</value>
   </data>
   <data name="PubWithdrawalStatusSubmitted" xml:space="preserve">
     <value>Submitted for Approval</value>
   </data>
   <data name="PubWithdrawalStatusWithdrawn" xml:space="preserve">
     <value>Wiithdrawn</value>
+  </data>
+  <data name="PubStatusApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="PubStatusVerifierRejected" xml:space="preserve">
+    <value>Pending Amendment</value>
+  </data>
+  <data name="PubWithdrawalStatusRejected" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
+  <data name="PubStatusApproverRejected" xml:space="preserve">
+    <value>Pending Amendment</value>
+  </data>
+  <data name="PubStatusUnpublished" xml:space="preserve">
+    <value>Unpublished</value>
+  </data>
+  <data name="PubStatusVerified" xml:space="preserve">
+    <value>Pending Approval</value>
+  </data>
+  <data name="PubStatusWithdrawalApproved" xml:space="preserve">
+    <value>Withdrawal Approved</value>
+  </data>
+  <data name="PubStatusWithdrawalApproverRejected" xml:space="preserve">
+    <value>Withdrawal Pending Amendment</value>
+  </data>
+  <data name="PubStatusWithdrawalComplete" xml:space="preserve">
+    <value>Withdrawn</value>
+  </data>
+  <data name="PubStatusWithdrawalNew" xml:space="preserve">
+    <value>Withdrawal Request</value>
+  </data>
+  <data name="PubStatusWithdrawalSubmitted" xml:space="preserve">
+    <value>Withdrawal Pending Verification</value>
+  </data>
+  <data name="PubStatusWithdrawalTrashed" xml:space="preserve">
+    <value>Withdrawal Cancelled</value>
+  </data>
+  <data name="PubStatusWithdrawalVerified" xml:space="preserve">
+    <value>Withdrawal Pending Approval</value>
+  </data>
+  <data name="PubStatusWithdrawalVerifierRejected" xml:space="preserve">
+    <value>Withdrawal Pending Amendment</value>
+  </data>
+  <data name="SurveyStatusApproverRejected" xml:space="preserve">
+    <value>Pending Amendment</value>
+  </data>
+  <data name="SurveyStatusVerified" xml:space="preserve">
+    <value>Pending Approval</value>
+  </data>
+  <data name="SurveyStatusVerifierRejected" xml:space="preserve">
+    <value>Pending Amendment</value>
   </data>
 </root>

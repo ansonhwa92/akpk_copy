@@ -15,6 +15,10 @@
     position: relative;
 }
 
+[dir=ltr] .title-header-container .mt-5 {
+    margin-top: 2rem !important;
+}
+
 [dir=ltr] .header-container {
     transition: all 0.4s ease-in 0s;
 }
@@ -89,12 +93,6 @@
     transition: all 0.2s ease-out 0s;
 }
 
-[dir="ltr"] .collapse-wrapper.show .navbar:before {
-    display: none;
-    transition: opacity 1s ease-out;
-    opacity: 0;
-}
-
 [dir="ltr"] .header__content {
     position: relative;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -112,17 +110,6 @@
     bottom: 0;
     width: 100%;
     transform: translateX(66px);
-}
-
-[dir="ltr"] .collapse-wrapper .navbar:before {
-    content: "";
-    position: absolute;
-    border-top: 1px solid;
-    border-color: rgba(255, 255, 255, 0.2);
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 5.3%;
 }
 
 [dir=ltr] .mdk-header {
@@ -197,6 +184,7 @@
 [dir="ltr"] .main-menu-dropdown .dropdown-toggle::after {
     margin-left: .4rem;
     font-size: 10px;
+    margin-top: .2rem;
 }
 
 [dir="ltr"] .main-menu-dropdown .dropdown-item+.dropdown-item {
@@ -208,6 +196,10 @@
 }
 
 [dir="ltr"] .main-menu-dropdown .dropdown.active a.nav-link {
+    color: #fff;
+}
+
+[dir="ltr"] .main-menu-dropdown .nav-item.show a.nav-link {
     color: #fff;
 }
 
@@ -325,7 +317,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 /*[dir="ltr"] .btn {
-	padding: .6rem 2rem;
+    padding: .6rem 2rem;
 }*/
 
 [dir="ltr"] .content-container hr {
@@ -352,13 +344,13 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 [dir="ltr"] .tableStyle1 th {
-    font-size: 0.875rem;
+    font-size: 0.825rem;
     color: #333;
     border-top: 0;
 }
 
 [dir="ltr"] .tableStyle1 td {
-    font-size: 0.875rem;
+    font-size: 0.825rem;
     color: #333;
     font-weight: 300;
     border-top: 0;
@@ -440,6 +432,10 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 [dir=ltr] .icon-action .btn {
     min-height: 39px;
+}
+
+[dir="ltr"] .tab-pane .tableStyle1 {
+    margin-top: 0;
 }
 
 
@@ -607,16 +603,35 @@ body.mobile-nav-active #mobile-nav-toggle {
     margin-bottom: 0;
 }
 
+[dir=ltr] .page-section {
+    margin-bottom: 2rem;
+}
+
+[dir=ltr] .page-section .x-small {
+    font-size: 0.875rem !important;
+}
+
 
 /*--------------------------------------------------------------
 # Media Interview
 --------------------------------------------------------------*/
+[dir=ltr] .box-contain {
+    position: relative;
+}
+
 [dir=ltr] .box-contain a {
     position: absolute;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
+    z-index: 1;
+}
+
+[dir=ltr] .box-contain a:hover ~ .card {
+    transform: translateY(-5px) translateZ(0);
+    box-shadow: 0px 0px 20px rgba(171, 190, 209, 0.6);
+    border: 2px solid #0067e0;
 }
 
 [dir=ltr] .box-contain .card {
@@ -627,6 +642,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     -ms-transition: all 0.2s linear 0s;
     -o-transition: all 0.2s linear 0s;
     transition: all 0.2s linear 0s;
+    border: 2px solid #d6dde5;
 }
 
 [dir=ltr] .box-contain .card:hover {
@@ -636,7 +652,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 [dir=ltr] .box-contain .card.active {
-	border: 2px solid #0067e0;
+    border: 2px solid #0067e0;
 }
 
 .select-multiple~.select2-container--custom-selection {
@@ -644,7 +660,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     margin: 1rem 0;
 }
 
-.select-multiple ~ .select2-container--custom-selection .select2-selection--multiple {
+.select-multiple~.select2-container--custom-selection .select2-selection--multiple {
     background: #f1f6fa;
     border: 0;
 }
@@ -653,19 +669,39 @@ body.mobile-nav-active #mobile-nav-toggle {
     display: none;
 }
 
-.select-multiple ~ .select2-container--default .select2-selection--multiple .select2-selection__choice {
-	width: 100%;
-	background: transparent;
-	border: 0;
-	padding: 0;
+.select-multiple~.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    padding: 0;
 }
 
-.select-multiple ~ .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-	position: absolute;
-	right: .75rem;
-	font-size: 1.3rem;
-	font-weight: normal;
-	color: #666 !important;
-	z-index: 1;
-	padding: .3rem;
+.select-multiple~.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    position: absolute;
+    right: .75rem;
+    font-size: 1.3rem;
+    font-weight: normal;
+    color: #666 !important;
+    z-index: 1;
+    padding: .3rem;
+}
+
+/*--------------------------------------------------------------
+# Text Editor
+--------------------------------------------------------------*/
+.ql-container {
+    height: calc(100% - 42px);
+    /* 100% - height of 'ql-toolbar' */
+}
+
+.ql-toolbar.ql-snow {
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    border: 1px solid #c0ccdb;
+}
+
+.ql-container.ql-snow {
+    border: 1px solid #c0ccdb;
+    border-bottom-left-radius: .25rem;
+    border-bottom-right-radius: .25rem;
 }

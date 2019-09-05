@@ -106,7 +106,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not Reviewed.
+        ///   Looks up a localized string similar to Please select Status.
         /// </summary>
         public static string PubApprovalStatusNone {
             get {
@@ -250,7 +250,25 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New.
+        ///   Looks up a localized string similar to Approved.
+        /// </summary>
+        public static string PubStatusApproved {
+            get {
+                return ResourceManager.GetString("PubStatusApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Amendment.
+        /// </summary>
+        public static string PubStatusApproverRejected {
+            get {
+                return ResourceManager.GetString("PubStatusApproverRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Draft.
         /// </summary>
         public static string PubStatusNew {
             get {
@@ -268,7 +286,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Submitted for Approval.
+        ///   Looks up a localized string similar to Pending Verification.
         /// </summary>
         public static string PubStatusSubmitted {
             get {
@@ -277,7 +295,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleted.
+        ///   Looks up a localized string similar to Cancelled.
         /// </summary>
         public static string PubStatusTrashed {
             get {
@@ -286,11 +304,119 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to N/A.
+        ///   Looks up a localized string similar to Unpublished.
+        /// </summary>
+        public static string PubStatusUnpublished {
+            get {
+                return ResourceManager.GetString("PubStatusUnpublished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Approval.
+        /// </summary>
+        public static string PubStatusVerified {
+            get {
+                return ResourceManager.GetString("PubStatusVerified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Amendment.
+        /// </summary>
+        public static string PubStatusVerifierRejected {
+            get {
+                return ResourceManager.GetString("PubStatusVerifierRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdrawal Approved.
+        /// </summary>
+        public static string PubStatusWithdrawalApproved {
+            get {
+                return ResourceManager.GetString("PubStatusWithdrawalApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdrawal Pending Amendment.
+        /// </summary>
+        public static string PubStatusWithdrawalApproverRejected {
+            get {
+                return ResourceManager.GetString("PubStatusWithdrawalApproverRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdrawn.
+        /// </summary>
+        public static string PubStatusWithdrawalComplete {
+            get {
+                return ResourceManager.GetString("PubStatusWithdrawalComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdrawal Request.
+        /// </summary>
+        public static string PubStatusWithdrawalNew {
+            get {
+                return ResourceManager.GetString("PubStatusWithdrawalNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdrawal Pending Verification.
+        /// </summary>
+        public static string PubStatusWithdrawalSubmitted {
+            get {
+                return ResourceManager.GetString("PubStatusWithdrawalSubmitted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdrawal Cancelled.
+        /// </summary>
+        public static string PubStatusWithdrawalTrashed {
+            get {
+                return ResourceManager.GetString("PubStatusWithdrawalTrashed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdrawal Pending Approval.
+        /// </summary>
+        public static string PubStatusWithdrawalVerified {
+            get {
+                return ResourceManager.GetString("PubStatusWithdrawalVerified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdrawal Pending Amendment.
+        /// </summary>
+        public static string PubStatusWithdrawalVerifierRejected {
+            get {
+                return ResourceManager.GetString("PubStatusWithdrawalVerifierRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select Status.
         /// </summary>
         public static string PubWithdrawalStatusNone {
             get {
                 return ResourceManager.GetString("PubWithdrawalStatusNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejected.
+        /// </summary>
+        public static string PubWithdrawalStatusRejected {
+            get {
+                return ResourceManager.GetString("PubWithdrawalStatusRejected", resourceCulture);
             }
         }
         
@@ -358,7 +484,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not Reviewed.
+        ///   Looks up a localized string similar to Please select Status.
         /// </summary>
         public static string SurveyApprovalStatusNone {
             get {
@@ -430,7 +556,16 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New.
+        ///   Looks up a localized string similar to Pending Amendment.
+        /// </summary>
+        public static string SurveyStatusApproverRejected {
+            get {
+                return ResourceManager.GetString("SurveyStatusApproverRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Draft.
         /// </summary>
         public static string SurveyStatusNew {
             get {
@@ -448,7 +583,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Submitted for Approval.
+        ///   Looks up a localized string similar to Pending Verification.
         /// </summary>
         public static string SurveyStatusSubmitted {
             get {
@@ -457,7 +592,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleted.
+        ///   Looks up a localized string similar to Cancelled.
         /// </summary>
         public static string SurveyStatusTrashed {
             get {
@@ -475,7 +610,25 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Public Survey.
+        ///   Looks up a localized string similar to Pending Approval.
+        /// </summary>
+        public static string SurveyStatusVerified {
+            get {
+                return ResourceManager.GetString("SurveyStatusVerified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Amendment.
+        /// </summary>
+        public static string SurveyStatusVerifierRejected {
+            get {
+                return ResourceManager.GetString("SurveyStatusVerifierRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Public Mass.
         /// </summary>
         public static string SurveyTypePublic {
             get {
@@ -484,7 +637,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Targeted Survey.
+        ///   Looks up a localized string similar to Targeted Groups.
         /// </summary>
         public static string SurveyTypeTargeted {
             get {

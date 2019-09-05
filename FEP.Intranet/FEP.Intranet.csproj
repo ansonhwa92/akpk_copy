@@ -610,7 +610,7 @@
     <Content Include="Areas\RnP\Views\web.config" />
     <Content Include="Areas\RnP\Views\_ViewStart.cshtml" />
     <Content Include="Areas\RnP\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\RnP\Views\Publication\Index.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Index_ori.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\Create.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\Details.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\Edit.cshtml" />
@@ -648,7 +648,13 @@
     <Content Include="Areas\Administrator\Views\Company\ResetPassword.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Edit.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Delete.cshtml" />
-    <Content Include="Areas\RnP\Views\Publication\Index_datatable.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Index.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\Build.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Eval_old.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\SelectCategory.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Review.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Evaluate.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\SelectType.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1072,6 +1078,7 @@
     <Content Include="Views\Home\ChangePassword.cshtml" />
     <Content Include="Views\Auth\ResetPassword.cshtml" />
     <Content Include="Views\Auth\SetPassword.cshtml" />
+    <Content Include="Views\Shared\_LayoutSurveyBuilder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

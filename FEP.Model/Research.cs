@@ -14,22 +14,32 @@ namespace FEP.Model
     {
         [Key]
         public int ID { get; set; }
+        // survey info.......................................................................................................
         public SurveyType? Type { get; set; }
-        public SurveyCategory Category { get; set; }
+        public SurveyCategory Category { get; set; }        // auto based on situation
         public string Title { get; set; }
         public string Description { get; set; }
         public string TargetGroup { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Contents { get; set; }
-        public string Template { get; set; }
+        public string TemplateName { get; set; }
+        public string TemplateDescription { get; set; }
         public bool Active { get; set; }
         public string Pictures { get; set; }
-        public string ProofOfApproval { get; set; }         // uploaded proof of approval
-        // non-key in data
+        public string ProofOfApproval { get; set; }
+        public string CancelRemark { get; set; }
+        // aut-filled in data................................................................................................
         public DateTime DateAdded { get; set; }
+        public int CreatorId { get; set; }
+        public string RefNo { get; set; }
         public SurveyStatus Status { get; set; }
-        // nav
+        public DateTime? DateCancelled { get; set; }
+        public int InviteCount { get; set; }
+        public int SubmitCount { get; set; }
+        // DMS integration (TODO)............................................................................................
+        public string DmsPath { get; set; }
+        // sub-tables
         public virtual ICollection<SurveyApproval> Approvals { get; set; }
     }
 
@@ -45,7 +55,7 @@ namespace FEP.Model
         public DateTime ApprovalDate { get; set; }
         public string Remarks { get; set; }
         public bool RequireNext { get; set; }
-
+        // foreign keys......................................................................................................
         [ForeignKey("SurveyID")]
         public virtual Survey Survey { get; set; }
     }
@@ -60,7 +70,7 @@ namespace FEP.Model
         public int UserId { get; set; }     // if 0/Null = anonymous/public respondent
         public DateTime ResponseDate { get; set; }
         public string Contents { get; set; }
-
+        // foreign keys......................................................................................................
         [ForeignKey("SurveyID")]
         public virtual Survey Survey { get; set; }
     }
@@ -85,17 +95,23 @@ namespace FEP.Model
 
     public enum SurveyStatus
     {
-        [Display(Name = "SurveyStatusNew", ResourceType = typeof(Language.RnPEnum))]
+        [Display(Name = "SurveyStatusNew", ResourceType = typeof(Language.RnPEnum))]                        // draft
         New,
-        [Display(Name = "SurveyStatusSubmitted", ResourceType = typeof(Language.RnPEnum))]
+        [Display(Name = "SurveyStatusSubmitted", ResourceType = typeof(Language.RnPEnum))]                  // pending verification
         Submitted,
-        [Display(Name = "SurveyStatusApproved", ResourceType = typeof(Language.RnPEnum))]
+        [Display(Name = "SurveyStatusVerifierRejected", ResourceType = typeof(Language.RnPEnum))]           // pending amendment
+        VerifierRejected,
+        [Display(Name = "SurveyStatusVerified", ResourceType = typeof(Language.RnPEnum))]                   // pending approval
+        Verified,
+        [Display(Name = "SurveyStatusApproverRejected", ResourceType = typeof(Language.RnPEnum))]           // pending amendment
+        ApproverRejected,
+        [Display(Name = "SurveyStatusApproved", ResourceType = typeof(Language.RnPEnum))]                   // approved
         Approved,
-        [Display(Name = "SurveyStatusPublished", ResourceType = typeof(Language.RnPEnum))]
+        [Display(Name = "SurveyStatusPublished", ResourceType = typeof(Language.RnPEnum))]                  // published
         Published,
-        [Display(Name = "SurveyStatusUnpublished", ResourceType = typeof(Language.RnPEnum))]
+        [Display(Name = "SurveyStatusUnpublished", ResourceType = typeof(Language.RnPEnum))]                // unpublished
         Unpublished,
-        [Display(Name = "SurveyStatusTrashed", ResourceType = typeof(Language.RnPEnum))]
+        [Display(Name = "SurveyStatusTrashed", ResourceType = typeof(Language.RnPEnum))]                    // cancelled
         Trashed
     }
 

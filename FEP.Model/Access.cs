@@ -88,7 +88,10 @@ namespace FEP.Model
         AdminCompanyMenu = 4003,
         [Display(Name = "Staff Menu")]
         AdminStaffMenu = 4004,
-        
+        [Display(Name = "Individual List")]
+        AdminIndividualList = 4005,
+        [Display(Name = "Individual Edit")]
+        AdminIndividualEdit = 4006,
 
 
 

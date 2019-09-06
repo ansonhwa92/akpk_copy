@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FEP.WebApiModel.Setting
 {
-    public class ConfigurationAccountModel
+    public class AccountSettingModel
     {
         [Display(Name = "FieldIsPasswordExpiry", ResourceType = typeof(Language.AccountSetting))]
         public bool IsPasswordExpiry { get; set; }
@@ -20,9 +20,6 @@ namespace FEP.WebApiModel.Setting
 
         [Display(Name = "FieldLoginAttemptLimit", ResourceType = typeof(Language.AccountSetting))]
         public int? LoginAttemptLimit { get; set; }
-
-        [Display(Name = "FieldInactiveDuration", ResourceType = typeof(Language.AccountSetting))]
-        public int InactiveDuration { get; set; }
 
         [Display(Name = "FieldIsContainLowerCase", ResourceType = typeof(Language.AccountSetting))]
         public bool IsContainLowerCase { get; set; }
@@ -40,7 +37,7 @@ namespace FEP.WebApiModel.Setting
         public bool IsLengthLimit { get; set; }
     }
 
-    public class EditConfigurationAccountModel
+    public class EditAccountSettingModel
     {
         public int Id { get; set; }
 
@@ -57,10 +54,6 @@ namespace FEP.WebApiModel.Setting
         [RegularExpression("([1-9][0-9]*)", ErrorMessageResourceName = "ValidNumericLoginAttemptLimit", ErrorMessageResourceType = typeof(Language.AccountSetting))]
         [Display(Name = "FieldLoginAttemptLimit", ResourceType = typeof(Language.AccountSetting))]
         public int? LoginAttemptLimit { get; set; }
-
-        [RegularExpression("([1-9][0-9]*)", ErrorMessageResourceName = "ValidNumericInactiveDuration", ErrorMessageResourceType = typeof(Language.AccountSetting))]
-        [Display(Name = "FieldInactiveDuration", ResourceType = typeof(Language.AccountSetting))]
-        public int InactiveDuration { get; set; }
 
         [Display(Name = "FieldIsContainLowerCase", ResourceType = typeof(Language.AccountSetting))]
         public bool IsContainLowerCase { get; set; }

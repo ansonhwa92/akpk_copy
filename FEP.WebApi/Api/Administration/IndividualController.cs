@@ -179,14 +179,16 @@ namespace FEP.WebApi.Api.Administration
         public IHttpActionResult Post([FromBody] CreateIndividualModel model)
         {
 
-            var password = Authentication.RandomString(10, true);
+            //var password = Authentication.RandomString(10, true);
+
+            var password = "abc123";
 
             Authentication.GeneratePassword(password);
 
             var account = new UserAccount
             {
                 LoginId = model.Email,
-                IsEnable = false,
+                IsEnable = true,
                 HashPassword = Authentication.HashPassword,
                 Salt = Authentication.Salt,
                 LoginAttempt = 0

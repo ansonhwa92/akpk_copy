@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlertFailUpdate" xml:space="preserve">
+    <value>Fail to update account setting</value>
+  </data>
+  <data name="AlertSuccessUpdate" xml:space="preserve">
+    <value>Account setting successfully updated</value>
+  </data>
   <data name="FieldInactiveDuration" xml:space="preserve">
     <value>User Inactive Duration</value>
   </data>
@@ -150,6 +156,33 @@
   <data name="FieldTerms" xml:space="preserve">
     <value>Terms of Use</value>
   </data>
+  <data name="TitleDescriptionDetails" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TitleDescriptionEdit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TitleDetails" xml:space="preserve">
+    <value>Account Setting</value>
+  </data>
+  <data name="TitleEdit" xml:space="preserve">
+    <value>Update Account Setting</value>
+  </data>
+  <data name="ValidContainLowerCase" xml:space="preserve">
+    <value>Password should contain at least one lower case letter</value>
+  </data>
+  <data name="ValidContainNumeric" xml:space="preserve">
+    <value>Password should contain at least one numeric value</value>
+  </data>
+  <data name="ValidContainSymbol" xml:space="preserve">
+    <value>Password should contain at least one special case characters</value>
+  </data>
+  <data name="ValidContainUpperCase" xml:space="preserve">
+    <value>Password should contain at least one upper case letter</value>
+  </data>
+  <data name="ValidLengthLimit" xml:space="preserve">
+    <value>Password should not be less than 8 characters</value>
+  </data>
   <data name="ValidNumericInactiveDuration" xml:space="preserve">
     <value>User Inactive Duration must be a number and greater than 0</value>
   </data>
@@ -158,6 +191,12 @@
   </data>
   <data name="ValidNumericPasswordExpiryDuration" xml:space="preserve">
     <value>Password Expiry Duration must be a number and greater than 0</value>
+  </data>
+  <data name="ValidRequiredLoginAttemptLimit" xml:space="preserve">
+    <value>Please enter Login Attempt Limit</value>
+  </data>
+  <data name="ValidRequiredPasswordExpiryDuration" xml:space="preserve">
+    <value>Please enter Password Expiry Duration</value>
   </data>
   <data name="ValidRequiredTerms" xml:space="preserve">
     <value>Please enter Terms of Use</value>

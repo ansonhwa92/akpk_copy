@@ -51,7 +51,7 @@ namespace FEP.WebApi.Api.Logs
                && (request.Activity == null || s.Activity.Contains(request.Activity))
                && (request.Details == null || s.Details.Contains(request.Details))
                && (request.IPAddress == null || s.IPAddress.Contains(request.IPAddress))
-               && (request.LogDateFrom == null || request.LogDateTo == null || DbFunctions.TruncateTime(s.LogDate) < DbFunctions.TruncateTime(request.LogDateTo) && DbFunctions.TruncateTime(s.LogDate) > DbFunctions.TruncateTime(request.LogDateFrom))
+               && (request.LogDateFrom == null || request.LogDateTo == null || DbFunctions.TruncateTime(s.LogDate) <= DbFunctions.TruncateTime(request.LogDateTo) && DbFunctions.TruncateTime(s.LogDate) >= DbFunctions.TruncateTime(request.LogDateFrom))
                );
 
             //quick search 

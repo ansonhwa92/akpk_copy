@@ -299,6 +299,7 @@
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">System Settings</a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Account", new { area = "Setting" })">Account Setting</a>
                                         <a class="dropdown-item" href="@Url.Action("List", "UserLog", new { area = "Logs" })">User Log</a>
                                         <a class="dropdown-item" href="@Url.Action("List", "ErrorLog", new { area = "Logs" })">Error Log</a>
                                     </div>
@@ -406,6 +407,18 @@
             $('.validation-summary-errors').removeClass('validation-summary-errors');
 
         }
+
+        $(".dateSelect").flatpickr({
+            // mode: "range",
+            dateFormat: "d/m/Y",
+            wrap: true
+        });
+
+        $(".timeSelect").flatpickr({
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i"
+        });
 
 	</script>
 

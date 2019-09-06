@@ -150,7 +150,7 @@
         akpk.smoothScroll();
         akpk.toggleMainMenu();
         akpk.selectOption();
-        akpk.dateSelect();
+        //akpk.dateSelect();
         akpk.updateList();
         akpk.filter();
         akpk.selectCategoryEvent();

@@ -163,9 +163,8 @@
     <Compile Include="Areas\eEvent\Models\EventCategory.cs" />
     <Compile Include="Areas\eLearning\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventSpeakerController.cs" />
-    <Compile Include="Areas\eEvent\Controllers\ExternalExhibitorController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\EventExternalExhibitorController.cs" />
     <Compile Include="Areas\eEvent\Models\EventSpeaker.cs" />
-    <Compile Include="Areas\eEvent\Models\ExternalExhibitor.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
     <Compile Include="Areas\RnP\Controllers\HomeController.cs" />
     <Compile Include="Areas\RnP\Controllers\PublicationController.cs" />
@@ -618,11 +617,11 @@
     <Content Include="Areas\RnP\Views\Survey\Details.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Create.cshtml" />
     <Content Include="Areas\RnP\Views\Home\Index.cshtml" />
-    <Content Include="Areas\eEvent\Views\ExternalExhibitor\List.cshtml" />
-    <Content Include="Areas\eEvent\Views\ExternalExhibitor\Details.cshtml" />
-    <Content Include="Areas\eEvent\Views\ExternalExhibitor\Create.cshtml" />
-    <Content Include="Areas\eEvent\Views\ExternalExhibitor\Edit.cshtml" />
-    <Content Include="Areas\eEvent\Views\ExternalExhibitor\Delete.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventExternalExhibitor\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventExternalExhibitor\Details.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventExternalExhibitor\Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventExternalExhibitor\Edit.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventExternalExhibitor\Delete.cshtml" />
     <Content Include="Areas\eEvent\Views\EventCategory\Details.cshtml" />
     <Content Include="Areas\eEvent\Views\EventCategory\Create.cshtml" />
     <Content Include="Areas\eEvent\Views\EventCategory\Edit.cshtml" />
@@ -657,6 +656,11 @@
     <Content Include="Areas\Administrator\Views\Role\_Edit.cshtml" />
     <Content Include="Areas\Administrator\Views\Role\_Delete.cshtml" />
     <Content Include="Areas\Administrator\Views\Role\Access.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\Details.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\Edit.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\Delete.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1086,7 +1090,6 @@
     <Folder Include="Areas\Administrator\Models\" />
     <Folder Include="Areas\Administrator\Views\Sector\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
-    <Folder Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Areas\eLearning\Models\" />
     <Folder Include="Areas\eLearning\Views\Shared\" />

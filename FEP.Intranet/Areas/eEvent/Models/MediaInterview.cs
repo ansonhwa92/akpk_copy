@@ -19,8 +19,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Media Type")]
 		public MediaType? MediaType { get; set; }
 
-		[Required(ErrorMessage = "Please Insert Contact Form")]
-		[Display(Name = "Contact Form")]
+		[Required(ErrorMessage = "Please Insert Contact Person")]
+		[Display(Name = "Contact Person")]
 		public string ContactPerson { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Contact Number")]
@@ -63,7 +63,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public DateTime? Time { get; set; }
 
 		[Display(Name = "Language")]
-		public string Language { get; set; }
+		public MediaLanguage? Language { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Topic")]
 		[Display(Name = "Topic")]

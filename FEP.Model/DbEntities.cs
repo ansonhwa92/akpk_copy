@@ -131,6 +131,7 @@ namespace FEP.Model
 		public DbSet<EventExternalExhibitor> EventExternalExhibitor { get; set; }
 		public DbSet<MediaFile> MediaFile { get; set; }
 		public DbSet<EventCategory> EventCategory { get; set; }
+		public DbSet<SpeakerFile> SpeakerFile { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

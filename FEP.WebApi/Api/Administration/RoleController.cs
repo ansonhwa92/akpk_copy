@@ -89,9 +89,7 @@ namespace FEP.WebApi.Api.Administration
             db.Entry(role).State = EntityState.Modified;
 
             db.SaveChanges();
-
             return Ok(true);
-
         }
 
         [Route("api/Administration/Role/GetAccess")]

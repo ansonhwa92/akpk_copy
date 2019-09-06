@@ -26,6 +26,7 @@ namespace FEP.WebApi.Api.eEvent
 		}
 
 		[Route("api/eEvent/PublicEvent/GetEventList")]
+		[HttpPost]
 		public IHttpActionResult Post(FilterPublicEventModel request)
 		{
 
@@ -35,9 +36,9 @@ namespace FEP.WebApi.Api.eEvent
 
 			//advance search
 			query = query.Where(s => (request.EventTitle == null || s.EventTitle.Contains(request.EventTitle))
-			   && (request.EventCategoryId == null || s.EventCategoryId == request.EventCategoryId)
-			   && (request.TargetedGroup == null || s.TargetedGroup == request.TargetedGroup)
-			   && (request.EventStatus == null || s.EventStatus == request.EventStatus)
+			   //&& (request.EventCategoryId == null || s.EventCategoryId == request.EventCategoryId)
+			   //&& (request.TargetedGroup == null || s.TargetedGroup == request.TargetedGroup)
+			   //&& (request.EventStatus.GetDisplayName() == null || s.EventStatus.GetDisplayName() == request.EventStatus.GetDisplayName())
 			   );
 
 			//quick search 
@@ -46,9 +47,9 @@ namespace FEP.WebApi.Api.eEvent
 				var value = request.search.value.Trim();
 
 				query = query.Where(p => p.EventTitle.Contains(value)
-				 || p.EventCategory.CategoryName.Contains(value)
-				|| p.TargetedGroup.GetDisplayName().Contains(value)
-				|| p.EventStatus.GetDisplayName().Contains(value)
+				//|| p.EventCategory.CategoryName.Contains(value)
+				//|| p.TargetedGroup.GetDisplayName().Contains(value)
+				//|| p.EventStatus.GetDisplayName().Contains(value)
 				);
 			}
 
@@ -75,6 +76,19 @@ namespace FEP.WebApi.Api.eEvent
 
 						break;
 
+					case "EventObjective":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.EventObjective);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.EventObjective);
+						}
+
+						break;
+
 					case "EventCategoryId":
 
 						if (sortAscending)
@@ -88,15 +102,54 @@ namespace FEP.WebApi.Api.eEvent
 
 						break;
 
-					case "TargetedGroup":
+					case "StartDate":
 
 						if (sortAscending)
 						{
-							query = query.OrderBy(o => o.TargetedGroup.ToString());
+							query = query.OrderBy(o => o.StartDate);
 						}
 						else
 						{
-							query = query.OrderByDescending(o => o.TargetedGroup.ToString());
+							query = query.OrderByDescending(o => o.StartDate);
+						}
+
+						break;
+
+					case "EndDate":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.EndDate);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.EndDate);
+						}
+
+						break;
+
+					case "Venue":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.Venue);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.Venue);
+						}
+
+						break;
+
+					case "Fee":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.Fee);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.Fee);
 						}
 
 						break;
@@ -124,6 +177,7 @@ namespace FEP.WebApi.Api.eEvent
 			{
 				query = query.OrderByDescending(o => o.EventTitle);
 			}
+						
 
 			var data = query.Skip(request.start).Take(request.length)
 				.Select(s => new PublicEventModel
@@ -133,8 +187,16 @@ namespace FEP.WebApi.Api.eEvent
 					EventCategoryId = s.EventCategoryId,
 					EventCategoryName = s.EventCategory.CategoryName,
 					TargetedGroup = s.TargetedGroup,
-					EventStatus = s.EventStatus
+					EventStatus = s.EventStatus,
+					//EventStatusDesc = s.EventStatus.GetDisplayName(),
+					StartDate = s.StartDate,
+					EndDate = s.EndDate,
+					EventObjective = s.EventObjective,
+					Venue = s.Venue,
+					Fee = s.Fee,
 				}).ToList();
+
+			data.ForEach(s => s.EventStatusDesc = s.EventStatus.GetDisplayName());
 
 			return Ok(new DataTableResponse
 			{
@@ -143,32 +205,31 @@ namespace FEP.WebApi.Api.eEvent
 				recordsFiltered = filteredCount,
 				data = data.ToArray()
 			});
-
 		}
 
-		//List
-		public List<PublicEventModel> Get()
-		{
-			var model = db.PublicEvent.Where(i => i.Display).Select(i => new PublicEventModel
-			{
-				Id = i.Id,
-				EventTitle = i.EventTitle,
-				EventObjective = i.EventObjective,
-				StartDate = i.StartDate,
-				EndDate = i.EndDate,
-				Venue = i.Venue,
-				Fee = i.Fee,
-				EventStatus = i.EventStatus,
-				EventCategoryId = i.EventCategoryId,
-				EventCategoryName = i.EventCategory.CategoryName,
-				TargetedGroup = i.TargetedGroup,
-				ParticipantAllowed = i.ParticipantAllowed,
-				Reasons = i.Reasons,
-				Remarks = i.Remarks
-			}).ToList();
+		////List
+		//public List<PublicEventModel> Get()
+		//{
+		//	var model = db.PublicEvent.Where(i => i.Display).Select(i => new PublicEventModel
+		//	{
+		//		Id = i.Id,
+		//		EventTitle = i.EventTitle,
+		//		EventObjective = i.EventObjective,
+		//		StartDate = i.StartDate,
+		//		EndDate = i.EndDate,
+		//		Venue = i.Venue,
+		//		Fee = i.Fee,
+		//		EventStatus = i.EventStatus,
+		//		EventCategoryId = i.EventCategoryId,
+		//		EventCategoryName = i.EventCategory.CategoryName,
+		//		TargetedGroup = i.TargetedGroup,
+		//		ParticipantAllowed = i.ParticipantAllowed,
+		//		Reasons = i.Reasons,
+		//		Remarks = i.Remarks
+		//	}).ToList();
 
-			return model;
-		}
+		//	return model;
+		//}
 
 		//Details
 		public PublicEventModel Get(int id)

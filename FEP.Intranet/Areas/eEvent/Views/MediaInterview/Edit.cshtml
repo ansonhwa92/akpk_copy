@@ -11,14 +11,14 @@
 		<div class="title-header-container">
 			<div class="container">
 				<!-- if have button -->
-				@*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "MediaInterview", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
 				<div class="header-col-left">
 					<div id="breadcrumb">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="#">Home</a></li>
 								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
-								<li class="breadcrumb-item"><a href="#">Media Interview</a></li>
+								<li class="breadcrumb-item"><a href="#">Manage Media Interview</a></li>
 								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
 							</ol>
 						</nav>
@@ -230,22 +230,16 @@
 						</div>
 
 						<div class="row">
-							<div class="form-group col-lg-12">
+							<div class="form-group col-lg-6">
 								@Html.LabelFor(model => model.Time, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect" } })
-									@Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
-								</div>
+								@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect" } })
+								@Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
 							</div>
-						</div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
+							<div class="form-group col-lg-6">
 								@Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Language, new { htmlAttributes = new { @class = "form-control", @placeholder = "- Language -" } })
-									@Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
-								</div>
+								@Html.EnumDropDownListFor(model => model.Language, "-Select Language-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+								@Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
 							</div>
 						</div>
 

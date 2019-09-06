@@ -1,9 +1,8 @@
-﻿
-@model FEP.WebApiModel.PublicEvent.ListPublicEventModel
+﻿@model FEP.WebApiModel.eEvent.ListExhibitionRoadshowRequestModel
 
 @{
+	ViewBag.Title = "Exhibition/Roadshow Request";
 	Layout = "~/Views/Shared/_Layout1.cshtml";
-	ViewBag.Title = "Public Event";
 }
 
 @section Contentscript{
@@ -16,9 +15,9 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)eEvent/PublicEvent/GetEventList',
+                    "url": '@(WebApiURL)eEvent/ExhibitionRoadshowRequest/GetExhibitionList',
                     "data": function (filter) {
-                        filter.EventTitle = $('#Filter_EventTitle').val();
+                        filter.EventName = $('#Filter_EventName').val();
                         //filter.ICNo = $('#Filter_ICNo').val();
                         //filter.MobileNo = $('#Filter_MobileNo').val();
                         //filter.Email = $('#Filter_Email').val();
@@ -33,17 +32,14 @@
                         }
                     },
                     {
-                        data: 'EventTitle',
+                        data: 'EventName',
                         sortable: true
                     },
                     {
-                        data: 'EventObjective',
+                        data: 'Organiser',
                         sortable: true
 					},
-					 {
-                        data: 'EventCategoryName',
-                        sortable: true
-					},
+					
 					  {
                         data: 'StartDate',
 						sortable: true,
@@ -75,17 +71,9 @@
                         }
                     },
                     {
-                        data: 'Venue',
-                        sortable: true
-                    },
-                    {
-                        data: 'Fee',
-                        sortable: true
-                    },
-                    {
-                        data: 'EventStatusDesc',
+                        data: 'ExhibitionStatusDesc',
                         sortable: false,
-                       
+
                     },
                     {
                         sortable: false,
@@ -94,9 +82,9 @@
                             var action = "";
 
                             action = '<div class="icon-action">'
-                                    +   '<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Delete", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+                                    +   '<a href="@Url.Action("Edit", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+                                    +   '<a href="@Url.Action("Details", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+                                    +   '<a href="@Url.Action("Delete", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
                                     + '</div>';
 
                             return action;
@@ -133,7 +121,7 @@
                 table.ajax.reload();
             });
 
-            table.on('order.dt search.dt page.dt', function () {
+            table.on('order.dt search.dt', function () {
                 var info = table.page.info();
 
                 var start = 0;
@@ -163,13 +151,13 @@
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="#">Home</a></li>
 								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
-								<li class="breadcrumb-item"><a href="#">Manage Public Event</a></li>
-								<li class="breadcrumb-item active" aria-current="page"><a href="#">Event List</a></li>
+								<li class="breadcrumb-item"><a href="#">Manage Exhibition/Roadshow Request</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
 							</ol>
 						</nav>
 					</div>
-					<h1 class="page-title text-white">Event List</h1>
-					<div class="header-text">List of created event</div>
+					<h1 class="page-title text-white">Exhibition/Roadshow Request List</h1>
+					<div class="header-text">List of created Exhibition/Roadshow Request</div>
 				</div>
 			</div>
 		</div>
@@ -182,30 +170,30 @@
 		<div class="dropdown-menu">
 			<div class="filter-head">Filters</div>
 			<div class="filter-body">
-				<div>@Html.DisplayNameFor(m => m.Filter.EventTitle)</div>
+				<div>@Html.DisplayNameFor(m => m.Filter.EventName)</div>
 				<div class="sorting-wrap">
 					<div class="sorting-dropdown">
-						@Html.EditorFor(m => m.Filter.EventTitle, new { htmlAttributes = new { @class = "form-control small" } })
+						@Html.EditorFor(m => m.Filter.EventName, new { htmlAttributes = new { @class = "form-control small" } })
 					</div>
 				</div>
 				@*<div>@Html.DisplayNameFor(m => m.Filter.EventCategoryId)</div>
-				<div class="sorting-wrap">
-					<div class="sorting-dropdown">
-						@Html.EditorFor(m => m.Filter.EventCategoryId, new { htmlAttributes = new { @class = "form-control small" } })
+					<div class="sorting-wrap">
+						<div class="sorting-dropdown">
+							@Html.EditorFor(m => m.Filter.EventCategoryId, new { htmlAttributes = new { @class = "form-control small" } })
+						</div>
 					</div>
-				</div>
-				<div>@Html.DisplayNameFor(m => m.Filter.TargetedGroup)</div>
-				<div class="sorting-wrap">
-					<div class="sorting-dropdown">
-						@Html.EditorFor(m => m.Filter.TargetedGroup, new { htmlAttributes = new { @class = "form-control small" } })
+					<div>@Html.DisplayNameFor(m => m.Filter.TargetedGroup)</div>
+					<div class="sorting-wrap">
+						<div class="sorting-dropdown">
+							@Html.EditorFor(m => m.Filter.TargetedGroup, new { htmlAttributes = new { @class = "form-control small" } })
+						</div>
 					</div>
-				</div>
-				<div>@Html.DisplayNameFor(m => m.Filter.EventStatus)</div>
-				<div class="sorting-wrap">
-					<div class="sorting-dropdown">
-						@Html.EditorFor(m => m.Filter.EventStatus, new { htmlAttributes = new { @class = "form-control small" } })
-					</div>
-				</div>*@
+					<div>@Html.DisplayNameFor(m => m.Filter.EventStatus)</div>
+					<div class="sorting-wrap">
+						<div class="sorting-dropdown">
+							@Html.EditorFor(m => m.Filter.EventStatus, new { htmlAttributes = new { @class = "form-control small" } })
+						</div>
+					</div>*@
 				<div>
 					<button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
 				</div>
@@ -220,15 +208,6 @@
 			<button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
 		</div>
 	</div>
-	@*<div class="sorting-wrap">
-			<div class="sorting-dropdown">
-				<select class="select2 form-control small" name="sorting">
-					<option value="Default Sorting">Default Sorting</option>
-					<option value="sorting 1">Sorting 1</option>
-					<option value="sorting 2">Sorting 2</option>
-				</select>
-			</div>
-		</div>*@
 </div>
 <hr>
 <div class="table-responsive" data-toggle="lists">
@@ -245,29 +224,19 @@
 			</span>
 		</div>
 		<div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-		<div><a href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
+		<div><a href="@Url.Action("Create", "ExhibitionRoadshowRequest", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
 	</div>
 	<!-- Table -->
 	<table class="table tableStyle1 tabledata">
 		<thead>
 			<tr>
-				@*<th>
-			<div class="custom-control custom-checkbox">
-				<input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#table01" id="customCheckAll">
-				<label class="custom-control-label" for="customCheckAll">
-					<span class="text-hide">Toggle all</span>
-				</label>
-			</div>
-		</th>*@
+				
 				<th>#</th>
-				<th>@Html.DisplayNameFor(model => model.List.EventTitle)</th>
-				<th>@Html.DisplayNameFor(model => model.List.EventObjective)</th>
-				<th>@Html.DisplayNameFor(model => model.List.EventCategoryName)</th>
+				<th>@Html.DisplayNameFor(model => model.List.EventName)</th>
+				<th>@Html.DisplayNameFor(model => model.List.Organiser)</th>
 				<th>@Html.DisplayNameFor(model => model.List.StartDate)</th>
 				<th>@Html.DisplayNameFor(model => model.List.EndDate)</th>
-				<th>@Html.DisplayNameFor(model => model.List.Venue)</th>
-				<th>@Html.DisplayNameFor(model => model.List.Fee)</th>
-				<th>@Html.DisplayNameFor(model => model.List.EventStatusDesc)</th>
+				<th>@Html.DisplayNameFor(model => model.List.ExhibitionStatusDesc)</th>
 				<th>Action</th>
 			</tr>
 		</thead>

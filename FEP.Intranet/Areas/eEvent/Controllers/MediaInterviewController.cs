@@ -22,36 +22,41 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View();
 		}
 
-		public ActionResult List(FilterMediaInterviewModel filter)
+		//public ActionResult List(FilterMediaInterviewModel filter)
+		//{
+		//	var media = db.EventMediaInterviewRequest.Where(i => i.Display)
+		//		.Select(i => new DetailsMediaInterviewModel()
+		//		{
+		//			Id = i.Id,
+		//			MediaName = i.MediaName,
+		//			MediaType = i.MediaType,
+		//			ContactPerson = i.ContactPerson,
+		//			ContactNo = i.ContactNo,
+		//			AddressStreet1 = i.AddressStreet1,
+		//			AddressStreet2 = i.AddressStreet2,
+		//			AddressPoscode = i.AddressPoscode,
+		//			AddressCity = i.AddressCity,
+		//			State = i.State,
+		//			Email = i.Email,
+		//			DateStart = i.DateStart,
+		//			DateEnd = i.DateEnd,
+		//			Time = i.Time,
+		//			Language = i.Language,
+		//			Topic = i.Topic,
+		//			RepUserId = i.UserId,
+		//			RepUserName = i.User.Name,
+		//			RepDesignation = i.Designation,
+		//			MediaStatus = i.MediaStatus,
+		//		}).ToList();
+
+		//	ListMediaInterviewModel model = new ListMediaInterviewModel(media);
+
+		//	return View("List", model);
+		//}
+
+		public ActionResult List()
 		{
-			var media = db.EventMediaInterviewRequest.Where(i => i.Display)
-				.Select(i => new DetailsMediaInterviewModel()
-				{
-					Id = i.Id,
-					MediaName = i.MediaName,
-					MediaType = i.MediaType,
-					ContactPerson = i.ContactPerson,
-					ContactNo = i.ContactNo,
-					AddressStreet1 = i.AddressStreet1,
-					AddressStreet2 = i.AddressStreet2,
-					AddressPoscode = i.AddressPoscode,
-					AddressCity = i.AddressCity,
-					State = i.State,
-					Email = i.Email,
-					DateStart = i.DateStart,
-					DateEnd = i.DateEnd,
-					Time = i.Time,
-					Language = i.Language,
-					Topic = i.Topic,
-					RepUserId = i.UserId,
-					RepUserName = i.User.Name,
-					RepDesignation = i.Designation,
-					MediaStatus = i.MediaStatus,
-				}).ToList();
-
-			ListMediaInterviewModel model = new ListMediaInterviewModel(media);
-
-			return View("List", model);
+			return View();
 		}
 
 		// GET: eEventMediaInterview/MediaInterview/Details/5

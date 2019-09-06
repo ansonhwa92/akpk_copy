@@ -1,7 +1,7 @@
 ﻿@model FEP.Intranet.Areas.eEvent.Models.CreatePublicEventModel
 
 @{
-	ViewBag.Title = "Internal Event";
+	ViewBag.Title = "Public Event";
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
@@ -23,8 +23,8 @@
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="#">Home</a></li>
 								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
-								<li class="breadcrumb-item"><a href="#">Internal Event</a></li>
-								<li class="breadcrumb-item active" aria-current="page"><a href="#">Create Event</a></li>
+								<li class="breadcrumb-item"><a href="#">Manage Public Event</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
 							</ol>
 						</nav>
 					</div>
@@ -68,11 +68,11 @@
 							</a>
 						</li> -->
 						@*<li class="step-item disabled">
-							<a href="" class="step-link">
-								<span class="step-number">3</span>
-								<span class="step-title">Event Verification Approval</span>
-							</a>
-						</li>*@
+								<a href="" class="step-link">
+									<span class="step-number">3</span>
+									<span class="step-title">Event Verification Approval</span>
+								</a>
+							</li>*@
 					</ul>
 					<!-- End Steps -->
 				</div>
@@ -85,27 +85,24 @@
 					<div class="form-container">
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.EventTitle, htmlAttributes: new { @class = "control-label col-md-12" })
-								<div class="col-md-12">
-									@Html.EditorFor(model => model.EventTitle, new { htmlAttributes = new { @class = "form-control" , @placeholder = "Be clear and descriptive"} })
-									@Html.ValidationMessageFor(model => model.EventTitle, "", new { @class = "text-danger" })
-								</div>
+								@Html.LabelFor(model => model.EventTitle)
+								@Html.EditorFor(model => model.EventTitle, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
+								@Html.ValidationMessageFor(model => model.EventTitle, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.EventObjective, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.EditorFor(model => model.EventObjective, new { htmlAttributes = new { @class = "form-control" } })
-									@Html.ValidationMessageFor(model => model.EventObjective, "", new { @class = "text-danger" })
-								</div>
+								@Html.LabelFor(model => model.EventObjective)
+								@Html.EditorFor(model => model.EventObjective, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.EventObjective, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-lg-12" })
+								@Html.LabelFor(model => model.StartDate)
+
 								<div class="row col-lg-12">
 									<div class="col-lg-6">
 										@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start" } })
@@ -121,95 +118,79 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Venue, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Venue, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
-									@Html.ValidationMessageFor(model => model.Venue, "", new { @class = "text-danger" })
-								</div>
+								@Html.LabelFor(model => model.Venue)
+								@Html.EditorFor(model => model.Venue, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
+								@Html.ValidationMessageFor(model => model.Venue, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Fee, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00" } })
-									@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
-								</div>
-							</div>
-						</div> 
-
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.ParticipantAllowed, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" } })
-									@Html.ValidationMessageFor(model => model.ParticipantAllowed, "", new { @class = "text-danger" })
-								</div>
+								@Html.LabelFor(model => model.Fee)
+								@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00" } })
+								@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.TargetedGroup, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
-									@Html.ValidationMessageFor(model => model.TargetedGroup, "", new { @class = "text-danger" })
-								</div>
+								@Html.LabelFor(model => model.ParticipantAllowed)
+								@Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" } })
+								@Html.ValidationMessageFor(model => model.ParticipantAllowed, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.EventCategoryId, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.DropDownListFor(model => model.EventCategoryId, Model.CategoryList, "-Select Category-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%", disabled = "disabled" })
-									@Html.ValidationMessageFor(model => model.EventCategoryId, "", new { @class = "text-danger" })
-								</div>
-							</div>
-						</div>
- 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.ExhibitorName, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.EditorFor(model => model.ExhibitorName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Exhibitor" } })
-									@Html.ValidationMessageFor(model => model.ExhibitorName, "", new { @class = "text-danger" })
-								</div>
+								@Html.LabelFor(model => model.TargetedGroup)
+								@Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+								@Html.ValidationMessageFor(model => model.TargetedGroup, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.SpeakerName, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.EditorFor(model => model.SpeakerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Speaker" } })
-									@Html.ValidationMessageFor(model => model.SpeakerName, "", new { @class = "text-danger" })
-								</div>
+								@Html.LabelFor(model => model.EventCategoryId)
+								@Html.DropDownListFor(model => model.EventCategoryId, Model.CategoryList, "-Select Category-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%", disabled = "disabled" })
+								@Html.ValidationMessageFor(model => model.EventCategoryId, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.DocumentEvent, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.TextBoxFor(model => model.DocumentEvent, "", new { type = "file", @class = "form-control" })
-									@Html.ValidationMessageFor(model => model.DocumentEvent, "", new { @class = "text-danger" })
-								</div>
+								@Html.LabelFor(model => model.ExternalExhibitorId)
+								@Html.DropDownListFor(model => model.ExternalExhibitorId, Model.ExternalExhibitorList, "-Select External Exhibitor-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+								@Html.ValidationMessageFor(model => model.ExternalExhibitorId, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.SpeakerId)
+								@Html.DropDownListFor(model => model.SpeakerId, Model.SpeakerList, "-Select Speaker-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+								@Html.ValidationMessageFor(model => model.SpeakerId, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.DocumentEvent)
+								@Html.TextBoxFor(model => model.DocumentEvent, "", new { type = "file", @class = "form-control multiple" })
+								@Html.ValidationMessageFor(model => model.DocumentEvent, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
 
 						@*<div class="row">
-			<div class="form-group col-lg-12">
-				<label>Proof of Approval</label>
-				<div class="custom-file">
-					<input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-					<label class="custom-file-label" for="customFile">No file choosen</label>
-				</div>
-				<div id="fileList"></div>
-			</div>
-		</div>*@
+								<div class="form-group col-lg-12">
+									<label>Proof of Approval</label>
+									<div class="custom-file">
+										<input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
+										<label class="custom-file-label" for="customFile">No file choosen</label>
+									</div>
+									<div id="fileList"></div>
+								</div>
+							</div>*@
 
 					</div>
 				</form>

@@ -33,32 +33,30 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View(model);
 		}
 
-		public ActionResult List(FilterPublicEventModel filter)
-		{
-			var e = db.PublicEvent.Where(i => i.Display && (filter.EventTitle == filter.EventTitle))
-				.Select(i => new DetailsPublicEventModel()
-				{
-					Id = i.Id,
-					EventTitle = i.EventTitle,
-					EventObjective = i.EventObjective,
-					EventCategoryId = i.EventCategoryId,
-					EventCategoryName = i.EventCategory.CategoryName,
-					StartDate = i.StartDate,
-					EndDate = i.EndDate,
-					Venue = i.Venue,
-					Fee = i.Fee,
-					EventStatus = i.EventStatus
-				}).ToList();
-
-			ListPublicEventModel model = new ListPublicEventModel(e);
-
-			return View(model);
-		}
-
-		//public ActionResult List()
+		//public ActionResult List(FilterPublicEventModel filter)
 		//{
-		//	return View();
+		//	var e = db.PublicEvent.Where(i => i.Display && (filter.EventTitle == filter.EventTitle))
+		//		.Select(i => new DetailsPublicEventModel()
+		//		{
+		//			Id = i.Id,
+		//			EventTitle = i.EventTitle,
+		//			EventObjective = i.EventObjective,
+		//			EventCategoryId = i.EventCategoryId,
+		//			EventCategoryName = i.EventCategory.CategoryName,
+		//			StartDate = i.StartDate,
+		//			EndDate = i.EndDate,
+		//			Venue = i.Venue,
+		//			Fee = i.Fee,
+		//			EventStatus = i.EventStatus
+		//		}).ToList();
+		//	ListPublicEventModel model = new ListPublicEventModel(e);
+		//	return View(model);
 		//}
+
+		public ActionResult List()
+		{
+			return View();
+		}
 
 		// GET: PublicEvent/Details/5
 		public ActionResult Details(int? id)
@@ -94,10 +92,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventCategoryName = i.EventCategory.CategoryName,
 					Reasons = i.Reasons,
 					Remarks = i.Remarks,
-					SpeakerName = i.EventSpeakers.Select(s => s.Name).FirstOrDefault(),
-					ExhibitorName = i.EventExternalExhibitors.Select(s => s.Name).FirstOrDefault(),
+					SpeakerId = i.SpeakerId,
+					SpeakerName = i.EventSpeaker.User.Name,
+					ExternalExhibitorId = i.ExternalExhibitorId,
+					ExternalExhibitorName = i.ExternalExhibitor.User.Name,
 					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
-					//GetFileName = eventfile.FileName
 				}).FirstOrDefault();
 
 			if (e == null)
@@ -117,14 +116,27 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				EventCategoryId = ctgryId,
 			};
 
-			var getcategory = db.EventCategory.Where(c => c.Display)
-				.Select(i => new
-				{
-					Id = i.Id,
-					Name = i.CategoryName
-				});
+			var getcategory = db.EventCategory.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.CategoryName
+			});
+
+			var getspeaker = db.EventSpeaker.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.User.Name
+			});
+
+			var getexhibitor = db.EventExternalExhibitor.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.Name
+			});
 
 			model.CategoryList = new SelectList(getcategory, "Id", "Name", 0);
+			model.SpeakerList = new SelectList(getspeaker, "Id", "Name", 0);
+			model.ExternalExhibitorList = new SelectList(getexhibitor, "Id", "Name", 0);
 
 			return View(model);
 		}
@@ -149,43 +161,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 					EventStatus = EventStatus.New,
 					EventCategoryId = model.EventCategoryId,
+					SpeakerId = model.SpeakerId,
 					Reasons = model.Reasons,
 					Remarks = model.Remarks,
 					CreatedBy = CurrentUser.UserId,
 					CreatedDate = DateTime.Now,
 					Display = true,
-
+					ExternalExhibitorId = model.ExternalExhibitorId,
 				};
 				db.PublicEvent.Add(x);
-
-				if (model.SpeakerName != null)
-				{
-					EventSpeaker eventspeaker = new EventSpeaker
-					{
-						Name = model.SpeakerName,
-						CreatedDate = DateTime.Now,
-						CreatedBy = CurrentUser.UserId,
-						Display = true,
-						EventId = x.Id,
-						DateAssigned = DateTime.Now,
-						SpeakerType = SpeakerType.FEP
-					};
-					db.EventSpeaker.Add(eventspeaker);
-				};
-
-				if (model.ExhibitorName != null)
-				{
-					EventExternalExhibitor externalExhibitor = new EventExternalExhibitor
-					{
-						Name = model.ExhibitorName,
-						Display = true,
-						EventId = x.Id,
-						CreatedDate = DateTime.Now,
-						CreatedBy = CurrentUser.UserId,
-
-					};
-					db.EventExternalExhibitor.Add(externalExhibitor);
-				};
 
 				string path = "FileUploaded/";
 				if (model.DocumentEvent != null)
@@ -212,14 +196,28 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				TempData["SuccessMessage"] = "Public Event successfully created.";
 				return RedirectToAction("List");
 			}
-			var getcategory = db.EventCategory.Where(c => c.Display)
-				.Select(i => new
-				{
-					Id = i.Id,
-					Name = i.CategoryName
-				});
+
+			var getcategory = db.EventCategory.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.CategoryName
+			});
+
+			var getspeaker = db.EventSpeaker.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.User.Name
+			});
+
+			var getexhibitor = db.EventExternalExhibitor.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.Name
+			});
 
 			model.CategoryList = new SelectList(getcategory, "Id", "Name", 0);
+			model.SpeakerList = new SelectList(getspeaker, "Id", "Name", 0);
+			model.ExternalExhibitorList = new SelectList(getexhibitor, "Id", "Name", 0);
 
 			return View(model);
 		}
@@ -251,11 +249,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Reasons = i.Reasons,
 					Remarks = i.Remarks,
 					origin = origin,
-					SpeakerName = i.EventSpeakers.Select(s => s.Name).FirstOrDefault(),
-					ExhibitorName = i.EventExternalExhibitors.Select(s => s.Name).FirstOrDefault(),
+					SpeakerId = i.SpeakerId,
+					SpeakerName = i.EventSpeaker.User.Name,
+					
+					ExternalExhibitorId = i.ExternalExhibitorId,
+					ExternalExhibitorName = i.ExternalExhibitor.User.Name,
 					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 					//GetFileName = eventfile.FileName
-					
+
 				}).FirstOrDefault();
 
 			if (e == null)
@@ -263,14 +264,27 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			var getcategory = db.EventCategory.Where(c => c.Display)
-				.Select(i => new
-				{
-					Id = i.Id,
-					Name = i.CategoryName
-				});
+			var getcategory = db.EventCategory.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.CategoryName
+			});
+
+			var getspeaker = db.EventSpeaker.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.User.Name
+			});
+
+			var getexhibitor = db.EventExternalExhibitor.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.Name
+			});
 
 			e.CategoryList = new SelectList(getcategory, "Id", "Name", 0);
+			e.SpeakerList = new SelectList(getspeaker, "Id", "Name", 0);
+			e.ExternalExhibitorList = new SelectList(getexhibitor, "Id", "Name", 0);
 
 			return View(e);
 		}
@@ -298,57 +312,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventCategoryId = model.EventCategoryId,
 					Reasons = model.Reasons,
 					Remarks = model.Remarks,
-
+					SpeakerId = model.SpeakerId,
+					ExternalExhibitorId = model.ExternalExhibitorId,
 				};
 
 				db.Entry(eEvent).State = EntityState.Modified;
 				db.Entry(eEvent).Property(x => x.CreatedDate).IsModified = false;
 				db.Entry(eEvent).Property(x => x.Display).IsModified = false;
 				db.Configuration.ValidateOnSaveEnabled = true;
-
-				if (model.SpeakerName != null)
-				{
-					var getIdSpeaker = db.EventSpeaker.Where(s => s.EventId == model.Id).FirstOrDefault();
-
-					if (getIdSpeaker != null)
-					{
-						db.EventSpeaker.Remove(getIdSpeaker);
-					}
-
-					EventSpeaker eventspeaker = new EventSpeaker
-					{
-						Name = model.SpeakerName,
-						CreatedDate = DateTime.Now,
-						CreatedBy = CurrentUser.UserId,
-						Display = true,
-						EventId = model.Id,
-						DateAssigned = DateTime.Now,
-						SpeakerType = SpeakerType.FEP,
-						Id = getIdSpeaker.Id
-					};
-					db.EventSpeaker.Add(eventspeaker);
-				};
-
-				if (model.ExhibitorName != null)
-				{
-					var getIdExhibitor = db.EventExternalExhibitor.Where(s => s.EventId == model.Id).FirstOrDefault();
-
-					if (getIdExhibitor != null)
-					{
-						db.EventExternalExhibitor.Remove(getIdExhibitor);
-					}
-
-					EventExternalExhibitor externalExhibitor = new EventExternalExhibitor
-					{
-						Name = model.ExhibitorName,
-						Display = true,
-						EventId = model.Id,
-						CreatedDate = DateTime.Now,
-						CreatedBy = CurrentUser.UserId,
-						Id = getIdExhibitor.Id
-					};
-					db.EventExternalExhibitor.Add(externalExhibitor);
-				};
 
 				string path = "FileUploaded/";
 				if (model.DocumentEvent != null)
@@ -390,14 +361,28 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				}
 			}
 
-			var getcategory = db.EventCategory.Where(c => c.Display)
-				.Select(i => new
-				{
-					Id = i.Id,
-					Name = i.CategoryName
-				});
+			var getcategory = db.EventCategory.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.CategoryName
+			});
 
-			model.CategoryList = new SelectList(getcategory, "Id", "Name", model.CategoryList);
+			var getspeaker = db.EventSpeaker.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.User.Name
+			});
+
+			var getexhibitor = db.EventExternalExhibitor.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.Name
+			});
+
+			model.CategoryList = new SelectList(getcategory, "Id", "Name", 0);
+			model.SpeakerList = new SelectList(getspeaker, "Id", "Name", 0);
+			model.ExternalExhibitorList = new SelectList(getexhibitor, "Id", "Name", 0);
+
 			return View(model);
 		}
 
@@ -438,8 +423,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Reasons = i.Reasons,
 					Remarks = i.Remarks,
 
-					SpeakerName = i.EventSpeakers.Select(s => s.Name).FirstOrDefault(),
-					ExhibitorName = i.EventExternalExhibitors.Select(s => s.Name).FirstOrDefault(),
+					SpeakerId = i.SpeakerId,
+					SpeakerName = i.EventSpeaker.User.Name,
+
+					ExternalExhibitorId = i.ExternalExhibitorId,
+					ExternalExhibitorName = i.ExternalExhibitor.User.Name,
 					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 					//GetFileName = eventfile.FileName
 				}).FirstOrDefault();

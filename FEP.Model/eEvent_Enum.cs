@@ -23,25 +23,37 @@ namespace FEP.Model
 
 	public enum MediaType
 	{
-		[Display(Name = "Panel Interview")]
-		PanelInterview,
-		[Display(Name = "Group Interview")]
-		GroupInterview,
-		[Display(Name = "Sequential Interview")]
-		SequentialInterview,
-		[Display(Name = "Formal / Informal Interview")]
-		FormalInformalInterview,
-		
+		[Display(Name = "Broadcast")]
+		Broadcast,
+
+		[Display(Name = "Internet")]
+		Internet,
+
+		[Display(Name = "Magazine")]
+		Magazine,
+
+		[Display(Name = "Newspaper")]
+		Newspaper,
+
+		[Display(Name = "Pres Agency")]
+		PressAgency
 	}
 
 	public enum EventStatus
 	{
+		[Display(Name = "New")]
 		New,
+		[Display(Name = "Pending")]
 		PendingToVerified,
+		[Display(Name = "Pending")]
 		Approval,
+		[Display(Name = "Approved")]
 		Approved, //==Published
+		[Display(Name = "Modify Request")]
 		RequestToModify,
+		[Display(Name = "Cancel Request")]
 		RequestToCancel,
+		[Display(Name = "Cancelled")]
 		Cancelled
 	}
 
@@ -76,7 +88,9 @@ namespace FEP.Model
 
 	public enum SpeakerType
 	{
+		[Display(Name = "Internal")]
 		FEP,
+		[Display(Name = "External")]
 		OBS
 	}
 
@@ -116,5 +130,31 @@ namespace FEP.Model
 		New,
 		Cancelled,
 		Approved
+	}
+
+	public enum MaritialStatus
+	{
+		Married,
+		Single,
+		Divorced,
+		Widowed
+	}
+
+	public enum Religion
+	{
+		Islam,
+		Hindu,
+		Buddha, 
+		Christian
+	}
+
+	public enum MediaLanguage
+	{
+		[Display(Name = "Bahasa Malaysia")]
+		BahasaMalaysia,
+		English,
+		Tamil,
+		Mandarin,
+		Cantonese,
 	}
 }

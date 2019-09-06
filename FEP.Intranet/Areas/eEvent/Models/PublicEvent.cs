@@ -84,10 +84,22 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string Remarks { get; set; }
 
 		[Display(Name = "Speaker")]
+		public int? SpeakerId { get; set; }
+
+		[Display(Name = "Speaker")]
 		public string SpeakerName { get; set; }
 
-		[Display(Name = "External Exhibitors")]
-		public string ExhibitorName { get; set; }
+		[Display(Name = "Speaker")]
+		public IEnumerable<SelectListItem> SpeakerList { get; set; }
+
+		[Display(Name = "External Exhibitor")] 
+		public int? ExternalExhibitorId { get; set; }
+
+		[Display(Name = "External Exhibitor")]
+		public string ExternalExhibitorName { get; set; }
+
+		[Display(Name = "External Exhibitor")]
+		public IEnumerable<SelectListItem> ExternalExhibitorList { get; set; }
 
 		[Display(Name = "Proof of Approval")]
 		public string GetFileName { get; set; }

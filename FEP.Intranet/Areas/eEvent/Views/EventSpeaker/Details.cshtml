@@ -1,50 +1,189 @@
-﻿@model FEP.Intranet.Areas.eEvent.Models.DetailsEventSpeakerModel
+﻿@model FEP.WebApiModel.eEvent.DetailsEventSpeakerModel
 
 @{
 	ViewBag.Title = "Event Speaker";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-@section ContentScript{
+@section Nav {
 
-	@Scripts.Render("~/bundles/dataTable-script")
-
-	<script type="text/javascript">
-		$('.menu_eventSpeaker').addClass('active');
-		$('.menu_eventSpeaker').parent('ul').parent('li').addClass('active');
-	</script>
-}
-
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box box-info">
-			<div class="box-header">
-				<h3 class="box-title">Event Speaker Details</h3>
-			</div>
-
-			<div class="box-body">
-				<dl class="dl-horizontal">
-					<dt>@Html.DisplayNameFor(model => model.SpeakerType)</dt>
-					<dd>@Html.DisplayFor(model => model.SpeakerType)</dd>
-
-					<dt>@Html.DisplayNameFor(model => model.UserId)</dt>
-					<dd>@Html.DisplayFor(model => model.UserName)</dd>
-
-					<dt>@Html.DisplayNameFor(model => model.DateAssigned)</dt>
-					<dd>@Html.DisplayFor(model => model.DateAssigned)</dd>
-
-					<dt>@Html.DisplayNameFor(model => model.Remark)</dt>
-					<dd>@Html.DisplayFor(model => model.Remark)</dd>
-
-				</dl>
+	<div class="title_header">
+		<div class="title-header-container">
+			<div class="container">
+				<!-- if have button -->
+				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "EventSpeaker", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+				<div class="header-col-left">
+					<div id="breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
+								<li class="breadcrumb-item"><a href="#">Manage Event Speaker</a></li>
+								<li class="breadcrumb-item"><a href="#">Event Speaker List</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+							</ol>
+						</nav>
+					</div>
+					<h1 class="page-title text-white">Event Speaker Details</h1>
+					@*<div class="header-text">List of created media interview</div>*@
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+
+}
 
 <div class="row">
-	<div class="col-xs-12">
-		<a href='@Url.Action("List")' class="btn btn-warning">Back</a>
-		<a href='@Url.Action("Edit",new { id = Model.Id })' class="btn btn-primary">Edit</a>
+	<div class="col-xl-3 col-md-3 col-sm-4 my-2">
+		<div class="sidebar-left">
+			<!-- Steps -->
+			<div class="sidebar-inner sticky">
+				<ul class="steps steps-vertical">
+					<li class="step-item complete">
+						<a href="" class="step-link">
+							<span class="step-number">1</span>
+							<span class="step-title">Event Speaker List</span>
+						</a>
+					</li>
+					<li class="step-item active">
+						<a href="" class="step-link">
+							<span class="step-number">2</span>
+							<span class="step-title">Event Speaker Details</span>
+						</a>
+					</li>
+					<!-- rejected -->
+					<!-- <li class="step-item rejected">
+						<a href="" class="step-link">
+							<span class="step-number">2</span>
+							<span class="step-title">Fill Up Event Details</span>
+						</a>
+					</li> -->
+					@*<li class="step-item disabled">
+							<a href="" class="step-link">
+								<span class="step-number">3</span>
+								<span class="step-title">Event Verification Approval</span>
+							</a>
+						</li>*@
+				</ul>
+				<!-- End Steps -->
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+		<!-- Start Form -->
+		<div class="border-form rounded-top">
+			<form>
+				<div class="form-container">
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.UserId)
+							@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%", @disabled = "disabled" })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.SpeakerType)
+							@Html.EnumDropDownListFor(model => model.SpeakerType, "-Select Speaker Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.Email)
+							@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-6">
+							@Html.LabelFor(model => model.DateAssigned, htmlAttributes: new { @class = "control-label col-lg-12" })
+							@Html.EditorFor(model => model.DateAssigned, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Assigned", @readonly = "readonly" } })
+						</div>
+
+						<div class="form-group col-lg-6">
+							@Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-lg-12" })
+							@Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date of Birth", @readonly = "readonly" } })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.AddressStreet1)
+							@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+						</div>
+
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.AddressStreet2)
+							@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-6">
+							@Html.LabelFor(model => model.AddressPoscode)
+							@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode", @readonly = "readonly" } })
+						</div>
+
+						<div class="form-group col-lg-6">
+							@Html.LabelFor(model => model.AddressCity)
+							@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City", @readonly = "readonly" } })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.State)
+							@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.MaritialStatus)
+							@Html.EnumDropDownListFor(model => model.MaritialStatus, "-Select Maritial Status-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.SpeakerPicture)
+							@Html.EditorFor(model => model.SpeakerPictureName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							@*@Html.TextBoxFor(model => model.SpeakerPicture, "", new { type = "file", @class = "form-control", @readonly = "readonly" })*@
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.SpeakerAttachment)
+							@Html.EditorFor(model => model.SpeakerAttachmentName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							@*@Html.TextBoxFor(model => model.SpeakerAttachment, "", new { type = "file", @class = "form-control", @readonly = "readonly" })*@
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.Experience)
+							@Html.TextAreaFor(model => model.Experience, new { @class = "form-control", rows = 6, @readonly = "readonly" })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.Remark)
+							@Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+						</div>
+					</div>
+
+
+				</div>
+			</form>
+		</div>
+		<div class="border-left border-right border-bottom p-3 rounded-bottom">
+			<div class="col-xs-12">
+				<a href='@Url.Action("List")' class="btn btn-warning">Back</a>
+				<a href='@Url.Action("Edit",new { id = Model.Id })' class="btn btn-primary">Edit</a>
+			</div>
+		</div>
 	</div>
 </div>

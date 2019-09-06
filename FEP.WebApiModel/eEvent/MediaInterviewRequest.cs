@@ -1,4 +1,5 @@
-﻿using FEP.Model;
+﻿using FEP.Helper;
+using FEP.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +16,8 @@ namespace FEP.WebApiModel
 		public string MediaName { get; set; }
 		[Display(Name = "Media Type")]
 		public MediaType? MediaType { get; set; }
+		[Display(Name = "Media Type")]
+		public string MediaTypeDesc { get; set; }
 		[Display(Name = "Contact Person")]
 		public string ContactPerson { get; set; }
 		[DataType(DataType.PhoneNumber)]
@@ -26,6 +29,13 @@ namespace FEP.WebApiModel
 		public string AddressPoscode { get; set; }
 		public string AddressCity { get; set; }
 		public MediaState? State { get; set; }
+
+		[Display(Name = "Status")]
+		public MediaStatus? MediaStatus { get; set; }
+
+		[Display(Name = "Status")]
+		public string MediaStatusDesc { get; set; }
+
 		[DataType(DataType.EmailAddress)]
 		[Display(Name = "Email")]
 		public string Email { get; set; }
@@ -34,7 +44,7 @@ namespace FEP.WebApiModel
 		public DateTime? DateEnd { get; set; }
 		public DateTime? Time { get; set; }
 		public string Location { get; set; }
-		public string Language { get; set; }
+		public MediaLanguage? Language { get; set; }
 		public string Topic { get; set; }
 		public string Designation { get; set; }
 		public int? UserId { get; set; }
@@ -44,5 +54,32 @@ namespace FEP.WebApiModel
 		public bool Display { get; set; }
 		public int? CreatedBy { get; set; }
 		public DateTime? CreatedDate { get; set; }
+	}
+
+	public class ListMediaInterviewRequestApiModel
+	{
+		public FilterMediaInterviewRequestApiModel Filter { get; set; }
+		public MediaInterviewRequestApiModel List { get; set; }
+	}
+
+	public class FilterMediaInterviewRequestApiModel : DataTableModel
+	{
+		[Display(Name = "Media Name")]
+		public string MediaName { get; set; }
+
+		[Display(Name = "Media Type")]
+		public MediaType? MediaType { get; set; }
+
+		[Display(Name = "Contact Person")]
+		public string ContactPerson { get; set; }
+
+		[Display(Name = "Start Date")]
+		public DateTime? DateStart { get; set; }
+
+		[Display(Name = "End Date")]
+		public DateTime? DateEnd { get; set; }
+
+		[Display(Name = "Status")]
+		public MediaStatus? MediaStatus { get; set; }
 	}
 }

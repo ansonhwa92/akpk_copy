@@ -383,11 +383,9 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
         }
 
-
         [NonAction]
         private async Task<IEnumerable<RoleModel>> GetRoles()
         {
-
             var roles = Enumerable.Empty<RoleModel>();
 
             var response = await WepApiMethod.SendApiAsync<List<RoleModel>>(HttpVerbs.Get, $"Administration/Role");

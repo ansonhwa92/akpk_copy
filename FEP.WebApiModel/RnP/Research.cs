@@ -202,6 +202,8 @@ namespace FEP.WebApiModel.RnP
 
         public SurveyApprovalStatus Status { get; set; }
 
+        public DateTime ApprovalDate { get; set; }
+
         public string Remarks { get; set; }
     }
 

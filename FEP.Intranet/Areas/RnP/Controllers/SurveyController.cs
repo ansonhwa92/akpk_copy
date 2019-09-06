@@ -127,7 +127,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
-                    LogActivity("Create New Survey: " + title);
+                    await LogActivity(Modules.RnP, "Create New Survey: " + title);
 
                     TempData["SuccessMessage"] = "New Survey titled " + title + " created successfully and saved as draft.";
 
@@ -224,7 +224,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
-                    LogActivity("Edit Survey: " + response.Data, model);
+                    await LogActivity(Modules.RnP, "Edit Survey: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Survey titled " + response.Data + " updated successfully and saved as draft.";
 
@@ -325,7 +325,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
-                    LogActivity("Build Survey: " + response.Data, model);
+                    await LogActivity(Modules.RnP, "Build Survey: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Survey titled " + response.Data + " built successfully and saved as draft.";
 
@@ -365,7 +365,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
-                    LogActivity("Survey design saved as Template named: " + response.Data, model);
+                    await LogActivity(Modules.RnP, "Survey design saved as Template named: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Survey design saved successfully as a Template named: " + response.Data + ".";
 
@@ -457,7 +457,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
-                    LogActivity("Submit Survey: " + response.Data, model);
+                    await LogActivity(Modules.RnP, "Submit Survey: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Survey titled " + response.Data + " submitted successfully for verification.";
 
@@ -497,7 +497,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 // log trail/system success notification/dashboard notification/email/sms upon submission
                 // log trail/system success/dashboard notification upon saving as draft
 
-                LogActivity("Submit Survey: " + response.Data);
+                await LogActivity(Modules.RnP, "Submit Survey: " + response.Data);
 
                 TempData["SuccessMessage"] = "Survey titled " + response.Data + " submitted successfully for verification.";
 
@@ -646,7 +646,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 // log trail/system success notification/dashboard notification/email/sms upon submission
                 // log trail/system success/dashboard notification upon saving as draft
 
-                LogActivity("Delete Survey: " + response.Data);
+                await LogActivity(Modules.RnP, "Delete Survey: " + response.Data);
 
                 TempData["SuccessMessage"] = "Survey titled " + response.Data + " successfully deleted.";
 
@@ -682,7 +682,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 // log trail/system success notification/dashboard notification/email/sms upon submission
                 // log trail/system success/dashboard notification upon saving as draft
 
-                LogActivity("Delete Survey: " + response.Data);
+                await LogActivity(Modules.RnP, "Delete Survey: " + response.Data);
 
                 TempData["SuccessMessage"] = "Survey titled " + response.Data + " successfully deleted.";
 
@@ -716,7 +716,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
-                    LogActivity("Cancel Survey: " + response.Data, model);
+                    await LogActivity(Modules.RnP, "Cancel Survey: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Survey titled " + response.Data + " successfully cancelled.";
 
@@ -833,14 +833,14 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     {
                         if (model.Approval.Level == SurveyApprovalLevels.Verifier)
                         {
-                            LogActivity("Verify Survey: " + response.Data, model);
+                            await LogActivity(Modules.RnP, "Verify Survey: " + response.Data, model);
                             TempData["SuccessMessage"] = "Survey titled " + response.Data + " updated as Verified.";
                             //SendEmail("Survey Approved", "A new Survey has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
                             // sms
                         }
                         else
                         {
-                            LogActivity("Approve Survey: " + response.Data, model);
+                            await LogActivity(Modules.RnP, "Approve Survey: " + response.Data, model);
                             TempData["SuccessMessage"] = "Survey titled " + response.Data + " updated as Approved.";
                             //SendEmail("Survey Approved", "A new Survey has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
                             // sms
@@ -848,7 +848,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     }
                     else
                     {
-                        LogActivity("Survey Requires Amendment: " + response.Data, model);
+                        await LogActivity(Modules.RnP, "Survey Requires Amendment: " + response.Data, model);
                         TempData["SuccessMessage"] = "Survey titled " + response.Data + " updated as Requires Amendment.";
                         //SendEmail("Survey Approved", "A new Survey has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
                         // sms

@@ -433,7 +433,7 @@ namespace FEP.WebApi.Api.RnP
                 ApproverId = 0,
                 Status = PublicationApprovalStatus.None,
                 Remarks = "",
-                RequireNext = false
+                RequireNext = s.RequireNext
             }).FirstOrDefault();
 
             var pevaluation = new ReturnPublicationApprovalModel
@@ -456,6 +456,7 @@ namespace FEP.WebApi.Api.RnP
             {
                 Level = s.Level,
                 ApproverId = s.ApproverId,
+                ApprovalDate = s.ApprovalDate,
                 Status = s.Status,
                 Remarks = s.Remarks
             }).ToList();
@@ -758,12 +759,14 @@ namespace FEP.WebApi.Api.RnP
                                 {
                                     case PublicationApprovalLevels.Verifier:
                                         nextlevel = PublicationApprovalLevels.Approver1;
+                                        publication.Status = PublicationStatus.Verified;
+                                        db.Entry(publication).State = EntityState.Modified;
                                         break;
                                     case PublicationApprovalLevels.Approver1:
-                                        nextlevel = PublicationApprovalLevels.Approver1;
+                                        nextlevel = PublicationApprovalLevels.Approver2;
                                         break;
                                     case PublicationApprovalLevels.Approver2:
-                                        nextlevel = PublicationApprovalLevels.Approver1;
+                                        nextlevel = PublicationApprovalLevels.Approver3;
                                         break;
                                     default:
                                         nextlevel = PublicationApprovalLevels.Approver1;
@@ -961,12 +964,14 @@ namespace FEP.WebApi.Api.RnP
                                 {
                                     case PublicationApprovalLevels.Verifier:
                                         nextlevel = PublicationApprovalLevels.Approver1;
+                                        publication.Status = PublicationStatus.WithdrawalVerified;
+                                        db.Entry(publication).State = EntityState.Modified;
                                         break;
                                     case PublicationApprovalLevels.Approver1:
-                                        nextlevel = PublicationApprovalLevels.Approver1;
+                                        nextlevel = PublicationApprovalLevels.Approver2;
                                         break;
                                     case PublicationApprovalLevels.Approver2:
-                                        nextlevel = PublicationApprovalLevels.Approver1;
+                                        nextlevel = PublicationApprovalLevels.Approver3;
                                         break;
                                     default:
                                         nextlevel = PublicationApprovalLevels.Approver1;

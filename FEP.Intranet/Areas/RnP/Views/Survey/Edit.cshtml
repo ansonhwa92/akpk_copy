@@ -234,6 +234,12 @@
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
+            var tstart = $('#StartDate').val();
+            var tend = $('#EndDate').val();
+            tstart = tstart.substr(0, 10);
+            tend = tend.substr(0, 10);
+            $('#StartDate').val(tstart);
+            $('#EndDate').val(tend);
             var mystart = $('#StartDate').val();
             var myend = $('#EndDate').val();
             $("#date_start").flatpickr({

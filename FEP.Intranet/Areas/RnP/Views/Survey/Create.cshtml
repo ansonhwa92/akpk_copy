@@ -215,6 +215,7 @@
                             <div class="custom-control custom-radio">
                                 @Html.RadioButtonFor(model => model.RequireLogin, "true", new { id = "yes" })
                                 @Html.Label("yes", "Yes")
+                                <br />
                                 @Html.RadioButtonFor(model => model.RequireLogin, "false", new { id = "no" })
                                 @Html.Label("No", "No")
                                 @Html.ValidationMessageFor(model => model.RequireLogin, "", new { @class = "text-danger" })

@@ -217,6 +217,8 @@ namespace FEP.WebApiModel.RnP
 
         public PublicationApprovalStatus Status { get; set; }
 
+        public DateTime ApprovalDate { get; set; }
+
         public string Remarks { get; set; }
     }
 

@@ -49,25 +49,39 @@
                 <div>
                     @{ if (Model.Pub.Status == PublicationStatus.Submitted)
                         {
-                            <!-- verifier -->
-                            <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
-                            <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                            if (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))
+                            {
+                                <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+                                <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                            }
                         }
                         else if (Model.Pub.Status == PublicationStatus.Verified)
                         {
-                            <!-- approver -->
-                            <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
-                            <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                            if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1) && Model.Approval.Level == PublicationApprovalLevels.Approver1)
+                            {
+                                <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+                                <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                            }
+                            else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2) && Model.Approval.Level == PublicationApprovalLevels.Approver2)
+                            {
+                                <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+                                <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                            }
+                            else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3) && Model.Approval.Level == PublicationApprovalLevels.Approver3)
+                            {
+                                <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+                                <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                                }
+                            }
                         }
-                    }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-        <!-- Start Form -->
-        <div class="border-form rounded-top">
-            <!--form-->
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <!--form-->
                 <div class="form-container tab-content">
                     <div class="tab-pane active" id="publication-details">
                         <div class="mb-4 mt-2 mr-auto">
@@ -315,7 +329,7 @@
                                         var icount = 0;
                                         foreach (var item in ViewBag.History)
                                         {
-                                            if (item.Status == 2)
+                                            if (item.Status == PublicationApprovalStatus.Rejected)
                                             {
                                                 icount++;
                                                 <li class="list-group-item pt-4">
@@ -350,15 +364,14 @@
 
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        @Html.HiddenFor(model => model.Pub.Author, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-
-                        @*Html.LabelFor(model => model.Approval.Status, htmlAttributes: new { @class = "control-label" })*@
-                        @Html.HiddenFor(model => model.Approval.ID, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.HiddenFor(model => model.Approval.PublicationID, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.HiddenFor(model => model.Approval.Level, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.HiddenFor(model => model.Approval.ApproverId, new { htmlAttributes = new { @class = "form-control" } })
-                        @*Html.EnumDropDownListFor(model => model.Approval.Status, null, htmlAttributes: new { @class = "form-control" })*@
-                        @*Html.ValidationMessageFor(model => model.Approval.Status, "", new { @class = "text-danger" })*@
+                        <div style="display:none;">
+                            @Html.EditorFor(model => model.Approval.ID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Approval.PublicationID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Approval.Level, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Approval.ApproverId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Approval.Status, new { htmlAttributes = new { @class = "form-control" } })
+                            @*Html.ValidationMessageFor(model => model.Approval.Status, "", new { @class = "text-danger" })*@
+                        </div>
 
                         <div class="modal fade" id="modalApprove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-sm" role="document">
@@ -366,29 +379,35 @@
                                     <div class="modal-body">
                                         @if (Model.Pub.Status == PublicationStatus.Submitted)
                                         {
-                                            <!-- mandatory forward (verifier) -->
-                                            <h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
-                                            <h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
+                                            if (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))
+                                            {
+                                                <h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
+                                                @Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+                                            }
                                         }
                                         else if (Model.Pub.Status == PublicationStatus.Verified)
                                         {
-                                            <!-- optional forward -->
-                                            <h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
-                                            <h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
-                                            <div class="form-group">
-                                                <div class="ml-4">
-                                                    <div class="custom-control custom-radio">
-                                                        <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" checked="">
-                                                        <label class="custom-control-label" for="customRadio1">Yes, submit to next level approval</label>
-                                                        <label class="custom-control-label" for="customRadio1">@Html.RadioButtonFor(model => model.Approval.RequireNext, true) Yes, submit to next level approval</label>
-                                                    </div>
-                                                    <div class="custom-control custom-radio">
-                                                        <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-                                                        <label class="custom-control-label" for="customRadio2">No, skip and approve this Publication</label>
-                                                        <label class="custom-control-label" for="customRadio2">@Html.RadioButtonFor(model => model.Approval.RequireNext, false) No, skip and approve this Publication</label>
+                                            if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1) || CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2))
+                                            {
+                                                <h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
+                                                <h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
+                                                <div class="form-group">
+                                                    <div class="ml-4">
+                                                        <div class="custom-control custom-radio">
+                                                            @Html.RadioButtonFor(model => model.Approval.RequireNext, true, new { @id = "option1" })
+                                                            <label for="option1">Yes, submit to next level approval</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            @Html.RadioButtonFor(model => model.Approval.RequireNext, false, new { @id = "option2" })
+                                                            <label for="option2">No, skip and approve this Publication</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            }
+                                            else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3))
+                                            {
+                                                @Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+                                            }
                                         }
                                         <div class="form-group">
                                             <label>Remarks</label>
@@ -441,7 +460,7 @@
                                     <div class="modal-body">
                                         <h4 class="color-darkblue mt-4">Require Amendment</h4>
                                         <label>Remarks</label>
-                                        <textarea class="form-control" rows="4" placeholder=""></textarea>
+                                        <textarea class="form-control" name="Reject.Remarks" id="Reject_Remarks" rows="4" placeholder=""></textarea>
                                     </div>
                                     <div class="divider-border"></div>
                                     <div class="m-4 text-center">
@@ -507,14 +526,14 @@
                     </div>
                 </div>
                 <!--  End Action Log -->
-            <!--/form-->
-            <!-- End Form -->
+                <!--/form-->
+                <!-- End Form -->
+            </div>
         </div>
     </div>
-</div>
 
-@section ContentScript {
-    <script type="text/javascript">
+    @section ContentScript {
+        <script type="text/javascript">
         $(document).ready(function () {
             var selectedLang = $('#Pub_Language').val();
             if (selectedLang.indexOf("English") >= 0) {
@@ -538,10 +557,30 @@
             });
             $('#btnApproveConfirm').click(function (event) {
                 // ajax call for approval
-                //var aid = $('#Approval_ID').val();
-                var url = '@Url.Action("Evaluate", "Publication", new { area = "RnP" })';
-                alert(url);
-                //window.location = url;
+                $('#Approval_Status').val('1');
+                $('#Approval_ApproverId').val('@CurrentUser.UserId');
+                var applevel = $('#Approval_Level').val();
+                if (applevel == "Verifier") {
+                    $('#Approval_RequireNext').val('True');
+                }
+                else if (applevel == "Approver3") {
+                    $('#Approval_RequireNext').val('False');
+                }
+                $('#myform').submit();
+                //var targeturl = '@*Url.Action("Evaluate", "Publication", new { area = "RnP" })*@';
+                //var form = $('#myform');
+                //alert(form.serialize());
+                //alert(targeturl);
+                /*
+                $.ajax({
+                    url: targeturl,
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        alert('success!')
+                    }
+                });
+                */
                 //$("#modalApproveSent").modal();
             });
             $('#btnReject').click(function (event) {
@@ -550,14 +589,36 @@
             });
             $('#btnRejectConfirm').click(function (event) {
                 // ajax call for approval
-                //var aid = $('#Approval_ID').val();
-                var url = '@Url.Action("Evaluate", "Publication", new { area = "RnP" })';
-                alert(url);
-                //window.location = url;
+                var rejecttext = $('#Reject_Remarks').val();
+                $('#Approval_Remarks').val(rejecttext);
+                $('#Approval_Status').val('2');
+                $('#Approval_ApproverId').val('@CurrentUser.UserId');
+                var applevel = $('#Approval_Level').val();
+                if (applevel == "Verifier") {
+                    $('#Approval_RequireNext').val('True');
+                }
+                else if (applevel == "Approver3") {
+                    $('#Approval_RequireNext').val('False');
+                }
+                $('#myform').submit();
+                //var targeturl = '@*Url.Action("Evaluate", "Publication", new { area = "RnP" })*@';
+                //var form = $('#myform');
+                //alert(form.serialize());
+                //alert(targeturl);
+                /*
+                $.ajax({
+                    url: targeturl,
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        alert('success!')
+                    }
+                });
+                */
                 //$("#modalApproveSent").modal();
             });
         });
-    </script>
-}
+        </script>
+    }
 
 

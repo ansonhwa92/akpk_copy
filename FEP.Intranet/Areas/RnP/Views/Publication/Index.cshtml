@@ -250,23 +250,79 @@
 
                             var action = "";
 
+                            var canview = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationView));
+                            var canedit = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationEdit));
+                            var candelete = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationDelete));
+                            var canverify = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationVerify));
+                            var canapprove1 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1));
+                            var canapprove2 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2));
+                            var canapprove3 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3));
+                            //var canpublish = @*Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationPublish));*@
+
+                            action = '<div class="icon-action">';
+
+                            if (canview) {
+                                action += '<a href="@Url.Action("Details", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
+                            }
+
                             if (row.Status == 0) {
-                                action = '<div class="icon-action">'
-                                    + '<a href="@Url.Action("Details", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;'
-                                    + '<a href="@Url.Action("Edit", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                                    + '<a href="@Url.Action("Delete", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
-                                    + '</div>';
+                                if (canedit) {
+                                    action += '<a href="@Url.Action("Edit", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
+                                }
+                                if (candelete) {
+                                    action += '<a href="@Url.Action("Delete", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>';
+                                }
                             }
                             else if (row.Status == 1) {
-                                action = '<div class="icon-action">'
-                                    + '<a href="@Url.Action("Evaluate", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>'
-                                    + '</div>';
+                                if (canverify || canapprove1 || canapprove2 || canapprove3) {
+                                    action += '<a href="@Url.Action("Evaluate", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
+                                }
+                            }
+                            else if (row.Status == 2) {
+                                if (canedit) {
+                                    action += '<a href="@Url.Action("Edit", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
+                                }
+                            }
+                            else if (row.Status == 3) {
+                                if (canapprove1 || canapprove2 || canapprove3) {
+                                    action += '<a href="@Url.Action("Evaluate", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
+                                }
+                            }
+                            else if (row.Status == 4) {
+                                if (canedit) {
+                                    action += '<a href="@Url.Action("Edit", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
+                                }
+                            }
+                            /*
+                            else if (row.Status == 5) {
+                            }
+                            else if (row.Status == 6) {
+                            }
+                            else if (row.Status == 7) {
+                            }
+                            else if (row.Status == 8) {
+                            }
+                            else if (row.Status == 9) {
+                            }
+                            else if (row.Status == 10) {
+                            }
+                            else if (row.Status == 11) {
+                            }
+                            else if (row.Status == 12) {
+                            }
+                            else if (row.Status == 13) {
+                            }
+                            else if (row.Status == 14) {
+                            }
+                            else if (row.Status == 15) {
+                            }
+                            else if (row.Status == 16) {
                             }
                             else {
-                                action = '<div class="icon-action">'
-                                    + '<a href="@Url.Action("Details", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-                                    + '</div>';
                             }
+                            */
+
+                            action += '</div>';
 
                             return action;
                         }

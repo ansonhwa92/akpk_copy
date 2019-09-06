@@ -770,10 +770,10 @@ namespace FEP.WebApi.Api.RnP
                                         nextlevel = SurveyApprovalLevels.Approver1;
                                         break;
                                     case SurveyApprovalLevels.Approver1:
-                                        nextlevel = SurveyApprovalLevels.Approver1;
+                                        nextlevel = SurveyApprovalLevels.Approver2;
                                         break;
                                     case SurveyApprovalLevels.Approver2:
-                                        nextlevel = SurveyApprovalLevels.Approver1;
+                                        nextlevel = SurveyApprovalLevels.Approver3;
                                         break;
                                     default:
                                         nextlevel = SurveyApprovalLevels.Approver1;

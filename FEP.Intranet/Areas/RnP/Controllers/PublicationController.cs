@@ -107,7 +107,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
-                    LogActivity("Create New Publication: " + title);
+                    await LogActivity(Modules.RnP, "Create New Publication: " + title);
 
                     if (Submittype == "Save")
                     {
@@ -227,7 +227,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
-                    LogActivity("Edit Publication: " + response.Data, model);
+                    await LogActivity(Modules.RnP, "Edit Publication: " + response.Data, model);
 
                     if (Submittype == "Save")
                     {
@@ -340,7 +340,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
-                    LogActivity("Submit Publication: " + response.Data, model);
+                    await LogActivity(Modules.RnP, "Submit Publication: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Publication titled " + response.Data + " submitted successfully for verification.";
 
@@ -381,7 +381,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 // log trail/system success notification/dashboard notification/email/sms upon submission
                 // log trail/system success/dashboard notification upon saving as draft
 
-                LogActivity("Submit Publication: " + response.Data);
+                await LogActivity(Modules.RnP, "Submit Publication: " + response.Data);
 
                 TempData["SuccessMessage"] = "Publication titled " + response.Data + " submitted successfully for verification.";
 
@@ -534,7 +534,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 // log trail/system success notification/dashboard notification/email/sms upon submission
                 // log trail/system success/dashboard notification upon saving as draft
 
-                LogActivity("Delete Publication: " + response.Data);
+                await LogActivity(Modules.RnP, "Delete Publication: " + response.Data);
 
                 TempData["SuccessMessage"] = "Publication titled " + response.Data + " successfully deleted.";
 
@@ -570,7 +570,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 // log trail/system success notification/dashboard notification/email/sms upon submission
                 // log trail/system success/dashboard notification upon saving as draft
 
-                LogActivity("Delete Publication: " + response.Data);
+                await LogActivity(Modules.RnP, "Delete Publication: " + response.Data);
 
                 TempData["SuccessMessage"] = "Publication titled " + response.Data + " successfully deleted.";
 
@@ -604,7 +604,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
-                    LogActivity("Cancel Publication: " + response.Data, model);
+                    await LogActivity(Modules.RnP, "Cancel Publication: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Publication titled " + response.Data + " successfully cancelled.";
 
@@ -735,14 +735,14 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     {
                         if (model.Approval.Level == PublicationApprovalLevels.Verifier)
                         {
-                            LogActivity("Verify Publication: " + response.Data, model);
+                            await LogActivity(Modules.RnP, "Verify Publication: " + response.Data, model);
                             TempData["SuccessMessage"] = "Publication titled " + response.Data + " updated as Verified.";
                             //SendEmail("Publication Approved", "A new Publication has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
                             // sms
                         }
                         else
                         {
-                            LogActivity("Approve Publication: " + response.Data, model);
+                            await LogActivity(Modules.RnP, "Approve Publication: " + response.Data, model);
                             TempData["SuccessMessage"] = "Publication titled " + response.Data + " updated as Approved.";
                             //SendEmail("Publication Approved", "A new Publication has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
                             // sms
@@ -750,7 +750,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     }
                     else
                     {
-                        LogActivity("Publication Requires Amendment: " + response.Data, model);
+                        await LogActivity(Modules.RnP, "Publication Requires Amendment: " + response.Data, model);
                         TempData["SuccessMessage"] = "Publication titled " + response.Data + " updated as Requires Amendment.";
                         //SendEmail("Publication Approved", "A new Publication has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
                         // sms
@@ -770,6 +770,22 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
             return View(model);
+        }
+
+        /*
+         * Statics 
+         */
+
+        public static List<SelectListItem> GetDropDownListForYears()
+        {
+            List<SelectListItem> ls = new List<SelectListItem>();
+
+            for (int i = 1960; i <= 2200; i++)
+            {
+                ls.Add(new SelectListItem() { Text = i.ToString(), Value = i.ToString() });
+            }
+
+            return ls;
         }
 
         /*

@@ -224,19 +224,15 @@
 
                             if (row.Status == 0) {
                                 action = '<div class="icon-action">'
-                                    + '<a href="@Url.Action("Details", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;'
                                     + '<a href="@Url.Action("Edit", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                                    + '<a href="@Url.Action("Delete", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
                                     + '</div>';
                             }
                             else if (row.Status == 1) {
                                 action = '<div class="icon-action">'
-                                    + '<a href="@Url.Action("Evaluate", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>'
                                     + '</div>';
                             }
                             else {
                                 action = '<div class="icon-action">'
-                                    + '<a href="@Url.Action("Details", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
                                     + '</div>';
                             }
 

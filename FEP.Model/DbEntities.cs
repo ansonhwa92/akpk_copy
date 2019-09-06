@@ -34,10 +34,14 @@ namespace FEP.Model
         public DbSet<Department> Department { get; set; }
         public DbSet<Branch> Branch { get; set; }
 
+        //access
+        public DbSet<Access> Access { get; set; }
+
         //role
         public DbSet<Role> Role { get; set; }
         public DbSet<RoleAccess> RoleAccess { get; set; }
         public DbSet<UserRole> UserRole { get; set; }
+        public DbSet<RoleDefault> RoleDefault { get; set; }
 
         //setting
         public DbSet<SystemSetting> SystemSetting { get; set; }
@@ -66,9 +70,12 @@ namespace FEP.Model
 		public DbSet<PurchaseOrder> PurchaseOrder { get; set; }
 		public DbSet<PurchaseOrderItem> PurchaseOrderItem { get; set; }
 
+        //logs
+        public DbSet<UserLog> UserLog { get; set; }
+        public DbSet<ErrorLog> ErrorLog { get; set; }
 
-		//elearning
-		public DbSet<LearningCourse> LearningCourse { get; set; }
+        //elearning
+        public DbSet<LearningCourse> LearningCourse { get; set; }
 		public DbSet<LearningCourseCertificate> LearningCourseCertificate { get; set; }
 		public DbSet<LearningCourseCategory> LearningCourseCategory { get; set; }
 		public DbSet<Learner> Learner { get; set; }

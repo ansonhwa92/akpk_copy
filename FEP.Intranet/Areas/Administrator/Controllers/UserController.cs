@@ -1,6 +1,5 @@
 ﻿using FEP.Helper;
-using FEP.Intranet.Areas.Administrator.Models;
-using FEP.WebApiModel.User;
+using FEP.WebApiModel.Administration;
 using System;
 using System.Collections.Generic;
 using System.Linq;

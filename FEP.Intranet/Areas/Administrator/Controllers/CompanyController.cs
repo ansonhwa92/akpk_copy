@@ -1,7 +1,8 @@
 ﻿using FEP.Helper;
+using FEP.Model;
 using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.Auth;
-using FEP.WebApiModel.User;
+using FEP.WebApiModel.Notification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
     public class CompanyController : FEPController
     {
 
-        // GET: Administrator/Individual
+        // GET: Administrator/Company
         public async Task<ActionResult> List()
         {
             var filter = new FilterCompanyModel();
@@ -41,7 +42,11 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            return View(response.Data);
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpGet]
@@ -50,6 +55,8 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             var model = new CreateCompanyModel();
 
             model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
 
             return View(model);
         }
@@ -60,14 +67,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var emailResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsEmailExist?id={null}&email={model.Email}");
 
-            if (emailResponse.Data)
+            if (emailResponse.isSuccess)
             {
                 ModelState.AddModelError("Email", "Email already registered in the system");
             }
 
             var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={model.ICNo}");
 
-            if (icnoResponse.Data)
+            if (icnoResponse.isSuccess)
             {
                 ModelState.AddModelError("ICNo", "IC No already registered in the system");
             }
@@ -76,12 +83,17 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 var response = await WepApiMethod.SendApiAsync<CreateUserResponse>(HttpVerbs.Post, $"Administration/Company", model);
 
-                if (response != null)
+                if (response.isSuccess)
                 {
 
-                    SendEmail("New FEP Account Created", "Sign in Id: " + model.Email + "\n" + "Password: " + response.Data.Password, new EmailAddress() { Address = model.Email, DisplayName = model.Name });
+                    StringBuilder body = new StringBuilder();
+                    body.Append("Dear " + model.Name + ",");
+                    body.Append("<br />");
+                    body.Append("You can sign to FEP Portal <a href = '" + BaseURL + Url.Action("Login", "Auth", new { area = "" }) + "' > here </a>. Sign in Id: " + model.Email + "\n" + "Password: " + response.Data.Password);
 
-                    LogActivity("Create Agency User");
+                    await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), new EmailAddress { DisplayName = model.Name, Address = model.Email });
+
+                    LogActivity(Modules.Admin, "Create Agency User", model);
 
                     TempData["SuccessMessage"] = "User successfully registered. User will receive email with sign in details and link to activate the account.";
 
@@ -98,6 +110,8 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             }
 
             model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
 
             return View(model);
         }
@@ -118,9 +132,12 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            response.Data.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+            var model = response.Data;
 
-            return View(response.Data);
+            model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpPost]
@@ -128,14 +145,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         {
             var emailResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsEmailExist?id={model.Id}&email={model.Email}");
 
-            if (emailResponse.Data)
+            if (emailResponse.isSuccess)
             {
                 ModelState.AddModelError("Email", "Email already registered in the system");
             }
 
             var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={model.Id}&icno={model.ICNo}");
 
-            if (icnoResponse.Data)
+            if (icnoResponse.isSuccess)
             {
                 ModelState.AddModelError("ICNo", "IC No already registered in the system");
             }
@@ -146,7 +163,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 if (response.Data)
                 {
-                    LogActivity("Update Agency User", model);
+                    LogActivity(Modules.Admin, "Update Agency User", model);
 
                     TempData["SuccessMessage"] = "User record successfully updated.";
 
@@ -163,7 +180,10 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
 
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
             return View(model);
+
         }
 
         [HttpGet]
@@ -181,7 +201,11 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            return View(response.Data);
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpPost, ActionName("Activate")]
@@ -197,7 +221,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.Data)
             {
-                LogActivity("Activate Agency User Account");
+                LogActivity(Modules.Admin, "Activate Agency User Account", new { id = id });
 
                 TempData["SuccessMessage"] = "User account successfully activate.";
 
@@ -228,7 +252,11 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            return View(response.Data);
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpPost, ActionName("Deactivate")]
@@ -242,9 +270,9 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Administration/User/Deactivate/?id={id}");
 
-            if (response.Data)
+            if (response.isSuccess)
             {
-                LogActivity("Disable Agency User Account");
+                LogActivity(Modules.Admin, "Disable Agency User Account", new { id = id});
 
                 TempData["SuccessMessage"] = "User account successfully disable.";
 
@@ -275,7 +303,11 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            return View(response.Data);
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpPost, ActionName("ResetPassword")]
@@ -289,23 +321,17 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var response = await WepApiMethod.SendApiAsync<ResetPasswordResponseModel>(HttpVerbs.Post, $"Auth/ResetPassword", new { Email = Email });
 
-            if (response.Data != null)
+            if (response.isSuccess)
             {
-
-                EmailAddress receiver = new EmailAddress()
-                {
-                    DisplayName = response.Data.Name,
-                    Address = Email
-                };
-
+                               
                 StringBuilder body = new StringBuilder();
                 body.Append("Dear " + response.Data.Name + ",");
                 body.Append("<br />");
                 body.Append("You can reset your password <a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data }) + "' > here </a>");
+                               
+                await EmailMethod.SendEmail("FE Portal Password Reset By Admin", body.ToString(), new EmailAddress { DisplayName = response.Data.Name, Address = Email });
 
-                SendEmail("FEP Password Reset", body.ToString(), receiver);
-
-                LogActivity("Reset Agency User Account Password");
+                LogActivity(Modules.Admin, "Reset Agency User Account Password", new { id = id });
 
                 TempData["SuccessMessage"] = "User account password successfully reset. User will receive email with link to reset account password.";
 
@@ -336,7 +362,11 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            return View(response.Data);
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -350,9 +380,9 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Administration/User/Delete/?id={id}");
 
-            if (response.Data)
+            if (response.isSuccess)
             {
-                LogActivity("Delete Agency User");
+                LogActivity(Modules.Admin, "Delete Agency User", new { id = id });
 
                 TempData["SuccessMessage"] = "User account successfully delete.";
 
@@ -365,6 +395,39 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _Add()
+        {
+            var filter = new FilterCompanyModel();
+
+            filter.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+
+            return View(new ListCompanyModel { Filter = filter });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _Details(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<DetailsCompanyModel>(HttpVerbs.Get, $"Administration/Company?id={id}");
+
+            if (!response.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var model = response.Data;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
 
         }
 
@@ -382,6 +445,23 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             }
 
             return sectors;
+
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<RoleModel>> GetRoles()
+        {
+
+            var roles = Enumerable.Empty<RoleModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<RoleModel>>(HttpVerbs.Get, $"Administration/Role");
+
+            if (response.isSuccess)
+            {
+                roles = response.Data.OrderBy(o => o.Name);
+            }
+
+            return roles;
 
         }
     }

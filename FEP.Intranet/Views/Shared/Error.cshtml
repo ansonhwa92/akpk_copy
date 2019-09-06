@@ -1,13 +1,18 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
-</head>
-<body>
-    <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
-    </hgroup>
-</body>
-</html>
+﻿
+@{
+    ViewBag.Title = "System Error";
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+
+}
+
+<div class="register-select-wrapper">
+    <div class="col-sm-8 col-md-6 col-lg-4 mx-auto">
+        <div class="col-xs-12">
+            <h3><i class="fa fa-warning text-red"></i> Oops! Something went wrong.</h3>
+            <p>
+                Please contact System Admin.<br />
+                You may <a href="@Url.Action("Index","Home", new { area = "" })">return to dashboard</a> or try @Html.ActionLink("back", null, null, null, new { href = Request.UrlReferrer }) to previous page.
+            </p>
+        </div>
+    </div>
+</div>

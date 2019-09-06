@@ -235,6 +235,7 @@ namespace FEP.Model
 		public string Language { get; set; }
 		public string Topic { get; set; }
 		public string Designation { get; set; }
+		public MediaStatus? MediaStatus { get; set; }
 
 		public int? UserId { get; set; }
 		[ForeignKey("UserId")]
@@ -421,8 +422,20 @@ namespace FEP.Model
 	{
 		[Key]
 		public int Id { get; set; }
-		public int? ReceivedBy { get; set; }
-		public DateTime ReceivedDate { get; set; }
+		public string EventName { get; set; }
+		public string Organiser { get; set; }
+		public string Location { get; set; }
+		public DateTime? StartDate { get; set; }
+		public DateTime? EndDate { get; set; }
+		public DateTime? StartTime { get; set; }
+		public DateTime? EndTime { get; set; }
+		public string ParticipationRequirement { get; set; }
+		public ExhibitionStatus? ExhibitionStatus { get; set; }
+
+		public int? ReceivedById { get; set; }
+		[ForeignKey("ReceivedById")]
+		public virtual User ReceivedBy { get; set; }
+		public DateTime? ReceivedDate { get; set; }
 		public string Receive_Via { get; set; }
 
 		[ForeignKey("CreatedBy")]

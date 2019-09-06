@@ -27,32 +27,20 @@ namespace FEP.WebApi.Api.Administration
         }
 
         // GET: api/Sector
-        public List<SectorModel> Get()
+        public IHttpActionResult Get()
         {
             var sectors = db.Sector.Where(u => u.Display).Select(s => new SectorModel
             {
                 Id = s.Id,
-                Name = s.Name                
+                Name = s.Name
             }).ToList();
 
-            return sectors;
+            return Ok(sectors);
         }
 
-        [HttpPost]
-        public List<SectorModel> GetTable()
-        {
-            //var sectors = db.Sector.Where(u => u.Display).Select(s => new SectorModel
-            //{
-            //    Id = s.Id,
-            //    Name = s.Name
-            //}).ToList();
-
-            //return sectors;
-            return null;
-        }
-
+        
         // GET: api/Sector/5
-        public SectorModel Get(int id)
+        public IHttpActionResult Get(int id)
         {
             var sector = db.Sector.Where(u => u.Display && u.Id == id).Select(s => new SectorModel
             {
@@ -60,61 +48,59 @@ namespace FEP.WebApi.Api.Administration
                 Name = s.Name
             }).FirstOrDefault();
 
-            return sector;          
+            if (sector != null)
+            {
+                return Ok(sector);
+            }
+
+            return NotFound();
         }
 
         // POST: api/Sector
-        public int? Post([FromBody]CreateSectorModel model)
+        [ValidationActionFilter]
+        public IHttpActionResult Post([FromBody]CreateSectorModel model)
         {
-            if (ModelState.IsValid)
+
+            var sector = new Sector
             {
-                var sector = new Sector
-                {
-                    Name = model.Name,
-                    Display = true
-                };
+                Name = model.Name,
+                Display = true
+            };
 
-                db.Sector.Add(sector);
-                db.SaveChanges();
+            db.Sector.Add(sector);
+            db.SaveChanges();
 
-                return sector.Id;
-            }
-
-            return null;
-
+            return Ok(sector.Id);
+            
         }
 
         // PUT: api/Sector/5
-        public bool Put(int id, [FromBody]EditSectorModel model)
+        [ValidationActionFilter]
+        public IHttpActionResult Put(int id, [FromBody]EditSectorModel model)
         {
 
-            if (ModelState.IsValid)
+            var sector = db.Sector.Where(s => s.Id == id).FirstOrDefault();
+
+            if (sector != null)
             {
-                var sector = db.Sector.Where(s => s.Id == id).FirstOrDefault();
+                sector.Name = model.Name;
 
-                if (sector != null)
-                {
-                    sector.Name = model.Name;
+                db.Entry(sector).State = EntityState.Modified;
+                db.Entry(sector).Property(x => x.Display).IsModified = false;
 
-                    db.Entry(sector).State = EntityState.Modified;
-                    db.Entry(sector).Property(x => x.Display).IsModified = false;
+                db.SaveChanges();
 
-                    db.SaveChanges();
-
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-
+                return Ok(true);
+            }
+            else
+            {
+                return NotFound();
             }
 
-            return false;
         }
 
         // DELETE: api/Sector/5
-        public bool Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
             var sector = db.Sector.Where(u => u.Id == id).FirstOrDefault();
 
@@ -128,13 +114,31 @@ namespace FEP.WebApi.Api.Administration
 
                 db.SaveChanges();
 
-                return true;
+                return Ok(true);
             }
             else
             {
-                return false;
+                return NotFound();
             }
 
+        }
+
+        [Route("api/Administration/Sector/IsNameExist")]
+        [HttpGet]
+        public IHttpActionResult IsNameExist(int? id, string name)
+        {
+            if (id == null)
+            {
+                if (db.Sector.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Display))
+                    return Ok(true);
+            }
+            else
+            {
+                if (db.Sector.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
+                    return Ok(true);
+            }
+
+            return NotFound();
         }
 
     }

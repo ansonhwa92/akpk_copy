@@ -254,15 +254,19 @@
 							<ul class="nav navbar-nav">
 								<li class="nav-item dropdown">
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User & Role Management</a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })">Individual</a>
-										<a class="dropdown-item" href="@Url.Action("List", "Company", new { area = "Administrator" })">Agency</a>
-									</div>
+                                    <div class="dropdown-menu">
+										<a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })"><i class="la la-user color-secondary font-icon"></i>Manage Individual</a>
+										<a class="dropdown-item" href="@Url.Action("List", "Company", new { area = "Administrator" })"><i class="la la-group color-secondary font-icon"></i>Manage Agency</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Role", new { area = "Administrator" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Role</a>
+                                    </div>
 								</li>
 								<li class="nav-item dropdown">
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Event Management</a>
 									<div class="dropdown-menu">
-										<a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })">Internal Event</a>
+										<a class="dropdown-item" href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })"><i class="la la-calendar color-secondary font-icon"></i>Create Event</a>
+										<a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Public Event</a>
+										<a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Media Interview</a>
+										<a class="dropdown-item" href="#"><i class="la la-comments-o color-secondary font-icon"></i>Manage Exhibition/Roadshow Request</a>
 									</div>
 								</li>
 								<li class="nav-item dropdown">
@@ -294,12 +298,11 @@
 								</li>
 								<li class="nav-item dropdown">
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">System Settings</a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="@Url.Action("List", "EventCategory", new { area = "eEvent" })">Event Category</a>
-                                        @*<a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })">User</a>*@
-										<a class="dropdown-item" href="#">Menu 3</a>
-										<a class="dropdown-item" href="#">Menu 4</a>
-									</div>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "UserLog", new { area = "Logs" })">User Log</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "ErrorLog", new { area = "Logs" })">Error Log</a>
+                                    </div>
 								</li>
 
 							</ul>
@@ -390,6 +393,20 @@
                 var y = moment(value, 'DD/MM/YYYY', true);
                 return this.optional(element) || moment(value, 'DD/MM/YYYY', true).isValid() || moment(value, 'HH:mm', true).isValid();
         };
+
+        function resetValidations() {
+            //Removes validation from input-fields
+            $('.input-validation-error').addClass('input-validation-valid');
+            $('.input-validation-error').removeClass('input-validation-error');
+            //Removes validation message after input-fields
+            $('.field-validation-error').html('');
+            $('.field-validation-error').addClass('field-validation-valid');
+            $('.field-validation-error').removeClass('field-validation-error');
+            //Removes validation summary 
+            $('.validation-summary-errors').addClass('validation-summary-valid');
+            $('.validation-summary-errors').removeClass('validation-summary-errors');
+
+        }
 
 	</script>
 

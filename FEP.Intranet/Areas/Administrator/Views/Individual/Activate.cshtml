@@ -102,6 +102,12 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(m => m.RoleIds)
+                        @Html.ListBoxFor(m => m.RoleIds, Model.Roles, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled", })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
                         @Html.LabelFor(m => m.Status)
                         <div>
                             @if (Model.Status)

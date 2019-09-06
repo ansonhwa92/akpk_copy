@@ -534,6 +534,47 @@
     <script src="assets/js/flatpickr.js"></script>
     <!-- Global Settings -->
     <script src="../js/script-admin.js"></script>
+    <script type="text/javascript">
+    var eventObjectivehtml = $("#eventobjective").html();
+    var btnAddMore = $('#btnAddMore');
+
+    btnAddMore.click(function() {
+        $("#eventobjective").append(eventObjectivehtml);
+    });
+
+    $('#eventobjective').on("click", ".deleteItem", function() {
+        $(this).closest(".lineItem").remove();
+        // console.log($(this));
+        return;
+    });
+
+
+    var externalExhibitorshtml = $("#externalexhibitors").html();
+    var btnAddEe = $('#btnAddExhibitor');
+
+    btnAddEe.click(function() {
+        $("#externalexhibitors").append(externalExhibitorshtml);
+    });
+
+    $('#externalexhibitors').on("click", ".deleteItem", function() {
+        $(this).closest(".lineItem").remove();
+        // console.log($(this));
+        return;
+    });
+
+    var speakerhtml = $("#addspeaker").html();
+    var btnAddSpeaker = $('#btnAddspeaker');
+
+    btnAddSpeaker.click(function() {
+        $("#addspeaker").append(speakerhtml);
+    });
+
+    $('#addspeaker').on("click", ".deleteItem", function() {
+        $(this).closest(".lineItem").remove();
+        // console.log($(this));
+        return;
+    });
+    </script>
 </body>
 
 </html>

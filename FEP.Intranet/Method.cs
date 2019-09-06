@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using FEP.Helper;
+using FEP.WebApiModel.Administration;
+using FEP.WebApiModel.Notification;
 using Newtonsoft.Json;
 
 namespace FEP.Intranet
@@ -106,6 +108,161 @@ namespace FEP.Intranet
         public bool isSuccess { get; set; }
         public string ErrorMessage { get; set; }
         public T Data { get; set; }
+    }
+
+    public static class EmailMethod
+    {
+        
+        public static async Task<long?> SendEmail(string Subject, string Body, EmailAddress To, DateTime? SendDate = null)
+        {
+
+            try
+            {
+
+                SendDate = SendDate ?? DateTime.Now;
+
+                var email = new EmailRecipientModel
+                {
+                    Subject = Subject,
+                    Body = Body,
+                    To = To,
+                    SendDate = SendDate
+                };
+                
+                var response = await WepApiMethod.SendApiAsync<long?>(HttpVerbs.Post, $"Notification/Email/SendEmailToRecepient", email);
+                
+                if (response.isSuccess)
+                {
+                    return response.Data;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                //LogError(ex.Message, ex.InnerException + " | " + ex.StackTrace);
+                return null;
+            }
+
+            return null;
+        }
+
+        
+        public static async Task<long?> SendEmail(string Subject, string Body, int UserId, DateTime? SendDate = null)
+        {
+            try
+            {
+                SendDate = SendDate ?? DateTime.Now;
+
+                var userResponse = await WepApiMethod.SendApiAsync<UserModel>(HttpVerbs.Get, $"Administration/User?id={UserId}");
+
+                if (userResponse.isSuccess)
+                {
+
+                    var user = userResponse.Data;
+
+                    var email = new EmailRecipientModel
+                    {
+                        Subject = Subject,
+                        Body = Body,
+                        To = new EmailAddress { DisplayName = user.Name, Address = user.Email },
+                        SendDate = DateTime.Now
+                    };
+
+                    var emailResponse = await WepApiMethod.SendApiAsync<long?>(HttpVerbs.Post, $"Notification/Email/SendEmailToRecepient", email);
+
+                    if (emailResponse.isSuccess)
+                    {
+                        return emailResponse.Data;
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //LogError(ex.Message, ex.InnerException + " | " + ex.StackTrace);
+                return null;
+            }
+
+            return null;
+        }
+
+        
+        public static async Task<long?> SendEmail(string Subject, string Body, List<EmailAddress> To, DateTime? SendDate = null)
+        {
+            try
+            {
+                SendDate = SendDate ?? DateTime.Now;
+
+                var email = new EmailRecipientsModel
+                {
+                    Subject = Subject,
+                    Body = Body,
+                    To = To,
+                    SendDate = DateTime.Now
+                };
+
+                var response = await WepApiMethod.SendApiAsync<long?>(HttpVerbs.Post, $"Notification/Email/SendEmailToRecepients", email);
+
+                if (response.isSuccess)
+                {
+                    return response.Data;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                //LogError(ex.Message, ex.InnerException + " | " + ex.StackTrace);
+                return null;
+            }
+
+            return null;
+        }
+
+        
+        public static async Task<long?> SendEmail(string Subject, string Body, List<int> RecipientsId, DateTime? SendDate = null)
+        {
+            try
+            {
+                SendDate = SendDate ?? DateTime.Now;
+
+                var userResponse = await WepApiMethod.SendApiAsync<List<UserModel>>(HttpVerbs.Post, $"Administration/UserGetUsers", RecipientsId);
+
+                if (userResponse.isSuccess)
+                {
+                                        
+                    var users = userResponse.Data;
+
+                    var email = new EmailRecipientsModel
+                    {
+                        Subject = Subject,
+                        Body = Body,
+                        To = users.Select(s => new EmailAddress { Address = s.Email, DisplayName = s.Name }).ToList(),
+                        SendDate = DateTime.Now
+                    };
+
+                    var emailResponse = await WepApiMethod.SendApiAsync<long?>(HttpVerbs.Post, $"Notification/Email/SendEmailToRecepients", email);
+
+                    if (emailResponse.isSuccess)
+                    {
+                        return emailResponse.Data;
+                    }
+
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                //LogError(ex.Message, ex.InnerException + " | " + ex.StackTrace);
+                return null;
+            }
+
+            return null;
+        }
+
     }
 
 }

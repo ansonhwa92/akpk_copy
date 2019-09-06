@@ -27,32 +27,23 @@ namespace FEP.WebApi.Api.Administration
         }
 
         [HttpGet]
-        public List<UserApiModel> Get()
+        public IHttpActionResult Get()
         {
-            var users = db.User.Where(u => u.Display).Select(s => new UserApiModel
+            var users = db.User.Where(u => u.Display).Select(s => new UserModel
             {
-                Id = s.Id,
-                LoginId = s.UserAccount.LoginId,
+                Id = s.Id,                
                 Name = s.Name,
                 Email = s.Email,
-                UserType = s.UserType,               
-                IsEnable = s.UserAccount.IsEnable,
-                ValidFrom = s.UserAccount.ValidFrom,
-                ValidTo = s.UserAccount.ValidTo,
-                LastLogin = s.UserAccount.LastLogin,
-                LoginAttempt = s.UserAccount.LoginAttempt,
-                LastPasswordChange = s.UserAccount.LastPasswordChange,
-                CreatedBy = s.CreatedBy,
-                CreatedDate = s.CreatedDate
+                UserType = s.UserType,   
             }).ToList();
                         
-            return users;
+            return Ok(users);
         }
 
         [HttpGet]
-        public UserApiModel Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            var user = db.User.Where(u => u.Display && u.Id == id).Select(s => new UserApiModel
+            var user = db.User.Where(u => u.Display && u.Id == id).Select(s => new DetailsUserModel
             {
                 Id = s.Id,
                 LoginId = s.UserAccount.LoginId,
@@ -69,48 +60,57 @@ namespace FEP.WebApi.Api.Administration
                 CreatedDate = s.CreatedDate
             }).FirstOrDefault();
 
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             //access
             var access = db.RoleAccess.Join(db.UserRole.Where(u => u.UserId == user.Id), s => s.RoleId, s => s.RoleId, (r, u) => new { Role = r }).Select(s => s.Role.UserAccess).ToList();
 
             user.UserAccesses = access;
 
-            return user;
+            return Ok(user);
         }
+
+
+        
 
         [Route("api/Administration/User/IsEmailExist")]
         [HttpGet]
-        public bool IsEmailExist(int? id, string email)
-        {            
+        public IHttpActionResult IsEmailExist(int? id, string email)
+        {
+
             if (id == null)
             {
                 if (db.User.Any(u => u.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase) && u.Display))
-                    return true;
+                    return Ok(true);
             }
             else
             {
                 if (db.User.Any(u => u.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
-                    return true;
+                    return Ok(true);
             }
             
-            return false;
+            return NotFound();
         }
 
         [Route("api/Administration/User/IsICNoExist")]
         [HttpGet]
-        public bool IsICNoExist(int? id, string icno)
+        public IHttpActionResult IsICNoExist(int? id, string icno)
         {
             if (id == null)
             {
                 if (db.User.Any(u => u.ICNo.Equals(icno, StringComparison.CurrentCultureIgnoreCase) && u.Display))
-                    return true;
+                    return Ok(true);
             }
             else
             {
                 if (db.User.Any(u => u.ICNo.Equals(icno, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
-                    return true;
+                    return Ok(true);
             }
 
-            return false;
+            return NotFound();
         }
 
         [Route("api/Administration/User/Activate")]

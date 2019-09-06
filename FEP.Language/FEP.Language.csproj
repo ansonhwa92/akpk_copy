@@ -41,6 +41,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventCategory.Designer.cs">
+      <DependentUpon>EventCategory.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="General.Designer.cs">
+      <DependentUpon>General.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CourseCategory.Designer.cs">
+      <DependentUpon>CourseCategory.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Sector.Designer.cs">
+      <DependentUpon>Sector.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Event.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Event.resx</DependentUpon>
+    </Compile>
     <Compile Include="RnPForm.Designer.cs">
       <DependentUpon>RnPForm.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -53,6 +78,21 @@
     </Compile>
     <Compile Include="Administration.Designer.cs">
       <DependentUpon>Administration.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AccountSetting.Designer.cs">
+      <DependentUpon>AccountSetting.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ErrorLog.Designer.cs">
+      <DependentUpon>ErrorLog.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="UserLog.Designer.cs">
+      <DependentUpon>UserLog.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -74,6 +114,26 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="EventCategory.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EventCategory.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="General.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>General.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CourseCategory.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CourseCategory.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sector.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Sector.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Event.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Event.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="RnPForm.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RnPForm.Designer.cs</LastGenOutput>
@@ -85,6 +145,18 @@
     <EmbeddedResource Include="Administration.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Administration.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccountSetting.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccountSetting.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorLog.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorLog.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserLog.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserLog.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="User.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

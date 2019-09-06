@@ -1,0 +1,445 @@
+﻿@model UserRoleModel
+
+@{
+    ViewBag.Title = "User Role";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section ContentScript{
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var roleid = $('#RoleId').val();
+
+            var table = $('.tabledata').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    "type": "post",
+                    "url": '@(WebApiURL)Administration/Role/GetUser?roleId=' + roleid,
+                    "data": function (filter) {
+                        filter.Name = $('#Filter_Name').val();
+                        filter.UserType = $('#Filter_UserType').val();
+                        filter.Email = $('#Filter_Email').val();
+                    }
+                },
+                columns: [
+                    //{
+                    //    sortable: false,
+                    //    render: function () {
+
+                    //        var action = "";
+
+                    //        action = '<div class="custom-control custom-checkbox">'
+                    //                    +'<input id="customCheck1_2" type="checkbox" class="custom-control-input js-check-selected-row">'
+                    //                    +'<label class="custom-control-label" for="customCheck1_2">'
+                    //                     +   '<span class="text-hide">Check</span>'
+                    //                    +'</label>'
+                    //                +'</div>';
+
+                    //        return action;
+                    //    }
+
+                    //},
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'Name',
+                        sortable: true
+                    },
+                    {
+                        data: 'Email',
+                        sortable: true
+                    },
+                    {
+                        data: 'UserTypeDesc',
+                        sortable: true
+                    },
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+
+                            var action = "";
+
+                            action = '<div class="icon-action">'
+                                    +   '<a href="javascript:void(0)" class="btnDetail" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+                                    +   '<a href="javascript:void(0)" class="btnDelete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+                                    + '</div>';
+
+                            return action;
+                        }
+                    }
+                ],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_ user"
+                },
+                dom: 'rtip'
+            });
+
+
+            table.on('click', '.btnDelete', function () {
+
+                var data = table.row($(this).parents('tr')).data();
+
+                var userids = [];
+                userids.push(data.Id);
+
+                deleteUser(userids);
+
+            });
+
+            table.on('click', '.btnDetail', function () {
+
+                var data = table.row($(this).parents('tr')).data();
+                showUser(data.Id, data.UserType);
+
+            });
+
+            $('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup( function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change( function() {
+                table.page.len($(this).val()).draw();
+            });
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt', function () {
+
+                var info = table.page.info();
+
+                var start = 0;
+                if (info.recordsTotal != 0) {
+                    start = info.start + 1;
+                }
+
+                $('#pageInfo').html('Showing ' + start + ' - ' + info.end + ' of ' + info.recordsTotal + ' user');
+                 $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+
+            }).draw();
+
+        });
+
+        function showUser(id, usertype) {
+
+            var url = '';
+
+            if (usertype == 0) {
+                url = '@Url.Action("_Details", "Individual", new { area = "Administrator" })/' + id;
+            }
+            else if (usertype == 1) {
+                url = '@Url.Action("_Details", "Individual", new { area = "Administrator" })/' + id;
+            }
+            else if (usertype == 2) {
+                url = '@Url.Action("_Details", "Company", new { area = "Administrator" })/' + id;
+            }
+            else if (usertype == 3) {
+                url = '@Url.Action("_Details", "Staff", new { area = "Administrator" })/' + id;
+            }
+
+            if (url != '') {
+
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    success: function (data) {
+
+                        $('#modalUser').html(data);
+                        $('.js-example-basic-multiple').select2({
+                            placeholder: 'Select an option'
+                        });
+                        $('#modalUser').children('.modal').first().modal('show');
+
+                    },
+                    error: function (xhr, status, error) {
+                        $('#modalUser').html('');
+                    }
+                });
+
+            }
+
+        }
+
+
+        function showAdd(usertype) {
+
+            var url = '';
+
+            if (usertype == 1) {
+                url = '@Url.Action("_Add", "Individual", new { area = "Administrator" })';
+            }
+            else if (usertype == 2) {
+                url = '@Url.Action("_Add", "Company", new { area = "Administrator" })';
+            }
+            else if (usertype == 3) {
+                url = '@Url.Action("_Add", "Staff", new { area = "Administrator" })';
+            }
+
+            if (url != '') {
+
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    success: function (data) {
+
+                        $('#modalUser').html(data);
+                        initTable();
+                        debugger
+                        $('#modalUser').children('.modal').first().modal('show');
+
+                    },
+                    error: function (xhr, status, error) {
+                        $('#modalUser').html('');
+                    }
+                });
+            }
+
+        }
+
+        //from modal
+        function addUser(userids) {
+
+            var form = $('#formAddUser');
+            var i = 0;
+
+            userids.forEach(function (item, index) {
+
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', '[' + i + ']')
+                        .val(item)
+                );
+
+                i++;
+
+            });
+
+            form.submit();
+
+        }
+
+        function deleteUser(userids) {
+
+            var form = $('#formDeleteUser');
+            var i = 0;
+
+            userids.forEach(function (item, index) {
+
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', '[' + i + ']')
+                        .val(item)
+                );
+
+                i++;
+
+            });
+
+            form.submit();
+
+        }
+
+    </script>
+
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="@Url.Action("List")" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Administration</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">User Role</h1>
+                    @*<div class="header-text">List of registered user as individual</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Role</h6>
+                    <ul class="nav page-nav__menu">
+                        @foreach (var role in Model.Roles)
+                        {
+                            <li class="nav-item">
+                                <a href="@Url.Action("UserRole", new { id = role.Id })" class=" @if (role.Id == Model.RoleId) { @Html.Raw("active")} nav-link">@Html.DisplayFor(m => role.Name)</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+
+        <h4 class="color-darkblue mb-4 mt-2">Role: @Html.DisplayFor(m => m.RoleName)</h4>
+        <div class="divtableStyle1">
+            <div class="row no-gutters">
+                <div class="col-lg-12">
+
+                    <div class="d-flex align-items-center">
+                        <div class="filter dropdown">
+                            <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element dropdown-toggle" data-toggle="dropdown"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+                            <div class="dropdown-menu">
+                                <div class="filter-head">Filters</div>
+                                <div class="filter-body">
+                                    <div>@Html.DisplayNameFor(m => m.Users.Filter.Name)</div>
+                                    <div class="sorting-wrap">
+                                        <div class="sorting-dropdown">
+                                            @Html.EditorFor(m => m.Users.Filter.Name, new { htmlAttributes = new { @class = "form-control small", @id = "Filter_Name" } })
+                                        </div>
+                                    </div>
+                                    <div>@Html.DisplayNameFor(m => m.Users.Filter.Email)</div>
+                                    <div class="sorting-wrap">
+                                        <div class="sorting-dropdown">
+                                            @Html.EditorFor(m => m.Users.Filter.Email, new { htmlAttributes = new { @class = "form-control small", @id = "Filter_Email" } })
+                                        </div>
+                                    </div>
+                                    <div>@Html.DisplayNameFor(m => m.Users.Filter.UserType)</div>
+                                    <div class="sorting-wrap">
+                                        <div class="sorting-dropdown">
+                                            @Html.EnumDropDownListFor(m => m.Users.Filter.UserType, "Select All", htmlAttributes: new { @class = "select2 form-control small", @id = "Filter_UserType" })
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divider-vertical">&nbsp;</div>
+                        <!-- Search -->
+                        <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+                            <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+                            <div class="input-group-append">
+                                <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+                            </div>
+                        </div>
+                        @*<div class="sorting-wrap">
+                                <div class="sorting-dropdown">
+                                    <select class="select2 form-control small" name="sorting">
+                                        <option value="Default Sorting">Default Sorting</option>
+                                        <option value="sorting 1">Sorting 1</option>
+                                        <option value="sorting 2">Sorting 2</option>
+                                    </select>
+                                </div>
+                            </div>*@
+                    </div>
+                    <hr>
+
+                    <div class="d-flex pb-4 align-items-center">
+                        <div>
+                            <!-- Select option -->
+                            <span class="select-arrow">
+                                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary" data-toggle="dropdown"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Add User</button>
+                            <div class="dropdown-menu">
+
+                                <a style="margin-top:10px" class="dropdown-item" href="javascript:void(0);" onclick="showAdd(1)">Individual</a>
+                                <a style="margin-top:10px" class="dropdown-item" href="javascript:void(0);" onclick="showAdd(2)">Agency</a>
+                                <a style="margin-top:10px" class="dropdown-item" href="javascript:void(0);" onclick="showAdd(3)">Staff</a>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Table -->
+                    <table class="table tableStyle1 tabledata">
+                        <thead>
+                            <tr>
+                                @*<th>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#table01" id="customCheckAll">
+                                            <label class="custom-control-label" for="customCheckAll">
+                                                <span class="text-hide">Toggle all</span>
+                                            </label>
+                                        </div>
+                                    </th>*@
+                                <th>#</th>
+                                <th>@Html.DisplayNameFor(model => model.Users.List.Name)</th>
+                                <th>@Html.DisplayNameFor(model => model.Users.List.Email)</th>
+                                <th>@Html.DisplayNameFor(model => model.Users.List.UserType)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@using (Html.BeginForm("AddUser", "Role", new { area = "Administrator" }, FormMethod.Post, new { id = "formAddUser" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RoleId)
+}
+
+@using (Html.BeginForm("DeleteUser", "Role", new { area = "Administrator" }, FormMethod.Post, new { id = "formDeleteUser" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.RoleId)
+}
+
+<div id="modalUser"></div>
+
+
+
+
+

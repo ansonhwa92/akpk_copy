@@ -1,0 +1,31 @@
+﻿
+
+
+@{
+
+    Layout = null
+}
+
+
+    <table id="tableModal" class="table table-bordered table-condensed table-striped table-hover">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>@Html.DisplayNameFor(model => model[0].Name)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr>
+                    <td></td>
+                    <td>@Html.DisplayFor(model => model[i].Name)</td>
+                    <td>
+                        <a href="javascript:void(0);" onclick="Detail('@Html.Raw(Model[i].Id)', '@Html.Raw(Model[i].Name)')" class="btn btn-success btn-xs" title="Detail"><i class="fa fa-list-alt"></i></a>
+                        <a href="javascript:void(0);" onclick="Add('@Html.Raw(Model[i].Id)', '@Html.Raw(Model[i].Name)')" class="btn btn-primary btn-xs" title="Add"><i class="fa fa-plus"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

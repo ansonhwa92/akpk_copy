@@ -46,7 +46,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					RepUserId = i.UserId,
 					RepUserName = i.User.Name,
 					RepDesignation = i.Designation,
-
+					MediaStatus = i.MediaStatus,
 				}).ToList();
 
 			ListMediaInterviewModel model = new ListMediaInterviewModel(media);
@@ -136,7 +136,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Designation = model.RepDesignation,
 					CreatedBy = null,
 					CreatedDate = DateTime.Now,
-					Display = true
+					Display = true,
+					MediaStatus = MediaStatus.New
 				};
 				db.EventMediaInterviewRequest.Add(media);
 				db.SaveChanges();

@@ -181,5 +181,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Display(Name = "Event Category")]
 		public string EventCategoryName { get; set; }
+
+		[Display(Name = "Status")]
+		public EventStatus? EventStatus { get; set; }
 	}
 }

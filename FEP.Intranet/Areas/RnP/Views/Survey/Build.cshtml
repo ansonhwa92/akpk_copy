@@ -90,7 +90,7 @@
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
                 @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
                 <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;">@Model.Contents</textarea>
-                <a class="btn btn-default" href="@Url.Action("Edit", "Survey", new { area = "RnP", @id = Model.ID })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
+                <a class="btn btn-default" href="@Url.Action("Edit", "Survey", new { area = "RnP", @id = Model.ID })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
                 <!--<button type="button" class="btn btn-default" id="btnTemplate" name="btnTemplate"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save as a Template</button>-->
                 <!-- Note: The builder is set to autosave so there's no need for save as draft button -->
                 <!--<button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Review for Submission</button>-->

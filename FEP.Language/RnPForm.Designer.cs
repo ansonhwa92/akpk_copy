@@ -79,6 +79,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approval Level.
+        /// </summary>
+        public static string PubApprovalLevel {
+            get {
+                return ResourceManager.GetString("PubApprovalLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remarks.
         /// </summary>
         public static string PubApprovalRemarks {
@@ -111,6 +120,15 @@ namespace Language {
         public static string PubAuthor {
             get {
                 return ResourceManager.GetString("PubAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancellation Remarks.
+        /// </summary>
+        public static string PubCancelRemark {
+            get {
+                return ResourceManager.GetString("PubCancelRemark", resourceCulture);
             }
         }
         
@@ -151,11 +169,29 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date Added.
+        ///   Looks up a localized string similar to Created By.
+        /// </summary>
+        public static string PubCreatorId {
+            get {
+                return ResourceManager.GetString("PubCreatorId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date Created.
         /// </summary>
         public static string PubDateAdded {
             get {
                 return ResourceManager.GetString("PubDateAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date Cancelled.
+        /// </summary>
+        public static string PubDateCancelled {
+            get {
+                return ResourceManager.GetString("PubDateCancelled", resourceCulture);
             }
         }
         
@@ -178,6 +214,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DMS Path.
+        /// </summary>
+        public static string PubDmsPath {
+            get {
+                return ResourceManager.GetString("PubDmsPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Digital Copy Price.
         /// </summary>
         public static string PubDPrice {
@@ -192,6 +237,33 @@ namespace Language {
         public static string PubFree {
             get {
                 return ResourceManager.GetString("PubFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string PubFreeDCopy {
+            get {
+                return ResourceManager.GetString("PubFreeDCopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string PubFreeHCopy {
+            get {
+                return ResourceManager.GetString("PubFreeHCopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string PubFreeHDCopy {
+            get {
+                return ResourceManager.GetString("PubFreeHDCopy", resourceCulture);
             }
         }
         
@@ -282,6 +354,15 @@ namespace Language {
         public static string PubPurchaseDeliveryAddress {
             get {
                 return ResourceManager.GetString("PubPurchaseDeliveryAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reference No.
+        /// </summary>
+        public static string PubRefNo {
+            get {
+                return ResourceManager.GetString("PubRefNo", resourceCulture);
             }
         }
         
@@ -421,6 +502,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancellation Remarks.
+        /// </summary>
+        public static string SurveyCancelRemark {
+            get {
+                return ResourceManager.GetString("SurveyCancelRemark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Module.
         /// </summary>
         public static string SurveyCategory {
@@ -439,6 +529,33 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created By.
+        /// </summary>
+        public static string SurveyCreatorId {
+            get {
+                return ResourceManager.GetString("SurveyCreatorId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date Created.
+        /// </summary>
+        public static string SurveyDateAdded {
+            get {
+                return ResourceManager.GetString("SurveyDateAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date Cancelled.
+        /// </summary>
+        public static string SurveyDateCancelled {
+            get {
+                return ResourceManager.GetString("SurveyDateCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Survey Description.
         /// </summary>
         public static string SurveyDescription {
@@ -448,11 +565,29 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DMS Path.
+        /// </summary>
+        public static string SurveyDmsPath {
+            get {
+                return ResourceManager.GetString("SurveyDmsPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End Date.
         /// </summary>
         public static string SurveyEndDate {
             get {
                 return ResourceManager.GetString("SurveyEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No. of invited participants.
+        /// </summary>
+        public static string SurveyInviteCount {
+            get {
+                return ResourceManager.GetString("SurveyInviteCount", resourceCulture);
             }
         }
         
@@ -471,6 +606,24 @@ namespace Language {
         public static string SurveyProofOfApproval {
             get {
                 return ResourceManager.GetString("SurveyProofOfApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reference No.
+        /// </summary>
+        public static string SurveyRefNo {
+            get {
+                return ResourceManager.GetString("SurveyRefNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Login Required.
+        /// </summary>
+        public static string SurveyRequireLogin {
+            get {
+                return ResourceManager.GetString("SurveyRequireLogin", resourceCulture);
             }
         }
         
@@ -511,6 +664,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No. of responses.
+        /// </summary>
+        public static string SurveySubmitCount {
+            get {
+                return ResourceManager.GetString("SurveySubmitCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Target Group.
         /// </summary>
         public static string SurveyTargetGroup {
@@ -520,11 +682,20 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Template Description.
+        /// </summary>
+        public static string SurveyTemplateDescription {
+            get {
+                return ResourceManager.GetString("SurveyTemplateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Template Name.
         /// </summary>
-        public static string SurveyTemplate {
+        public static string SurveyTemplateName {
             get {
-                return ResourceManager.GetString("SurveyTemplate", resourceCulture);
+                return ResourceManager.GetString("SurveyTemplateName", resourceCulture);
             }
         }
         
@@ -543,6 +714,15 @@ namespace Language {
         public static string SurveyType {
             get {
                 return ResourceManager.GetString("SurveyType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a Status.
+        /// </summary>
+        public static string ValidInvalidApprovalStatus {
+            get {
+                return ResourceManager.GetString("ValidInvalidApprovalStatus", resourceCulture);
             }
         }
         
@@ -633,6 +813,15 @@ namespace Language {
         public static string ValidRequiredAuthor {
             get {
                 return ResourceManager.GetString("ValidRequiredAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Remarks.
+        /// </summary>
+        public static string ValidRequiredCancellationRemark {
+            get {
+                return ResourceManager.GetString("ValidRequiredCancellationRemark", resourceCulture);
             }
         }
         
@@ -754,6 +943,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter Remarks.
+        /// </summary>
+        public static string ValidRequiredSurveyCancellationRemark {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyCancellationRemark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select Module.
         /// </summary>
         public static string ValidRequiredSurveyCategory {
@@ -808,6 +1006,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please specify Login requirement.
+        /// </summary>
+        public static string ValidRequiredSurveyRequireLogin {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyRequireLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please complete the Survey.
         /// </summary>
         public static string ValidRequiredSurveyResponseContents {
@@ -844,11 +1051,20 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please specify Template name.
+        ///   Looks up a localized string similar to Please enter Template Description.
         /// </summary>
-        public static string ValidRequiredSurveyTemplate {
+        public static string ValidRequiredSurveyTemplateDescription {
             get {
-                return ResourceManager.GetString("ValidRequiredSurveyTemplate", resourceCulture);
+                return ResourceManager.GetString("ValidRequiredSurveyTemplateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify Template Name.
+        /// </summary>
+        public static string ValidRequiredSurveyTemplateName {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyTemplateName", resourceCulture);
             }
         }
         

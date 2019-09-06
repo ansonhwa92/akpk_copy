@@ -31,7 +31,8 @@
     </div>
 }
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myform" }))
+@*using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myform" }))*@
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
@@ -43,23 +44,22 @@
                 <!-- Steps -->
                 <div class="sidebar-inner sticky">
                     <ul class="steps steps-vertical">
-                        <li class="step-item active">
+                        <li class="step-item complete">
                             <a href="" class="step-link">
                                 <span class="step-number">1</span>
-                                <span class="step-title">Fill Up Publication Details</span>
+                                <span class="step-title">Select Publication Category</span>
                             </a>
                         </li>
-                        <!-- rejected -->
-                        <!-- <li class="step-item rejected">
+                        <li class="step-item active">
                             <a href="" class="step-link">
                                 <span class="step-number">2</span>
-                                <span class="step-title">Fill Up Event Details</span>
+                                <span class="step-title">Fill In Publication Details</span>
                             </a>
-                        </li> -->
+                        </li>
                         <li class="step-item disabled">
                             <a href="" class="step-link">
-                                <span class="step-number">2</span>
-                                <span class="step-title">Publication Approval</span>
+                                <span class="step-number">3</span>
+                                <span class="step-title">Review & Submission</span>
                             </a>
                         </li>
                     </ul>
@@ -70,169 +70,180 @@
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
             <!-- Start Form -->
             <div class="border-form rounded-top">
-                <form>
-                    <div class="form-container">
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label" })
-                                @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control", @placeholder = "Name of the Author" } })
-                                @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Coauthor, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Coauthor, new { htmlAttributes = new { @class = "form-control", @placeholder = "Names of Co-Authors (if any)" } })
-                                @Html.ValidationMessageFor(model => model.Coauthor, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @placeholder = "Title of Publication" } })
-                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-6">
-                                @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", @placeholder = "Year of Publication" } })
-                                @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-lg-6">
-                                &nbsp;
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
-                                @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @placeholder = "Description of Publication", cols = 48, @rows = 5 })
-                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" })
-                                <select class="js-example-basic-multiple" id="pub_lang" name="pub_langs[]" multiple="multiple" style="width: 100%;">
-                                    <option value="English">English</option>
-                                    <option value="Malay">Malay</option>
-                                </select>
-                                @Html.HiddenFor(model => model.Language, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.ISBN, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.ISBN, new { htmlAttributes = new { @class = "form-control", @placeholder = "ISBN/ISSN/DOI Number" } })
-                                @Html.ValidationMessageFor(model => model.ISBN, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                <div class="custom-control custom-checkbox">
-                                    @Html.EditorFor(model => model.Free, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
-                                    @Html.LabelFor(model => model.Free, htmlAttributes: new { @class = "custom-control-label" })
-                                    @Html.ValidationMessageFor(model => model.Free, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-6">
-                                Format
-                            </div>
-                            <div class="form-group col-lg-6">
-                                Price (RM)
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-6">
-                                <div class="custom-control custom-checkbox">
-                                    @Html.EditorFor(model => model.Hardcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
-                                    @Html.LabelFor(model => model.Hardcopy, htmlAttributes: new { @class = "custom-control-label" })
-                                    @Html.ValidationMessageFor(model => model.Hardcopy, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group col-lg-6">
-                                @Html.EditorFor(model => model.HPrice, new { htmlAttributes = new { @class = "form-control", @Value = "0.00" } })
-                                @Html.ValidationMessageFor(model => model.HPrice, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-6">
-                                <div class="custom-control custom-checkbox">
-                                    @Html.EditorFor(model => model.Digitalcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
-                                    @Html.LabelFor(model => model.Digitalcopy, htmlAttributes: new { @class = "custom-control-label" })
-                                    @Html.ValidationMessageFor(model => model.Digitalcopy, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group col-lg-6">
-                                @Html.EditorFor(model => model.DPrice, new { htmlAttributes = new { @class = "form-control", @Value = "0.00" } })
-                                @Html.ValidationMessageFor(model => model.DPrice, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-6">
-                                <div class="custom-control custom-checkbox">
-                                    @Html.EditorFor(model => model.HDcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
-                                    @Html.LabelFor(model => model.HDcopy, htmlAttributes: new { @class = "custom-control-label" })
-                                    @Html.ValidationMessageFor(model => model.HDcopy, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group col-lg-6">
-                                @Html.EditorFor(model => model.HDPrice, new { htmlAttributes = new { @class = "form-control", @Value = "0.00" } })
-                                @Html.ValidationMessageFor(model => model.HDPrice, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <!--
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                                <div class="custom-file">
-                                    @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-                                    <label class="custom-file-label" for="customFile">No file choosen</label>
-                                    @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
-                                </div>
-                                <div id="fileList"></div>
-                            </div>
-                        </div>
-                        -->
-                        <div class="row" style="display:none;">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-6">
-                                @Html.LabelFor(model => model.StockBalance, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.StockBalance, new { htmlAttributes = new { @class = "form-control" }, @placeholder = "Quantity in Stock" })
-                                @Html.ValidationMessageFor(model => model.StockBalance, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-lg-6">
-                                &nbsp;
-                            </div>
+                <div class="form-container">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label" })
+                            @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control", @Value = @ViewBag.SelectedCategory })
+                            @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                </form>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control", @placeholder = "Name of the Author" } })
+                            @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Coauthor, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Coauthor, new { htmlAttributes = new { @class = "form-control", @placeholder = "Names of Co-Authors (if any)" } })
+                            @Html.ValidationMessageFor(model => model.Coauthor, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @placeholder = "Title of Publication" } })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", @placeholder = "Year of Publication" } })
+                            @*Html.DropDownListFor(model => model.Year, PublicationController.GetDropDownListForYears())*@
+                            @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                            @*Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @placeholder = "Description of Publication", cols = 48, @rows = 5 })*@
+                            <textarea id="Description" name="Description" class="form-control" rows="3" placeholder="Description of Publication"></textarea>
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" })
+                            <select class="js-example-basic-multiple" id="pub_lang" name="pub_langs[]" multiple="multiple" style="width: 100%;">
+                                <option value="Bahasa Malaysia">Bahasa Malaysia</option>
+                                <option value="English">English</option>
+                            </select>
+                            @Html.HiddenFor(model => model.Language, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ISBN, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.ISBN, new { htmlAttributes = new { @class = "form-control", @placeholder = "ISBN/ISSN/DOI Number" } })
+                            @Html.ValidationMessageFor(model => model.ISBN, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            Format
+                        </div>
+                        <div class="form-group col-lg-4">
+                            Free?
+                        </div>
+                        <div class="form-group col-lg-4">
+                            Price (RM)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.Hardcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+                                @Html.LabelFor(model => model.Hardcopy, htmlAttributes: new { @class = "custom-control-label" })
+                                @Html.ValidationMessageFor(model => model.Hardcopy, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.FreeHCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+                                @Html.LabelFor(model => model.FreeHCopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @Html.EditorFor(model => model.HPrice, new { htmlAttributes = new { @class = "form-control", @Value = "0.00", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.HPrice, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.Digitalcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+                                @Html.LabelFor(model => model.Digitalcopy, htmlAttributes: new { @class = "custom-control-label" })
+                                @Html.ValidationMessageFor(model => model.Digitalcopy, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.FreeDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+                                @Html.LabelFor(model => model.FreeDCopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @Html.EditorFor(model => model.DPrice, new { htmlAttributes = new { @class = "form-control", @Value = "0.00", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.DPrice, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.HDcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+                                @Html.LabelFor(model => model.HDcopy, htmlAttributes: new { @class = "custom-control-label" })
+                                @Html.ValidationMessageFor(model => model.HDcopy, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.FreeHDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+                                @Html.LabelFor(model => model.FreeHDCopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @Html.EditorFor(model => model.HDPrice, new { htmlAttributes = new { @class = "form-control", @Value = "0.00", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.HDPrice, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <!--
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            <div class="custom-file">
+                                @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
+                                <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
+                                <label class="custom-file-label" for="customFile">No file choosen</label>
+                                @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
+                            </div>
+                            <div id="fileList"></div>
+                        </div>
+                    </div>
+                    -->
+                    <div class="row" style="display:none;">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.StockBalance, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.StockBalance, new { htmlAttributes = new { @class = "form-control" }, @placeholder = "Quantity in Stock" })
+                            @Html.ValidationMessageFor(model => model.StockBalance, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
                 <!-- End Form -->
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
                 <!--input type="submit" value="Create" class="btn btn-default" /-->
-                @Html.HiddenFor(model => model.HiddenPubStatus, new { htmlAttributes = new { @class = "form-control" } })
-                <a class="btn btn-default" href="@Url.Action("Index", "Publication", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
-                <button type="button" class="btn btn-secondary" id="btnSave" name="Submittype" value="Save">Save</button>
-                <button type="button" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Submit for Approval</button>
+                <a class="btn btn-default" href="@Url.Action("SelectCategory", "Publication", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
+                <button type="submit" class="btn btn-default" id="btnSave" name="Submittype" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save as Draft</button>
+                <button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Review for Submission</button>
             </div>
         </div>
     </div>
@@ -251,23 +262,64 @@
                 selectedText = selectedValues.join();
                 $("#Language").val(selectedText);
             });
-            $('#Free').change(function () {
-                if ($('#Free').is(':checked')) {
+            $('#Hardcopy').change(function () {
+                if ($('#Hardcopy').is(':checked')) {
                     $('#HPrice').val('0.00');
-                    $('#DPrice').val('0.00');
-                    $('#HDPrice').val('0.00');
+                    $('#HPrice').prop('readonly', false);
+                } else {
+                    $('#FreeHCopy').prop('checked', false);
+                    $('#HPrice').val('0.00');
                     $('#HPrice').prop('readonly', true);
+                }
+            });
+            $('#FreeHCopy').change(function () {
+                if ($('#FreeHCopy').is(':checked')) {
+                    $('#Hardcopy').prop('checked', true);
+                    $('#HPrice').val('0.00');
+                    $('#HPrice').prop('readonly', true);
+                } else {
+                    $('#HPrice').prop('readonly', false);
+                }
+            });
+            $('#Digitalcopy').change(function () {
+                if ($('#Digitalcopy').is(':checked')) {
+                    $('#DPrice').val('0.00');
+                    $('#DPrice').prop('readonly', false);
+                } else {
+                    $('#FreeDCopy').prop('checked', false);
+                    $('#DPrice').val('0.00');
                     $('#DPrice').prop('readonly', true);
+                }
+            });
+            $('#FreeDCopy').change(function () {
+                if ($('#FreeDCopy').is(':checked')) {
+                    $('#Digitalcopy').prop('checked', true);
+                    $('#DPrice').val('0.00');
+                    $('#DPrice').prop('readonly', true);
+                } else {
+                    $('#DPrice').prop('readonly', false);
+                }
+            });
+            $('#HDcopy').change(function () {
+                if ($('#HDcopy').is(':checked')) {
+                    $('#HDPrice').val('0.00');
+                    $('#HDPrice').prop('readonly', false);
+                } else {
+                    $('#FreeHDCopy').prop('checked', false);
+                    $('#HDPrice').val('0.00');
+                    $('#HDPrice').prop('readonly', true);
+                }
+            });
+            $('#FreeHDCopy').change(function () {
+                if ($('#FreeHDCopy').is(':checked')) {
+                    $('#HDcopy').prop('checked', true);
+                    $('#HDPrice').val('0.00');
                     $('#HDPrice').prop('readonly', true);
                 } else {
-                    $('#HPrice').val('');
-                    $('#DPrice').val('');
-                    $('#HDPrice').val('');
-                    $('#HPrice').prop('readonly', false);
-                    $('#DPrice').prop('readonly', false);
                     $('#HDPrice').prop('readonly', false);
                 }
             });
+            /*
             $('#btnSave').click(function (event) {
                 $('#HiddenPubStatus').val("save")
                 $("#myform").submit();
@@ -278,6 +330,7 @@
                 $("#myform").submit();
                 event.stopPropagation();
             });
+            */
         });
     </script>
 }

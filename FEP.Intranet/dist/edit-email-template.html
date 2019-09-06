@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Setting</title>
+    <!-- Favicons -->
+    <link href="../img/favicon.png" rel="icon">
+    <!-- Perfect Scrollbar -->
+    <link type="text/css" href="assets/vendor/perfect-scrollbar.css" rel="stylesheet">
+    <!-- Material Design Icons -->
+    <link type="text/css" href="assets/css/material-icons.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/material-icons.rtl.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link type="text/css" href="assets/css/fontawesome.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/fontawesome.rtl.css" rel="stylesheet">
+    <link href="../lib/line-awesome/css/line-awesome.min.css" rel="stylesheet">
+    <!-- Select 2 form -->
+    <link href="../css/select2.min.css" rel="stylesheet">
+    <!-- Text Editor -->
+    <link href="../css/quill.snow.css" rel="stylesheet">
+    <!-- Flatpickr -->
+    <link type="text/css" href="assets/css/flatpickr.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/flatpickr.rtl.css" rel="stylesheet">
+    <!-- App CSS -->
+    <link type="text/css" href="assets/css/app.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/app.rtl.css" rel="stylesheet">
+    <!-- Main css -->
+    <link type="text/css" href="../css/base.css" rel="stylesheet">
+    <link type="text/css" href="../css/custom-admin.css" rel="stylesheet">
+</head>
+
+<body class="fixed-layout">
+    <div class="preloader">
+        <div class="sk-double-bounce">
+            <div class="sk-child sk-double-bounce1"></div>
+            <div class="sk-child sk-double-bounce2"></div>
+        </div>
+    </div>
+    <!-- Header Layout -->
+    <div class="bg-gradient">
+        <!-- Header -->
+        <div class="header-container">
+            <div id="header" class="mdk-header m-0" data-fixed data-effects="waterfall">
+                <div class="header__content">
+                    <!-- Navbar -->
+                    <nav id="default-navbar" class="navbar navbar-expand m-0">
+                        <div class="container">
+                            <div class="menu-admin">
+                                <div class="wrapper-menu" data-toggle="collapse" href="#menu-collapse">
+                                    <div class="line-menu half end"></div>
+                                    <div class="line-menu"></div>
+                                    <div class="line-menu short end"></div>
+                                </div>
+                            </div>
+                            <a href="fixed-student-dashboard.html" class="navbar-brand">
+                                <a href="#" class="logo-akpk"><img src="../img/logo-akpk.svg" alt="logo" title="logo akpk"></a>
+                            </a>
+                            <!-- Search -->
+                            <form class="search-form d-none d-md-flex mx-2 col-lg-4">
+                                <input type="search" class="form-control" placeholder="Search for online courses, event, etc..">
+                                <button class="btn mw-auto" type="button"><i class="fas fa-search"></i></button>
+                            </form>
+                            <!-- // END Search -->
+                            <div class="flex"></div>
+                            <!-- Menu -->
+                            <ul class="nav navbar-nav flex-nowrap d-none d-lg-flex">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <span class="icon-top"><i class="la la-shopping-cart"></i></span>
+                                        <span class="badge badge-notifications point"> </span>
+                                    </a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="la la-heart-o"></i></a>
+                                </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <span class="icon-top"><i class="la la-inbox"></i></span>
+                                        <span class="badge badge-notifications point"> </span>
+                                    </a>
+                                </li>
+                                <!-- Notifications dropdown -->
+                                <li class="nav-item dropdown dropdown-notifications dropdown-menu-sm-full">
+                                    <button class="nav-link btn-flush dropdown-toggle" type="button" data-toggle="dropdown" data-dropdown-disable-document-scroll data-caret="false">
+                                        <span class="icon-top"><i class="la la-bell-o"></i></span>
+                                        <span class="badge badge-notifications point"> </span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <div data-perfect-scrollbar class="position-relative">
+                                            <div class="dropdown-header"><strong>Messages</strong></div>
+                                            <div class="list-group list-group-flush mb-0">
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action unread">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">5 minutes ago</small>
+                                                        <span class="ml-auto unread-indicator bg-primary"></span>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <img src="assets/images/people/110/woman-5.jpg" alt="people" class="avatar-img rounded-circle">
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <strong>Michelle</strong>
+                                                            <span class="text-black-70">Clients loved the new design.</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action unread">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">5 minutes ago</small>
+                                                        <span class="ml-auto unread-indicator bg-primary"></span>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <img src="assets/images/people/110/woman-5.jpg" alt="people" class="avatar-img rounded-circle">
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <strong>Michelle</strong>
+                                                            <span class="text-black-70">🔥 Superb job..</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <div class="dropdown-header"><strong>System notifications</strong></div>
+                                            <div class="list-group list-group-flush mb-0">
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action border-left-3 border-left-danger">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">3 minutes ago</small>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <span class="avatar-title rounded-circle bg-light">
+                                                                <i class="material-icons font-size-16pt text-danger">account_circle</i>
+                                                            </span>
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <span class="text-black-70">Your profile information has not been synced correctly.</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">5 hours ago</small>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <span class="avatar-title rounded-circle bg-light">
+                                                                <i class="material-icons font-size-16pt text-success">group_add</i>
+                                                            </span>
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <strong>Adrian. D</strong>
+                                                            <span class="text-black-70">Wants to join your private group.</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">1 day ago</small>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <span class="avatar-title rounded-circle bg-light">
+                                                                <i class="material-icons font-size-16pt text-warning">storage</i>
+                                                            </span>
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <span class="text-black-70">Your deploy was successful.</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- // END Notifications dropdown -->
+                            </ul>
+                            <!-- Menu -->
+                            <ul class="nav navbar-nav flex-nowrap dropdown-profile">
+                                <span class="badge badge-profile mt-2">Learner</span>
+                                <!-- User dropdown -->
+                                <li class="nav-item dropdown ml-1">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"><img src="assets/images/people/50/guy-6.jpg" alt="Avatar" class="rounded-circle rounded-color" width="40"><span class="dropdown-custom"><i class="fas fa-chevron-down"></i></span></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <div class="card__author pt-0"><a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="assets/images/people/50/guy-6.jpg" alt="image"></span>
+                                                <span class="card__name-wrap">
+                                                    <span class="card__author-name">Jones Smith</span>
+                                                    <span class="card__instructby">Learner</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-book color-secondary font-icon"></i> My Courses
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-certificate color-secondary font-icon"></i> My Certifications
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-spinner color-secondary font-icon"></i> My Progress
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-group color-secondary font-icon"></i> My Groups
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-sitemap color-secondary font-icon"></i> My Branches
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-suitcase color-secondary font-icon"></i> My Files
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-calendar color-secondary font-icon"></i> My Events
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-pie-chart color-secondary font-icon"></i> My Researches
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-file-o color-secondary font-icon"></i> My Publications
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-life-saver color-secondary font-icon"></i> Help Center
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-edit color-secondary font-icon"></i> Edit Profile
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-sign-out color-secondary font-icon"></i> Log out
+                                        </a>
+                                    </div>
+                                </li>
+                                <!-- // END User dropdown -->
+                            </ul>
+                            <!-- // END Menu -->
+                        </div>
+                    </nav>
+                    <!-- // END Navbar -->
+                </div>
+            </div>
+            <div class="collapse-wrapper collapse" id="menu-collapse">
+                <div class="navbar navbar-expand-sm d-none2">
+                    <div class="container">
+                        <div class="navbar-collapse collapse main-menu-dropdown">
+                            <ul class="nav navbar-nav">
+                                <li class="nav-item dropdown active">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Events</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item active" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Research & Publications</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                        <a class="dropdown-item" href="#">Menu 4</a>
+                                        <a class="dropdown-item" href="#">Menu 5</a>
+                                        <a class="dropdown-item" href="#">Menu 6</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Learning</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#"><i class="la la-search color-secondary font-icon"></i>Browse Courses</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-user color-secondary font-icon"></i>Instructors</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-group color-secondary font-icon"></i>Groups</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-comments-o color-secondary font-icon"></i>Discussions</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-calendar color-secondary font-icon"></i>Calendar</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Online booking System</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                        <a class="dropdown-item" href="#">Menu 4</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Get Help</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                        <a class="dropdown-item" href="#">Menu 4</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">
+                            <span class="material-icons">menu</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Header Layout Content -->
+        <!-- // END Header Layout Content -->
+        <div class="title_header">
+            <div class="title-header-container">
+                <div class="container">
+                    <!-- if have button -->
+                    <!--  <div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div> -->
+                    <div class="header-col-left">
+                        <div id="breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <h1 class="page-title text-white">Admin Settings</h1>
+                        <div class="header-text">Manage who can access the admin console to help manage your organization's account.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- // END Header -->
+    </div>
+    <!-- Start Content -->
+    <div class="content-container">
+        <div class="container">
+            <div class="row">
+                <!-- Start content leftbar -->
+                <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+                    <div id="page-nav" class="sidebar-left page-nav">
+                        <div data-perfect-scrollbar>
+                            <div class="page-section">
+                                <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> Admin Settings</h6>
+                                <ul class="nav page-nav__menu">
+                                    <li class="nav-item">
+                                        <a href="#setting1" data-toggle="tab" class="nav-link">Setting 1</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#adminroles" data-toggle="tab" class="nav-link">Administrator Roles</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#emailtemplate" data-toggle="tab" class="nav-link active">Email Template</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#setting3" data-toggle="tab" class="nav-link">Setting 3</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#setting4" data-toggle="tab" class="nav-link">Setting 4</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#setting5" data-toggle="tab" class="nav-link">Setting 5</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End content leftbar -->
+                <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+                    <!-- Start Form -->
+                    <div class="border-form rounded">
+                        <div class="tab-content">
+                            <div class="tab-pane" id="setting1">
+                                <form>
+                                    <div class="form-container form-container-w100">
+                                        <div class="d-flex align-items-center mb-4 mt-2">
+                                            <h4 class="color-darkblue mr-auto mb-0">Setting 1</h4>
+                                            <button class="btn btn-secondary btn-lg"><i class="la la-plus font-icon"></i>Create New Role</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="adminroles">
+                                <form>
+                                    <div class="form-container form-container-w100">
+                                        <div class="d-flex align-items-center mb-4 mt-2">
+                                            <h4 class="color-darkblue mr-auto mb-0">Administrator Roles</h4>
+                                            <button class="btn btn-secondary btn-lg"><i class="la la-plus font-icon"></i>Create New Role</button>
+                                        </div>
+                                        <div class="divtableStyle1">
+                                            <div class="row no-gutters">
+                                                <div class="col-lg-12 divTableWrap">
+                                                    <div class="divtableheader">
+                                                        <div class="row">
+                                                            <div class="col-1 text-center">No</div>
+                                                            <div class="col px-0">Role Name</div>
+                                                            <div class="col-3 pl-0">&nbsp;</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="divtableBody">
+                                                        <!-- Bila add/edit/delete akan keluar row ni -->
+                                                        <div class="row divTd">
+                                                            <div class="col-1 text-center">1</div>
+                                                            <div class="col px-0"><input type="text" name="editrole" class="form-control" value="Super Admin"></div>
+                                                            <div class="col-3 pl-0 text-right">
+                                                                <div class="icon-action">
+                                                                    <a class="btn btn-secondary btn-sm mw-auto mr-2" href="#">Update</a>
+                                                                    <a class="btn btn-default btn-sm mw-auto" href="#">Cancel</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- end -->
+                                                        <div class="row divTd">
+                                                            <div class="col-1 text-center">2</div>
+                                                            <div class="col px-0">Group Admin</div>
+                                                            <div class="col-3 pl-0 text-right">
+                                                                <div class="icon-action">
+                                                                    <a href="#"><i class="la la-list-alt text-muted"></i></a>
+                                                                    <a href="#"><i class="la la-edit text-muted"></i></a>
+                                                                    <a href="#"><i class="la la-trash-o text-muted"></i></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row divTd">
+                                                            <div class="col-1 text-center">3</div>
+                                                            <div class="col px-0">User Management Admin</div>
+                                                            <div class="col-3 pl-0 text-right">
+                                                                <div class="icon-action">
+                                                                    <a href="list-role.html"><i class="la la-list-alt text-muted"></i></a>
+                                                                    <a href="#"><i class="la la-edit text-muted"></i></a>
+                                                                    <a href="#"><i class="la la-trash-o text-muted"></i></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row divTd">
+                                                            <div class="col-1 text-center">4</div>
+                                                            <div class="col px-0">Help Desk Admin</div>
+                                                            <div class="col-3 pl-0 text-right">
+                                                                <div class="icon-action">
+                                                                    <a href="#"><i class="la la-list-alt text-muted"></i></a>
+                                                                    <a href="#"><i class="la la-edit text-muted"></i></a>
+                                                                    <a href="#"><i class="la la-trash-o text-muted"></i></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row divTd">
+                                                            <div class="col-1 text-center">5</div>
+                                                            <div class="col px-0">Services Admin</div>
+                                                            <div class="col-3 pl-0 text-right">
+                                                                <div class="icon-action">
+                                                                    <a href="#"><i class="la la-list-alt text-muted"></i></a>
+                                                                    <a href="#"><i class="la la-edit text-muted"></i></a>
+                                                                    <a href="#"><i class="la la-trash-o text-muted"></i></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row divTd">
+                                                            <div class="col-1 text-center">6</div>
+                                                            <div class="col px-0">Reports Reader</div>
+                                                            <div class="col-3 pl-0 text-right">
+                                                                <div class="icon-action">
+                                                                    <a href="#"><i class="la la-list-alt text-muted"></i></a>
+                                                                    <a href="#"><i class="la la-edit text-muted"></i></a>
+                                                                    <a href="#"><i class="la la-trash-o text-muted"></i></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane active" id="emailtemplate">
+                                <form>
+                                    <div class="form-container form-container-w100">
+                                        <div class="mb-4 mt-2">
+                                            <h4 class="color-darkblue mb-0">Editing: Ask Listing Question</h4>
+                                            <h6 class="font-weight-normal">Ask Buyer a question.</h6>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-lg-12">
+                                                <label>Subject</label>
+                                                <input class="form-control" placeholder="Subject" type="text" id="MessageTemplate_Subject" name="MessageTemplate.Subject" value="You have been sent a message on [#FriendlySiteName] about listing #[Detail.ID]">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-lg-12">
+                                                <label>Body Message</label>
+                                                <!--  Start editor -->
+                                                <div id="editor"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Action Button -->
+                                    <div class="p-3 rounded-bottom">
+                                        <a class="btn btn-default font-weight-normal mr-2" href="email-template-list.html">Cancel</a>
+                                        <a class="btn btn-secondary mr-2" href="#">Save Template</a>
+                                        <a class="btn btn-outline-default font-weight-normal" href="#">Preview</a>
+                                    </div>
+                                    <!-- End Action Button -->
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="setting3">
+                                <form>
+                                    <div class="form-container form-container-w100">
+                                        <div class="d-flex align-items-center mb-4 mt-2">
+                                            <h4 class="color-darkblue mr-auto mb-0">Setting 3</h4>
+                                            <button class="btn btn-secondary btn-lg"><i class="la la-plus font-icon"></i>Create New Role</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="setting4">
+                                <form>
+                                    <div class="form-container form-container-w100">
+                                        <div class="d-flex align-items-center mb-4 mt-2">
+                                            <h4 class="color-darkblue mr-auto mb-0">Setting 4</h4>
+                                            <button class="btn btn-secondary btn-lg"><i class="la la-plus font-icon"></i>Create New Role</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="setting5">
+                                <form>
+                                    <div class="form-container form-container-w100">
+                                        <div class="d-flex align-items-center mb-4 mt-2">
+                                            <h4 class="color-darkblue mr-auto mb-0">Setting 5</h4>
+                                            <button class="btn btn-secondary btn-lg"><i class="la la-plus font-icon"></i>Create New Role</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- End Form -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Wrapper -->
+    </div>
+    <!-- // END Header Layout -->
+    <!-- jQuery -->
+    <script src="assets/vendor/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="assets/vendor/popper.min.js"></script>
+    <script src="assets/vendor/bootstrap.min.js"></script>
+    <!-- Perfect Scrollbar -->
+    <script src="assets/vendor/perfect-scrollbar.min.js"></script>
+    <!-- MDK -->
+    <script src="assets/vendor/dom-factory.js"></script>
+    <script src="assets/vendor/material-design-kit.js"></script>
+    <!-- App JS -->
+    <script src="assets/js/app.js"></script>
+    <script src="../js/select2.min.js"></script>
+    <script src="../js/quill.js"></script>
+    <!-- Tables -->
+    <script src="assets/js/toggle-check-all.js"></script>
+    <script src="assets/js/check-selected-row.js"></script>
+    <!-- Date Flatpickr -->
+    <script src="assets/vendor/flatpickr/flatpickr.min.js"></script>
+    <script src="assets/js/flatpickr.js"></script>
+    <!-- Global Settings -->
+    <script src="../js/script-admin.js"></script>
+    <!-- Initialize editor with toolbar -->
+    <script>
+    var toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'indent': '-1' }, { 'indent': '+1' }], // outdent/indent
+        [{ 'direction': 'rtl' }], // text direction
+
+        [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+        [{ 'align': [] }]
+
+    ];
+
+    var quill = new Quill('#editor', {
+        modules: {
+            toolbar: toolbarOptions
+        },
+        theme: 'snow'
+    });
+    </script>
+</body>
+
+</html>

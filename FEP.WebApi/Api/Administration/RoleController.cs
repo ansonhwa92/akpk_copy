@@ -1,4 +1,5 @@
-﻿using FEP.Model;
+﻿using FEP.Helper;
+using FEP.Model;
 using FEP.WebApiModel.Administration;
 using System;
 using System.Collections.Generic;
@@ -28,11 +29,22 @@ namespace FEP.WebApi.Api.Administration
 
         public IHttpActionResult Get()
         {
-            var role = db.Role.Where(u => u.Display).Select(s => new RoleModel
+            var roles = db.Role.Where(u => u.Display).Select(s => new RoleModel
             {
                 Id = s.Id,
                 Name = s.Name
             }).ToList();
+
+            return Ok(roles);
+        }
+
+        public IHttpActionResult Get(int id)
+        {
+            var role = db.Role.Where(u => u.Display && u.Id == id).Select(s => new RoleModel
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).FirstOrDefault();
 
             return Ok(role);
         }
@@ -154,6 +166,179 @@ namespace FEP.WebApi.Api.Administration
                     {                        
                         db.RoleAccess.Remove(roleaccess);
                     }
+                }
+
+            }
+
+            db.SaveChanges();
+
+            return Ok(true);
+
+        }
+
+        [Route("api/Administration/Role/GetUser")]
+        [HttpPost]
+        public IHttpActionResult GetUser([FromUri]int RoleId, [FromBody] FilterUserModel request)
+        {
+            var role = db.Role.Where(r => r.Id == RoleId).FirstOrDefault();
+
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            var query = db.UserRole.Where(ur => ur.RoleId == RoleId);
+
+            var totalCount = query.Count();
+
+            //advance search
+            query = query.Where(s => (request.Name == null || s.User.Name.Contains(request.Name))              
+               && (request.Email == null || s.User.Email.Contains(request.Email))
+               && (request.UserType == null || s.User.UserType == request.UserType)
+               );
+
+            //quick search 
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+
+                query = query.Where(p => p.User.Name.Contains(value)                
+                || p.User.Email.Contains(value)               
+                );
+            }
+
+            var filteredCount = query.Count();
+
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "Name":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.User.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.User.Name);
+                        }
+
+                        break;
+
+                    case "UserType":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.User.UserType);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.User.UserType);
+                        }
+
+                        break;
+
+                    case "Email":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.User.Email);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.User.Email);
+                        }
+
+                        break;
+
+                    default:
+                        query = query.OrderByDescending(o => o.User.Name);
+                        break;
+                }
+
+            }
+            else
+            {
+                query = query.OrderByDescending(o => o.User.Name);
+            }
+
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(s => new UserModel
+                {
+                    Id = s.UserId,
+                    Name = s.User.Name,
+                    Email = s.User.Email,
+                    UserType = s.User.UserType
+                }).ToList();
+
+            data.ForEach(item => { item.UserTypeDesc = item.UserType.GetDisplayName(); });
+
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+
+        }
+
+
+        [Route("api/Administration/Role/AddUser")]
+        [HttpPost]
+        public IHttpActionResult AddUser(UpdateUserRoleModel model)
+        {
+
+            var role = db.Role.Where(r => r.Id == model.RoleId && r.Display).FirstOrDefault();
+
+            if (role == null)
+            {
+                return NotFound();
+            }
+                        
+            foreach (var userid in model.UserId)
+            {
+
+                var userrole = db.UserRole.Where(r => r.RoleId == model.RoleId && r.UserId == userid).FirstOrDefault();
+                                
+                if (userrole == null)
+                {
+                    db.UserRole.Add(new UserRole { RoleId = model.RoleId, UserId = userid });
+                }
+               
+            }
+
+            db.SaveChanges();
+
+            return Ok(true);
+
+        }
+
+        [Route("api/Administration/Role/DeleteUser")]
+        [HttpPost]
+        public IHttpActionResult DeleteUser(UpdateUserRoleModel model)
+        {
+
+            var role = db.Role.Where(r => r.Id == model.RoleId && r.Display).FirstOrDefault();
+
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var userid in model.UserId)
+            {
+
+                var userrole = db.UserRole.Where(r => r.RoleId == model.RoleId && r.UserId == userid).FirstOrDefault();
+
+                if (userrole != null)
+                {
+                    db.UserRole.Remove(userrole);
                 }
 
             }

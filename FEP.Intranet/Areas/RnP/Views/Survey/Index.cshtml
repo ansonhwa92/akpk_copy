@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FEP.WebApiModel.RnP.ReturnSurveyModel>
+﻿@model FEP.WebApiModel.RnP.ReturnListSurveyModel
 
 @{
     ViewBag.Title = "Survey";
@@ -36,7 +36,7 @@
         <div class="dropdown-menu">
             <div class="filter-head">Filters</div>
             <div class="filter-body">
-                <div>Registration Type</div>
+                <!--
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
                         <select class="select2 form-control small" name="filter">
@@ -46,25 +46,22 @@
                         </select>
                     </div>
                 </div>
-                <div>Check-in Status</div>
+                -->
+                <!--
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        <select class="select2 form-control small" name="filter">
-                            <option value="all">All</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select>
+                        @*Html.EditorFor(m => m.Filters.Type, new { htmlAttributes = new { @class = "form-control small" } })*@
                     </div>
                 </div>
-                <div>Target Group</div>
+                -->
+                <div>@Html.DisplayNameFor(m => m.Filters.Title)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        <select class="select2 form-control small" name="filter">
-                            <option value="all">All</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select>
+                        @Html.EditorFor(m => m.Filters.Title, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
+                </div>
+                <div>
+                    <button id="btnSearch" class="btn btn-secondary">Search</button>
                 </div>
             </div>
         </div>
@@ -72,18 +69,9 @@
     <div class="divider-vertical">&nbsp;</div>
     <!-- Search -->
     <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
-        <input type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+        <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
         <div class="input-group-append">
-            <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
-        </div>
-    </div>
-    <div class="sorting-wrap">
-        <div class="sorting-dropdown">
-            <select class="select2 form-control small" name="sorting">
-                <option value="Default Sorting">Default Sorting</option>
-                <option value="sorting 1">Sorting 1</option>
-                <option value="sorting 2">Sorting 2</option>
-            </select>
+            <button id="quickSearchBtn" class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
         </div>
     </div>
 </div>
@@ -93,7 +81,7 @@
         <div>
             <!-- Select option -->
             <span class="select-arrow">
-                <select name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
@@ -101,113 +89,199 @@
                 </select>
             </span>
         </div>
-        <div class="showing-result px-3 py-2 mr-auto">Showing 1 - 6 of 2000 surveys</div>
-        <div><a href="~/RnP/Survey/Create" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Survey</a></div>
+        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+        <div><a href="@Url.Action("SelectType", "Survey", new { area = "RnP" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Survey</a></div>
     </div>
     <!-- Table -->
-    <table class="table tableStyle1 mb-4">
+    <table class="table tableStyle1 tabledata">
         <thead>
             <tr>
-                <!--
-                <th>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#table01" id="customCheckAll">
-                        <label class="custom-control-label" for="customCheckAll">
-                            <span class="text-hide">Toggle all</span>
-                        </label>
-                    </div>
-                </th>
-                -->
-                <th>No</th>
-                <th>@Html.DisplayNameFor(model => model.Type)</th>
-                <th>@Html.DisplayNameFor(model => model.Category)</th>
-                <th>@Html.DisplayNameFor(model => model.Title)</th>
-                <th>@Html.DisplayNameFor(model => model.TargetGroup)</th>
-                <th>@Html.DisplayNameFor(model => model.Active)</th>
-                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.Surveys.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Surveys.Type)</th>
+                <th>Duration</th>
+                <th>Response</th>
+                <!--<th>@*Html.DisplayNameFor(model => model.Surveys.Active)*@</th>-->
+                <th>@Html.DisplayNameFor(model => model.Surveys.Status)</th>
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody class="list" id="table01">
-            @{ var icount = 0; }
-            @foreach (var item in Model)
-            {
-                icount++;
-                <tr>
-                    <!--
-                    <td>
-                        <div class="custom-control custom-checkbox">
-                            <input id="customCheck1" type="checkbox" class="custom-control-input js-check-selected-row">
-                            <label class="custom-control-label" for="customCheck1">
-                                <span class="text-hide">Check</span>
-                            </label>
-                        </div>
-                    </td>
-                    -->
-                    <td>@icount</td>
-                    <td>@Html.DisplayFor(modelItem => item.Type)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Category)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
-                    <td>@Html.DisplayFor(modelItem => item.TargetGroup)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Active)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
-                    @if (item.Status == FEP.Model.SurveyStatus.New)
-                    {
-                        <td>
-                            <div class="icon-action">
-                                <!--<a href="#" data-toggle="tooltip" data-placement="top" title="Search"><i class="la la-search text-muted"></i></a>-->
-                                <a href="@Url.Action("Edit", "Survey", new { area = "RnP", @id = item.ID })" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
-                                <a href="@Url.Action("Details", "Survey", new { area = "RnP", @id = item.ID })" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
-                                <a href="@Url.Action("Delete", "Survey", new { area = "RnP", @id = item.ID })" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></a>
-                            </div>
-                        </td>
-                    }
-                    else
-                    {
-                        <td>
-                            <div class="icon-action">
-                                <a href="@Url.Action("Details", "Survey", new { area = "RnP", @id = item.ID })" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>
-                            </div>
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
     </table>
-    <!-- Pagination -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination pagination-sm float-right">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true" class="material-icons">chevron_left</span>
-                </a>
-            </li>
-            <li class="page-item active">
-                <a class="page-link" href="#" aria-label="1">
-                    <span>1</span>
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="2">
-                    <span>2</span>
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="3">
-                    <span>3</span>
-                </a>
-            </li>
-            <li class="page-iteme">
-                <a class="page-link" href="#" aria-label="4">
-                    <span>4</span>
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true" class="material-icons">chevron_right</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <div class="showing-result py-2">Showing 1 - 6 of 2000 surveys</div>
 </div>
+
+@section ContentScript{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var table = $('.tabledata').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    "type": "post",
+                    "url": '@(WebApiURL)RnP/Survey/GetAll',
+                    "data": function (filter) {
+                        //filter.Type = $('#Filters_Type').val();
+                        filter.Title = $('#Filters_Title').val();
+                        //filter.StartDate = $('#Filters_StartDate').val();
+                        //filter.EndDate = $('#Filters_EndDate').val();
+                    },
+                    dataFilter: function (res) {
+                        // do what you need to the data before it loads to the table
+                        // for debugging only for now
+                        return res;
+                    },
+                    error: function (x, y) {
+                        console.log(x);
+                    }
+                },
+                columns: [
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'Title',
+                        sortable: true
+                    },
+                    {
+                        data: 'Type',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+                            if (row.Type == 0) {
+                                return "<span>Public Mass</span>";
+                            }
+                            else if (row.Type == 1) {
+                                return "<span>Targeted Groups</span>";
+                            }
+                        }
+                    },
+                    {
+                        data: 'Duration',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+                            var sdate = new Date(row.StartDate);
+                            var sday = ("0" + sdate.getDate()).slice(-2);            //sdate.getDate();
+                            var smonth = ("0" + (sdate.getMonth() + 1)).slice(-2);   //sdate.getMonth();
+                            var syear = sdate.getFullYear();
+                            var sfinaldate = sday + '/' + smonth + '/' + syear;
+                            var edate = new Date(row.EndDate);
+                            var eday = ("0" + edate.getDate()).slice(-2);            //sdate.getDate();
+                            var emonth = ("0" + (edate.getMonth() + 1)).slice(-2);   //sdate.getMonth();
+                            var eyear = edate.getFullYear();
+                            var efinaldate = eday + '/' + emonth + '/' + eyear;
+                            return "<span>" + sfinaldate + " to " + efinaldate + "</span>";
+                        }
+
+                    },
+                    {
+                        data: 'Progress',
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return "<span>" + row.SubmitCount + " / " + row.InviteCount + "</span>";
+                            // TODO: return progress bar
+                        }
+                    },
+                    {
+                        data: 'Status',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+                            if (row.Status == 0) {
+                                return "<span class='color-grey font-weight-bold'>Draft</span>";
+                            }
+                            else if (row.Status == 1) {
+                                return "<span class='color-yellow font-weight-bold'>Pending Verification</span>";
+                            }
+                            else if (row.Status == 2) {
+                                return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
+                            }
+                            else if (row.Status == 3) {
+                                return "<span class='color-yellow font-weight-bold'>Pending Approval</span>";
+                            }
+                            else if (row.Status == 4) {
+                                return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
+                            }
+                            else if (row.Status == 5) {
+                                return "<span class='color-green font-weight-bold'>Approved</span>";
+                            }
+                            else if (row.Status == 6) {
+                                return "<span class='color-green font-weight-bold'>Published</span>";
+                            }
+                            else if (row.Status == 7) {
+                                return "<span class='color-grey font-weight-bold'>Unpublished</span>";
+                            }
+                            else if (row.Status == 8) {
+                                return "<span class='color-grey font-weight-bold'>Cancelled</span>";
+                            }
+                        }
+                    },
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+
+                            var action = "";
+
+                            if (row.Status == 0) {
+                                action = '<div class="icon-action">'
+                                    + '<a href="@Url.Action("Edit", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+                                    + '</div>';
+                            }
+                            else if (row.Status == 1) {
+                                action = '<div class="icon-action">'
+                                    + '</div>';
+                            }
+                            else {
+                                action = '<div class="icon-action">'
+                                    + '</div>';
+                            }
+
+                            return action;
+                        }
+                    }
+                ],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_ surveys"
+                },
+                dom: 'rtip'
+            });
+
+            $('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#quickSearchBtn').click(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change(function () {
+                table.page.len($(this).val()).draw();
+            });
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt', function () {
+                var info = table.page.info();
+                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' surveys');
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            }).draw();
+
+        });
+
+    </script>
+
+}

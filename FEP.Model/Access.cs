@@ -66,7 +66,31 @@ namespace FEP.Model
         [Display(Name = "Survey Menu")]
         RnPSurveyMenu = 2003,
 
+        [Display(Name = "Publication - List")]
+        RnPPublicationList = 2101,
+        [Display(Name = "Publication - View")]
+        RnPPublicationView = 2102,
+        [Display(Name = "Publication - Add")]
+        RnPPublicationAdd = 2103,
+        [Display(Name = "Publication - Edit")]
+        RnPPublicationEdit = 2104,
+        [Display(Name = "Publication - Delete")]
+        RnPPublicationDelete = 2105,
+        [Display(Name = "Publication - Submit")]
+        RnPPublicationSubmit = 2106,
+        [Display(Name = "Publication - Cancel")]
+        RnPPublicationCancel = 2107,
+        [Display(Name = "Publication - Withdraw")]
+        RnPPublicationWithdraw = 2108,
 
+        [Display(Name = "Publication - Verify")]
+        RnPPublicationVerify = 2201,
+        [Display(Name = "Publication - Approve (Level 1)")]
+        RnPPublicationApprove1 = 2202,
+        [Display(Name = "Publication - Approve (Level 2)")]
+        RnPPublicationApprove2 = 2203,
+        [Display(Name = "Publication - Approve (Level 3)")]
+        RnPPublicationApprove3 = 2204,
 
 
 
@@ -88,8 +112,10 @@ namespace FEP.Model
         AdminCompanyMenu = 4003,
         [Display(Name = "Staff Menu")]
         AdminStaffMenu = 4004,
-
-
+        [Display(Name = "Individual List")]
+        AdminIndividualList = 4005,
+        [Display(Name = "Individual Edit")]
+        AdminIndividualEdit = 4006,
 
 
 

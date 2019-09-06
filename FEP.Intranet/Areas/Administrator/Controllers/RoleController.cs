@@ -1,4 +1,5 @@
-﻿using FEP.Model;
+﻿using FEP.Helper;
+using FEP.Model;
 using FEP.WebApiModel.Administration;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.Administrator.Controllers
 {
-    public class RoleController : Controller
+    public class RoleController : FEPController
     {
-        // GET: Administrator/Role
+        
         public async Task<ActionResult> List()
         {
             var response = await WepApiMethod.SendApiAsync<List<RoleModel>>(HttpVerbs.Get, $"Administration/Role");
@@ -49,6 +50,8 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 if (response.isSuccess)
                 {
                     TempData["SuccessMessage"] = "Role successfully added";
+
+                    LogActivity(Modules.Admin, "Create Role", model);
 
                     return RedirectToAction("List");
                 }
@@ -95,6 +98,8 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 {
                     TempData["SuccessMessage"] = "Role successfully updated";
 
+                    LogActivity(Modules.Admin, "Update Role", model);
+
                     return RedirectToAction("List");
                 }
             }
@@ -129,6 +134,8 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 TempData["SuccessMessage"] = "Role successfully deleted";
 
+                LogActivity(Modules.Admin, "Delete Role", new { id = id });
+
                 return RedirectToAction("List");
             }
 
@@ -141,14 +148,21 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         [HttpGet]
         public async Task<ActionResult> Access(int id, Modules? module)
         {
-            var response = await WepApiMethod.SendApiAsync<RoleAccessModel>(HttpVerbs.Get, $"Administration/Role/GetAccess?roleId={id}&module={module}");
-
             var model = new AccessModel();
 
-            if (response.isSuccess)
+            var responseRoles = await WepApiMethod.SendApiAsync<List<RoleModel>>(HttpVerbs.Get, $"Administration/Role");
+
+            if (responseRoles.isSuccess)
+            {
+                model.Roles = responseRoles.Data;
+            }
+            
+            var responseRole = await WepApiMethod.SendApiAsync<RoleAccessModel>(HttpVerbs.Get, $"Administration/Role/GetAccess?roleId={id}&module={module}");
+
+            if (responseRole.isSuccess)
             {
                 model.RoleId = id;
-                model.RoleName = response.Data.RoleName;
+                model.RoleName = responseRole.Data.RoleName;
                 model.Module = module;
 
                 int i = 0;
@@ -156,7 +170,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 var str = new StringBuilder();
                 model.Access = new Dictionary<UserAccess, string>();
 
-                foreach (var useraccess in response.Data.UserAccesses.OrderBy(o => o.UserAccess))
+                foreach (var useraccess in responseRole.Data.UserAccesses.OrderBy(o => o.UserAccess))
                 {
                     str = new StringBuilder();
 
@@ -189,6 +203,9 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             if (response.isSuccess)
             {
                 TempData["SuccessMessage"] = "Role access successfully updated.";
+
+                LogActivity(Modules.Admin, "Update Role Access", model);
+
                 return RedirectToAction("Access", new { id = model.RoleId });
             }
             
@@ -197,8 +214,85 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<ActionResult> UserRole(int? id)
+        {
+            var model = new UserRoleModel();
 
-        
+            var responseRoles = await WepApiMethod.SendApiAsync<List<RoleModel>>(HttpVerbs.Get, $"Administration/Role");
+
+            if (responseRoles.isSuccess)
+            {
+                model.Roles = responseRoles.Data;
+            }
+
+            var responseRole = await WepApiMethod.SendApiAsync<RoleModel>(HttpVerbs.Get, $"Administration/Role?id={id}");
+
+            if (!responseRole.isSuccess)
+            {
+                return HttpNotFound();
+            }
+                        
+            model.RoleId = responseRole.Data.Id;
+            model.RoleName = responseRole.Data.Name;
+            model.Users = new ListUserModel();
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddUser(int RoleId, int[] Ids)
+        {
+
+            var model = new UpdateUserRoleModel {
+                RoleId = RoleId,
+                UserId = Ids.ToList()
+            };
+
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Administration/Role/AddUser", model);
+
+            if (response.isSuccess)
+            {
+                TempData["SuccessMessage"] = "User successfully added to the role.";
+                LogActivity(Modules.Admin, "Add User To Role", model);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Fail to add user.";
+            }
+
+
+            return RedirectToAction("UserRole", "Role", new { area = "Administrator", id = RoleId });
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> DeleteUser(int RoleId, int[] Ids)
+        {
+
+            var model = new UpdateUserRoleModel
+            {
+                RoleId = RoleId,
+                UserId = Ids.ToList()
+            };
+
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Administration/Role/DeleteUser", model);
+
+            if (response.isSuccess)
+            {
+                TempData["SuccessMessage"] = "User successfully remove from role.";
+                LogActivity(Modules.Admin, "Remove User From Role", model);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Fail to remove user.";
+            }
+
+
+            return RedirectToAction("UserRole", "Role", new { area = "Administrator", id = RoleId });
+
+        }
+
 
     }
 }

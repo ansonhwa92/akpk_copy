@@ -1,10 +1,13 @@
 ﻿using FEP.Helper;
 using FEP.Intranet.Areas.eEvent.Models;
 using FEP.Model;
+using FEP.WebApiModel.eEvent;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
@@ -20,17 +23,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View();
 		}
 
-		public ActionResult Create_SelectCategory(FilterEventCategoryModel filter)
+		public async Task<ActionResult> Create_SelectCategory()
 		{
-			var selectCategory = db.EventCategory.Where(i => i.Display).Select(i => new DetailsEventCategoryModel()
-			{
-				Id = i.Id,
-				CategoryName = i.CategoryName
-			}).ToList();
+            var response = await WepApiMethod.SendApiAsync<List<EventCategoryModel>>(HttpVerbs.Get, $"eEvent/EventCategory");
 
-			ListEventCategoryModel model = new ListEventCategoryModel(selectCategory);
+            if (response.isSuccess)
+                return View(response.Data);
 
-			return View(model);
+            return View(new List<EventCategoryModel>());
+
 		}
 
 		//public ActionResult List(FilterPublicEventModel filter)

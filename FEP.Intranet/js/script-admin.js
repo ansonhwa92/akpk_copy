@@ -100,6 +100,10 @@
                     });
                 });
 
+                if (wind.width() >= 991) {
+                    $('#menu-collapse').collapse('show');
+                }
+
             },
 
             //configure the select2 custom plugin
@@ -243,6 +247,17 @@
                     $(this).addClass('active');
                 }); 
 
+            },
+
+             //For height Action Log Media Interview to trigger scroll
+            actionLogHeight: function() {
+                var formContainerH = $(".form-container").innerHeight();
+                //alert (formContainer);
+                $(".action-log .ps").css({
+                    'max-height': formContainerH
+                });
+
+
             }
 
            
@@ -263,7 +278,7 @@
         akpk.updateList();
         akpk.filter();
         akpk.selectCategoryEvent();
-       
+        akpk.actionLogHeight();
 
     });
 

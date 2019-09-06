@@ -70,6 +70,10 @@
     <Compile Include="Migrations\201909061749502_a2.cs" />
     <Compile Include="Migrations\201909061749502_a2.Designer.cs">
       <DependentUpon>201909061749502_a2.cs</DependentUpon>
+    <Compile Include="Logs.cs" />
+    <Compile Include="Migrations\201909061254150_fr1.cs" />
+    <Compile Include="Migrations\201909061254150_fr1.Designer.cs">
+      <DependentUpon>201909061254150_fr1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -102,6 +106,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909061749502_a2.resx">
       <DependentUpon>201909061749502_a2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909061254150_fr1.resx">
+      <DependentUpon>201909061254150_fr1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

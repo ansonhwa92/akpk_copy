@@ -182,6 +182,7 @@
                                                 <div class="col-3 pl-0 text-right">
                                                     <div class="icon-action">
                                                         <a href="@Url.Action("Access", new { id = item.Id })"><i class="la la-list-alt text-muted"></i></a>
+                                                        <a href="@Url.Action("UserRole", new { id = item.Id })"><i class="la la-user text-muted"></i></a>
                                                         <a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')"><i class="la la-edit text-muted"></i></a>
                                                         <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')"><i class="la la-trash-o text-muted"></i></a>
                                                     </div>

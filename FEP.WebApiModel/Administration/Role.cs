@@ -1,4 +1,5 @@
-﻿using FEP.Model;
+﻿using FEP.Helper;
+using FEP.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -56,14 +57,22 @@ namespace FEP.WebApiModel.Administration
         public string Description { get; set; }
     }
 
-    public class RoleAccessModel
+    public class RoleAccessModel//api
     {
         public string RoleName { get; set; }
         public List<UserAccessModel> UserAccesses { get; set; }
     }
 
-    public class AccessModel
+    public class RoleUserModel//api
     {
+        public string RoleName { get; set; }
+        public List<UserModel> Users { get; set; }
+    }
+
+    public class AccessModel//view
+    {
+        public List<RoleModel> Roles { get; set; }
+
         public int RoleId { get; set; }
 
         public Modules? Module { get; set; }
@@ -74,17 +83,32 @@ namespace FEP.WebApiModel.Administration
         public Dictionary<UserAccess, string> Access { get; set; }
     }
 
-    public class UpdateRoleAccessModel
+    public class UpdateRoleAccessModel//api
     {
         public int RoleId { get; set; }
         public List<UserAccessModel> Access { get; set; }
     }
 
+    public class UpdateUserRoleModel
+    {
+        public int RoleId { get; set; }
+        public List<int> UserId { get; set; }
+    }
+
    
-    public class UserAccessModel
+    public class UserAccessModel//view
     {
         public UserAccess UserAccess { get; set; }
         public bool IsCheck { get; set; }
+    }
+
+    public class UserRoleModel//view
+    {
+        public List<RoleModel> Roles { get; set; }
+        public int RoleId { get; set; }
+        public string RoleName { get; set; }
+        public ListUserModel Users { get; set; }
+
     }
 
 }

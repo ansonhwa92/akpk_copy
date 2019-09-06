@@ -43,18 +43,16 @@
         <div id="page-nav" class="sidebar-left page-nav">
             <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Role Access</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Role</h6>
                     <ul class="nav page-nav__menu">
-                        <li class="nav-item">
-                            <a href="@Url.Action("Access", new { id = Model.RoleId })" class=" @if (Model.Module == null) { @Html.Raw("active")} nav-link">All</a>
-                        </li>
-                        @foreach (Modules type in (Modules[])Enum.GetValues(typeof(Modules)))
+
+                        @foreach (var role in Model.Roles)
                         {
                             <li class="nav-item">
-                                <a href="@Url.Action("Access", new { id = Model.RoleId, module = type })" class=" @if (type == Model.Module) { @Html.Raw("active") } nav-link">@type.GetDisplayName()</a>
+                                <a href="@Url.Action("Access", new { id = role.Id })" class=" @if (role.Id == Model.RoleId) { @Html.Raw("active")} nav-link">@Html.DisplayFor(m => role.Name)</a>
                             </li>
-
                         }
+
                     </ul>
                 </div>
             </div>

@@ -75,6 +75,35 @@ namespace FEP.Intranet
             stylebundle.Orderer = new NonOrderingBundleOrderer();
             bundles.Add(stylebundle);
 
+            // survey
+            stylebundle = new StyleBundle("~/layoutSurveyBuilder/style")
+                .Include("~/dist/assets/vendor/perfect-scrollbar.css", new CssRewriteUrlTransform())
+
+                .Include("~/dist/assets/css/material-icons.css", new CssRewriteUrlTransform())
+                .Include("~/dist/assets/css/material-icons.rtl.css", new CssRewriteUrlTransform())
+
+                .Include("~/dist/assets/css/fontawesome.css", new CssRewriteUrlTransform())
+                .Include("~/dist/assets/css/fontawesome.rtl.css", new CssRewriteUrlTransform())
+
+                .Include("~/lib/line-awesome/css/line-awesome.min.css", new CssRewriteUrlTransform())
+
+                .Include("~/css/select2.min.css", new CssRewriteUrlTransform())
+
+                .Include("~/dist/assets/css/flatpickr.css", new CssRewriteUrlTransform())
+                .Include("~/dist/assets/css/flatpickr.rtl.css", new CssRewriteUrlTransform())
+
+                .Include("~/dist/assets/css/app.css", new CssRewriteUrlTransform())
+                .Include("~/dist/assets/css/app.rtl.css", new CssRewriteUrlTransform())
+
+                .Include("~/dist/assets/vendor/datatables.css", new CssRewriteUrlTransform())
+
+                .Include("~/css/base.css", new CssRewriteUrlTransform())
+                .Include("~/css/custom-admin.css", new CssRewriteUrlTransform())
+                ;
+
+            stylebundle.Orderer = new NonOrderingBundleOrderer();
+            bundles.Add(stylebundle);
+
             //var scriptbundle = new ScriptBundle("~/core/js")
             //    .Include("~/dist/assets/vendor/jquery.min.js")
             //    .Include("~/dist/assets/vendor/popper.min.js")
@@ -143,6 +172,41 @@ namespace FEP.Intranet
                 
                 .Include("~/dist/assets/vendor/datatables.js")
                 
+                .Include("~/js/script-admin.js")
+
+                .Include("~/Scripts/moment.js")
+                .Include("~/Scripts/jquery.validate.min.js")
+                .Include("~/Scripts/jquery.validate.unobtrusive.min.js")
+                .Include("~/Scripts/jquery.unobtrusive-ajax.min.js");
+
+            scriptbundle.Orderer = new NonOrderingBundleOrderer();
+            bundles.Add(scriptbundle);
+
+            // survey
+            scriptbundle = new Bundle("~/layoutSurveyBuilder/script")
+                .Include("~/dist/assets/vendor/jquery.min.js")
+
+                .Include("~/dist/assets/vendor/popper.min.js")
+                .Include("~/dist/assets/vendor/bootstrap.min.js")
+
+                .Include("~/dist/assets/vendor/perfect-scrollbar.min.js")
+
+                .Include("~/dist/assets/vendor/dom-factory.js")
+                .Include("~/dist/assets/vendor/material-design-kit.js")
+
+                .Include("~/dist/assets/js/app.js")
+
+                .Include("~/dist/assets/js/hljs.js")
+                .Include("~/js/select2.min.js")
+
+                .Include("~/dist/assets/js/toggle-check-all.js")
+                .Include("~/dist/assets/js/check-selected-row.js")
+
+                .Include("~/dist/assets/vendor/flatpickr/flatpickr.min.js")
+                .Include("~/dist/assets/js/flatpickr.js")
+
+                .Include("~/dist/assets/vendor/datatables.js")
+
                 .Include("~/js/script-admin.js")
 
                 .Include("~/Scripts/moment.js")

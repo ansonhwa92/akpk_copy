@@ -17,7 +17,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             if (CurrentUser.IsAuthenticated())
             {
-                view.MasterName = "~/Views/Shared/_Layout.cshtml";
+                return RedirectToAction("Dashboard", "Home", new { area = "" });
             }
 
             return view;

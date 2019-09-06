@@ -186,7 +186,9 @@ namespace FEP.WebApi.Api.Administration
         public IHttpActionResult Post([FromBody] CreateCompanyModel model)
         {
 
-            var password = Authentication.RandomString(10, true);
+            //var password = Authentication.RandomString(10, true);
+
+            var password = "abc123";
 
             Authentication.GeneratePassword(password);
 

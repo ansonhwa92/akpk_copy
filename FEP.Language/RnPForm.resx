@@ -133,7 +133,7 @@
     <value>Co-Author(s)</value>
   </data>
   <data name="PubDateAdded" xml:space="preserve">
-    <value>Date Added</value>
+    <value>Date Created</value>
   </data>
   <data name="PubDescription" xml:space="preserve">
     <value>Description</value>
@@ -327,7 +327,7 @@
   <data name="ValidInvalidSurveyStartDate" xml:space="preserve">
     <value>Please specify a valid date</value>
   </data>
-  <data name="SurveyTemplate" xml:space="preserve">
+  <data name="SurveyTemplateName" xml:space="preserve">
     <value>Template Name</value>
   </data>
   <data name="ValidRequiredSurveyApprovalApprovalDate" xml:space="preserve">
@@ -336,8 +336,8 @@
   <data name="ValidRequiredSurveyResponseResponseDate" xml:space="preserve">
     <value>Please specify response date</value>
   </data>
-  <data name="ValidRequiredSurveyTemplate" xml:space="preserve">
-    <value>Please specify Template name</value>
+  <data name="ValidRequiredSurveyTemplateName" xml:space="preserve">
+    <value>Please specify Template Name</value>
   </data>
   <data name="PubApprovalApprovalDate" xml:space="preserve">
     <value>Approval Date</value>
@@ -401,5 +401,77 @@
   </data>
   <data name="ValidInvalidYearOutOfRange" xml:space="preserve">
     <value>Please enter a year between 1900 to 3000</value>
+  </data>
+  <data name="PubApprovalLevel" xml:space="preserve">
+    <value>Approval Level</value>
+  </data>
+  <data name="ValidInvalidApprovalStatus" xml:space="preserve">
+    <value>Please select a Status</value>
+  </data>
+  <data name="PubCreatorId" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="PubDmsPath" xml:space="preserve">
+    <value>DMS Path</value>
+  </data>
+  <data name="PubFreeDCopy" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="PubFreeHCopy" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="PubFreeHDCopy" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="PubRefNo" xml:space="preserve">
+    <value>Reference No</value>
+  </data>
+  <data name="SurveyCreatorId" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="SurveyDateAdded" xml:space="preserve">
+    <value>Date Created</value>
+  </data>
+  <data name="SurveyDmsPath" xml:space="preserve">
+    <value>DMS Path</value>
+  </data>
+  <data name="SurveyRefNo" xml:space="preserve">
+    <value>Reference No</value>
+  </data>
+  <data name="SurveyTemplateDescription" xml:space="preserve">
+    <value>Template Description</value>
+  </data>
+  <data name="PubCancelRemark" xml:space="preserve">
+    <value>Cancellation Remarks</value>
+  </data>
+  <data name="SurveyCancelRemark" xml:space="preserve">
+    <value>Cancellation Remarks</value>
+  </data>
+  <data name="PubDateCancelled" xml:space="preserve">
+    <value>Date Cancelled</value>
+  </data>
+  <data name="SurveyDateCancelled" xml:space="preserve">
+    <value>Date Cancelled</value>
+  </data>
+  <data name="ValidRequiredCancellationRemark" xml:space="preserve">
+    <value>Please enter Remarks</value>
+  </data>
+  <data name="ValidRequiredSurveyCancellationRemark" xml:space="preserve">
+    <value>Please enter Remarks</value>
+  </data>
+  <data name="SurveyInviteCount" xml:space="preserve">
+    <value>No. of invited participants</value>
+  </data>
+  <data name="SurveySubmitCount" xml:space="preserve">
+    <value>No. of responses</value>
+  </data>
+  <data name="ValidRequiredSurveyTemplateDescription" xml:space="preserve">
+    <value>Please enter Template Description</value>
+  </data>
+  <data name="SurveyRequireLogin" xml:space="preserve">
+    <value>User Login Required</value>
+  </data>
+  <data name="ValidRequiredSurveyRequireLogin" xml:space="preserve">
+    <value>Please specify Login requirement</value>
   </data>
 </root>

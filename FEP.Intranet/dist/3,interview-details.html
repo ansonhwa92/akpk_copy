@@ -698,6 +698,21 @@
     <script src="assets/js/flatpickr.js"></script>
     <!-- Global Settings -->
     <script src="../js/script-admin.js"></script>
+    <script type="text/javascript">
+    var languagehtml = $("#addlanguage").html();
+    var btnAddLanguage = $('#btnAddlanguage');
+
+    btnAddLanguage.click(function() {
+        $("#addlanguage").append(languagehtml);
+    });
+
+    $("#addlanguage .lineItem").remove();
+    $('#addlanguage').on("click", ".deleteItem", function() {
+        $(this).closest(".lineItem").remove();
+        // console.log($(this));
+        return;
+    });
+    </script>
 </body>
 
 </html>

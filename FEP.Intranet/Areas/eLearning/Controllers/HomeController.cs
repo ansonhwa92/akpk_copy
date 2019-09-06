@@ -18,7 +18,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (CurrentUser.IsAuthenticated())
             {
-                view.MasterName = "~/Views/Shared/_Layout.cshtml";
+                return RedirectToAction("Dashboard", "Home", new { area = "" });
             }
 
             return view;

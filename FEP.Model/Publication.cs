@@ -9,11 +9,20 @@ using System.Data.Entity;
 
 namespace FEP.Model
 {
+    [Table("PublicationCategory")]
+    public class PublicationCategory
+    {
+        [Key]
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
+
     [Table("Publication")]
     public class Publication
     {
         [Key]
         public int ID { get; set; }
+        // publication info..................................................................................................
         public int CategoryID { get; set; }
         public string Author { get; set; }
         public string Coauthor { get; set; }
@@ -22,39 +31,39 @@ namespace FEP.Model
         public string Description { get; set; }
         public string Language { get; set; }
         public string ISBN { get; set; }
-        public bool Free { get; set; }
         public bool Hardcopy { get; set; }
         public bool Digitalcopy { get; set; }
         public bool HDcopy { get; set; }
+        public bool FreeHCopy { get; set; }
+        public bool FreeDCopy { get; set; }
+        public bool FreeHDCopy { get; set; }
         public float HPrice { get; set; }
         public float DPrice { get; set; }
         public float HDPrice { get; set; }
         public string Pictures { get; set; }
         public string ProofOfApproval { get; set; }
         public int? StockBalance { get; set; }
-        // withdrawal use
+        public string CancelRemark { get; set; }
+        // withdrawal info...................................................................................................
         public string WithdrawalReason { get; set; }
         public string ProofOfWithdrawal { get; set; }
-        // non-key in data
+        // auto-filled in data...............................................................................................
         public DateTime DateAdded { get; set; }
+        public int CreatorId { get; set; }
+        public string RefNo { get; set; }
         public PublicationStatus Status { get; set; }
-        public PublicationWithdrawalStatus WStatus { get; set; }
+        public DateTime? DateCancelled { get; set; }
+        //public PublicationWithdrawalStatus WStatus { get; set; }
         public int ViewCount { get; set; }
         public int PurchaseCount { get; set; }
-        // DMS integration (TODO)
-        // nav
+        // DMS integration (TODO)............................................................................................
+        public string DmsPath { get; set; }
+        // foreign keys......................................................................................................
         [ForeignKey("CategoryID")]
         public virtual PublicationCategory Category { get; set; }
+        // sub-tables........................................................................................................
         public virtual ICollection<PublicationApproval> Approvals { get; set; }
         public virtual ICollection<PublicationWithdrawal> Withdrawals { get; set; }
-    }
-
-    [Table("PublicationCategory")]
-    public class PublicationCategory
-    {
-        [Key]
-        public int ID { get; set; }
-        public string Name { get; set; }
     }
 
     [Table("PublicationApproval")]
@@ -69,7 +78,7 @@ namespace FEP.Model
         public DateTime ApprovalDate { get; set; }
         public string Remarks { get; set; }
         public bool RequireNext { get; set; }
-
+        // foreign keys......................................................................................................
         [ForeignKey("PublicationID")]
         public virtual Publication Publication { get; set; }
     }
@@ -86,7 +95,7 @@ namespace FEP.Model
         public DateTime ApprovalDate { get; set; }
         public string Remarks { get; set; }
         public bool RequireNext { get; set; }
-
+        // foreign keys......................................................................................................
         [ForeignKey("PublicationID")]
         public virtual Publication Publication { get; set; }
     }
@@ -163,25 +172,55 @@ namespace FEP.Model
 
     public enum PublicationStatus
     {
-        [Display(Name = "PubStatusNew", ResourceType = typeof(Language.RnPEnum))]
+        [Display(Name = "PubStatusNew", ResourceType = typeof(Language.RnPEnum))]                           // draft
         New,
-        [Display(Name = "PubStatusSubmitted", ResourceType = typeof(Language.RnPEnum))]
+        [Display(Name = "PubStatusSubmitted", ResourceType = typeof(Language.RnPEnum))]                     // pending verification
         Submitted,
-        [Display(Name = "PubStatusPublished", ResourceType = typeof(Language.RnPEnum))]
+        [Display(Name = "PubStatusVerifierRejected", ResourceType = typeof(Language.RnPEnum))]              // pending amendment
+        VerifierRejected,
+        [Display(Name = "PubStatusVerified", ResourceType = typeof(Language.RnPEnum))]                      // pending approval
+        Verified,
+        [Display(Name = "PubStatusApproverRejected", ResourceType = typeof(Language.RnPEnum))]              // pending amendment
+        ApproverRejected,
+        [Display(Name = "PubStatusApproved", ResourceType = typeof(Language.RnPEnum))]                      // approved
+        Approved,
+        [Display(Name = "PubStatusPublished", ResourceType = typeof(Language.RnPEnum))]                     // published
         Published,
-        [Display(Name = "PubStatusTrashed", ResourceType = typeof(Language.RnPEnum))]
-        Trashed
+        [Display(Name = "PubStatusUnpublished", ResourceType = typeof(Language.RnPEnum))]                   // unpublished
+        Unpublished,
+        [Display(Name = "PubStatusTrashed", ResourceType = typeof(Language.RnPEnum))]                       // cancelled
+        Trashed,
+        [Display(Name = "PubStatusWithdrawalNew", ResourceType = typeof(Language.RnPEnum))]                 // draft
+        NewWithdrawal,
+        [Display(Name = "PubStatusWithdrawalSubmitted", ResourceType = typeof(Language.RnPEnum))]           // pending verification
+        WithdrawalSubmitted,
+        [Display(Name = "PubStatusWithdrawalVerifierRejected", ResourceType = typeof(Language.RnPEnum))]    // pending amendment
+        WithdrawalVerifierRejected,
+        [Display(Name = "PubStatusWithdrawalVerified", ResourceType = typeof(Language.RnPEnum))]            // pending approval
+        WithdrawalVerified,
+        [Display(Name = "PubStatusWithdrawalApproverRejected", ResourceType = typeof(Language.RnPEnum))]    // pending amendment
+        WithdrawalApproverRejected,
+        [Display(Name = "PubStatusWithdrawalApproved", ResourceType = typeof(Language.RnPEnum))]            // approved
+        WithdrawalApproved,
+        [Display(Name = "PubStatusWithdrawalComplete", ResourceType = typeof(Language.RnPEnum))]            // published
+        Withdrawn,
+        [Display(Name = "PubStatusWithdrawalTrashed", ResourceType = typeof(Language.RnPEnum))]             // cancelled
+        WithdrawalTrashed
     }
 
+    /*
     public enum PublicationWithdrawalStatus
     {
         [Display(Name = "PubWithdrawalStatusNone", ResourceType = typeof(Language.RnPEnum))]
         None,
         [Display(Name = "PubWithdrawalStatusSubmitted", ResourceType = typeof(Language.RnPEnum))]
         Submitted,
+        [Display(Name = "PubWithdrawalStatusRejected", ResourceType = typeof(Language.RnPEnum))]
+        Rejected,
         [Display(Name = "PubWithdrawalStatusWithdrawn", ResourceType = typeof(Language.RnPEnum))]
         Withdrawn
     }
+    */
 
     public enum PublicationApprovalLevels
     {

@@ -93,7 +93,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 				if (response.isSuccess)
 				{
-					LogActivity("Create Event Speaker");
+					//LogActivity("Create Event Speaker");
 
 					TempData["SuccessMessage"] = "Event Speaker successfully added";
 
@@ -180,7 +180,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 				if (response.isSuccess)
 				{
-					LogActivity("Update Event Speaker", model);
+					//LogActivity("Update Event Speaker", model);
 
 					TempData["SuccessMessage"] = "Event Speaker successfully updated";
 
@@ -247,7 +247,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			if (response.isSuccess)
 			{
-				LogActivity("Delete Event Speaker");
+				//LogActivity("Delete Event Speaker");
 
 				TempData["SuccessMessage"] = "Event Speaker successfully deleted";
 

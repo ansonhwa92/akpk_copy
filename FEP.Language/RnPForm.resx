@@ -468,4 +468,10 @@
   <data name="ValidRequiredSurveyTemplateDescription" xml:space="preserve">
     <value>Please enter Template Description</value>
   </data>
+  <data name="SurveyRequireLogin" xml:space="preserve">
+    <value>User Login Required</value>
+  </data>
+  <data name="ValidRequiredSurveyRequireLogin" xml:space="preserve">
+    <value>Please specify Login requirement</value>
+  </data>
 </root>

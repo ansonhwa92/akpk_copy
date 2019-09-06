@@ -619,6 +619,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Login Required.
+        /// </summary>
+        public static string SurveyRequireLogin {
+            get {
+                return ResourceManager.GetString("SurveyRequireLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Survey Answers.
         /// </summary>
         public static string SurveyResponseContents {
@@ -993,6 +1002,15 @@ namespace Language {
         public static string ValidRequiredSurveyProofOfApproval {
             get {
                 return ResourceManager.GetString("ValidRequiredSurveyProofOfApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please specify Login requirement.
+        /// </summary>
+        public static string ValidRequiredSurveyRequireLogin {
+            get {
+                return ResourceManager.GetString("ValidRequiredSurveyRequireLogin", resourceCulture);
             }
         }
         

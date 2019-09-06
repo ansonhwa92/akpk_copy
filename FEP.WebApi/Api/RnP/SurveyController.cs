@@ -182,6 +182,7 @@ namespace FEP.WebApi.Api.RnP
                 TargetGroup = s.TargetGroup,
                 StartDate = s.StartDate,
                 EndDate = s.EndDate,
+                RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
                 ProofOfApproval = s.ProofOfApproval,
@@ -208,6 +209,41 @@ namespace FEP.WebApi.Api.RnP
                 TargetGroup = s.TargetGroup,
                 StartDate = s.StartDate,
                 EndDate = s.EndDate,
+                RequireLogin = s.RequireLogin,
+                Contents = s.Contents,
+                Active = s.Active,
+                ProofOfApproval = s.ProofOfApproval,
+                DateAdded = s.DateAdded,
+                Status = s.Status
+            }).FirstOrDefault();
+
+            if (survey == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(survey);
+            //return survey;
+        }
+
+        // Function to get a single survey
+        // NOTE: THE WAY INFO IS RETURNED HERE MAY NEED TO BE USED FOR ALL GET FUNCTIONS IN THE FUTURE
+        // GET: api/RnP/Survey/5
+        //public ReturnSurveyModel Get(int id)
+        [Route("api/RnP/Survey/GetSingle")]
+        public IHttpActionResult GetSingle(int id)
+        {
+            var survey = db.Survey.Where(v => v.ID == id).Select(s => new ReturnSurveyModel
+            {
+                ID = s.ID,
+                Type = s.Type,
+                Category = s.Category,
+                Title = s.Title,
+                Description = s.Description,
+                TargetGroup = s.TargetGroup,
+                StartDate = s.StartDate,
+                EndDate = s.EndDate,
+                RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
                 ProofOfApproval = s.ProofOfApproval,
@@ -230,11 +266,27 @@ namespace FEP.WebApi.Api.RnP
         {
             var surveys = db.Survey.OrderBy(v => v.Title).Select(s => new UpdateSurveyTemplateModel
             {
+                ID = s.ID,
                 TemplateName = s.TemplateName,
                 TemplateDescription = s.TemplateDescription
             }).ToList();
 
             return surveys;
+        }
+
+        // Function to get json of a single survey template
+        // GET: api/RnP/Survey/GetTemplate/5
+        public string GetTemplate(int id)
+        {
+            var survey = db.Survey.Where(v => v.ID == id).Select(s => new ReturnSurveyModel
+            {
+                ID = s.ID,
+                TemplateName = s.TemplateName,
+                TemplateDescription = s.TemplateDescription,
+                Contents = s.Contents
+            }).FirstOrDefault();
+
+            return survey.Contents;
         }
 
         // Function to get survey details for review before submission. The details retrieved include action
@@ -253,6 +305,7 @@ namespace FEP.WebApi.Api.RnP
                 TargetGroup = s.TargetGroup,
                 StartDate = s.StartDate,
                 EndDate = s.EndDate,
+                RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Pictures = s.Pictures,
                 ProofOfApproval = s.ProofOfApproval,
@@ -286,6 +339,7 @@ namespace FEP.WebApi.Api.RnP
                 TargetGroup = s.TargetGroup,
                 StartDate = s.StartDate,
                 EndDate = s.EndDate,
+                RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Pictures = s.Pictures,
                 ProofOfApproval = s.ProofOfApproval,
@@ -319,6 +373,7 @@ namespace FEP.WebApi.Api.RnP
                 TargetGroup = s.TargetGroup,
                 StartDate = s.StartDate,
                 EndDate = s.EndDate,
+                RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Pictures = s.Pictures,
                 ProofOfApproval = s.ProofOfApproval,
@@ -411,6 +466,7 @@ namespace FEP.WebApi.Api.RnP
                     TargetGroup = model.TargetGroup,
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
+                    RequireLogin = model.RequireLogin,
                     TemplateName = "",
                     TemplateDescription = "",
                     Contents = "",
@@ -482,6 +538,7 @@ namespace FEP.WebApi.Api.RnP
                     survey.TargetGroup = model.TargetGroup;
                     survey.StartDate = model.StartDate;
                     survey.EndDate = model.EndDate;
+                    survey.RequireLogin = model.RequireLogin;
                     survey.Pictures = model.Pictures;
                     survey.ProofOfApproval = model.ProofOfApproval;
 
@@ -496,6 +553,8 @@ namespace FEP.WebApi.Api.RnP
         }
 
         // Function to save survey build (as draft) after editing an existing one.
+        // This is called automatically every time Survey Creator autosaves changes, and is also called by
+        // the other controller for final save before review
         // POST: api/RnP/Survey/Build
         [Route("api/RnP/Survey/Build")]
         [HttpPost]

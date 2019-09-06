@@ -43,29 +43,28 @@
                 <!-- Steps -->
                 <div class="sidebar-inner sticky">
                     <ul class="steps steps-vertical">
-                        <li class="step-item active">
+                        <li class="step-item complete">
                             <a href="" class="step-link">
                                 <span class="step-number">1</span>
-                                <span class="step-title">Fill Up Survey Details</span>
+                                <span class="step-title">Select Survey Type</span>
                             </a>
                         </li>
-                        <li class="step-item disabled">
+                        <li class="step-item active">
                             <a href="" class="step-link">
                                 <span class="step-number">2</span>
-                                <span class="step-title">Design Survey Questions</span>
+                                <span class="step-title">Edit Survey Details</span>
                             </a>
                         </li>
-                        <!-- rejected -->
-                        <!-- <li class="step-item rejected">
-                            <a href="" class="step-link">
-                                <span class="step-number">2</span>
-                                <span class="step-title">Fill Up Event Details</span>
-                            </a>
-                        </li> -->
                         <li class="step-item disabled">
                             <a href="" class="step-link">
                                 <span class="step-number">3</span>
-                                <span class="step-title">Survey Approval</span>
+                                <span class="step-title">Design Survey Questions</span>
+                            </a>
+                        </li>
+                        <li class="step-item disabled">
+                            <a href="" class="step-link">
+                                <span class="step-number">4</span>
+                                <span class="step-title">Review & Submission</span>
                             </a>
                         </li>
                     </ul>
@@ -76,37 +75,49 @@
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
             <!-- Start Form -->
             <div class="border-form rounded-top">
-                <form>
-                    <div class="form-container">
-                        <div class="row">
+                <div class="form-container">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label" })
+                            @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
+                            @*Html.EnumDropDownListFor(model => model.Type, new { @class = "form-control", @readonly = "readonly" })*@
+                            <input class="form-control" type="text" name="TypeName" id="TypeName" readonly="readonly" value="@ViewBag.TypeName">
+                            @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.Category, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @placeholder = "Title of the Survey" } })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                            @*Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @placeholder = "Description of Survey", cols = 48, @rows = 2 })*@
+                            <textarea id="Description" name="Description" class="form-control" rows="3" placeholder="Description of Survey">@Model.Description</textarea>
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    @if (ViewBag.TypeName == "Public Mass")
+                    {
+                        <div class="row" style="display:none;">
                             <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label" })
-                                @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.EnumDropDownListFor(model => model.Type, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label" })
-                                @Html.EnumDropDownListFor(model => model.Category, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @placeholder = "Title of the Survey" } })
-                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
-                                @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @placeholder = "Description of Survey", cols = 48, @rows = 2 })
-                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+                    }
+                    else if (ViewBag.TypeName == "Targeted Groups")
+                    {
                         <div class="row">
                             <div class="form-group col-lg-12">
                                 @Html.LabelFor(model => model.TargetGroup, htmlAttributes: new { @class = "control-label" })
@@ -121,72 +132,99 @@
                                 @Html.ValidationMessageFor(model => model.TargetGroup, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-lg-6">
-                                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label", @title = "The start date of the Survey duration" })
-                                <div class="dateSelect">
-                                    <input type="text" id="date_start" class="form-control" placeholder="Date Start" data-input="flatpickr">
-                                    <a class="input-button calendar" title="toggle" data-toggle>
-                                        <i class="la la-calendar"></i>
-                                    </a>
-                                    <a class="input-button clear" title="clear" data-clear>
-                                        <i class="la la-times"></i>
-                                    </a>
-                                </div>
-                                @Html.HiddenFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                    }
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label", @title = "The start date of the Survey duration" })
+                            <div class="dateSelect">
+                                <input type="text" id="date_start" class="form-control" placeholder="Date Start" data-input="flatpickr">
+                                <a class="input-button calendar" title="toggle" data-toggle>
+                                    <i class="la la-calendar"></i>
+                                </a>
+                                <a class="input-button clear" title="clear" data-clear>
+                                    <i class="la la-times"></i>
+                                </a>
                             </div>
-                            <div class="form-group col-lg-6">
-                                @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label", @title = "The end date of the Survey duration" })
-                                <div class="dateSelect">
-                                    <input type="text" id="date_end" class="form-control" placeholder="Date End" data-input="flatpickr">
-                                    <a class="input-button calendar" title="toggle" data-toggle>
-                                        <i class="la la-calendar"></i>
-                                    </a>
-                                    <a class="input-button clear" title="clear" data-clear>
-                                        <i class="la la-times"></i>
-                                    </a>
-                                </div>
-                                @Html.HiddenFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-                            </div>
+                            @Html.HiddenFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                         </div>
-                        <!--
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Pictures, htmlAttributes: new { @class = "control-label" })
-                                <div class="custom-file">
-                                    @Html.EditorFor(model => model.Pictures, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-                                    <label class="custom-file-label" for="customFile">No file choosen</label>
-                                    @Html.ValidationMessageFor(model => model.Pictures, "", new { @class = "text-danger" })
-                                </div>
-                                <div id="fileList"></div>
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label", @title = "The end date of the Survey duration" })
+                            <div class="dateSelect">
+                                <input type="text" id="date_end" class="form-control" placeholder="Date End" data-input="flatpickr">
+                                <a class="input-button calendar" title="toggle" data-toggle>
+                                    <i class="la la-calendar"></i>
+                                </a>
+                                <a class="input-button clear" title="clear" data-clear>
+                                    <i class="la la-times"></i>
+                                </a>
                             </div>
+                            @Html.HiddenFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                         </div>
-                        -->
-                        <!--
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                                <div class="custom-file">
-                                    @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-                                    <label class="custom-file-label" for="customFile">No file choosen</label>
-                                    @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
-                                </div>
-                                <div id="fileList"></div>
-                            </div>
-                        </div>
-                        -->
                     </div>
-                </form>
+                    <!--
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pictures, htmlAttributes: new { @class = "control-label" })
+                            <div class="custom-file">
+                                @Html.EditorFor(model => model.Pictures, new { htmlAttributes = new { @class = "form-control" } })
+                                <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
+                                <label class="custom-file-label" for="customFile">No file choosen</label>
+                                @Html.ValidationMessageFor(model => model.Pictures, "", new { @class = "text-danger" })
+                            </div>
+                            <div id="fileList"></div>
+                        </div>
+                    </div>
+                    -->
+                    <!--
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            <div class="custom-file">
+                                @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
+                                <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
+                                <label class="custom-file-label" for="customFile">No file choosen</label>
+                                @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
+                            </div>
+                            <div id="fileList"></div>
+                        </div>
+                    </div>
+                    -->
+                    <div class="row" style="display:none;">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pictures, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Pictures, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row" style="display:none;">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.RequireLogin, htmlAttributes: new { @class = "control-label" })
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(model => model.RequireLogin, "true", new { id = "yes" })
+                                @Html.Label("yes", "Yes")
+                                <br />
+                                @Html.RadioButtonFor(model => model.RequireLogin, "false", new { id = "no" })
+                                @Html.Label("No", "No")
+                                @Html.ValidationMessageFor(model => model.RequireLogin, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- End Form -->
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
                 <!--input type="submit" value="Create" class="btn btn-default" /-->
                 <a class="btn btn-default" href="@Url.Action("Index", "Survey", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
-                <button type="submit" class="btn btn-secondary" id="btnSave" name="Submittype" value="Save">Save</button>
+                <button type="submit" class="btn btn-secondary" id="btnSave" name="Submittype" value="Save">Next</button>
             </div>
         </div>
     </div>
@@ -199,17 +237,17 @@
             var mystart = $('#StartDate').val();
             var myend = $('#EndDate').val();
             $("#date_start").flatpickr({
-                dateFormat: "d-m-Y",
+                dateFormat: "d/m/Y",
                 defaultDate: mystart,
-                maxDate: "31-01-3000",
+                maxDate: "31/01/3000",
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#StartDate").val(dateStr);
                 },
             });
             $("#date_end").flatpickr({
-                dateFormat: "d-m-Y",
+                dateFormat: "d/m/Y",
                 defaultDate: myend,
-                maxDate: "31-01-3000",
+                maxDate: "31/01/3000",
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#EndDate").val(dateStr);
                 },

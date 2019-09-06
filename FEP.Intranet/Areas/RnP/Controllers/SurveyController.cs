@@ -53,7 +53,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Show create form (blank form so no api call needed)
         // GET: RnP/Survey/Create
-        public ActionResult Create(int? typeid)
+        public async Task<ActionResult> Create(int? typeid)
         {
             var model = new UpdateSurveyModel();
             if (typeid != null)
@@ -80,6 +80,18 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.TypeName = "Public Mass";
                 model.Type = SurveyType.Public;
             }
+
+            var response = await WepApiMethod.SendApiAsync<List<UpdateSurveyTemplateModel>>(HttpVerbs.Get, $"RnP/Survey/GetTemplates", model);
+
+            if (response.isSuccess)
+            {
+                ViewBag.Templates = response.Data;
+            }
+            else
+            {
+                ViewBag.Templates = null;
+            }
+
             return View(model);
         }
 
@@ -91,7 +103,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(UpdateSurveyModel model)
+        public async Task<ActionResult> Create(UpdateSurveyModel model, int TemplateSelection)
         {
             /*
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Survey/TitleExists?id={null}&title={model.Title}");
@@ -125,7 +137,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                     // sms
 
-                    return RedirectToAction("Build", "Survey", new { area = "RnP", @id = newid });
+                    return RedirectToAction("Build", "Survey", new { area = "RnP", @id = newid, @templateid = TemplateSelection });
                 }
                 else
                 {
@@ -147,7 +159,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 return HttpNotFound();
             }
 
-            var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey?id={id}");
+            var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey/GetSingle?id={id}");
 
             if (!resSurvey.isSuccess)
             {
@@ -170,9 +182,19 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 TargetGroup = survey.TargetGroup,
                 StartDate = survey.StartDate,
                 EndDate = survey.EndDate,
+                RequireLogin = survey.RequireLogin,
                 Pictures = survey.Pictures,
                 ProofOfApproval = survey.ProofOfApproval
             };
+
+            if (survey.Type == 0)
+            {
+                ViewBag.TypeName = "Public Mass";
+            }
+            else
+            {
+                ViewBag.TypeName = "Targeted Groups";
+            }
 
             return View(vmsurvey);
         }
@@ -212,6 +234,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                     // sms
 
+                    // NOTE: when editing, user never gets the select template option anymore (TBD more)
+
                     return RedirectToAction("Build", "Survey", new { area = "RnP", @id = model.ID });
                 }
                 else
@@ -228,14 +252,14 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Show build survey form
         // Retrieve saved-as-draft survey info based on id first
         // GET: RnP/Survey/Build
-        public async Task<ActionResult> Build(int? id)
+        public async Task<ActionResult> Build(int? id, int? templateid)
         {
             if (id == null)
             {
                 return HttpNotFound();
             }
 
-            var resPub = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey?id={id}");
+            var resPub = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey/GetSingle?id={id}");
 
             if (!resPub.isSuccess)
             {
@@ -248,10 +272,36 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 return HttpNotFound();
             }
 
+            string actualcontents;
+
+            if ((templateid != null) && (templateid != 0))
+            {
+                var resptemp = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Get, $"RnP/Survey/GetTemplate?id={templateid}");
+
+                if (resptemp.isSuccess)
+                {
+                    if (resptemp.Data != null)
+                    {
+                        actualcontents = resptemp.Data;
+                    }
+                    else
+                    {
+                        actualcontents = survey.Contents;
+                    }
+                }
+                else
+                {
+                    actualcontents = survey.Contents;
+                }
+            } else
+            {
+                actualcontents = survey.Contents;
+            }
+
             var vmcontents = new UpdateSurveyContentsModel
             {
                 ID = survey.ID,
-                Contents = survey.Contents
+                Contents = actualcontents
             };
 
             return View(vmcontents);
@@ -259,6 +309,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Process build form
         // After editing build, user automatically redirected to review page if successful, and details page if failed.
+        // This is only when user clicks submit! (for review)
         // POST: Survey/Build/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -291,6 +342,38 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     TempData["SuccessMessage"] = "Failed to build Survey.";
 
                     return RedirectToAction("Details", "Survey", new { area = "RnP", @id = model.ID });
+                }
+            }
+
+            return View(model);
+        }
+
+        // Process save template form
+        // After editing build, user can save it as template (this is called via ajax).
+        // POST: Survey/SaveTemplate/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SaveTemplate(UpdateSurveyTemplateModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/SaveTemplate", model);
+
+                if (response.isSuccess)
+                {
+                    // log trail/system success notification/dashboard notification/email/sms upon submission
+                    // log trail/system success/dashboard notification upon saving as draft
+
+                    LogActivity("Survey design saved as Template named: " + response.Data, model);
+
+                    TempData["SuccessMessage"] = "Survey design saved successfully as a Template named: " + response.Data + ".";
+
+                    // dashboard
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Failed to save Survey design as template.";
                 }
             }
 
@@ -331,6 +414,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 TargetGroup = survey.TargetGroup,
                 StartDate = survey.StartDate,
                 EndDate = survey.EndDate,
+                RequireLogin = survey.RequireLogin,
                 Pictures = survey.Pictures,
                 ProofOfApproval = survey.ProofOfApproval
             };
@@ -471,6 +555,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 TargetGroup = survey.TargetGroup,
                 StartDate = survey.StartDate,
                 EndDate = survey.EndDate,
+                RequireLogin = survey.RequireLogin,
                 Pictures = survey.Pictures,
                 ProofOfApproval = survey.ProofOfApproval
             };
@@ -527,7 +612,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 return HttpNotFound();
             }
 
-            var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey?id={id}");
+            var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey/GetSingle?id={id}");
 
             if (!resSurvey.isSuccess)
             {
@@ -690,6 +775,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 TargetGroup = surveyapproval.Survey.TargetGroup,
                 StartDate = surveyapproval.Survey.StartDate,
                 EndDate = surveyapproval.Survey.EndDate,
+                RequireLogin = surveyapproval.Survey.RequireLogin,
                 Contents = surveyapproval.Survey.Contents,
                 Pictures = surveyapproval.Survey.Pictures,
                 ProofOfApproval = surveyapproval.Survey.ProofOfApproval,

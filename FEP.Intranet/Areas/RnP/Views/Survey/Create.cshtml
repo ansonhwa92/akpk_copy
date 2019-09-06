@@ -108,7 +108,7 @@
                             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    @if (ViewBag.TypeId == 0)
+                    @if (ViewBag.TypeName == "Public Mass")
                     {
                         <div class="row" style="display:none;">
                             <div class="form-group col-lg-12">
@@ -116,7 +116,7 @@
                             </div>
                         </div>
                     }
-                    else if (ViewBag.TypeId == 0)
+                    else if (ViewBag.TypeName == "Targeted Groups")
                     {
                         <div class="row">
                             <div class="form-group col-lg-12">
@@ -203,6 +203,38 @@
                             @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
                             @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.RequireLogin, htmlAttributes: new { @class = "control-label" })
+                            <!--<div class="custom-control custom-radio">
+                                <label for="RequireLogin1"><input type="radio" class="custom-control" id="RequireLogin1" name="RequireLogin" value="1" style="float:left;margin-top:-5px;margin-right:8px;" />Yes</label><br />
+                                <label for="RequireLogin0"><input type="radio" class="custom-control" id="RequireLogin0" name="RequireLogin" value="0" style="float:left;margin-top:-5px;margin-right:8px;" />No</label><br />
+                            </div>-->
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(model => model.RequireLogin, "true", new { id = "yes" })
+                                @Html.Label("yes", "Yes")
+                                @Html.RadioButtonFor(model => model.RequireLogin, "false", new { id = "no" })
+                                @Html.Label("No", "No")
+                                @Html.ValidationMessageFor(model => model.RequireLogin, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <label class="d-block">Select Template (optional) <!--span class="text-danger">*</span--></label>
+                            <select class="select2" name="TemplateSelection" style="width: 100%;">
+                                <option value="0">Start from scratch</option>
+                                @if (ViewBag.Templates != null)
+                                {
+                                    foreach (var item in ViewBag.Templates)
+                                    {
+
+                                        <option value="@item.ID">@item.TemplateName</option>
+                                    }
+                                }
+                            </select>
                         </div>
                     </div>
                 </div>

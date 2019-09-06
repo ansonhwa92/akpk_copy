@@ -40,6 +40,9 @@ namespace FEP.WebApiModel.RnP
         [DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
         public DateTime EndDate { get; set; }
 
+        [Display(Name = "SurveyRequireLogin", ResourceType = typeof(Language.RnPForm))]
+        public bool RequireLogin { get; set; }
+
         [Display(Name = "SurveyContents", ResourceType = typeof(Language.RnPForm))]
         public string Contents { get; set; }
 
@@ -268,14 +271,19 @@ namespace FEP.WebApiModel.RnP
         [Required(ErrorMessageResourceName = "ValidRequiredSurveyStartDate", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "SurveyStartDate", ResourceType = typeof(Language.RnPForm))]
         //[DataType(DataType.Date, ErrorMessageResourceName = "ValidInvalidSurveyStartDate", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}")]    //, ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        //[UIHint("Date")]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessageResourceName = "ValidRequiredSurveyEndDate", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "SurveyEndDate", ResourceType = typeof(Language.RnPForm))]
         //[DataType(DataType.Date, ErrorMessageResourceName = "ValidInvalidSurveyEndDate", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}")]    //, ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredSurveyRequireLogin", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "SurveyRequireLogin", ResourceType = typeof(Language.RnPForm))]
+        public bool RequireLogin { get; set; }
 
         //[Required(ErrorMessageResourceName = "ValidRequiredSurveyPictures", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "SurveyPictures", ResourceType = typeof(Language.RnPForm))]

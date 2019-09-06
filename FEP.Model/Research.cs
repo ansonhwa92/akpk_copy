@@ -22,6 +22,7 @@ namespace FEP.Model
         public string TargetGroup { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public bool RequireLogin { get; set; }
         public string Contents { get; set; }
         public string TemplateName { get; set; }
         public string TemplateDescription { get; set; }

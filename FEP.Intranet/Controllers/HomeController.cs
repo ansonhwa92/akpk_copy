@@ -3,10 +3,12 @@ using FEP.Intranet.Models;
 using FEP.Model;
 using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.Home;
+using FEP.WebApiModel.Setting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -201,6 +203,7 @@ namespace FEP.Intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordModel model)
         {
+
             if (ModelState.IsValid)
             {
 
@@ -215,7 +218,6 @@ namespace FEP.Intranet.Controllers
                     return RedirectToAction("MyProfile", "Home", new { area = "" });
                 }
                 
-
             }
 
             TempData["SuccessMessage"] = "Fail to change password.";
@@ -236,38 +238,48 @@ namespace FEP.Intranet.Controllers
             return Json(false, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult ValidatePassword(string Password)
+        public async Task<JsonResult> ValidatePassword(string Password)
         {
-            //var hasNumber = new Regex(@"[0-9]+");
-            //var hasUpperChar = new Regex(@"[A-Z]+");
-            //var hasMiniMaxChars = new Regex(@".{8,15}");
-            //var hasLowerChar = new Regex(@"[a-z]+");
-            //var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
+            var hasNumber = new Regex(@"[0-9]+");
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasMiniMaxChars = new Regex(@".{8,15}");
+            var hasLowerChar = new Regex(@"[a-z]+");
+            var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
 
-            //var config = db.AccountSetting.FirstOrDefault();
+            var response = await WepApiMethod.SendApiAsync<AccountSettingModel>(HttpVerbs.Get, $"Setting/AccountSetting");
 
-            //if (config.IsContainLowerCase && !hasLowerChar.IsMatch(Password))
-            //{
-            //    return Json("Password should contain at least one lower case letter", JsonRequestBehavior.AllowGet);
-            //}
-            //else if (config.IsContainUpperCase && !hasUpperChar.IsMatch(Password))
-            //{
-            //    return Json("Password should contain at least one upper case letter", JsonRequestBehavior.AllowGet);
-            //}
-            //else if (config.IsContainNumeric && !hasNumber.IsMatch(Password))
-            //{
-            //    return Json("Password should contain at least one numeric value", JsonRequestBehavior.AllowGet);
-            //}
-            //else if (config.IsContainSymbol && !hasSymbols.IsMatch(Password))
-            //{
-            //    return Json("Password should contain at least one special case characters", JsonRequestBehavior.AllowGet);
-            //}
-            //else if (config.IsLengthLimit && !hasMiniMaxChars.IsMatch(Password))
-            //{
-            //    return Json("Password should not be less than 8 characters", JsonRequestBehavior.AllowGet);
-            //}
+            
+            if (response.isSuccess)
+            {
+
+                var config = response.Data;
+
+                if (config.IsContainLowerCase && !hasLowerChar.IsMatch(Password))
+                {
+                    return Json(Language.AccountSetting.ValidContainLowerCase, JsonRequestBehavior.AllowGet);
+                }
+                else if (config.IsContainUpperCase && !hasUpperChar.IsMatch(Password))
+                {
+                    return Json(Language.AccountSetting.ValidContainUpperCase, JsonRequestBehavior.AllowGet);
+                }
+                else if (config.IsContainNumeric && !hasNumber.IsMatch(Password))
+                {
+                    return Json(Language.AccountSetting.ValidContainNumeric, JsonRequestBehavior.AllowGet);
+                }
+                else if (config.IsContainSymbol && !hasSymbols.IsMatch(Password))
+                {
+                    return Json(Language.AccountSetting.ValidContainSymbol, JsonRequestBehavior.AllowGet);
+                }
+                else if (config.IsLengthLimit && !hasMiniMaxChars.IsMatch(Password))
+                {
+                    return Json(Language.AccountSetting.ValidLengthLimit, JsonRequestBehavior.AllowGet);
+                }
+
+            }
 
             return Json(true, JsonRequestBehavior.AllowGet);
+
+
         }
 
         [NonAction]

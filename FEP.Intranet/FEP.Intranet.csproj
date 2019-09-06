@@ -175,6 +175,7 @@
     <Compile Include="Areas\RnP\Controllers\SurveyController.cs" />
     <Compile Include="Areas\RnP\Models\Research.cs" />
     <Compile Include="Areas\RnP\RnPAreaRegistration.cs" />
+    <Compile Include="Areas\Setting\Controllers\AccountController.cs" />
     <Compile Include="Areas\Setting\Controllers\ParameterController.cs" />
     <Compile Include="Areas\Setting\SettingAreaRegistration.cs" />
     <Compile Include="Controllers\AuthController.cs" />
@@ -694,6 +695,8 @@
     <Content Include="Areas\RnP\Views\Publication\Review.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\Evaluate.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\SelectType.cshtml" />
+    <Content Include="Areas\Setting\Views\Account\Edit.cshtml" />
+    <Content Include="Areas\Setting\Views\Account\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

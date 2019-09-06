@@ -61,6 +61,24 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fail to update account setting.
+        /// </summary>
+        public static string AlertFailUpdate {
+            get {
+                return ResourceManager.GetString("AlertFailUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account setting successfully updated.
+        /// </summary>
+        public static string AlertSuccessUpdate {
+            get {
+                return ResourceManager.GetString("AlertSuccessUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Inactive Duration.
         /// </summary>
         public static string FieldInactiveDuration {
@@ -160,6 +178,87 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TitleDescriptionDetails {
+            get {
+                return ResourceManager.GetString("TitleDescriptionDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TitleDescriptionEdit {
+            get {
+                return ResourceManager.GetString("TitleDescriptionEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Setting.
+        /// </summary>
+        public static string TitleDetails {
+            get {
+                return ResourceManager.GetString("TitleDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Account Setting.
+        /// </summary>
+        public static string TitleEdit {
+            get {
+                return ResourceManager.GetString("TitleEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password should contain at least one lower case letter.
+        /// </summary>
+        public static string ValidContainLowerCase {
+            get {
+                return ResourceManager.GetString("ValidContainLowerCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password should contain at least one numeric value.
+        /// </summary>
+        public static string ValidContainNumeric {
+            get {
+                return ResourceManager.GetString("ValidContainNumeric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password should contain at least one special case characters.
+        /// </summary>
+        public static string ValidContainSymbol {
+            get {
+                return ResourceManager.GetString("ValidContainSymbol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password should contain at least one upper case letter.
+        /// </summary>
+        public static string ValidContainUpperCase {
+            get {
+                return ResourceManager.GetString("ValidContainUpperCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password should not be less than 8 characters.
+        /// </summary>
+        public static string ValidLengthLimit {
+            get {
+                return ResourceManager.GetString("ValidLengthLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Inactive Duration must be a number and greater than 0.
         /// </summary>
         public static string ValidNumericInactiveDuration {
@@ -183,6 +282,24 @@ namespace Language {
         public static string ValidNumericPasswordExpiryDuration {
             get {
                 return ResourceManager.GetString("ValidNumericPasswordExpiryDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Login Attempt Limit.
+        /// </summary>
+        public static string ValidRequiredLoginAttemptLimit {
+            get {
+                return ResourceManager.GetString("ValidRequiredLoginAttemptLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Password Expiry Duration.
+        /// </summary>
+        public static string ValidRequiredPasswordExpiryDuration {
+            get {
+                return ResourceManager.GetString("ValidRequiredPasswordExpiryDuration", resourceCulture);
             }
         }
         

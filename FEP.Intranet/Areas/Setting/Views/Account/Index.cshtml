@@ -1,0 +1,192 @@
+﻿@model AccountSettingModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                @*<div class="header-col-right float-right mt-5"><a href="@Url.Action("List", "Individual", new { area = "Administrator"})" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">System Settings</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@Language.AccountSetting.TitleDetails</h1>
+                    <div class="header-text">@Language.AccountSetting.TitleDescriptionDetails</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Account Setting</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Account", new { area = "Setting" })" class="active nav-link">View</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Edit", "Account", new { area = "Setting" })" class="nav-link">Edit</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+
+        <div class="border-form rounded-top">
+
+            <div class="form-container">
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(m => m.IsPasswordExpiry)
+                        <div class="form-inline">
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsPasswordExpiry, "true", new { @class = "custom-control-input", id = "yes1", disabled = "disabled" })
+                                <label class="custom-control-label mr-3" for="yes1">@Language.General.TextYes</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsPasswordExpiry, "false", new { @class = "custom-control-input", id = "no1", disabled = "disabled" })
+                                <label class="custom-control-label" for="no1">@Language.General.TextNo</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(m => m.PasswordExpiryDuration)
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.PasswordExpiryDuration, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            <div class="input-group-append">
+                                <span class="input-group-text">days</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(m => m.IsLimitLoginAttempt)
+                        <div class="form-inline">
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsLimitLoginAttempt, "true", new { @class = "custom-control-input", id = "yes2", disabled = "disabled" })
+                                <label class="custom-control-label mr-3" for="yes2">@Language.General.TextYes</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsLimitLoginAttempt, "false", new { @class = "custom-control-input", id = "no2", disabled = "disabled" })
+                                <label class="custom-control-label" for="no2">@Language.General.TextNo</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(m => m.LoginAttemptLimit)
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.LoginAttemptLimit, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            <div class="input-group-append">
+                                <span class="input-group-text">attempts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(m => m.IsContainLowerCase)
+                        <div class="form-inline">
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsContainLowerCase, "true", new { @class = "custom-control-input", id = "yes3", disabled = "disabled" })
+                                <label class="custom-control-label mr-3" for="yes3">@Language.General.TextYes</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsContainLowerCase, "false", new { @class = "custom-control-input", id = "no3", disabled = "disabled" })
+                                <label class="custom-control-label" for="no3">@Language.General.TextNo</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(m => m.IsContainUpperCase)
+                        <div class="form-inline">
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsContainUpperCase, "true", new { @class = "custom-control-input", id = "yes4", disabled = "disabled" })
+                                <label class="custom-control-label mr-3" for="yes4">@Language.General.TextYes</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsContainUpperCase, "false", new { @class = "custom-control-input", id = "no4", disabled = "disabled" })
+                                <label class="custom-control-label" for="no4">@Language.General.TextNo</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(m => m.IsContainNumeric)
+                        <div class="form-inline">
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsContainNumeric, "true", new { @class = "custom-control-input", id = "yes5", disabled = "disabled" })
+                                <label class="custom-control-label mr-3" for="yes5">@Language.General.TextYes</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsContainNumeric, "false", new { @class = "custom-control-input", id = "no5", disabled = "disabled" })
+                                <label class="custom-control-label" for="no5">@Language.General.TextNo</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(m => m.IsContainSymbol)
+                        <div class="form-inline">
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsContainSymbol, "true", new { @class = "custom-control-input", id = "yes6", disabled = "disabled" })
+                                <label class="custom-control-label mr-3" for="yes6">@Language.General.TextYes</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsContainSymbol, "false", new { @class = "custom-control-input", id = "no6", disabled = "disabled" })
+                                <label class="custom-control-label" for="no6">@Language.General.TextNo</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(m => m.IsLengthLimit)
+                        <div class="form-inline">
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsLengthLimit, "true", new { @class = "custom-control-input", id = "yes7", disabled = "disabled" })
+                                <label class="custom-control-label mr-3" for="yes7">@Language.General.TextYes</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(m => m.IsLengthLimit, "false", new { @class = "custom-control-input", id = "no7", disabled = "disabled" })
+                                <label class="custom-control-label" for="no7">@Language.General.TextNo</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

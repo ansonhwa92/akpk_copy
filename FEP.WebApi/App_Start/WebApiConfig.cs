@@ -29,6 +29,9 @@ namespace FEP.WebApi
 
             //config.Filters.Add(new ValidationActionFilter()); developer can manually configured at action
             config.Filters.Add(new ExceptionFilter());
+
+            config.BindParameter(typeof(DateTime), new DateModelBinder());
+            config.BindParameter(typeof(DateTime?), new DateModelBinder());
         }
     }
 }

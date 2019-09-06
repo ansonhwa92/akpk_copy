@@ -107,7 +107,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             return View(model);
         }
 
-        [HttpGet]
+        [HttpGet]        
         public async Task<ActionResult> Edit(int? id)
         {
 
@@ -130,7 +130,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPost]        
         public async Task<ActionResult> Edit(EditIndividualModel model)
         {
             var emailResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsEmailExist?id={model.Id}&email={model.Email}");

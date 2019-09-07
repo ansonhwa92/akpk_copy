@@ -252,7 +252,6 @@
 
                             var canview = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationView));
                             var canedit = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationEdit));
-                            var candelete = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationDelete));
                             var canverify = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationVerify));
                             var canapprove1 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1));
                             var canapprove2 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2));
@@ -268,8 +267,6 @@
                             if (row.Status == 0) {
                                 if (canedit) {
                                     action += '<a href="@Url.Action("Edit", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
-                                }
-                                if (candelete) {
                                     action += '<a href="@Url.Action("Delete", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>';
                                 }
                             }

@@ -82,6 +82,57 @@
             </div>
         </div>
         <!-- End Form -->
+        <!-- Popups -->
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formtemplate", id = "formtemplate" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="modal fade" id="modalSaveTemplate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="hidden" class="form-control" name="ID" id="TemplateID" value="@Model.ID" />
+                                <label>Template Name</label>
+                                <input type="text" class="form-control" name="TemplateName" id="TemplateName" placeholder="" />
+                                <span class="text-danger field-validation-error" id="span_nameerror" style="display:none;">Please enter Template Name</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Template Description</label>
+                                <textarea class="form-control" name="TemplateDescription" id="TemplateDescription" rows="4" placeholder=""></textarea>
+                                <span class="text-danger field-validation-error" id="span_descerror" style="display:none;">Please enter Template Description</span>
+                            </div>
+                        </div>
+                        <div class="divider-border"></div>
+                        <div class="m-4 text-center">
+                            <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                            <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#approvalsent" id="btnSaveTemplateConfirm">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="modalTemplateSaved" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="~/img/icon-confirmation.svg" alt="image">
+                            <h4 class="color-darkblue mt-4" id="resultTitle">Saved as Template</h4>
+                            <p class="small" id="resultText">Your Survey design has been successfully saved as a Template.</p>
+                        </div>
+                        <!-- Bila xde modal footer -->
+                        <div class="modal-footer py-0">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+        }
+
         @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formbuild", id = "formbuild" }))
         {
             @Html.AntiForgeryToken()
@@ -91,9 +142,9 @@
                 @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
                 <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;">@Model.Contents</textarea>
                 <a class="btn btn-default" href="@Url.Action("Edit", "Survey", new { area = "RnP", @id = Model.ID })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
-                <!--<button type="button" class="btn btn-default" id="btnTemplate" name="btnTemplate"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save as a Template</button>-->
+                <button type="button" class="btn btn-default" id="btnSaveTemplate" name="btnSaveTemplate"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save as a Template</button>
                 <!-- Note: The builder is set to autosave so there's no need for save as draft button -->
-                <!--<button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Review for Submission</button>-->
+                <button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Review for Submission</button>
             </div>
         }
     </div>
@@ -114,7 +165,7 @@
                     data: form.serialize(),
                     success: function (data) {
                         //alert(data.isSuccess);
-                        callback(saveNo, data.isSuccess);
+                        //callback(saveNo, data.isSuccess);
                     }
                     /*,
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -129,7 +180,56 @@
                     surveyText: surveyCreator.text
                 },
                 */
-            }
+            };
+
+            $('#btnSaveTemplate').click(function (event) {
+                $('#span_nameerror').hide();
+                $('#span_descerror').hide();
+                $("#modalSaveTemplate").modal();
+                return false;
+            });
+
+            $('#btnSaveTemplateConfirm').click(function () {
+                var tname = $('#TemplateName').val();
+                var tdesc = $('#TemplateDescription').val();
+                $('#span_nameerror').hide();
+                $('#span_descerror').hide();
+                if (tname.trim() == "") {
+                    $('#span_nameerror').show();
+                }
+                if (tdesc.trim() == "") {
+                    $('#span_descerror').show();
+                }
+                if ((tname.trim() == "") || (tdesc.trim() == "")) {
+                    return false;
+                }
+                $('#span_nameerror').hide();
+                $('#span_descerror').hide();
+                var form = $('#formtemplate');
+                //alert(form.serialize());
+                //return false;
+                $.ajax({
+                    url: "@(WebApiURL)RnP/Survey/SaveTemplate",
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        if (data == "exists") {
+                            $("#resultTitle").text('Failed to save Template');
+                            $("#resultText").text('Template Name already exists!');
+                        }
+                        else if (data == "") {
+                            $("#resultTitle").text('Failed to save Template');
+                            $("#resultText").text('The Template Name or Template Description are invalid!');
+                        }
+                        else {
+                            $("#resultTitle").text('Saved as Template');
+                            $("#resultText").text('Your Survey design has been successfully saved as a Template.');
+                        }
+                        $("#modalTemplateSaved").modal();
+                    }
+                });
+            });
+
         });
     </script>
 }

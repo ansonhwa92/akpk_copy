@@ -81,7 +81,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 model.Type = SurveyType.Public;
             }
 
-            var response = await WepApiMethod.SendApiAsync<List<UpdateSurveyTemplateModel>>(HttpVerbs.Get, $"RnP/Survey/GetTemplates", model);
+            var response = await WepApiMethod.SendApiAsync<List<UpdateSurveyTemplateModel>>(HttpVerbs.Get, $"RnP/Survey/GetTemplates");
 
             if (response.isSuccess)
             {

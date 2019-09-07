@@ -262,9 +262,10 @@ namespace FEP.WebApi.Api.RnP
 
         // Function to get survey templates
         // GET: api/RnP/Survey/GetTemplates
+        [Route("api/RnP/Survey/GetTemplates")]
         public List<UpdateSurveyTemplateModel> GetTemplates()
         {
-            var surveys = db.Survey.OrderBy(v => v.Title).Select(s => new UpdateSurveyTemplateModel
+            var surveys = db.Survey.Where(v => v.TemplateName != "").OrderBy(v => v.TemplateName).Select(s => new UpdateSurveyTemplateModel
             {
                 ID = s.ID,
                 TemplateName = s.TemplateName,
@@ -276,6 +277,7 @@ namespace FEP.WebApi.Api.RnP
 
         // Function to get json of a single survey template
         // GET: api/RnP/Survey/GetTemplate/5
+        [Route("api/RnP/Survey/GetTemplate")]
         public string GetTemplate(int id)
         {
             var survey = db.Survey.Where(v => v.ID == id).Select(s => new ReturnSurveyModel
@@ -601,6 +603,36 @@ namespace FEP.WebApi.Api.RnP
                     db.SaveChanges();
 
                     return survey.Title;
+                }
+            }
+
+            return "";
+        }
+
+        // Function to save survey template after creating/editing a survey build (w/o using model)
+        // POST: api/RnP/Survey/SaveTemmplateNonmodel
+        [Route("api/RnP/Survey/SaveTemplateNonmodel")]
+        [HttpPost]
+        [ValidationActionFilter]
+        //public string SaveTemplateNonmodel(int TemplateID, string TemplateName, string TemplateDescription)
+        public string SaveTemplateNonmodel(System.Web.Mvc.FormCollection form)
+        {
+            // TODO: check name existence and return "exists" if true
+
+            if ((form["TemplateName"] != "") && (form["TemplateDescription"] != ""))
+            {
+                int tid = System.Int32.Parse(form["TemplateID"]);
+                var survey = db.Survey.Where(v => v.ID == tid).FirstOrDefault();
+
+                if (survey != null)
+                {
+                    survey.TemplateName = form["TemplateName"];
+                    survey.TemplateDescription = form["TemplateDescription"];
+
+                    db.Entry(survey).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return survey.TemplateName;
                 }
             }
 

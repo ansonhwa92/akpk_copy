@@ -66,22 +66,14 @@ namespace FEP.Model
         [Display(Name = "Survey Menu")]
         RnPSurveyMenu = 2003,
 
-        [Display(Name = "Publication - List")]
-        RnPPublicationList = 2101,
-        [Display(Name = "Publication - View")]
-        RnPPublicationView = 2102,
-        [Display(Name = "Publication - Add")]
-        RnPPublicationAdd = 2103,
-        [Display(Name = "Publication - Edit")]
-        RnPPublicationEdit = 2104,
-        [Display(Name = "Publication - Delete")]
-        RnPPublicationDelete = 2105,
-        [Display(Name = "Publication - Submit")]
-        RnPPublicationSubmit = 2106,
-        [Display(Name = "Publication - Cancel")]
-        RnPPublicationCancel = 2107,
-        [Display(Name = "Publication - Withdraw")]
-        RnPPublicationWithdraw = 2108,
+        [Display(Name = "Publication - List/View")]
+        RnPPublicationView = 2101,
+        [Display(Name = "Publication - Edit")]                  // add/edit/delete/submit/cancel
+        RnPPublicationEdit = 2102,
+        [Display(Name = "Publication - Withdraw")]              // withdraw/cancel withdrawal
+        RnPPublicationWithdraw = 2103,
+        [Display(Name = "Publication - Publish")]               // publish/unpublish
+        RnPPublicationPublish = 2104,
 
         [Display(Name = "Publication - Verify")]
         RnPPublicationVerify = 2201,
@@ -91,6 +83,24 @@ namespace FEP.Model
         RnPPublicationApprove2 = 2203,
         [Display(Name = "Publication - Approve (Level 3)")]
         RnPPublicationApprove3 = 2204,
+
+        [Display(Name = "Survey - List/View")]
+        RnPSurveyView = 2301,
+        [Display(Name = "Survey - Edit")]                       // add/edit/build/delete/submit/cancel
+        RnPSurveyEdit = 2302,
+        [Display(Name = "Survey - Withdraw")]                   // withdraw/cancel withdrawal
+        RnPSurveyWithdraw = 2303,
+        [Display(Name = "Survey - Publish")]                    // publish/unpublish
+        RnPSurveyPublish = 2304,
+
+        [Display(Name = "Survey - Verify")]
+        RnPSurveyVerify = 2401,
+        [Display(Name = "Survey - Approve (Level 1)")]
+        RnPSurveyApprove1 = 2402,
+        [Display(Name = "Survey - Approve (Level 2)")]
+        RnPSurveyApprove2 = 2403,
+        [Display(Name = "Survey - Approve (Level 3)")]
+        RnPSurveyApprove3 = 2404,
 
 
 

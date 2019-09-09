@@ -17,6 +17,7 @@ namespace FEP.Model.Migrations
             mhafeez.Seed(context);
             aiman.Seed(context);
             firus.Seed(context);
+            tajulSeed.Seed(context);
         }
     }
 }

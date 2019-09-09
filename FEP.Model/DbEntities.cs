@@ -138,6 +138,10 @@ namespace FEP.Model
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
         }
 
-        public System.Data.Entity.DbSet<FEP.Model.EmailTemplate> EmailTemplates { get; set; }
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public DbSet<TemplateParameters> TemplateParameters { get; set; }
+        public DbSet<SLAReminder> SLAReminder { get; set; }
+        public DbSet<SLAReminderStatus> SLAReminderStatus { get; set; }
+
     }
 }

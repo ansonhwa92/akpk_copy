@@ -151,6 +151,7 @@
     <Compile Include="Api\RnP\SurveyController.cs" />
     <Compile Include="Api\Notification\EmailController.cs" />
     <Compile Include="Api\Notification\NotificationController.cs" />
+    <Compile Include="Api\Reminder\SLAReminderController.cs" />
     <Compile Include="Api\Template\EmailTemplateController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />

@@ -1,0 +1,174 @@
+﻿@model FEP.WebApiModel.SLAReminder.ListSLAReminderModel
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Contentscript{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('.onChangeSubmit').change(
+                function () {
+                    $('.formSLA').attr('id', 'formSLA'+$(this).attr('id'));
+                    alert($('.formSLA').attr('id'));
+                    
+                    $('.formSLA').trigger('submit');
+                });
+            });
+
+    </script>
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                @*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">SLA Reminder</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Admin Settings</h1>
+                    <div class="header-text">Manage who can access the admin console to help manage your organization's account.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    <!-- Start content leftbar -->
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> Admin Settings</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="#setting1" data-toggle="tab" class="nav-link">Setting 1</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#adminroles" data-toggle="tab" class="nav-link">Administrator Roles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#emailtemplate" data-toggle="tab" class="nav-link">Email Template</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#sla-reminder" data-toggle="tab" class="nav-link active">SLA Reminder</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#setting4" data-toggle="tab" class="nav-link">Setting 4</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#setting5" data-toggle="tab" class="nav-link">Setting 5</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End content leftbar -->
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded">
+            <div class="tab-content">
+                <div class="tab-pane active" id="sal-reminder">
+                    <!--<form>-->
+                    <div class="form-container form-container-w100">
+                        <div class="d-flex align-items-center mb-4 mt-2">
+                            <h4 class="color-darkblue mr-auto mb-0">SLA Reminder</h4>
+                        </div>
+                        <!-- Start Table -->
+                        <div class="table-responsive">
+                            @using (Html.BeginForm("Edit", "SLAReminders", FormMethod.Post, new { id = "formSLA", @class = "formSLA" }))
+                            {
+                                @Html.AntiForgeryToken()
+                            }
+                            <table class="table tableStyle1">
+                                <thead>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => model.filter.NotificationType)</th>
+                                        <th>@Html.DisplayNameFor(model => model.filter.ETCode)</th>
+                                        <th>@Html.DisplayNameFor(model => model.filter.SLAResolutionTime)</th>
+                                        <th>@Html.DisplayNameFor(model => model.filter.IntervalDuration)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.SLAReminderList)
+                                    {
+                                    <tr>
+                                        @{
+                                            var formID = "formSLA" + item.Id;
+                                        }
+
+                                        @Html.HiddenFor(m => item.Id, new  { @form = "formSLA" + item.Id  })
+
+                                        <td>@Html.DisplayFor(m => item.StagesName)</td>
+                                        <td>
+                                            @Html.EditorFor(m => item.ETCode, new { htmlAttributes = new { @class = "form-control onChangeSubmit", @form = "formSLA" + item.Id, @id=item.Id } })
+                                            @Html.ValidationMessageFor(m => item.ETCode, "", new { @class = "text-danger" })
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+
+                                                Less than
+                                                <input id="@item.Id" type="number" name="SLAResolutionTime" form="@formID" class="numericbox  ml-1 mr-1 form-control onChangeSubmit" min="0" max="10" value="@Html.DisplayFor(m => item.SLAResolutionTime)">
+                                                days
+
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="d-flex align-items-center">
+
+                                                <span>Every</span>
+
+                                                <span class="numericbox ml-1 mr-1">
+                                                    <input id="@item.Id" type="number" name="IntervalDuration" form="@formID" class="form-control onChangeSubmit" min="0" value="@Html.DisplayFor(m => item.IntervalDuration)">
+                                                </span>
+
+                                                <span class="select-arrow ml-1 mr-1">
+
+                                                    <select class="custom-select onChangeSubmit" form="@formID" id="@item.Id" name="item.SLADurationType">
+                                                        <option value="none">None</option>
+                                                        @foreach (var duration in Model.SLADurationTypeList)
+                                                        {
+                                                            <option @if (duration.Text == item.SLADurationType.ToString()) { @: selected
+                                                                    }
+                                                                    value="@duration.Value">
+                                                                @duration.Text
+                                                            </option>
+                                                        }
+                                                    </select>
+                                                </span>
+
+                                            </div>
+                                        </td>
+
+
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                            </div>
+                            <!--</form>-->
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>

@@ -4,6 +4,25 @@
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
+@section Contentscript{
+
+    <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
+    <script src="~/Scripts/summernote/summernote-lite.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#summernote').summernote({
+                placeholder: 'Type email here',
+                tabsize: 2,
+                height: 300,
+                //width: $('#textareaContainer').parent().width() + ($('#textareaContainer').parent().width() * 0.3)
+            });
+            //$('#summernote').summernote('code', @Model.TemplateMessage);
+        });
+    </script>
+
+}
+
 @section Nav {
 
     <div class="title_header">
@@ -65,19 +84,74 @@
                 <div class="form-container">
                     <div class="row">
                         <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.NotificationTypeList, htmlAttributes: new { @class = "control-label col-lg-12" })
+                            <div class="col-lg-12">
+                                @Html.DropDownListFor(model => model.NotificationType, Model.NotificationTypeList, "-Select Notification Type-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+                                @Html.ValidationMessageFor(model => model.NotificationTypeList, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TemplateRefNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.TemplateRefNo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TemplateRefNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.TemplateName)
                             @Html.EditorFor(m => m.TemplateName, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(m => m.TemplateName)
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TemplateSubject, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.TemplateSubject, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TemplateSubject, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.TemplateMessage)
-                            @Html.EditorFor(m => m.TemplateMessage, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.TextAreaFor(m => m.TemplateMessage, new { @class = "form-control summernote", @id = "summernote" })
                             @Html.ValidationMessageFor(m => m.TemplateMessage)
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.enableSMSMessage, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.CheckBoxFor(model => model.enableSMSMessage, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.enableSMSMessage, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SMSMessage, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.SMSMessage, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.SMSMessage, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.enableWebMessage, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.CheckBoxFor(model => model.enableWebMessage, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.enableWebMessage, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.WebMessage, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.WebMessage, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.WebMessage, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
                 </div>
 

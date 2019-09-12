@@ -184,7 +184,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 EndDate = survey.EndDate,
                 RequireLogin = survey.RequireLogin,
                 Pictures = survey.Pictures,
-                ProofOfApproval = survey.ProofOfApproval
+                ProofOfApproval = survey.ProofOfApproval,
+                CreatorId = survey.CreatorId
             };
 
             if (survey.Type == 0)
@@ -416,7 +417,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 EndDate = survey.EndDate,
                 RequireLogin = survey.RequireLogin,
                 Pictures = survey.Pictures,
-                ProofOfApproval = survey.ProofOfApproval
+                ProofOfApproval = survey.ProofOfApproval,
+                CreatorId = survey.CreatorId
             };
 
             var vmcontents = new UpdateSurveyContentsModel
@@ -446,7 +448,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // POST: Survey/Review/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Review(UpdateSurveyModel model)
+        public async Task<ActionResult> Review(UpdateSurveyReviewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -473,7 +475,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 {
                     TempData["SuccessMessage"] = "Failed to submit Survey.";
 
-                    return RedirectToAction("Review", "Survey", new { area = "RnP", @id = model.ID });
+                    return RedirectToAction("Review", "Survey", new { area = "RnP", @id = model.Survey.ID });
                 }
             }
 
@@ -557,7 +559,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 EndDate = survey.EndDate,
                 RequireLogin = survey.RequireLogin,
                 Pictures = survey.Pictures,
-                ProofOfApproval = survey.ProofOfApproval
+                ProofOfApproval = survey.ProofOfApproval,
+                CreatorId = survey.CreatorId,
+                CreatorName = survey.CreatorName
             };
 
             var vmcontents = new UpdateSurveyContentsModel
@@ -783,7 +787,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 CreatorId = surveyapproval.Survey.CreatorId,
                 RefNo = surveyapproval.Survey.RefNo,
                 Status = surveyapproval.Survey.Status,
-                DmsPath = surveyapproval.Survey.DmsPath
+                DmsPath = surveyapproval.Survey.DmsPath,
+                CreatorName = surveyapproval.Survey.CreatorName
             };
 
             var sapproval = new ReturnUpdateSurveyApprovalModel
@@ -863,6 +868,190 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     TempData["SuccessMessage"] = "Failed to process Survey.";
 
                     return RedirectToAction("Evaluate", "Survey", new { area = "RnP", @id = model.Survey.ID });
+                }
+            }
+
+            return View(model);
+        }
+
+        // Show tester form
+        // Retrieve survey info based on id first
+        // GET: RnP/Survey/Test/5
+        public async Task<ActionResult> Test(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resPub = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey/GetSingle?id={id}");
+
+            if (!resPub.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var surveyinfo = resPub.Data;
+            if (surveyinfo == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (surveyinfo.Type == 0)
+            {
+                ViewBag.TypeName = "Public Mass";
+            }
+            else
+            {
+                ViewBag.TypeName = "Targeted Groups";
+            }
+
+            var uid = 0;
+
+            if (CurrentUser.UserId.HasValue)
+            {
+                uid = CurrentUser.UserId.Value;
+            }
+
+            var vmresp = new UpdateSurveyResponseModel
+            {
+                SurveyID = surveyinfo.ID,
+                Type = SurveyResponseTypes.Testing,
+                UserId = uid,
+                Contents = ""
+            };
+
+            var vmtest = new ReturnSurveyResponseModel
+            {
+                Survey = surveyinfo,
+                Response = vmresp
+            };
+
+            return View(vmtest);
+        }
+
+        // Process survey answers (testing) submission
+        // Redirects to thank you page?
+        // POST: Survey/SubmitAnswers/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SubmitTest(UpdateSurveyResponseModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/SubmitTest", model);
+
+                if (response.isSuccess)
+                {
+                    // log trail/system success notification/dashboard notification/email/sms upon submission
+                    // log trail/system success/dashboard notification upon saving as draft
+
+                    await LogActivity(Modules.RnP, "Test answers submitted", model);    // for Survey titled: " + response.Data, model);
+
+                    TempData["SuccessMessage"] = "Test answers submitted successfully"; // for Survey titled: " + response.Data + ".";
+
+                    // dashboard
+
+                    return RedirectToAction("Thankyou", "Survey", new { area = "RnP" });
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Failed to submit test answers for survey.";
+
+                    return RedirectToAction("Test", "Survey", new { area = "RnP", @id = model.ID });
+                }
+            }
+
+            return View(model);
+        }
+
+        // Show answer form
+        // Retrieve survey info based on id first
+        // GET: RnP/Survey/Answer/5
+        public async Task<ActionResult> Answer(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resPub = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey/GetSingle?id={id}");
+
+            if (!resPub.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var surveyinfo = resPub.Data;
+            if (surveyinfo == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (surveyinfo.Type == 0)
+            {
+                ViewBag.TypeName = "Public Mass";
+            }
+            else
+            {
+                ViewBag.TypeName = "Targeted Groups";
+            }
+
+            var uid = 0;
+
+            if (CurrentUser.UserId.HasValue)
+            {
+                uid = CurrentUser.UserId.Value;
+            }
+
+            var vmresp = new UpdateSurveyResponseModel
+            {
+                SurveyID = surveyinfo.ID,
+                Type = SurveyResponseTypes.Actual,
+                UserId = uid,
+                Contents = ""
+            };
+
+            var vmtest = new ReturnSurveyResponseModel
+            {
+                Survey = surveyinfo,
+                Response = vmresp
+            };
+
+            return View(vmtest);
+        }
+
+        // Process survey answers (actual) submission
+        // Redirects to thank you page?
+        // POST: Survey/SubmitAnswers/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SubmitAnswers(UpdateSurveyResponseModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/SubmitAnswers", model);
+
+                if (response.isSuccess)
+                {
+                    // log trail/system success notification/dashboard notification/email/sms upon submission
+                    // log trail/system success/dashboard notification upon saving as draft
+
+                    await LogActivity(Modules.RnP, "Answers submitted for Survey", model);      // titled: " + response.Data, model);
+
+                    TempData["SuccessMessage"] = "Answers submitted successfully for Survey";   // titled: " + response.Data + ".";
+
+                    // dashboard
+
+                    return RedirectToAction("Thankyou", "Survey", new { area = "RnP" });
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Failed to submit answers for survey.";
+
+                    return RedirectToAction("Answer", "Survey", new { area = "RnP", @id = model.ID });
                 }
             }
 

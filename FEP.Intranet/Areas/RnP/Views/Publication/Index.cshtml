@@ -256,7 +256,8 @@
                             var canapprove1 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1));
                             var canapprove2 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2));
                             var canapprove3 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3));
-                            //var canpublish = @*Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationPublish));*@
+                            var canpublish = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationPublish));
+                            var canwithdraw = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationWithdraw));
 
                             action = '<div class="icon-action">';
 
@@ -264,60 +265,71 @@
                                 action += '<a href="@Url.Action("Details", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
                             }
 
-                            if (row.Status == 0) {
+                            if (row.Status == 0) {          // new
                                 if (canedit) {
                                     action += '<a href="@Url.Action("Edit", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
                                     action += '<a href="@Url.Action("Delete", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>';
                                 }
                             }
-                            else if (row.Status == 1) {
+                            else if (row.Status == 1) {     // submitted
                                 if (canverify || canapprove1 || canapprove2 || canapprove3) {
                                     action += '<a href="@Url.Action("Evaluate", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
                                 }
                             }
-                            else if (row.Status == 2) {
-                                if (canedit) {
-                                    action += '<a href="@Url.Action("Edit", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
-                                }
+                            else if (row.Status == 2) {     // verifier rejected (can edit from view - view lets user see comments)
+                                action += '';
                             }
-                            else if (row.Status == 3) {
+                            else if (row.Status == 3) {     // verified
                                 if (canapprove1 || canapprove2 || canapprove3) {
                                     action += '<a href="@Url.Action("Evaluate", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
                                 }
                             }
-                            else if (row.Status == 4) {
-                                if (canedit) {
-                                    action += '<a href="@Url.Action("Edit", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
+                            else if (row.Status == 4) {     // approver rejected
+                                action += '';
+                            }
+                            else if (row.Status == 5) {     // approved (can publish from view)
+                                action += '';
+                            }
+                            else if (row.Status == 6) {     // published (can withdraw from view)
+                                action += '';
+                            }
+                            else if (row.Status == 7) {     // unpublished
+                                action += '';
+                            }
+                            else if (row.Status == 8) {     // trashed
+                                action += '';
+                            }
+                            else if (row.Status == 9) {     // new withdrawal (skipped, withdrawal cannot be saved as draft and edited before submission)
+                                action += '';
+                            }
+                            else if (row.Status == 10) {    // withdrawal submitted
+                                if (canverify || canapprove1 || canapprove2 || canapprove3) {
+                                    action += '<a href="@Url.Action("EvaluateWithdrawal", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate Withdrawal"><i class="la la-edit text-muted"></i></a>';
                                 }
                             }
-                            /*
-                            else if (row.Status == 5) {
+                            else if (row.Status == 11) {    // verifier rejected
+                                action += '';
                             }
-                            else if (row.Status == 6) {
+                            else if (row.Status == 12) {    // verified
+                                if (canapprove1 || canapprove2 || canapprove3) {
+                                    action += '<a href="@Url.Action("EvaluateWithdrawal", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate Withdrawal"><i class="la la-edit text-muted"></i></a>';
+                                }
                             }
-                            else if (row.Status == 7) {
+                            else if (row.Status == 13) {    // approver rejected
+                                action += '';
                             }
-                            else if (row.Status == 8) {
+                            else if (row.Status == 14) {    // approved (skipped, goes straight to withdrawn)
+                                action += '';
                             }
-                            else if (row.Status == 9) {
+                            else if (row.Status == 15) {    // withdrawn
+                                action += '';
                             }
-                            else if (row.Status == 10) {
-                            }
-                            else if (row.Status == 11) {
-                            }
-                            else if (row.Status == 12) {
-                            }
-                            else if (row.Status == 13) {
-                            }
-                            else if (row.Status == 14) {
-                            }
-                            else if (row.Status == 15) {
-                            }
-                            else if (row.Status == 16) {
+                            else if (row.Status == 16) {    // withdrawal trashed (in reality goes back to published)
+                                action += '';
                             }
                             else {
+                                action += '';
                             }
-                            */
 
                             action += '</div>';
 

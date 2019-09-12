@@ -83,13 +83,12 @@
         </div>
         <!-- End Form -->
         <!-- Popups -->
-        @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formtemplate", id = "formtemplate" }))
-        {
-            @Html.AntiForgeryToken()
+        <div class="modal fade" id="modalSaveTemplate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formtemplate", id = "formtemplate" }))
+            {
+                @Html.AntiForgeryToken()
 
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-            <div class="modal fade" id="modalSaveTemplate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="modal-dialog modal-sm" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
@@ -112,26 +111,26 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal fade" id="modalTemplateSaved" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-sm" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body text-center">
-                            <img src="~/img/icon-confirmation.svg" alt="image">
-                            <h4 class="color-darkblue mt-4" id="resultTitle">Saved as Template</h4>
-                            <p class="small" id="resultText">Your Survey design has been successfully saved as a Template.</p>
-                        </div>
-                        <!-- Bila xde modal footer -->
-                        <div class="modal-footer py-0">&nbsp;</div>
+            }
+        </div>
+        <div class="modal fade" id="modalTemplateSaved" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
                     </div>
+                    <div class="modal-body text-center">
+                        <img src="~/img/icon-confirmation.svg" alt="image">
+                        <h4 class="color-darkblue mt-4" id="resultTitle">Saved as Template</h4>
+                        <p class="small" id="resultText">Your Survey design has been successfully saved as a Template.</p>
+                    </div>
+                    <!-- Bila xde modal footer -->
+                    <div class="modal-footer py-0">&nbsp;</div>
                 </div>
             </div>
-        }
+        </div>
 
         @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formbuild", id = "formbuild" }))
         {
@@ -144,7 +143,7 @@
                 <a class="btn btn-default" href="@Url.Action("Edit", "Survey", new { area = "RnP", @id = Model.ID })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
                 <button type="button" class="btn btn-default" id="btnSaveTemplate" name="btnSaveTemplate"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save as a Template</button>
                 <!-- Note: The builder is set to autosave so there's no need for save as draft button -->
-                <button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Review for Submission</button>
+                <button type="button" class="btn btn-secondary" id="btnReview" name="btnReview" data-surveyid="@Model.ID">Review for Submission</button>
             </div>
         }
     </div>
@@ -153,8 +152,10 @@
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
+
             var scontent = $('#Contents').val();
             surveyCreator.text = scontent;
+
             surveyCreator.saveSurveyFunc = function (saveNo, callback) {
                 //alert('saving');
                 $('#Contents').val(surveyCreator.text);
@@ -174,12 +175,6 @@
                     }
                     */
                 });
-                /*
-                data: {
-                    surveyId: uniqueid,
-                    surveyText: surveyCreator.text
-                },
-                */
             };
 
             $('#btnSaveTemplate').click(function (event) {
@@ -228,6 +223,19 @@
                         $("#modalTemplateSaved").modal();
                     }
                 });
+            });
+
+            $('#btnReview').click(function (event) {
+                var pid = $(this).data('surveyid');
+                var url = '@Url.Action("Review", "Survey", new { area = "RnP" })?id=' + pid;
+                window.location = url;
+            });
+
+            // currently not used
+            $('#btnSubmit').click(function (event) {
+                var pid = $(this).data('surveyid');
+                var url = '@Url.Action("SubmitByID", "Survey", new { area = "RnP" })?id=' + pid;
+                window.location = url;
             });
 
         });

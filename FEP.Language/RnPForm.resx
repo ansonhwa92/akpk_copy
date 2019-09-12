@@ -474,4 +474,13 @@
   <data name="ValidRequiredSurveyRequireLogin" xml:space="preserve">
     <value>Please specify Login requirement</value>
   </data>
+  <data name="PubWithdrawalDate" xml:space="preserve">
+    <value>Date Withdrawn</value>
+  </data>
+  <data name="SurveyApprovalLevel" xml:space="preserve">
+    <value>Approval Level</value>
+  </data>
+  <data name="ValidInvalidSurveyApprovalStatus" xml:space="preserve">
+    <value>Please select a Status</value>
+  </data>
 </root>

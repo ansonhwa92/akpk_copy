@@ -64,6 +64,14 @@
     <Compile Include="Migrations\201909061254150_fr1.Designer.cs">
       <DependentUpon>201909061254150_fr1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909081033299_0809_1.cs" />
+    <Compile Include="Migrations\201909081033299_0809_1.Designer.cs">
+      <DependentUpon>201909081033299_0809_1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909081250356_0809_2.cs" />
+    <Compile Include="Migrations\201909081250356_0809_2.Designer.cs">
+      <DependentUpon>201909081250356_0809_2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
@@ -89,6 +97,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201909061254150_fr1.resx">
       <DependentUpon>201909061254150_fr1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909081033299_0809_1.resx">
+      <DependentUpon>201909081033299_0809_1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909081250356_0809_2.resx">
+      <DependentUpon>201909081250356_0809_2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

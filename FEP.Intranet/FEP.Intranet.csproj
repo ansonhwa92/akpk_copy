@@ -479,6 +479,9 @@
     <Content Include="js\select2.customSelectionAdapter.min.js" />
     <Content Include="js\select2.min.js" />
     <Content Include="js\slick.min.js" />
+    <Content Include="js\survey-builder-init-readonly.js" />
+    <Content Include="js\survey-builder-init.js" />
+    <Content Include="js\survey-tester-init.js" />
     <Content Include="lib\animate\animate.css" />
     <Content Include="lib\animate\animate.min.css" />
     <Content Include="lib\easing\easing.js" />
@@ -697,6 +700,11 @@
     <Content Include="Areas\RnP\Views\Survey\SelectType.cshtml" />
     <Content Include="Areas\Setting\Views\Account\Edit.cshtml" />
     <Content Include="Areas\Setting\Views\Account\Index.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\Evaluate.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\Review.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\Test.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\EvaluateWithdrawal.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\Answer.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1122,6 +1130,8 @@
     <Content Include="Views\Auth\SetPassword.cshtml" />
     <Content Include="Views\Shared\UnAuthorize.cshtml" />
     <Content Include="Views\Shared\_LayoutSurveyBuilder.cshtml" />
+    <Content Include="Views\Shared\_LayoutSurveyBuilderReadonly.cshtml" />
+    <Content Include="Views\Shared\_LayoutSurveyTester.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

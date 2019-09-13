@@ -1,8 +1,8 @@
-﻿@model FEP.WebApiModel.RnP.ReturnSurveyModel
+﻿@model FEP.WebApiModel.RnP.UpdateSurveyViewModel
 
 @{
     ViewBag.Title = "Survey Details";
-    Layout = "~/Views/Shared/_Layout1.cshtml";
+    Layout = "~/Views/Shared/_LayoutSurveyBuilderReadonly.cshtml";
 }
 
 @section Nav{
@@ -18,13 +18,13 @@
                                 <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
                                 <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
                                 <li class="breadcrumb-item"><a href="~/RnP/Survey">Survey</a></li>
-                                <li class="breadcrumb-item"><a href="#">Survey Details</a></li>
+                                <li class="breadcrumb-item"><a href="#">Survey Request</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Survey Details</h1>
-                    <div class="header-text">View details of survey.</div>
+                    <h1 class="page-title text-white">Survey Request Ref No: @Model.Auto.RefNo</h1>
+                    <div class="header-text"><!--View details of survey.--></div>
                 </div>
             </div>
         </div>
@@ -33,72 +33,128 @@
 
 <div class="row">
     <div class="col-xl-3 col-md-3 col-sm-4 my-2">
-        <div class="sidebar-left">
-            <!-- Steps -->
-            <div class="sidebar-inner sticky">
-                <ul class="steps steps-vertical">
-                    <li class="step-item active">
-                        <a href="" class="step-link">
-                            <span class="step-number">1</span>
-                            <span class="step-title">Fill Up Survey Details</span>
-                        </a>
-                    </li>
-                    <li class="step-item disabled">
-                        <a href="" class="step-link">
-                            <span class="step-number">2</span>
-                            <span class="step-title">Design Survey Questions</span>
-                        </a>
-                    </li>
-                    <!-- rejected -->
-                    <!-- <li class="step-item rejected">
-                        <a href="" class="step-link">
-                            <span class="step-number">2</span>
-                            <span class="step-title">Fill Up Event Details</span>
-                        </a>
-                    </li> -->
-                    <li class="step-item disabled">
-                        <a href="" class="step-link">
-                            <span class="step-number">3</span>
-                            <span class="step-title">Survey Approval</span>
-                        </a>
-                    </li>
-                </ul>
-                <!-- End Steps -->
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Request Information</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a id="tab_details" href="#survey-details" data-toggle="tab" class="nav-link active">Survey Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab_design" href="#survey-design" data-toggle="tab" class="nav-link active">Survey Design</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    @{ if ((Model.Auto.Status == SurveyStatus.New) && (CurrentUser.HasAccess(UserAccess.RnPSurveyEdit)))
+                        {
+                            <p><button class="btn btn-secondary btn-block" id="btnSubmit" data-surveyid="@Model.Survey.ID">Submit for Approval</button></p>
+                        }
+                        else if ((Model.Auto.Status == SurveyStatus.Approved) && (CurrentUser.HasAccess(UserAccess.RnPSurveyPublish)))
+                        {
+                            <p><button class="btn btn-secondary btn-block" id="btnPublish" data-surveyid="@Model.Survey.ID">Publish on FEPP</button></p>
+                        }
+                        else if (((Model.Auto.Status == SurveyStatus.VerifierRejected) || (Model.Auto.Status == SurveyStatus.ApproverRejected)) && (CurrentUser.HasAccess(UserAccess.RnPSurveyEdit)))
+                        {
+                            <p><button class="btn btn-outline-danger btn-block" id="btnCancel">Cancel Survey</button></p>
+                        }
+                        <p><a class="btn btn-default btn-block" id="btnTest" href="@Url.Action("Test", "Survey", new { area = "RnP", @id = Model.Survey.ID })" target="_blank">Test Survey</a></p>
+                    }
+                </div>
             </div>
         </div>
     </div>
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
         <!-- Start Form -->
         <div class="border-form rounded-top">
-            <form>
-                <div class="form-container">
+            <div class="form-container tab-content">
+                <div class="tab-pane active" id="survey-details">
+                    <div>
+                        <div class="d-flex align-items-center mb-4 mt-2">
+                            <h4 class="color-darkblue mr-auto mb-0">Survey Details<br><span class="small">View survey details below.</span></h4>
+                            @{ if (((Model.Auto.Status == SurveyStatus.New) || (Model.Auto.Status == SurveyStatus.VerifierRejected) || (Model.Auto.Status == SurveyStatus.ApproverRejected)) && (CurrentUser.HasAccess(UserAccess.RnPSurveyEdit)))
+                                {
+                                    <a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Edit", "Survey", new { area = "RnP", @id = Model.Survey.ID })"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
+                                }
+                            }
+                        </div>
+                    </div>
                     <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Auto.RefNo, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Auto.RefNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Auto.Status, htmlAttributes: new { @class = "control-label" })
+                            @*Html.EditorFor(model => model.Auto.Status, new { htmlAttributes = new { @class = "form-control bg-warning-ccd", @readonly = "readonly" } })*@
+                            @{ if (Model.Auto.Status == SurveyStatus.New)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Draft">
+                                }
+                                else if (Model.Auto.Status == SurveyStatus.Submitted)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Verification">
+                                }
+                                else if (Model.Auto.Status == SurveyStatus.VerifierRejected)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Amendment">
+                                }
+                                else if (Model.Auto.Status == SurveyStatus.Verified)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Approval">
+                                }
+                                else if (Model.Auto.Status == SurveyStatus.ApproverRejected)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Amendment">
+                                }
+                                else if (Model.Auto.Status == SurveyStatus.Approved)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Approved">
+                                }
+                                else if (Model.Auto.Status == SurveyStatus.Published)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Published">
+                                }
+                                else if (Model.Auto.Status == SurveyStatus.Unpublished)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Unpublished">
+                                }
+                                else if (Model.Auto.Status == SurveyStatus.Trashed)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Deleted">
+                                }
+                            }
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.LabelFor(model => model.Survey.Type, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Survey.Type, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.LabelFor(model => model.Survey.Category, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Survey.Category, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
-                            @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly", cols = 48, @rows = 5 })
+                            @Html.LabelFor(model => model.Survey.Title, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Survey.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.TargetGroup, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Survey.Description, htmlAttributes: new { @class = "control-label" })
+                            @*Html.TextAreaFor(model => model.Survey.Description, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly", cols = 48, @rows = 5 })*@
+                            <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Survey.Description)</textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Survey.TargetGroup, htmlAttributes: new { @class = "control-label" })
                             <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" disabled="disabled">
                                 <option value="Group 1">Group 1</option>
                                 <option value="Group 2">Group 2</option>
@@ -106,51 +162,170 @@
                                 <option value="Group 4">Group 4</option>
                                 <option value="Group 5">Group 5</option>
                             </select>
-                            @Html.HiddenFor(model => model.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.Survey.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-6">
-                            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label", @title = "The start date of the Survey duration" })
-                            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.LabelFor(model => model.Survey.StartDate, htmlAttributes: new { @class = "control-label", @title = "The start date of the Survey duration" })
+                            @Html.EditorFor(model => model.Survey.StartDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         </div>
                         <div class="form-group col-lg-6">
-                            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label", @title = "The end date of the Survey duration" })
-                            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly" })
+                            @Html.LabelFor(model => model.Survey.EndDate, htmlAttributes: new { @class = "control-label", @title = "The end date of the Survey duration" })
+                            @Html.EditorFor(model => model.Survey.EndDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Survey.RequireLogin, htmlAttributes: new { @class = "control-label" })
+                            <div class="custom-control custom-radio">
+                                @Html.RadioButtonFor(model => model.Survey.RequireLogin, "true", new { id = "yes" })
+                                @Html.Label("yes", "Yes")
+                                <br />
+                                @Html.RadioButtonFor(model => model.Survey.RequireLogin, "false", new { id = "no" })
+                                @Html.Label("no", "No")
+                                @Html.ValidationMessageFor(model => model.Survey.RequireLogin, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                     </div>
                 </div>
-            </form>
+                <div class="tab-pane" id="survey-design">
+                    <div>
+                        <div class="d-flex align-items-center mb-4 mt-2">
+                            <h4 class="color-darkblue mr-auto mb-0">Survey Design<br><span class="small">View survey design below.</span></h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="surveyContainer">
+                            <div id="creatorElement"></div>
+                        </div>
+                        <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;">@Model.Contents.Contents</textarea>
+                    </div>
+                </div>
+                <!-- popups start -->
+                <!-- submit (if requires confirmation, otherwise direct js) -->
+                <!-- publish (same as above) -->
+                <!-- cancel -->
+                <div class="modal fade" id="modalCancel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formcancel", id = "formcancel" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <input type="hidden" class="form-control" name="ID" id="CancelID" value="@Model.Survey.ID" />
+                                        @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" })
+                                        <textarea class="form-control" name="CancelRemark" id="CancelRemark" rows="4" placeholder=""></textarea>
+                                        <span class="text-danger field-validation-error" id="span_remarkerror" style="display:none;">Please enter Remarks</span>
+                                    </div>
+                                </div>
+                                <div class="divider-border"></div>
+                                <div class="m-4 text-center">
+                                    <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                    <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#cancelsent" id="btnCancelConfirm">Cancel Publication</button><!-- erk, both cancel -->
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!-- ajax result - success -->
+                <div class="modal fade" id="modalOperationSuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" id="btnCloseOperationSuccess" class="close" data-dismiss="modal" data-surveyid="@Model.Survey.ID" data-operation="" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img src="~/img/icon-confirmation.svg" alt="image">
+                                <h4 class="color-darkblue mt-4" id="resultSuccessTitle">Success!</h4>
+                                <p class="small" id="resultSuccessText">Operation successful.</p>
+                            </div>
+                            <!-- Bila xde modal footer -->
+                            <div class="modal-footer py-0">&nbsp;</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ajax result - failure -->
+                <div class="modal fade" id="modalOperationFail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" id="btnCloseOperationFail" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img src="~/img/icon-confirmation.svg" alt="image"><!-- TODO: failed icon -->
+                                <h4 class="color-darkblue mt-4" id="resultFailTitle">Failure!</h4>
+                                <p class="small" id="resultFailText">Operation unsuccessful.</p>
+                            </div>
+                            <!-- Bila xde modal footer -->
+                            <div class="modal-footer py-0">&nbsp;</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- popups end -->
+            </div>
+            <!-- action log start -->
+            <div class="action-log">
+                <h5 class="color-darkblue mr-auto mb-0"><i class="la la-comment color-secondary"></i>&nbsp;&nbsp;Action Log</h5>
+                <p></p>
+                @if (ViewBag.History != null)
+                {
+                    var icount = 0;
+                    foreach (var item in ViewBag.History)
+                    {
+                        icount++;
+                        <div class="border-form rounded mg-b-10">
+                            <p class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="fl-right">@item.ApprovalDate.ToString("hh:mm tt")</span></p>
+                            @if (item.Status == SurveyApprovalStatus.Approved)
+                            {
+                                <p class="small"><span class="card__author-name color-darkblue">:Officer Name:</span><br>:Designation: Approval Result<br>- <span class="color-green">Approved</span></p>
+                            }
+                            else
+                            {
+                                <p class="small"><span class="card__author-name color-darkblue">:Officer Name:</span><br>:Designation: Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
+                            }
+                            <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
+                        </div>
+                    }
+
+                }
+                <div class="border-form rounded mg-b-10">
+                    <p class="small text-muted">@Model.Auto.DateAdded.ToString("dd/MM/yyyy")<span class="fl-right">@Model.Auto.DateAdded.ToString("hh:mm tt")</span></p>
+                    <p class="small"><span class="card__author-name color-darkblue">@Model.Survey.CreatorName</span><br>created a Survey.</p>
+                </div>
+            </div>
+            <!-- action log end -->
             <!-- End Form -->
         </div>
-        @if (Model.Status == FEP.Model.SurveyStatus.New)
-        {
-            <div class="border-left border-right border-bottom p-3 rounded-bottom">
-                <a class="btn btn-default" href="@Url.Action("Index", "Survey", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
-                <a class="btn btn-secondary" href="@Url.Action("Edit", "Survey", new { area = "RnP", @id = Model.ID })" data-toggle="tooltip" data-placement="top" title="Edit">Edit</a>
-            </div>
-        }
-        else
-        {
-            <div class="border-left border-right border-bottom p-3 rounded-bottom">
-                <a class="btn btn-default" href="@Url.Action("Index", "Survey", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
-            </div>
-        }
     </div>
 </div>
 
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
+
+            var scontent = $('#Contents').val();
+            surveyCreator.text = scontent;
+
             $("#StartDate").flatpickr({
-                dateFormat: "d-m-Y",
-                maxDate: "31-01-3000",
+                dateFormat: "d/m/Y",
+                maxDate: "31/12/2200",
             });
+
             $("#EndDate").flatpickr({
-                dateFormat: "d-m-Y",
-                maxDate: "31-01-3000",
+                dateFormat: "d/m/Y",
+                maxDate: "31/12/2200",
             });
-            var selectedGroup = $('#TargetGroup').val();
+
+            var selectedGroup = $('#Survey_TargetGroup').val();
             if (selectedGroup.indexOf("Group 1") >= 0) {
                 $('#survey_group option').each(function () {
                     if ($(this).text() == "Group 1") {
@@ -187,6 +362,87 @@
                 });
             }
             $('#survey_group').trigger('change');
+
+            $('#tab_details').click(function () {
+                $('#survey-details').show();
+                $('#survey-design').hide();
+            });
+
+            $('#tab_design').click(function () {
+                $('#survey-details').hide();
+                $('#survey-design').show();
+            });
+
+            // submit - may change if js alert or onscreen confirmation is required
+
+            $('#btnSubmit').click(function (event) {
+                var pid = $(this).data('surveyid');
+                var url = '@Url.Action("SubmitByID", "Survey", new { area = "RnP" })?id=' + pid;
+                window.location = url;
+            });
+
+            // publish - may change if js alert or onscreen confirmation is required
+
+            $('#btnPublish').click(function (event) {
+                var pid = $(this).data('surveyid');
+                var url = '@Url.Action("PublishByID", "Survey", new { area = "RnP" })?id=' + pid;
+                //alert(url);
+                window.location = url;
+            });
+
+            // cancel - requires input, shows success notification, and redirects to details view (refreshes)
+            // note: refresh is needed because action buttons will need to change
+
+            $('#btnCancel').click(function (event) {
+                $('#modalCancel').modal();
+            });
+
+            function ValidCancellation() {
+                var cremarks = $('#CancelRemark').val();
+                $('#span_remarkserror').hide();
+                if (cremarks.trim() == "") {
+                    $('#span_remarkserror').show();
+                    return false;
+                }
+                return true;
+            }
+
+            $('#btnCancelConfirm').click(function (event) {
+                if (!ValidCancellation()) {
+                    return false;
+                }
+                var form = $('#formcancel');
+                alert(form.serialize());
+                return false;
+                var myurl = '@Url.Action("Cancel", "Survey", new { area = "RnP" })';
+                $.ajax({
+                    url: myurl,
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        if (data == "error") {
+                            $("#resultFailTitle").text('Failed to Cancel Survey');
+                            $("#resultFailText").text('Operation to cancel Survey unsuccessful! Please try again later.');
+                            $("#modalOperationFail").modal();
+                        }
+                        else {
+                            $("#resultSuccessTitle").text('Survey Cancellation Successful');
+                            $("#resultSuccessText").text('Survey cancelled successfully. Survey can no longer be edited or submitted for Approval.');
+                            $("#btnCloseOperationSuccess").data('operation', "cancel");
+                            $("#modalOperationSuccess").modal();
+                        }
+                    }
+                });
+            });
+
+            // redirection after success
+
+            $('#btnCloseOperationSuccess').click(function (event) {
+                var pid = $(this).data('surveyid');
+                var pop = $(this).data('operation');    // in case needed in future
+                var url = '@Url.Action("Details", "Survey", new { area = "RnP" })?id=' + pid;
+                window.location = url;
+            });
         });
     </script>
 }

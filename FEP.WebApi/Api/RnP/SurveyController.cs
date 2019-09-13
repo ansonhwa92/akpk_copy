@@ -248,8 +248,15 @@ namespace FEP.WebApi.Api.RnP
                 Active = s.Active,
                 ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
-                Status = s.Status
+                Status = s.Status,
+                CreatorName = ""
             }).FirstOrDefault();
+
+            var user = db.User.Where(u => u.Id == survey.CreatorId).FirstOrDefault();
+            if (user != null)
+            {
+                survey.CreatorName = user.Name;
+            }
 
             if (survey == null)
             {
@@ -262,9 +269,10 @@ namespace FEP.WebApi.Api.RnP
 
         // Function to get survey templates
         // GET: api/RnP/Survey/GetTemplates
+        [Route("api/RnP/Survey/GetTemplates")]
         public List<UpdateSurveyTemplateModel> GetTemplates()
         {
-            var surveys = db.Survey.OrderBy(v => v.Title).Select(s => new UpdateSurveyTemplateModel
+            var surveys = db.Survey.Where(v => v.TemplateName != "").OrderBy(v => v.TemplateName).Select(s => new UpdateSurveyTemplateModel
             {
                 ID = s.ID,
                 TemplateName = s.TemplateName,
@@ -276,6 +284,7 @@ namespace FEP.WebApi.Api.RnP
 
         // Function to get json of a single survey template
         // GET: api/RnP/Survey/GetTemplate/5
+        [Route("api/RnP/Survey/GetTemplate")]
         public string GetTemplate(int id)
         {
             var survey = db.Survey.Where(v => v.ID == id).Select(s => new ReturnSurveyModel
@@ -315,8 +324,15 @@ namespace FEP.WebApi.Api.RnP
                 Status = s.Status,
                 InviteCount = s.InviteCount,
                 SubmitCount = s.SubmitCount,
-                DmsPath = s.DmsPath                
+                DmsPath = s.DmsPath,
+                CreatorName = ""
             }).FirstOrDefault();
+
+            var user = db.User.Where(u => u.Id == survey.CreatorId).FirstOrDefault();
+            if (user != null)
+            {
+                survey.CreatorName = user.Name;
+            }
 
             return survey;
         }
@@ -351,8 +367,15 @@ namespace FEP.WebApi.Api.RnP
                 DateCancelled = s.DateCancelled,
                 InviteCount = s.InviteCount,
                 SubmitCount = s.SubmitCount,
-                DmsPath = s.DmsPath
+                DmsPath = s.DmsPath,
+                CreatorName = ""
             }).FirstOrDefault();
+
+            var user = db.User.Where(u => u.Id == survey.CreatorId).FirstOrDefault();
+            if (user != null)
+            {
+                survey.CreatorName = user.Name;
+            }
 
             return survey;
         }
@@ -385,8 +408,15 @@ namespace FEP.WebApi.Api.RnP
                 DateCancelled = s.DateCancelled,
                 InviteCount = s.InviteCount,
                 SubmitCount = s.SubmitCount,
-                DmsPath = s.DmsPath
+                DmsPath = s.DmsPath,
+                CreatorName = ""
             }).FirstOrDefault();
+
+            var user = db.User.Where(u => u.Id == survey.CreatorId).FirstOrDefault();
+            if (user != null)
+            {
+                survey.CreatorName = user.Name;
+            }
 
             var sapproval = db.SurveyApproval.Where(pa => pa.SurveyID == id && pa.Status == SurveyApprovalStatus.None).Select(s => new ReturnUpdateSurveyApprovalModel
             {
@@ -414,11 +444,12 @@ namespace FEP.WebApi.Api.RnP
         [Route("api/RnP/Survey/GetHistory")]
         public List<SurveyApprovalHistoryModel> GetHistory(int id)
         {
-            //var phistory = db.PublicationApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { tapproval = pa, tuser = u }).Where(pau => pau.tapproval.PublicationID == id && pau.tapproval.Status != PublicationApprovalStatus.None).OrderByDescending(pau => pau.tapproval.ApprovalDate).Select(s => new PublicationApprovalHistoryModel
-            var shistory = db.SurveyApproval.Where(pa => pa.SurveyID == id && pa.Status != SurveyApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).Select(s => new SurveyApprovalHistoryModel
+            //var shistory = db.SurveyApproval.Where(pa => pa.SurveyID == id && pa.Status != SurveyApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).Select(s => new SurveyApprovalHistoryModel
+            var shistory = db.SurveyApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { pa.SurveyID, pa.Level, pa.ApproverId, pa.ApprovalDate, pa.Status, pa.Remarks, UserName = u.Name }).Where(pa => pa.SurveyID == id && pa.Status != SurveyApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).Select(s => new SurveyApprovalHistoryModel
             {
                 Level = s.Level,
                 ApproverId = s.ApproverId,
+                UserName = s.UserName,
                 Status = s.Status,
                 Remarks = s.Remarks
             }).ToList();
@@ -475,7 +506,7 @@ namespace FEP.WebApi.Api.RnP
                     ProofOfApproval = model.ProofOfApproval,
                     CancelRemark = "",
                     DateAdded = DateTime.Now,
-                    CreatorId = 0,
+                    CreatorId = model.CreatorId,
                     RefNo = "",
                     Status = SurveyStatus.New,
                     InviteCount = 0,
@@ -541,6 +572,7 @@ namespace FEP.WebApi.Api.RnP
                     survey.RequireLogin = model.RequireLogin;
                     survey.Pictures = model.Pictures;
                     survey.ProofOfApproval = model.ProofOfApproval;
+                    //survey.CreatorId = model.CreatorId;
 
                     db.Entry(survey).State = EntityState.Modified;
                     db.SaveChanges();
@@ -607,17 +639,47 @@ namespace FEP.WebApi.Api.RnP
             return "";
         }
 
+        // Function to save survey template after creating/editing a survey build (w/o using model)
+        // POST: api/RnP/Survey/SaveTemmplateNonmodel
+        [Route("api/RnP/Survey/SaveTemplateNonmodel")]
+        [HttpPost]
+        [ValidationActionFilter]
+        //public string SaveTemplateNonmodel(int TemplateID, string TemplateName, string TemplateDescription)
+        public string SaveTemplateNonmodel(System.Web.Mvc.FormCollection form)
+        {
+            // TODO: check name existence and return "exists" if true
+
+            if ((form["TemplateName"] != "") && (form["TemplateDescription"] != ""))
+            {
+                int tid = System.Int32.Parse(form["TemplateID"]);
+                var survey = db.Survey.Where(v => v.ID == tid).FirstOrDefault();
+
+                if (survey != null)
+                {
+                    survey.TemplateName = form["TemplateName"];
+                    survey.TemplateDescription = form["TemplateDescription"];
+
+                    db.Entry(survey).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return survey.TemplateName;
+                }
+            }
+
+            return "";
+        }
+
         // Function to submit a survey for verification after reviewing.
         // POST: api/RnP/Survey/Submit
         [Route("api/RnP/Survey/Submit")]
         [HttpPost]
         [ValidationActionFilter]
-        public string Submit([FromBody] UpdateSurveyModel model)
+        public string Submit([FromBody] UpdateSurveyReviewModel model)
         {
 
             if (ModelState.IsValid)
             {
-                var survey = db.Survey.Where(p => p.ID == model.ID).FirstOrDefault();
+                var survey = db.Survey.Where(p => p.ID == model.Survey.ID).FirstOrDefault();
 
                 if (survey != null)
                 {
@@ -834,5 +896,58 @@ namespace FEP.WebApi.Api.RnP
             return "";
         }
 
+        // Function to save survey response (testing)
+        // POST: api/RnP/Survey/SubmitTest
+        [Route("api/RnP/Survey/SubmitTest")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public string SubmitTest([FromBody] UpdateSurveyResponseModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var surveyresponse = new SurveyResponse
+                {
+                    SurveyID = model.SurveyID,
+                    Type = model.Type,
+                    UserId = model.UserId,
+                    Contents = model.Contents,
+                    ResponseDate = DateTime.Now
+                };
+
+                db.SurveyResponse.Add(surveyresponse);
+                db.SaveChanges();
+
+                return "ok";
+            }
+            return "";
+        }
+
+        // Function to save survey response (actual)
+        // POST: api/RnP/Survey/SubmitAnswers
+        [Route("api/RnP/Survey/SubmitAnswers")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public string SubmitAnswers([FromBody] UpdateSurveyResponseModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var surveyresponse = new SurveyResponse
+                {
+                    SurveyID = model.SurveyID,
+                    Type = model.Type,
+                    UserId = model.UserId,
+                    Contents = model.Contents,
+                    ResponseDate = DateTime.Now
+                };
+
+                db.SurveyResponse.Add(surveyresponse);
+                db.SaveChanges();
+
+                return "ok";
+            }
+            return "";
+        }
     }
 }

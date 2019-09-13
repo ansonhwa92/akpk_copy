@@ -1,0 +1,95 @@
+﻿@model FEP.WebApiModel.RnP.ReturnSurveyResponseModel
+
+@{
+    ViewBag.Title = "Survey Test";
+    Layout = "~/Views/Shared/_LayoutSurveyTester.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/Home" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Home</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
+                                <li class="breadcrumb-item"><a href="#">Survey Test</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Survey Test</h1>
+                    <div class="header-text">Test your survey.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <!--
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+    </div>
+    -->
+    <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
+            <div class="form-container tab-content" style="max-width:840px;">
+                <div id="surveyContainer"></div>
+            </div>
+            <!-- End Form -->
+            <textarea id="Questions" name="Questions" class="form-control" rows="3" style="display:none;">@Model.Survey.Contents</textarea>
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formresponse", id = "formresponse" }))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <input type="hidden" name="ID" class="form-control" value="@Model.Response.ID" />
+                <input type="hidden" name="SurveyID" class="form-control" value="@Model.Survey.ID" />
+                <input type="hidden" name="Type" class="form-control" value="@Model.Response.Type" />
+                <input type="hidden" name="UserId" class="form-control" value="@Model.Response.UserId" />
+                <input type="hidden" name="ResponseDate" class="form-control" value="" />
+                <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;"></textarea>
+            }
+        </div>
+    </div>
+</div>
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var surveyJSON = $('#Questions').val();
+
+            var survey = new Survey.Model(surveyJSON);
+            
+            $("#surveyContainer").Survey({
+                model: survey,
+                onComplete: sendDataToServer
+            });
+
+            function sendDataToServer(survey) {
+                var resultAsString = JSON.stringify(survey.data);
+                $('#Contents').val(resultAsString)
+                //alert(resultAsString);
+                return false;
+                // ajax
+                var form = $('#formresponse');
+                $.ajax({
+                    url: "@(WebApiURL)RnP/Survey/SubmitTest",
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        //alert(data.isSuccess);
+                        //callback(saveNo, data.isSuccess);
+                    }
+                });
+            }
+
+        });
+    </script>
+}

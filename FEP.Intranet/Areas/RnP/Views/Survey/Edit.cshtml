@@ -24,7 +24,7 @@
                         </nav>
                     </div>
                     <h1 class="page-title text-white">Edit Survey</h1>
-                    <div class="header-text">Edit survey that has not been submitted for approval.</div>
+                    <div class="header-text">Edit survey.</div>
                 </div>
             </div>
         </div>
@@ -213,7 +213,7 @@
                                 @Html.Label("yes", "Yes")
                                 <br />
                                 @Html.RadioButtonFor(model => model.RequireLogin, "false", new { id = "no" })
-                                @Html.Label("No", "No")
+                                @Html.Label("no", "No")
                                 @Html.ValidationMessageFor(model => model.RequireLogin, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -223,6 +223,7 @@
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
                 <!--input type="submit" value="Create" class="btn btn-default" /-->
+                @Html.HiddenFor(model => model.CreatorId, new { htmlAttributes = new { @class = "form-control" } })
                 <a class="btn btn-default" href="@Url.Action("Index", "Survey", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
                 <button type="submit" class="btn btn-secondary" id="btnSave" name="Submittype" value="Save">Next</button>
             </div>
@@ -234,6 +235,7 @@
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
+
             var tstart = $('#StartDate').val();
             var tend = $('#EndDate').val();
             tstart = tstart.substr(0, 10);
@@ -242,22 +244,25 @@
             $('#EndDate').val(tend);
             var mystart = $('#StartDate').val();
             var myend = $('#EndDate').val();
+
             $("#date_start").flatpickr({
                 dateFormat: "d/m/Y",
                 defaultDate: mystart,
-                maxDate: "31/01/3000",
+                maxDate: "31/01/2200",
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#StartDate").val(dateStr);
                 },
             });
+
             $("#date_end").flatpickr({
                 dateFormat: "d/m/Y",
                 defaultDate: myend,
-                maxDate: "31/01/3000",
+                maxDate: "31/01/2200",
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#EndDate").val(dateStr);
                 },
             });
+
             var selectedGroup = $('#TargetGroup').val();
             if (selectedGroup.indexOf("Group 1") >= 0) {
                 $('#survey_group option').each(function () {
@@ -295,6 +300,7 @@
                 });
             }
             $('#survey_group').trigger('change');
+
             $('#survey_group').change(function () {
                 var selectedValues = [];
                 var selectedText = "";

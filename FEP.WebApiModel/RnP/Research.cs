@@ -70,6 +70,9 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "SurveyCreatorId", ResourceType = typeof(Language.RnPForm))]
         public int CreatorId { get; set; }
 
+        [Display(Name = "SurveyCreatorId", ResourceType = typeof(Language.RnPForm))]
+        public string CreatorName { get; set; }
+
         [Display(Name = "SurveyRefNo", ResourceType = typeof(Language.RnPForm))]
         public string RefNo { get; set; }
 
@@ -89,6 +92,23 @@ namespace FEP.WebApiModel.RnP
         public string DmsPath { get; set; }
 
         //public List<SurveyApproval> Approvals { get; set; }
+    }
+
+    // class for returning just the survey design contents to client app
+    // returned whenever the client requests for contents information on a single survey
+    public class ReturnSurveyContentsModel
+    {
+        public int ID { get; set; }
+
+        [Display(Name = "SurveyContents", ResourceType = typeof(Language.RnPForm))]
+        public string Contents { get; set; }
+    }
+
+    // class for returning survey information as well as deisgn contents to client app
+    public class ReturnFullSurveyModel
+    {
+        public ReturnSurveyModel Survey { get; set; }
+        public ReturnSurveyContentsModel Contents { get; set; }
     }
 
     // class for returning just the auto-fields of survey information to client app
@@ -200,6 +220,8 @@ namespace FEP.WebApiModel.RnP
 
         public int ApproverId { get; set; }
 
+        public string UserName { get; set; }
+
         public SurveyApprovalStatus Status { get; set; }
 
         public DateTime ApprovalDate { get; set; }
@@ -294,6 +316,11 @@ namespace FEP.WebApiModel.RnP
         //[Required(ErrorMessageResourceName = "ValidRequiredSurveyProofOfApproval", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "SurveyProofOfApproval", ResourceType = typeof(Language.RnPForm))]
         public string ProofOfApproval { get; set; }
+
+        [Required]
+        public int CreatorId { get; set; }
+
+        public string CreatorName { get; set; }
     }
 
     // class for updating of survey questions by client app
@@ -422,5 +449,13 @@ namespace FEP.WebApiModel.RnP
         [Required(ErrorMessageResourceName = "ValidRequiredSurveyResponseContents", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "SurveyResponseContents", ResourceType = typeof(Language.RnPForm))]
         public string Contents { get; set; }
+    }
+
+    // class for returning survey response preparation to client app
+    // used to create form for answering survey (test & actual)
+    public class ReturnSurveyResponseModel
+    {
+        public ReturnSurveyModel Survey { get; set; }
+        public UpdateSurveyResponseModel Response { get; set; }
     }
 }

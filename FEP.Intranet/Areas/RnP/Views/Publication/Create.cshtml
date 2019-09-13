@@ -103,7 +103,8 @@
                     <div class="row">
                         <div class="form-group col-lg-6">
                             @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", @placeholder = "Year of Publication" } })
+                            @*Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", @placeholder = "Year of Publication" } })*@
+                            <select name="Year" id="Year" class="form-control"></select>
                             @*Html.DropDownListFor(model => model.Year, PublicationController.GetDropDownListForYears())*@
                             @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
                         </div>
@@ -241,6 +242,7 @@
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
                 <!--input type="submit" value="Create" class="btn btn-default" /-->
+                <input class="form-control" type="hidden" name="CreatorId" id="CreatorId" value="@CurrentUser.UserId">
                 <a class="btn btn-default" href="@Url.Action("SelectCategory", "Publication", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
                 <button type="submit" class="btn btn-default" id="btnSave" name="Submittype" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save as Draft</button>
                 <button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Review for Submission</button>
@@ -253,6 +255,22 @@
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
+
+            function populateYears() {
+                var currentdate = new Date();
+                var currentyear = currentdate.getFullYear();
+                var startyear = 1900;
+                var endyear = 2200;
+                var selected = '';
+                for (var i = startyear; i <= endyear; i++) {
+                    selected = '';
+                    if (i.toString() == currentyear) {
+                        selected = ' selected';
+                    }
+                    $('#Year').append('<option value="' + i + '"' + selected + '>' + i + '</option>');
+                }
+            }
+
             $('#pub_lang').change(function () {
                 var selectedValues = [];
                 var selectedText = "";
@@ -262,6 +280,7 @@
                 selectedText = selectedValues.join();
                 $("#Language").val(selectedText);
             });
+
             $('#Hardcopy').change(function () {
                 if ($('#Hardcopy').is(':checked')) {
                     $('#HPrice').val('0.00');
@@ -272,6 +291,7 @@
                     $('#HPrice').prop('readonly', true);
                 }
             });
+
             $('#FreeHCopy').change(function () {
                 if ($('#FreeHCopy').is(':checked')) {
                     $('#Hardcopy').prop('checked', true);
@@ -281,6 +301,7 @@
                     $('#HPrice').prop('readonly', false);
                 }
             });
+
             $('#Digitalcopy').change(function () {
                 if ($('#Digitalcopy').is(':checked')) {
                     $('#DPrice').val('0.00');
@@ -291,6 +312,7 @@
                     $('#DPrice').prop('readonly', true);
                 }
             });
+
             $('#FreeDCopy').change(function () {
                 if ($('#FreeDCopy').is(':checked')) {
                     $('#Digitalcopy').prop('checked', true);
@@ -300,6 +322,7 @@
                     $('#DPrice').prop('readonly', false);
                 }
             });
+
             $('#HDcopy').change(function () {
                 if ($('#HDcopy').is(':checked')) {
                     $('#HDPrice').val('0.00');
@@ -310,6 +333,7 @@
                     $('#HDPrice').prop('readonly', true);
                 }
             });
+
             $('#FreeHDCopy').change(function () {
                 if ($('#FreeHDCopy').is(':checked')) {
                     $('#HDcopy').prop('checked', true);
@@ -319,6 +343,9 @@
                     $('#HDPrice').prop('readonly', false);
                 }
             });
+
+            populateYears();
+
             /*
             $('#btnSave').click(function (event) {
                 $('#HiddenPubStatus').val("save")

@@ -46,6 +46,7 @@ namespace FEP.Model
         public string CancelRemark { get; set; }
         // withdrawal info...................................................................................................
         public string WithdrawalReason { get; set; }
+        public DateTime? WithdrawalDate { get; set; }
         public string ProofOfWithdrawal { get; set; }
         // auto-filled in data...............................................................................................
         public DateTime DateAdded { get; set; }

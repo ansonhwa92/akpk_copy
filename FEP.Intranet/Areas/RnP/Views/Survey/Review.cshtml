@@ -1,0 +1,297 @@
+﻿@model FEP.WebApiModel.RnP.UpdateSurveyReviewModel
+
+@{
+    ViewBag.Title = "Survey Details";
+    Layout = "~/Views/Shared/_LayoutSurveyBuilderReadonly.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/RnP/Survey" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
+                                <li class="breadcrumb-item"><a href="~/RnP/Survey">Survey</a></li>
+                                <li class="breadcrumb-item"><a href="#">Review Survey</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Review Survey for Submission</h1>
+                    <div class="header-text">Review details of survey before submission to Verifier & Approver.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row">
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div class="sidebar-left">
+                <!-- Steps -->
+                <div class="sidebar-inner sticky">
+                    <ul class="steps steps-vertical">
+                        <li class="step-item complete">
+                            <a href="" class="step-link">
+                                <span class="step-number">1</span>
+                                <span class="step-title">Select Survey Type</span>
+                            </a>
+                        </li>
+                        <li class="step-item complete">
+                            <a href="" class="step-link">
+                                <span class="step-number">2</span>
+                                <span class="step-title">Fill In Survey Details</span>
+                            </a>
+                        </li>
+                        <li class="step-item complete">
+                            <a href="" class="step-link">
+                                <span class="step-number">3</span>
+                                <span class="step-title">Design Survey Questions</span>
+                            </a>
+                        </li>
+                        <li class="step-item active">
+                            <a href="" class="step-link">
+                                <span class="step-number">4</span>
+                                <span class="step-title">Review & Submission</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- End Steps -->
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <div class="form-container tab-content">
+                    <div class="tab-pane active" id="survey-details">
+                        <div class="tab-pane" id="setting1">
+                            <div class="d-flex align-items-center mb-4 mt-2">
+                                <h4 class="color-darkblue mr-auto mb-0">Survey Details<br><span class="small">View survey details below.</span></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Survey.Type, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Survey.Type, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Survey.Category, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Survey.Category, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Survey.Title, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Survey.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Survey.Description, htmlAttributes: new { @class = "control-label" })
+                                @*Html.TextAreaFor(model => model.Survey.Description, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly", cols = 48, @rows = 5 })*@
+                                <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Survey.Description)</textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Survey.TargetGroup, htmlAttributes: new { @class = "control-label" })
+                                <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" disabled="disabled">
+                                    <option value="Group 1">Group 1</option>
+                                    <option value="Group 2">Group 2</option>
+                                    <option value="Group 3">Group 3</option>
+                                    <option value="Group 4">Group 4</option>
+                                    <option value="Group 5">Group 5</option>
+                                </select>
+                                @Html.HiddenFor(model => model.Survey.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                @Html.LabelFor(model => model.Survey.StartDate, htmlAttributes: new { @class = "control-label", @title = "The start date of the Survey duration" })
+                                @Html.EditorFor(model => model.Survey.StartDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                            <div class="form-group col-lg-6">
+                                @Html.LabelFor(model => model.Survey.EndDate, htmlAttributes: new { @class = "control-label", @title = "The end date of the Survey duration" })
+                                @Html.EditorFor(model => model.Survey.EndDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Survey.RequireLogin, htmlAttributes: new { @class = "control-label" })
+                                <div class="custom-control custom-radio">
+                                    @Html.RadioButtonFor(model => model.Survey.RequireLogin, "true", new { id = "yes" })
+                                    @Html.Label("yes", "Yes")
+                                    <br />
+                                    @Html.RadioButtonFor(model => model.Survey.RequireLogin, "false", new { id = "no" })
+                                    @Html.Label("no", "No")
+                                    @Html.ValidationMessageFor(model => model.Survey.RequireLogin, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="survey-design">
+                        <div class="tab-pane" id="setting1">
+                            <div class="d-flex align-items-center mb-4 mt-2">
+                                <h4 class="color-darkblue mr-auto mb-0">Survey Design<br><span class="small">View survey design below.</span></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="surveyContainer">
+                                <div id="creatorElement"></div>
+                            </div>
+                            <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;">@Model.Contents.Contents</textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- popups start -->
+                <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <p class="small">Are you sure you want to delete this Draft Survey?</p>
+                            </div>
+                            <div class="divider-border"></div>
+                            <div class="m-4 text-center">
+                                <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">No, do not delete</button>
+                                <button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" id="btnDiscardConfirm" data-surveyid="@Model.Survey.ID">Yes, please delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="confirm-email" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <p class="small">Would you like to send confirmation emails to<br>recommended representatives?</p>
+                            </div>
+                            <div class="divider-border"></div>
+                            <div class="m-4 text-center">
+                                <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">No, not yet</button>
+                                <button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#confirm-email-yes">Yes, please send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="confirm-email-yes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img src="~/img/icon-noti-email.svg" alt="image">
+                                <h4 class="color-darkblue mt-4">Confirmation Email Sent</h4>
+                                <p class="small">Your request has been sent.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- popups end -->
+                <!-- End Form -->
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <!--input type="submit" value="Create" class="btn btn-default" /-->
+                @Html.HiddenFor(model => model.Survey.CreatorId, new { htmlAttributes = new { @class = "form-control" } })
+                <a class="btn btn-default" href="@Url.Action("Edit", "Survey", new { area = "RnP", @id = Model.Survey.ID })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
+                <button type="submit" class="btn btn-secondary" id="btnSubmit">Submit for Approval</button>
+                <button type="button" class="btn btn-default" id="btnDiscard"><i class="la la-trash font-icon" style="font-size: 1.5rem;"></i>Discard</button>
+            </div>
+        </div>
+    </div>
+}
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var scontent = $('#Contents').val();
+            surveyCreator.text = scontent;
+
+            $("#StartDate").flatpickr({
+                dateFormat: "d/m/Y",
+                maxDate: "31/01/2200",
+            });
+
+            $("#EndDate").flatpickr({
+                dateFormat: "d/m/Y",
+                maxDate: "31/01/2200",
+            });
+
+            var selectedGroup = $('#Survey_TargetGroup').val();
+            if (selectedGroup.indexOf("Group 1") >= 0) {
+                $('#survey_group option').each(function () {
+                    if ($(this).text() == "Group 1") {
+                        $(this).prop("selected", true);
+                    }
+                });
+            }
+            if (selectedGroup.indexOf("Group 2") >= 0) {
+                $('#survey_group option').each(function () {
+                    if ($(this).text() == "Group 2") {
+                        $(this).prop("selected", true);
+                    }
+                });
+            }
+            if (selectedGroup.indexOf("Group 3") >= 0) {
+                $('#survey_group option').each(function () {
+                    if ($(this).text() == "Group 3") {
+                        $(this).prop("selected", true);
+                    }
+                });
+            }
+            if (selectedGroup.indexOf("Group 4") >= 0) {
+                $('#survey_group option').each(function () {
+                    if ($(this).text() == "Group 4") {
+                        $(this).prop("selected", true);
+                    }
+                });
+            }
+            if (selectedGroup.indexOf("Group 5") >= 0) {
+                $('#survey_group option').each(function () {
+                    if ($(this).text() == "Group 5") {
+                        $(this).prop("selected", true);
+                    }
+                });
+            }
+            $('#survey_group').trigger('change');
+
+            $('#btnDiscard').click(function (event) {
+                $("#modalConfirmDelete").modal();
+                return false;
+            });
+
+            $('#btnDiscardConfirm').click(function () {
+                var pid = $(this).data('surveyid');
+                var url = '@Url.Action("Discard", "Survey", new { area = "RnP" })?id=' + pid;
+                window.location = url;
+            });
+        });
+    </script>
+}

@@ -421,6 +421,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date Withdrawn.
+        /// </summary>
+        public static string PubWithdrawalDate {
+            get {
+                return ResourceManager.GetString("PubWithdrawalDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reason For Withdrawal.
         /// </summary>
         public static string PubWithdrawalReason {
@@ -471,6 +480,15 @@ namespace Language {
         public static string SurveyApprovalApprovalDate {
             get {
                 return ResourceManager.GetString("SurveyApprovalApprovalDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approval Level.
+        /// </summary>
+        public static string SurveyApprovalLevel {
+            get {
+                return ResourceManager.GetString("SurveyApprovalLevel", resourceCulture);
             }
         }
         
@@ -741,6 +759,15 @@ namespace Language {
         public static string ValidInvalidStockBalanceOutOfRange {
             get {
                 return ResourceManager.GetString("ValidInvalidStockBalanceOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a Status.
+        /// </summary>
+        public static string ValidInvalidSurveyApprovalStatus {
+            get {
+                return ResourceManager.GetString("ValidInvalidSurveyApprovalStatus", resourceCulture);
             }
         }
         

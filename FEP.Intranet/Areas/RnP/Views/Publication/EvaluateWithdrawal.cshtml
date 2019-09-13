@@ -1,7 +1,7 @@
-﻿@model FEP.WebApiModel.RnP.ReturnPublicationApprovalModel
+﻿@model FEP.WebApiModel.RnP.ReturnPublicationWithdrawalModel
 
 @{
-    ViewBag.Title = "Evaluate Publication";
+    ViewBag.Title = "Evaluate Publication Withdrawal";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
@@ -18,12 +18,12 @@
                                 <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
                                 <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
                                 <li class="breadcrumb-item"><a href="~/RnP/Publication">Publication</a></li>
-                                <li class="breadcrumb-item"><a href="#">Publication Request</a></li>
+                                <li class="breadcrumb-item"><a href="#">Publication Withdrawal Request</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Publication Request Ref No: @Model.Pub.RefNo</h1>
+                    <h1 class="page-title text-white">Publication Withdrawal Request Ref No: @Model.Pub.RefNo</h1>
                     <div class="header-text"><!--View details of publication.--></div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                     </ul>
                 </div>
                 <div>
-                    @{ if (Model.Pub.Status == PublicationStatus.Submitted)
+                    @{ if (Model.Pub.Status == PublicationStatus.WithdrawalSubmitted)
                         {
                             if (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))
                             {
@@ -55,7 +55,7 @@
                                 <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
                             }
                         }
-                        else if (Model.Pub.Status == PublicationStatus.Verified)
+                        else if (Model.Pub.Status == PublicationStatus.WithdrawalVerified)
                         {
                             if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1) && Model.Approval.Level == PublicationApprovalLevels.Approver1)
                             {
@@ -315,6 +315,24 @@
                             &nbsp;
                         </div>
                     </div>
+                    @if (Model.Withdrawal.WithdrawalReason != "")
+                    {
+                        <div class="mb-4 mt-2 mr-auto">
+                            <h4 class="color-darkblue mb-0">Withdrawal Details</h4>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Withdrawal.WithdrawalReason, htmlAttributes: new { @class = "control-label" })
+                                <textarea name="WReason" id="WReason" class="form-control" rows="3" readonly="readonly">@Model.Withdrawal.WithdrawalReason</textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Withdrawal.ProofOfWithdrawal, htmlAttributes: new { @class = "control-label" })
+                                <input type="text" name="WProof" id="WProof" class="form-control" readonly="readonly" value="@Model.Withdrawal.ProofOfWithdrawal" />
+                            </div>
+                        </div>
+                    }
                 </div>
                 <div class="tab-pane" id="amendment-history">
                     <div class="mb-4 mt-2 mr-auto">
@@ -535,6 +553,7 @@
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
+
             var selectedLang = $('#Pub_Language').val();
             if (selectedLang.indexOf("English") >= 0) {
                 $('#pub_lang option').each(function () {
@@ -551,10 +570,12 @@
                 });
             }
             $('#pub_lang').trigger('change');
+
             $('#btnApprove').click(function (event) {
                 $("#modalApprove").modal();
                 return false;
             });
+
             $('#btnApproveConfirm').click(function (event) {
                 // ajax call for approval
                 $('#Approval_Status').val('1');
@@ -567,26 +588,13 @@
                     $('#Approval_RequireNext').val('False');
                 }
                 $('#myform').submit();
-                //var targeturl = '@*Url.Action("Evaluate", "Publication", new { area = "RnP" })*@';
-                //var form = $('#myform');
-                //alert(form.serialize());
-                //alert(targeturl);
-                /*
-                $.ajax({
-                    url: targeturl,
-                    type: "POST",
-                    data: form.serialize(),
-                    success: function (data) {
-                        alert('success!')
-                    }
-                });
-                */
-                //$("#modalApproveSent").modal();
             });
+
             $('#btnReject').click(function (event) {
                 $("#modalReject").modal();
                 return false;
             });
+
             $('#btnRejectConfirm').click(function (event) {
                 // ajax call for approval
                 var rejecttext = $('#Reject_Remarks').val();
@@ -601,22 +609,8 @@
                     $('#Approval_RequireNext').val('False');
                 }
                 $('#myform').submit();
-                //var targeturl = '@*Url.Action("Evaluate", "Publication", new { area = "RnP" })*@';
-                //var form = $('#myform');
-                //alert(form.serialize());
-                //alert(targeturl);
-                /*
-                $.ajax({
-                    url: targeturl,
-                    type: "POST",
-                    data: form.serialize(),
-                    success: function (data) {
-                        alert('success!')
-                    }
-                });
-                */
-                //$("#modalApproveSent").modal();
             });
+
         });
     </script>
 }

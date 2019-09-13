@@ -222,18 +222,53 @@
 
                             var action = "";
 
-                            if (row.Status == 0) {
-                                action = '<div class="icon-action">'
-                                    + '<a href="@Url.Action("Edit", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                                    + '</div>';
+                            var canview = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyView));
+                            var canedit = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyEdit));
+                            var canverify = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyVerify));
+                            var canapprove1 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyApprove1));
+                            var canapprove2 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyApprove2));
+                            var canapprove3 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyApprove3));
+                            var canpublish = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyPublish));
+
+                            action = '<div class="icon-action">';
+
+                            if (canview) {
+                                action += '<a href="@Url.Action("Details", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
                             }
-                            else if (row.Status == 1) {
-                                action = '<div class="icon-action">'
-                                    + '</div>';
+
+                            if (row.Status == 0) {          // new
+                                if (canedit) {
+                                    action += '<a href="@Url.Action("Edit", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
+                                    action += '<a href="@Url.Action("Delete", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>';
+                                }
                             }
-                            else {
-                                action = '<div class="icon-action">'
-                                    + '</div>';
+                            else if (row.Status == 1) {     // submitted
+                                if (canverify || canapprove1 || canapprove2 || canapprove3) {
+                                    action += '<a href="@Url.Action("Evaluate", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
+                                }
+                            }
+                            else if (row.Status == 2) {     // verifier rejected (can edit from view - view lets user see comments)
+                                action += '';
+                            }
+                            else if (row.Status == 3) {     // verified
+                                if (canapprove1 || canapprove2 || canapprove3) {
+                                    action += '<a href="@Url.Action("Evaluate", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
+                                }
+                            }
+                            else if (row.Status == 4) {     // approver rejected
+                                action += '';
+                            }
+                            else if (row.Status == 5) {     // approved (can publish from view, too)
+                                action += '';
+                            }
+                            else if (row.Status == 6) {     // published (can unpublish/deactivate from view)
+                                action += '';
+                            }
+                            else if (row.Status == 7) {     // unpublished
+                                action += '';
+                            }
+                            else if (row.Status == 8) {     // trashed
+                                action += '';
                             }
 
                             return action;

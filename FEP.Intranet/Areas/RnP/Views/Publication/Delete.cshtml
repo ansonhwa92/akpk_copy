@@ -34,39 +34,29 @@
 <h3>Are you sure you want to delete this Publication?</h3>
 <div class="row">
     <div class="col-xl-3 col-md-3 col-sm-4 my-2">
-        <div class="sidebar-left">
-            <!-- Steps -->
-            <div class="sidebar-inner sticky">
-                <ul class="steps steps-vertical">
-                    <li class="step-item active">
-                        <a href="" class="step-link">
-                            <span class="step-number">1</span>
-                            <span class="step-title">Publication Details</span>
-                        </a>
-                    </li>
-                    <!-- rejected -->
-                    <!-- <li class="step-item rejected">
-                        <a href="" class="step-link">
-                            <span class="step-number">2</span>
-                            <span class="step-title">Fill Up Event Details</span>
-                        </a>
-                    </li> -->
-                    <li class="step-item disabled">
-                        <a href="" class="step-link">
-                            <span class="step-number">2</span>
-                            <span class="step-title">Publication Approval</span>
-                        </a>
-                    </li>
-                </ul>
-                <!-- End Steps -->
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Publication Information</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="#publication-details" data-toggle="tab" class="nav-link active">Publication Details</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
         <!-- Start Form -->
         <div class="border-form rounded-top">
-            <form>
-                <div class="form-container">
+            <div class="form-container tab-content">
+                <div class="tab-pane active" id="publication-details">
+                    <div class="tab-pane" id="setting1">
+                        <div class="d-flex align-items-center mb-4 mt-2">
+                            <h4 class="color-darkblue mr-auto mb-0">Are you sure you want to delete this Publication?<br><span class="small">View publication details below.</span></h4>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label" })
@@ -214,17 +204,17 @@
                         </div>
                     </div>
                 </div>
-            </form>
-            <!-- End Form -->
+                <!-- End Form -->
+            </div>
         </div>
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
-        <div class="border-left border-right border-bottom p-3 rounded-bottom">
-            <a class="btn btn-default" href="@Url.Action("Index", "Publication", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
-            <button type="submit" class="btn btn-secondary" value="Delete">Delete</button>
-        </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a class="btn btn-default" href="@Url.Action("Index", "Publication", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
+                <button type="submit" class="btn btn-secondary" value="Delete">Delete</button>
+            </div>
         }
     </div>
 
@@ -233,6 +223,7 @@
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
+
             var selectedLang = $('#Language').val();
             if (selectedLang.indexOf("English") >= 0) {
                 $('#pub_lang option').each(function () {

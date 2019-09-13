@@ -24,7 +24,7 @@
                         </nav>
                     </div>
                     <h1 class="page-title text-white">Edit Publication</h1>
-                    <div class="header-text">Edit publication that has not been submitted for approval.</div>
+                    <div class="header-text">Edit publication.</div>
                 </div>
             </div>
         </div>
@@ -69,7 +69,6 @@
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
             <!-- Start Form -->
             <div class="border-form rounded-top">
-                <form>
                     <div class="form-container">
                         <div class="row">
                             <div class="form-group col-lg-12">
@@ -103,7 +102,8 @@
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", @placeholder = "Year of Publication" } })
+                                @*Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", @placeholder = "Year of Publication" } })*@
+                                <select name="Year" id="Year" class="form-control"></select>
                                 @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-lg-6">
@@ -236,11 +236,11 @@
                             </div>
                         </div>
                     </div>
-                </form>
                 <!-- End Form -->
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
                 <!--input type="submit" value="Create" class="btn btn-default" /-->
+                @Html.HiddenFor(model => model.CreatorId, new { htmlAttributes = new { @class = "form-control" } })
                 <a class="btn btn-default" href="@Url.Action("Index", "Publication", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
                 <button type="submit" class="btn btn-default" id="btnSave" name="Submittype" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save as Draft</button>
                 <button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Review for Submission</button>
@@ -253,6 +253,23 @@
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
+
+            var iyear = @Model.Year;
+            var dbyear = iyear.toString();
+
+            function populateYears() {
+                var startyear = 1900;
+                var endyear = 2200;
+                var selected = '';
+                for (var i = startyear; i <= endyear; i++) {
+                    selected = '';
+                    if (i.toString() == dbyear) {
+                        selected = ' selected';
+                    }
+                    $('#Year').append('<option value="' + i + '"' + selected + '>' + i + '</option>');
+                }
+            }
+
             var selectedLang = $('#Language').val();
             if (selectedLang.indexOf("English") >= 0) {
                 $('#pub_lang option').each(function () {
@@ -269,6 +286,7 @@
                 });
             }
             $('#pub_lang').trigger('change');
+
             if ($('#Hardcopy').is(':checked')) {
                 if ($('#FreeHCopy').is(':checked')) {
                     $('#HPrice').prop('readonly', true);
@@ -278,6 +296,7 @@
             } else {
                 $('#HPrice').prop('readonly', true);
             }
+
             if ($('#Digitalcopy').is(':checked')) {
                 if ($('#FreeDCopy').is(':checked')) {
                     $('#DPrice').prop('readonly', true);
@@ -287,6 +306,7 @@
             } else {
                 $('#DPrice').prop('readonly', true);
             }
+
             if ($('#HDcopy').is(':checked')) {
                 if ($('#FreeHDCopy').is(':checked')) {
                     $('#HDPrice').prop('readonly', true);
@@ -296,6 +316,7 @@
             } else {
                 $('#HDPrice').prop('readonly', true);
             }
+
             $('#pub_lang').change(function () {
                 var selectedValues = [];
                 var selectedText = "";
@@ -305,6 +326,7 @@
                 selectedText = selectedValues.join();
                 $("#Language").val(selectedText);
             });
+
             $('#Hardcopy').change(function () {
                 if ($('#Hardcopy').is(':checked')) {
                     $('#HPrice').val('0.00');
@@ -315,6 +337,7 @@
                     $('#HPrice').prop('readonly', true);
                 }
             });
+
             $('#FreeHCopy').change(function () {
                 if ($('#FreeHCopy').is(':checked')) {
                     $('#Hardcopy').prop('checked', true);
@@ -324,6 +347,7 @@
                     $('#HPrice').prop('readonly', false);
                 }
             });
+
             $('#Digitalcopy').change(function () {
                 if ($('#Digitalcopy').is(':checked')) {
                     $('#DPrice').val('0.00');
@@ -334,6 +358,7 @@
                     $('#DPrice').prop('readonly', true);
                 }
             });
+
             $('#FreeDCopy').change(function () {
                 if ($('#FreeDCopy').is(':checked')) {
                     $('#Digitalcopy').prop('checked', true);
@@ -343,6 +368,7 @@
                     $('#DPrice').prop('readonly', false);
                 }
             });
+
             $('#HDcopy').change(function () {
                 if ($('#HDcopy').is(':checked')) {
                     $('#HDPrice').val('0.00');
@@ -353,6 +379,7 @@
                     $('#HDPrice').prop('readonly', true);
                 }
             });
+
             $('#FreeHDCopy').change(function () {
                 if ($('#FreeHDCopy').is(':checked')) {
                     $('#HDcopy').prop('checked', true);
@@ -362,6 +389,9 @@
                     $('#HDPrice').prop('readonly', false);
                 }
             });
+
+            populateYears();
+
             /*
             $('#btnSave').click(function (event) {
                 $('#HiddenPubStatus').val("save")

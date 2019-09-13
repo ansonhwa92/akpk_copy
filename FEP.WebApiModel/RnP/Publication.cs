@@ -89,6 +89,9 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "PubWithdrawalReason", ResourceType = typeof(Language.RnPForm))]
         public string WithdrawalReason { get; set; }
 
+        [Display(Name = "PubWithdrawalDate", ResourceType = typeof(Language.RnPForm))]
+        public DateTime WithdrawalDate { get; set; }
+
         [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
         public string ProofOfWithdrawal { get; set; }
 
@@ -209,6 +212,21 @@ namespace FEP.WebApiModel.RnP
 
     // class for returning publication approval history
     public class PublicationApprovalHistoryModel
+    {
+        //public IEnumerable<PublicationApproval> Event { get; set; }
+        public PublicationApprovalLevels Level { get; set; }
+
+        public int ApproverId { get; set; }
+
+        public PublicationApprovalStatus Status { get; set; }
+
+        public DateTime ApprovalDate { get; set; }
+
+        public string Remarks { get; set; }
+    }
+
+    // class for returning publication withdrawal approval history
+    public class PublicationWithdrawalHistoryModel
     {
         //public IEnumerable<PublicationApproval> Event { get; set; }
         public PublicationApprovalLevels Level { get; set; }
@@ -350,6 +368,9 @@ namespace FEP.WebApiModel.RnP
         //[MinLength(1)]
         //[Range(0, 9999, ErrorMessage = "Please enter a valid year")]
         public int? StockBalance { get; set; }
+
+        [Required]
+        public int CreatorId { get; set; }
     }
 
     // class for updating of publication cancellation information by client app
@@ -362,15 +383,6 @@ namespace FEP.WebApiModel.RnP
         [Required(ErrorMessageResourceName = "ValidRequiredCancellationRemark", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubCancelRemark", ResourceType = typeof(Language.RnPForm))]
         public string CancelRemark { get; set; }
-    }
-
-    // class for returning publication information for submission as well as cancellation form to client app
-    // used to create form for viewing publication (admin only)
-    public class UpdatePublicationViewModel
-    {
-        public UpdatePublicationModel Pub { get; set; }
-        public ReturnPublicationAutofieldsModel Auto { get; set; }
-        public UpdatePublicationCancellationModel Cancellation { get; set; }
     }
 
     // class for updating of publication withdrawal information by client app
@@ -387,6 +399,25 @@ namespace FEP.WebApiModel.RnP
         [Required(ErrorMessageResourceName = "ValidRequiredProofOfWithdrawal", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
         public string ProofOfWithdrawal { get; set; }
+    }
+
+    // class for returning publication information for submission as well as cancellation form to client app
+    // used to create form for viewing publication (admin only)
+    public class UpdatePublicationViewModel
+    {
+        public UpdatePublicationModel Pub { get; set; }
+        public ReturnPublicationAutofieldsModel Auto { get; set; }
+        public UpdatePublicationWithdrawalModel Withdrawal { get; set; }
+        public UpdatePublicationCancellationModel Cancellation { get; set; }
+    }
+
+    // class for returning publication information, withdrawal information, as well as withdrawal approval form to client app
+    // used to create form for reviewing (approving/rejecting) publication withdrawal
+    public class ReturnPublicationWithdrawalModel
+    {
+        public ReturnPublicationModel Pub { get; set; }
+        public UpdatePublicationWithdrawalModel Withdrawal { get; set; }
+        public ReturnUpdatePublicationApprovalModel Approval { get; set; }
     }
 
     /*

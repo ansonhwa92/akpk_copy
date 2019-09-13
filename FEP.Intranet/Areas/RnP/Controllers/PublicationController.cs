@@ -188,7 +188,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 HDPrice = publication.HDPrice,
                 Pictures = publication.Pictures,
                 ProofOfApproval = publication.ProofOfApproval,
-                StockBalance = publication.StockBalance
+                StockBalance = publication.StockBalance,
+                CreatorId = publication.CreatorId
             };
 
             ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", vmpublication.CategoryID);
@@ -311,6 +312,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 Pictures = publication.Pictures,
                 ProofOfApproval = publication.ProofOfApproval,
                 StockBalance = publication.StockBalance,
+                CreatorId = publication.CreatorId
             };
 
             var resHis = await WepApiMethod.SendApiAsync<IEnumerable<PublicationApprovalHistoryModel>>(HttpVerbs.Get, $"RnP/Publication/GetHistory?id={id}");
@@ -401,6 +403,123 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
         }
 
+        // Process publishing from details page
+        // Called for direct publishing via id
+        // GET: RnP/Publication/PublishByID/5
+        public async Task<ActionResult> PublishByID(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Publication/PublishByID?id={id}");
+
+            if (response.isSuccess)
+            {
+                // log trail/system success notification/dashboard notification/email/sms upon submission
+                // log trail/system success/dashboard notification upon saving as draft
+
+                await LogActivity(Modules.RnP, "Publish Publication: " + response.Data);
+
+                TempData["SuccessMessage"] = "Publication titled " + response.Data + " published successfully.";
+
+                // dashboard
+
+                //SendEmail("New Publication Submitted", "A new Publication has been submitted for verification." + "\n" + "Please login to AKPK-FEP and review the submission.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
+
+                // sms
+
+                return RedirectToAction("Index", "Publication", new { area = "RnP" });
+            }
+            else
+            {
+                TempData["SuccessMessage"] = "Failed to publish Publication.";
+
+                return RedirectToAction("Details", "Publication", new { area = "RnP", @id = id });
+            }
+        }
+
+        // Process withdraw form (modal dialog from details)
+        // Called via ajax and returns empty string or "error"
+        // POST: Publication/Withdraw/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> Withdraw(UpdatePublicationWithdrawalModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Publication/Withdraw", model);
+
+                if (response.isSuccess)
+                {
+                    // log trail/system success notification/dashboard notification/email/sms upon submission
+                    // log trail/system success/dashboard notification upon saving as draft
+
+                    await LogActivity(Modules.RnP, "Withdraw Publication: " + response.Data, model);
+
+                    // no notification because it's handled by the ajax caller
+                    //TempData["SuccessMessage"] = "Publication titled " + response.Data + " requested to be withdrawn.";
+
+                    // dashboard
+
+                    //SendEmail("New Publication Submitted", "A new Publication has been submitted for verification." + "\n" + "Please login to AKPK-FEP and review the submission.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
+
+                    // sms
+
+                    return  "";
+                }
+                else
+                {
+                    //TempData["SuccessMessage"] = "Failed to submit Publication.";
+
+                    return "error";
+                }
+            }
+
+            return "error";
+        }
+
+        // Process cancel form (modal dialog from details)
+        // Called via ajax and returns empty string or "error"
+        // POST: Publication/Cancel/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> Cancel(UpdatePublicationCancellationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Publication/Cancel", model);
+
+                if (response.isSuccess)
+                {
+                    // log trail/system success notification/dashboard notification/email/sms upon submission
+                    // log trail/system success/dashboard notification upon saving as draft
+
+                    await LogActivity(Modules.RnP, "Cancel Publication: " + response.Data, model);
+
+                    // no notification because it's handled by the ajax caller
+                    //TempData["SuccessMessage"] = "Publication titled " + response.Data + " successfully cancelled.";
+
+                    // dashboard
+
+                    //SendEmail("New Publication Created", "A new Publication has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
+
+                    // sms
+
+                    return "";
+                }
+                else
+                {
+                    //TempData["SuccessMessage"] = "Failed to cancel Publication.";
+
+                    return "error";
+                }
+            }
+
+            return "error";
+        }
+
         // Show view form
         // From here user can do one of the following:
         // 1. Admin can edit the publication if it's not submitted yet (redirection button)
@@ -429,6 +548,32 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 return HttpNotFound();
             }
 
+            // redirect for eavluation if applicable
+
+            if ((CurrentUser.HasAccess(UserAccess.RnPPublicationVerify)) || (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1)) || (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2)) || (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3)))
+            {
+                // if approvers, check pending approval
+
+                var resApp = await WepApiMethod.SendApiAsync<PublicationApprovalHistoryModel>(HttpVerbs.Get, $"RnP/Publication/GetNextApproval?id={id}");
+
+                if (resApp.isSuccess)
+                {
+                    var nextapp = resApp.Data;
+
+                    if (((nextapp.Level == PublicationApprovalLevels.Verifier) && (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))) || ((nextapp.Level == PublicationApprovalLevels.Approver1) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1))) || ((nextapp.Level == PublicationApprovalLevels.Approver2) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2))) || ((nextapp.Level == PublicationApprovalLevels.Approver3) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3))))
+                    {
+                        if ((publication.Status == PublicationStatus.Submitted) || (publication.Status == PublicationStatus.Verified)) {
+                            return RedirectToAction("Evaluate", "Publication", new { area = "RnP", @id = id });
+                        }
+                        else if ((publication.Status == PublicationStatus.WithdrawalSubmitted) || (publication.Status == PublicationStatus.WithdrawalVerified))
+                        {
+                            return RedirectToAction("EvaluateWithdrawal", "Publication", new { area = "RnP", @id = id });
+                        }
+                    }
+                }
+
+            }
+
             var vmpublication = new UpdatePublicationModel
             {
                 ID = publication.ID,
@@ -451,7 +596,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 HDPrice = publication.HDPrice,
                 Pictures = publication.Pictures,
                 ProofOfApproval = publication.ProofOfApproval,
-                StockBalance = publication.StockBalance
+                StockBalance = publication.StockBalance,
+                CreatorId = publication.CreatorId
             };
 
             var vmautofields = new ReturnPublicationAutofieldsModel
@@ -473,10 +619,18 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 CancelRemark = publication.CancelRemark
             };
 
+            var vmwithdrawal = new UpdatePublicationWithdrawalModel
+            {
+                ID = publication.ID,
+                WithdrawalReason = publication.WithdrawalReason,
+                ProofOfWithdrawal = publication.ProofOfWithdrawal
+            };
+
             var vmview = new UpdatePublicationViewModel
             {
                 Pub = vmpublication,
                 Auto = vmautofields,
+                Withdrawal = vmwithdrawal,
                 Cancellation = vmcancellation
             };
 
@@ -588,43 +742,6 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 return RedirectToAction("Review", "Publication", new { area = "RnP", @id = id });
             }
-        }
-
-        // Process cancel form
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Cancel(UpdatePublicationCancellationModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Publication/Cancel", model);
-
-                if (response.isSuccess)
-                {
-                    // log trail/system success notification/dashboard notification/email/sms upon submission
-                    // log trail/system success/dashboard notification upon saving as draft
-
-                    await LogActivity(Modules.RnP, "Cancel Publication: " + response.Data, model);
-
-                    TempData["SuccessMessage"] = "Publication titled " + response.Data + " successfully cancelled.";
-
-                    // dashboard
-
-                    //SendEmail("New Publication Created", "A new Publication has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
-
-                    // sms
-
-                    return RedirectToAction("Index", "Publication", new { area = "RnP" });
-                }
-                else
-                {
-                    TempData["SuccessMessage"] = "Failed to cancel Publication.";
-
-                    return RedirectToAction("Details", "Publication", new { area = "RnP", @id = model.ID });
-                }
-            }
-
-            return View(model);
         }
 
         // Show verifier/approver evaluation form
@@ -765,6 +882,160 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     TempData["SuccessMessage"] = "Failed to process Publication.";
 
                     return RedirectToAction("Evaluate", "Publication", new { area = "RnP", @id = model.Pub.ID });
+                }
+            }
+
+            //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
+            return View(model);
+        }
+
+        // Show verifier/approver withdrawal evaluation form
+        // From here user can do the following:
+        // 1. Verifier/Approver can approve and submit for next approval (if applicable) if status is applicable
+        // 2. Verifier/Approver can reject and require amendment if status is applicable
+        // GET: RnP/Publication/EvaluateWithdrawal/5
+        public async Task<ActionResult> EvaluateWithdrawal(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resPub = await WepApiMethod.SendApiAsync<ReturnPublicationWithdrawalModel>(HttpVerbs.Get, $"RnP/Publication/GetForWithdrawalEvaluation?id={id}");
+
+            if (!resPub.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var pubapproval = resPub.Data;
+
+            if (pubapproval == null)
+            {
+                return HttpNotFound();
+            }
+
+            var publication = new ReturnPublicationModel
+            {
+                ID = pubapproval.Pub.ID,
+                CategoryID = pubapproval.Pub.CategoryID,
+                Category = pubapproval.Pub.Category,
+                Author = pubapproval.Pub.Author,
+                Coauthor = pubapproval.Pub.Coauthor,
+                Title = pubapproval.Pub.Title,
+                Year = pubapproval.Pub.Year,
+                Description = pubapproval.Pub.Description,
+                Language = pubapproval.Pub.Language,
+                ISBN = pubapproval.Pub.ISBN,
+                Hardcopy = pubapproval.Pub.Hardcopy,
+                Digitalcopy = pubapproval.Pub.Digitalcopy,
+                HDcopy = pubapproval.Pub.HDcopy,
+                FreeHCopy = pubapproval.Pub.FreeHCopy,
+                FreeDCopy = pubapproval.Pub.FreeDCopy,
+                FreeHDCopy = pubapproval.Pub.FreeHDCopy,
+                HPrice = pubapproval.Pub.HPrice,
+                DPrice = pubapproval.Pub.DPrice,
+                HDPrice = pubapproval.Pub.HDPrice,
+                Pictures = pubapproval.Pub.Pictures,
+                ProofOfApproval = pubapproval.Pub.ProofOfApproval,
+                StockBalance = pubapproval.Pub.StockBalance,
+                DateAdded = pubapproval.Pub.DateAdded,
+                CreatorId = pubapproval.Pub.CreatorId,
+                RefNo = pubapproval.Pub.RefNo,
+                Status = pubapproval.Pub.Status,
+                DmsPath = pubapproval.Pub.DmsPath
+            };
+
+            var pwithdrawal = new UpdatePublicationWithdrawalModel
+            {
+                ID = pubapproval.Pub.ID,
+                WithdrawalReason = pubapproval.Pub.WithdrawalReason,
+                ProofOfWithdrawal = pubapproval.Pub.ProofOfWithdrawal
+            };
+
+            var papproval = new ReturnUpdatePublicationApprovalModel
+            {
+                ID = pubapproval.Approval.ID,
+                PublicationID = pubapproval.Approval.PublicationID,
+                Level = pubapproval.Approval.Level,
+                ApproverId = pubapproval.Approval.ApproverId,
+                Status = pubapproval.Approval.Status,
+                Remarks = pubapproval.Approval.Remarks,
+                RequireNext = pubapproval.Approval.RequireNext
+            };
+
+            var pevaluation = new ReturnPublicationWithdrawalModel
+            {
+                Pub = publication,
+                Withdrawal = pwithdrawal,
+                Approval = papproval
+            };
+
+            // TODO: show approval history for publication only or withdrawal only or both??
+            var resHis = await WepApiMethod.SendApiAsync<IEnumerable<PublicationWithdrawalHistoryModel>>(HttpVerbs.Get, $"RnP/Publication/GetWithdrawalHistory?id={id}");
+
+            if (resHis.isSuccess)
+            {
+                ViewBag.History = resHis.Data;
+            }
+
+            //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", publication.CategoryID);
+            //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", vmpublication.CategoryID);
+            //ViewBag.TestItem = pubapproval.Pub.Category;
+            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", publication.CategoryID);
+            return View(pevaluation);
+        }
+
+        // Process withdrawal evaluation form
+        // User (verifier/approver) is redirected to Index afterwards because their "work is done"
+        // POST: Publication/EvaluateWithdrawal/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EvaluateWithdrawal(ReturnPublicationWithdrawalModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Publication/EvaluateWithdrawal", model);
+
+                if (response.isSuccess)
+                {
+                    // log trail/system success notification/dashboard notification/email/sms upon submission
+                    // log trail/system success/dashboard notification upon saving as draft
+
+                    if (model.Approval.Status == PublicationApprovalStatus.Approved)
+                    {
+                        if (model.Approval.Level == PublicationApprovalLevels.Verifier)
+                        {
+                            await LogActivity(Modules.RnP, "Verify Publication Withdrawal: " + response.Data, model);
+                            TempData["SuccessMessage"] = "Withdrawal of Publication titled " + response.Data + " updated as Verified.";
+                            //SendEmail("Publication Approved", "A new Publication has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
+                            // sms
+                        }
+                        else
+                        {
+                            await LogActivity(Modules.RnP, "Approve Publication Withdrawal: " + response.Data, model);
+                            TempData["SuccessMessage"] = "Withdrawal of Publication titled " + response.Data + " updated as Approved.";
+                            //SendEmail("Publication Approved", "A new Publication has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
+                            // sms
+                        }
+                    }
+                    else
+                    {
+                        await LogActivity(Modules.RnP, "Publication Withdrawal Requires Amendment: " + response.Data, model);
+                        TempData["SuccessMessage"] = "Withdrawal of Publication titled " + response.Data + " updated as Requires Amendment.";
+                        //SendEmail("Publication Approved", "A new Publication has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
+                        // sms
+                    }
+
+                    // dashboard
+
+                    return RedirectToAction("Index", "Publication", new { area = "RnP" });
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Failed to process Publication Withdrawal.";
+
+                    return RedirectToAction("EvaluateWithdrawal", "Publication", new { area = "RnP", @id = model.Pub.ID });
                 }
             }
 

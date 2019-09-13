@@ -217,7 +217,7 @@
                                 @Html.Label("yes", "Yes")
                                 <br />
                                 @Html.RadioButtonFor(model => model.RequireLogin, "false", new { id = "no" })
-                                @Html.Label("No", "No")
+                                @Html.Label("no", "No")
                                 @Html.ValidationMessageFor(model => model.RequireLogin, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -225,7 +225,8 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <label class="d-block">Select Template (optional) <!--span class="text-danger">*</span--></label>
-                            <select class="select2" name="TemplateSelection" style="width: 100%;">
+                            @*<select class="select2" name="TemplateSelection" style="width: 100%;">*@
+                            <select class="form-control" name="TemplateSelection" id="TemplateSelection" style="width: 100%;">
                                 <option value="0">Start from scratch</option>
                                 @if (ViewBag.Templates != null)
                                 {
@@ -243,6 +244,7 @@
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
                 <!--input type="submit" value="Create" class="btn btn-default" /-->
+                <input class="form-control" type="hidden" name="CreatorId" id="CreatorId" value="@CurrentUser.UserId">
                 <a class="btn btn-default" href="@Url.Action("SelectType", "Survey", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
                 <button type="submit" class="btn btn-secondary" id="btnSave" name="Submittype" value="Save">Next</button>
             </div>
@@ -257,7 +259,7 @@
             $("#date_start").flatpickr({
                 dateFormat: "d/m/Y",
                 minDate: "today",
-                maxDate: "31/01/3000",
+                maxDate: "31/01/2200",
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#StartDate").val(dateStr);
                 },
@@ -265,7 +267,7 @@
             $("#date_end").flatpickr({
                 dateFormat: "d/m/Y",
                 minDate: "today",
-                maxDate: "31/01/3000",
+                maxDate: "31/01/2200",
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#EndDate").val(dateStr);
                 },

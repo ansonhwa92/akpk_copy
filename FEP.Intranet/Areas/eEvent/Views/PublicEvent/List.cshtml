@@ -85,7 +85,7 @@
                     {
                         data: 'EventStatusDesc',
                         sortable: false,
-                       
+
                     },
                     {
                         sortable: false,
@@ -94,10 +94,11 @@
                             var action = "";
 
                             action = '<div class="icon-action">'
-                                    +   '<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Delete", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
-                                    + '</div>';
+                                    +'<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '?origin=fromlist" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+                                    +'<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+									+'<a href="@Url.Action("Delete", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+								    +'<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Verify"><i class="la la-edit text-muted"></i></i></a>'
+									+ '</div>';
 
                             return action;
                         }
@@ -189,23 +190,23 @@
 					</div>
 				</div>
 				@*<div>@Html.DisplayNameFor(m => m.Filter.EventCategoryId)</div>
-				<div class="sorting-wrap">
-					<div class="sorting-dropdown">
-						@Html.EditorFor(m => m.Filter.EventCategoryId, new { htmlAttributes = new { @class = "form-control small" } })
+					<div class="sorting-wrap">
+						<div class="sorting-dropdown">
+							@Html.EditorFor(m => m.Filter.EventCategoryId, new { htmlAttributes = new { @class = "form-control small" } })
+						</div>
 					</div>
-				</div>
-				<div>@Html.DisplayNameFor(m => m.Filter.TargetedGroup)</div>
-				<div class="sorting-wrap">
-					<div class="sorting-dropdown">
-						@Html.EditorFor(m => m.Filter.TargetedGroup, new { htmlAttributes = new { @class = "form-control small" } })
+					<div>@Html.DisplayNameFor(m => m.Filter.TargetedGroup)</div>
+					<div class="sorting-wrap">
+						<div class="sorting-dropdown">
+							@Html.EditorFor(m => m.Filter.TargetedGroup, new { htmlAttributes = new { @class = "form-control small" } })
+						</div>
 					</div>
-				</div>
-				<div>@Html.DisplayNameFor(m => m.Filter.EventStatus)</div>
-				<div class="sorting-wrap">
-					<div class="sorting-dropdown">
-						@Html.EditorFor(m => m.Filter.EventStatus, new { htmlAttributes = new { @class = "form-control small" } })
-					</div>
-				</div>*@
+					<div>@Html.DisplayNameFor(m => m.Filter.EventStatus)</div>
+					<div class="sorting-wrap">
+						<div class="sorting-dropdown">
+							@Html.EditorFor(m => m.Filter.EventStatus, new { htmlAttributes = new { @class = "form-control small" } })
+						</div>
+					</div>*@
 				<div>
 					<button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
 				</div>
@@ -252,13 +253,13 @@
 		<thead>
 			<tr>
 				@*<th>
-			<div class="custom-control custom-checkbox">
-				<input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#table01" id="customCheckAll">
-				<label class="custom-control-label" for="customCheckAll">
-					<span class="text-hide">Toggle all</span>
-				</label>
-			</div>
-		</th>*@
+						<div class="custom-control custom-checkbox">
+							<input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#table01" id="customCheckAll">
+							<label class="custom-control-label" for="customCheckAll">
+								<span class="text-hide">Toggle all</span>
+							</label>
+						</div>
+					</th>*@
 				<th>#</th>
 				<th>@Html.DisplayNameFor(model => model.List.EventTitle)</th>
 				<th>@Html.DisplayNameFor(model => model.List.EventObjective)</th>

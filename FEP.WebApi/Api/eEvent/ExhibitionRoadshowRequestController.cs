@@ -224,8 +224,15 @@ namespace FEP.WebApi.Api.eEvent
 			db.EventExhibitionRequest.Add(exroad);
 			db.SaveChanges();
 
-			return Ok(exroad.Id);
+			//save refno exhibition roadshow request
+			var refno = "EVT/" + DateTime.Now.ToString("yyMM");
+			refno += "/" + exroad.Id.ToString("D4");
+			exroad.RefNo = refno;
 
+			db.Entry(exroad).State = EntityState.Modified;
+			db.SaveChanges();
+
+			return Ok(exroad.Id);
 		}
 
 

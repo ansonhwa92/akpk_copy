@@ -138,28 +138,28 @@
 					<div class="row">
 						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.TargetedGroup)
-							@Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", , @disabled = "disabled" })
+							@Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.EventCategoryId)
-							@Html.EditorFor(model => model.EventCategoryName, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @readonly = "readonly" } })
+							@Html.EditorFor(model => model.EventCategoryName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.ExternalExhibitorId)
-							@Html.EditorFor(model => model.ExternalExhibitorName, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @readonly = "readonly" } })
+							@Html.EditorFor(model => model.ExternalExhibitorName, new { htmlAttributes = new { @class = "form-control",  @readonly = "readonly" } })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.SpeakerId)
-							@Html.EditorFor(model => model.SpeakerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @readonly = "readonly" } })
+							@Html.EditorFor(model => model.SpeakerName, new { htmlAttributes = new { @class = "form-control",  @readonly = "readonly" } })
 						</div>
 					</div>
 

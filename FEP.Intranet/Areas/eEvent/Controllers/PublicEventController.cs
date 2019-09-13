@@ -12,7 +12,6 @@ using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
 {
-	//[LogError(Modules.   )]
 	public class PublicEventController : FEPController
 	{
 		private DbEntities db = new DbEntities();
@@ -76,6 +75,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventObjective = i.EventObjective,
 					StartDate = i.StartDate,
 					EndDate = i.EndDate,
+					EventStatus = i.EventStatus,
 					Venue = i.Venue,
 					Fee = i.Fee,
 					ParticipantAllowed = i.ParticipantAllowed,
@@ -88,7 +88,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ApprovalName3 = i.Approval3.User.Name,
 					ApprovalId4 = i.ApprovalId4,
 					ApprovalName4 = i.Approval4.User.Name,
-					EventStatus = i.EventStatus,
 					EventCategoryId = i.EventCategoryId,
 					EventCategoryName = i.EventCategory.CategoryName,
 					Reasons = i.Reasons,
@@ -185,18 +184,25 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						CreatedBy = CurrentUser.UserId,
 						Category = FileCategory.NewFile,
 						EventId = x.Id,
-
 					};
 
 					db.EventFile.Add(eventfile);
 				};
+				db.SaveChanges();
 
+				//save refno public event
+				var refno = "EVP/" + DateTime.Now.ToString("yyMM");
+				refno += "/" + x.Id.ToString("D4");
+				x.RefNo = refno;
+
+				db.Entry(x).State = EntityState.Modified;
 				db.SaveChanges();
 
 				//LogActivity();
 				TempData["SuccessMessage"] = "Public Event successfully created.";
 				return RedirectToAction("List");
 			}
+
 
 			var getcategory = db.EventCategory.Where(c => c.Display).Select(i => new
 			{
@@ -457,6 +463,22 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			//LogActivity();
 			TempData["SuccessMessage"] = "Public Event successfully deleted.";
+			return RedirectToAction("List");
+		}
+
+		public ActionResult SubmitVerificationPublicEvent(EditPublicEventModel model)
+		{
+			PublicEvent eEvent = new PublicEvent() { Id = model.Id };
+			eEvent.EventStatus = EventStatus.PendingforVerification;
+
+			db.PublicEvent.Attach(eEvent);
+			db.Entry(eEvent).Property(m => m.Display).IsModified = true;
+
+			db.Configuration.ValidateOnSaveEnabled = false;
+			db.SaveChanges();
+
+			//LogActivity();
+			TempData["SuccessMessage"] = "Public Event successfully submitted for verification.";
 			return RedirectToAction("List");
 		}
 	}

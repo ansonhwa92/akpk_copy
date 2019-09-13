@@ -5,6 +5,22 @@
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
+
+@section ContentScript {
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#DateAssigned").flatpickr({
+				dateFormat: "d-m-Y",
+				maxDate: "31-01-3000",
+			});
+			$("#DateOfBirth").flatpickr({
+				dateFormat: "d-m-Y",
+				maxDate: "31-01-3000",
+			});
+		});
+	</script>
+}
+
 @section Nav {
 
 	<div class="title_header">
@@ -98,24 +114,23 @@
 					<div class="row">
 						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.DateAssigned, htmlAttributes: new { @class = "control-label col-lg-12" })
-							@Html.EditorFor(model => model.DateAssigned, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Assigned", @readonly = "readonly" } })
+							@Html.EditorFor(model => model.DateAssigned, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Assigned", @disabled = "disabled" } })
 						</div>
 
 						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-lg-12" })
-							@Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date of Birth", @readonly = "readonly" } })
+							@Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date of Birth", @disabled = "disabled" } })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.AddressStreet1)
-							@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+							@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 1", @disabled = "disabled" } })
 						</div>
 
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.AddressStreet2)
-							@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+							@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 2", @disabled = "disabled" } })
 						</div>
 					</div>
 

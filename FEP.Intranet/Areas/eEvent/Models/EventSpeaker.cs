@@ -20,6 +20,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Required(ErrorMessage = "Please Insert Date Assigned")]
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "SpDateAssigned", ResourceType = typeof(Language.Event))]
 		public DateTime? DateAssigned { get; set; }
 
@@ -40,6 +41,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "SpDateOfBirth", ResourceType = typeof(Language.Event))]
 		public DateTime? DateOfBirth { get; set; }
 
@@ -98,6 +100,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Required(ErrorMessage = "Please Insert Date Assigned")]
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "SpDateAssigned", ResourceType = typeof(Language.Event))]
 		public DateTime? DateAssigned { get; set; }
 
@@ -118,6 +121,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "SpDateOfBirth", ResourceType = typeof(Language.Event))]
 		public DateTime? DateOfBirth { get; set; }
 
@@ -151,9 +155,13 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		public IEnumerable<SelectListItem> UserIds { get; set; }
 
+
+
+		[Required]
 		[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
 		public HttpPostedFileBase SpeakerPicture { get; set; }
 
+		[Required]
 		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
 		public HttpPostedFileBase SpeakerAttachment { get; set; }
 	}
@@ -172,6 +180,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Required(ErrorMessage = "Please Insert Date Assigned")]
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "SpDateAssigned", ResourceType = typeof(Language.Event))]
 		public DateTime? DateAssigned { get; set; }
 
@@ -192,6 +201,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "SpDateOfBirth", ResourceType = typeof(Language.Event))]
 		public DateTime? DateOfBirth { get; set; }
 
@@ -225,12 +235,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		public IEnumerable<SelectListItem> UserIds { get; set; }
 
+		[Required]
 		[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
 		public HttpPostedFileBase SpeakerPicture { get; set; }
 
 		[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
 		public string SpeakerPictureName { get; set; }
 
+		[Required]
 		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
 		public HttpPostedFileBase SpeakerAttachment { get; set; }
 
@@ -251,6 +263,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Required(ErrorMessage = "Please Insert Date Assigned")]
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "SpDateAssigned", ResourceType = typeof(Language.Event))]
 		public DateTime? DateAssigned { get; set; }
 
@@ -271,6 +284,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "SpDateOfBirth", ResourceType = typeof(Language.Event))]
 		public DateTime? DateOfBirth { get; set; }
 

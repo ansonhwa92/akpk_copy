@@ -628,7 +628,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     z-index: 1;
 }
 
-[dir=ltr] .box-contain a:hover ~ .card {
+[dir=ltr] .box-contain a:hover~.card {
     transform: translateY(-5px) translateZ(0);
     box-shadow: 0px 0px 20px rgba(171, 190, 209, 0.6);
     border: 2px solid #0067e0;
@@ -704,4 +704,67 @@ body.mobile-nav-active #mobile-nav-toggle {
     border: 1px solid #c0ccdb;
     border-bottom-left-radius: .25rem;
     border-bottom-right-radius: .25rem;
+}
+
+/*--------------------------------------------------------------
+# Exhibition Roadshow
+--------------------------------------------------------------*/
+.total {
+    background: #f1f6fb;
+    padding: 0 1rem;
+}
+
+.total-points {
+    border-left: 1px solid #e3eaef;
+    padding: 1.5rem 1rem;
+}
+
+.btn-padding {
+    padding: 0 .75rem .75rem;
+}
+
+.border-green {
+    border: 1px solid #3bdd53;
+}
+
+.border-red {
+    border: 1px solid #fa6868;
+}
+
+.total .status {
+    font-weight: 700;
+}
+
+.border-green .status::before {
+    content: "\f17d";
+    font-family: "LineAwesome";
+    position: relative;
+    display: inline-block;
+    color: #3bdd53;
+    font-size: 21px;
+    margin-right: .3rem;
+    top: 2px;
+    font-weight: normal;
+}
+
+.border-red .status::before {
+    content: "\f344";
+    font-family: "LineAwesome";
+    position: relative;
+    display: inline-block;
+    color: #fa6868;
+    font-size: 21px;
+    margin-right: .3rem;
+    top: 2px;
+    font-weight: normal;
+}
+
+[dir="ltr"] .showcontent .lineItem .form-control {
+    padding: .5rem 0;
+    border: 0;
+}
+
+[dir="ltr"] .showcontent .addcost .lineItem .form-control { 
+    padding: .5rem .75rem;
+    border: 1px solid #c0ccdb;
 }

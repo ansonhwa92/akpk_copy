@@ -39,8 +39,11 @@ namespace FEP.WebApiModel
 		[DataType(DataType.EmailAddress)]
 		[Display(Name = "Email")]
 		public string Email { get; set; }
+
+		[Display(Name = "Start Date")]
 		public DateTime? DateStart { get; set; }
 
+		[Display(Name = "End Date")]
 		public DateTime? DateEnd { get; set; }
 		public DateTime? Time { get; set; }
 		public string Location { get; set; }

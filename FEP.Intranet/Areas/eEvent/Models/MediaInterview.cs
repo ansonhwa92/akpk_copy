@@ -20,6 +20,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public MediaType? MediaType { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Contact Person")]
+		[DataType(DataType.PhoneNumber)]
 		[Display(Name = "Contact Person")]
 		public string ContactPerson { get; set; }
 

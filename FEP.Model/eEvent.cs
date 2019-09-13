@@ -13,6 +13,7 @@ namespace FEP.Model
 	{
 		[Key]
 		public int Id { get; set; }
+		public string RefNo { get; set; }
 		public string EventTitle { get; set; }
 		public string EventObjective { get; set; }
 		public DateTime? StartDate { get; set; }
@@ -238,6 +239,7 @@ namespace FEP.Model
 	{
 		[Key]
 		public int Id { get; set; }
+		public string RefNo { get; set; }
 		public string MediaName { get; set; }
 		public MediaType? MediaType { get; set; }
 		public string ContactPerson { get; set; }
@@ -404,6 +406,7 @@ namespace FEP.Model
 	{
 		[Key]
 		public int Id { get; set; }
+		public string RefNo { get; set; }
 		public string EventName { get; set; }
 		public string Organiser { get; set; }
 		public string Location { get; set; }

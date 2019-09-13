@@ -42,19 +42,25 @@ namespace FEP.Model
 	public enum EventStatus
 	{
 		[Display(Name = "New")]
-		New,
+		New, //If Saved Public Event
+
 		[Display(Name = "Pending")]
-		PendingToVerified,
+		PendingforVerification, //If Admin Public Event Submit
+
 		[Display(Name = "Pending")]
-		Approval,
+		VerifiedbyFirstApprover, //If Approver 1 Submit
+
+		[Display(Name = "Pending")]
+		VerifiedbySecondApprover, //If Approver 1 Submit
+
 		[Display(Name = "Approved")]
-		Approved, //==Published
-		[Display(Name = "Modify Request")]
-		RequestToModify,
-		[Display(Name = "Cancel Request")]
-		RequestToCancel,
+		Approved, //If Approver 3 Approved
+
+		[Display(Name = "Rejected")]
+		RejectNeedToEdit, //If Approver 3 Rejected
+
 		[Display(Name = "Cancelled")]
-		Cancelled
+		Cancelled //If Admin Cancel Public Event 
 	}
 
 	public enum Ticket

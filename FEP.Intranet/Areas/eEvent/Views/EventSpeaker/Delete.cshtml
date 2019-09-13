@@ -116,12 +116,13 @@
 					<div class="row">
 						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.AddressStreet1)
-							@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+							@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 1" , @disabled = "disabled"} })
+							@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
 						</div>
 
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.AddressStreet2)
-							@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+							@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 2" , @disabled = "disabled"} })
+							@Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
 						</div>
 					</div>
 

@@ -147,6 +147,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				db.EventMediaInterviewRequest.Add(media);
 				db.SaveChanges();
 
+				//save refno public event
+				var refno = "EVT/" + DateTime.Now.ToString("yyMM");
+				refno += "/" + media.Id.ToString("D4");
+				media.RefNo = refno;
+
+				db.Entry(media).State = EntityState.Modified;
+				db.SaveChanges();
+
 				//LogActivity();
 				TempData["SuccessMessage"] = "Media Interview Request successfully created.";
 				return RedirectToAction("List");

@@ -22,6 +22,7 @@ namespace FEP.WebApiModel.eEvent
 
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "SpDateAssigned", ResourceType = typeof(Language.Event))]
 		public DateTime? DateAssigned { get; set; }
 
@@ -41,6 +42,7 @@ namespace FEP.WebApiModel.eEvent
 
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "SpDateOfBirth", ResourceType = typeof(Language.Event))]
 		public DateTime? DateOfBirth { get; set; }
 
@@ -129,6 +131,7 @@ namespace FEP.WebApiModel.eEvent
 		[Required(ErrorMessage = "Please Insert Date Assigned")]
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "SpDateAssigned", ResourceType = typeof(Language.Event))]
 		public DateTime? DateAssigned { get; set; }
 
@@ -149,6 +152,7 @@ namespace FEP.WebApiModel.eEvent
 
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "SpDateOfBirth", ResourceType = typeof(Language.Event))]
 		public DateTime? DateOfBirth { get; set; }
 

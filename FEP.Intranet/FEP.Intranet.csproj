@@ -631,10 +631,6 @@
     <Content Include="Areas\eEvent\Views\EventExternalExhibitor\Create.cshtml" />
     <Content Include="Areas\eEvent\Views\EventExternalExhibitor\Edit.cshtml" />
     <Content Include="Areas\eEvent\Views\EventExternalExhibitor\Delete.cshtml" />
-    <Content Include="Areas\eEvent\Views\EventCategory\Details.cshtml" />
-    <Content Include="Areas\eEvent\Views\EventCategory\Create.cshtml" />
-    <Content Include="Areas\eEvent\Views\EventCategory\Edit.cshtml" />
-    <Content Include="Areas\eEvent\Views\EventCategory\Delete.cshtml" />
     <Content Include="Areas\eEvent\Views\EventCategory\List.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Create_SelectCategory.cshtml" />
     <Content Include="Areas\Administrator\Views\Individual\List.cshtml" />
@@ -655,7 +651,6 @@
     <Content Include="Areas\Administrator\Views\Company\ResetPassword.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Edit.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Delete.cshtml" />
-    <Content Include="Areas\RnP\Views\Publication\Index_datatable.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\List.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\Details.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\Deactivate.cshtml" />
@@ -681,7 +676,6 @@
     <Content Include="Areas\eLearning\Views\CourseCategory\_Create.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseCategory\_Delete.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseCategory\_Edit.cshtml" />
-    <Content Include="Areas\eEvent\Views\EventCategory\List.cshtml" />
     <Content Include="Areas\eEvent\Views\EventCategory\_Create.cshtml" />
     <Content Include="Areas\eEvent\Views\EventCategory\_Delete.cshtml" />
     <Content Include="Areas\eEvent\Views\EventCategory\_Edit.cshtml" />
@@ -1136,7 +1130,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administrator\Models\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
-    <Folder Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Areas\eLearning\Models\" />
     <Folder Include="Areas\eLearning\Views\Shared\" />

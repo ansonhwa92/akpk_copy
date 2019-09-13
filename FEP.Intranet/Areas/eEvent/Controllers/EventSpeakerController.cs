@@ -69,6 +69,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				var modelapi = new CreateEventSpeakerModel()
 				{
+					//webapi = intranet
 					UserId = model.UserId,
 					UserName = model.UserName,
 					SpeakerType = model.SpeakerType,

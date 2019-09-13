@@ -43,10 +43,9 @@
 	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 	@Html.HiddenFor(model => model.Id)
 	@Html.HiddenFor(model => model.origin)
+	@Html.HiddenFor(model => model.EventStatus)
 
 	<div class="row">
-
-
 		<div class="col-xl-3 col-md-3 col-sm-4 my-2">
 			<div class="sidebar-left">
 				<!-- Steps -->

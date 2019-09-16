@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace FEP.Model
 {
-    [Table("EmailTemplate")]
-    public class EmailTemplate
+    [Table("NotificationTemplate")]
+    public class NotificationTemplate
     {
         [Key]
         public int Id { get; set; }
@@ -23,6 +23,8 @@ namespace FEP.Model
         public string TemplateRefNo { get; set; }
 
         public string TemplateMessage { get; set; }
+        public bool enableEmail { get; set; }
+
 
         public string SMSMessage { get; set; }
         public bool enableSMSMessage { get; set; }
@@ -48,30 +50,49 @@ namespace FEP.Model
         [Key]
         public int Id { get; set; }
         public NotificationType NotificationType { get; set; }
-        public TemplateParameterType TemplateParameterType { get; set; }
+        public string TemplateParameterType { get; set; }
     }
 
-    
-    
+    [Table("ParameterGroup")]
+    public class ParameterGroup
+    {
+        [Key]
+        public int Id { get; set; }
+        public SLAEventType SLAEventType { get; set; }
+        public TemplateParameterType TemplateParameterType { get; set; }
+    }    
     
 
     public enum TemplateParameterType
     {
-        //1-100 for system
+        //1-20 for System
         [Display(Name = "Friendly Site Name")]
         FriendlySiteName = 1,
-
-        //101-200 for User
         [Display(Name = "User Full Name")]
-        UserFullName = 101,
+        UserFullName = 2,
         [Display(Name = "User's Role")]
-        UserRole = 102,
+        UserRole = 3,
 
-        //201-300 for eLearning
-        [Display(Name = "Application Number")]
-        ApplicationNo = 201,
-        [Display(Name = "Course Name")]
-        CourseName = 202,
+        //21-40 for Verify/Approval Public Event
+        [Display(Name = "Event Name")]
+        EventName = 21,
+        [Display(Name = "Event Location")]
+        EventLocation = 22,
+        [Display(Name = "Event Code")]
+        EventCode = 23,
+        [Display(Name = "Event Approval")]
+        EventApproval = 24,
+
+        //41-60 for Payment
+        [Display(Name = "GL Holder")]
+        GLHolderName = 41,
+        [Display(Name = "Payment Ref No")]
+        PaymentRefNo = 42,
+        [Display(Name = "Payment Status")]
+        PaymentStatus = 43,
+
+
+
     }
 
 

@@ -96,6 +96,42 @@
     <Compile Include="Migrations\201909081341275_tajul9.Designer.cs">
       <DependentUpon>201909081341275_tajul9.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909090917576_tajul10.cs" />
+    <Compile Include="Migrations\201909090917576_tajul10.Designer.cs">
+      <DependentUpon>201909090917576_tajul10.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909090919150_tajul11.cs" />
+    <Compile Include="Migrations\201909090919150_tajul11.Designer.cs">
+      <DependentUpon>201909090919150_tajul11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909111421064_tajul12.cs" />
+    <Compile Include="Migrations\201909111421064_tajul12.Designer.cs">
+      <DependentUpon>201909111421064_tajul12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909111456435_tajul13.cs" />
+    <Compile Include="Migrations\201909111456435_tajul13.Designer.cs">
+      <DependentUpon>201909111456435_tajul13.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909111457170_tajul14.cs" />
+    <Compile Include="Migrations\201909111457170_tajul14.Designer.cs">
+      <DependentUpon>201909111457170_tajul14.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909111458482_tajul15.cs" />
+    <Compile Include="Migrations\201909111458482_tajul15.Designer.cs">
+      <DependentUpon>201909111458482_tajul15.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909141508588_tajul16.cs" />
+    <Compile Include="Migrations\201909141508588_tajul16.Designer.cs">
+      <DependentUpon>201909141508588_tajul16.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909160557035_tajul17.cs" />
+    <Compile Include="Migrations\201909160557035_tajul17.Designer.cs">
+      <DependentUpon>201909160557035_tajul17.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909160628522_tajul18.cs" />
+    <Compile Include="Migrations\201909160628522_tajul18.Designer.cs">
+      <DependentUpon>201909160628522_tajul18.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
@@ -147,6 +183,33 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909081341275_tajul9.resx">
       <DependentUpon>201909081341275_tajul9.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909090917576_tajul10.resx">
+      <DependentUpon>201909090917576_tajul10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909090919150_tajul11.resx">
+      <DependentUpon>201909090919150_tajul11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909111421064_tajul12.resx">
+      <DependentUpon>201909111421064_tajul12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909111456435_tajul13.resx">
+      <DependentUpon>201909111456435_tajul13.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909111457170_tajul14.resx">
+      <DependentUpon>201909111457170_tajul14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909111458482_tajul15.resx">
+      <DependentUpon>201909111458482_tajul15.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909141508588_tajul16.resx">
+      <DependentUpon>201909141508588_tajul16.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909160557035_tajul17.resx">
+      <DependentUpon>201909160557035_tajul17.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909160628522_tajul18.resx">
+      <DependentUpon>201909160628522_tajul18.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

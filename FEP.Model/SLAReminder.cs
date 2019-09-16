@@ -21,19 +21,43 @@ namespace FEP.Model
         public SLADurationType? SLADurationType { get; set; }
     }
 
+    [Table("SLAReminderStatus")]
     public class SLAReminderStatus
     {
         [Key]
         public int Id { get; set; }
-        public int NotificationId { get; set; }
         public NotificationType NotificationType { get; set; }
         public NotificationReminderStatusType NotificationReminderStatusType { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime? closeDate { get; set; }
+    }
+
+    [Table("BulkNotification")]
+    public class BulkNotification
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public NotificationMedium NotificationMedium { get; set; }
+
+        public int SLAReminderStatusId { get; set; }
+        public int NotificationId { get; set; }
+
+ 
+    }
+
+    public enum NotificationMedium
+    {
+        Email,
+        SMS,
+        Web
     }
 
     public enum NotificationReminderStatusType
     {
+        [Display(Name = "Open")]
         Open,
-        Suspended,
+        [Display(Name = "Closed")]
         Closed
     }
 
@@ -47,6 +71,8 @@ namespace FEP.Model
 
     public enum SLAEventType
     {
+        [Display(Name = "System")]
+        System,
         [Display(Name = "Verify Public Event")]
         VerifyPublicEvent,
         [Display(Name = "Approve Public Event")]

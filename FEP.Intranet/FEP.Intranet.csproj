@@ -175,6 +175,7 @@
     <Compile Include="Areas\SLAReminder\Controllers\SLARemindersController.cs" />
     <Compile Include="Areas\SLAReminder\SLAReminderAreaRegistration.cs" />
     <Compile Include="Areas\Template\Controllers\EmailTemplatesController.cs" />
+    <Compile Include="Areas\Template\Method\TemplateFunction.cs" />
     <Compile Include="Areas\Template\Models\EmailTemplate.cs" />
     <Compile Include="Areas\Template\TemplateAreaRegistration.cs" />
     <Compile Include="Controllers\AuthController.cs" />
@@ -707,6 +708,7 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />

@@ -1,4 +1,4 @@
-﻿@model FEP.WebApiModel.Template.ListEmailTemplateModel
+﻿@model FEP.WebApiModel.Template.ListNotificationTemplateModel
 @{
     ViewBag.Title = "List";
     Layout = "~/Views/Shared/_Layout1.cshtml";
@@ -9,7 +9,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-           
+           $('.js-example-basic-single').select2();
             var table = $('.tabledata').DataTable({
                 serverSide: true,
                 processing: true,
@@ -79,9 +79,17 @@
                 language: {
                     processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
                     emptyTable: "No Record Found",
-                    info: "Showing _START_ - _END_ of _TOTAL_ user"
+                    info: "Showing _START_ - _END_ of _TOTAL_ template",
+                    lengthMenu: '<div class="d-flex align-items-center"> Display <select class="form-control ml-1 mr-1" >'+
+                        '<option value="10">10</option>'+
+                        '<option value="20">20</option>' +
+                        '<option value="30">30</option>' +
+                        '<option value="40">40</option>' +
+                        '<option value="50">50</option>' +
+                        '<option value="-1">All</option>'+
+                        '</select> records </div>'
                 },
-                dom: 'rtip'
+                dom: 'lrtip'
             });
 
             $('#lengthChange').val(table.page.len());
@@ -100,10 +108,9 @@
 
             table.on('order.dt search.dt', function () {
                 var info = table.page.info();
-                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' email templates ');
+                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' templates ');
                 $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
             }).draw();
-
 
         });
 
@@ -174,6 +181,9 @@
             <form>
                 <div class="form-container form-container-w100">
                     <h4 class="color-darkblue mb-4 mt-2">Email Template List</h4>
+                    @*<div>
+                        <a href="@Url.Action("Create", "EmailTemplates", new { area = "Template" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a>
+                    </div>*@
                     <div class="table-responsive">
                         <table class="table tableStyle1 tabledata">
                             <thead>
@@ -184,38 +194,38 @@
                                 </tr>
                             </thead>
                             @*<tbody>
-                                <tr>
-                                    <td class="font-weight-bolder"><a href="edit-email-template.html" class="text-dark">Ask Listing Question</a></td>
-                                    <td>Ask Buyer a question</td>
-                                    <td>
-                                        <div class="icon-action">
-                                            <a href="edit-email-template.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="la la-edit text-muted"></i></a>
+                    <tr>
+                        <td class="font-weight-bolder"><a href="edit-email-template.html" class="text-dark">Ask Listing Question</a></td>
+                        <td>Ask Buyer a question</td>
+                        <td>
+                            <div class="icon-action">
+                                <a href="edit-email-template.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="la la-edit text-muted"></i></a>
 
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-weight-bolder"><a href="edit-email-template.html" class="text-dark">Ask Listing Question</a></td>
-                                    <td>Ask Seller a listing question</td>
-                                    <td>
-                                        <div class="icon-action">
-                                            <a href="edit-email-template.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="la la-edit text-muted"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bolder"><a href="edit-email-template.html" class="text-dark">Ask Listing Question</a></td>
+                        <td>Ask Seller a listing question</td>
+                        <td>
+                            <div class="icon-action">
+                                <a href="edit-email-template.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="la la-edit text-muted"></i></a>
 
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-weight-bolder"><a href="edit-email-template.html" class="text-dark">Bid Confirmation</a></td>
-                                    <td>Notify bidder they placed a bid</td>
-                                    <td>
-                                        <div class="icon-action">
-                                            <a href="edit-email-template.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="la la-edit text-muted"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bolder"><a href="edit-email-template.html" class="text-dark">Bid Confirmation</a></td>
+                        <td>Notify bidder they placed a bid</td>
+                        <td>
+                            <div class="icon-action">
+                                <a href="edit-email-template.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="la la-edit text-muted"></i></a>
 
-                                        </div>
-                                    </td>
-                                </tr>
-                                
-                            </tbody>*@
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>*@
                         </table>
                     </div>
                 </div>

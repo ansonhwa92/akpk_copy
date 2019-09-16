@@ -81,21 +81,70 @@ namespace FEP.WebApiModel.SLAReminder
 
     public class SLAReminderStatusModel
     {
-        [Display(Name = "Notification ID")]
-        public int NotificationId { get; set; }
+        public int Id { get; set; }
         [Display(Name = "Notification Type")]
         public NotificationType NotificationType { get; set; }
         [Display(Name = "Notification Status")]
         public NotificationReminderStatusType NotificationReminderStatusType { get; set; }
+
+        [Display(Name = "Start Date")]
+        public DateTime StartDate { get; set; }
+        [Display(Name = "Closed Date")]
+        public DateTime? closeDate { get; set; }
     }
 
     public class CreateSLAReminderStatusModel : SLAReminderStatusModel
     {
-        CreateSLAReminderStatusModel() { }
+        public CreateSLAReminderStatusModel() { }
     }
     public class EditSLAReminderStatusModel 
     {
         public int NotificationId { get; set; }
         public NotificationReminderStatusType NotificationReminderStatusType { get; set; }
+    }
+
+    public class BulkNotificationModel
+    {
+
+        [Display(Name = "SLA Reminder Status")]
+        public int SLAReminderStatusId { get; set; }
+
+        [Display(Name = "Notification Medium")]
+        public NotificationMedium NotificationMedium { get; set; }
+
+        [Display(Name = "Notification ID")]
+        public int NotificationId { get; set; }
+    }
+    public class CreateBulkNotificationModel : BulkNotificationModel
+    {
+        public CreateBulkNotificationModel() { }
+    }
+
+    public class CreateAutoReminder
+    {
+        public NotificationType NotificationType { get; set; }
+        public ParameterListToSend ParameterListToSend { get; set; }
+        public DateTime StartNotificationDate { get; set; }
+    }
+
+    public class ParameterListToSend
+    {
+        //1-20 for System
+        public string FriendlySiteName { get; set; }
+        public string UserFullName { get; set; }
+        public string UserRole { get; set; }
+
+        //21-40 for Verify/Approval Public Event
+        public string EventName { get; set; }
+        public string EventLocation { get; set; }
+        public string EventCode { get; set; }
+        public string EventApproval { get; set; }
+
+        //41-60 for Payment
+        public string GLHolderName { get; set; }
+        public string PaymentRefNo { get; set; }
+        public string PaymentStatus { get; set; }
+
+
     }
 }

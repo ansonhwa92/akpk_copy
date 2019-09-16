@@ -8,4 +8,6 @@ namespace FEP.Intranet.Areas.Template.Models
     public class EmailTemplate
     {
     }
+
+    
 }

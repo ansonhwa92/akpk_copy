@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Web.Http;
 
 namespace FEP.WebApi.Api.Template
@@ -33,12 +34,14 @@ namespace FEP.WebApi.Api.Template
                                 .First()
                                 .GetCustomAttributes(typeof(DisplayAttribute), false)[0]).Name;
         }
+
+        
         // GET: api/EmailTemplate
         [Route("api/Template/Email/GetAll")]
         [HttpPost]
-        public IHttpActionResult Post(FilterEmailTemplateModel request)
+        public IHttpActionResult Post(FilterNotificationTemplateModel request)
         {
-            var query = db.EmailTemplates.Where(t => t.Display);
+            var query = db.NotificationTemplates.Where(t => t.Display);
             var totalCount = query.Count();
 
             //advanceSearch
@@ -124,7 +127,7 @@ namespace FEP.WebApi.Api.Template
             }
 
             var emailTemplates = query.Skip(request.start).Take(request.length)
-                .Select(s => new EmailTemplateModel
+                .Select(s => new NotificationTemplateModel
                 {
                     Id = s.Id,
                     NotificationType = s.NotificationType,
@@ -159,7 +162,7 @@ namespace FEP.WebApi.Api.Template
         // GET: api/EmailTemplate/5
         public IHttpActionResult Get(int id)
         {
-            var emailTemplate = db.EmailTemplates.Where(t => t.Display && t.Id == id).Select(s => new EmailTemplateModel
+            var NotificationTemplate = db.NotificationTemplates.Where(t => t.Display && t.Id == id).Select(s => new NotificationTemplateModel
             {
                 Id = s.Id,
                 NotificationType = s.NotificationType,
@@ -167,6 +170,7 @@ namespace FEP.WebApi.Api.Template
                 TemplateSubject = s.TemplateSubject,
                 TemplateRefNo = s.TemplateRefNo,
                 TemplateMessage = s.TemplateMessage,
+                enableEmail = s.enableEmail,
                 CreatedDate = s.CreatedDate,
                 LastModified = s.LastModified,
                 CreatedBy = s.CreatedBy,
@@ -179,17 +183,17 @@ namespace FEP.WebApi.Api.Template
 
             }).FirstOrDefault();
 
-            if(emailTemplate == null)
+            if(NotificationTemplate == null)
             {
                 return NotFound();
             }
 
-            return Ok(emailTemplate);
+            return Ok(NotificationTemplate);
         }
 
         [HttpPost]
         // POST: api/EmailTemplate
-        public IHttpActionResult Post(CreateEmailTemplateModel model)
+        public IHttpActionResult Post(CreateNotificationTemplateModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -197,7 +201,7 @@ namespace FEP.WebApi.Api.Template
             }
 
             var timeNow = DateTime.Now;
-            var EmailTemplate = new EmailTemplate
+            var NotificationTemplate = new NotificationTemplate
             {
                 NotificationType = model.NotificationType,
                 TemplateName = model.TemplateName,
@@ -209,21 +213,69 @@ namespace FEP.WebApi.Api.Template
                 CreatedBy = model.CreatedBy,
                 Display = true,
 
+                enableEmail = model.enableEmail,
                 enableSMSMessage = model.enableSMSMessage,
                 SMSMessage = model.SMSMessage,
                 enableWebMessage = model.enableWebMessage,
                 WebMessage = model.WebMessage
             };
 
-            db.EmailTemplates.Add(EmailTemplate);
+            db.NotificationTemplates.Add(NotificationTemplate);
+
+            //getAllParam first dan delete dulu
+            var listParam = db.TemplateParameters.Where(p => p.NotificationType == model.NotificationType).ToList();
+            db.TemplateParameters.RemoveRange(listParam);
+
+            //lepas tu add yg baru
+            foreach (var item in model.ParameterList) {
+
+                TemplateParameters param = new TemplateParameters
+                {
+                    NotificationType = model.NotificationType,
+                    TemplateParameterType = item
+                };
+                db.TemplateParameters.Add(param);
+
+            }
+
+
             db.SaveChanges();
 
-            return Ok(EmailTemplate);
+            return Ok(NotificationTemplate);
         }
+
+        [Route("api/Template/Email/GetParameterToSend")]
+        [HttpGet]
+        public IHttpActionResult GetParameterToSend(int id)
+        //public List<ParameterToSend> prepareParameter(NotificationType NotificationType)
+        {
+            SLAEventType group = db.SLAReminder.Where(s => (int)s.NotificationType == id).FirstOrDefault().SLAEventType;
+            if (group == null)
+            {
+                return NotFound();
+            }
+            List<ParameterGroup> getParamList = db.ParameterGroup.Where(g => g.SLAEventType == group).ToList();
+
+            List<ParameterToSend> ParamToSend = new List<ParameterToSend>();
+            foreach(var item in getParamList)
+            {
+                ParameterToSend obj = new ParameterToSend
+                {
+                    TemplateParameterType = item.TemplateParameterType,
+                    ParamTypeText = item.TemplateParameterType.ToString(),
+                    Value = ""
+                };
+                ParamToSend.Add(obj);
+            }
+
+            return Ok(ParamToSend);
+        }
+
+        
 
         [HttpPut]
         // PUT: api/EmailTemplate/5
-        public IHttpActionResult Put(int id, EditEmailTemplateModel model)
+        public IHttpActionResult Put(int id, EditNotificationTemplateModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -235,12 +287,13 @@ namespace FEP.WebApi.Api.Template
                 return BadRequest();
             }
 
-            EmailTemplate template = db.EmailTemplates.Where(t => t.Id == id).FirstOrDefault();
+            NotificationTemplate template = db.NotificationTemplates.Where(t => t.Id == id).FirstOrDefault();
             template.NotificationType = model.NotificationType;
             template.TemplateName = model.TemplateName;
             template.TemplateMessage = model.TemplateMessage;
             template.TemplateSubject = model.TemplateSubject;
             template.TemplateRefNo = model.TemplateRefNo;
+            template.enableEmail = model.enableEmail;
             template.enableSMSMessage = model.enableSMSMessage;
             template.SMSMessage = model.SMSMessage;
             template.enableWebMessage = model.enableWebMessage;
@@ -270,14 +323,14 @@ namespace FEP.WebApi.Api.Template
         // DELETE: api/EmailTemplate/5
         public IHttpActionResult Delete(int id)
         {
-            EmailTemplate tmp = db.EmailTemplates.Find(id);
+            NotificationTemplate tmp = db.NotificationTemplates.Find(id);
             if(tmp == null)
             {
                 return BadRequest();
             }
 
             tmp.Display = false;
-            db.EmailTemplates.Attach(tmp);
+            db.NotificationTemplates.Attach(tmp);
             db.Entry(tmp).Property(x => x.Display).IsModified = true;
             db.Configuration.ValidateOnSaveEnabled = true;
             db.SaveChanges();

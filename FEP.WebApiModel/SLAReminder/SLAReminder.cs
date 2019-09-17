@@ -125,6 +125,8 @@ namespace FEP.WebApiModel.SLAReminder
         public NotificationType NotificationType { get; set; }
         public ParameterListToSend ParameterListToSend { get; set; }
         public DateTime StartNotificationDate { get; set; }
+
+        public List<int> ReceiverId { get; set; }
     }
 
     public class ParameterListToSend

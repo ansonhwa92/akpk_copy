@@ -15,15 +15,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using FEP.Intranet.Areas.Template.Models;
 using FEP.WebApiModel.SLAReminder;
-using FEP.Intranet.Areas.Template.Method;
 
 namespace FEP.Intranet.Areas.Template.Controllers
 {
     public class EmailTemplatesController : FEPController
     {
-        private DbEntities db = new DbEntities();
-
-        TemplateFunction TemplateFunction = new TemplateFunction();
 
         // GET: Template/EmailTemplates
         public ActionResult Index()
@@ -162,15 +158,14 @@ namespace FEP.Intranet.Areas.Template.Controllers
                 {
                     NotificationType = NotificationType.Verify_Public_Event_Creation,
                     ParameterListToSend = paramToSend,
-                    StartNotificationDate = DateTime.Now
-
+                    StartNotificationDate = DateTime.Now,
+                    ReceiverId = new List<int> { 1 }
                 };
 
                 var response = await WepApiMethod.SendApiAsync<string>
                     (HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
 
-                //TemplateFunction.GenerateAutoNotificationReminder(response.Data.NotificationType, paramToSend, DateTime.Now);
-
+                
                 if (response.isSuccess)
                 {
                     LogActivity("Create Email Template");
@@ -192,8 +187,6 @@ namespace FEP.Intranet.Areas.Template.Controllers
             }
 
         }
-
-       
 
         //proses parameter function
         public List<string> ParameterListing(string message)

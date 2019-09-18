@@ -31,7 +31,7 @@
     </div>
 }
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myform" }))
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
@@ -52,7 +52,7 @@
                         <li class="step-item active">
                             <a href="" class="step-link">
                                 <span class="step-number">2</span>
-                                <span class="step-title">Fill In Publication Details</span>
+                                <span class="step-title">Edit Publication Details</span>
                             </a>
                         </li>
                         <li class="step-item disabled">
@@ -258,8 +258,10 @@
             var dbyear = iyear.toString();
 
             function populateYears() {
+                var currentdate = new Date();
+                var currentyear = currentdate.getFullYear();
                 var startyear = 1900;
-                var endyear = 2200;
+                var endyear = currentyear;
                 var selected = '';
                 for (var i = startyear; i <= endyear; i++) {
                     selected = '';
@@ -392,18 +394,6 @@
 
             populateYears();
 
-            /*
-            $('#btnSave').click(function (event) {
-                $('#HiddenPubStatus').val("save")
-                $("#myform").submit();
-                event.stopPropagation();
-            });
-            $('#btnSubmit').click(function (event) {
-                $('#HiddenPubStatus').val("submit")
-                $("#myform").submit();
-                event.stopPropagation();
-            });
-            */
         });
     </script>
 }

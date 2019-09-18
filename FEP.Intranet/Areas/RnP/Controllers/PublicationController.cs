@@ -38,6 +38,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         */
 
         // GET: RnP/Publication
+        [HasAccess(UserAccess.RnPPublicationView)]
         public ActionResult Index()
         {
             return View();
@@ -46,6 +47,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Show select publication category form
         // After category selection, user automatically redirected to creation page
         // GET: RnP/Publication/SelectCategory
+        [HasAccess(UserAccess.RnPPublicationEdit)]
         public ActionResult SelectCategory()
         {
             ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name");
@@ -55,6 +57,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Show create form (blank form so no api call needed)
         // GET: RnP/Publication/Create
+        [HasAccess(UserAccess.RnPPublicationEdit)]
         public ActionResult Create(int? catid)
         {
             if (catid != null)
@@ -146,6 +149,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Show edit form
         // GET: RnP/Publication/Edit/5
+        [HasAccess(UserAccess.RnPPublicationEdit)]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -268,6 +272,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Show review form
         // User is redirected here after saving as draft at creation or editing page
         // GET: RnP/Publication/Review/5
+        [HasAccess(UserAccess.RnPPublicationEdit)]
         public async Task<ActionResult> Review(int? id)
         {
             if (id == null)
@@ -369,6 +374,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Process submission from details page
         // Called for direct submission via id
         // GET: RnP/Publication/SubmitByID/5
+        [HasAccess(UserAccess.RnPPublicationEdit)]
         public async Task<ActionResult> SubmitByID(int? id)
         {
             if (id == null)
@@ -406,6 +412,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Process publishing from details page
         // Called for direct publishing via id
         // GET: RnP/Publication/PublishByID/5
+        [HasAccess(UserAccess.RnPPublicationPublish)]
         public async Task<ActionResult> PublishByID(int? id)
         {
             if (id == null)
@@ -445,6 +452,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // POST: Publication/Withdraw/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [HasAccess(UserAccess.RnPPublicationWithdraw)]
         public async Task<string> Withdraw(UpdatePublicationWithdrawalModel model)
         {
             if (ModelState.IsValid)
@@ -485,6 +493,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // POST: Publication/Cancel/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [HasAccess(UserAccess.RnPPublicationEdit)]
         public async Task<string> Cancel(UpdatePublicationCancellationModel model)
         {
             if (ModelState.IsValid)
@@ -520,6 +529,47 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return "error";
         }
 
+        // Process cancel withdrawal form (modal dialog from details)
+        // Called via ajax and returns empty string or "error"
+        // POST: Publication/CancelWithdrawal/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [HasAccess(UserAccess.RnPPublicationWithdraw)]
+        public async Task<string> CancelWithdrawal(UpdatePublicationCancellationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Publication/CancelWithdrawal", model);
+
+                if (response.isSuccess)
+                {
+                    // log trail/system success notification/dashboard notification/email/sms upon submission
+                    // log trail/system success/dashboard notification upon saving as draft
+
+                    await LogActivity(Modules.RnP, "Cancel Publication Withdrawal: " + response.Data, model);
+
+                    // no notification because it's handled by the ajax caller
+                    //TempData["SuccessMessage"] = "Publication titled " + response.Data + " successfully cancelled.";
+
+                    // dashboard
+
+                    //SendEmail("New Publication Created", "A new Publication has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
+
+                    // sms
+
+                    return "";
+                }
+                else
+                {
+                    //TempData["SuccessMessage"] = "Failed to cancel Publication.";
+
+                    return "error";
+                }
+            }
+
+            return "error";
+        }
+
         // Show view form
         // From here user can do one of the following:
         // 1. Admin can edit the publication if it's not submitted yet (redirection button)
@@ -527,6 +577,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // 3. Admin can submit the application if it's not been submitted yet
         // 4. Admin can cancel the application if the status is Pending Amendment
         // GET: RnP/Publication/Details/5
+        [HasAccess(UserAccess.RnPPublicationView)]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -560,18 +611,37 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 {
                     var nextapp = resApp.Data;
 
-                    if (((nextapp.Level == PublicationApprovalLevels.Verifier) && (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))) || ((nextapp.Level == PublicationApprovalLevels.Approver1) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1))) || ((nextapp.Level == PublicationApprovalLevels.Approver2) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2))) || ((nextapp.Level == PublicationApprovalLevels.Approver3) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3))))
+                    if (nextapp != null)
                     {
-                        if ((publication.Status == PublicationStatus.Submitted) || (publication.Status == PublicationStatus.Verified)) {
-                            return RedirectToAction("Evaluate", "Publication", new { area = "RnP", @id = id });
-                        }
-                        else if ((publication.Status == PublicationStatus.WithdrawalSubmitted) || (publication.Status == PublicationStatus.WithdrawalVerified))
+                        if (((nextapp.Level == PublicationApprovalLevels.Verifier) && (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))) || ((nextapp.Level == PublicationApprovalLevels.Approver1) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1))) || ((nextapp.Level == PublicationApprovalLevels.Approver2) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2))) || ((nextapp.Level == PublicationApprovalLevels.Approver3) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3))))
                         {
-                            return RedirectToAction("EvaluateWithdrawal", "Publication", new { area = "RnP", @id = id });
+                            if ((publication.Status == PublicationStatus.Submitted) || (publication.Status == PublicationStatus.Verified))
+                            {
+                                return RedirectToAction("Evaluate", "Publication", new { area = "RnP", @id = id });
+                            }
                         }
                     }
                 }
 
+                // if approvers, also check pending withdrawal approval
+
+                var resWithApp = await WepApiMethod.SendApiAsync<PublicationWithdrawalHistoryModel>(HttpVerbs.Get, $"RnP/Publication/GetNextWithdrawalApproval?id={id}");
+
+                if (resWithApp.isSuccess)
+                {
+                    var nextapp = resWithApp.Data;
+
+                    if (nextapp != null)
+                    {
+                        if (((nextapp.Level == PublicationApprovalLevels.Verifier) && (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))) || ((nextapp.Level == PublicationApprovalLevels.Approver1) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1))) || ((nextapp.Level == PublicationApprovalLevels.Approver2) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2))) || ((nextapp.Level == PublicationApprovalLevels.Approver3) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3))))
+                        {
+                            if ((publication.Status == PublicationStatus.WithdrawalSubmitted) || (publication.Status == PublicationStatus.WithdrawalVerified))
+                            {
+                                return RedirectToAction("EvaluateWithdrawal", "Publication", new { area = "RnP", @id = id });
+                            }
+                        }
+                    }
+                }
             }
 
             var vmpublication = new UpdatePublicationModel
@@ -597,12 +667,14 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 Pictures = publication.Pictures,
                 ProofOfApproval = publication.ProofOfApproval,
                 StockBalance = publication.StockBalance,
-                CreatorId = publication.CreatorId
+                CreatorId = publication.CreatorId,
+                CreatorName = publication.CreatorName
             };
 
             var vmautofields = new ReturnPublicationAutofieldsModel
             {
                 ID = publication.ID,
+                WithdrawalDate = publication.WithdrawalDate,
                 DateAdded = publication.DateAdded,
                 CreatorId = publication.CreatorId,
                 RefNo = publication.RefNo,
@@ -623,7 +695,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             {
                 ID = publication.ID,
                 WithdrawalReason = publication.WithdrawalReason,
-                ProofOfWithdrawal = publication.ProofOfWithdrawal
+                ProofOfWithdrawal = publication.ProofOfWithdrawal,
             };
 
             var vmview = new UpdatePublicationViewModel
@@ -641,12 +713,20 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.History = resHis.Data;
             }
 
+            var resWith = await WepApiMethod.SendApiAsync<IEnumerable<PublicationApprovalHistoryModel>>(HttpVerbs.Get, $"RnP/Publication/GetWithdrawalHistory?id={id}");
+
+            if (resWith.isSuccess)
+            {
+                ViewBag.Withdrawal = resWith.Data;
+            }
+
             ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", vmpublication.CategoryID);
             return View(vmview);
         }
 
         // Show delete form (only from list page)
         // GET: RnP/Publication/Delete/5
+        [HasAccess(UserAccess.RnPPublicationEdit)]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -710,6 +790,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Process deletion from review page (confirmation by prompt)
         // GET: RnP/Publication/Discard/5
+        [HasAccess(UserAccess.RnPPublicationEdit)]
         public async Task<ActionResult> Discard(int? id)
         {
             if (id == null)
@@ -749,6 +830,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // 1. Verifier/Approver can approve and submit for next approval (if applicable) if status is applicable
         // 2. Verifier/Approver can reject and require amendment if status is applicable
         // GET: RnP/Publication/Evaluate/5
+        //[HasAccess(UserAccess.RnPPublicationVerify)]
+        //[HasAccess(UserAccess.RnPPublicationApprove1)]
         public async Task<ActionResult> Evaluate(int? id)
         {
             if (id == null)
@@ -825,9 +908,13 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.History = resHis.Data;
             }
 
-            //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", publication.CategoryID);
-            //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", vmpublication.CategoryID);
-            //ViewBag.TestItem = pubapproval.Pub.Category;
+            var resWith = await WepApiMethod.SendApiAsync<IEnumerable<PublicationApprovalHistoryModel>>(HttpVerbs.Get, $"RnP/Publication/GetWithdrawalHistory?id={id}");
+
+            if (resWith.isSuccess)
+            {
+                ViewBag.Withdrawal = resWith.Data;
+            }
+
             ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", publication.CategoryID);
             return View(pevaluation);
         }
@@ -894,6 +981,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // 1. Verifier/Approver can approve and submit for next approval (if applicable) if status is applicable
         // 2. Verifier/Approver can reject and require amendment if status is applicable
         // GET: RnP/Publication/EvaluateWithdrawal/5
+        //[HasAccess(UserAccess.RnPPublicationEdit)]
         public async Task<ActionResult> EvaluateWithdrawal(int? id)
         {
             if (id == null)
@@ -939,6 +1027,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 Pictures = pubapproval.Pub.Pictures,
                 ProofOfApproval = pubapproval.Pub.ProofOfApproval,
                 StockBalance = pubapproval.Pub.StockBalance,
+                WithdrawalDate = pubapproval.Pub.WithdrawalDate,
                 DateAdded = pubapproval.Pub.DateAdded,
                 CreatorId = pubapproval.Pub.CreatorId,
                 RefNo = pubapproval.Pub.RefNo,
@@ -972,11 +1061,19 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             };
 
             // TODO: show approval history for publication only or withdrawal only or both??
-            var resHis = await WepApiMethod.SendApiAsync<IEnumerable<PublicationWithdrawalHistoryModel>>(HttpVerbs.Get, $"RnP/Publication/GetWithdrawalHistory?id={id}");
+
+            var resHis = await WepApiMethod.SendApiAsync<IEnumerable<PublicationApprovalHistoryModel>>(HttpVerbs.Get, $"RnP/Publication/GetHistory?id={id}");
 
             if (resHis.isSuccess)
             {
                 ViewBag.History = resHis.Data;
+            }
+
+            var resWith = await WepApiMethod.SendApiAsync<IEnumerable<PublicationWithdrawalHistoryModel>>(HttpVerbs.Get, $"RnP/Publication/GetWithdrawalHistory?id={id}");
+
+            if (resWith.isSuccess)
+            {
+                ViewBag.Withdrawal = resWith.Data;
             }
 
             //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", publication.CategoryID);

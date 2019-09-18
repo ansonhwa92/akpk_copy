@@ -90,7 +90,7 @@ namespace FEP.WebApiModel.RnP
         public string WithdrawalReason { get; set; }
 
         [Display(Name = "PubWithdrawalDate", ResourceType = typeof(Language.RnPForm))]
-        public DateTime WithdrawalDate { get; set; }
+        public DateTime? WithdrawalDate { get; set; }
 
         [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
         public string ProofOfWithdrawal { get; set; }
@@ -100,6 +100,9 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "PubCreatorId", ResourceType = typeof(Language.RnPForm))]
         public int CreatorId { get; set; }
+
+        [Display(Name = "PubCreatorId", ResourceType = typeof(Language.RnPForm))]
+        public string CreatorName { get; set; }
 
         [Display(Name = "PubRefNo", ResourceType = typeof(Language.RnPForm))]
         public string RefNo { get; set; }
@@ -131,6 +134,9 @@ namespace FEP.WebApiModel.RnP
     public class ReturnPublicationAutofieldsModel
     {
         public int ID { get; set; }
+
+        [Display(Name = "PubWithdrawalDate", ResourceType = typeof(Language.RnPForm))]
+        public DateTime? WithdrawalDate { get; set; }
 
         [Display(Name = "PubDateAdded", ResourceType = typeof(Language.RnPForm))]
         public DateTime DateAdded { get; set; }
@@ -218,6 +224,8 @@ namespace FEP.WebApiModel.RnP
 
         public int ApproverId { get; set; }
 
+        public string UserName { get; set; }
+
         public PublicationApprovalStatus Status { get; set; }
 
         public DateTime ApprovalDate { get; set; }
@@ -232,6 +240,8 @@ namespace FEP.WebApiModel.RnP
         public PublicationApprovalLevels Level { get; set; }
 
         public int ApproverId { get; set; }
+
+        public string UserName { get; set; }
 
         public PublicationApprovalStatus Status { get; set; }
 
@@ -371,6 +381,8 @@ namespace FEP.WebApiModel.RnP
 
         [Required]
         public int CreatorId { get; set; }
+
+        public string CreatorName { get; set; }
     }
 
     // class for updating of publication cancellation information by client app

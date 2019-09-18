@@ -42,7 +42,7 @@ namespace FEP.WebApi.Api.RnP
         public IHttpActionResult Post(FilterPublicationModel request)
         {
 
-            var query = db.Publication.Where(p => p.Status != PublicationStatus.Trashed);   //TODO: all!!
+            var query = db.Publication.Where(p => p.Status <= PublicationStatus.WithdrawalTrashed);   //TODO: all!!
 
             var totalCount = query.Count();
 
@@ -333,6 +333,12 @@ namespace FEP.WebApi.Api.RnP
                 Category = s.Category.Name
             }).FirstOrDefault();
 
+            var puser = db.User.Where(u => u.Id == publication.CreatorId).FirstOrDefault();
+            if (puser != null)
+            {
+                publication.CreatorName = puser.Name;
+            }
+
             return publication;
         }
 
@@ -369,6 +375,7 @@ namespace FEP.WebApi.Api.RnP
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
                 ProofOfWithdrawal = s.ProofOfWithdrawal,
+                WithdrawalDate = s.WithdrawalDate,
                 CancelRemark = s.CancelRemark, 
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
@@ -380,6 +387,12 @@ namespace FEP.WebApi.Api.RnP
                 DmsPath = s.DmsPath,
                 Category = s.Category.Name
             }).FirstOrDefault();
+
+            var puser = db.User.Where(u => u.Id == publication.CreatorId).FirstOrDefault();
+            if (puser != null)
+            {
+                publication.CreatorName = puser.Name;
+            }
 
             return publication;
         }
@@ -415,6 +428,7 @@ namespace FEP.WebApi.Api.RnP
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
                 ProofOfWithdrawal = s.ProofOfWithdrawal,
+                WithdrawalDate = s.WithdrawalDate,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
                 RefNo = s.RefNo,
@@ -424,6 +438,12 @@ namespace FEP.WebApi.Api.RnP
                 DmsPath = s.DmsPath,
                 Category = s.Category.Name
             }).FirstOrDefault();
+
+            var puser = db.User.Where(u => u.Id == publication.CreatorId).FirstOrDefault();
+            if (puser != null)
+            {
+                publication.CreatorName = puser.Name;
+            }
 
             var papproval = db.PublicationApproval.Where(pa => pa.PublicationID == id && pa.Status == PublicationApprovalStatus.None).Select(s => new ReturnUpdatePublicationApprovalModel
             {
@@ -476,6 +496,7 @@ namespace FEP.WebApi.Api.RnP
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
                 ProofOfWithdrawal = s.ProofOfWithdrawal,
+                WithdrawalDate = s.WithdrawalDate,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
                 RefNo = s.RefNo,
@@ -486,6 +507,12 @@ namespace FEP.WebApi.Api.RnP
                 Category = s.Category.Name
             }).FirstOrDefault();
 
+            var puser = db.User.Where(u => u.Id == publication.CreatorId).FirstOrDefault();
+            if (puser != null)
+            {
+                publication.CreatorName = puser.Name;
+            }
+
             var pwithdrawal = new UpdatePublicationWithdrawalModel
             {
                 ID = publication.ID,
@@ -493,7 +520,7 @@ namespace FEP.WebApi.Api.RnP
                 ProofOfWithdrawal = publication.ProofOfWithdrawal
             };
 
-            var papproval = db.PublicationApproval.Where(pa => pa.PublicationID == id && pa.Status == PublicationApprovalStatus.None).Select(s => new ReturnUpdatePublicationApprovalModel
+            var papproval = db.PublicationWithdrawal.Where(pa => pa.PublicationID == id && pa.Status == PublicationApprovalStatus.None).Select(s => new ReturnUpdatePublicationApprovalModel
             {
                 ID = s.ID,
                 PublicationID = s.PublicationID,
@@ -520,12 +547,12 @@ namespace FEP.WebApi.Api.RnP
         [Route("api/RnP/Publication/GetHistory")]
         public List<PublicationApprovalHistoryModel> GetHistory(int id)
         {
-            //var phis = db.PublicationApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { pa.PublicationID, pa.Level, pa.ApproverId, pa.ApprovalDate, pa.Status, pa.Remarks, UserName = u.Name }).Where(pa => pa.PublicationID == id && pa.Status != PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).Select(s => new PublicationApprovalHistoryModel
-            var phistory = db.PublicationApproval.Where(pa => pa.PublicationID == id && pa.Status != PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).Select(s => new PublicationApprovalHistoryModel
+            var phistory = db.PublicationApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { pa.PublicationID, pa.Level, pa.ApproverId, pa.ApprovalDate, pa.Status, pa.Remarks, UserName = u.Name }).Where(pa => pa.PublicationID == id && pa.Status != PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).Select(s => new PublicationApprovalHistoryModel
             {
                 Level = s.Level,
                 ApproverId = s.ApproverId,
                 ApprovalDate = s.ApprovalDate,
+                UserName = s.UserName,
                 Status = s.Status,
                 Remarks = s.Remarks
             }).ToList();
@@ -540,11 +567,12 @@ namespace FEP.WebApi.Api.RnP
         public List<PublicationWithdrawalHistoryModel> GetWithdrawalHistory(int id)
         {
             //var phistory = db.PublicationApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { tapproval = pa, tuser = u }).Where(pau => pau.tapproval.PublicationID == id && pau.tapproval.Status != PublicationApprovalStatus.None).OrderByDescending(pau => pau.tapproval.ApprovalDate).Select(s => new PublicationApprovalHistoryModel
-            var phistory = db.PublicationWithdrawal.Where(pw => pw.PublicationID == id && pw.Status != PublicationApprovalStatus.None).OrderByDescending(pw => pw.ApprovalDate).Select(s => new PublicationWithdrawalHistoryModel
+            var phistory = db.PublicationWithdrawal.Join(db.User, pw => pw.ApproverId, u => u.Id, (pw, u) => new { pw.PublicationID, pw.Level, pw.ApproverId, pw.ApprovalDate, pw.Status, pw.Remarks, UserName = u.Name }).Where(pw => pw.PublicationID == id && pw.Status != PublicationApprovalStatus.None).OrderByDescending(pw => pw.ApprovalDate).Select(s => new PublicationWithdrawalHistoryModel
             {
                 Level = s.Level,
                 ApproverId = s.ApproverId,
                 ApprovalDate = s.ApprovalDate,
+                UserName = s.UserName,
                 Status = s.Status,
                 Remarks = s.Remarks
             }).ToList();
@@ -552,14 +580,33 @@ namespace FEP.WebApi.Api.RnP
             return phistory;
         }
 
-        // Function to the next pending approval record
+        // Function to get the next pending approval record
         // This is used to check for who's in charge of the next step in approval
         // GET: api/RnP/Publication/GetNextApproval/5
         [Route("api/RnP/Publication/GetNextApproval")]
         public PublicationApprovalHistoryModel GetNextApproval(int id)
         {
             //var phistory = db.PublicationApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { tapproval = pa, tuser = u }).Where(pau => pau.tapproval.PublicationID == id && pau.tapproval.Status != PublicationApprovalStatus.None).OrderByDescending(pau => pau.tapproval.ApprovalDate).Select(s => new PublicationApprovalHistoryModel
-            var phistory = db.PublicationApproval.Where(pa => pa.PublicationID == id && pa.Status != PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).Select(s => new PublicationApprovalHistoryModel
+            var phistory = db.PublicationApproval.Where(pa => pa.PublicationID == id && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).Select(s => new PublicationApprovalHistoryModel
+            {
+                Level = s.Level,
+                ApproverId = s.ApproverId,
+                ApprovalDate = s.ApprovalDate,
+                Status = s.Status,
+                Remarks = s.Remarks
+            }).FirstOrDefault();
+
+            return phistory;
+        }
+
+        // Function to get the next pending withdrawal approval record
+        // This is used to check for who's in charge of the next step in approval
+        // GET: api/RnP/Publication/GetNextWithdrawalApproval/5
+        [Route("api/RnP/Publication/GetNextWithdrawalApproval")]
+        public PublicationWithdrawalHistoryModel GetNextWithdrawalApproval(int id)
+        {
+            //var phistory = db.PublicationApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { tapproval = pa, tuser = u }).Where(pau => pau.tapproval.PublicationID == id && pau.tapproval.Status != PublicationApprovalStatus.None).OrderByDescending(pau => pau.tapproval.ApprovalDate).Select(s => new PublicationApprovalHistoryModel
+            var phistory = db.PublicationWithdrawal.Where(pw => pw.PublicationID == id && pw.Status == PublicationApprovalStatus.None).OrderByDescending(pw => pw.ApprovalDate).Select(s => new PublicationWithdrawalHistoryModel
             {
                 Level = s.Level,
                 ApproverId = s.ApproverId,
@@ -1010,30 +1057,31 @@ namespace FEP.WebApi.Api.RnP
         }
 
         // Function for when admin confirms cancellation of publication withdrawal
+        // TODO: where to store remarks??
         // POST: api/RnP/Publication/CancelWithdrawal
         [Route("api/RnP/Publication/CancelWithdrawal")]
         [HttpPost]
-        public string CancelWithdrawal(int id)
+        [ValidationActionFilter]
+        public string CancelWithdrawal([FromBody] UpdatePublicationCancellationModel model)
         {
-            var publication = db.Publication.Where(p => p.ID == id).FirstOrDefault();
-
-            if (publication != null)
+            if (ModelState.IsValid)
             {
-                // delete withdrawal approval child records in case deletion is done during approvals
-                db.PublicationWithdrawal.RemoveRange(db.PublicationWithdrawal.Where(pa => pa.PublicationID == id));
+                var publication = db.Publication.Where(p => p.ID == model.ID).FirstOrDefault();
 
-                publication.WithdrawalReason = "";
-                publication.ProofOfWithdrawal = "";
-                publication.Status = PublicationStatus.Published;
+                if (publication != null)
+                {
+                    publication.WithdrawalReason = "";
+                    publication.ProofOfWithdrawal = "";
+                    publication.Status = PublicationStatus.Published;
 
-                db.Entry(publication).State = EntityState.Modified;
-                
-                //db.Configuration.ValidateOnSaveEnabled = false;
-                db.SaveChanges();
+                    db.Entry(publication).State = EntityState.Modified;
 
-                return publication.Title;
+                    //db.Configuration.ValidateOnSaveEnabled = false;
+                    db.SaveChanges();
+
+                    return publication.Title;
+                }
             }
-
             return "";
         }
 
@@ -1042,20 +1090,20 @@ namespace FEP.WebApi.Api.RnP
         [Route("api/RnP/Publication/EvaluateWithdrawal")]
         [HttpPost]
         [ValidationActionFilter]
-        public string EvaluateWithdrawal([FromBody] UpdatePublicationWithdrawalApprovalModel model)
+        public string EvaluateWithdrawal([FromBody] ReturnPublicationWithdrawalModel model)
         {
 
             if (ModelState.IsValid)
             {
-                var papproval = db.PublicationWithdrawal.Where(pa => pa.ID == model.ID).FirstOrDefault();
+                var papproval = db.PublicationWithdrawal.Where(pa => pa.ID == model.Approval.ID).FirstOrDefault();
 
                 if (papproval != null)
                 {
-                    papproval.ApproverId = model.ApproverId;
-                    papproval.Status = model.Status;
+                    papproval.ApproverId = model.Approval.ApproverId;
+                    papproval.Status = model.Approval.Status;
                     papproval.ApprovalDate = DateTime.Now;
-                    papproval.Remarks = model.Remarks;
-                    papproval.RequireNext = model.RequireNext;
+                    papproval.Remarks = model.Approval.Remarks;
+                    papproval.RequireNext = model.Approval.RequireNext;
                     // requirenext is always set to true when coming from verifier approval, and always false from approver3
 
                     db.Entry(papproval).State = EntityState.Modified;
@@ -1065,7 +1113,7 @@ namespace FEP.WebApi.Api.RnP
                     if (publication != null)
                     {
                         // proceed depending on status (assuming user can only pick approve and reject)
-                        if (model.Status == PublicationApprovalStatus.Rejected)
+                        if (model.Approval.Status == PublicationApprovalStatus.Rejected)
                         {
                             if (publication.Status == PublicationStatus.WithdrawalSubmitted)
                             {
@@ -1083,7 +1131,7 @@ namespace FEP.WebApi.Api.RnP
                         else
                         {
                             // proceed depending on requirenext
-                            if (model.RequireNext == false)
+                            if (model.Approval.RequireNext == false)
                             {
                                 // no more approvals necessary
                                 publication.Status = PublicationStatus.Withdrawn;       // as opposed to Approved coz admin don't need to "Publish" withdrawals

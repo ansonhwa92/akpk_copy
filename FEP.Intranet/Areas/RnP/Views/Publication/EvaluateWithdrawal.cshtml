@@ -39,10 +39,13 @@
                     <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Request Information</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="#publication-details" data-toggle="tab" class="nav-link active">Publication Details</a>
+                            <a id="tab_details" href="#publication-details" data-toggle="tab" class="nav-link active">Publication Details</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#amendment-history" data-toggle="tab" class="nav-link active">Amendment History</a>
+                            <a id="tab_withdrawal" href="#publication-withdrawal" data-toggle="tab" class="nav-link active alert">Withdrawal Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab_history" href="#amendment-history" data-toggle="tab" class="nav-link active">Amendment History</a>
                         </li>
                     </ul>
                 </div>
@@ -81,7 +84,6 @@
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
         <!-- Start Form -->
         <div class="border-form rounded-top">
-            <!--form-->
             <div class="form-container tab-content">
                 <div class="tab-pane active" id="publication-details">
                     <div class="mb-4 mt-2 mr-auto">
@@ -315,10 +317,13 @@
                             &nbsp;
                         </div>
                     </div>
-                    @if (Model.Withdrawal.WithdrawalReason != "")
-                    {
+                </div>
+                @if (Model.Withdrawal.WithdrawalReason != "")
+                {
+                    <div class="tab-pane" id="publication-withdrawal">
                         <div class="mb-4 mt-2 mr-auto">
                             <h4 class="color-darkblue mb-0">Withdrawal Details</h4>
+                            <h6 class="font-weight-normal">View withdrawal details below.</h6>
                         </div>
                         <div class="row">
                             <div class="form-group col-lg-12">
@@ -332,8 +337,8 @@
                                 <input type="text" name="WProof" id="WProof" class="form-control" readonly="readonly" value="@Model.Withdrawal.ProofOfWithdrawal" />
                             </div>
                         </div>
-                    }
-                </div>
+                    </div>
+                }
                 <div class="tab-pane" id="amendment-history">
                     <div class="mb-4 mt-2 mr-auto">
                         <h4 class="color-darkblue mb-0">Amendment History</h4>
@@ -342,7 +347,34 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <ul class="list-group list-group-fit">
-                                @if (ViewBag.History != null)
+                                @if (ViewBag.Withdrawal.Count != 0)
+                                {
+                                    var icount = 0;
+                                    foreach (var item in ViewBag.Withdrawal)
+                                    {
+                                        if (item.Status == PublicationApprovalStatus.Rejected)
+                                        {
+                                            icount++;
+                                            <li class="list-group-item pt-4">
+                                                <div class="media align-items-top">
+                                                    <div class="media-left">
+                                                        <div class="card__avatar">
+                                                            <img src="~/dist/assets/images/people/50/guy-6.jpg" alt="Avatar" class="card__avatar__image">
+                                                        </div>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="card__name-wrap ml-0">
+                                                            <div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
+                                                            <div class="card__author-name">@item.UserName</div>
+                                                            <div class="card__text pb-3">@item.Remarks</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                @if (ViewBag.History.Count != 0)
                                 {
                                     var icount = 0;
                                     foreach (var item in ViewBag.History)
@@ -360,7 +392,7 @@
                                                     <div class="media-body">
                                                         <div class="card__name-wrap ml-0">
                                                             <div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
-                                                            <div class="card__author-name">:Verifier/Approver Name:</div>
+                                                            <div class="card__author-name">@item.UserName</div>
                                                             <div class="card__text pb-3">@item.Remarks</div>
                                                         </div>
                                                     </div>
@@ -395,7 +427,7 @@
                         <div class="modal-dialog modal-sm" role="document">
                             <div class="modal-content">
                                 <div class="modal-body">
-                                    @if (Model.Pub.Status == PublicationStatus.Submitted)
+                                    @if (Model.Pub.Status == PublicationStatus.WithdrawalSubmitted)
                                     {
                                         if (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))
                                         {
@@ -403,7 +435,7 @@
                                             @Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
                                         }
                                     }
-                                    else if (Model.Pub.Status == PublicationStatus.Verified)
+                                    else if (Model.Pub.Status == PublicationStatus.WithdrawalVerified)
                                     {
                                         if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1) || CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2))
                                         {
@@ -432,7 +464,8 @@
                                         @Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" })
                                         <textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
                                         @*Html.TextAreaFor(model => model.Approval.Remarks, new { htmlAttributes = new { @class = "form-control" }, cols = 48, @rows = 5 })*@
-                                        @Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })
+                                        @*Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })*@
+                                        <span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
                                     </div>
                                 </div>
                                 <div class="divider-border"></div>
@@ -452,19 +485,23 @@
                                     </button>
                                 </div>
                                 <div class="modal-body text-center">
-                                    @if (Model.Pub.Status == PublicationStatus.Submitted)
+                                    @if (Model.Pub.Status == PublicationStatus.WithdrawalSubmitted)
+                                    {
+                                        <!-- verification (always forwarded) -->
+                                        <img src="~/img/icon-noti-email.svg" alt="image">
+                                        <h4 class="color-darkblue mt-4">Approval Request Sent</h4>
+                                        <p class="small">Your publication withdrawal approval request has been sent to HOD.</p>
+                                    }
+                                    else if (Model.Pub.Status == PublicationStatus.WithdrawalVerified)
                                     {
                                         <!-- forwarding -->
-                                        <img src="../img/icon-noti-email.svg" alt="image">
+                                        <img src="~/img/icon-approval.svg" alt="image">
                                         <h4 class="color-darkblue mt-4">Approval Request Sent</h4>
-                                        <p class="small">Your approval request has been sent to HOD.</p>
-                                    }
-                                    else if (Model.Pub.Status == PublicationStatus.Verified)
-                                    {
+                                        <p class="small">Your publication withdrawal approval request has been sent to the next Approver.</p>
                                         <!-- not forwarding -->
-                                        <img src="../img/icon-approval.svg" alt="image">
-                                        <h4 class="color-darkblue mt-4">Publication Submission Approved</h4>
-                                        <p class="small">Your Publication approval has been notified to CCD.</p>
+                                        <img src="~/img/icon-approval.svg" alt="image">
+                                        <h4 class="color-darkblue mt-4">Publication Withdrawal Approved</h4>
+                                        <p class="small">Your publication withdrawal approval has been notified to CCD.</p>
                                     }
                                 </div>
                                 <!-- Bila xde modal footer -->
@@ -479,6 +516,7 @@
                                     <h4 class="color-darkblue mt-4">Require Amendment</h4>
                                     <label>Remarks</label>
                                     <textarea class="form-control" name="Reject.Remarks" id="Reject_Remarks" rows="4" placeholder=""></textarea>
+                                    <span class="text-danger field-validation-error" id="span_rejectremarkserror" style="display:none;">Please enter Remarks</span>
                                 </div>
                                 <div class="divider-border"></div>
                                 <div class="m-4 text-center">
@@ -513,7 +551,41 @@
                 <h6 class="color-darkblue px-3"><i class="la la-comment color-secondary font-icon align-top"></i>Action Log</h6>
                 <!-- Kalau banyak action log akan jd scroll ke bwh -->
                 <div data-perfect-scrollbar class="position-relative">
-                    @if (ViewBag.History != null)
+                    @if (ViewBag.Withdrawal.Count != 0)
+                    {
+                        var icount = 0;
+                        foreach (var item in ViewBag.Withdrawal)
+                        {
+                            icount++;
+                            <div class="border-form rounded mg-b-10">
+                                <p class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="fl-right">@item.ApprovalDate.ToString("hh:mm tt")</span></p>
+                                @if (item.Status == PublicationApprovalStatus.Approved)
+                                {
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Withdrawal Approval Result<br>- <span class="color-green">Approved</span></p>
+                                }
+                                else
+                                {
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Withdrawal Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
+                                }
+                                <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
+                            </div>
+                        }
+                    }
+                    @if (Model.Withdrawal.WithdrawalReason != "")
+                    {
+                        string wdate = "Unknown Date";
+                        string wtime = "Unknown Time";
+                        if (Model.Pub.WithdrawalDate.HasValue)
+                        {
+                            wdate = Model.Pub.WithdrawalDate.Value.ToString("dd/MM/yyyy");
+                            wtime = Model.Pub.WithdrawalDate.Value.ToString("hh:mm tt");
+                        }
+                        <div class="border-form rounded mg-b-10">
+                            <p class="small text-muted">@wdate<span class="fl-right">@wtime</span></p>
+                            <p class="small"><span class="card__author-name color-darkblue">@Model.Pub.CreatorName</span><br>withdrew the Publication.</p>
+                        </div>
+                    }
+                    @if (ViewBag.History.Count != 0)
                     {
                         var icount = 0;
                         foreach (var item in ViewBag.History)
@@ -523,11 +595,11 @@
                                 <div class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="float-right">@item.ApprovalDate.ToString("hh:mm tt")</span></div>
                                 @if (item.Status == PublicationApprovalStatus.Approved)
                                 {
-                                    <div class="small"><span class="card__author-name color-darkblue">:Verifier/Approver Name:</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-green">Approved</span></div>
+                                    <div class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-green">Approved</span></div>
                                 }
                                 else
                                 {
-                                    <div class="small"><span class="card__author-name color-darkblue">:Verifier/Approver Name:</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-yellow">Amendment Required</span></div>
+                                    <div class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-yellow">Amendment Required</span></div>
                                 }
                                 @if (item.Remarks != "")
                                 {
@@ -539,7 +611,7 @@
                     }
                     <div class="border-form rounded mg-2">
                         <div class="small text-muted">@Model.Pub.DateAdded.ToString("dd/MM/yyyy")<span class="float-right">@Model.Pub.DateAdded.ToString("hh:mm tt")</span></div>
-                        <div class="small"><span class="card__author-name color-darkblue">:Creator Name:</span><br>created a Publication.</div>
+                        <div class="small"><span class="card__author-name color-darkblue">@Model.Pub.CreatorName</span><br>created the Publication.</div>
                     </div>
                 </div>
             </div>
@@ -571,13 +643,44 @@
             }
             $('#pub_lang').trigger('change');
 
+            $('#tab_details').click(function () {
+                $('#publication-details').show();
+                $('#publication-withdrawal').hide();
+                $('#amendment-history').hide();
+            });
+
+            $('#tab_withdrawal').click(function () {
+                $('#publication-details').hide();
+                $('#publication-withdrawal').show();
+                $('#amendment-history').hide();
+            });
+
+            $('#tab_history').click(function () {
+                $('#publication-details').hide();
+                $('#publication-withdrawal').hide();
+                $('#amendment-history').show();
+            });
+
             $('#btnApprove').click(function (event) {
                 $("#modalApprove").modal();
                 return false;
             });
 
+            function ValidApprove() {
+                var aremarks = $('#Approval_Remarks').val();
+                $('#span_approveremarkserror').hide();
+                if (aremarks.trim() == "") {
+                    $('#span_approveremarkserror').show();
+                    return false;
+                }
+                return true;
+            }
+
             $('#btnApproveConfirm').click(function (event) {
                 // ajax call for approval
+                if (!ValidApprove()) {
+                    return false;
+                }
                 $('#Approval_Status').val('1');
                 $('#Approval_ApproverId').val('@CurrentUser.UserId');
                 var applevel = $('#Approval_Level').val();
@@ -595,8 +698,21 @@
                 return false;
             });
 
+            function ValidReject() {
+                var rremarks = $('#Reject_Remarks').val();
+                $('#span_rejectremarkserror').hide();
+                if (rremarks.trim() == "") {
+                    $('#span_rejectremarkserror').show();
+                    return false;
+                }
+                return true;
+            }
+
             $('#btnRejectConfirm').click(function (event) {
                 // ajax call for approval
+                if (!ValidReject()) {
+                    return false;
+                }
                 var rejecttext = $('#Reject_Remarks').val();
                 $('#Approval_Remarks').val(rejecttext);
                 $('#Approval_Status').val('2');

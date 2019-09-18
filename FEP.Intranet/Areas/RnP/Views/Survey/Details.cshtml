@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Survey Details";
-    Layout = "~/Views/Shared/_LayoutSurveyBuilderReadonly.cshtml";
+    Layout = "~/Views/Shared/_LayoutSurveyTester.cshtml";
 }
 
 @section Nav{
@@ -44,6 +44,9 @@
                         <li class="nav-item">
                             <a id="tab_design" href="#survey-design" data-toggle="tab" class="nav-link active">Survey Design</a>
                         </li>
+                        <li class="nav-item">
+                            <a id="tab_history" href="#amendment-history" data-toggle="tab" class="nav-link active">Amendment History</a>
+                        </li>
                     </ul>
                 </div>
                 <div>
@@ -70,7 +73,7 @@
         <div class="border-form rounded-top">
             <div class="form-container tab-content">
                 <div class="tab-pane active" id="survey-details">
-                    <div>
+                    <div class="tab-pane" id="setting1">
                         <div class="d-flex align-items-center mb-4 mt-2">
                             <h4 class="color-darkblue mr-auto mb-0">Survey Details<br><span class="small">View survey details below.</span></h4>
                             @{ if (((Model.Auto.Status == SurveyStatus.New) || (Model.Auto.Status == SurveyStatus.VerifierRejected) || (Model.Auto.Status == SurveyStatus.ApproverRejected)) && (CurrentUser.HasAccess(UserAccess.RnPSurveyEdit)))
@@ -190,16 +193,53 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="survey-design">
-                    <div>
-                        <div class="d-flex align-items-center mb-4 mt-2">
-                            <h4 class="color-darkblue mr-auto mb-0">Survey Design<br><span class="small">View survey design below.</span></h4>
-                        </div>
+                    <div class="mb-4 mt-2 mr-auto">
+                        <h4 class="color-darkblue mb-0">Survey Design</h4>
+                        <h6 class="font-weight-normal">View survey design below.</h6>
                     </div>
                     <div class="row">
-                        <div id="surveyContainer">
-                            <div id="creatorElement"></div>
-                        </div>
+                        <div id="surveyContainer"></div>
                         <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;">@Model.Contents.Contents</textarea>
+                    </div>
+                </div>
+                <div class="tab-pane" id="amendment-history">
+                    <div class="mb-4 mt-2 mr-auto">
+                        <h4 class="color-darkblue mb-0">Amendment History</h4>
+                        <h6 class="font-weight-normal">Check amendment list here.</h6>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <ul class="list-group list-group-fit">
+                                @if (ViewBag.History != null)
+                                {
+                                    var icount = 0;
+                                    foreach (var item in ViewBag.History)
+                                    {
+                                        if (item.Status == SurveyApprovalStatus.Rejected)
+                                        {
+                                            icount++;
+                                            <li class="list-group-item pt-4">
+                                                <div class="media align-items-top">
+                                                    <div class="media-left">
+                                                        <div class="card__avatar">
+                                                            <img src="~/dist/assets/images/people/50/guy-6.jpg" alt="Avatar" class="card__avatar__image">
+                                                        </div>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="card__name-wrap ml-0">
+                                                            <div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
+                                                            <div class="card__author-name">@item.UserName</div>
+                                                            <div class="card__text pb-3">@item.Remarks</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+
+                                }
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <!-- popups start -->
@@ -215,6 +255,9 @@
 
                         <div class="modal-dialog modal-sm" role="document">
                             <div class="modal-content">
+                                <div class="m-4 text-center">
+                                    <h4 class="color-darkblue mb-0">Cancel Survey Request</h4>
+                                </div>
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <input type="hidden" class="form-control" name="ID" id="CancelID" value="@Model.Survey.ID" />
@@ -275,31 +318,32 @@
             <!-- action log start -->
             <div class="action-log">
                 <h5 class="color-darkblue mr-auto mb-0"><i class="la la-comment color-secondary"></i>&nbsp;&nbsp;Action Log</h5>
-                <p></p>
-                @if (ViewBag.History != null)
-                {
-                    var icount = 0;
-                    foreach (var item in ViewBag.History)
+                <div data-perfect-scrollbar class="position-relative">
+                    @if (ViewBag.History != null)
                     {
-                        icount++;
-                        <div class="border-form rounded mg-b-10">
-                            <p class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="fl-right">@item.ApprovalDate.ToString("hh:mm tt")</span></p>
-                            @if (item.Status == SurveyApprovalStatus.Approved)
-                            {
-                                <p class="small"><span class="card__author-name color-darkblue">:Officer Name:</span><br>:Designation: Approval Result<br>- <span class="color-green">Approved</span></p>
-                            }
-                            else
-                            {
-                                <p class="small"><span class="card__author-name color-darkblue">:Officer Name:</span><br>:Designation: Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
-                            }
-                            <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
-                        </div>
-                    }
+                        var icount = 0;
+                        foreach (var item in ViewBag.History)
+                        {
+                            icount++;
+                            <div class="border-form rounded mg-b-10">
+                                <p class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="fl-right">@item.ApprovalDate.ToString("hh:mm tt")</span></p>
+                                @if (item.Status == SurveyApprovalStatus.Approved)
+                                {
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Approval Result<br>- <span class="color-green">Approved</span></p>
+                                }
+                                else
+                                {
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
+                                }
+                                <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
+                            </div>
+                        }
 
-                }
-                <div class="border-form rounded mg-b-10">
-                    <p class="small text-muted">@Model.Auto.DateAdded.ToString("dd/MM/yyyy")<span class="fl-right">@Model.Auto.DateAdded.ToString("hh:mm tt")</span></p>
-                    <p class="small"><span class="card__author-name color-darkblue">@Model.Survey.CreatorName</span><br>created a Survey.</p>
+                    }
+                    <div class="border-form rounded mg-b-10">
+                        <p class="small text-muted">@Model.Auto.DateAdded.ToString("dd/MM/yyyy")<span class="fl-right">@Model.Auto.DateAdded.ToString("hh:mm tt")</span></p>
+                        <p class="small"><span class="card__author-name color-darkblue">@Model.Survey.CreatorName</span><br>created the Survey.</p>
+                    </div>
                 </div>
             </div>
             <!-- action log end -->
@@ -312,8 +356,12 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            // populate survey contents
+
             var scontent = $('#Contents').val();
             surveyCreator.text = scontent;
+
+            // format date picker
 
             $("#StartDate").flatpickr({
                 dateFormat: "d/m/Y",
@@ -324,6 +372,8 @@
                 dateFormat: "d/m/Y",
                 maxDate: "31/12/2200",
             });
+
+            // populate target groups
 
             var selectedGroup = $('#Survey_TargetGroup').val();
             if (selectedGroup.indexOf("Group 1") >= 0) {
@@ -363,14 +413,24 @@
             }
             $('#survey_group').trigger('change');
 
+            // tab switching
+
             $('#tab_details').click(function () {
                 $('#survey-details').show();
                 $('#survey-design').hide();
+                $('#amendment-history').hide();
             });
 
             $('#tab_design').click(function () {
                 $('#survey-details').hide();
                 $('#survey-design').show();
+                $('#amendment-history').hide();
+            });
+
+            $('#tab_history').click(function () {
+                $('#survey-details').hide();
+                $('#survey-design').hide();
+                $('#amendment-history').show();
             });
 
             // submit - may change if js alert or onscreen confirmation is required

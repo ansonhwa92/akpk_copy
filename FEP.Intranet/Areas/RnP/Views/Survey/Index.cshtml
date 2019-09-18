@@ -150,10 +150,10 @@
                         sortable: true,
                         render: function (data, type, row, meta) {
                             if (row.Type == 0) {
-                                return "<span>Public Mass</span>";
+                                return "<span>@Language.General.CategoryPublicMass</span>";
                             }
                             else if (row.Type == 1) {
-                                return "<span>Targeted Groups</span>";
+                                return "<span>@Language.General.CategoryTargetedGroups</span>";
                             }
                         }
                     },
@@ -179,7 +179,8 @@
                         data: 'Progress',
                         sortable: false,
                         render: function (data, type, row, meta) {
-                            return "<span>" + row.SubmitCount + " / " + row.InviteCount + "</span>";
+                            //return "<span>" + row.SubmitCount + " / " + row.InviteCount + "</span>";
+                            return "<progress max='" + row.SubmitCount + "' value='" + row.InviteCount + "'></progress>";
                             // TODO: return progress bar
                         }
                     },
@@ -243,17 +244,14 @@
                                 }
                             }
                             else if (row.Status == 1) {     // submitted
-                                if (canverify || canapprove1 || canapprove2 || canapprove3) {
-                                    action += '<a href="@Url.Action("Evaluate", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
-                                }
+                                action += '';
+                                //if (canverify || canapprove1 || canapprove2 || canapprove3) {
                             }
                             else if (row.Status == 2) {     // verifier rejected (can edit from view - view lets user see comments)
                                 action += '';
                             }
                             else if (row.Status == 3) {     // verified
-                                if (canapprove1 || canapprove2 || canapprove3) {
-                                    action += '<a href="@Url.Action("Evaluate", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
-                                }
+                                action += '';
                             }
                             else if (row.Status == 4) {     // approver rejected
                                 action += '';

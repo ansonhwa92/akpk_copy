@@ -31,7 +31,6 @@
     </div>
 }
 
-@*using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myform" }))*@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -346,18 +345,6 @@
 
             populateYears();
 
-            /*
-            $('#btnSave').click(function (event) {
-                $('#HiddenPubStatus').val("save")
-                $("#myform").submit();
-                event.stopPropagation();
-            });
-            $('#btnSubmit').click(function (event) {
-                $('#HiddenPubStatus').val("submit")
-                $("#myform").submit();
-                event.stopPropagation();
-            });
-            */
         });
     </script>
 }

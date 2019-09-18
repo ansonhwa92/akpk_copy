@@ -69,170 +69,161 @@
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
             <!-- Start Form -->
             <div class="border-form rounded-top">
-                <div class="form-container">
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Coauthor, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Coauthor, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                        <div class="form-group col-lg-6">
-                            &nbsp;
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
-                            @*Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly", cols = 48, @rows = 5 })*@
-                            <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Description)</textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" })
-                            <select class="js-example-basic-multiple" id="pub_lang" name="pub_langs[]" multiple="multiple" style="width: 100%;" disabled="disabled">
-                                <option value="Bahasa Malaysia">Bahasa Malaysia</option>
-                                <option value="English">English</option>
-                            </select>
-                            @Html.HiddenFor(model => model.Language, new { htmlAttributes = new { @class = "form-control" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.ISBN, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.ISBN, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            Format
-                        </div>
-                        <div class="form-group col-lg-4">
-                            Free?
-                        </div>
-                        <div class="form-group col-lg-4">
-                            Price (RM)
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            <div class="custom-control custom-checkbox">
-                                @Html.EditorFor(model => model.Hardcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.Hardcopy, htmlAttributes: new { @class = "custom-control-label" })
+                <div class="form-container tab-content">
+                    <div class="tab-pane active" id="publication-details">
+                        <div class="tab-pane" id="setting1">
+                            <div class="d-flex align-items-center mb-4 mt-2">
+                                <h4 class="color-darkblue mr-auto mb-0">Publication Details<br><span class="small">View publication details below.</span></h4>
                             </div>
                         </div>
-                        <div class="form-group col-lg-4">
-                            <div class="custom-control custom-checkbox">
-                                @Html.EditorFor(model => model.FreeHCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.FreeHCopy, htmlAttributes: new { @class = "custom-control-label" })
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label" })
+                                @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
                             </div>
                         </div>
-                        <div class="form-group col-lg-4">
-                            @Html.EditorFor(model => model.HPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            <div class="custom-control custom-checkbox">
-                                @Html.EditorFor(model => model.Digitalcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.Digitalcopy, htmlAttributes: new { @class = "custom-control-label" })
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             </div>
                         </div>
-                        <div class="form-group col-lg-4">
-                            <div class="custom-control custom-checkbox">
-                                @Html.EditorFor(model => model.FreeDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.FreeDCopy, htmlAttributes: new { @class = "custom-control-label" })
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Coauthor, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Coauthor, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             </div>
                         </div>
-                        <div class="form-group col-lg-4">
-                            @Html.EditorFor(model => model.DPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            <div class="custom-control custom-checkbox">
-                                @Html.EditorFor(model => model.HDcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.HDcopy, htmlAttributes: new { @class = "custom-control-label" })
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             </div>
                         </div>
-                        <div class="form-group col-lg-4">
-                            <div class="custom-control custom-checkbox">
-                                @Html.EditorFor(model => model.FreeHDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.FreeHDCopy, htmlAttributes: new { @class = "custom-control-label" })
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                            <div class="form-group col-lg-6">
+                                &nbsp;
                             </div>
                         </div>
-                        <div class="form-group col-lg-4">
-                            @Html.EditorFor(model => model.HDPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                                @*Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly", cols = 48, @rows = 5 })*@
+                                <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Description)</textarea>
+                            </div>
                         </div>
-                    </div>
-                    <!--
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                            <div class="custom-file">
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" })
+                                <select class="js-example-basic-multiple" id="pub_lang" name="pub_langs[]" multiple="multiple" style="width: 100%;" disabled="disabled">
+                                    <option value="Bahasa Malaysia">Bahasa Malaysia</option>
+                                    <option value="English">English</option>
+                                </select>
+                                @Html.HiddenFor(model => model.Language, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.ISBN, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.ISBN, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                Format
+                            </div>
+                            <div class="form-group col-lg-4">
+                                Free?
+                            </div>
+                            <div class="form-group col-lg-4">
+                                Price (RM)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <div class="custom-control custom-checkbox">
+                                    @Html.EditorFor(model => model.Hardcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                    @Html.LabelFor(model => model.Hardcopy, htmlAttributes: new { @class = "custom-control-label" })
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <div class="custom-control custom-checkbox">
+                                    @Html.EditorFor(model => model.FreeHCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                    @Html.LabelFor(model => model.FreeHCopy, htmlAttributes: new { @class = "custom-control-label" })
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.EditorFor(model => model.HPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <div class="custom-control custom-checkbox">
+                                    @Html.EditorFor(model => model.Digitalcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                    @Html.LabelFor(model => model.Digitalcopy, htmlAttributes: new { @class = "custom-control-label" })
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <div class="custom-control custom-checkbox">
+                                    @Html.EditorFor(model => model.FreeDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                    @Html.LabelFor(model => model.FreeDCopy, htmlAttributes: new { @class = "custom-control-label" })
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.EditorFor(model => model.DPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <div class="custom-control custom-checkbox">
+                                    @Html.EditorFor(model => model.HDcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                    @Html.LabelFor(model => model.HDcopy, htmlAttributes: new { @class = "custom-control-label" })
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <div class="custom-control custom-checkbox">
+                                    @Html.EditorFor(model => model.FreeHDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                    @Html.LabelFor(model => model.FreeHDCopy, htmlAttributes: new { @class = "custom-control-label" })
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.EditorFor(model => model.HDPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                        <!--
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                                <div class="custom-file">
+                                    @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
+                                    <label class="custom-file-label" for="customFile">No file choosen</label>
+                                </div>
+                                <div id="fileList"></div>
+                            </div>
+                        </div>
+                        -->
+                        <div class="row" style="display:none;">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
                                 @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-                                <label class="custom-file-label" for="customFile">No file choosen</label>
                             </div>
-                            <div id="fileList"></div>
                         </div>
-                    </div>
-                    -->
-                    <div class="row" style="display:none;">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            @Html.LabelFor(model => model.StockBalance, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.StockBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                        <div class="form-group col-lg-6">
-                            &nbsp;
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                @Html.LabelFor(model => model.StockBalance, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.StockBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                            <div class="form-group col-lg-6">
+                                &nbsp;
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!--
-                <div class="tab-pane" id="other-details">
-                    <div class="tab-pane" id="setting1">
-                        <div class="d-flex align-items-center mb-4 mt-2">
-                            <h4 class="color-darkblue mr-auto mb-0">Other Details<br><span class="small">View other details below.</span></h4>
-                            <a class="btn btn-default btn-sm mw-auto" href="#"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            <label for="event_title">Test</label>
-                            <input class="form-control" type="text" placeholder="Test" disabled>
-                        </div>
-                    </div>
-                </div>
-                -->
                 <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -304,6 +295,7 @@
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
+
             var selectedLang = $('#Language').val();
             if (selectedLang.indexOf("English") >= 0) {
                 $('#pub_lang option').each(function () {

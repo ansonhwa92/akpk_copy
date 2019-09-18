@@ -39,10 +39,10 @@
                     <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Request Information</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="#publication-details" data-toggle="tab" class="nav-link active">Publication Details</a>
+                            <a id="tab_details" href="#publication-details" data-toggle="tab" class="nav-link active">Publication Details</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#amendment-history" data-toggle="tab" class="nav-link active">Amendment History</a>
+                            <a id="tab_history" href="#amendment-history" data-toggle="tab" class="nav-link active">Amendment History</a>
                         </li>
                     </ul>
                 </div>
@@ -81,7 +81,6 @@
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
         <!-- Start Form -->
         <div class="border-form rounded-top">
-            <!--form-->
             <div class="form-container tab-content">
                 <div class="tab-pane active" id="publication-details">
                     <div class="mb-4 mt-2 mr-auto">
@@ -342,7 +341,7 @@
                                                     <div class="media-body">
                                                         <div class="card__name-wrap ml-0">
                                                             <div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
-                                                            <div class="card__author-name">:Verifier/Approver Name:</div>
+                                                            <div class="card__author-name">@item.UserName</div>
                                                             <div class="card__text pb-3">@item.Remarks</div>
                                                         </div>
                                                     </div>
@@ -436,17 +435,22 @@
                                 <div class="modal-body text-center">
                                     @if (Model.Pub.Status == PublicationStatus.Submitted)
                                     {
-                                        <!-- forwarding -->
-                                        <img src="../img/icon-noti-email.svg" alt="image">
+                                        <!-- verification (always forwarded) -->
+                                        <img src="~/img/icon-noti-email.svg" alt="image">
                                         <h4 class="color-darkblue mt-4">Approval Request Sent</h4>
-                                        <p class="small">Your approval request has been sent to HOD.</p>
+                                        <p class="small">Your publication approval request has been sent to HOD.</p>
                                     }
                                     else if (Model.Pub.Status == PublicationStatus.Verified)
                                     {
+                                        <!-- approval -->
+                                        <!-- forwarding -->
+                                        <img src="~/img/icon-approval.svg" alt="image">
+                                        <h4 class="color-darkblue mt-4">Approval Request Sent</h4>
+                                        <p class="small">Your publication approval request has been sent to the next Approver.</p>
                                         <!-- not forwarding -->
-                                        <img src="../img/icon-approval.svg" alt="image">
-                                        <h4 class="color-darkblue mt-4">Publication Submission Approved</h4>
-                                        <p class="small">Your Publication approval has been notified to CCD.</p>
+                                        <img src="~/img/icon-approval.svg" alt="image">
+                                        <h4 class="color-darkblue mt-4">Publication Approved</h4>
+                                        <p class="small">Your publication approval has been notified to CCD.</p>
                                     }
                                 </div>
                                 <!-- Bila xde modal footer -->
@@ -489,6 +493,7 @@
                         </div>
                     </div>
                 }
+                <!-- popups end -->
             </div>
             <!--  Start Action Log -->
             <div class="action-log">
@@ -521,7 +526,7 @@
                     }
                     <div class="border-form rounded mg-2">
                         <div class="small text-muted">@Model.Pub.DateAdded.ToString("dd/MM/yyyy")<span class="float-right">@Model.Pub.DateAdded.ToString("hh:mm tt")</span></div>
-                        <div class="small"><span class="card__author-name color-darkblue">:Creator Name:</span><br>created a Publication.</div>
+                        <div class="small"><span class="card__author-name color-darkblue">@Model.Pub.CreatorName</span><br>created the Publication.</div>
                     </div>
                 </div>
             </div>
@@ -535,6 +540,7 @@
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
+
             var selectedLang = $('#Pub_Language').val();
             if (selectedLang.indexOf("English") >= 0) {
                 $('#pub_lang option').each(function () {
@@ -551,10 +557,22 @@
                 });
             }
             $('#pub_lang').trigger('change');
+
+            $('#tab_details').click(function () {
+                $('#publication-details').show();
+                $('#amendment-history').hide();
+            });
+
+            $('#tab_history').click(function () {
+                $('#publication-details').hide();
+                $('#amendment-history').show();
+            });
+
             $('#btnApprove').click(function (event) {
                 $("#modalApprove").modal();
                 return false;
             });
+
             $('#btnApproveConfirm').click(function (event) {
                 // ajax call for approval
                 $('#Approval_Status').val('1');
@@ -567,26 +585,13 @@
                     $('#Approval_RequireNext').val('False');
                 }
                 $('#myform').submit();
-                //var targeturl = '@*Url.Action("Evaluate", "Publication", new { area = "RnP" })*@';
-                //var form = $('#myform');
-                //alert(form.serialize());
-                //alert(targeturl);
-                /*
-                $.ajax({
-                    url: targeturl,
-                    type: "POST",
-                    data: form.serialize(),
-                    success: function (data) {
-                        alert('success!')
-                    }
-                });
-                */
-                //$("#modalApproveSent").modal();
             });
+
             $('#btnReject').click(function (event) {
                 $("#modalReject").modal();
                 return false;
             });
+
             $('#btnRejectConfirm').click(function (event) {
                 // ajax call for approval
                 var rejecttext = $('#Reject_Remarks').val();
@@ -601,21 +606,7 @@
                     $('#Approval_RequireNext').val('False');
                 }
                 $('#myform').submit();
-                //var targeturl = '@*Url.Action("Evaluate", "Publication", new { area = "RnP" })*@';
-                //var form = $('#myform');
-                //alert(form.serialize());
-                //alert(targeturl);
-                /*
-                $.ajax({
-                    url: targeturl,
-                    type: "POST",
-                    data: form.serialize(),
-                    success: function (data) {
-                        alert('success!')
-                    }
-                });
-                */
-                //$("#modalApproveSent").modal();
+
             });
         });
     </script>

@@ -1,8 +1,8 @@
 ﻿@model FEP.WebApiModel.RnP.UpdateSurveyReviewModel
 
 @{
-    ViewBag.Title = "Survey Details";
-    Layout = "~/Views/Shared/_LayoutSurveyBuilderReadonly.cshtml";
+    ViewBag.Title = "Review Survey for Submission";
+    Layout = "~/Views/Shared/_LayoutSurveyTester.cshtml";
 }
 
 @section Nav{
@@ -139,7 +139,6 @@
                                     <br />
                                     @Html.RadioButtonFor(model => model.Survey.RequireLogin, "false", new { id = "no" })
                                     @Html.Label("no", "No")
-                                    @Html.ValidationMessageFor(model => model.Survey.RequireLogin, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
@@ -151,9 +150,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div id="surveyContainer">
-                                <div id="creatorElement"></div>
-                            </div>
+                            <div id="surveyContainer"></div>
                             <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;">@Model.Contents.Contents</textarea>
                         </div>
                     </div>

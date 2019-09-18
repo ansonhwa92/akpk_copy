@@ -256,6 +256,7 @@
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
+
             $("#date_start").flatpickr({
                 dateFormat: "d/m/Y",
                 minDate: "today",
@@ -264,6 +265,7 @@
                     $("#StartDate").val(dateStr);
                 },
             });
+
             $("#date_end").flatpickr({
                 dateFormat: "d/m/Y",
                 minDate: "today",
@@ -272,26 +274,7 @@
                     $("#EndDate").val(dateStr);
                 },
             });
-            /*
-            $('#Type').change(function () {
-                var selectedType = $('#Type option:selected').text();
-                if (selectedType == "Public Survey") {
-                    //$('#row_targetgroup').hide();
-                    $('#survey_group').val("");
-                    $('#survey_group').select2("destroy");
-                    $('#survey_group').prop("disabled", true);
-                    $('#survey_group').select2();
-                    $('#TargetGroup').val("");
-                } else {
-                    //$('#row_targetgroup').show();
-                    $('#survey_group').val("");
-                    $('#survey_group').select2("destroy");
-                    $('#survey_group').prop("disabled", false);
-                    $('#survey_group').select2();
-                    $('#TargetGroup').val("");
-                }
-            });
-            */
+
             $('#survey_group').change(function () {
                 var selectedValues = [];
                 var selectedText = "";

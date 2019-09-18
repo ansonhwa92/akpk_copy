@@ -171,6 +171,12 @@
   <data name="ButtonUpdate" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="CategoryPublicMass" xml:space="preserve">
+    <value>Public Mass</value>
+  </data>
+  <data name="CategoryTargetedGroups" xml:space="preserve">
+    <value>Targeted Groups</value>
+  </data>
   <data name="FieldDate" xml:space="preserve">
     <value>Date</value>
   </data>

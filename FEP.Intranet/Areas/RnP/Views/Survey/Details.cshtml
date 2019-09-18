@@ -44,6 +44,12 @@
                         <li class="nav-item">
                             <a id="tab_design" href="#survey-design" data-toggle="tab" class="nav-link active">Survey Design</a>
                         </li>
+                        @if (Model.Cancellation.CancelRemark != "")
+                        {
+                            <li class="nav-item">
+                                <a id="tab_cancellation" href="#survey-cancellation" data-toggle="tab" class="nav-link active">Cancellation Information</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a id="tab_history" href="#amendment-history" data-toggle="tab" class="nav-link active">Amendment History</a>
                         </li>
@@ -202,6 +208,21 @@
                         <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;">@Model.Contents.Contents</textarea>
                     </div>
                 </div>
+                @if (Model.Cancellation.CancelRemark != "")
+                {
+                    <div class="tab-pane" id="publication-cancellation">
+                        <div class="mb-4 mt-2 mr-auto">
+                            <h4 class="color-darkblue mb-0">Cancellation Details</h4>
+                            <h6 class="font-weight-normal">View cancellation details below.</h6>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" })
+                                <textarea name="CReason" id="CReason" class="form-control" rows="3" readonly="readonly">@Model.Cancellation.CancelRemark</textarea>
+                            </div>
+                        </div>
+                    </div>
+                }
                 <div class="tab-pane" id="amendment-history">
                     <div class="mb-4 mt-2 mr-auto">
                         <h4 class="color-darkblue mb-0">Amendment History</h4>
@@ -210,7 +231,7 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <ul class="list-group list-group-fit">
-                                @if (ViewBag.History != null)
+                                @if (ViewBag.History.Count != 0)
                                 {
                                     var icount = 0;
                                     foreach (var item in ViewBag.History)
@@ -319,7 +340,21 @@
             <div class="action-log">
                 <h5 class="color-darkblue mr-auto mb-0"><i class="la la-comment color-secondary"></i>&nbsp;&nbsp;Action Log</h5>
                 <div data-perfect-scrollbar class="position-relative">
-                    @if (ViewBag.History != null)
+                    @if (Model.Cancellation.CancelRemark != "")
+                    {
+                        string cdate = "Unknown Date";
+                        string ctime = "Unknown Time";
+                        if (Model.Auto.DateCancelled.HasValue)
+                        {
+                            cdate = Model.Auto.DateCancelled.Value.ToString("dd/MM/yyyy");
+                            ctime = Model.Auto.DateCancelled.Value.ToString("hh:mm tt");
+                        }
+                        <div class="border-form rounded mg-b-10">
+                            <p class="small text-muted">@cdate<span class="fl-right">@ctime</span></p>
+                            <p class="small"><span class="card__author-name color-darkblue">@Model.Survey.CreatorName</span><br>- <span class="color-yellow">cancelled the Survey</span></p>
+                        </div>
+                    }
+                    @if (ViewBag.History.Count != 0)
                     {
                         var icount = 0;
                         foreach (var item in ViewBag.History)
@@ -358,8 +393,16 @@
 
             // populate survey contents
 
-            var scontent = $('#Contents').val();
-            surveyCreator.text = scontent;
+            //var scontent = $('#Contents').val();
+            //surveyCreator.text = scontent;
+
+            var surveyJSON = $('#Contents').val();
+
+            var survey = new Survey.Model(surveyJSON);
+
+            $("#surveyContainer").Survey({
+                model: survey
+            });
 
             // format date picker
 
@@ -418,18 +461,28 @@
             $('#tab_details').click(function () {
                 $('#survey-details').show();
                 $('#survey-design').hide();
+                $('#survey-cancellation').hide();
                 $('#amendment-history').hide();
             });
 
             $('#tab_design').click(function () {
                 $('#survey-details').hide();
                 $('#survey-design').show();
+                $('#survey-cancellation').hide();
+                $('#amendment-history').hide();
+            });
+
+            $('#tab_cancellation').click(function () {
+                $('#survey-details').hide();
+                $('#survey-design').hide();
+                $('#survey-cancellation').show();
                 $('#amendment-history').hide();
             });
 
             $('#tab_history').click(function () {
                 $('#survey-details').hide();
                 $('#survey-design').hide();
+                $('#survey-cancellation').hide();
                 $('#amendment-history').show();
             });
 
@@ -459,9 +512,9 @@
 
             function ValidCancellation() {
                 var cremarks = $('#CancelRemark').val();
-                $('#span_remarkserror').hide();
+                $('#span_remarkerror').hide();
                 if (cremarks.trim() == "") {
-                    $('#span_remarkserror').show();
+                    $('#span_remarkerror').show();
                     return false;
                 }
                 return true;
@@ -472,8 +525,8 @@
                     return false;
                 }
                 var form = $('#formcancel');
-                alert(form.serialize());
-                return false;
+                //alert(form.serialize());
+                //return false;
                 var myurl = '@Url.Action("Cancel", "Survey", new { area = "RnP" })';
                 $.ajax({
                     url: myurl,
@@ -500,6 +553,13 @@
             $('#btnCloseOperationSuccess').click(function (event) {
                 var pid = $(this).data('surveyid');
                 var pop = $(this).data('operation');    // in case needed in future
+                var url = '@Url.Action("Details", "Survey", new { area = "RnP" })?id=' + pid;
+                window.location = url;
+            });
+
+            $('#modalOperationSuccess').on( "hidden.bs.modal", function () {
+                var pid = $('#btnCloseOperationSuccess').data('surveyid');
+                var pop = $('#btnCloseOperationSuccess').data('operation');    // in case needed in future
                 var url = '@Url.Action("Details", "Survey", new { area = "RnP" })?id=' + pid;
                 window.location = url;
             });

@@ -619,14 +619,29 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                             {
                                 return RedirectToAction("Evaluate", "Publication", new { area = "RnP", @id = id });
                             }
-                            else if ((publication.Status == PublicationStatus.WithdrawalSubmitted) || (publication.Status == PublicationStatus.WithdrawalVerified))
+                        }
+                    }
+                }
+
+                // if approvers, also check pending withdrawal approval
+
+                var resWithApp = await WepApiMethod.SendApiAsync<PublicationWithdrawalHistoryModel>(HttpVerbs.Get, $"RnP/Publication/GetNextWithdrawalApproval?id={id}");
+
+                if (resWithApp.isSuccess)
+                {
+                    var nextapp = resWithApp.Data;
+
+                    if (nextapp != null)
+                    {
+                        if (((nextapp.Level == PublicationApprovalLevels.Verifier) && (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))) || ((nextapp.Level == PublicationApprovalLevels.Approver1) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1))) || ((nextapp.Level == PublicationApprovalLevels.Approver2) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2))) || ((nextapp.Level == PublicationApprovalLevels.Approver3) && (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3))))
+                        {
+                            if ((publication.Status == PublicationStatus.WithdrawalSubmitted) || (publication.Status == PublicationStatus.WithdrawalVerified))
                             {
                                 return RedirectToAction("EvaluateWithdrawal", "Publication", new { area = "RnP", @id = id });
                             }
                         }
                     }
                 }
-
             }
 
             var vmpublication = new UpdatePublicationModel
@@ -1046,11 +1061,19 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             };
 
             // TODO: show approval history for publication only or withdrawal only or both??
-            var resHis = await WepApiMethod.SendApiAsync<IEnumerable<PublicationWithdrawalHistoryModel>>(HttpVerbs.Get, $"RnP/Publication/GetWithdrawalHistory?id={id}");
+
+            var resHis = await WepApiMethod.SendApiAsync<IEnumerable<PublicationApprovalHistoryModel>>(HttpVerbs.Get, $"RnP/Publication/GetHistory?id={id}");
 
             if (resHis.isSuccess)
             {
                 ViewBag.History = resHis.Data;
+            }
+
+            var resWith = await WepApiMethod.SendApiAsync<IEnumerable<PublicationWithdrawalHistoryModel>>(HttpVerbs.Get, $"RnP/Publication/GetWithdrawalHistory?id={id}");
+
+            if (resWith.isSuccess)
+            {
+                ViewBag.Withdrawal = resWith.Data;
             }
 
             //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", publication.CategoryID);

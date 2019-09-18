@@ -323,7 +323,7 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <ul class="list-group list-group-fit">
-                                @if (ViewBag.History != null)
+                                @if (ViewBag.History.Count != 0)
                                 {
                                     var icount = 0;
                                     foreach (var item in ViewBag.History)
@@ -413,7 +413,8 @@
                                         @Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" })
                                         <textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
                                         @*Html.TextAreaFor(model => model.Approval.Remarks, new { htmlAttributes = new { @class = "form-control" }, cols = 48, @rows = 5 })*@
-                                        @Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })
+                                        @*Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })*@
+                                        <span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
                                     </div>
                                 </div>
                                 <div class="divider-border"></div>
@@ -465,6 +466,7 @@
                                     <h4 class="color-darkblue mt-4">Require Amendment</h4>
                                     <label>Remarks</label>
                                     <textarea class="form-control" name="Reject.Remarks" id="Reject_Remarks" rows="4" placeholder=""></textarea>
+                                    <span class="text-danger field-validation-error" id="span_rejectremarkserror" style="display:none;">Please enter Remarks</span>
                                 </div>
                                 <div class="divider-border"></div>
                                 <div class="m-4 text-center">
@@ -500,7 +502,7 @@
                 <h6 class="color-darkblue px-3"><i class="la la-comment color-secondary font-icon align-top"></i>Action Log</h6>
                 <!-- Kalau banyak action log akan jd scroll ke bwh -->
                 <div data-perfect-scrollbar class="position-relative">
-                    @if (ViewBag.History != null)
+                    @if (ViewBag.History.Count != 0)
                     {
                         var icount = 0;
                         foreach (var item in ViewBag.History)
@@ -510,11 +512,11 @@
                                 <div class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="float-right">@item.ApprovalDate.ToString("hh:mm tt")</span></div>
                                 @if (item.Status == PublicationApprovalStatus.Approved)
                                 {
-                                    <div class="small"><span class="card__author-name color-darkblue">:Verifier/Approver Name:</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-green">Approved</span></div>
+                                    <div class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-green">Approved</span></div>
                                 }
                                 else
                                 {
-                                    <div class="small"><span class="card__author-name color-darkblue">:Verifier/Approver Name:</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-yellow">Amendment Required</span></div>
+                                    <div class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-yellow">Amendment Required</span></div>
                                 }
                                 @if (item.Remarks != "")
                                 {
@@ -573,8 +575,21 @@
                 return false;
             });
 
+            function ValidApprove() {
+                var aremarks = $('#Approval_Remarks').val();
+                $('#span_approveremarkserror').hide();
+                if (aremarks.trim() == "") {
+                    $('#span_approveremarkserror').show();
+                    return false;
+                }
+                return true;
+            }
+
             $('#btnApproveConfirm').click(function (event) {
                 // ajax call for approval
+                if (!ValidApprove()) {
+                    return false;
+                }
                 $('#Approval_Status').val('1');
                 $('#Approval_ApproverId').val('@CurrentUser.UserId');
                 var applevel = $('#Approval_Level').val();
@@ -592,8 +607,21 @@
                 return false;
             });
 
+            function ValidReject() {
+                var rremarks = $('#Reject_Remarks').val();
+                $('#span_rejectremarkserror').hide();
+                if (rremarks.trim() == "") {
+                    $('#span_rejectremarkserror').show();
+                    return false;
+                }
+                return true;
+            }
+
             $('#btnRejectConfirm').click(function (event) {
                 // ajax call for approval
+                if (!ValidReject()) {
+                    return false;
+                }
                 var rejecttext = $('#Reject_Remarks').val();
                 $('#Approval_Remarks').val(rejecttext);
                 $('#Approval_Status').val('2');

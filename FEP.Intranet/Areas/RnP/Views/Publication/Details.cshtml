@@ -41,6 +41,12 @@
                         <li class="nav-item">
                             <a id="tab_details" href="#publication-details" data-toggle="tab" class="nav-link active">Publication Details</a>
                         </li>
+                        @if (Model.Cancellation.CancelRemark != "")
+                        {
+                            <li class="nav-item">
+                                <a id="tab_cancellation" href="#publication-cancellation" data-toggle="tab" class="nav-link active">Cancellation Information</a>
+                            </li>
+                        }
                         @if (Model.Withdrawal.WithdrawalReason != "")
                         {
                             <li class="nav-item">
@@ -55,23 +61,23 @@
                 <div>
                     @{ if ((Model.Auto.Status == PublicationStatus.New) && (CurrentUser.HasAccess(UserAccess.RnPPublicationEdit)))
                         {
-                            <p><button class="btn btn-secondary" id="btnSubmit" data-pubid="@Model.Pub.ID">Submit for Approval</button></p>
+                            <p><button class="btn btn-secondary btn-block mb-2" id="btnSubmit" data-pubid="@Model.Pub.ID">Submit for Approval</button></p>
                         }
                         else if ((Model.Auto.Status == PublicationStatus.Approved) && (CurrentUser.HasAccess(UserAccess.RnPPublicationPublish)))
                         {
-                            <p><button class="btn btn-secondary" id="btnPublish" data-pubid="@Model.Pub.ID">Publish on FEP</button></p>
+                            <p><button class="btn btn-secondary btn-block mb-2" id="btnPublish" data-pubid="@Model.Pub.ID">Publish on FEP</button></p>
                         }
                         else if ((Model.Auto.Status == PublicationStatus.Published) && (CurrentUser.HasAccess(UserAccess.RnPPublicationWithdraw)))
                         {
-                            <p><button class="btn btn-secondary" id="btnWithdraw">Withdraw Publication</button></p>
+                            <p><button class="btn btn-secondary btn-block mb-2" id="btnWithdraw">Withdraw Publication</button></p>
                         }
                         else if (((Model.Auto.Status == PublicationStatus.VerifierRejected) || (Model.Auto.Status == PublicationStatus.ApproverRejected)) && (CurrentUser.HasAccess(UserAccess.RnPPublicationEdit)))
                         {
-                            <p><button class="btn btn-outline-danger" id="btnCancel">Cancel Publication</button></p>
+                            <p><button class="btn btn-outline-danger btn-block mb-2" id="btnCancel">Cancel Publication</button></p>
                         }
                         else if (((Model.Auto.Status == PublicationStatus.WithdrawalVerifierRejected) || (Model.Auto.Status == PublicationStatus.WithdrawalApproverRejected)) && (CurrentUser.HasAccess(UserAccess.RnPPublicationEdit)))
                         {
-                            <p><button class="btn btn-secondary" id="btnCancelWithdrawal" data-pubid="@Model.Pub.ID">Cancel Withdrawal</button></p>
+                            <p><button class="btn btn-secondary btn-block mb-2" id="btnCancelWithdrawal" data-pubid="@Model.Pub.ID">Cancel Withdrawal</button></p>
                         }
                     }
                 </div>
@@ -325,6 +331,21 @@
                         </div>
                     </div>
                 </div>
+                @if (Model.Cancellation.CancelRemark != "")
+                {
+                    <div class="tab-pane" id="publication-cancellation">
+                        <div class="mb-4 mt-2 mr-auto">
+                            <h4 class="color-darkblue mb-0">Cancellation Details</h4>
+                            <h6 class="font-weight-normal">View cancellation details below.</h6>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" })
+                                <textarea name="CReason" id="CReason" class="form-control" rows="3" readonly="readonly">@Model.Cancellation.CancelRemark</textarea>
+                            </div>
+                        </div>
+                    </div>
+                }
                 @if (Model.Withdrawal.WithdrawalReason != "")
                 {
                     <div class="tab-pane" id="publication-withdrawal">
@@ -354,7 +375,34 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <ul class="list-group list-group-fit">
-                                @if (ViewBag.History != null)
+                                @if (ViewBag.Withdrawal.Count != 0)
+                                {
+                                    var icount = 0;
+                                    foreach (var item in ViewBag.Withdrawal)
+                                    {
+                                        if (item.Status == PublicationApprovalStatus.Rejected)
+                                        {
+                                            icount++;
+                                            <li class="list-group-item pt-4">
+                                                <div class="media align-items-top">
+                                                    <div class="media-left">
+                                                        <div class="card__avatar">
+                                                            <img src="~/dist/assets/images/people/50/guy-6.jpg" alt="Avatar" class="card__avatar__image">
+                                                        </div>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="card__name-wrap ml-0">
+                                                            <div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
+                                                            <div class="card__author-name">@item.UserName</div>
+                                                            <div class="card__text pb-3">@item.Remarks</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                @if (ViewBag.History.Count != 0)
                                 {
                                     var icount = 0;
                                     foreach (var item in ViewBag.History)
@@ -382,6 +430,7 @@
                                     }
 
                                 }
+
                             </ul>
                         </div>
                     </div>
@@ -477,7 +526,7 @@
                                         <div class="form-group">
                                             <input type="hidden" class="form-control" name="ID" id="CancelID" value="@Model.Pub.ID" />
                                             @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" })
-                                            <textarea class="form-control" name="CancelWithdrawalRemark" id="CancelWithdrawalRemark" rows="4" placeholder=""></textarea>
+                                            <textarea class="form-control" name="CancelRemark" id="CancelRemark" rows="4" placeholder=""></textarea>
                                             <span class="text-danger field-validation-error" id="span_withdrawalremarkerror" style="display:none;">Please enter Remarks</span>
                                         </div>
                                     </div>
@@ -535,7 +584,21 @@
             <div class="action-log">
                 <h5 class="color-darkblue mr-auto mb-0"><i class="la la-comment color-secondary"></i>&nbsp;&nbsp;Action Log</h5>
                 <div data-perfect-scrollbar class="position-relative">
-                    @if (ViewBag.Withdrawal != null)
+                    @if (Model.Cancellation.CancelRemark != "")
+                    {
+                        string cdate = "Unknown Date";
+                        string ctime = "Unknown Time";
+                        if (Model.Auto.DateCancelled.HasValue)
+                        {
+                            cdate = Model.Auto.DateCancelled.Value.ToString("dd/MM/yyyy");
+                            ctime = Model.Auto.DateCancelled.Value.ToString("hh:mm tt");
+                        }
+                        <div class="border-form rounded mg-b-10">
+                            <p class="small text-muted">@cdate<span class="fl-right">@ctime</span></p>
+                            <p class="small"><span class="card__author-name color-darkblue">@Model.Pub.CreatorName</span><br>- <span class="color-yellow">cancelled the Publication</span></p>
+                        </div>
+                    }
+                    @if (ViewBag.Withdrawal.Count != 0)
                     {
                         var icount = 0;
                         foreach (var item in ViewBag.Withdrawal)
@@ -554,6 +617,9 @@
                                 <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
                             </div>
                         }
+                    }
+                    @if (Model.Withdrawal.WithdrawalReason != "")
+                    {
                         string wdate = "Unknown Date";
                         string wtime = "Unknown Time";
                         if (Model.Auto.WithdrawalDate.HasValue)
@@ -566,7 +632,7 @@
                             <p class="small"><span class="card__author-name color-darkblue">@Model.Pub.CreatorName</span><br>withdrew the Publication.</p>
                         </div>
                     }
-                    @if (ViewBag.History != null)
+                    @if (ViewBag.History.Count != 0)
                     {
                         var icount = 0;
                         foreach (var item in ViewBag.History)
@@ -626,18 +692,28 @@
 
             $('#tab_details').click(function () {
                 $('#publication-details').show();
+                $('#publication-cancellation').hide();
+                $('#publication-withdrawal').hide();
+                $('#amendment-history').hide();
+            });
+
+            $('#tab_cancellation').click(function () {
+                $('#publication-details').hide();
+                $('#publication-cancellation').show();
                 $('#publication-withdrawal').hide();
                 $('#amendment-history').hide();
             });
 
             $('#tab_withdrawal').click(function () {
                 $('#publication-details').hide();
+                $('#publication-cancellation').hide();
                 $('#publication-withdrawal').show();
                 $('#amendment-history').hide();
             });
 
             $('#tab_history').click(function () {
                 $('#publication-details').hide();
+                $('#publication-cancellation').hide();
                 $('#publication-withdrawal').hide();
                 $('#amendment-history').show();
             });
@@ -694,8 +770,8 @@
                     return false;
                 }
                 var form = $('#formwithdraw');
-                alert(form.serialize());
-                return false;
+                //alert(form.serialize());
+                //return false;
                 var myurl = '@Url.Action("Withdraw", "Publication", new { area = "RnP" })';
                 $.ajax({
                     url: myurl,
@@ -726,9 +802,9 @@
 
             function ValidCancellation() {
                 var cremarks = $('#CancelRemark').val();
-                $('#span_remarkserror').hide();
+                $('#span_remarkerror').hide();
                 if (cremarks.trim() == "") {
-                    $('#span_remarkserror').show();
+                    $('#span_remarkerror').show();
                     return false;
                 }
                 return true;
@@ -739,8 +815,8 @@
                     return false;
                 }
                 var form = $('#formcancel');
-                alert(form.serialize());
-                return false;
+                //alert(form.serialize());
+                //return false;
                 var myurl = '@Url.Action("Cancel", "Publication", new { area = "RnP" })';
                 $.ajax({
                     url: myurl,
@@ -770,10 +846,10 @@
             });
 
             function ValidWithdrawalCancellation() {
-                var cremarks = $('#CancelWithdrawalRemark').val();
-                $('#span_withdrawalremarkserror').hide();
+                var cremarks = $('#CancelRemark').val();
+                $('#span_withdrawalremarkerror').hide();
                 if (cremarks.trim() == "") {
-                    $('#span_withdrawalremarkserror').show();
+                    $('#span_withdrawalremarkerror').show();
                     return false;
                 }
                 return true;
@@ -784,8 +860,8 @@
                     return false;
                 }
                 var form = $('#formcancelwithdrawal');
-                alert(form.serialize());
-                return false;
+                //alert(form.serialize());
+                //return false;
                 var myurl = '@Url.Action("CancelWithdrawal", "Publication", new { area = "RnP" })';
                 $.ajax({
                     url: myurl,
@@ -812,6 +888,13 @@
             $('#btnCloseOperationSuccess').click(function (event) {
                 var pid = $(this).data('pubid');
                 var pop = $(this).data('operation');    // in case needed in future
+                var url = '@Url.Action("Details", "Publication", new { area = "RnP" })?id=' + pid;
+                window.location = url;
+            });
+
+            $('#modalOperationSuccess').on( "hidden.bs.modal", function () {
+                var pid = $('#btnCloseOperationSuccess').data('pubid');
+                var pop = $('#btnCloseOperationSuccess').data('operation');    // in case needed in future
                 var url = '@Url.Action("Details", "Publication", new { area = "RnP" })?id=' + pid;
                 window.location = url;
             });

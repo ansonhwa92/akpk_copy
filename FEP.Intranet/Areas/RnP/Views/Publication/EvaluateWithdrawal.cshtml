@@ -347,7 +347,34 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <ul class="list-group list-group-fit">
-                                @if (ViewBag.History != null)
+                                @if (ViewBag.Withdrawal.Count != 0)
+                                {
+                                    var icount = 0;
+                                    foreach (var item in ViewBag.Withdrawal)
+                                    {
+                                        if (item.Status == PublicationApprovalStatus.Rejected)
+                                        {
+                                            icount++;
+                                            <li class="list-group-item pt-4">
+                                                <div class="media align-items-top">
+                                                    <div class="media-left">
+                                                        <div class="card__avatar">
+                                                            <img src="~/dist/assets/images/people/50/guy-6.jpg" alt="Avatar" class="card__avatar__image">
+                                                        </div>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="card__name-wrap ml-0">
+                                                            <div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
+                                                            <div class="card__author-name">@item.UserName</div>
+                                                            <div class="card__text pb-3">@item.Remarks</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                @if (ViewBag.History.Count != 0)
                                 {
                                     var icount = 0;
                                     foreach (var item in ViewBag.History)
@@ -437,7 +464,8 @@
                                         @Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" })
                                         <textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
                                         @*Html.TextAreaFor(model => model.Approval.Remarks, new { htmlAttributes = new { @class = "form-control" }, cols = 48, @rows = 5 })*@
-                                        @Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })
+                                        @*Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })*@
+                                        <span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
                                     </div>
                                 </div>
                                 <div class="divider-border"></div>
@@ -488,6 +516,7 @@
                                     <h4 class="color-darkblue mt-4">Require Amendment</h4>
                                     <label>Remarks</label>
                                     <textarea class="form-control" name="Reject.Remarks" id="Reject_Remarks" rows="4" placeholder=""></textarea>
+                                    <span class="text-danger field-validation-error" id="span_rejectremarkserror" style="display:none;">Please enter Remarks</span>
                                 </div>
                                 <div class="divider-border"></div>
                                 <div class="m-4 text-center">
@@ -522,7 +551,7 @@
                 <h6 class="color-darkblue px-3"><i class="la la-comment color-secondary font-icon align-top"></i>Action Log</h6>
                 <!-- Kalau banyak action log akan jd scroll ke bwh -->
                 <div data-perfect-scrollbar class="position-relative">
-                    @if (ViewBag.Withdrawal != null)
+                    @if (ViewBag.Withdrawal.Count != 0)
                     {
                         var icount = 0;
                         foreach (var item in ViewBag.Withdrawal)
@@ -541,6 +570,9 @@
                                 <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
                             </div>
                         }
+                    }
+                    @if (Model.Withdrawal.WithdrawalReason != "")
+                    {
                         string wdate = "Unknown Date";
                         string wtime = "Unknown Time";
                         if (Model.Pub.WithdrawalDate.HasValue)
@@ -553,7 +585,7 @@
                             <p class="small"><span class="card__author-name color-darkblue">@Model.Pub.CreatorName</span><br>withdrew the Publication.</p>
                         </div>
                     }
-                    @if (ViewBag.History != null)
+                    @if (ViewBag.History.Count != 0)
                     {
                         var icount = 0;
                         foreach (var item in ViewBag.History)
@@ -579,7 +611,7 @@
                     }
                     <div class="border-form rounded mg-2">
                         <div class="small text-muted">@Model.Pub.DateAdded.ToString("dd/MM/yyyy")<span class="float-right">@Model.Pub.DateAdded.ToString("hh:mm tt")</span></div>
-                        <div class="small"><span class="card__author-name color-darkblue">:Creator Name:</span><br>created the Publication.</div>
+                        <div class="small"><span class="card__author-name color-darkblue">@Model.Pub.CreatorName</span><br>created the Publication.</div>
                     </div>
                 </div>
             </div>
@@ -634,8 +666,21 @@
                 return false;
             });
 
+            function ValidApprove() {
+                var aremarks = $('#Approval_Remarks').val();
+                $('#span_approveremarkserror').hide();
+                if (aremarks.trim() == "") {
+                    $('#span_approveremarkserror').show();
+                    return false;
+                }
+                return true;
+            }
+
             $('#btnApproveConfirm').click(function (event) {
                 // ajax call for approval
+                if (!ValidApprove()) {
+                    return false;
+                }
                 $('#Approval_Status').val('1');
                 $('#Approval_ApproverId').val('@CurrentUser.UserId');
                 var applevel = $('#Approval_Level').val();
@@ -653,8 +698,21 @@
                 return false;
             });
 
+            function ValidReject() {
+                var rremarks = $('#Reject_Remarks').val();
+                $('#span_rejectremarkserror').hide();
+                if (rremarks.trim() == "") {
+                    $('#span_rejectremarkserror').show();
+                    return false;
+                }
+                return true;
+            }
+
             $('#btnRejectConfirm').click(function (event) {
                 // ajax call for approval
+                if (!ValidReject()) {
+                    return false;
+                }
                 var rejecttext = $('#Reject_Remarks').val();
                 $('#Approval_Remarks').val(rejecttext);
                 $('#Approval_Status').val('2');

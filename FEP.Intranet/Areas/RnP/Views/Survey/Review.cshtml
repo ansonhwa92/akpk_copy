@@ -80,10 +80,12 @@
                         <div class="tab-pane" id="setting1">
                             <div class="d-flex align-items-center mb-4 mt-2">
                                 <h4 class="color-darkblue mr-auto mb-0">Survey Details<br><span class="small">View survey details below.</span></h4>
+                                <a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Test", "Survey", new { area = "RnP", @id = Model.Survey.ID })" target="_blank"><i class="la la-eye color-secondary"></i>&nbsp;&nbsp;Test Survey</a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-lg-12">
+                                @Html.HiddenFor(model => model.Survey.ID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                 @Html.LabelFor(model => model.Survey.Type, htmlAttributes: new { @class = "control-label" })
                                 @Html.EditorFor(model => model.Survey.Type, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             </div>
@@ -104,7 +106,7 @@
                             <div class="form-group col-lg-12">
                                 @Html.LabelFor(model => model.Survey.Description, htmlAttributes: new { @class = "control-label" })
                                 @*Html.TextAreaFor(model => model.Survey.Description, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly", cols = 48, @rows = 5 })*@
-                                <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Survey.Description)</textarea>
+                                <textarea id="Survey_Description" name="Survey.Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Survey.Description)</textarea>
                             </div>
                         </div>
                         <div class="row">
@@ -142,16 +144,29 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row" style="display:none;">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Survey.Pictures, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Survey.Pictures, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="row" style="display:none;">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Survey.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Survey.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="survey-design">
-                        <div class="tab-pane" id="setting1">
+                        <div class="tab-pane" id="setting2">
                             <div class="d-flex align-items-center mb-4 mt-2">
                                 <h4 class="color-darkblue mr-auto mb-0">Survey Design<br><span class="small">View survey design below.</span></h4>
                             </div>
                         </div>
                         <div class="row">
                             <div id="surveyContainer"></div>
-                            <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;">@Model.Contents.Contents</textarea>
+                            <input type="hidden" id="Contents_ID" name="Contents.ID" class="form-control" value="@Model.Contents.ID" />
+                            <textarea id="Contents_Contents" name="Contents.Contents" class="form-control" rows="3" style="display:none;">@Model.Contents.Contents</textarea>
                         </div>
                     </div>
                 </div>
@@ -228,8 +243,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            var scontent = $('#Contents').val();
-            surveyCreator.text = scontent;
+            //var scontent = $('#Contents').val();
+            //surveyCreator.text = scontent;
 
             $("#StartDate").flatpickr({
                 dateFormat: "d/m/Y",

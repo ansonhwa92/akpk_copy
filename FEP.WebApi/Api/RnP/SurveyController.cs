@@ -41,7 +41,7 @@ namespace FEP.WebApi.Api.RnP
         public IHttpActionResult Post(FilterSurveyModel request)
         {
 
-            var query = db.Survey.Where(p => p.Status != SurveyStatus.Trashed);   //TODO: all!!
+            var query = db.Survey.Where(p => p.Status <= SurveyStatus.Trashed);   //TODO: all!!
 
             var totalCount = query.Count();
 

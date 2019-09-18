@@ -258,8 +258,10 @@
             var dbyear = iyear.toString();
 
             function populateYears() {
+                var currentdate = new Date();
+                var currentyear = currentdate.getFullYear();
                 var startyear = 1900;
-                var endyear = 2200;
+                var endyear = currentyear;
                 var selected = '';
                 for (var i = startyear; i <= endyear; i++) {
                     selected = '';

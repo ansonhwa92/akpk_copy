@@ -80,7 +80,8 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
-                            @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly", cols = 48, @rows = 5 })
+                            @*Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly", cols = 48, @rows = 5 })*@
+                            <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Description)</textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -148,6 +149,16 @@
 @section ContentScript {
     <script type="text/javascript">
         $(document).ready(function () {
+
+            // populate survey contents
+
+            var surveyJSON = $('#Contents').val();
+
+            var survey = new Survey.Model(surveyJSON);
+
+            $("#surveyContainer").Survey({
+                model: survey
+            });
 
             $("#StartDate").flatpickr({
                 dateFormat: "d-m-Y",

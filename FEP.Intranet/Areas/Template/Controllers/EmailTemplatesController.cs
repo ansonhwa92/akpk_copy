@@ -168,7 +168,7 @@ namespace FEP.Intranet.Areas.Template.Controllers
                 
                 if (response.isSuccess)
                 {
-                    LogActivity("Create Email Template");
+                    await LogActivity(Modules.Setting, "Create Email Template");
                     TempData["SuccessMessage"] = "Email Template created successfully";
 
                     
@@ -303,7 +303,8 @@ namespace FEP.Intranet.Areas.Template.Controllers
                 var response = await WepApiMethod.SendApiAsync<EditNotificationTemplateModel>(HttpVerbs.Put, $"Template/Email?id={model.Id}", model);
                 if (response.isSuccess)
                 {
-                    LogActivity("Update Email Template");
+					//aiman edit
+                    await LogActivity(Modules.Setting, "Update Email Template");
                     TempData["SuccessMessage"] = "Email Template updated successfully";
 
                     return RedirectToAction("Details", "EmailTemplates", new { area = "Template", @id = model.Id });
@@ -362,7 +363,8 @@ namespace FEP.Intranet.Areas.Template.Controllers
             var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Delete, $"Template/Email?id={id}");
             if (response.isSuccess)
             {
-                LogActivity("Delete Email Template");
+				//aiman edit
+                await LogActivity(Modules.Setting, "Delete Email Template");
 
                 TempData["SuccessMessage"] = "Email Template successfully deleted.";
                 return RedirectToAction("List");

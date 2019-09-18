@@ -113,8 +113,8 @@ namespace FEP.Intranet.Areas.SLAReminder.Controllers
                 var response = await WepApiMethod.SendApiAsync<EditSLAReminderModel>(HttpVerbs.Put, $"Reminder/SLA/?id={model.Id}", model);
                 if(response.isSuccess)
                 {
-                    LogActivity("Update SLA Reminder Settings");
-                    TempData["SuccessMessage"] = "SLA Reminder updated successfully";
+                    await LogActivity(Modules.Setting, "Update SLA Reminder Settings");
+					TempData["SuccessMessage"] = "SLA Reminder updated successfully";
 
                     return RedirectToAction("List");
                 }

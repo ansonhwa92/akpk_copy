@@ -708,6 +708,7 @@
     <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\Create.cshtml" />
     <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\Edit.cshtml" />
     <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\Delete.cshtml" />
+    <Content Include="Areas\eEvent\Views\PublicEvent\Event_Setting.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

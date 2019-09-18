@@ -4,6 +4,7 @@ using FEP.WebApiModel;
 using FEP.WebApiModel.PublicEvent;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -277,22 +278,147 @@ namespace FEP.WebApi.Api.eEvent
 		public bool Delete(int id)
 		{
 			var model = db.PublicEvent.Where(u => u.Id == id).FirstOrDefault();
-
 			if (model != null)
 			{
 				model.Display = false;
-
 				db.PublicEvent.Attach(model);
 				db.Entry(model).Property(m => m.Display).IsModified = true;
 				db.Configuration.ValidateOnSaveEnabled = false;
-
 				db.SaveChanges();
-
 				return true;
 			}
-
 			return false;
-
 		}
+
+
+
+		//Submit Public Event for Verification
+		[Route("api/eEvent/PublicEvent/SubmitToVerify")] 
+		public string SubmitToVerify(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.PendingforVerification;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
+
+		//First Approved Public Event 
+		[Route("api/eEvent/PublicEvent/FirstApproved")]
+		public string FirstApproved(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.VerifiedbyFirstApprover;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
+
+		//Second Approved Public Event 
+		[Route("api/eEvent/PublicEvent/SecondApproved")]
+		public string SecondApproved(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.VerifiedbySecondApprover;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
+
+		//Final Approved Public Event 
+		[Route("api/eEvent/PublicEvent/FinalApproved")]
+		public string FinalApproved(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.Approved;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
+
+		//Reject Approved Public Event 
+		[Route("api/eEvent/PublicEvent/RejectPublicEvent")]
+		public string RejectPublicEvent(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.RejectNeedToEdit;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
+
+		//Cancel Approved Public Event 
+		[Route("api/eEvent/PublicEvent/CancelPublicEvent")]
+		public string CancelPublicEvent(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.Cancelled;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
+
+
+
 	}
 }

@@ -25,7 +25,6 @@
                     }
                 },
 				columns: [
-
 					 {
                         sortable: false,
                         render: function (data, type, row, meta) {
@@ -94,11 +93,31 @@
                             var action = "";
 
                             action = '<div class="icon-action">'
-                                    +'<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '?origin=fromlist" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                                    +'<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-									+'<a href="@Url.Action("Delete", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
-								    +'<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Verify"><i class="la la-edit text-muted"></i></i></a>'
-									+ '</div>';
+                            action +='<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '?origin=fromlist" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+                            action +='<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=fromlist" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+							action += '<a href="@Url.Action("Delete", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+
+							if (row.EventStatus == 0) {
+							//Verify By Admin Event
+							action +='<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toverify" data-toggle="tooltip" data-placement="top" title="Verify"><i class="la la-edit text-muted"></i></i></a>'
+							}
+
+							if (row.EventStatus == 1) {
+								//Approve By Approver1
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove1" data-toggle="tooltip" data-placement="top" title="Verify"><i class="la la-edit text-muted"></i></i></a>'
+							}
+
+							if (row.EventStatus == 2) {
+								//Approve By Approver2
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove2" data-toggle="tooltip" data-placement="top" title="Verify"><i class="la la-edit text-muted"></i></i></a>'
+							}
+
+							if (row.EventStatus == 3) {
+								//Approve By Approver3
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove3" data-toggle="tooltip" data-placement="top" title="Verify"><i class="la la-edit text-muted"></i></i></a>'
+							}
+
+							action +='</div>';
 
                             return action;
                         }

@@ -75,18 +75,18 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		public IEnumerable<SelectListItem> UserIds { get; set; }
 
-		[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		public HttpPostedFileBase SpeakerPicture { get; set; }
+		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
+		//public HttpPostedFileBase SpeakerPicture { get; set; }
 
-		[Display(Name = "SpPictureName", ResourceType = typeof(Language.Event))]
-		public string SpeakerPictureName { get; set; }
+		//[Display(Name = "SpPictureName", ResourceType = typeof(Language.Event))]
+		//public string SpeakerPictureName { get; set; }
 
 
-		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
-		public HttpPostedFileBase SpeakerAttachment { get; set; }
+		//[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
+		//public HttpPostedFileBase SpeakerAttachment { get; set; }
 
-		[Display(Name = "SpAttachmentName", ResourceType = typeof(Language.Event))]
-		public string SpeakerAttachmentName { get; set; }
+		//[Display(Name = "SpAttachmentName", ResourceType = typeof(Language.Event))]
+		//public string SpeakerAttachmentName { get; set; }
 	}
 
 	public class CreateEventSpeakerModel
@@ -157,13 +157,13 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 
 
-		[Required]
-		[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		public HttpPostedFileBase SpeakerPicture { get; set; }
+		//[Required]
+		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
+		//public HttpPostedFileBase SpeakerPicture { get; set; }
 
-		[Required]
-		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
-		public HttpPostedFileBase SpeakerAttachment { get; set; }
+		//[Required]
+		//[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
+		//public HttpPostedFileBase SpeakerAttachment { get; set; }
 	}
 
 
@@ -235,19 +235,19 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		public IEnumerable<SelectListItem> UserIds { get; set; }
 
-		[Required]
-		[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		public HttpPostedFileBase SpeakerPicture { get; set; }
+		//[Required]
+		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
+		//public HttpPostedFileBase SpeakerPicture { get; set; }
 
-		[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		public string SpeakerPictureName { get; set; }
+		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
+		//public string SpeakerPictureName { get; set; }
 
-		[Required]
-		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
-		public HttpPostedFileBase SpeakerAttachment { get; set; }
+		//[Required]
+		//[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
+		//public HttpPostedFileBase SpeakerAttachment { get; set; }
 
-		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
-		public string SpeakerAttachmentName { get; set; }
+		//[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
+		//public string SpeakerAttachmentName { get; set; }
 	}
 
 	public class DetailsEventSpeakerModel
@@ -318,17 +318,17 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		public IEnumerable<SelectListItem> UserIds { get; set; }
 
-		[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		public HttpPostedFileBase SpeakerPicture { get; set; }
+		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
+		//public HttpPostedFileBase SpeakerPicture { get; set; }
 
-		[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		public string SpeakerPictureName { get; set; }
+		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
+		//public string SpeakerPictureName { get; set; }
 
-		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
-		public HttpPostedFileBase SpeakerAttachment { get; set; }
+		//[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
+		//public HttpPostedFileBase SpeakerAttachment { get; set; }
 
-		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
-		public string SpeakerAttachmentName { get; set; }
+		//[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
+		//public string SpeakerAttachmentName { get; set; }
 	}
 
 

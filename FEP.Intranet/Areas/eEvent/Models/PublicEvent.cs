@@ -104,9 +104,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Proof of Approval")]
 		public string GetFileName { get; set; }
 
-
-
-
+		public string origin { get; set; }
+		 
+		public string RefNo { get; set; }
 
 
 		//File

@@ -86,8 +86,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					AddressCity = model.AddressCity,
 					State = model.State,
 					MaritialStatus = model.MaritialStatus,
-					SpeakerPictureName = model.SpeakerPicture.FileName,
-					SpeakerAttachmentName = model.SpeakerAttachment.FileName,
+					//SpeakerPictureName = model.SpeakerPicture.FileName,
+					//SpeakerAttachmentName = model.SpeakerAttachment.FileName,
 				};
 
 				var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eEvent/EventSpeaker", modelapi);
@@ -140,8 +140,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				AddressCity = response.Data.AddressCity,
 				State = response.Data.State,
 				MaritialStatus = response.Data.MaritialStatus,
-				SpeakerPictureName = response.Data.SpeakerPictureName,
-				SpeakerAttachmentName = response.Data.SpeakerAttachmentName,
+				//SpeakerPictureName = response.Data.SpeakerPictureName,
+				//SpeakerAttachmentName = response.Data.SpeakerAttachmentName,
 			};
 
 			model.UserIds = new SelectList(await GetUsers(), "Id", "Name", 0);
@@ -229,8 +229,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				AddressCity = response.Data.AddressCity,
 				State = response.Data.State,
 				MaritialStatus = response.Data.MaritialStatus,
-				SpeakerPictureName = response.Data.SpeakerPictureName,
-				SpeakerAttachmentName = response.Data.SpeakerAttachmentName,
+				//SpeakerPictureName = response.Data.SpeakerPictureName,
+				//SpeakerAttachmentName = response.Data.SpeakerAttachmentName,
 			};
 
 			model.UserIds = new SelectList(await GetUsers(), "Id", "Name", 0);

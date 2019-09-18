@@ -58,30 +58,21 @@
     <Compile Include="eLearning.cs" />
     <Compile Include="eEvent.cs" />
     <Compile Include="Email.cs" />
+    <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201909061254150_fr1.cs" />
-    <Compile Include="Migrations\201909061254150_fr1.Designer.cs">
-      <DependentUpon>201909061254150_fr1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909081033299_0809_1.cs" />
-    <Compile Include="Migrations\201909081033299_0809_1.Designer.cs">
-      <DependentUpon>201909081033299_0809_1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909081250356_0809_2.cs" />
-    <Compile Include="Migrations\201909081250356_0809_2.Designer.cs">
-      <DependentUpon>201909081250356_0809_2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
     <Compile Include="Migrations\mhafeez.cs" />
+    <Compile Include="Migrations\tajul.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publication.cs" />
     <Compile Include="Research.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Setting.cs" />
+    <Compile Include="SLAReminder.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -93,17 +84,6 @@
       <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
       <Name>FEP.Language</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909061254150_fr1.resx">
-      <DependentUpon>201909061254150_fr1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909081033299_0809_1.resx">
-      <DependentUpon>201909081033299_0809_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909081250356_0809_2.resx">
-      <DependentUpon>201909081250356_0809_2.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

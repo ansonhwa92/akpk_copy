@@ -18,8 +18,9 @@
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="#">Home</a></li>
 								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
-								<li class="breadcrumb-item"><a href="#">Internal Event</a></li>
-								<li class="breadcrumb-item active" aria-current="page"><a href="#">Event Category</a></li>
+								<li class="breadcrumb-item"><a href="#">Manage Public Event</a></li>
+								<li class="breadcrumb-item"><a href="#">Event Category</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
 							</ol>
 						</nav>
 					</div>
@@ -103,7 +104,7 @@
 													<div class="box-contain">
 														<div class="card text-center">
 															<span>Media Interview</span>
-															<a href='@Url.Action("List", "MediaInterview", new { area = "eEvent" })'></a>
+															<a href='@Url.Action("Create", "MediaInterview", new { area = "eEvent" })'></a>
 														</div>
 													</div>
 												</div>
@@ -111,6 +112,7 @@
 													<div class="box-contain">
 														<div class="card text-center">
 															<span>Exhibition/Roadshow</span>
+															<a href='@Url.Action("Create", "ExhibitionRoadshowRequest", new { area = "eEvent" })'></a>
 														</div>
 													</div>
 												</div>

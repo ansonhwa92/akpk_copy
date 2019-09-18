@@ -40,6 +40,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -71,6 +72,8 @@
     <Compile Include="Administration\Sector.cs" />
     <Compile Include="Administration\User.cs" />
     <Compile Include="Auth\Registration.cs" />
+    <Compile Include="eEvent\EventExternalExhibitor.cs" />
+    <Compile Include="eEvent\EventSpeaker.cs" />
     <Compile Include="eEvent\ExhibitionRoadshowRequest.cs" />
     <Compile Include="eLearning\CourseCategory.cs" />
     <Compile Include="Home\ProfileModel.cs" />
@@ -87,6 +90,8 @@
     <Compile Include="Administration\Individual.cs" />
     <Compile Include="Administration\Staff.cs" />
     <Compile Include="Setting\Account.cs" />
+    <Compile Include="SLAReminder\SLAReminder.cs" />
+    <Compile Include="Template\EmailTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FEP.Language\FEP.Language.csproj">

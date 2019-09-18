@@ -1,0 +1,133 @@
+﻿@model FEP.WebApiModel.eEvent.EditEventExternalExhibitorModel
+
+@{
+	ViewBag.Title = "Event External Exhibitor";
+	Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav {
+
+	<div class="title_header">
+		<div class="title-header-container">
+			<div class="container">
+				<!-- if have button -->
+				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "EventExternalExhibitor", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+				<div class="header-col-left">
+					<div id="breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
+								<li class="breadcrumb-item"><a href="#">Manage External Exhibitor</a></li>
+								<li class="breadcrumb-item"><a href="#">External Exhibitor List</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+							</ol>
+						</nav>
+					</div>
+					<h1 class="page-title text-white">Edit External Exhibitor</h1>
+					@*<div class="header-text">List of created event</div>*@
+				</div>
+			</div>
+		</div>
+	</div>
+
+}
+
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+	@Html.HiddenFor(model => model.Id)
+	@*@Html.HiddenFor(model => model.origin)*@
+	<div class="row">
+		<div class="col-xl-3 col-md-3 col-sm-4 my-2">
+			<div class="sidebar-left">
+				<!-- Steps -->
+				<div class="sidebar-inner sticky">
+					<ul class="steps steps-vertical">
+						<li class="step-item complete">
+							<a href="" class="step-link">
+								<span class="step-number">1</span>
+								<span class="step-title">External Exhibitor List</span>
+							</a>
+						</li>
+						<li class="step-item active">
+							<a href="" class="step-link">
+								<span class="step-number">2</span>
+								<span class="step-title">Edit External Exhibitor</span>
+							</a>
+						</li>
+						<!-- rejected -->
+						<!-- <li class="step-item rejected">
+							<a href="" class="step-link">
+								<span class="step-number">2</span>
+								<span class="step-title">Fill Up Event Details</span>
+							</a>
+						</li> -->
+						@*<li class="step-item disabled">
+								<a href="" class="step-link">
+									<span class="step-number">3</span>
+									<span class="step-title">Event Verification Approval</span>
+								</a>
+							</li>*@
+					</ul>
+					<!-- End Steps -->
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+			<!-- Start Form -->
+			<div class="border-form rounded-top">
+				<form>
+					<div class="form-container">
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-12" })
+								<div class="col-md-12">
+									@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+									@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.PhoneNo, htmlAttributes: new { @class = "control-label col-md-12" })
+								<div class="col-md-12">
+									@Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @class = "form-control" } })
+									@Html.ValidationMessageFor(model => model.PhoneNo, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-12" })
+								<div class="col-md-12">
+									@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+									@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.Remark, htmlAttributes: new { @class = "control-label col-md-12" })
+								<div class="col-md-12">
+									@Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control" } })
+									@Html.ValidationMessageFor(model => model.Remark, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</form>
+			</div>
+			<div class="border-left border-right border-bottom p-3 rounded-bottom">
+				<a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
+				<button class="btn btn-secondary" type="submit">Save</button>
+			</div>
+		</div>
+	</div>
+}

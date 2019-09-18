@@ -1,0 +1,107 @@
+﻿@{
+	ViewBag.Title = "Event Setting";
+	Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav {
+
+	<div class="title_header">
+		<div class="title-header-container">
+			<div class="container">
+				<!-- if have button -->
+				@*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+				<div class="header-col-left">
+					<div id="breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+							</ol>
+						</nav>
+					</div>
+					<h1 class="page-title text-white">Event Setting</h1>
+					@*<div class="header-text">List of event setting</div>*@
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+
+<div class="content-container">
+	<div class="container">
+		<div class="row">
+			<!-- Start content leftbar -->
+			<div class="col-xl-3 col-md-3 col-sm-4 my-2">
+				<div id="page-nav" class="sidebar-left page-nav">
+					<div data-perfect-scrollbar>
+						<div class="sidebar-inner">
+							<ul class="steps steps-vertical nav">
+								<li class="step-item active">
+									<a href="#step1" class="step-link" data-toggle="tab">
+										<span class="step-number">1</span>
+										<span class="step-title">Select Event Setting</span>
+									</a>
+								</li>
+							</ul>
+							<!-- End Steps -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- End content leftbar -->
+			<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+				<!-- Start Tab Content -->
+				<div class="border-form rounded-top">
+					<div class="tab-content">
+						<div class="tab-pane active" id="step1">
+							<form>
+								<div class="form-container form-container-w100">
+									<div class="mt-2 mb-4 pb-1">
+										<h4 class="color-darkblue mb-0">Event Setting</h4>
+										@*<h6 class="font-weight-normal">Select Event Category</h6>*@
+									</div>
+									@*<div class="d-flex align-items-center mb-3">
+										<span class="badge badge-light px-3 py-1 mr-2">A</span><span class="sub-Title color-darkblue">Event Setting</span>
+									</div>*@
+									<div>
+										<div class="mxw-660">
+											<div class="row">
+												<div class="col-lg-4">
+													<div class="box-contain">
+														<div class="card text-center">
+															<span>Event Speaker</span>
+															<a href='@Url.Action("List", "EventSpeaker", new { area = "eEvent" })'></a>
+														</div>
+													</div>
+												</div>
+												<div class="col-lg-4">
+													<div class="box-contain">
+														<div class="card text-center">
+															<span>Event External Exhibitor</span>
+															<a href='@Url.Action("List", "EventExternalExhibitor", new { area = "eEvent" })'></a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+
+									</div>
+								</div>
+							</form>
+							<!-- End Form -->
+							<!-- Action Button -->
+							<div class="border-top p-3 rounded-bottom">
+								<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("Dashboard", "Home", new { area = "" })'>Back</a>
+							</div>
+							<!-- End Action Button -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Wrapper -->
+</div>

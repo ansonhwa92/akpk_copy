@@ -61,6 +61,42 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string ExhibitorEmail {
+            get {
+                return ResourceManager.GetString("ExhibitorEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exhibitor Name.
+        /// </summary>
+        public static string ExhibitorName {
+            get {
+                return ResourceManager.GetString("ExhibitorName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone No..
+        /// </summary>
+        public static string ExhibitorPhoneNo {
+            get {
+                return ResourceManager.GetString("ExhibitorPhoneNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remark.
+        /// </summary>
+        public static string ExhibitorRemark {
+            get {
+                return ResourceManager.GetString("ExhibitorRemark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End Date.
         /// </summary>
         public static string ExRoadEndDate {
@@ -97,11 +133,38 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string ExRoadExhibitionStatusDesc {
+            get {
+                return ResourceManager.GetString("ExRoadExhibitionStatusDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Location.
         /// </summary>
         public static string ExRoadLocation {
             get {
                 return ResourceManager.GetString("ExRoadLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nominee.
+        /// </summary>
+        public static string ExRoadNomineeId {
+            get {
+                return ResourceManager.GetString("ExRoadNomineeId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nominee.
+        /// </summary>
+        public static string ExRoadNomineeName {
+            get {
+                return ResourceManager.GetString("ExRoadNomineeName", resourceCulture);
             }
         }
         
@@ -151,6 +214,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Received By.
+        /// </summary>
+        public static string ExRoadReceivedBys {
+            get {
+                return ResourceManager.GetString("ExRoadReceivedBys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Received Date.
         /// </summary>
         public static string ExRoadReceivedDate {
@@ -174,6 +246,195 @@ namespace Language {
         public static string ExRoadStartTime {
             get {
                 return ResourceManager.GetString("ExRoadStartTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address.
+        /// </summary>
+        public static string SpAddress1 {
+            get {
+                return ResourceManager.GetString("SpAddress1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address.
+        /// </summary>
+        public static string SpAddress2 {
+            get {
+                return ResourceManager.GetString("SpAddress2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support Document.
+        /// </summary>
+        public static string SpAttachment {
+            get {
+                return ResourceManager.GetString("SpAttachment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support Document.
+        /// </summary>
+        public static string SpAttachmentName {
+            get {
+                return ResourceManager.GetString("SpAttachmentName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to City.
+        /// </summary>
+        public static string SpCity {
+            get {
+                return ResourceManager.GetString("SpCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date Assigned.
+        /// </summary>
+        public static string SpDateAssigned {
+            get {
+                return ResourceManager.GetString("SpDateAssigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date of Birth.
+        /// </summary>
+        public static string SpDateOfBirth {
+            get {
+                return ResourceManager.GetString("SpDateOfBirth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string SpEmail {
+            get {
+                return ResourceManager.GetString("SpEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Experience.
+        /// </summary>
+        public static string SpExperience {
+            get {
+                return ResourceManager.GetString("SpExperience", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maritial Status.
+        /// </summary>
+        public static string SpMaritialStatus {
+            get {
+                return ResourceManager.GetString("SpMaritialStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone No..
+        /// </summary>
+        public static string SpPhoneNo {
+            get {
+                return ResourceManager.GetString("SpPhoneNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile Picture.
+        /// </summary>
+        public static string SpPicture {
+            get {
+                return ResourceManager.GetString("SpPicture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile Picture.
+        /// </summary>
+        public static string SpPictureName {
+            get {
+                return ResourceManager.GetString("SpPictureName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Poscode.
+        /// </summary>
+        public static string SpPoscode {
+            get {
+                return ResourceManager.GetString("SpPoscode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Religion.
+        /// </summary>
+        public static string SpReligion {
+            get {
+                return ResourceManager.GetString("SpReligion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remark.
+        /// </summary>
+        public static string SpRemark {
+            get {
+                return ResourceManager.GetString("SpRemark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        public static string SpState {
+            get {
+                return ResourceManager.GetString("SpState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speaker Type.
+        /// </summary>
+        public static string SpType {
+            get {
+                return ResourceManager.GetString("SpType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speaker Type.
+        /// </summary>
+        public static string SpTypeDesc {
+            get {
+                return ResourceManager.GetString("SpTypeDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speaker Name.
+        /// </summary>
+        public static string SpUserId {
+            get {
+                return ResourceManager.GetString("SpUserId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speaker Name.
+        /// </summary>
+        public static string SpUserName {
+            get {
+                return ResourceManager.GetString("SpUserName", resourceCulture);
             }
         }
     }

@@ -134,6 +134,7 @@ namespace FEP.Model
 		public DbSet<EventExternalExhibitor> EventExternalExhibitor { get; set; }
 		public DbSet<MediaFile> MediaFile { get; set; }
 		public DbSet<EventCategory> EventCategory { get; set; }
+		public DbSet<SpeakerFile> SpeakerFile { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -141,5 +142,11 @@ namespace FEP.Model
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
         }
 
-	}
+        public DbSet<NotificationTemplate> NotificationTemplates { get; set; }
+        public DbSet<TemplateParameters> TemplateParameters { get; set; }
+        public DbSet<SLAReminder> SLAReminder { get; set; }
+        public DbSet<SLAReminderStatus> SLAReminderStatus { get; set; }
+        public DbSet<BulkNotification> BulkNotification { get; set; }
+        public DbSet<ParameterGroup> ParameterGroup { get; set; }
+    }
 }

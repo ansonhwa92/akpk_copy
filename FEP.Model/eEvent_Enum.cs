@@ -23,26 +23,44 @@ namespace FEP.Model
 
 	public enum MediaType
 	{
-		[Display(Name = "Panel Interview")]
-		PanelInterview,
-		[Display(Name = "Group Interview")]
-		GroupInterview,
-		[Display(Name = "Sequential Interview")]
-		SequentialInterview,
-		[Display(Name = "Formal / Informal Interview")]
-		FormalInformalInterview,
-		
+		[Display(Name = "Broadcast")]
+		Broadcast,
+
+		[Display(Name = "Internet")]
+		Internet,
+
+		[Display(Name = "Magazine")]
+		Magazine,
+
+		[Display(Name = "Newspaper")]
+		Newspaper,
+
+		[Display(Name = "Pres Agency")]
+		PressAgency
 	}
 
 	public enum EventStatus
 	{
-		New,
-		PendingToVerified,
-		Approval,
-		Approved, //==Published
-		RequestToModify,
-		RequestToCancel,
-		Cancelled
+		[Display(Name = "New")]
+		New, //If Saved Public Event
+
+		[Display(Name = "Pending")]
+		PendingforVerification, //If Admin Public Event Submit
+
+		[Display(Name = "Pending")]
+		VerifiedbyFirstApprover, //If Approver 1 Submit
+
+		[Display(Name = "Pending")]
+		VerifiedbySecondApprover, //If Approver 1 Submit
+
+		[Display(Name = "Approved")]
+		Approved, //If Approver 3 Approved
+
+		[Display(Name = "Amending")]
+		RejectNeedToEdit, //If Approver 3 Rejected
+
+		[Display(Name = "Rejected")]
+		Cancelled //If Admin Cancel Public Event 
 	}
 
 	public enum Ticket
@@ -76,7 +94,9 @@ namespace FEP.Model
 
 	public enum SpeakerType
 	{
+		[Display(Name = "Internal")]
 		FEP,
+		[Display(Name = "External")]
 		OBS
 	}
 
@@ -116,5 +136,31 @@ namespace FEP.Model
 		New,
 		Cancelled,
 		Approved
+	}
+
+	public enum MaritialStatus
+	{
+		Married,
+		Single,
+		Divorced,
+		Widowed
+	}
+
+	public enum Religion
+	{
+		Islam,
+		Hindu,
+		Buddha, 
+		Christian
+	}
+
+	public enum MediaLanguage
+	{
+		[Display(Name = "Bahasa Malaysia")]
+		BahasaMalaysia,
+		English,
+		Tamil,
+		Mandarin,
+		Cantonese,
 	}
 }

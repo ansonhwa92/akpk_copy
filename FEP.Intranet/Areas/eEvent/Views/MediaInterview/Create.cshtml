@@ -19,7 +19,7 @@
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="#">Home</a></li>
 								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
-								<li class="breadcrumb-item"><a href="#">Media Interview</a></li>
+								<li class="breadcrumb-item"><a href="#">Manage Media Interview</a></li>
 								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
 							</ol>
 						</nav>
@@ -71,11 +71,11 @@
 								</a>
 							</li>
 							@*<li class="step-item disabled">
-								<a href="#step5" class="step-link" data-toggle="tab">
-									<span class="step-number">5</span>
-									<span class="step-title">Review & Submission</span>
-								</a>
-							</li>*@
+									<a href="#step5" class="step-link" data-toggle="tab">
+										<span class="step-number">5</span>
+										<span class="step-title">Review & Submission</span>
+									</a>
+								</li>*@
 						</ul>
 						<!-- End Steps -->
 					</div>
@@ -217,22 +217,16 @@
 						</div>
 
 						<div class="row">
-							<div class="form-group col-lg-12">
+							<div class="form-group col-lg-6">
 								@Html.LabelFor(model => model.Time, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect" } })
-									@Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
-								</div>
+								@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect" } })
+								@Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
 							</div>
-						</div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
+							<div class="form-group col-lg-6">
 								@Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Language, new { htmlAttributes = new { @class = "form-control", @placeholder = "- Language -" } })
-									@Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
-								</div>
+								@Html.EnumDropDownListFor(model => model.Language, "-Select Language-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+								@Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
@@ -240,7 +234,7 @@
 							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.Topic, htmlAttributes: new { @class = "control-label col-lg-12" })
 								<div class="col-lg-12">
-									@Html.EditorFor(model => model.Topic, new { htmlAttributes = new { @class = "form-control" , @placeholder = "Be clear and descriptive"} })
+									@Html.EditorFor(model => model.Topic, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
 									@Html.ValidationMessageFor(model => model.Topic, "", new { @class = "text-danger" })
 								</div>
 							</div>
@@ -266,7 +260,7 @@
 							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.RepDesignation, htmlAttributes: new { @class = "control-label col-lg-12" })
 								<div class="col-lg-12">
-									@Html.EditorFor(model => model.RepDesignation, new { htmlAttributes = new { @class = "form-control" , @placeholder = "Be clear and descriptive"} })
+									@Html.EditorFor(model => model.RepDesignation, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
 									@Html.ValidationMessageFor(model => model.RepDesignation, "", new { @class = "text-danger" })
 								</div>
 							</div>

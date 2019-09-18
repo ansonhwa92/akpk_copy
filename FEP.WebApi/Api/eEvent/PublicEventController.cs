@@ -4,6 +4,7 @@ using FEP.WebApiModel;
 using FEP.WebApiModel.PublicEvent;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -26,6 +27,7 @@ namespace FEP.WebApi.Api.eEvent
 		}
 
 		[Route("api/eEvent/PublicEvent/GetEventList")]
+		[HttpPost]
 		public IHttpActionResult Post(FilterPublicEventModel request)
 		{
 
@@ -35,9 +37,9 @@ namespace FEP.WebApi.Api.eEvent
 
 			//advance search
 			query = query.Where(s => (request.EventTitle == null || s.EventTitle.Contains(request.EventTitle))
-			   && (request.EventCategoryId == null || s.EventCategoryId == request.EventCategoryId)
-			   && (request.TargetedGroup == null || s.TargetedGroup == request.TargetedGroup)
-			   && (request.EventStatus == null || s.EventStatus == request.EventStatus)
+			   //&& (request.EventCategoryId == null || s.EventCategoryId == request.EventCategoryId)
+			   //&& (request.TargetedGroup == null || s.TargetedGroup == request.TargetedGroup)
+			   //&& (request.EventStatus.GetDisplayName() == null || s.EventStatus.GetDisplayName() == request.EventStatus.GetDisplayName())
 			   );
 
 			//quick search 
@@ -46,9 +48,9 @@ namespace FEP.WebApi.Api.eEvent
 				var value = request.search.value.Trim();
 
 				query = query.Where(p => p.EventTitle.Contains(value)
-				 || p.EventCategory.CategoryName.Contains(value)
-				|| p.TargetedGroup.GetDisplayName().Contains(value)
-				|| p.EventStatus.GetDisplayName().Contains(value)
+				//|| p.EventCategory.CategoryName.Contains(value)
+				//|| p.TargetedGroup.GetDisplayName().Contains(value)
+				//|| p.EventStatus.GetDisplayName().Contains(value)
 				);
 			}
 
@@ -75,6 +77,19 @@ namespace FEP.WebApi.Api.eEvent
 
 						break;
 
+					case "EventObjective":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.EventObjective);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.EventObjective);
+						}
+
+						break;
+
 					case "EventCategoryId":
 
 						if (sortAscending)
@@ -88,15 +103,54 @@ namespace FEP.WebApi.Api.eEvent
 
 						break;
 
-					case "TargetedGroup":
+					case "StartDate":
 
 						if (sortAscending)
 						{
-							query = query.OrderBy(o => o.TargetedGroup.ToString());
+							query = query.OrderBy(o => o.StartDate);
 						}
 						else
 						{
-							query = query.OrderByDescending(o => o.TargetedGroup.ToString());
+							query = query.OrderByDescending(o => o.StartDate);
+						}
+
+						break;
+
+					case "EndDate":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.EndDate);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.EndDate);
+						}
+
+						break;
+
+					case "Venue":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.Venue);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.Venue);
+						}
+
+						break;
+
+					case "Fee":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.Fee);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.Fee);
 						}
 
 						break;
@@ -124,6 +178,7 @@ namespace FEP.WebApi.Api.eEvent
 			{
 				query = query.OrderByDescending(o => o.EventTitle);
 			}
+						
 
 			var data = query.Skip(request.start).Take(request.length)
 				.Select(s => new PublicEventModel
@@ -133,8 +188,16 @@ namespace FEP.WebApi.Api.eEvent
 					EventCategoryId = s.EventCategoryId,
 					EventCategoryName = s.EventCategory.CategoryName,
 					TargetedGroup = s.TargetedGroup,
-					EventStatus = s.EventStatus
+					EventStatus = s.EventStatus,
+					//EventStatusDesc = s.EventStatus.GetDisplayName(),
+					StartDate = s.StartDate,
+					EndDate = s.EndDate,
+					EventObjective = s.EventObjective,
+					Venue = s.Venue,
+					Fee = s.Fee,
 				}).ToList();
+
+			data.ForEach(s => s.EventStatusDesc = s.EventStatus.GetDisplayName());
 
 			return Ok(new DataTableResponse
 			{
@@ -143,32 +206,31 @@ namespace FEP.WebApi.Api.eEvent
 				recordsFiltered = filteredCount,
 				data = data.ToArray()
 			});
-
 		}
 
-		//List
-		public List<PublicEventModel> Get()
-		{
-			var model = db.PublicEvent.Where(i => i.Display).Select(i => new PublicEventModel
-			{
-				Id = i.Id,
-				EventTitle = i.EventTitle,
-				EventObjective = i.EventObjective,
-				StartDate = i.StartDate,
-				EndDate = i.EndDate,
-				Venue = i.Venue,
-				Fee = i.Fee,
-				EventStatus = i.EventStatus,
-				EventCategoryId = i.EventCategoryId,
-				EventCategoryName = i.EventCategory.CategoryName,
-				TargetedGroup = i.TargetedGroup,
-				ParticipantAllowed = i.ParticipantAllowed,
-				Reasons = i.Reasons,
-				Remarks = i.Remarks
-			}).ToList();
+		////List
+		//public List<PublicEventModel> Get()
+		//{
+		//	var model = db.PublicEvent.Where(i => i.Display).Select(i => new PublicEventModel
+		//	{
+		//		Id = i.Id,
+		//		EventTitle = i.EventTitle,
+		//		EventObjective = i.EventObjective,
+		//		StartDate = i.StartDate,
+		//		EndDate = i.EndDate,
+		//		Venue = i.Venue,
+		//		Fee = i.Fee,
+		//		EventStatus = i.EventStatus,
+		//		EventCategoryId = i.EventCategoryId,
+		//		EventCategoryName = i.EventCategory.CategoryName,
+		//		TargetedGroup = i.TargetedGroup,
+		//		ParticipantAllowed = i.ParticipantAllowed,
+		//		Reasons = i.Reasons,
+		//		Remarks = i.Remarks
+		//	}).ToList();
 
-			return model;
-		}
+		//	return model;
+		//}
 
 		//Details
 		public PublicEventModel Get(int id)
@@ -216,22 +278,147 @@ namespace FEP.WebApi.Api.eEvent
 		public bool Delete(int id)
 		{
 			var model = db.PublicEvent.Where(u => u.Id == id).FirstOrDefault();
-
 			if (model != null)
 			{
 				model.Display = false;
-
 				db.PublicEvent.Attach(model);
 				db.Entry(model).Property(m => m.Display).IsModified = true;
 				db.Configuration.ValidateOnSaveEnabled = false;
-
 				db.SaveChanges();
-
 				return true;
 			}
-
 			return false;
-
 		}
+
+
+
+		//Submit Public Event for Verification
+		[Route("api/eEvent/PublicEvent/SubmitToVerify")] 
+		public string SubmitToVerify(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.PendingforVerification;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
+
+		//First Approved Public Event 
+		[Route("api/eEvent/PublicEvent/FirstApproved")]
+		public string FirstApproved(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.VerifiedbyFirstApprover;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
+
+		//Second Approved Public Event 
+		[Route("api/eEvent/PublicEvent/SecondApproved")]
+		public string SecondApproved(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.VerifiedbySecondApprover;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
+
+		//Final Approved Public Event 
+		[Route("api/eEvent/PublicEvent/FinalApproved")]
+		public string FinalApproved(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.Approved;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
+
+		//Reject Approved Public Event 
+		[Route("api/eEvent/PublicEvent/RejectPublicEvent")]
+		public string RejectPublicEvent(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.RejectNeedToEdit;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
+
+		//Cancel Approved Public Event 
+		[Route("api/eEvent/PublicEvent/CancelPublicEvent")]
+		public string CancelPublicEvent(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.Cancelled;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
+
+
+
 	}
 }

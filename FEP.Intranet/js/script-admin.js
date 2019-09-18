@@ -245,11 +245,11 @@
                 boxEvent.click(function() {
                     $("#selecteventcategory .box-contain .card").removeClass('active');
                     $(this).addClass('active');
-                }); 
+                });
 
             },
 
-             //For height Action Log Media Interview to trigger scroll
+            //For height Action Log Media Interview to trigger scroll
             actionLogHeight: function() {
                 var formContainerH = $(".form-container").innerHeight();
                 //alert (formContainer);
@@ -258,9 +258,48 @@
                 });
 
 
+            },
+
+            showhidebutton: function() {
+                $(".showcontent").on('show.bs.collapse', function() {
+                    $(this).find("a.btn").removeClass("color-secondary btn-default").addClass("color-white btn-secondary");
+                    $(this).find("a.btn").text(function() {
+                        //change text based on condition
+                        return "HIDE";
+                    });
+                    $(this).find("a.btn").append('<i class="la la-comment-o color-white pl-1"></i>');
+                }).on('hide.bs.collapse', function() {
+                    $(this).find("a.btn").removeClass("color-white btn-secondary").addClass("color-secondary btn-default");
+                    $(this).find("a.btn").text(function() {
+                        //change text based on condition
+                        return "ADD";
+                    });
+                    $(this).find("a.btn").append('<i class="la la-comment-o color-secondary pl-1"></i>');
+                });
+
+            },
+
+            //View display
+            viewhidebutton: function() {
+                $("#essdetails .showcontent").on('show.bs.collapse', function() {
+                    $(this).find("a.btn").removeClass("color-secondary btn-default").addClass("color-white btn-secondary");
+                    $(this).find("a.btn").text(function() {
+                        //change text based on condition
+                        return "HIDE";
+                    });
+                    $(this).find("a.btn").append('<i class="la la-comment-o color-white pl-1"></i>');
+                }).on('hide.bs.collapse', function() {
+                    $(this).find("a.btn").removeClass("color-white btn-secondary").addClass("color-secondary btn-default");
+                    $(this).find("a.btn").text(function() {
+                        //change text based on condition
+                        return "VIEW";
+                    });
+                    $(this).find("a.btn").append('<i class="la la-comment-o color-secondary pl-1"></i>');
+                });
+
             }
 
-           
+
 
 
         };
@@ -279,6 +318,8 @@
         akpk.filter();
         akpk.selectCategoryEvent();
         akpk.actionLogHeight();
+        //akpk.showhidebutton();
+        //akpk.viewhidebutton();
 
     });
 

@@ -12,13 +12,17 @@ using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
 {
-	//[LogError(Modules.   )]
 	public class PublicEventController : FEPController
 	{
 		private DbEntities db = new DbEntities();
 
 		// GET: eEvent/PublicEvent
 		public ActionResult Index()
+		{
+			return View();
+		}
+
+		public ActionResult Event_Setting()
 		{
 			return View();
 		}
@@ -34,35 +38,33 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 		}
 
-		public ActionResult List(FilterPublicEventModel filter)
-		{
-			var e = db.PublicEvent.Where(i => i.Display && (filter.EventTitle == filter.EventTitle))
-				.Select(i => new DetailsPublicEventModel()
-				{
-					Id = i.Id,
-					EventTitle = i.EventTitle,
-					EventObjective = i.EventObjective,
-					EventCategoryId = i.EventCategoryId,
-					EventCategoryName = i.EventCategory.CategoryName,
-					StartDate = i.StartDate,
-					EndDate = i.EndDate,
-					Venue = i.Venue,
-					Fee = i.Fee,
-					EventStatus = i.EventStatus
-				}).ToList();
-
-			ListPublicEventModel model = new ListPublicEventModel(e);
-
-			return View(model);
-		}
-
-		//public ActionResult List()
+		//public ActionResult List(FilterPublicEventModel filter)
 		//{
-		//	return View();
+		//	var e = db.PublicEvent.Where(i => i.Display && (filter.EventTitle == filter.EventTitle))
+		//		.Select(i => new DetailsPublicEventModel()
+		//		{
+		//			Id = i.Id,
+		//			EventTitle = i.EventTitle,
+		//			EventObjective = i.EventObjective,
+		//			EventCategoryId = i.EventCategoryId,
+		//			EventCategoryName = i.EventCategory.CategoryName,
+		//			StartDate = i.StartDate,
+		//			EndDate = i.EndDate,
+		//			Venue = i.Venue,
+		//			Fee = i.Fee,
+		//			EventStatus = i.EventStatus
+		//		}).ToList();
+		//	ListPublicEventModel model = new ListPublicEventModel(e);
+		//	return View(model);
 		//}
 
+		public ActionResult List()
+		{
+			return View();
+		}
+
 		// GET: PublicEvent/Details/5
-		public ActionResult Details(int? id)
+		public ActionResult Details(int? id, string origin)
 		{
 			if (id == null)
 			{
@@ -78,6 +80,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventObjective = i.EventObjective,
 					StartDate = i.StartDate,
 					EndDate = i.EndDate,
+					EventStatus = i.EventStatus,
 					Venue = i.Venue,
 					Fee = i.Fee,
 					ParticipantAllowed = i.ParticipantAllowed,
@@ -90,15 +93,17 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ApprovalName3 = i.Approval3.User.Name,
 					ApprovalId4 = i.ApprovalId4,
 					ApprovalName4 = i.Approval4.User.Name,
-					EventStatus = i.EventStatus,
 					EventCategoryId = i.EventCategoryId,
 					EventCategoryName = i.EventCategory.CategoryName,
 					Reasons = i.Reasons,
 					Remarks = i.Remarks,
-					SpeakerName = i.EventSpeakers.Select(s => s.Name).FirstOrDefault(),
-					ExhibitorName = i.EventExternalExhibitors.Select(s => s.Name).FirstOrDefault(),
+					SpeakerId = i.SpeakerId,
+					SpeakerName = i.EventSpeaker.User.Name,
+					ExternalExhibitorId = i.ExternalExhibitorId,
+					ExternalExhibitorName = i.ExternalExhibitor.User.Name,
 					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
-					//GetFileName = eventfile.FileName
+					origin = origin,
+					RefNo = i.RefNo,
 				}).FirstOrDefault();
 
 			if (e == null)
@@ -118,14 +123,27 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				EventCategoryId = ctgryId,
 			};
 
-			var getcategory = db.EventCategory.Where(c => c.Display)
-				.Select(i => new
-				{
-					Id = i.Id,
-					Name = i.CategoryName
-				});
+			var getcategory = db.EventCategory.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.CategoryName
+			});
+
+			var getspeaker = db.EventSpeaker.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.User.Name
+			});
+
+			var getexhibitor = db.EventExternalExhibitor.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.Name
+			});
 
 			model.CategoryList = new SelectList(getcategory, "Id", "Name", 0);
+			model.SpeakerList = new SelectList(getspeaker, "Id", "Name", 0);
+			model.ExternalExhibitorList = new SelectList(getexhibitor, "Id", "Name", 0);
 
 			return View(model);
 		}
@@ -150,43 +168,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 					EventStatus = EventStatus.New,
 					EventCategoryId = model.EventCategoryId,
+					SpeakerId = model.SpeakerId,
 					Reasons = model.Reasons,
 					Remarks = model.Remarks,
 					CreatedBy = CurrentUser.UserId,
 					CreatedDate = DateTime.Now,
 					Display = true,
-
+					ExternalExhibitorId = model.ExternalExhibitorId,
 				};
 				db.PublicEvent.Add(x);
-
-				if (model.SpeakerName != null)
-				{
-					EventSpeaker eventspeaker = new EventSpeaker
-					{
-						Name = model.SpeakerName,
-						CreatedDate = DateTime.Now,
-						CreatedBy = CurrentUser.UserId,
-						Display = true,
-						EventId = x.Id,
-						DateAssigned = DateTime.Now,
-						SpeakerType = SpeakerType.FEP
-					};
-					db.EventSpeaker.Add(eventspeaker);
-				};
-
-				if (model.ExhibitorName != null)
-				{
-					EventExternalExhibitor externalExhibitor = new EventExternalExhibitor
-					{
-						Name = model.ExhibitorName,
-						Display = true,
-						EventId = x.Id,
-						CreatedDate = DateTime.Now,
-						CreatedBy = CurrentUser.UserId,
-
-					};
-					db.EventExternalExhibitor.Add(externalExhibitor);
-				};
 
 				string path = "FileUploaded/";
 				if (model.DocumentEvent != null)
@@ -201,26 +191,47 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						CreatedBy = CurrentUser.UserId,
 						Category = FileCategory.NewFile,
 						EventId = x.Id,
-
 					};
 
 					db.EventFile.Add(eventfile);
 				};
+				db.SaveChanges();
 
+				//save refno public event
+				var refno = "EVP/" + DateTime.Now.ToString("yyMM");
+				refno += "/" + x.Id.ToString("D4");
+				x.RefNo = refno;
+
+				db.Entry(x).State = EntityState.Modified;
 				db.SaveChanges();
 
 				//LogActivity();
 				TempData["SuccessMessage"] = "Public Event successfully created.";
 				return RedirectToAction("List");
 			}
-			var getcategory = db.EventCategory.Where(c => c.Display)
-				.Select(i => new
-				{
-					Id = i.Id,
-					Name = i.CategoryName
-				});
+
+
+			var getcategory = db.EventCategory.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.CategoryName
+			});
+
+			var getspeaker = db.EventSpeaker.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.User.Name
+			});
+
+			var getexhibitor = db.EventExternalExhibitor.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.Name
+			});
 
 			model.CategoryList = new SelectList(getcategory, "Id", "Name", 0);
+			model.SpeakerList = new SelectList(getspeaker, "Id", "Name", 0);
+			model.ExternalExhibitorList = new SelectList(getexhibitor, "Id", "Name", 0);
 
 			return View(model);
 		}
@@ -252,11 +263,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Reasons = i.Reasons,
 					Remarks = i.Remarks,
 					origin = origin,
-					SpeakerName = i.EventSpeakers.Select(s => s.Name).FirstOrDefault(),
-					ExhibitorName = i.EventExternalExhibitors.Select(s => s.Name).FirstOrDefault(),
+					SpeakerId = i.SpeakerId,
+					SpeakerName = i.EventSpeaker.User.Name,
+					
+					ExternalExhibitorId = i.ExternalExhibitorId,
+					ExternalExhibitorName = i.ExternalExhibitor.User.Name,
 					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 					//GetFileName = eventfile.FileName
-					
+
 				}).FirstOrDefault();
 
 			if (e == null)
@@ -264,14 +278,27 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			var getcategory = db.EventCategory.Where(c => c.Display)
-				.Select(i => new
-				{
-					Id = i.Id,
-					Name = i.CategoryName
-				});
+			var getcategory = db.EventCategory.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.CategoryName
+			});
+
+			var getspeaker = db.EventSpeaker.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.User.Name
+			});
+
+			var getexhibitor = db.EventExternalExhibitor.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.Name
+			});
 
 			e.CategoryList = new SelectList(getcategory, "Id", "Name", 0);
+			e.SpeakerList = new SelectList(getspeaker, "Id", "Name", 0);
+			e.ExternalExhibitorList = new SelectList(getexhibitor, "Id", "Name", 0);
 
 			return View(e);
 		}
@@ -299,57 +326,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventCategoryId = model.EventCategoryId,
 					Reasons = model.Reasons,
 					Remarks = model.Remarks,
-
+					SpeakerId = model.SpeakerId,
+					ExternalExhibitorId = model.ExternalExhibitorId,
 				};
 
 				db.Entry(eEvent).State = EntityState.Modified;
 				db.Entry(eEvent).Property(x => x.CreatedDate).IsModified = false;
 				db.Entry(eEvent).Property(x => x.Display).IsModified = false;
 				db.Configuration.ValidateOnSaveEnabled = true;
-
-				if (model.SpeakerName != null)
-				{
-					var getIdSpeaker = db.EventSpeaker.Where(s => s.EventId == model.Id).FirstOrDefault();
-
-					if (getIdSpeaker != null)
-					{
-						db.EventSpeaker.Remove(getIdSpeaker);
-					}
-
-					EventSpeaker eventspeaker = new EventSpeaker
-					{
-						Name = model.SpeakerName,
-						CreatedDate = DateTime.Now,
-						CreatedBy = CurrentUser.UserId,
-						Display = true,
-						EventId = model.Id,
-						DateAssigned = DateTime.Now,
-						SpeakerType = SpeakerType.FEP,
-						Id = getIdSpeaker.Id
-					};
-					db.EventSpeaker.Add(eventspeaker);
-				};
-
-				if (model.ExhibitorName != null)
-				{
-					var getIdExhibitor = db.EventExternalExhibitor.Where(s => s.EventId == model.Id).FirstOrDefault();
-
-					if (getIdExhibitor != null)
-					{
-						db.EventExternalExhibitor.Remove(getIdExhibitor);
-					}
-
-					EventExternalExhibitor externalExhibitor = new EventExternalExhibitor
-					{
-						Name = model.ExhibitorName,
-						Display = true,
-						EventId = model.Id,
-						CreatedDate = DateTime.Now,
-						CreatedBy = CurrentUser.UserId,
-						Id = getIdExhibitor.Id
-					};
-					db.EventExternalExhibitor.Add(externalExhibitor);
-				};
 
 				string path = "FileUploaded/";
 				if (model.DocumentEvent != null)
@@ -391,14 +375,28 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				}
 			}
 
-			var getcategory = db.EventCategory.Where(c => c.Display)
-				.Select(i => new
-				{
-					Id = i.Id,
-					Name = i.CategoryName
-				});
+			var getcategory = db.EventCategory.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.CategoryName
+			});
 
-			model.CategoryList = new SelectList(getcategory, "Id", "Name", model.CategoryList);
+			var getspeaker = db.EventSpeaker.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.User.Name
+			});
+
+			var getexhibitor = db.EventExternalExhibitor.Where(c => c.Display).Select(i => new
+			{
+				Id = i.Id,
+				Name = i.Name
+			});
+
+			model.CategoryList = new SelectList(getcategory, "Id", "Name", 0);
+			model.SpeakerList = new SelectList(getspeaker, "Id", "Name", 0);
+			model.ExternalExhibitorList = new SelectList(getexhibitor, "Id", "Name", 0);
+
 			return View(model);
 		}
 
@@ -439,8 +437,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Reasons = i.Reasons,
 					Remarks = i.Remarks,
 
-					SpeakerName = i.EventSpeakers.Select(s => s.Name).FirstOrDefault(),
-					ExhibitorName = i.EventExternalExhibitors.Select(s => s.Name).FirstOrDefault(),
+					SpeakerId = i.SpeakerId,
+					SpeakerName = i.EventSpeaker.User.Name,
+
+					ExternalExhibitorId = i.ExternalExhibitorId,
+					ExternalExhibitorName = i.ExternalExhibitor.User.Name,
 					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 					//GetFileName = eventfile.FileName
 				}).FirstOrDefault();
@@ -471,5 +472,133 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			TempData["SuccessMessage"] = "Public Event successfully deleted.";
 			return RedirectToAction("List");
 		}
+
+		// Submit Public Event for Verification
+		public async Task<ActionResult> SubmitToVerify(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SubmitToVerify?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, "Submit Public Event Ref No: " + response.Data +" for verification.");
+				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully submitted for verification.";
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to submit Public Event.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+		//First Approved Public Event 
+		public async Task<ActionResult> FirstApproved(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/FirstApproved?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved on first level.");
+				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to approve Public Event.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+		//Second Approved Public Event 
+		public async Task<ActionResult> SecondApproved(int? id) 
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SecondApproved?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved on first level.");
+				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to approve Public Event.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+		//Final Approved Public Event 
+		public async Task<ActionResult> FinalApproved(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/FinalApproved?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved");
+				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved.";
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to approve Public Event.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+		//Reject Approved Public Event 
+		public async Task<ActionResult> RejectPublicEvent(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/RejectPublicEvent?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is rejected and require amendment.");
+				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully rejected and require amendment.";
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to reject Public Event.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+		//Cancel Approved Public Event
+		public async Task<ActionResult> CancelPublicEvent(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/CancelPublicEvent?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is cancelled.");
+				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully cancelled.";
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to cancel Public Event.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+
 	}
 }

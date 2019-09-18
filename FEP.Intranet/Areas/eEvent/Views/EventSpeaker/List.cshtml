@@ -1,111 +1,231 @@
-﻿@model FEP.Intranet.Areas.eEvent.Models.ListEventSpeakerModel
+﻿@model FEP.WebApiModel.eEvent.ListEventSpeakerModel
 
 @{
 	ViewBag.Title = "Event Speaker";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-@section ContentStyle{
-	@Styles.Render("~/bundles/dataTable-css")
-}
-
-@section ContentScript{
-
-	@Scripts.Render("~/bundles/dataTable-script")
-
+@section Contentscript{
 	<script type="text/javascript">
-		$('.menu_eventSpeaker').addClass('active');
-		$('.menu_eventSpeaker').parent('ul').parent('li').addClass('active');
 
-		$(document).ready(function () {
-			var t = $('.tabledata').DataTable({
-				"columnDefs": [{
-					"searchable": false,
-					"orderable": false,
-					"targets": [0, 6]
-				}],
-				"order": [[1, 'asc']],
-				"paging": true,
-				"lengthChange": true,
-				"searching": true,
-				"ordering": true,
-				"info": true,
-				"autoWidth": false,
-				"language": {
-					"emptyTable": "No record found"
-				},
-				"lengthMenu": [10, 25, 50],
-				buttons: [{
-					extend: 'csvHtml5',
-					title: 'Export Field Of Research List',
-					//fieldSeparator:'|',
-					exportOptions: {
-						columns: [1]
-					}
-				}]
-			});
-			t.on('order.dt search.dt', function () {
-				t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-					cell.innerHTML = i + 1;
-				});
-			}).draw();
+		 $(document).ready(function () {
 
-			$('#export').click(function () { t.button('0').trigger(); });
+            var table = $('.tabledata').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    "type": "post",
+                    "url": '@(WebApiURL)eEvent/EventSpeaker/GetSpeakerList',
+                    "data": function (filter) {
+                        filter.UserId = $('#Filter_UserId').val();
+                        //filter.ICNo = $('#Filter_ICNo').val();
+                        //filter.MobileNo = $('#Filter_MobileNo').val();
+                        //filter.Email = $('#Filter_Email').val();
+                    }
+                },
+				columns: [
 
-		});
+					 {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'UserName',
+                        sortable: true
+                    },
+                    {
+                        data: 'SpeakerTypeDesc',
+                        sortable: true
+					},
 
+					{
+						data: 'DateAssigned',
+						sortable: true,
+						render: function (data, type, row, meta) {
+
+							var x = moment(data);
+
+							if (x.isValid()) {
+								return x.format("DD/MM/YYYY");
+							}
+							else {
+								return '';
+							}
+
+						}
+					},
+					
+                    {
+						data: 'Email',
+
+                        sortable: false,
+
+                    },
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+
+                            var action = "";
+
+                            action = '<div class="icon-action">'
+                                    +   '<a href="@Url.Action("Edit", "EventSpeaker", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+                                    +   '<a href="@Url.Action("Details", "EventSpeaker", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+                                    +   '<a href="@Url.Action("Delete", "EventSpeaker", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+                                    + '</div>';
+
+                            return action;
+                        }
+                    }
+                ],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_"
+                },
+                dom: 'rtip'
+            });
+
+            $('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup( function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change( function() {
+                table.page.len($(this).val()).draw();
+            });
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt page.dt', function () {
+                var info = table.page.info();
+
+                var start = 0;
+                if (info.recordsTotal != 0) {
+                    start = info.start + 1;
+                }
+
+                $('#pageInfo').html('Showing ' + start + ' - ' + info.end + ' of ' + info.recordsTotal);
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            }).draw();
+
+
+        });
 	</script>
 }
 
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box box-info">
-			<div class="box-header">
-				<h3 class="box-title">Event Speaker List</h3>
-				<div class="pull-right box-tools">
+@section Nav {
 
-					<a href='@Url.Action("Create")' class="btn btn-primary btn-xs" title="Add"><i class="fa fa-plus"></i>Speaker</a>
-					<a class="btn btn-success btn-xs" title="Export" id="export"><i class="fa fa-file-excel-o"></i>Export</a>
-
+	<div class="title_header">
+		<div class="title-header-container">
+			<div class="container">
+				<!-- if have button -->
+				@*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+				<div class="header-col-left">
+					<div id="breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
+								<li class="breadcrumb-item"><a href="#">Manage Event Speaker</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+							</ol>
+						</nav>
+					</div>
+					<h1 class="page-title text-white">Event Speaker List</h1>
+					<div class="header-text">List of created Event Speaker</div>
 				</div>
-			</div><!-- /.box-header -->
-
-
-			<div class="box-body">
-				<table class="table table-bordered table-striped tabledata table-hover">
-					<thead>
-						<tr>
-							<th>No.</th>
-							<th>@Html.DisplayNameFor(m => m.filter.UserId)</th>
-							<th>@Html.DisplayNameFor(m => m.filter.SpeakerType)</th>
-							
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (var item in Model.SpeakerList)
-						{
-							<tr>
-								<td></td>
-								<td>@Html.DisplayFor(m => item.UserName)</td>
-								<td>@Html.DisplayFor(m => item.SpeakerType)</td>
-								
-								<td>
-									<a href='@Url.Action("Details", new { id=item.Id })' class="btn btn-info btn-xs" title="Details"> <i class="fa fa-list-alt"> </i>Details</a>
-									<a href='@Url.Action("Edit", new { id=item.Id })' class="btn btn-info btn-xs" title="Edit"> <i class="fa fa-edit"> </i>Edit</a>
-									<a href='@Url.Action("Delete", new { id=item.Id })' class="btn btn-warning btn-xs" title="Delete"> <i class="fa fa-trash"></i>Delete</a>
-								</td>
-							</tr>
-						}
-					</tbody>
-				</table>
 			</div>
 		</div>
 	</div>
-</div>
 
-<div class="row">
-	<div class="col-xs-12">
-		<a href='@Url.Action("Index", "Project" , new { area = "Projects"})' class="btn btn-warning">Back</a>
+}
+<div class="d-flex align-items-center">
+	<div class="filter dropdown">
+		<button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+		<div class="dropdown-menu">
+			<div class="filter-head">Filters</div>
+			<div class="filter-body">
+				<div>@Html.DisplayNameFor(m => m.Filter.UserId)</div>
+				<div class="sorting-wrap">
+					<div class="sorting-dropdown">
+						@Html.DropDownListFor(m => m.Filter.UserId, Model.Filter.UserIds, "Select All", htmlAttributes: new { @class = "select2 form-control small" })
+					</div>
+				</div>
+				@*<div>@Html.DisplayNameFor(m => m.Filter.EventCategoryId)</div>
+					<div class="sorting-wrap">
+						<div class="sorting-dropdown">
+							@Html.EditorFor(m => m.Filter.EventCategoryId, new { htmlAttributes = new { @class = "form-control small" } })
+						</div>
+					</div>
+					<div>@Html.DisplayNameFor(m => m.Filter.TargetedGroup)</div>
+					<div class="sorting-wrap">
+						<div class="sorting-dropdown">
+							@Html.EditorFor(m => m.Filter.TargetedGroup, new { htmlAttributes = new { @class = "form-control small" } })
+						</div>
+					</div>
+					<div>@Html.DisplayNameFor(m => m.Filter.EventStatus)</div>
+					<div class="sorting-wrap">
+						<div class="sorting-dropdown">
+							@Html.EditorFor(m => m.Filter.EventStatus, new { htmlAttributes = new { @class = "form-control small" } })
+						</div>
+					</div>*@
+				<div>
+					<button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
+				</div>
+			</div>
+		</div>
 	</div>
+	<div class="divider-vertical">&nbsp;</div>
+	<!-- Search -->
+	<div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+		<input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+		<div class="input-group-append">
+			<button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+		</div>
+	</div>
+</div>
+<hr>
+<div class="table-responsive" data-toggle="lists">
+	<div class="d-flex pb-4 align-items-center">
+		<div>
+			<!-- Select option -->
+			<span class="select-arrow">
+				<select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+					<option value="10">10</option>
+					<option value="25">25</option>
+					<option value="50">50</option>
+					<option value="100">100</option>
+				</select>
+			</span>
+		</div>
+		<div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+		<div><a href="@Url.Action("Create", "EventSpeaker", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
+	</div>
+	<!-- Table -->
+	<table class="table tableStyle1 tabledata">
+		<thead>
+			<tr>
+
+				<th>#</th>
+				<th>@Html.DisplayNameFor(model => model.List.UserName)</th>
+				<th>@Html.DisplayNameFor(model => model.List.SpeakerTypeDesc)</th>
+				<th>@Html.DisplayNameFor(model => model.List.DateAssigned)</th>
+				<th>@Html.DisplayNameFor(model => model.List.Email)</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+	</table>
 </div>

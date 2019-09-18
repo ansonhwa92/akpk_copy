@@ -13,8 +13,108 @@ namespace FEP.Model
         [Display(Name = "Activate Account")]
         ActivateAccount,
         [Display(Name = "Reset Password")]
-        ResetPassword,       
+        ResetPassword,
 
+        //---------------------------------------------------
+        //tajul tambah for SLA
+
+        //Verify Public Event 
+        [Display(Name = "Verify Public Event Creation")]
+        Verify_Public_Event_Creation,
+        [Display(Name = "Verify Public Event Published Changed")]
+        Verify_Public_Event_Published_Changed,
+        [Display(Name = "Verify Public Event Published Cancelled")]
+        Verify_Public_Event_Published_Cancelled,
+
+        //Approve Public Event
+        [Display(Name = "Approve Public Event Creation")]
+        Approve_Public_Event_Creation,
+        [Display(Name = "Approve Public Event Published Changed")]
+        Approve_Public_Event_Published_Changed,
+        [Display(Name = "Approve Public Event Published Cancelled")]
+        Approve_Public_Event_Published_Cancelled,
+
+        //Payment
+        [Display(Name = "Payment Pending GL")]
+        Payment_Pending_GL,
+        [Display(Name = "Payment Pending Payment")]
+        Payment_Pending_Payment,
+        [Display(Name = "Payment Verify GL")]
+        Payment_Verify_GL,
+        [Display(Name = "Payment Verify Payment")]
+        Payment_Verify_Payment,
+        [Display(Name = "Payment Verify Refund Request")]
+        Payment_Verify_Refund_Request,
+        [Display(Name = "Payment Approve Refund Request")]
+        Payment_Approve_Refund_Request,
+        [Display(Name = "Payment Pending Refund")]
+        Payment_Pending_Refund,
+
+        //Verify External Request
+        [Display(Name = "Verify External RequestMedia Interview")]
+        Verify_External_Request_Media_Interview,
+        [Display(Name = "Verify External RequestExhibition ESS")]
+        Verify_External_Request_Exhibition_ESS,
+        [Display(Name = "Verify External RequestDuty Roster")]
+        Verify_External_Request_Duty_Roster,
+        
+        //Approve External Request
+        [Display(Name = "Approve External Request Media Interview")]
+        Approve_External_Request_Media_Interview,
+        [Display(Name = "Approve External Request Exhibition Participation")]
+        Approve_External_Request_Exhibition_Participation,
+        [Display(Name = "Approve External Request Duty Roster")]
+        Approve_External_Request_Duty_Roster,
+
+        //Verify Courses
+        [Display(Name = "Verify Courses Creation")]
+        Verify_Courses_Creation,
+        [Display(Name = "Verify Courses Published Change")]
+        Verify_Courses_Published_Change,
+        [Display(Name = "Verify Courses Published Withdraw")]
+        Verify_Courses_Published_Withdraw,
+        [Display(Name = "Verify Courses Participant Withdraw")]
+        Verify_Courses_Participant_Withdraw,
+
+        //Approve Courses
+        [Display(Name = "Approve Courses Creation")]
+        Approve_Courses_Creation,
+        [Display(Name = "Approve Courses Published Change")]
+        Approve_Courses_Published_Change,
+        [Display(Name = "Approve Courses Published Withdraw")]
+        Approve_Courses_Published_Withdraw,
+        [Display(Name = "Approve Courses Participant Withdraw")]
+        Approve_Courses_Participant_Withdraw,
+
+        //Verify Survey
+        [Display(Name = "Verify Survey Creation")]
+        Verify_Survey_Creation,
+        [Display(Name = "Verify Survey Published Cancelled")]
+        Verify_Survey_Published_Cancelled,
+
+        //Approve Survey
+        [Display(Name = "Approve Survey Creation")]
+        Approve_Survey_Creation,
+        [Display(Name = "Approve Survey Published Cancelled")]
+        Approve_Survey_Published_Cancelled,
+
+        //VerifyPublication
+        [Display(Name = "Verify Publication Creation")]
+        Verify_Publication_Creation,
+        [Display(Name = "Verify Publication Published Change")]
+        Verify_Publication_Published_Change,
+        [Display(Name = "Verify Publication Published Withdraw")]
+        Verify_Publication_Published_Withdraw,
+
+        //Approve Publication
+        [Display(Name = "Approve Publication Creation")]
+        Approve_Publication_Creation,
+        [Display(Name = "Approve Publication Published Change")]
+        Approve_Publication_Published_Change,
+        [Display(Name = "Approve Publication Published Withdraw")]
+        Approve_Publication_Published_Withdraw,
+
+        //---------------------------------------------------
     }
 
     [Table("Notification")]

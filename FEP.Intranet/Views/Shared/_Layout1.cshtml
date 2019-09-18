@@ -297,9 +297,12 @@
 										<a class="dropdown-item" href="#">Menu 4</a>*@
 									</div>
 								</li>
-								<li class="nav-item dropdown">
-									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">System Settings</a>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">System Settings</a>
                                     <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="@Url.Action("List", "EmailTemplates", new { area = "Template" })"><i class="la la-comment color-secondary font-icon"></i>Template Management</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "SLAReminders", new { area = "SLAReminder" })"><i class="la la-comment color-secondary font-icon"></i>SLA Reminder Settings</a>
+                                   
                                         <a class="dropdown-item" href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a>
                                         <a class="dropdown-item" href="@Url.Action("Index", "Account", new { area = "Setting" })">Account Setting</a>
                                         <a class="dropdown-item" href="@Url.Action("List", "UserLog", new { area = "Logs" })">User Log</a>

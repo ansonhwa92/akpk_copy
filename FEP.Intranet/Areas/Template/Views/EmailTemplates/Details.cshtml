@@ -1,0 +1,139 @@
+﻿@model FEP.WebApiModel.Template.DetailsNotificationTemplateModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                @*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Template</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "EmailTemplates", new { area = "Template" })">Notification Template</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Admin Settings</h1>
+                    <div class="header-text">Manage who can access the admin console to help manage your organization's account.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    }
+
+    <div class="row">
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div id="page-nav" class="sidebar-left page-nav">
+                <div data-perfect-scrollbar>
+                    <div class="page-section">
+                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Email Template</h6>
+                        <ul class="nav page-nav__menu">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Details", "EmailTemplates", new { area = "Template", id = Model.Id })" class="active nav-link">View</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Edit", "EmailTemplates", new { area = "Template", id = Model.Id })" class="nav-link">Edit</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+
+            <div class="border-form rounded-top">
+
+                <div class="form-container form-container-w100">
+                    <div class="mb-4 mt-2">
+                        <h4 class="color-darkblue mb-0">Details : @Model.NotificationType.GetDisplayName()</h4>
+                        <h6 class="font-weight-normal">@Model.TemplateName</h6>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.TemplateRefNo)
+                            @Html.EditorFor(m => m.TemplateRefNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.TemplateName)
+                            @Html.EditorFor(m => m.TemplateName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.SMSMessage)
+                            @Html.EditorFor(m => m.SMSMessage, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.WebMessage)
+                            @Html.EditorFor(m => m.WebMessage, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.TemplateSubject)
+                            @Html.EditorFor(m => m.TemplateSubject, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.TemplateMessage) 
+                            <div class="border-form rounded p-2">
+                                <div class="small">@Html.Raw(HttpUtility.HtmlDecode(Model.TemplateMessage))</div>
+                            </div>
+                            @*@Html.EditorFor(m => m.TemplateMessage, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })*@
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.CreatedByName)
+                            @Html.EditorFor(m => m.CreatedByName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.CreatedDate)
+                            @Html.EditorFor(m => m.CreatedDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.LastModified)
+                            @Html.EditorFor(m => m.LastModified, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a href="@Url.Action("List")" class="btn btn-default mr-2">Back</a>
+            </div>
+
+        </div>
+
+    </div>
+
+

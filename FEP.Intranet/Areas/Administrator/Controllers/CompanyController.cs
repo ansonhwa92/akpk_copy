@@ -285,7 +285,6 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
-
         }
 
         [HttpGet]

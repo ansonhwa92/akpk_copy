@@ -10,7 +10,9 @@ var creatorOptions = {
  // hide the "Options" button menu. It is hidden by default 
  showOptions: false,
  // true means every change triggers a save
- isAutoSave: true
+ isAutoSave: true,
+ // true means show saving state
+ showState: true
 };
 var surveyCreator = new SurveyCreator.SurveyCreator("creatorElement", creatorOptions);
 

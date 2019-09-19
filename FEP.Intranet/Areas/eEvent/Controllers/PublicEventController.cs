@@ -22,6 +22,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View();
 		}
 
+		public ActionResult Event_Setting()
+		{
+			return View();
+		}
+
 		public async Task<ActionResult> Create_SelectCategory()
 		{
             var response = await WepApiMethod.SendApiAsync<List<EventCategoryModel>>(HttpVerbs.Get, $"eEvent/EventCategory");
@@ -59,7 +64,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 		// GET: PublicEvent/Details/5
-		public ActionResult Details(int? id)
+		public ActionResult Details(int? id, string origin)
 		{
 			if (id == null)
 			{
@@ -97,6 +102,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ExternalExhibitorId = i.ExternalExhibitorId,
 					ExternalExhibitorName = i.ExternalExhibitor.User.Name,
 					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
+					origin = origin,
+					RefNo = i.RefNo,
 				}).FirstOrDefault();
 
 			if (e == null)
@@ -466,20 +473,132 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return RedirectToAction("List");
 		}
 
-		public ActionResult SubmitVerificationPublicEvent(EditPublicEventModel model)
+		// Submit Public Event for Verification
+		public async Task<ActionResult> SubmitToVerify(int? id)
 		{
-			PublicEvent eEvent = new PublicEvent() { Id = model.Id };
-			eEvent.EventStatus = EventStatus.PendingforVerification;
-
-			db.PublicEvent.Attach(eEvent);
-			db.Entry(eEvent).Property(m => m.Display).IsModified = true;
-
-			db.Configuration.ValidateOnSaveEnabled = false;
-			db.SaveChanges();
-
-			//LogActivity();
-			TempData["SuccessMessage"] = "Public Event successfully submitted for verification.";
-			return RedirectToAction("List");
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SubmitToVerify?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, "Submit Public Event Ref No: " + response.Data +" for verification.");
+				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully submitted for verification.";
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to submit Public Event.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
 		}
+
+		//First Approved Public Event 
+		public async Task<ActionResult> FirstApproved(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/FirstApproved?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved on first level.");
+				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to approve Public Event.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+		//Second Approved Public Event 
+		public async Task<ActionResult> SecondApproved(int? id) 
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SecondApproved?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved on first level.");
+				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to approve Public Event.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+		//Final Approved Public Event 
+		public async Task<ActionResult> FinalApproved(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/FinalApproved?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved");
+				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved.";
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to approve Public Event.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+		//Reject Approved Public Event 
+		public async Task<ActionResult> RejectPublicEvent(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/RejectPublicEvent?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is rejected and require amendment.");
+				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully rejected and require amendment.";
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to reject Public Event.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+		//Cancel Approved Public Event
+		public async Task<ActionResult> CancelPublicEvent(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/CancelPublicEvent?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is cancelled.");
+				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully cancelled.";
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to cancel Public Event.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+
 	}
 }

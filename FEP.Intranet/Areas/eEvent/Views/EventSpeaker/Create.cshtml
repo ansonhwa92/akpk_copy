@@ -160,7 +160,7 @@
 							</div>
 						</div>
 
-						<div class="row">
+						@*<div class="row">
 							<div class="form-group col-lg-12">
 								@Html.FEPLabelFor(model => model.SpeakerPicture)
 								@Html.TextBoxFor(model => model.SpeakerPicture, "", new { type = "file", @class = "form-control" })
@@ -174,7 +174,7 @@
 								@Html.TextBoxFor(model => model.SpeakerAttachment, "", new { type = "file", @class = "form-control" })
 								@Html.ValidationMessageFor(model => model.SpeakerAttachment, "", new { @class = "text-danger" })
 							</div>
-						</div>
+						</div>*@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
@@ -182,7 +182,7 @@
 								@Html.TextAreaFor(model => model.Experience, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive"})
 								@Html.ValidationMessageFor(model => model.Experience, "", new { @class = "text-danger" })
 							</div>
-						</div>z
+						</div>
 
 
 						<div class="row">

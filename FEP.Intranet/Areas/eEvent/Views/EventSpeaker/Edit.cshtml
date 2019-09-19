@@ -118,7 +118,7 @@
 					<div class="form-container">
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.UserId)
+								@Html.FEPLabelFor(model => model.UserId)
 								@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
 								@Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
 							</div>
@@ -126,7 +126,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.SpeakerType)
+								@Html.FEPLabelFor(model => model.SpeakerType)
 								@Html.EnumDropDownListFor(model => model.SpeakerType, "-Select Speaker Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
 								@Html.ValidationMessageFor(model => model.SpeakerType, "", new { @class = "text-danger" })
 							</div>
@@ -134,7 +134,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Email)
+								@Html.FEPLabelFor(model => model.Email)
 								@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address" } })
 								@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
 							</div>
@@ -142,7 +142,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-6">
-								@Html.LabelFor(model => model.DateAssigned, htmlAttributes: new { @class = "control-label col-lg-12" })
+								@Html.FEPLabelFor(model => model.DateAssigned, htmlAttributes: new { @class = "control-label col-lg-12" })
 								<div class="dateSelect">
 									<input type="text" id="date_assigned" class="form-control" placeholder="Date End" data-input="flatpickr">
 									<a class="input-button calendar" title="toggle" data-toggle>
@@ -215,7 +215,7 @@
 							</div>
 						</div>
 
-						<div class="row">
+						@*<div class="row">
 							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.SpeakerPicture)
 								@Html.EditorFor(model => model.SpeakerPictureName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
@@ -231,7 +231,7 @@
 								@Html.TextBoxFor(model => model.SpeakerAttachment, "", new { type = "file", @class = "form-control" })
 								@Html.ValidationMessageFor(model => model.SpeakerAttachment, "", new { @class = "text-danger" })
 							</div>
-						</div>
+						</div>*@
 
 						<div class="row">
 							<div class="form-group col-lg-12">

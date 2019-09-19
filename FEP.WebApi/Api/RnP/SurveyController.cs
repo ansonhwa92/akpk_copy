@@ -41,7 +41,7 @@ namespace FEP.WebApi.Api.RnP
         public IHttpActionResult Post(FilterSurveyModel request)
         {
 
-            var query = db.Survey.Where(p => p.Status != SurveyStatus.Trashed);   //TODO: all!!
+            var query = db.Survey.Where(p => p.Status <= SurveyStatus.Trashed);   //TODO: all!!
 
             var totalCount = query.Count();
 
@@ -444,15 +444,34 @@ namespace FEP.WebApi.Api.RnP
         [Route("api/RnP/Survey/GetHistory")]
         public List<SurveyApprovalHistoryModel> GetHistory(int id)
         {
-            //var shistory = db.SurveyApproval.Where(pa => pa.SurveyID == id && pa.Status != SurveyApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).Select(s => new SurveyApprovalHistoryModel
             var shistory = db.SurveyApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { pa.SurveyID, pa.Level, pa.ApproverId, pa.ApprovalDate, pa.Status, pa.Remarks, UserName = u.Name }).Where(pa => pa.SurveyID == id && pa.Status != SurveyApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).Select(s => new SurveyApprovalHistoryModel
             {
                 Level = s.Level,
                 ApproverId = s.ApproverId,
+                ApprovalDate = s.ApprovalDate,
                 UserName = s.UserName,
                 Status = s.Status,
                 Remarks = s.Remarks
             }).ToList();
+
+            return shistory;
+        }
+
+        // Function to the next pending approval record
+        // This is used to check for who's in charge of the next step in approval
+        // GET: api/RnP/Survey/GetNextApproval/5
+        [Route("api/RnP/Survey/GetNextApproval")]
+        public SurveyApprovalHistoryModel GetNextApproval(int id)
+        {
+            //var phistory = db.PublicationApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { tapproval = pa, tuser = u }).Where(pau => pau.tapproval.PublicationID == id && pau.tapproval.Status != PublicationApprovalStatus.None).OrderByDescending(pau => pau.tapproval.ApprovalDate).Select(s => new PublicationApprovalHistoryModel
+            var shistory = db.SurveyApproval.Where(sa => sa.SurveyID == id && sa.Status == SurveyApprovalStatus.None).OrderByDescending(sa => sa.ApprovalDate).Select(s => new SurveyApprovalHistoryModel
+            {
+                Level = s.Level,
+                ApproverId = s.ApproverId,
+                ApprovalDate = s.ApprovalDate,
+                Status = s.Status,
+                Remarks = s.Remarks
+            }).FirstOrDefault();
 
             return shistory;
         }
@@ -830,6 +849,8 @@ namespace FEP.WebApi.Api.RnP
                                 {
                                     case SurveyApprovalLevels.Verifier:
                                         nextlevel = SurveyApprovalLevels.Approver1;
+                                        survey.Status = SurveyStatus.Verified;
+                                        db.Entry(survey).State = EntityState.Modified;
                                         break;
                                     case SurveyApprovalLevels.Approver1:
                                         nextlevel = SurveyApprovalLevels.Approver2;

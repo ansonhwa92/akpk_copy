@@ -37,19 +37,19 @@
             <div class="filter-head">Filters</div>
             <div class="filter-body">
                 <!--
-    <div>@*Html.DisplayNameFor(m => m.Filters.Type)*@</div>
-        -->
+                <div>@*Html.DisplayNameFor(m => m.Filters.Type)*@</div>
+                    -->
                 <!--
-    <div class="sorting-wrap">
-        <div class="sorting-dropdown">
-            <select class="select2 form-control small" name="filter">
-                <option value="all">All</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-            </select>
-        </div>
-    </div>
-    -->
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        <select class="select2 form-control small" name="filter">
+                            <option value="all">All</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                </div>
+                -->
                 <!--
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
@@ -89,15 +89,6 @@
             <button id="quickSearchBtn" class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
         </div>
     </div>
-    @*<div class="sorting-wrap">
-            <div class="sorting-dropdown">
-                <select class="select2 form-control small" name="sorting">
-                    <option value="Default Sorting">Default Sorting</option>
-                    <option value="sorting 1">Sorting 1</option>
-                    <option value="sorting 2">Sorting 2</option>
-                </select>
-            </div>
-        </div>*@
 </div>
 <hr>
 <div class="table-responsive" data-toggle="lists">
@@ -271,18 +262,15 @@
                                     action += '<a href="@Url.Action("Delete", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>';
                                 }
                             }
-                            else if (row.Status == 1) {     // submitted
-                                if (canverify || canapprove1 || canapprove2 || canapprove3) {
-                                    action += '<a href="@Url.Action("Evaluate", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
-                                }
+                            else if (row.Status == 1) {     // submitted (can verify from view)
+                                action += '';
+                                //if (canverify || canapprove1 || canapprove2 || canapprove3) {
                             }
                             else if (row.Status == 2) {     // verifier rejected (can edit from view - view lets user see comments)
                                 action += '';
                             }
-                            else if (row.Status == 3) {     // verified
-                                if (canapprove1 || canapprove2 || canapprove3) {
-                                    action += '<a href="@Url.Action("Evaluate", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
-                                }
+                            else if (row.Status == 3) {     // verified (can approve from view)
+                                action += '';
                             }
                             else if (row.Status == 4) {     // approver rejected
                                 action += '';
@@ -303,17 +291,14 @@
                                 action += '';
                             }
                             else if (row.Status == 10) {    // withdrawal submitted
-                                if (canverify || canapprove1 || canapprove2 || canapprove3) {
-                                    action += '<a href="@Url.Action("EvaluateWithdrawal", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate Withdrawal"><i class="la la-edit text-muted"></i></a>';
-                                }
+                                action += '';
+                                //if (canverify || canapprove1 || canapprove2 || canapprove3) {
                             }
                             else if (row.Status == 11) {    // verifier rejected
                                 action += '';
                             }
                             else if (row.Status == 12) {    // verified
-                                if (canapprove1 || canapprove2 || canapprove3) {
-                                    action += '<a href="@Url.Action("EvaluateWithdrawal", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate Withdrawal"><i class="la la-edit text-muted"></i></a>';
-                                }
+                                action += '';
                             }
                             else if (row.Status == 13) {    // approver rejected
                                 action += '';

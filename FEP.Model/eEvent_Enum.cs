@@ -56,10 +56,10 @@ namespace FEP.Model
 		[Display(Name = "Approved")]
 		Approved, //If Approver 3 Approved
 
-		[Display(Name = "Rejected")]
+		[Display(Name = "Amending")]
 		RejectNeedToEdit, //If Approver 3 Rejected
 
-		[Display(Name = "Cancelled")]
+		[Display(Name = "Rejected")]
 		Cancelled //If Admin Cancel Public Event 
 	}
 

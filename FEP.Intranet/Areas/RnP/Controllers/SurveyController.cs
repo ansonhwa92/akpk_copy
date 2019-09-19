@@ -36,6 +36,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         */
 
         // GET: RnP/Survey
+        [HasAccess(UserAccess.RnPSurveyView)]
         public ActionResult Index()
         {
             return View();
@@ -44,6 +45,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Show select survey type form
         // After type selection, user automatically redirected to creation page
         // GET: RnP/Survey/SelectCategory
+        [HasAccess(UserAccess.RnPSurveyEdit)]
         public ActionResult SelectType()
         {
             //ViewBag.Categories = new List<SurveyType>();
@@ -53,6 +55,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Show create form (blank form so no api call needed)
         // GET: RnP/Survey/Create
+        [HasAccess(UserAccess.RnPSurveyEdit)]
         public async Task<ActionResult> Create(int? typeid)
         {
             var model = new UpdateSurveyModel();
@@ -152,6 +155,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Show edit form
         // GET: RnP/Survey/Edit/5
+        [HasAccess(UserAccess.RnPSurveyEdit)]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -253,6 +257,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Show build survey form
         // Retrieve saved-as-draft survey info based on id first
         // GET: RnP/Survey/Build
+        [HasAccess(UserAccess.RnPSurveyEdit)]
         public async Task<ActionResult> Build(int? id, int? templateid)
         {
             if (id == null)
@@ -384,6 +389,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Show review form
         // User is redirected here after saving as draft at builder creation or builder editing page
         // GET: RnP/Survey/Review/5
+        [HasAccess(UserAccess.RnPSurveyEdit)]
         public async Task<ActionResult> Review(int? id)
         {
             if (id == null)
@@ -485,6 +491,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Process submission from details page
         // Called for direct submission via id
         // GET: RnP/Survey/SubmitByID/5
+        [HasAccess(UserAccess.RnPSurveyEdit)]
         public async Task<ActionResult> SubmitByID(int? id)
         {
             if (id == null)
@@ -526,6 +533,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // 3. Admin can submit the survey if it's not been submitted yet
         // 4. Admin can cancel the survey if the status is Pending Amendment
         // GET: RnP/Survey/Details/5
+        [HasAccess(UserAccess.RnPSurveyView)]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -545,6 +553,32 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             if (survey == null)
             {
                 return HttpNotFound();
+            }
+
+            // redirect for eavluation if applicable
+
+            if ((CurrentUser.HasAccess(UserAccess.RnPSurveyVerify)) || (CurrentUser.HasAccess(UserAccess.RnPSurveyApprove1)) || (CurrentUser.HasAccess(UserAccess.RnPSurveyApprove2)) || (CurrentUser.HasAccess(UserAccess.RnPSurveyApprove3)))
+            {
+                // if approvers, check pending approval
+
+                var resApp = await WepApiMethod.SendApiAsync<SurveyApprovalHistoryModel>(HttpVerbs.Get, $"RnP/Survey/GetNextApproval?id={id}");
+
+                if (resApp.isSuccess)
+                {
+                    var nextapp = resApp.Data;
+
+                    if (nextapp != null)
+                    {
+                        if (((nextapp.Level == SurveyApprovalLevels.Verifier) && (CurrentUser.HasAccess(UserAccess.RnPSurveyVerify))) || ((nextapp.Level == SurveyApprovalLevels.Approver1) && (CurrentUser.HasAccess(UserAccess.RnPSurveyApprove1))) || ((nextapp.Level == SurveyApprovalLevels.Approver2) && (CurrentUser.HasAccess(UserAccess.RnPSurveyApprove2))) || ((nextapp.Level == SurveyApprovalLevels.Approver3) && (CurrentUser.HasAccess(UserAccess.RnPSurveyApprove3))))
+                        {
+                            if ((survey.Status == SurveyStatus.Submitted) || (survey.Status == SurveyStatus.Verified))
+                            {
+                                return RedirectToAction("Evaluate", "Survey", new { area = "RnP", @id = id });
+                            }
+                        }
+                    }
+                }
+
             }
 
             var vmsurvey = new UpdateSurveyModel
@@ -609,6 +643,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Show delete form (only from list page)
         // GET: RnP/Survey/Delete/5
+        [HasAccess(UserAccess.RnPSurveyEdit)]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -672,6 +707,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Process deletion from review page (confirmation by prompt)
         // GET: RnP/Survey/Discard/5
+        [HasAccess(UserAccess.RnPSurveyEdit)]
         public async Task<ActionResult> Discard(int? id)
         {
             if (id == null)
@@ -709,6 +745,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Process cancel form
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [HasAccess(UserAccess.RnPSurveyEdit)]
         public async Task<ActionResult> Cancel(UpdateSurveyCancellationModel model)
         {
             if (ModelState.IsValid)
@@ -748,6 +785,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // 1. Verifier/Approver can approve and submit for next approval (if applicable) if status is applicable
         // 2. Verifier/Approver can reject and require amendment if status is applicable
         // GET: RnP/Survey/Evaluate/5
+        //[HasAccess(UserAccess.RnPSurveyEdit)]
         public async Task<ActionResult> Evaluate(int? id)
         {
             if (id == null)

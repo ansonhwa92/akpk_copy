@@ -173,8 +173,8 @@ namespace FEP.WebApi.Api.eEvent
 					AddressCity = s.AddressCity,
 					State = s.State,
 					Remark = s.Remark,
-					SpeakerPictureName = db.SpeakerFile.Where(f => f.EventSpeakerId == s.Id && f.SpeakerFileType == SpeakerFileType.Picture).Select(i => i.FileName).FirstOrDefault(),
-					SpeakerAttachmentName = db.SpeakerFile.Where(f => f.EventSpeakerId == s.Id && f.SpeakerFileType == SpeakerFileType.Attachment).Select(i => i.FileName).FirstOrDefault()
+					//SpeakerPictureName = db.SpeakerFile.Where(f => f.EventSpeakerId == s.Id && f.SpeakerFileType == SpeakerFileType.Picture).Select(i => i.FileName).FirstOrDefault(),
+					//SpeakerAttachmentName = db.SpeakerFile.Where(f => f.EventSpeakerId == s.Id && f.SpeakerFileType == SpeakerFileType.Attachment).Select(i => i.FileName).FirstOrDefault()
 				}).FirstOrDefault();
 
 			if (speaker == null)
@@ -211,27 +211,27 @@ namespace FEP.WebApi.Api.eEvent
 			};
 			db.EventSpeaker.Add(speaker);
 
-			SpeakerFile speakerFile = new SpeakerFile
-			{
-				FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.SpeakerPictureName,
-				UploadedDate = DateTime.Now,
-				CreatedBy = model.UserId,
-				EventSpeakerId = model.UserId,
-				Display = true,
-				SpeakerFileType = SpeakerFileType.Picture
-			};
-			db.SpeakerFile.Add(speakerFile);
+			//SpeakerFile speakerFile = new SpeakerFile
+			//{
+			//	FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.SpeakerPictureName,
+			//	UploadedDate = DateTime.Now,
+			//	CreatedBy = model.UserId,
+			//	EventSpeakerId = model.UserId,
+			//	Display = true,
+			//	SpeakerFileType = SpeakerFileType.Picture
+			//};
+			//db.SpeakerFile.Add(speakerFile);
 
-			SpeakerFile speakerAttachFile = new SpeakerFile
-			{
-				FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.SpeakerAttachmentName,
-				UploadedDate = DateTime.Now,
-				CreatedBy = model.UserId,
-				EventSpeakerId = model.UserId,
-				Display = true,
-				SpeakerFileType = SpeakerFileType.Attachment
-			};
-			db.SpeakerFile.Add(speakerAttachFile);
+			//SpeakerFile speakerAttachFile = new SpeakerFile
+			//{
+			//	FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.SpeakerAttachmentName,
+			//	UploadedDate = DateTime.Now,
+			//	CreatedBy = model.UserId,
+			//	EventSpeakerId = model.UserId,
+			//	Display = true,
+			//	SpeakerFileType = SpeakerFileType.Attachment
+			//};
+			//db.SpeakerFile.Add(speakerAttachFile);
 
 
 			db.SaveChanges();
@@ -288,27 +288,27 @@ namespace FEP.WebApi.Api.eEvent
 			db.Entry(speaker).Property(x => x.Id).IsModified = false;
 			db.Configuration.ValidateOnSaveEnabled = true;
 
-			SpeakerFile speakerFile = new SpeakerFile
-			{
-				FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.SpeakerPictureName,
-				UploadedDate = DateTime.Now,
-				CreatedBy = model.UserId,
-				EventSpeakerId = model.UserId,
-				Display = true,
-				SpeakerFileType = SpeakerFileType.Picture
-			};
-			db.SpeakerFile.Add(speakerFile);
+			//SpeakerFile speakerFile = new SpeakerFile
+			//{
+			//	FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.SpeakerPictureName,
+			//	UploadedDate = DateTime.Now,
+			//	CreatedBy = model.UserId,
+			//	EventSpeakerId = model.UserId,
+			//	Display = true,
+			//	SpeakerFileType = SpeakerFileType.Picture
+			//};
+			//db.SpeakerFile.Add(speakerFile);
 
-			SpeakerFile speakerAttachFile = new SpeakerFile
-			{
-				FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.SpeakerAttachmentName,
-				UploadedDate = DateTime.Now,
-				CreatedBy = model.UserId,
-				EventSpeakerId = model.UserId,
-				Display = true,
-				SpeakerFileType = SpeakerFileType.Attachment
-			};
-			db.SpeakerFile.Add(speakerAttachFile);
+			//SpeakerFile speakerAttachFile = new SpeakerFile
+			//{
+			//	FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.SpeakerAttachmentName,
+			//	UploadedDate = DateTime.Now,
+			//	CreatedBy = model.UserId,
+			//	EventSpeakerId = model.UserId,
+			//	Display = true,
+			//	SpeakerFileType = SpeakerFileType.Attachment
+			//};
+			//db.SpeakerFile.Add(speakerAttachFile);
 
 			db.SaveChanges();
 

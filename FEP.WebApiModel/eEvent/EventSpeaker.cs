@@ -74,17 +74,17 @@ namespace FEP.WebApiModel.eEvent
 		public string UserName { get; set; }
 		public IEnumerable<SelectListItem> UserIds { get; set; }
 
-		[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		public HttpPostedFileBase SpeakerPicture { get; set; }
+		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
+		//public HttpPostedFileBase SpeakerPicture { get; set; }
 
-		[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		public string SpeakerPictureName { get; set; }
+		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
+		//public string SpeakerPictureName { get; set; }
 
-		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
-		public HttpPostedFileBase SpeakerAttachment { get; set; }
+		//[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
+		//public HttpPostedFileBase SpeakerAttachment { get; set; }
 
-		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
-		public string SpeakerAttachmentName { get; set; }
+		//[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
+		//public string SpeakerAttachmentName { get; set; }
 
 	}
 
@@ -186,18 +186,12 @@ namespace FEP.WebApiModel.eEvent
 
 		public IEnumerable<SelectListItem> UserIds { get; set; }
 
-		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		//public HttpPostedFileBase SpeakerPicture { get; set; }
 
-		[Display(Name = "SpPictureName", ResourceType = typeof(Language.Event))]
-		public string SpeakerPictureName { get; set; }
+		//[Display(Name = "SpPictureName", ResourceType = typeof(Language.Event))]
+		//public string SpeakerPictureName { get; set; }
 
-
-		//[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
-		//public HttpPostedFileBase SpeakerAttachment { get; set; }
-
-		[Display(Name = "SpAttachmentName", ResourceType = typeof(Language.Event))]
-		public string SpeakerAttachmentName { get; set; }
+		//[Display(Name = "SpAttachmentName", ResourceType = typeof(Language.Event))]
+		//public string SpeakerAttachmentName { get; set; }
 	}
 
 	public class EditEventSpeakerModel : CreateEventSpeakerModel

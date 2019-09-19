@@ -1,0 +1,434 @@
+﻿@model FEP.WebApiModel.Template.EditNotificationTemplateModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Contentscript{
+
+    <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
+    <script src="~/Scripts/summernote/summernote-lite.js"></script>
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var t = $('.tabledata').DataTable({
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": [0]
+                }],
+                "order": [[1, 'asc']],
+                "paging": true,
+                "lengthChange": true,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "language": {
+                    "emptyTable": "No record found"
+                },
+                "bLengthChange": false,
+                //"lengthMenu": [10, 25, 50],
+                buttons: [{
+                    extend: 'csvHtml5',
+                    title: 'Export Field Of Research List',
+                    //fieldSeparator:'|',
+                    exportOptions: {
+                        columns: [1]
+                    }
+                }]
+            });
+            t.on('order.dt search.dt', function () {
+                t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+
+            $('#export').click(function () { t.button('0').trigger(); });
+
+            var currentElement = "";
+
+            $('#summernote').summernote({
+                placeholder: 'Type email here',
+                tabsize: 2,
+                height: 300,
+                //width: $('#textareaContainer').parent().width() + ($('#textareaContainer').parent().width() * 0.3)
+                callbacks: {
+                    onFocus: function () {
+                        //currentElement = "body";
+                    }
+                }
+            });
+
+            /*$('#TemplateSubject').click(function () {
+                currentElement = "subject";
+            });*/
+            $('#addParamWeb').click(function () {
+                currentElement = "webMessage";
+                $('#myModal').modal('show');
+            });
+            $('#addParamSMS').click(function () {
+                currentElement = "smsMessage";
+                $('#myModal').modal('show');
+            });
+            $('#addParamEmailSubject').click(function () {
+                currentElement = "emailSubject";
+                $('#myModal').modal('show');
+            });
+            $('#addParamEmailBody').click(function () {
+                currentElement = "emailBody";
+                $('#myModal').modal('show');
+            });
+
+            $('.addParam').click(function () {
+
+                if (currentElement == "webMessage") {
+                    var currentVal = $('#WebMessage').val();
+                    var caretPos = document.getElementById("WebMessage").selectionStart;
+                    var textAreaTxt = jQuery("#WebMessage").val();
+                    var txtToAdd = $.trim($(this).text());
+                    jQuery("#WebMessage").val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos));
+                }
+                if (currentElement == "smsMessage") {
+                    var currentVal = $('#SMSMessage').val();
+                    var caretPos = document.getElementById("SMSMessage").selectionStart;
+                    var textAreaTxt = jQuery("#SMSMessage").val();
+                    var txtToAdd = $.trim($(this).text());
+                    jQuery("#SMSMessage").val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos));
+                }
+                if (currentElement == "emailSubject") {
+                    var currentVal = $('#TemplateSubject').val();
+                    var caretPos = document.getElementById("TemplateSubject").selectionStart;
+                    var textAreaTxt = jQuery("#TemplateSubject").val();
+                    var txtToAdd = $.trim($(this).text());
+                    jQuery("#TemplateSubject").val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos));
+                }
+                if (currentElement == "emailBody") {
+                    $('#summernote').summernote('saveRange');
+
+                    // Editor loses selected range (e.g after blur)
+
+                    $('#summernote').summernote('restoreRange');
+                    $('#summernote').summernote('focus');
+                    $('#summernote').summernote('insertText', $.trim($(this).text()));
+                }
+            });
+
+
+            $('#emailBox').hide();
+            $('#SMSBox').hide();
+            $('#webBox').hide();
+
+            $('#toggleWeb').click(function () {
+                $('#webBox').toggle();
+                $(this).children('span').children('i').toggleClass('fa-chevron-up fa-chevron-down');
+            });
+            $('#toggleSMS').click(function () {
+                $('#SMSBox').toggle();
+                $(this).children('span').children('i').toggleClass('fa-chevron-up fa-chevron-down');
+            });
+            $('#toggleEmail').click(function () {
+                $('#emailBox').toggle();
+                $(this).children('span').children('i').toggleClass('fa-chevron-up fa-chevron-down');
+            });
+
+            // limit SMSMessage text
+            var SMStext_max = 160;
+            $('#SMStextarea_feedback').html((SMStext_max - $('#SMSMessage').val().length ) + ' characters remaining');
+
+            $('#SMSMessage').keyup(function () {
+                var text_length = $('#SMSMessage').val().length;
+                var text_remaining = SMStext_max - text_length;
+
+                $('#SMStextarea_feedback').html(text_remaining + ' characters remaining');
+            });
+
+            // limit WebMessage text
+            var WEBtext_max = 100;
+            $('#WEBtextarea_feedback').html((WEBtext_max - $('#WebMessage').val().length ) + ' characters remaining');
+
+            $('#WebMessage').keyup(function () {
+                var text_length = $('#WebMessage').val().length;
+                var text_remaining = WEBtext_max - text_length;
+
+                $('#WEBtextarea_feedback').html(text_remaining + ' characters remaining');
+            });
+
+            $('.modal-dialog').draggable({
+                handle: ".modal-header"
+            });
+        });
+    </script>
+
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                @*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Template</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "EmailTemplates", new { area = "Template" })">Notification Template</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Admin Settings</h1>
+                    <div class="header-text">Manage who can access the admin console to help manage your organization's account.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Notification Template</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Details", "EmailTemplates", new { area = "Template", id = Model.Id })" class="nav-link">View</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Edit", "EmailTemplates", new { area = "Template", id = Model.Id })" class="active nav-link">Edit</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
+        {
+        <div class="border-form rounded-top">
+
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.NotificationType)
+
+            <div class="form-container form-container-w100">
+                <div class="mb-4 mt-2">
+                    <h4 class="color-darkblue mb-0">Editing : @Model.NotificationType.GetDisplayName()</h4>
+                    <h6 class="font-weight-normal">@Model.TemplateName</h6>
+
+                </div>
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TemplateRefNo, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12 pl-0">
+                        @Html.EditorFor(model => model.TemplateRefNo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TemplateRefNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-12 pl-0">
+                        @Html.FEPLabelFor(m => m.TemplateName)
+                        @Html.EditorFor(m => m.TemplateName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.TemplateName)
+                    </div>
+                </div>
+
+
+                <div class="divTable">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="enableWebMessage" checked="">
+                            @Html.LabelFor(model => model.enableWebMessage, htmlAttributes: new { @class = "custom-control-label mr-3" })
+                            <ul class="steps steps-vertical nav pull-right">
+                                <li class="step-item active">
+                                    <a href="#toggleWeb" class="step-link" id="toggleWeb">
+                                        <span class="step-number"><i class="fa fa-chevron-down text-white"></i></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.enableWebMessage, "", new { @class = "text-danger" })
+
+                    </div>
+                    <div id="webBox" class="form-group">
+                        <div class="col-md-12">
+                        @Html.LabelFor(model => model.WebMessage, htmlAttributes: new { @class = "control-label" })
+                            <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamWeb">
+                                <i class="fa fa-plus"></i>
+                                Add Parameters
+                            </button>
+                        </div>
+                        <div class="col-md-12 pl-0">
+                            @Html.TextAreaFor(model => model.WebMessage, new { @class = "form-control", @maxlength = "100", @style = "max-width 100%" })
+                            @Html.ValidationMessageFor(model => model.WebMessage, "", new { @class = "text-danger" })
+                            <label class="control-label pull-right" id="WEBtextarea_feedback"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divTable mt-2">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="enableSMSMessage" checked="">
+                            @Html.LabelFor(model => model.enableSMSMessage, htmlAttributes: new { @class = "custom-control-label mr-3" })
+                            <ul class="steps steps-vertical nav pull-right">
+                                <li class="step-item active">
+                                    <a href="#toggleSMS" class="step-link" id="toggleSMS">
+                                        <span class="step-number"><i class="fa fa-chevron-down text-white"></i></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.enableSMSMessage, "", new { @class = "text-danger" })
+                    </div>
+                    <div id="SMSBox" class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.SMSMessage, htmlAttributes: new { @class = "control-label" })
+                            <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamSMS">
+                                <i class="fa fa-plus"></i>
+                                Add Parameters
+                            </button>
+                        </div>
+                        <div class="col-md-12 pl-0">
+                            @Html.TextAreaFor(model => model.SMSMessage, new { @class = "form-control ", @maxlength = "160", @style = "max-width 100%" })
+                            @Html.ValidationMessageFor(model => model.SMSMessage, "", new { @class = "text-danger" })
+                            <label class="control-label pull-right" id="SMStextarea_feedback"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divTable mt-2">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="enableEmail" checked="">
+                            @Html.LabelFor(model => model.enableEmail, htmlAttributes: new { @class = "custom-control-label mr-3" })
+                            <ul class="steps steps-vertical nav pull-right">
+                                <li class="step-item active">
+                                    <a href="#toggleEmail" class="step-link" id="toggleEmail">
+                                        <span class="step-number"><i class="fa fa-chevron-down text-white"></i></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.enableEmail, "", new { @class = "text-danger" })
+                    </div>
+                    <div id="emailBox" class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-12 pl-0">
+                                        @Html.LabelFor(model => model.TemplateSubject, htmlAttributes: new { @class = "control-label" })
+                                        <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamEmailSubject" >
+                                            <i class="fa fa-plus"></i>
+                                            Add Parameters
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 pl-0">
+                                @Html.EditorFor(model => model.TemplateSubject, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.TemplateSubject, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-12 pl-0">
+                                        @Html.LabelFor(model => model.TemplateMessage, htmlAttributes: new { @class = "control-label" })
+                                        <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamEmailBody" >
+                                            <i class="fa fa-plus"></i>
+                                            Add Parameters
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 pl-0" id="textareaContainer">
+                                @*<div style="transform: scale(0.75); transform-origin: 0 0;">*@
+                                @Html.TextAreaFor(model => model.TemplateMessage, new { @class = "form-control summernote", @id = "summernote", @onfocus = "updateFocus(this)" })
+                                @Html.ValidationMessageFor(model => model.TemplateMessage, "", new { @class = "text-danger" })
+                                @*</div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a href="@Url.Action("List")" class="btn btn-default mr-2">Back</a>
+                <button class="btn btn-secondary" type="submit">Save</button>
+            </div>
+        }
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Parameter</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Pick a parameter to add in your template</p>
+                <div class="table-responsive">
+                    <table class="table tableStyle1 tabledata">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>@Html.DisplayNameFor(model => model.TemplateParameterTypeList)</th>
+                                <th>@Html.DisplayName("Description")</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.TemplateParameterTypeList.Count > 0)
+                            {
+                                foreach (var item in Model.TemplateParameterTypeList)
+                                {
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <div class="badge badge-info addParam" style="cursor: pointer">
+                                            <span class="ml-2 mr-2">
+                                                <i class="fa fa-plus-circle fa-1x"></i> &nbsp;
+                                                [#@item.TemplateParameterType]
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @item.parameterDisplayName
+                                    </td>
+                                </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+

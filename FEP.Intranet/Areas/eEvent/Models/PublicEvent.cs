@@ -19,19 +19,23 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Objective")]
 		public string EventObjective { get; set; }
 
+		[Required(ErrorMessage = "Please Insert Start Date")]
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
-		[Display(Name = "Event Date")]
+		[Display(Name = "Start Date")]
 		public DateTime? StartDate { get; set; }
 
+		[Required(ErrorMessage = "Please Insert End Date")]
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
-		[Display(Name = "Event Date")]
+		[Display(Name = "End Date")]
 		public DateTime? EndDate { get; set; }
 
+		[Required(ErrorMessage = "Please Insert Event Venue")]
 		[Display(Name = "Event Venue")]
 		public string Venue { get; set; }
 
+		[Required(ErrorMessage = "Please Insert Event Fee")]
 		[Display(Name = "Event Fee (RM) per Person")]
 		public float? Fee { get; set; }
 
@@ -65,6 +69,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Approver Name")]
 		public string ApprovalName4 { get; set; }
 
+		[Required(ErrorMessage = "Please Select Event Status")]
 		[Display(Name = "Status")]
 		public EventStatus? EventStatus { get; set; }
 
@@ -104,9 +109,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Proof of Approval")]
 		public string GetFileName { get; set; }
 
-
-
-
+		public string origin { get; set; }
+		 
+		public string RefNo { get; set; }
 
 
 		//File

@@ -128,6 +128,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+
             $('.card').click(function () {
                 var cid = $(this).attr("name");
                 $('#typeid').val(cid);
@@ -140,7 +141,6 @@
                 }
                 else {
                     var url = '@Url.Action("Create", "Survey", new { area = "RnP" })?typeid=' + tid;
-                    //alert(url);
                     window.location = url;
                 }
                 return false;

@@ -136,7 +136,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
             {
                 TempData["SuccessMessage"] = Language.EventCategory.AlertSuccessDelete;
 
-                LogActivity(Modules.Setting, "Delete Parameter Event Category", new { id = id });
+                await LogActivity(Modules.Setting, "Delete Parameter Event Category", new { id = id });
 
                 return RedirectToAction("List");
             }

@@ -60,21 +60,9 @@
     <Compile Include="Email.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201909062106261_a.cs" />
-    <Compile Include="Migrations\201909062106261_a.Designer.cs">
-      <DependentUpon>201909062106261_a.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909100306276_a1.cs" />
-    <Compile Include="Migrations\201909100306276_a1.Designer.cs">
-      <DependentUpon>201909100306276_a1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909081033299_0809_1.cs" />
-    <Compile Include="Migrations\201909081033299_0809_1.Designer.cs">
-      <DependentUpon>201909081033299_0809_1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909081250356_0809_2.cs" />
-    <Compile Include="Migrations\201909081250356_0809_2.Designer.cs">
-      <DependentUpon>201909081250356_0809_2.cs</DependentUpon>
+    <Compile Include="Migrations\201909170911281_initial-wawar.cs" />
+    <Compile Include="Migrations\201909170911281_initial-wawar.Designer.cs">
+      <DependentUpon>201909170911281_initial-wawar.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -99,17 +87,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909062106261_a.resx">
-      <DependentUpon>201909062106261_a.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909100306276_a1.resx">
-      <DependentUpon>201909100306276_a1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909081033299_0809_1.resx">
-      <DependentUpon>201909081033299_0809_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909081250356_0809_2.resx">
-      <DependentUpon>201909081250356_0809_2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909170911281_initial-wawar.resx">
+      <DependentUpon>201909170911281_initial-wawar.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

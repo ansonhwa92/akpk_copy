@@ -259,6 +259,7 @@ namespace FEP.WebApi.Api.Reminder
                         // --> CALL EMAIL API HERE---
                         //                          |   send received notificationId here
                         //                         \|/
+
                         int EmailNotificationId = 100; //assumed returned Id
                                                        // --> CALL insert BulkNotificationGroup API (NotificationMedium : Email, int [SLAReminderStatusId])
                         BulkNotificationModel objEmailNotification = new BulkNotificationModel

@@ -297,6 +297,10 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FEP.Intranet\FEP.Intranet.csproj">
+      <Project>{4079286E-AE06-46A4-AD44-02DBB01D8666}</Project>
+      <Name>FEP.Intranet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FEP.Model\FEP.Model.csproj">
       <Project>{2a1a9157-1c94-4b4a-96a4-52648bd8076a}</Project>
       <Name>FEP.Model</Name>

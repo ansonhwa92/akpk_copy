@@ -113,7 +113,7 @@ namespace FEP.WebApiModel.SLAReminder
         public NotificationMedium NotificationMedium { get; set; }
 
         [Display(Name = "Notification ID")]
-        public int NotificationId { get; set; }
+        public string NotificationId { get; set; }
     }
     public class CreateBulkNotificationModel : BulkNotificationModel
     {
@@ -123,10 +123,43 @@ namespace FEP.WebApiModel.SLAReminder
     public class CreateAutoReminder
     {
         public NotificationType NotificationType { get; set; }
+
+        public NotificationCategory NotificationCategory { get; set; }
         public ParameterListToSend ParameterListToSend { get; set; }
         public DateTime StartNotificationDate { get; set; }
 
         public List<int> ReceiverId { get; set; }
+    }
+
+    public class ReminderResponse
+    {
+        public string Status { get; set; }
+        public int SLAReminderStatusId { get; set; }
+    }
+
+    public class EmailClass
+    {
+        public string datID { get; set; }
+        public int datType { get; set; }
+        public int datNotify { get; set; }
+        public string dtInsert { get; set; }
+        public string dtSchedule { get; set; }
+        public string dtExpired { get; set; }
+        public string emailTo { get; set; }
+        public string subject { get; set; }
+        public string body { get; set; }
+    }
+    public class SMSClass
+    {
+        public string datID { get; set; }
+        public int datType { get; set; }
+        public int datNotify { get; set; }
+        public string dtInsert { get; set; }
+        public string dtSchedule { get; set; }
+        public string dtExpired { get; set; }
+        public string smsTo { get; set; }
+        public string subject { get; set; }
+        public string body { get; set; }
     }
 
     public class ParameterListToSend
@@ -149,4 +182,5 @@ namespace FEP.WebApiModel.SLAReminder
 
 
     }
+
 }

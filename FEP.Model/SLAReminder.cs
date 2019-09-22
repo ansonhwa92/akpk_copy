@@ -41,11 +41,17 @@ namespace FEP.Model
         public NotificationMedium NotificationMedium { get; set; }
 
         public int SLAReminderStatusId { get; set; }
-        public int NotificationId { get; set; }
+        public string NotificationId { get; set; }
 
  
     }
 
+    public enum NotificationCategory
+    {
+        Event = 1,
+        Learning = 2,
+        ResearchAndPublication = 3
+    }
     public enum NotificationMedium
     {
         Email,

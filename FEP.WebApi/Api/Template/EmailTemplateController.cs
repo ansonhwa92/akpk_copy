@@ -313,6 +313,23 @@ namespace FEP.WebApi.Api.Template
             db.Entry(template).Property(x => x.LastModified).IsModified = true;
             db.Entry(template).Property(x => x.CreatedBy).IsModified = false;
 
+            //getAllParam first dan delete dulu
+            var listParam = db.TemplateParameters.Where(p => p.NotificationType == model.NotificationType).ToList();
+            db.TemplateParameters.RemoveRange(listParam);
+
+            //lepas tu add yg baru
+            foreach (var item in model.ParameterList)
+            {
+
+                TemplateParameters param = new TemplateParameters
+                {
+                    NotificationType = model.NotificationType,
+                    TemplateParameterType = item
+                };
+                db.TemplateParameters.Add(param);
+
+            }
+
             db.Configuration.ValidateOnSaveEnabled = true;
             db.SaveChanges();
 

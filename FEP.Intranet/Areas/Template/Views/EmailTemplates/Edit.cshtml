@@ -248,7 +248,7 @@
                 <div class="divTable">
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="enableWebMessage" checked="">
+                            @Html.CheckBoxFor(model => model.enableWebMessage, new { @class = "custom-control-input" })
                             @Html.LabelFor(model => model.enableWebMessage, htmlAttributes: new { @class = "custom-control-label mr-3" })
                             <ul class="steps steps-vertical nav pull-right">
                                 <li class="step-item active">
@@ -280,7 +280,7 @@
                 <div class="divTable mt-2">
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="enableSMSMessage" checked="">
+                            @Html.CheckBoxFor(model => model.enableSMSMessage, new { @class = "custom-control-input" })
                             @Html.LabelFor(model => model.enableSMSMessage, htmlAttributes: new { @class = "custom-control-label mr-3" })
                             <ul class="steps steps-vertical nav pull-right">
                                 <li class="step-item active">
@@ -311,7 +311,7 @@
                 <div class="divTable mt-2">
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="enableEmail" checked="">
+                            @Html.CheckBoxFor(model => model.enableEmail, new { @class = "custom-control-input" })
                             @Html.LabelFor(model => model.enableEmail, htmlAttributes: new { @class = "custom-control-label mr-3" })
                             <ul class="steps steps-vertical nav pull-right">
                                 <li class="step-item active">

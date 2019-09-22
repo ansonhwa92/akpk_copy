@@ -11,6 +11,15 @@ using System.Web.Http;
 
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using FEP.Intranet;
+using System.Web.Mvc;
+using RouteAttribute = System.Web.Http.RouteAttribute;
+using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
+using HttpPutAttribute = System.Web.Http.HttpPutAttribute;
+using HttpGetAttribute = System.Web.Http.HttpGetAttribute;
+using NonActionAttribute = System.Web.Http.NonActionAttribute;
+using System.Web;
+using System.Threading.Tasks;
 
 namespace FEP.WebApi.Api.Reminder
 {
@@ -139,28 +148,28 @@ namespace FEP.WebApi.Api.Reminder
         }
 
         [Route("api/Reminder/SLA/StopNotification")]
-        [HttpPut]
+        [HttpGet]
         // POST: api/SLAReminder
-        public IHttpActionResult StopNotification(int NotificationId)
+        public IHttpActionResult StopNotification(int SLAReminderStatusId)
         {
-            if (!ModelState.IsValid)
+            /*if (!ModelState.IsValid)
             {
                 return BadRequest();
-            }
+            }*/
 
-            BulkNotification BN = db.BulkNotification.Where(b => b.NotificationId == NotificationId).FirstOrDefault();
-            
             //get list of notification related to the same Email reminder
-            var NotificationList = db.BulkNotification.Where(b => b.SLAReminderStatusId == BN.SLAReminderStatusId).ToList();
+            var NotificationList = db.BulkNotification.Where(b => b.SLAReminderStatusId == SLAReminderStatusId).ToList();
             foreach(var item in NotificationList)
             {
                 if(item.NotificationMedium == NotificationMedium.Email)
                 {
                     // --> CALL EMail API utk delete future email
+                    var responEmail = StopEmailUsingAPI(item.NotificationId);
                 }
                 if (item.NotificationMedium == NotificationMedium.SMS)
                 {
                     // --> CALL SMS API utk delete future SMS
+                    var responseSMS = StopSMSUsingAPI(item.NotificationId);
                 }
                 if (item.NotificationMedium == NotificationMedium.Web)
                 {
@@ -168,17 +177,19 @@ namespace FEP.WebApi.Api.Reminder
                 }
             }
 
-            SLAReminderStatus SLA = db.SLAReminderStatus.Where(s => s.Id == BN.SLAReminderStatusId).FirstOrDefault();
-            SLA.NotificationReminderStatusType = NotificationReminderStatusType.Closed;
-            SLA.closeDate = DateTime.Now;
+            List<SLAReminderStatus> SLAList = db.SLAReminderStatus.Where(s => s.Id == SLAReminderStatusId).ToList();
+            foreach (var sla in SLAList)
+            {
+                sla.NotificationReminderStatusType = NotificationReminderStatusType.Closed;
+                sla.closeDate = DateTime.Now;
 
-            db.Entry(SLA).State = EntityState.Modified;
-            db.Entry(SLA).Property(x => x.NotificationReminderStatusType).IsModified = true;
-            db.Entry(SLA).Property(x => x.closeDate).IsModified = true;
-            db.Configuration.ValidateOnSaveEnabled = true;
-            db.SaveChanges();
-
-            return Ok(SLA);
+                db.Entry(sla).State = EntityState.Modified;
+                db.Entry(sla).Property(x => x.NotificationReminderStatusType).IsModified = true;
+                db.Entry(sla).Property(x => x.closeDate).IsModified = true;
+                db.Configuration.ValidateOnSaveEnabled = true;
+                db.SaveChanges();
+            }
+            return Ok(NotificationList);
 
         }
 
@@ -218,6 +229,7 @@ namespace FEP.WebApi.Api.Reminder
         {
         }
 
+        
         //--------------------------------------------------------------------------------------------------
         //                  BIG CHUNK OF CODE TO AUTOMATE SLA REMINDER
         //--------------------------------------------------------------------------------------------------
@@ -228,10 +240,11 @@ namespace FEP.WebApi.Api.Reminder
         //5 call email API
         [Route("api/Reminder/SLA/GenerateAutoNotificationReminder")]
         [HttpPost]
-        public IHttpActionResult GenerateAutoNotificationReminder(CreateAutoReminder reminder)
+        public async Task<IHttpActionResult> GenerateAutoNotificationReminder(CreateAutoReminder reminder)
         {
             List<DateTime> ScheduleMessage = GetSLAReminder(reminder.NotificationType, reminder.StartNotificationDate);
             var template = db.NotificationTemplates.Where(t => t.NotificationType == reminder.NotificationType).FirstOrDefault();
+            int SLAReminderId = 0;
 
             // --> CALL StartNotification API (register SLAReminder) -> return [SLAReminderStatusId]
             CreateSLAReminderStatusModel objReminder = new CreateSLAReminderStatusModel
@@ -246,58 +259,69 @@ namespace FEP.WebApi.Api.Reminder
 
             if (responseStartNotification != null)
             {
-                var SLAReminderId = responseStartNotification.Id;
+                SLAReminderId = responseStartNotification.Id;
 
                 if (template.enableEmail)
                 {
                     string emailSubject = generateBodyMessage(template.TemplateSubject, reminder.NotificationType, reminder.ParameterListToSend);
                     string emailBody = generateBodyMessage(template.TemplateMessage, reminder.NotificationType, reminder.ParameterListToSend);
 
-                    //send notification mengikut jadual
-                    foreach (var notifyDate in ScheduleMessage)
+                    //send email ke setiap reciever
+                    foreach (var receiver in reminder.ReceiverId)
                     {
-                        // --> CALL EMAIL API HERE---
-                        //                          |   send received notificationId here
-                        //                         \|/
-
-                        int EmailNotificationId = 100; //assumed returned Id
-                                                       // --> CALL insert BulkNotificationGroup API (NotificationMedium : Email, int [SLAReminderStatusId])
-                        BulkNotificationModel objEmailNotification = new BulkNotificationModel
+                        string receiverEmailAddress = db.User.Find(receiver).Email;
+                        //send notification mengikut jadual
+                        foreach (var notifyDate in ScheduleMessage)
                         {
-                            SLAReminderStatusId = SLAReminderId,
-                            NotificationMedium = NotificationMedium.Email,
-                            NotificationId = EmailNotificationId
-                        };
+                            // --> CALL EMAIL API HERE---
+                            //                          |   send received notificationId here
+                            //                         \|/
+                            var response = await sendEmailUsingAPIAsync(notifyDate, (int)reminder.NotificationCategory, (int)reminder.NotificationType, receiverEmailAddress, emailSubject, emailBody);
+                            if (response != null) { 
+                                string EmailNotificationId = response.datID; //assumed returned Id
+                                // --> CALL insert BulkNotificationGroup API (NotificationMedium : Email, int [SLAReminderStatusId])
+                                BulkNotificationModel objEmailNotification = new BulkNotificationModel
+                                {
+                                    SLAReminderStatusId = SLAReminderId,
+                                    NotificationMedium = NotificationMedium.Email,
+                                    NotificationId = EmailNotificationId
+                                };
 
-                        var responseEmailNotificationGroup = RegisterBulkNotificationGroupFunc(objEmailNotification);
-
-                        /*var responseEmailNotificationGroup = await WepApiMethod.SendApiAsync<BulkNotificationModel>
-                            (HttpVerbs.Post, $"Reminder/SLA/RegisterBulkNotificationGroup/", objEmailNotification);*/
+                                var responseEmailNotificationGroup = RegisterBulkNotificationGroupFunc(objEmailNotification);
+                            }
+                        }
                     }
 
                 }
 
                 if (template.enableSMSMessage)
                 {
-                    foreach (var notifyDate in ScheduleMessage)
+                    //send sms ke setiap reciever
+                    foreach (var receiver in reminder.ReceiverId)
                     {
-                        string SMSToSend = generateSMSMessage(template.SMSMessage, template.NotificationType, reminder.ParameterListToSend);
-                        // --> CALL SMS API HERE-----
-                        //                          |   send received notificationId here
-                        //                         \|/
-                        int SMSNotificationId = 101; //assumed returned Id
-                                                     // --> CALL insert BulkNotificationGroup API (NotificationMedium : SMS, [SLAReminderStatusId])
-                        BulkNotificationModel objSMSNotification = new BulkNotificationModel
+                        string receiverPhoneNo = db.User.Find(receiver).MobileNo;
+
+                        foreach (var notifyDate in ScheduleMessage)
                         {
-                            SLAReminderStatusId = SLAReminderId,
-                            NotificationMedium = NotificationMedium.SMS,
-                            NotificationId = SMSNotificationId
-                        };
+                            string SMSToSend = generateSMSMessage(template.SMSMessage, template.NotificationType, reminder.ParameterListToSend);
+                            // --> CALL SMS API HERE-----
+                            //                          |   send received notificationId here
+                            //                         \|/
+                            var response = await sendSMSUsingAPIAsync(notifyDate, (int)reminder.NotificationCategory, (int)reminder.NotificationType, receiverPhoneNo, null, SMSToSend);
+                            if (response != null)
+                            {
+                                string SMSNotificationId = response.datID; //assumed returned Id
+                                // --> CALL insert BulkNotificationGroup API (NotificationMedium : SMS, [SLAReminderStatusId])
+                                BulkNotificationModel objSMSNotification = new BulkNotificationModel
+                                {
+                                    SLAReminderStatusId = SLAReminderId,
+                                    NotificationMedium = NotificationMedium.SMS,
+                                    NotificationId = SMSNotificationId
+                                };
 
-                        var responseSMSNotificationGroup = RegisterBulkNotificationGroupFunc(objSMSNotification);
-
-                        /*var responseSMSNotificationGroup = await WepApiMethod.SendApiAsync<BulkNotificationModel>
-                            (HttpVerbs.Post, $"Reminder/SLA/RegisterBulkNotificationGroup/", objSMSNotification);*/
+                                var responseSMSNotificationGroup = RegisterBulkNotificationGroupFunc(objSMSNotification);
+                            }
+                        }
                     }
                 }
 
@@ -309,7 +333,7 @@ namespace FEP.WebApi.Api.Reminder
                         // --> CALL WEB API HERE-----
                         //                          |   send received notificationId here
                         //                         \|/
-                        int WEBNotificationId = 102; //assumed returned Id
+                        string WEBNotificationId = "102"; //assumed returned Id
                                                      // --> CALL insert BulkNotificationGroup API (NotificationMedium : Web, [SLAReminderStatusId])
                         BulkNotificationModel objWEBNotification = new BulkNotificationModel
                         {
@@ -324,9 +348,23 @@ namespace FEP.WebApi.Api.Reminder
                             (HttpVerbs.Post, $"Reminder/SLA/RegisterBulkNotificationGroup/", objWEBNotification);*/
                     }
                 }
-            }
 
-            return Ok("success");
+                ReminderResponse result = new ReminderResponse
+                {
+                    Status = "Success",
+                    SLAReminderStatusId = SLAReminderId
+                };
+                return Ok(result);
+            }
+            else
+            {
+                ReminderResponse result = new ReminderResponse
+                {
+                    Status = "Failed",
+                    SLAReminderStatusId = SLAReminderId
+                };
+                return Ok(result);
+            }
         }
         [NonAction]
         public List<DateTime> GetSLAReminder(NotificationType NotificationType, DateTime StartTime)
@@ -337,7 +375,13 @@ namespace FEP.WebApi.Api.Reminder
             DateTime TempTime;
             reminderList.Add(StartTime);
             TempTime = StartTime;
-            for (int i = 0; i < SLAReminder.SLAResolutionTime; i++)
+            int numberOrReminder = 0;
+            if (SLAReminder.SLADurationType == SLADurationType.Days)
+                numberOrReminder = SLAReminder.SLAResolutionTime;
+            else if (SLAReminder.SLADurationType == SLADurationType.Hours)
+                numberOrReminder = (SLAReminder.SLAResolutionTime * 24) / SLAReminder.IntervalDuration;
+
+            for (int i = 0; i < numberOrReminder; i++)
             {
                 if (SLAReminder.SLADurationType == SLADurationType.Hours)
                 {
@@ -426,6 +470,81 @@ namespace FEP.WebApi.Api.Reminder
             return WholeText;
         }
 
+        [NonAction]
+        public async Task<EmailClass> sendEmailUsingAPIAsync
+            (DateTime emailDate, int notifyCategory, int notifyType, string emailAddress, string emailSubject, string emailBody)
+        {
+            DateTime myTimeNow = DateTime.Now;
+            int epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+            EmailClass emailObj = new EmailClass
+            {
+                datID = emailAddress + "-email-" + epoch.ToString(),
+                datType = notifyCategory,
+                datNotify = notifyType,
+                dtInsert = myTimeNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                dtSchedule = emailDate.AddMinutes(1).ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                dtExpired = emailDate.AddYears(1).ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                emailTo = emailAddress,
+                subject = HttpUtility.HtmlDecode(emailSubject),
+                body = HttpUtility.HtmlDecode(emailBody)
+            };
+            var response = await WepApiMethod.SendApiAsync<EmailClass>
+                (HttpVerbs.Post, $"BulkEmail", emailObj, WepApiMethod.APIEngine.EmailSMSAPI);
+
+            if (response.isSuccess)
+                return response.Data;
+            else
+                return null;
+        }
+        [NonAction]
+        public async Task<EmailClass> StopEmailUsingAPI (string emailId)
+        {
+            var response = await WepApiMethod.SendApiAsync<EmailClass>
+                (HttpVerbs.Delete, $"BulkEmail/"+emailId, null, WepApiMethod.APIEngine.EmailSMSAPI);
+
+            if (response.isSuccess)
+                return response.Data;
+            else
+                return null;
+        }
+        [NonAction]
+        public async Task<EmailClass> StopSMSUsingAPI(string smsId)
+        {
+            var response = await WepApiMethod.SendApiAsync<EmailClass>
+                (HttpVerbs.Delete, $"BulkSMS/" + smsId, null, WepApiMethod.APIEngine.EmailSMSAPI);
+
+            if (response.isSuccess)
+                return response.Data;
+            else
+                return null;
+        }
+
+        [NonAction]
+        public async Task<SMSClass> sendSMSUsingAPIAsync
+            (DateTime smsDate, int notifyCategory, int notifyType, string phoneNo, string smsSubject, string smsBody)
+        {
+            DateTime myTimeNow = DateTime.Now;
+            int epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+            SMSClass smsObj = new SMSClass
+            {
+                datID = phoneNo + "-sms-" + epoch.ToString(),
+                datType = notifyCategory,
+                datNotify = notifyType,
+                dtInsert = myTimeNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                dtSchedule = smsDate.AddMinutes(1).ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                dtExpired = smsDate.AddYears(1).ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                smsTo = phoneNo,
+                subject = smsSubject,
+                body = smsBody
+            };
+            var response = await WepApiMethod.SendApiAsync<SMSClass>
+                (HttpVerbs.Post, $"BulkSMS", smsObj, WepApiMethod.APIEngine.EmailSMSAPI);
+
+            if (response.isSuccess)
+                return response.Data;
+            else
+                return null;
+        }
         //--------------------------------------------------------------------------------------------------
     }
 }

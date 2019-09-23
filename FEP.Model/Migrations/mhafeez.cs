@@ -25,16 +25,16 @@ namespace FEP.Model.Migrations
         public static void Seed(DbEntities db)
         {
             //notification
-            if (!db.NotificationSetting.Any())
-            {
-                foreach (NotificationType type in (NotificationType[])Enum.GetValues(typeof(NotificationType)))
-                {
-                    db.NotificationSetting.AddOrUpdate(
-                        t => new { t.NotificationType },
-                        new NotificationSetting { NotificationType = type }
-                    );
-                }
-            }
+            //if (!db.NotificationSetting.Any())
+            //{
+            //    foreach (NotificationType type in (NotificationType[])Enum.GetValues(typeof(NotificationType)))
+            //    {
+            //        db.NotificationSetting.AddOrUpdate(
+            //            t => new { t.NotificationType },
+            //            new NotificationSetting { NotificationType = type }
+            //        );
+            //    }
+            //}
             
             //default setting
             if (!db.SystemSetting.Any(m => m.Id == 0))

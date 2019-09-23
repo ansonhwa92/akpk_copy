@@ -163,16 +163,16 @@ namespace FEP.Model
         public virtual User User { get; set; }
     }
 
-    [Table("NotificationSetting")]
-    public class NotificationSetting
-    {
-        [Key]
-        public NotificationType NotificationType { get; set; }
-        public bool IsSendEmail { get; set; }
-        public bool IsSendNotification { get; set; }
-        public string NotificationMessage { get; set; }
-        public string EmailSubject { get; set; }
-        public string EmailMessage { get; set; }
+    //[Table("NotificationSetting")]
+    //public class NotificationSetting
+    //{
+    //    [Key]
+    //    public NotificationType NotificationType { get; set; }
+    //    public bool IsSendEmail { get; set; }
+    //    public bool IsSendNotification { get; set; }
+    //    public string NotificationMessage { get; set; }
+    //    public string EmailSubject { get; set; }
+    //    public string EmailMessage { get; set; }
 
-    }
+    //}
 }

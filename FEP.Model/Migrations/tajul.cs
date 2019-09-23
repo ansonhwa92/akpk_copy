@@ -14,7 +14,7 @@ namespace FEP.Model.Migrations
 
             DefaultSLAReminder(db);
             DefaultParameterGroup(db);
-            DefaultTemplate(db);
+            //DefaultTemplate(db);
         }
 
         public static void DefaultSLAReminder(DbEntities db)
@@ -115,31 +115,31 @@ namespace FEP.Model.Migrations
             
         }
 
-        public static void DefaultTemplate(DbEntities db)
-        {
-            if (!db.NotificationTemplates.Any())
-            {
-                foreach (NotificationType notifyType in Enum.GetValues(typeof(NotificationType)))
-                {
-                    db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
-                        new NotificationTemplate {
-                            NotificationType = notifyType,
-                            TemplateName = notifyType.DisplayName(),
-                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
-                            enableEmail = true,
-                            TemplateSubject = "Subject: " + notifyType.DisplayName(),
-                            TemplateMessage = "Email Body Template",
-                            enableSMSMessage = true,
-                            SMSMessage = "SMS Message Template",
-                            enableWebMessage = true,
-                            WebMessage = "Web Message Template",
-                            CreatedDate = DateTime.Now,
-                            CreatedBy = db.User.Where(u => u.Name == "System Admin").FirstOrDefault().Id,
-                            Display = true
-                        } );
-                }
-            }
+        //public static void DefaultTemplate(DbEntities db)
+        //{
+        //    if (!db.NotificationTemplates.Any())
+        //    {
+        //        foreach (NotificationType notifyType in Enum.GetValues(typeof(NotificationType)))
+        //        {
+        //            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+        //                new NotificationTemplate {
+        //                    NotificationType = notifyType,
+        //                    TemplateName = notifyType.DisplayName(),
+        //                    TemplateRefNo = "T" + ((int)notifyType).ToString(),
+        //                    enableEmail = true,
+        //                    TemplateSubject = "Subject: " + notifyType.DisplayName(),
+        //                    TemplateMessage = "Email Body Template",
+        //                    enableSMSMessage = true,
+        //                    SMSMessage = "SMS Message Template",
+        //                    enableWebMessage = true,
+        //                    WebMessage = "Web Message Template",
+        //                    CreatedDate = DateTime.Now,
+        //                    CreatedBy = db.User.Where(u => u.Name == "System Admin").FirstOrDefault().Id,
+        //                    Display = true
+        //                } );
+        //        }
+        //    }
             
-        }
+        //}
     }
 }

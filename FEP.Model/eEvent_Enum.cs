@@ -44,19 +44,19 @@ namespace FEP.Model
 		[Display(Name = "New")]
 		New, //If Saved Public Event
 
-		[Display(Name = "Pending")]
+		[Display(Name = "Pending Approval")]
 		PendingforVerification, //If Admin Public Event Submit
 
-		[Display(Name = "Pending")]
+		[Display(Name = "Pending Approval")]
 		VerifiedbyFirstApprover, //If Approver 1 Submit
 
-		[Display(Name = "Pending")]
+		[Display(Name = "Pending Approval")]
 		VerifiedbySecondApprover, //If Approver 1 Submit
 
 		[Display(Name = "Approved")]
 		Approved, //If Approver 3 Approved
 
-		[Display(Name = "Amending")]
+		[Display(Name = "Require Amendment")]
 		RejectNeedToEdit, //If Approver 3 Rejected
 
 		[Display(Name = "Rejected")]

@@ -108,7 +108,6 @@ namespace FEP.Model.Migrations
                         },
                     }
                 );
-
             }
 
             AddRole(db, "Individual", "Default Individual");

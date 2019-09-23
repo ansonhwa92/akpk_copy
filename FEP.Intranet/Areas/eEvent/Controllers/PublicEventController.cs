@@ -2,6 +2,7 @@
 using FEP.Intranet.Areas.eEvent.Models;
 using FEP.Model;
 using FEP.WebApiModel.eEvent;
+using FEP.WebApiModel.SLAReminder;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using EventSpeakerModel = FEP.WebApiModel.eEvent.EventSpeakerModel;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
 {
@@ -114,7 +116,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View(e);
 		}
 
-		// GET: PublicEvent/Create
+		//GET: PublicEvent/Create
 		public ActionResult Create(int? ctgryId)
 		{
 			CreatePublicEventModel model = new CreatePublicEventModel
@@ -147,6 +149,23 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			return View(model);
 		}
+
+		//[HttpGet]
+		//public async Task<ActionResult> Create(int? ctgryId)
+		//{
+		//	var model = new FEP.Intranet.Areas.eEvent.Models.CreatePublicEventModel()
+		//	{
+		//		EventStatus = EventStatus.New,
+		//		EventCategoryId = ctgryId,
+		//	};
+
+		//	model.CategoryList = new SelectList(await GetCategory(), "Id", "Name", 0);
+		//	model.SpeakerList = new SelectList(GetSpeaker(), "Id", "Name", 0);
+		//	model.ExternalExhibitorList = new SelectList(GetExhibitor(), "Id", "Name", 0);
+
+		//	return View(model);
+		//}
+
 
 		// POST: PublicEvent/Create
 		[HttpPost]
@@ -483,8 +502,24 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SubmitToVerify?id={id}");
 			if (response.isSuccess)
 			{
+				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
+
 				await LogActivity(Modules.Event, "Submit Public Event Ref No: " + response.Data +" for verification.");
 				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully submitted for verification.";
+
+				ParameterListToSend paramToSend = new ParameterListToSend();
+				paramToSend.EventName = response.Data;
+				paramToSend.EventCode = getevent.RefNo;
+
+				CreateAutoReminder reminder = new CreateAutoReminder
+				{
+					NotificationType = NotificationType.Verify_Public_Event_Creation,
+					ParameterListToSend = paramToSend,
+					StartNotificationDate = DateTime.Now,
+					ReceiverId = new List<int> { 1 }
+				};
+				var response2 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
 			}
 			else
@@ -598,6 +633,55 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
 			}
 		}
+
+		//[NonAction]
+		//private async Task<IEnumerable<UserModel>> GetUsers()
+		//{
+
+		//	var roles = Enumerable.Empty<UserModel>();
+
+		//	var response = await WepApiMethod.SendApiAsync<List<UserModel>>(HttpVerbs.Get, $"Administration/User");
+
+		//	if (response.isSuccess)
+		//	{
+		//		roles = response.Data.OrderBy(o => o.Name);
+		//	}
+
+		//	return roles;
+
+		//}
+
+		//[NonAction]
+		//private async Task<IEnumerable<EventSpeakerModel>> GetSpeaker()
+		//{
+
+		//	var roles = Enumerable.Empty<EventSpeakerModel>();
+
+		//	var response = await WepApiMethod.SendApiAsync<List<EventSpeakerModel>>(HttpVerbs.Get, $"Administration/User");
+
+		//	if (response.isSuccess)
+		//	{
+		//		roles = response.Data.OrderBy(o => o.Name);
+		//	}
+		//	return roles;
+		//}
+
+
+		//[NonAction]
+		//private async Task<IEnumerable<EventExternalExhibitorModel>> GetExhibitor()
+		//{
+		//	var roles = Enumerable.Empty<EventExternalExhibitorModel>();
+
+		//	var response = await WepApiMethod.SendApiAsync<List<EventExternalExhibitorModel>>(HttpVerbs.Get, $"eEvent/EventExternalExhibitor");
+
+		//	if (response.isSuccess)
+		//	{
+		//		roles = response.Data.OrderBy(o => o.Name);
+		//	}
+
+		//	return roles;
+
+		//}
 
 
 	}

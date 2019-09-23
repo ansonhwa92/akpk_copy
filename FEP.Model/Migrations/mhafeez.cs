@@ -108,7 +108,38 @@ namespace FEP.Model.Migrations
                         },
                     }
                 );
+
+
             }
+            /*else
+            {
+                var role = db.Role.Local.Where(r => r.Name.Contains("All Access")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("All Access")).FirstOrDefault();
+
+                List<UserRole> userroles = new List<UserRole>();
+
+                userroles.Add(new UserRole { Role = role });
+                db.User.Add(
+                    new User
+                    {
+                        Name = "Tajul Admin",
+                        Email = "tajulzaid@gmail.com",
+                        UserType = UserType.SystemAdmin,
+                        CreatedDate = DateTime.Now,
+                        Display = true,
+                        UserAccount = new UserAccount
+                        {
+                            LoginId = "tajulzaid@gmail.com",
+                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==", //default abc123
+                            Salt = "/ZCqmg==",
+                            IsEnable = true,
+                            LoginAttempt = 0,
+                            LastPasswordChange = DateTime.Now,
+                            LastLogin = DateTime.Now,
+                            UserRoles = userroles
+                        },
+                    }
+                );
+            }*/
 
             AddRole(db, "Individual", "Default Individual");
             AddRole(db, "Individual with paper", "Individual with paper");

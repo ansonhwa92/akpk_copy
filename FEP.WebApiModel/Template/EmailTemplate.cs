@@ -109,6 +109,8 @@ namespace FEP.WebApiModel.Template
     {
         public int Id { get; set; }
 
+        public List<String> ParameterList { get; set; }
+
         [Display(Name = "Notification Type")]
         public IEnumerable<SelectListItem> NotificationTypeList { get; set; }
 

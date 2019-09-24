@@ -5,25 +5,6 @@
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-@section ContentScript{
-	<script type="text/javascript">
-		$(document).ready(function () {
-
-			var scontent = $('#Contents').val();
-			surveyCreator.text = scontent;
-
-			$("#StartDate").flatpickr({
-				dateFormat: "d/m/Y",
-				maxDate: "31/12/2200",
-			});
-
-			$("#EndDate").flatpickr({
-				dateFormat: "d/m/Y",
-				maxDate: "31/12/2200",
-			});
-	</script>
-}
-
 @section Nav {
 
 	<div class="title_header">

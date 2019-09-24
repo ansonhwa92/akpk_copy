@@ -56,10 +56,10 @@ namespace FEP.Model
         public DbSet<NotificationToSend> NotificationToSend { get; set; }
         public DbSet<NotificationToSendRecipient> NotificationToSendRecipient { get; set; }
 
-        //public DbSet<NotificationSetting> NotificationSetting { get; set; }
+		public DbSet<NotificationSetting> NotificationSetting { get; set; }
 
-        //email
-        public DbSet<EmailToSend> EmailToSend { get; set; }
+		//email
+		public DbSet<EmailToSend> EmailToSend { get; set; }
         public DbSet<EmailToSendAddress> EmailToSendAddress { get; set; }
 
 
@@ -135,6 +135,7 @@ namespace FEP.Model
 		public DbSet<MediaFile> MediaFile { get; set; }
 		public DbSet<EventCategory> EventCategory { get; set; }
 		public DbSet<SpeakerFile> SpeakerFile { get; set; }
+		public DbSet<ExhibitionNominee> ExhibitionNominee { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

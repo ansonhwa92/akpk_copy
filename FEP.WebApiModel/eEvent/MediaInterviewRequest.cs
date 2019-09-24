@@ -26,7 +26,7 @@ namespace FEP.WebApiModel
 		[Display(Name = "Address")]
 		public string AddressStreet1 { get; set; }
 		public string AddressStreet2 { get; set; }
-		public string AddressPoscode { get; set; }
+		public int? AddressPoscode { get; set; }
 		public string AddressCity { get; set; }
 		public MediaState? State { get; set; }
 
@@ -49,9 +49,15 @@ namespace FEP.WebApiModel
 		public string Location { get; set; }
 		public MediaLanguage? Language { get; set; }
 		public string Topic { get; set; }
-		public string Designation { get; set; }
+
+
 		public int? UserId { get; set; }
 		public string UserName { get; set; }
+		public string RepDesignation { get; set; }
+		public string RepEmail { get; set; }
+		public string RepMobileNumber { get; set; }
+
+
 		public int? EventId { get; set; }
 		public string EventTitle { get; set; }
 		public bool Display { get; set; }

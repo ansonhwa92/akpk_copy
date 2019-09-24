@@ -128,27 +128,37 @@
 
 							if (row.EventStatus == 1) {
 								//Approve By Approver1
-								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove1" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-edit text-muted"></i></i></a>'
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove1" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-eye text-muted"></i></i></a>'
 							}
 
 							if (row.EventStatus == 2) {
 								//Approve By Approver2
-								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove2" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-edit text-muted"></i></i></a>'
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove2" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-eye text-muted"></i></i></a>'
 							}
 
 							if (row.EventStatus == 3) {
 								//Approve By Approver3
-								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove3" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-edit text-muted"></i></i></a>'
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove3" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-eye text-muted"></i></i></a>'
 							}
 
 							if (row.EventStatus == 5) {
 								//Approve By Approver3
-								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=fromamendment" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-edit text-muted"></i></i></a>'
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=fromamendment" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-eye text-muted"></i></i></a>'
 							}
 
 							if (row.EventStatus == 4 || row.EventStatus == 6) {
 								//Approved
                                 action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=approvedcancel" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+							}
+
+							if (row.EventStatus == 7) {
+								//Published
+                                action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=published" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+							}
+
+							if (row.EventStatus == 5) {
+								//require amendment
+						    action +='<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '?origin=amendment" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
 							}
 
 							action +='</div>';

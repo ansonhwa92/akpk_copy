@@ -25,10 +25,10 @@ namespace FEP.Model.Migrations
 			}
 
 			//string Name, string Email, string ICNo, string MobileNo, UserType UserType
-			//AddUserEvent(db, "Event Admin", "EventAdmin@fep.com", null, null, UserType.Staff);
-			//AddUserEvent(db, "Event Approver 1", "Approver1@fep.com", null, null, UserType.Staff);
-			//AddUserEvent(db, "Event Approver 2", "Approver2@fep.com", null, null, UserType.Staff);
-			//AddUserEvent(db, "Event Approver 3", "Approver3@fep.com", null, null, UserType.Staff);
+			AddUserEvent(db, "Event Admin", "aimannoramri@gmail.com", null, null, UserType.Staff);
+			AddUserEvent(db, "Event Approver 1", "aiman@primuscore.com", null, null, UserType.Staff);
+			AddUserEvent(db, "Event Approver 2", "tajulzaid@gmail.com", null, null, UserType.Staff);
+			AddUserEvent(db, "Event Approver 3", "radzi@primuscore.com", null, null, UserType.Staff);
 			//AddUserEvent(db, "HAROLDEAN LIM @ LIM JIN LOK", "", "690315065097", "0106598960", UserType.Staff);
 			//AddUserEvent(db, "AZMAN BIN HASIM", "", "69062715005", "0192333703", UserType.Staff);
 			//AddUserEvent(db, "NOR FAZILLAH BINTI MOHD ZIN", "", "730201 14 - 5172", "0123844738", UserType.Staff);
@@ -46,40 +46,40 @@ namespace FEP.Model.Migrations
 		}
 
 		//Administrator Event
-		//public static void AddUserEvent(DbEntities db, string Name, string Email, string ICNo, string MobileNo, UserType UserType)
-		//{
-		//	var eventadmin = db.User.Local.Where(r => r.Name.Contains(Name)).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains(Name)).FirstOrDefault();
-		//	if (eventadmin == null)
-		//	{
-		//		//var role = db.Role.Local.Where(r => r.Name.Contains("")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("")).FirstOrDefault();
-		//		//List<UserRole> userroles = new List<UserRole>();
-		//		//userroles.Add(new UserRole { Role = role });
-		//		db.User.Add(
-		//			new User
-		//			{
-		//				Name = Name,
-		//				Email = Email,
-		//				ICNo = ICNo,
-		//				MobileNo = MobileNo,
-		//				UserType = UserType,
-		//				CreatedDate = DateTime.Now,
-		//				Display = true,						
-		//				UserAccount = new UserAccount
-		//				{
-		//					LoginId = Email,
-		//					HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==", //default abc123
-		//					Salt = "/ZCqmg==",
-		//					IsEnable = true,
-		//					LoginAttempt = 0,
-		//					LastPasswordChange = DateTime.Now,
-		//					LastLogin = DateTime.Now,
-		//					//UserRoles = userroles
-		//				},
-		//			}
-		//		);
-		//	}
+		public static void AddUserEvent(DbEntities db, string Name, string Email, string ICNo, string MobileNo, UserType UserType)
+		{
+			var eventadmin = db.User.Local.Where(r => r.Name.Contains(Name)).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains(Name)).FirstOrDefault();
+			if (eventadmin == null)
+			{
+				//var role = db.Role.Local.Where(r => r.Name.Contains("")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("")).FirstOrDefault();
+				//List<UserRole> userroles = new List<UserRole>();
+				//userroles.Add(new UserRole { Role = role });
+				db.User.Add(
+					new User
+					{
+						Name = Name,
+						Email = Email,
+						ICNo = ICNo,
+						MobileNo = MobileNo,
+						UserType = UserType,
+						CreatedDate = DateTime.Now,
+						Display = true,
+						UserAccount = new UserAccount
+						{
+							LoginId = Email,
+							HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==", //default abc123
+							Salt = "/ZCqmg==",
+							IsEnable = true,
+							LoginAttempt = 0,
+							LastPasswordChange = DateTime.Now,
+							LastLogin = DateTime.Now,
+							//UserRoles = userroles
+						},
+					}
+				);
+			}
 
-		//}
+		}
 
 
 

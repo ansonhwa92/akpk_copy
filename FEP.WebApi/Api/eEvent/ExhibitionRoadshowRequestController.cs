@@ -153,7 +153,7 @@ namespace FEP.WebApi.Api.eEvent
 					ReceivedById = i.ReceivedById,
 					ReceivedDate = i.ReceivedDate,
 					Receive_Via = i.Receive_Via,
-					NomineeId = i.NomineeId
+					//NomineeId = i.NomineeId
 				}).ToList();
 
 			data.ForEach(s => s.ExhibitionStatusDesc = s.ExhibitionStatus.GetDisplayName());
@@ -188,14 +188,16 @@ namespace FEP.WebApi.Api.eEvent
 					ReceivedByName = s.ReceivedBy.Name,
 					ReceivedDate = s.ReceivedDate,
 					Receive_Via = s.Receive_Via,
-					NomineeId = s.NomineeId,
-					NomineeName = s.Nominee.Name
+					//NomineeId = s.NomineeId,
+					//NomineeName = s.Nominee.Name
 				}).FirstOrDefault();
 
 			if (exhibition == null)
 			{
 				return NotFound();
 			}
+
+			exhibition.NomineeId = db.ExhibitionNominee.Where(u => u.ExhibitionRoadshowId == id).Select(s => s.UserId).ToArray();
 
 			return Ok(exhibition);
 		}
@@ -219,9 +221,20 @@ namespace FEP.WebApi.Api.eEvent
 				Receive_Via = model.Receive_Via,
 				Display = true,
 				CreatedDate = DateTime.Now,
-				NomineeId = model.NomineeId
+				//NomineeId = model.NomineeId
 			};
 			db.EventExhibitionRequest.Add(exroad);
+
+			foreach (var nomineeid in model.NomineeId)
+			{
+				var nominee = new ExhibitionNominee
+				{
+					UserId = nomineeid,
+					ExhibitionRequest = exroad,
+				};
+				db.ExhibitionNominee.Add(nominee);
+			}
+
 			db.SaveChanges();
 
 			//save refno exhibition roadshow request
@@ -257,7 +270,7 @@ namespace FEP.WebApi.Api.eEvent
 			exroad.ReceivedById = model.ReceivedById;
 			exroad.ReceivedDate = model.ReceivedDate;
 			exroad.Receive_Via = model.Receive_Via;
-			exroad.NomineeId = model.NomineeId;
+			//exroad.NomineeId = model.NomineeId;
 
 			db.EventExhibitionRequest.Attach(exroad);
 			db.Entry(exroad).Property(x => x.EventName).IsModified = true;
@@ -271,11 +284,23 @@ namespace FEP.WebApi.Api.eEvent
 			db.Entry(exroad).Property(x => x.ReceivedById).IsModified = true;
 			db.Entry(exroad).Property(x => x.ReceivedDate).IsModified = true;
 			db.Entry(exroad).Property(x => x.Receive_Via).IsModified = true;
-			db.Entry(exroad).Property(x => x.NomineeId).IsModified = true;
+			//db.Entry(exroad).Property(x => x.NomineeId).IsModified = true;
 
 			db.Entry(exroad).Property(x => x.ExhibitionStatus).IsModified = false;
 			db.Entry(exroad).Property(x => x.Display).IsModified = false;
 			db.Entry(exroad).Property(x => x.Id).IsModified = false;
+
+			db.ExhibitionNominee.RemoveRange(db.ExhibitionNominee.Where(u => u.ExhibitionRoadshowId == id));//remove all
+			foreach (var nomineeid in model.NomineeId)
+			{
+				var nominee = new ExhibitionNominee
+				{
+					ExhibitionRoadshowId = id,
+					UserId = nomineeid,
+				};
+
+				db.ExhibitionNominee.Add(nominee);
+			}
 
 			db.Configuration.ValidateOnSaveEnabled = true;
 			db.SaveChanges();

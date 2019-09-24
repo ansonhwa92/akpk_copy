@@ -24,7 +24,7 @@ namespace FEP.WebApiModel.eEvent
 		[Required(ErrorMessage = "Please Insert Phone No")]
 		[DataType(DataType.PhoneNumber)]
 		[Display(Name = "ExhibitorPhoneNo", ResourceType = typeof(Language.Event))]
-		public string PhoneNo { get; set; }
+		public int? PhoneNo { get; set; }
 
 		[Display(Name = "ExhibitorRemark", ResourceType = typeof(Language.Event))]
 		public string Remark { get; set; }
@@ -45,7 +45,7 @@ namespace FEP.WebApiModel.eEvent
 		[Required(ErrorMessage = "Please Insert Phone No")]
 		[DataType(DataType.PhoneNumber)]
 		[Display(Name = "ExhibitorPhoneNo", ResourceType = typeof(Language.Event))]
-		public string PhoneNo { get; set; }
+		public int? PhoneNo { get; set; }
 
 		[Display(Name = "ExhibitorRemark", ResourceType = typeof(Language.Event))]
 		public string Remark { get; set; }
@@ -79,7 +79,7 @@ namespace FEP.WebApiModel.eEvent
 		[Required(ErrorMessage = "Please Insert Phone No")]
 		[DataType(DataType.PhoneNumber)]
 		[Display(Name = "ExhibitorPhoneNo", ResourceType = typeof(Language.Event))]
-		public string PhoneNo { get; set; }
+		public int? PhoneNo { get; set; }
 
 		[Display(Name = "ExhibitorRemark", ResourceType = typeof(Language.Event))]
 		public string Remark { get; set; }

@@ -309,7 +309,7 @@
         akpk.smoothScroll();
         akpk.toggleMainMenu();
         akpk.selectOption();
-        akpk.dateSelect();
+        //akpk.dateSelect();
         akpk.addButton();
         akpk.addEe();
         akpk.addSpeaker();

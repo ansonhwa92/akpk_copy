@@ -35,7 +35,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Required(ErrorMessage = "Please Insert Address")]
 		public string AddressStreet2 { get; set; }
 		[Required(ErrorMessage = "Please Insert Poscode")]
-		public string AddressPoscode { get; set; }
+		public int? AddressPoscode { get; set; }
 		[Required(ErrorMessage = "Please Insert City")]
 		public string AddressCity { get; set; }
 		[Required(ErrorMessage = "Please Select State")]
@@ -70,11 +70,16 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Topic")]
 		public string Topic { get; set; }
 
-		[Required(ErrorMessage = "Please Insert Designation")]
 		[Display(Name = "Designation")]
 		public string RepDesignation { get; set; }
 
-		[Required(ErrorMessage = "Please Insert Representative")]
+		[Display(Name = "Email Address")]
+		public string RepEmail { get; set; }
+
+		[Display(Name = "Mobile Number")]
+		public string RepMobileNumber { get; set; }
+
+		[Required(ErrorMessage = "Please Insert Staff Representative")]
 		[Display(Name = "Name")]
 		public int? RepUserId { get; set; }
 

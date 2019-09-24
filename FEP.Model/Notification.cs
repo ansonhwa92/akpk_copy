@@ -12,6 +12,7 @@ namespace FEP.Model
     {
         [Display(Name = "Activate Account")]
         ActivateAccount,
+
         [Display(Name = "Reset Password")]
         ResetPassword,
 
@@ -21,15 +22,19 @@ namespace FEP.Model
         //Verify Public Event 
         [Display(Name = "Verify Public Event Creation")]
         Verify_Public_Event_Creation,
-        [Display(Name = "Verify Public Event Published Changed")]
+		[Display(Name = "Verify Public Event Published Changed")]
         Verify_Public_Event_Published_Changed,
         [Display(Name = "Verify Public Event Published Cancelled")]
         Verify_Public_Event_Published_Cancelled,
 
         //Approve Public Event
-        [Display(Name = "Approve Public Event Creation")]
-        Approve_Public_Event_Creation,
-        [Display(Name = "Approve Public Event Published Changed")]
+        [Display(Name = "Approve Public Event Creation 1")]
+        Approve_Public_Event_Creation1,
+		[Display(Name = "Approve Public Event Creation 2")]
+		Approve_Public_Event_Creation2,
+		[Display(Name = "Approve Public Event Creation 3")]
+		Approve_Public_Event_Creation3,
+		[Display(Name = "Approve Public Event Published Changed")]
         Approve_Public_Event_Published_Changed,
         [Display(Name = "Approve Public Event Published Cancelled")]
         Approve_Public_Event_Published_Cancelled,
@@ -51,7 +56,7 @@ namespace FEP.Model
         Payment_Pending_Refund,
 
         //Verify External Request
-        [Display(Name = "Verify External RequestMedia Interview")]
+        [Display(Name = "Verify External Request Media Interview")]
         Verify_External_Request_Media_Interview,
         [Display(Name = "Verify External RequestExhibition ESS")]
         Verify_External_Request_Exhibition_ESS,
@@ -163,16 +168,16 @@ namespace FEP.Model
         public virtual User User { get; set; }
     }
 
-    //[Table("NotificationSetting")]
-    //public class NotificationSetting
-    //{
-    //    [Key]
-    //    public NotificationType NotificationType { get; set; }
-    //    public bool IsSendEmail { get; set; }
-    //    public bool IsSendNotification { get; set; }
-    //    public string NotificationMessage { get; set; }
-    //    public string EmailSubject { get; set; }
-    //    public string EmailMessage { get; set; }
+	[Table("NotificationSetting")]
+	public class NotificationSetting
+	{
+		[Key]
+		public NotificationType NotificationType { get; set; }
+		public bool IsSendEmail { get; set; }
+		public bool IsSendNotification { get; set; }
+		public string NotificationMessage { get; set; }
+		public string EmailSubject { get; set; }
+		public string EmailMessage { get; set; }
 
-    //}
+	}
 }

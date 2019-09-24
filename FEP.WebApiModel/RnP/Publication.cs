@@ -432,6 +432,78 @@ namespace FEP.WebApiModel.RnP
         public ReturnUpdatePublicationApprovalModel Approval { get; set; }
     }
 
+    // class for returning publication featured/rank information
+    public class ReturnPublicationRank
+    {
+        public int ID { get; set; }
+
+        public int PublicationID { get; set; }
+
+        [Display(Name = "PubRankPosition", ResourceType = typeof(Language.RnPForm))]
+        public int? Position { get; set; }
+    }
+
+    // class for updating publication featured/rank information
+    public class UpdatePublicationRank
+    {
+        public int ID { get; set; }
+
+        [Required]
+        public int PublicationID { get; set; }
+
+        [Display(Name = "PubRankPosition", ResourceType = typeof(Language.RnPForm))]
+        public int? Position { get; set; }
+    }
+
+    // class for returning publication review information
+    public class ReturnPublicationReview
+    {
+        public int ID { get; set; }
+
+        public int PublicationID { get; set; }
+
+        [Display(Name = "PubReviewRating", ResourceType = typeof(Language.RnPForm))]
+        public int Rating { get; set; }
+
+        [Display(Name = "PubReviewReviewerId", ResourceType = typeof(Language.RnPForm))]
+        public int? ReviewerId { get; set; }
+
+        [Display(Name = "PubReviewReviewerName", ResourceType = typeof(Language.RnPForm))]
+        public string ReviewerName { get; set; }
+
+        [Display(Name = "PubReviewReviewDate", ResourceType = typeof(Language.RnPForm))]
+        public DateTime? ReviewDate { get; set; }
+
+        [Display(Name = "PubReviewRemarks", ResourceType = typeof(Language.RnPForm))]
+        public string Remarks { get; set; }
+    }
+
+    // class for updating publication review information
+    public class UpdatePublicationReview
+    {
+        public int ID { get; set; }
+
+        [Required]
+        public int PublicationID { get; set; }
+
+        [Required]
+        [Display(Name = "PubReviewRating", ResourceType = typeof(Language.RnPForm))]
+        public int Rating { get; set; }
+
+        [Display(Name = "PubReviewReviewerId", ResourceType = typeof(Language.RnPForm))]
+        public int? ReviewerId { get; set; }
+
+        [Required]
+        [Display(Name = "PubReviewReviewerName", ResourceType = typeof(Language.RnPForm))]
+        public string ReviewerName { get; set; }
+
+        [Display(Name = "PubReviewReviewDate", ResourceType = typeof(Language.RnPForm))]
+        public DateTime? ReviewDate { get; set; }
+
+        [Display(Name = "PubReviewRemarks", ResourceType = typeof(Language.RnPForm))]
+        public string Remarks { get; set; }
+    }
+
     /*
     // class for creation of publication approval record by client app
     // used to create approval record for later filling in by approvers

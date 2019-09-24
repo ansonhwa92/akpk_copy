@@ -40,7 +40,7 @@ namespace FEP.Model
         public float HPrice { get; set; }
         public float DPrice { get; set; }
         public float HDPrice { get; set; }
-        public string Pictures { get; set; }
+        public string Pictures { get; set; }        // 1st pic: cover, 2nd pic: cover 2, 3rd pic: author
         public string ProofOfApproval { get; set; }
         public int? StockBalance { get; set; }
         public string CancelRemark { get; set; }
@@ -100,6 +100,40 @@ namespace FEP.Model
         [ForeignKey("PublicationID")]
         public virtual Publication Publication { get; set; }
     }
+
+    [Table("PublicationRank")]
+    public class PublicationRank
+    {
+        [Key]
+        public int ID { get; set; }
+        public int PublicationID { get; set; }
+        public int? Position { get; set; }
+        // foreign keys......................................................................................................
+        [ForeignKey("PublicationID")]
+        public virtual Publication Publication { get; set; }
+    }
+
+    [Table("PublicationReview")]
+    public class PublicationReview
+    {
+        [Key]
+        public int ID { get; set; }
+        public int PublicationID { get; set; }
+        public int Rating { get; set; }
+        public int? ReviewerId { get; set; }
+        public string ReviewerName { get; set; }
+        public DateTime? ReviewDate { get; set; }
+        public string Remarks { get; set; }
+        // Helpful/Likes need a child table with review ID and user ID!!!
+        //public int? Helpful { get; set; }
+        //public int? Likes { get; set; }
+        // foreign keys......................................................................................................
+        [ForeignKey("PublicationID")]
+        public virtual Publication Publication { get; set; }
+    }
+
+    // NOTE: sample publication catalog also has "Like" icon on featured publications!
+    // which means another child table with publication ID and user ID
 
     [Table("PublicationPurchase")]
     public class PublicationPurchase

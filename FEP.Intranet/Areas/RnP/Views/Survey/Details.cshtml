@@ -278,11 +278,12 @@
                             <div class="modal-content">
                                 <div class="m-4 text-center">
                                     <h4 class="color-darkblue mb-0">Cancel Survey Request</h4>
+                                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <input type="hidden" class="form-control" name="ID" id="CancelID" value="@Model.Survey.ID" />
-                                        @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" })
+                                        @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                                         <textarea class="form-control" name="CancelRemark" id="CancelRemark" rows="4" placeholder=""></textarea>
                                         <span class="text-danger field-validation-error" id="span_remarkerror" style="display:none;">Please enter Remarks</span>
                                     </div>

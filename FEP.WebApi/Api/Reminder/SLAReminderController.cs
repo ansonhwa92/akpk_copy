@@ -78,6 +78,10 @@ namespace FEP.WebApi.Api.Reminder
         public IHttpActionResult GetParameterList(int id)
         {
             var getNotifyTpe = db.SLAReminder.Where(n => (int)n.NotificationType == id).FirstOrDefault();
+            if (getNotifyTpe == null)
+            {
+                return Ok();
+            }
             var paramList = db.ParameterGroup.Where(p => p.SLAEventType == getNotifyTpe.SLAEventType).ToList();
 
             List<TemplateParameterType> paramTypeList = new List<TemplateParameterType>();

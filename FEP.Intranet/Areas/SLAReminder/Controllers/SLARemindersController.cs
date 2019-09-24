@@ -24,7 +24,7 @@ namespace FEP.Intranet.Areas.SLAReminder.Controllers
             return View();
         }
 
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> List(int pin = 0)
         {
             var response = await WepApiMethod.SendApiAsync<List<SLAReminderModel>>(HttpVerbs.Get, $"Reminder/SLA/");
             if (!response.isSuccess)
@@ -44,6 +44,7 @@ namespace FEP.Intranet.Areas.SLAReminder.Controllers
                     Value = ((int)e).ToString()
                 })).ToList();
 
+            ViewBag.pin = pin;
             return View(model);
         }
 
@@ -116,7 +117,7 @@ namespace FEP.Intranet.Areas.SLAReminder.Controllers
                     await LogActivity(Modules.Setting, "Update SLA Reminder Settings");
 					TempData["SuccessMessage"] = "SLA Reminder updated successfully";
 
-                    return RedirectToAction("List");
+                    return RedirectToAction("List", new { pin = model.Id });
                 }
                 else
                 {

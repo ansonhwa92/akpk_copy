@@ -96,21 +96,20 @@
     <Compile Include="Template\EmailTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FEP.Language\FEP.Language.csproj">
-      <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
-      <Name>FEP.Language</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FEP.Model\FEP.Model.csproj">
-      <Project>{2a1a9157-1c94-4b4a-96a4-52648bd8076a}</Project>
-      <Name>FEP.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="User\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FEP.Language\FEP.Language.csproj">
+      <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
+      <Name>FEP.Language</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEP.Model\FEP.Model.csproj">
+      <Project>{2A1A9157-1C94-4B4A-96A4-52648BD8076A}</Project>
+      <Name>FEP.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

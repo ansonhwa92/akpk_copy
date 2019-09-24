@@ -47,6 +47,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -729,18 +732,10 @@
     <Content Include="Areas\eLearning\Views\Home\_Menu.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Create.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Delete.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\Details.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Edit.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Index.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\Manage.cshtml" />
-    <Content Include="Areas\eLearning\Views\_ViewStart.cshtml" />
     <Content Include="Areas\eLearning\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\eLearning\Views\Home\_Menu.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\Create.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\Delete.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Details.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\Edit.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Manage.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
@@ -1257,7 +1252,7 @@
       <Name>FEP.Language</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEP.Model\FEP.Model.csproj">
-      <Project>{2a1a9157-1c94-4b4a-96a4-52648bd8076a}</Project>
+      <Project>{2A1A9157-1C94-4B4A-96A4-52648BD8076A}</Project>
       <Name>FEP.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEP.WebApiModel\FEP.WebApiModel.csproj">

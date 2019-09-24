@@ -11,6 +11,7 @@ using FEP.Model.eLearning;
 using FEP.Helper;
 using System.Threading.Tasks;
 using FEP.WebApiModel.eLearning;
+using AutoMapper;
 
 namespace FEP.Intranet.Areas.eLearning.Controllers
 {
@@ -25,6 +26,19 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     {
 
         private DbEntities db = new DbEntities();
+        private readonly IMapper _mapper;
+
+        public CoursesController()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<CreateOrEditCourseModel, Course>();
+
+                cfg.CreateMap<Course, CreateOrEditCourseModel>();
+            });
+
+            _mapper = config.CreateMapper();
+        }
 
         // GET: eLearning/Courses
         [Authorize]
@@ -87,6 +101,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                model.CreatedBy = CurrentUser.UserId.Value;
+
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, ApiUrl.CreateCourse, model);
 
                 if (response.isSuccess)
@@ -96,21 +113,25 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     await LogActivity(Modules.Learning, "Create Course : " + model.Title);
 
                     //return RedirectToAction("Manage", new { area = "eLearning", id = model.Id });
-                    return RedirectToAction("Manage", "Courses", new { id = model.Id });
+
+
+                    var id = response.Data;
+
+                    if (!String.IsNullOrEmpty(id))
+
+                        return RedirectToAction("Manage", "Courses", new { id = id });
+                    else
+                        return RedirectToAction("Index", "Courses");
                 }
 
-
-
-                //var course = new Course
-                //{
-                //    Title = model.Title,
-                //    Code = model.Code,
-                //    Description = model.Description,
-                //    CategoryId = model.CategoryId
-                //};
+                //// --- FOR TESTING ONLY ----
+                //var course = _mapper.Map<Course>(model);
+                //course.CreatedBy = CurrentUser.Email;
+                //course.CreatedDate = DateTime.Now;
 
                 //db.Courses.Add(course);
                 //await db.SaveChangesAsync();
+                //return RedirectToAction("Manage", "Courses", new { id = model.Id });
 
             }
 

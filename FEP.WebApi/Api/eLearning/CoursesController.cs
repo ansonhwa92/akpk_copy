@@ -155,19 +155,19 @@ namespace FEP.WebApi.Api.eLearning
             if (ModelState.IsValid)
             {
                 var course = _mapper.Map<Course>(request);
+                course.CreatedDate = DateTime.Now;
 
                 db.Courses.Add(course);
 
                 await db.SaveChangesAsync();
 
-                return Ok();
+                return Ok(course.Id.ToString());
             }
             else
             {
                 return BadRequest(ModelState);
             }
         }
-
 
         [HttpGet]
         public async Task<IHttpActionResult> Get(int? id)
@@ -178,7 +178,6 @@ namespace FEP.WebApi.Api.eLearning
                 return NotFound();
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
-
 
             return Ok(model);
         }

@@ -173,42 +173,6 @@
                             else if (row.Status == 4) {
                                 return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
                             }
-                            else if (row.Status == 5) {
-                                return "<span class='color-green font-weight-bold'>Approved</span>";
-                            }
-                            else if (row.Status == 6) {
-                                return "<span class='color-green font-weight-bold'>Published</span>";
-                            }
-                            else if (row.Status == 7) {
-                                return "<span class='color-grey font-weight-bold'>Unpublished</span>";
-                            }
-                            else if (row.Status == 8) {
-                                return "<span class='color-grey font-weight-bold'>Cancelled</span>";
-                            }
-                            else if (row.Status == 9) {
-                                return "<span class='color-grey font-weight-bold'>Draft Withdrawal</span>";
-                            }
-                            else if (row.Status == 10) {
-                                return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Verification</span>";
-                            }
-                            else if (row.Status == 11) {
-                                return "<span class='color-red font-weight-bold'>Withdrawal Pending Amendment</span>";
-                            }
-                            else if (row.Status == 12) {
-                                return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Approval</span>";
-                            }
-                            else if (row.Status == 13) {
-                                return "<span class='color-red font-weight-bold'>Withdrawal Pending Amendment</span>";
-                            }
-                            else if (row.Status == 14) {
-                                return "<span class='color-green font-weight-bold'>Withdrawal Approved</span>";
-                            }
-                            else if (row.Status == 15) {
-                                return "<span class='color-green font-weight-bold'>Withdrawn</span>";
-                            }
-                            else if (row.Status == 16) {
-                                return "<span class='color-grey font-weight-bold'>Withdrawal Cancelled</span>";
-                            }
                         }
                     },
                     {
@@ -229,7 +193,7 @@
                             action = '<div class="icon-action">';
 
                             if (canview) {
-                                action += '<a href="@Url.Action("Details", "Courses", new { area = "eLearning" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
+                                action += '<a href="@Url.Action("Manage", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
                             }
 
                             if (row.Status == 0) {          // new
@@ -241,37 +205,6 @@
                             else if (row.Status == 1) {     // submitted
                                 if (canverify || canapprove1 || canapprove2 || canapprove3) {
                                     action += '<a href="@Url.Action("Evaluate", "Courses", new { area = "eLearning" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
-                                }
-                            }
-                            else if (row.Status == 2) {     // verifier rejected (can edit from view - view lets user see comments)
-                                action += '';
-                            }
-                            else if (row.Status == 3) {     // verified
-                                if (canapprove1 || canapprove2 || canapprove3) {
-                                    action += '<a href="@Url.Action("Evaluate", "Courses", new { area = "eLearning" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
-                                }
-                            }
-                            else if (row.Status == 4) {     // approver rejected
-                                action += '';
-                            }
-                            else if (row.Status == 5) {     // approved (can publish from view)
-                                action += '';
-                            }
-                            else if (row.Status == 6) {     // published (can withdraw from view)
-                                action += '';
-                            }
-                            else if (row.Status == 7) {     // unpublished
-                                action += '';
-                            }
-                            else if (row.Status == 8) {     // trashed
-                                action += '';
-                            }
-                            else if (row.Status == 9) {     // new withdrawal (skipped, withdrawal cannot be saved as draft and edited before submission)
-                                action += '';
-                            }
-                            else if (row.Status == 10) {    // withdrawal submitted
-                                if (canverify || canapprove1 || canapprove2 || canapprove3) {
-                                    action += '<a href="@Url.Action("EvaluateWithdrawal", "eLearning", new { area = "eLearning" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Evaluate Withdrawal"><i class="la la-edit text-muted"></i></a>';
                                 }
                             }
                             else {

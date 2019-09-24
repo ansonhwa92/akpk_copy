@@ -316,11 +316,11 @@
       <Name>FEP.Intranet</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEP.Model\FEP.Model.csproj">
-      <Project>{2a1a9157-1c94-4b4a-96a4-52648bd8076a}</Project>
+      <Project>{2A1A9157-1C94-4B4A-96A4-52648BD8076A}</Project>
       <Name>FEP.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEP.WebApiModel\FEP.WebApiModel.csproj">
-      <Project>{91af142d-c57f-4296-a485-d17a80cdc57e}</Project>
+      <Project>{91AF142D-C57F-4296-A485-D17A80CDC57E}</Project>
       <Name>FEP.WebApiModel</Name>
     </ProjectReference>
   </ItemGroup>

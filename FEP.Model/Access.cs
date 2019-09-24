@@ -107,11 +107,43 @@ namespace FEP.Model
         //elearning 3001 - 4000
         [Display(Name = "Learning Management Menu")]
         LearningMenu = 3001,
+        
+        //elearnig Admin
+        [Display(Name = "Course - Create")]
+        CourseCreate,
+        [Display(Name = "Course - View")]
+        CourseView,
+        [Display(Name = "Course - Edit")]
+        CourseEdit,
+        [Display(Name = "Course - Publish")]
+        CoursePublish,
+        [Display(Name = "Course - Assign Trainer")]
+        CourseAssignTrainer,
 
+        // elearning Verifier
+        [Display(Name = "Course - Verify")]
+        CourseVerify,
 
+        // elearning Approvers
+        [Display(Name = "Course - Approve (Level 1)")]
+        CourseApproval1,
+        [Display(Name = "Course - Approve (Level 2)")]
+        CourseApproval2,
+        [Display(Name = "Course - Approve (Level 3)")]
+        CourseApproval3,
+        [Display(Name = "Course - Withdraw")]
 
+        // elearning Learner
+        CourseEnroll,
 
-
+        // elearning Trainer
+        CourseGroupCreate,
+        CourseDiscussionCreate,
+        CourseDiscussionGroupCreate,        
+        CourseAddDocument,
+        
+ 
+        
 
         //administration 4001 - 5000
         [Display(Name = "User & Role Management Menu")]

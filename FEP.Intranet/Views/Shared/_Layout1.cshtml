@@ -280,13 +280,10 @@
 								</li>
 								<li class="nav-item dropdown">
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Learning Management</a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#"><i class="la la-search color-secondary font-icon"></i>Browse Courses</a>
-										<a class="dropdown-item" href="#"><i class="la la-user color-secondary font-icon"></i>Instructors</a>
-										<a class="dropdown-item" href="#"><i class="la la-group color-secondary font-icon"></i>Groups</a>
-										<a class="dropdown-item" href="#"><i class="la la-comments-o color-secondary font-icon"></i>Discussions</a>
-										<a class="dropdown-item" href="#"><i class="la la-calendar color-secondary font-icon"></i>Calendar</a>
-									</div>
+                                    <div class="dropdown-menu">
+                                        @Html.Action("Menu", "Home", new { area = "eLearning" })
+
+                                    </div>
 								</li>
 								<li class="nav-item dropdown">
 									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Reports</a>

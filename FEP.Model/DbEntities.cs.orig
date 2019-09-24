@@ -137,6 +137,8 @@ namespace FEP.Model
 		public DbSet<EventCategory> EventCategory { get; set; }
 		public DbSet<SpeakerFile> SpeakerFile { get; set; }
 
+<<<<<<< Updated upstream
+=======
 
         // Elearning
         public DbSet<Course> Courses { get; set; }
@@ -167,6 +169,7 @@ namespace FEP.Model
         public DbSet<RefCourseCategory> RefCourseCategories { get; set; }
 
 
+>>>>>>> Stashed changes
 
         // Elearning
         public DbSet<Course> Courses { get; set; }
@@ -205,12 +208,5 @@ namespace FEP.Model
         public DbSet<BulkNotification> BulkNotification { get; set; }
         public DbSet<ParameterGroup> ParameterGroup { get; set; }
     }
-    
-    protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
-        }
-
 }
 

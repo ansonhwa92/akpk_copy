@@ -75,6 +75,8 @@
     <Compile Include="eEvent\EventExternalExhibitor.cs" />
     <Compile Include="eEvent\EventSpeaker.cs" />
     <Compile Include="eEvent\ExhibitionRoadshowRequest.cs" />
+    <Compile Include="eLearning\BaseModel.cs" />
+    <Compile Include="eLearning\CourseModels.cs" />
     <Compile Include="eLearning\CourseCategory.cs" />
     <Compile Include="Home\ProfileModel.cs" />
     <Compile Include="eEvent\EventCategory.cs" />

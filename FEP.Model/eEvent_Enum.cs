@@ -9,8 +9,8 @@ namespace FEP.Model
 {
 	public enum EventTargetGroup
 	{
-		[Display(Name = "Student")]
-		Student,
+		[Display(Name = "Learner")]
+		Learner,
 		[Display(Name = "Goverment")]
 		Goverment,
 		[Display(Name = "Private Agency")]

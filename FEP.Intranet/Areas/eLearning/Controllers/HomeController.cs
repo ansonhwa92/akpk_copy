@@ -4,11 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FEP.Helper;
+using FEP.Model;
 
 namespace FEP.Intranet.Areas.eLearning.Controllers
 {
     public class HomeController : FEPController
     {
+        private DbEntities db = new DbEntities();
+
         // GET: eLearning/Home
         [AllowAnonymous]
         public ActionResult Index()
@@ -22,6 +25,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return view;
+        }
+
+        [ChildActionOnly]
+        public ActionResult Menu()
+        {
+
+         //   var user = db.User.FirstOrDefault(x => x.Name == User.Identity.Name);        
+
+            return PartialView("_Menu");
         }
     }
 }

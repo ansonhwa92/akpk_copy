@@ -1,5 +1,4 @@
-﻿using FEP.Model.eLearning;
-using FEP.Model;
+﻿using FEP.Model;
 using FEP.WebApiModel.eLearning;
 using System;
 using System.Collections.Generic;
@@ -26,10 +25,10 @@ namespace FEP.WebApi.Api.eLearning
             base.Dispose(disposing);
         }
 
-        
+
         public IHttpActionResult Get()
         {
-            var categories = db.RefCourseCategories.Where(u => u.IsDisplayed).Select(s => new CourseCategoryModel
+            var categories = db.LearningCourseCategory.Where(u => u.Display).Select(s => new CourseCategoryModel
             {
                 Id = s.Id,
                 Name = s.Name
@@ -38,10 +37,10 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(categories);
         }
 
-                
+
         public IHttpActionResult Get(int id)
         {
-            var category = db.RefCourseCategories.Where(u => u.IsDisplayed && u.Id == id).Select(s => new CourseCategoryModel
+            var category = db.LearningCourseCategory.Where(u => u.Display && u.Id == id).Select(s => new CourseCategoryModel
             {
                 Id = s.Id,
                 Name = s.Name
@@ -55,37 +54,37 @@ namespace FEP.WebApi.Api.eLearning
             return NotFound();
         }
 
-        
+
         [ValidationActionFilter]
         public IHttpActionResult Post([FromBody]CreateCourseCategoryModel model)
         {
 
-            var category = new RefCourseCategory
+            var category = new LearningCourseCategory
             {
                 Name = model.Name,
-                IsDisplayed = true
+                Display = true
             };
 
-            db.RefCourseCategories.Add(category);
+            db.LearningCourseCategory.Add(category);
             db.SaveChanges();
 
             return Ok(category.Id);
 
         }
 
-        
+
         [ValidationActionFilter]
         public IHttpActionResult Put(int id, [FromBody]EditCourseCategoryModel model)
         {
 
-            var category = db.RefCourseCategories.Where(s => s.Id == id).FirstOrDefault();
+            var category = db.LearningCourseCategory.Where(s => s.Id == id).FirstOrDefault();
 
             if (category != null)
             {
                 category.Name = model.Name;
 
                 db.Entry(category).State = EntityState.Modified;
-                db.Entry(category).Property(x => x.IsDisplayed).IsModified = false;
+                db.Entry(category).Property(x => x.Display).IsModified = false;
 
                 db.SaveChanges();
 
@@ -98,17 +97,17 @@ namespace FEP.WebApi.Api.eLearning
 
         }
 
-       
+
         public IHttpActionResult Delete(int id)
         {
-            var category = db.RefCourseCategories.Where(u => u.Id == id).FirstOrDefault();
+            var category = db.LearningCourseCategory.Where(u => u.Id == id).FirstOrDefault();
 
             if (category != null)
             {
-                category.IsDisplayed = false;
+                category.Display = false;
 
-                db.RefCourseCategories.Attach(category);
-                db.Entry(category).Property(m => m.IsDisplayed).IsModified = true;
+                db.LearningCourseCategory.Attach(category);
+                db.Entry(category).Property(m => m.Display).IsModified = true;
                 db.Configuration.ValidateOnSaveEnabled = false;
 
                 db.SaveChanges();
@@ -128,12 +127,12 @@ namespace FEP.WebApi.Api.eLearning
         {
             if (id == null)
             {
-                if (db.RefCourseCategories.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.IsDisplayed))
+                if (db.LearningCourseCategory.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Display))
                     return Ok(true);
             }
             else
             {
-                if (db.RefCourseCategories.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.IsDisplayed))
+                if (db.LearningCourseCategory.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
                     return Ok(true);
             }
 

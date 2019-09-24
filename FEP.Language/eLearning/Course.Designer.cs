@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Language {
+namespace Language.eLearning {
     using System;
     
     
@@ -19,17 +19,17 @@ namespace Language {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CourseCategory {
+    public class Course {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CourseCategory() {
+        internal Course() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Language {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Language.CourseCategory", typeof(CourseCategory).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Language.eLearning.Course", typeof(Course).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,128 +61,146 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fail to add new Course category.
+        ///   Looks up a localized string similar to Category.
         /// </summary>
-        public static string AlertFailCreate {
+        public static string Category {
             get {
-                return ResourceManager.GetString("AlertFailCreate", resourceCulture);
+                return ResourceManager.GetString("Category", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fail to delete Course category.
+        ///   Looks up a localized string similar to Category.
         /// </summary>
-        public static string AlertFailDelete {
+        public static string CategoryId {
             get {
-                return ResourceManager.GetString("AlertFailDelete", resourceCulture);
+                return ResourceManager.GetString("CategoryId", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fail to update Course category.
+        ///   Looks up a localized string similar to Course Code.
         /// </summary>
-        public static string AlertFailUpdate {
+        public static string Code {
             get {
-                return ResourceManager.GetString("AlertFailUpdate", resourceCulture);
+                return ResourceManager.GetString("Code", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Course category successfully added.
+        ///   Looks up a localized string similar to 100% online course.
         /// </summary>
-        public static string AlertSuccessCreate {
+        public static string CourseMediumOnline {
             get {
-                return ResourceManager.GetString("AlertSuccessCreate", resourceCulture);
+                return ResourceManager.GetString("CourseMediumOnline", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Course category successfully deleted.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
-        public static string AlertSuccessDelete {
+        public static string Description {
             get {
-                return ResourceManager.GetString("AlertSuccessDelete", resourceCulture);
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Course category successfully updated.
+        ///   Looks up a localized string similar to Course Duration.
         /// </summary>
-        public static string AlertSuccessUpdate {
+        public static string Duration {
             get {
-                return ResourceManager.GetString("AlertSuccessUpdate", resourceCulture);
+                return ResourceManager.GetString("Duration", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Category Name.
+        ///   Looks up a localized string similar to Duration Type.
         /// </summary>
-        public static string FieldName {
+        public static string DurationType {
             get {
-                return ResourceManager.GetString("FieldName", resourceCulture);
+                return ResourceManager.GetString("DurationType", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter Category Name.
+        ///   Looks up a localized string similar to Is this a free course?.
         /// </summary>
-        public static string PlaceholderName {
+        public static string IsFree {
             get {
-                return ResourceManager.GetString("PlaceholderName", resourceCulture);
+                return ResourceManager.GetString("IsFree", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Course Category.
+        ///   Looks up a localized string similar to Language.
         /// </summary>
-        public static string SidebarCourseCategory {
+        public static string Language {
             get {
-                return ResourceManager.GetString("SidebarCourseCategory", resourceCulture);
+                return ResourceManager.GetString("Language", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Course Category List.
+        ///   Looks up a localized string similar to Medium.
         /// </summary>
-        public static string SidebarCourseCategoryList {
+        public static string Medium {
             get {
-                return ResourceManager.GetString("SidebarCourseCategoryList", resourceCulture);
+                return ResourceManager.GetString("Medium", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Objectives.
         /// </summary>
-        public static string TitleDescriptionList {
+        public static string Objectives {
             get {
-                return ResourceManager.GetString("TitleDescriptionList", resourceCulture);
+                return ResourceManager.GetString("Objectives", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Course Category Parameter.
+        ///   Looks up a localized string similar to Price.
         /// </summary>
-        public static string TitleList {
+        public static string Price {
             get {
-                return ResourceManager.GetString("TitleList", resourceCulture);
+                return ResourceManager.GetString("Price", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Category Name already registered in the system.
+        ///   Looks up a localized string similar to Schedule Type.
         /// </summary>
-        public static string ValidExistName {
+        public static string ScheduleType {
             get {
-                return ResourceManager.GetString("ValidExistName", resourceCulture);
+                return ResourceManager.GetString("ScheduleType", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter Category Name.
+        ///   Looks up a localized string similar to Status.
         /// </summary>
-        public static string ValidRequiredName {
+        public static string Status {
             get {
-                return ResourceManager.GetString("ValidRequiredName", resourceCulture);
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Course Name.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viewable by.
+        /// </summary>
+        public static string ViewCategory {
+            get {
+                return ResourceManager.GetString("ViewCategory", resourceCulture);
             }
         }
     }

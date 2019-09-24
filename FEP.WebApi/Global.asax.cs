@@ -8,6 +8,8 @@ using System.Web.Http.Controllers;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FEP.WebApi
 {
@@ -24,6 +26,20 @@ namespace FEP.WebApi
             ModelBinders.Binders.Add(typeof(DateTime), new DateModelBinder());
             ModelBinders.Binders.Add(typeof(DateTime?), new DateModelBinder());
 
+
+            // Dependency Injection
+            var services = new ServiceCollection();
+            services.AddAutoMapper(typeof(eLearningProfile));
+
+
+        }
+    }
+
+    public class eLearningProfile : Profile
+    {
+        public eLearningProfile()
+        {
+            CreateMap<FEP.WebApiModel.eLearning.CreateOrEditCourseModel, FEP.Model.eLearning.Course>();
         }
     }
 

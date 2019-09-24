@@ -14,7 +14,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     {
         public async Task<ActionResult> List()
         {
-            var response = await WepApiMethod.SendApiAsync<List<CourseCategoryModel>>(HttpVerbs.Get, $"eLearning/CourseCategory");
+            var response = await WepApiMethod.SendApiAsync<List<CourseCategoryModel>>(HttpVerbs.Get, $"eLearning/eLearning.CourseCategory");
 
             if (response.isSuccess)
                 return View(response.Data);
@@ -32,22 +32,22 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public async Task<ActionResult> _Create(CreateCourseCategoryModel model)
         {
 
-            var nameResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"eLearning/CourseCategory/IsNameExist?id={null}&name={model.Name}");
+            var nameResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"eLearning/eLearning.CourseCategory/IsNameExist?id={null}&name={model.Name}");
 
             if (nameResponse.isSuccess)
             {
-                TempData["ErrorMessage"] = Language.CourseCategory.ValidExistName;
+                TempData["ErrorMessage"] = Language.eLearning.CourseCategory.ValidExistName;
                 return RedirectToAction("List");
             }
 
             if (ModelState.IsValid)
             {
 
-                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eLearning/CourseCategory", model);
+                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eLearning/eLearning.CourseCategory", model);
 
                 if (response.isSuccess)
                 {
-                    TempData["SuccessMessage"] = Language.CourseCategory.AlertSuccessCreate;
+                    TempData["SuccessMessage"] = Language.eLearning.CourseCategory.AlertSuccessCreate;
 
                     LogActivity(Modules.Learning, "Create Parameter Course Category", model);
 
@@ -55,7 +55,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 }
             }
 
-            TempData["ErrorMessage"] = Language.CourseCategory.AlertFailCreate;
+            TempData["ErrorMessage"] = Language.eLearning.CourseCategory.AlertFailCreate;
 
             return RedirectToAction("List");
 
@@ -79,22 +79,22 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public async Task<ActionResult> _Edit(EditCourseCategoryModel model)
         {
 
-            var nameResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"eLearning/CourseCategory/IsNameExist?id={model.Id}&name={model.Name}");
+            var nameResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"eLearning/eLearning.CourseCategory/IsNameExist?id={model.Id}&name={model.Name}");
 
             if (nameResponse.isSuccess)
             {
-                TempData["ErrorMessage"] = Language.CourseCategory.ValidExistName;
+                TempData["ErrorMessage"] = Language.eLearning.CourseCategory.ValidExistName;
                 return RedirectToAction("List");
             }
 
             if (ModelState.IsValid)
             {
 
-                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eLearning/CourseCategory?id={model.Id}", model);
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eLearning/eLearning.CourseCategory?id={model.Id}", model);
 
                 if (response.isSuccess)
                 {
-                    TempData["SuccessMessage"] = Language.CourseCategory.AlertSuccessUpdate;
+                    TempData["SuccessMessage"] = Language.eLearning.CourseCategory.AlertSuccessUpdate;
 
                     LogActivity(Modules.Learning, "Update Parameter Course Category", model);
 
@@ -102,7 +102,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 }
             }
 
-            TempData["ErrorMessage"] = Language.CourseCategory.AlertFailUpdate;
+            TempData["ErrorMessage"] = Language.eLearning.CourseCategory.AlertFailUpdate;
 
             return RedirectToAction("List");
 
@@ -126,18 +126,18 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public async Task<ActionResult> _Delete(int id)
         {
 
-            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Delete, $"eLearning/CourseCategory?id={id}");
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Delete, $"eLearning/eLearning.CourseCategory?id={id}");
 
             if (response.isSuccess)
             {
-                TempData["SuccessMessage"] = Language.CourseCategory.AlertSuccessDelete;
+                TempData["SuccessMessage"] = Language.eLearning.CourseCategory.AlertSuccessDelete;
 
                 LogActivity(Modules.Learning, "Delete Parameter Course Category", new { id = id });
 
                 return RedirectToAction("List");
             }
 
-            TempData["ErrorMessage"] = Language.CourseCategory.AlertFailDelete;
+            TempData["ErrorMessage"] = Language.eLearning.CourseCategory.AlertFailDelete;
 
             return RedirectToAction("List");
 

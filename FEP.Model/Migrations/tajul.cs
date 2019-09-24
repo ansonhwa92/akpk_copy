@@ -22,7 +22,7 @@ namespace FEP.Model.Migrations
 			if (!db.SLAReminder.Any())
 			{
 				db.SLAReminder.AddOrUpdate(s => s.NotificationType,
-					new SLAReminder { SLAEventType = SLAEventType.VerifyPublicEvent, NotificationType = NotificationType.Verify_Public_Event_Creation, ETCode = "ET001APE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                    new SLAReminder { SLAEventType = SLAEventType.VerifyPublicEvent, NotificationType = NotificationType.Verify_Public_Event_Creation, ETCode = "ET001APE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 					new SLAReminder { SLAEventType = SLAEventType.VerifyPublicEvent, NotificationType = NotificationType.Verify_Public_Event_Published_Changed, ETCode = "ET001BPE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 					new SLAReminder { SLAEventType = SLAEventType.VerifyPublicEvent, NotificationType = NotificationType.Verify_Public_Event_Published_Cancelled, ETCode = "ET001CPE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
@@ -71,9 +71,12 @@ namespace FEP.Model.Migrations
 
 					new SLAReminder { SLAEventType = SLAEventType.ApprovePublication, NotificationType = NotificationType.Approve_Publication_Creation, ETCode = "ET031RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 					new SLAReminder { SLAEventType = SLAEventType.ApprovePublication, NotificationType = NotificationType.Approve_Publication_Published_Change, ETCode = "ET032RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-					new SLAReminder { SLAEventType = SLAEventType.ApprovePublication, NotificationType = NotificationType.Approve_Publication_Published_Withdraw, ETCode = "ET033RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days }
+					new SLAReminder { SLAEventType = SLAEventType.ApprovePublication, NotificationType = NotificationType.Approve_Publication_Published_Withdraw, ETCode = "ET033RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
-					);
+                    new SLAReminder { SLAEventType = SLAEventType.System, NotificationType = NotificationType.ActivateAccount, ETCode = "ET001SY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                    new SLAReminder { SLAEventType = SLAEventType.System, NotificationType = NotificationType.ResetPassword, ETCode = "ET002SY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days }
+
+                    );
 			}
 		}
 

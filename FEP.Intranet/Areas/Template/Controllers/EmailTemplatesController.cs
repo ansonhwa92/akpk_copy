@@ -277,7 +277,7 @@ namespace FEP.Intranet.Areas.Template.Controllers
             model.TemplateParameterTypeList = new List<ParameterList>();
             var response2 = await WepApiMethod.SendApiAsync<List<TemplateParameterType>>
                 (HttpVerbs.Get, $"Reminder/SLA/GetParameterList?id={(int)model.NotificationType}");
-            if (response2.isSuccess)
+            if (response2.isSuccess && response2.Data != null)
             {
                 foreach (var item in response2.Data)
                 {

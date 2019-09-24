@@ -12,11 +12,16 @@
             $('.onChangeSubmit').change(
                 function () {
                     $('.formSLA').attr('id', 'formSLA'+$(this).attr('id'));
-                    alert($('.formSLA').attr('id'));
                     
                     $('.formSLA').trigger('submit');
                 });
-            });
+
+            @if(ViewBag.pin != 0)
+            {
+                @:document.getElementById(@ViewBag.pin).scrollIntoView({behavior: 'auto',block: 'center'});
+            }
+
+        });
 
     </script>
 }
@@ -115,7 +120,13 @@
 
                                         @Html.HiddenFor(m => item.Id, new  { @form = "formSLA" + item.Id  })
 
-                                        <td>@Html.DisplayFor(m => item.StagesName)</td>
+                                        <td>
+                                            @Html.DisplayFor(m => item.StagesName)
+                                            @if (ViewBag.pin == item.Id)
+                                            {
+                                                @:<span class="small text-success"><b>(Updated)</b></span>
+                                            }
+                                        </td>
                                         @*<td>
                                             @Html.EditorFor(m => item.ETCode, new { htmlAttributes = new { @class = "form-control onChangeSubmit", @size="8", @form = "formSLA" + item.Id, @id=item.Id } })
                                             @Html.ValidationMessageFor(m => item.ETCode, "", new { @class = "text-danger" })

@@ -61,41 +61,9 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201909230502192_a.cs" />
-    <Compile Include="Migrations\201909230502192_a.Designer.cs">
-      <DependentUpon>201909230502192_a.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909230622434_a1.cs" />
-    <Compile Include="Migrations\201909230622434_a1.Designer.cs">
-      <DependentUpon>201909230622434_a1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909231217022_a2.cs" />
-    <Compile Include="Migrations\201909231217022_a2.Designer.cs">
-      <DependentUpon>201909231217022_a2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909240335162_a3.cs" />
-    <Compile Include="Migrations\201909240335162_a3.Designer.cs">
-      <DependentUpon>201909240335162_a3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909240503303_a4.cs" />
-    <Compile Include="Migrations\201909240503303_a4.Designer.cs">
-      <DependentUpon>201909240503303_a4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909240737180_a5.cs" />
-    <Compile Include="Migrations\201909240737180_a5.Designer.cs">
-      <DependentUpon>201909240737180_a5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909240816338_a6.cs" />
-    <Compile Include="Migrations\201909240816338_a6.Designer.cs">
-      <DependentUpon>201909240816338_a6.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909240949039_a7.cs" />
-    <Compile Include="Migrations\201909240949039_a7.Designer.cs">
-      <DependentUpon>201909240949039_a7.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909241128451_a8.cs" />
-    <Compile Include="Migrations\201909241128451_a8.Designer.cs">
-      <DependentUpon>201909241128451_a8.cs</DependentUpon>
+    <Compile Include="Migrations\201909241408500_tajul3-1.cs" />
+    <Compile Include="Migrations\201909241408500_tajul3-1.Designer.cs">
+      <DependentUpon>201909241408500_tajul3-1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201909241439238_a9.cs" />
     <Compile Include="Migrations\201909241439238_a9.Designer.cs">
@@ -126,32 +94,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909230502192_a.resx">
-      <DependentUpon>201909230502192_a.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909230622434_a1.resx">
-      <DependentUpon>201909230622434_a1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909231217022_a2.resx">
-      <DependentUpon>201909231217022_a2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909240335162_a3.resx">
-      <DependentUpon>201909240335162_a3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909240503303_a4.resx">
-      <DependentUpon>201909240503303_a4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909240737180_a5.resx">
-      <DependentUpon>201909240737180_a5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909240816338_a6.resx">
-      <DependentUpon>201909240816338_a6.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909240949039_a7.resx">
-      <DependentUpon>201909240949039_a7.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909241128451_a8.resx">
-      <DependentUpon>201909241128451_a8.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909241408500_tajul3-1.resx">
+      <DependentUpon>201909241408500_tajul3-1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909241439238_a9.resx">
       <DependentUpon>201909241439238_a9.cs</DependentUpon>

@@ -740,6 +740,7 @@
     <Content Include="Areas\eLearning\Views\Courses\Details.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Content.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\EditRules.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseCategory\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\_contentSidebar.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\Create.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\Delete.cshtml" />

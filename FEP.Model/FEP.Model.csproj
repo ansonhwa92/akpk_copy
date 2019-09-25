@@ -81,9 +81,9 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201909240414047_initialdb.cs" />
-    <Compile Include="Migrations\201909240414047_initialdb.Designer.cs">
-      <DependentUpon>201909240414047_initialdb.cs</DependentUpon>
+    <Compile Include="Migrations\201909240705233_Initial-wawar.cs" />
+    <Compile Include="Migrations\201909240705233_Initial-wawar.Designer.cs">
+      <DependentUpon>201909240705233_Initial-wawar.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201909240822494_addlearningpathtocourse.cs" />
     <Compile Include="Migrations\201909240822494_addlearningpathtocourse.Designer.cs">
@@ -127,8 +127,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909240414047_initialdb.resx">
-      <DependentUpon>201909240414047_initialdb.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909240705233_Initial-wawar.resx">
+      <DependentUpon>201909240705233_Initial-wawar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909240822494_addlearningpathtocourse.resx">
       <DependentUpon>201909240822494_addlearningpathtocourse.cs</DependentUpon>

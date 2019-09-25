@@ -53,13 +53,13 @@
             parent.prev('div.details').removeClass('d-none').addClass('d-block');
         }
 
-        function showEdit(obj, id, no, name) {
+        function showEdit(obj, id, no, name, desc) {
 
             clearForm();
 
             $.ajax({
                 type: 'get',
-                url: '@Url.Action("_Edit", "CourseCategory", new { area = "eLearning" })?id=' + id + '&Name=' + name + '&No=' + no,
+                url: '@Url.Action("_Edit", "CourseCategory", new { area = "eLearning" })?id=' + id + '&Name=' + name + '&No=' + no + '&Desc=' + desc,
                 success: function (data) {
 
                     var parent = $(obj).closest('div.details');
@@ -77,13 +77,13 @@
 
         }
 
-        function showDelete(obj, id, no, name) {
+        function showDelete(obj, id, no, name, desc) {
 
             clearForm();
 
             $.ajax({
                 type: 'get',
-                url: '@Url.Action("_Delete", "CourseCategory", new { area = "eLearning" })?id=' + id + '&Name=' + name + '&No=' + no,
+                url: '@Url.Action("_Delete", "CourseCategory", new { area = "eLearning" })?id=' + id + '&Name=' + name + '&No=' + no + '&Desc=' + desc,
                 success: function (data) {
 
                     var parent = $(obj).closest('div.details');
@@ -121,8 +121,8 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">@Language.CourseCategory.TitleList</h1>
-                    <div class="header-text">@Language.CourseCategory.TitleDescriptionList</div>
+                    <h1 class="page-title text-white">@Language.eLearning.CourseCategory.TitleList</h1>
+                    <div class="header-text">@Language.eLearning.CourseCategory.TitleDescriptionList</div>
                 </div>
             </div>
         </div>
@@ -135,10 +135,10 @@
         <div id="page-nav" class="sidebar-left page-nav">
             <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> @Language.CourseCategory.SidebarCourseCategory</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> @Language.eLearning.CourseCategory.SidebarCourseCategory</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="" class="active nav-link">@Language.CourseCategory.SidebarCourseCategoryList</a>
+                            <a href="" class="active nav-link">@Language.eLearning.CourseCategory.SidebarCourseCategoryList</a>
                         </li>                       
                     </ul>
                 </div>
@@ -161,7 +161,9 @@
                                 <div class="divtableheader">
                                     <div class="row">
                                         <div class="col-1 text-center">@Language.General.ListNo</div>
-                                        <div class="col px-0">@Language.CourseCategory.FieldName</div>
+                                        <div class="col px-0">@Language.eLearning.CourseCategory.FieldName</div>
+                                        <div class="col px-0">@Language.eLearning.CourseCategory.Description</div>
+
                                         <div class="col-3 pl-0">&nbsp;</div>
                                     </div>
                                 </div>
@@ -177,10 +179,11 @@
                                             <div class="row divTd">
                                                 <div class="col-1 text-center">@i</div>
                                                 <div class="col px-0">@Html.DisplayFor(m => item.Name)</div>
+                                                <div class="col px-0">@Html.DisplayFor(m => item.Description)</div>
                                                 <div class="col-3 pl-0 text-right">
-                                                    <div class="icon-action">                                                        
-                                                        <a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonEdit" data-toggle="tooltip"><i class="la la-edit text-muted"></i></a>
-                                                        <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>
+                                                    <div class="icon-action">
+                                                        <a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)', '@HttpUtility.JavaScriptStringEncode(item.Description)')" title="@Language.General.ButtonEdit" data-toggle="tooltip"><i class="la la-edit text-muted"></i></a>
+                                                        <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)', '@HttpUtility.JavaScriptStringEncode(item.Description)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>
                                                     </div>
                                                 </div>
                                             </div>

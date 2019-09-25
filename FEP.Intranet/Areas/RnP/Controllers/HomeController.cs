@@ -79,6 +79,33 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View(publication);
         }
 
+        // Select format to purchase
+        // GET: RnP/Home/SelectFormat
+        [AllowAnonymous]
+        public async Task<ActionResult> SelectFormat(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resPub = await WepApiMethod.SendApiAsync<ReturnPublicationModel>(HttpVerbs.Get, $"RnP/Publication?id={id}");
+
+            if (!resPub.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var publication = resPub.Data;
+
+            if (publication == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(publication);
+        }
+
         // Purchase publication
         // GET: RnP/Home/PurchasePublication
         [AllowAnonymous]

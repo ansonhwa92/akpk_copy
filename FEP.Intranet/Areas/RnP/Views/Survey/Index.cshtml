@@ -238,7 +238,6 @@
                             }
 
 							if (row.Status == 0) {          // new
-								   action += '<a href="@Url.Action("Details", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
                                 if (canedit) {
                                     action += '<a href="@Url.Action("Edit", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
                                     action += '<a href="@Url.Action("Delete", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>';

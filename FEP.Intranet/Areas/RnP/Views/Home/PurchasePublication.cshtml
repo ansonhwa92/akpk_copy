@@ -1,0 +1,223 @@
+﻿@model FEP.WebApiModel.RnP.ReturnPublicationModel
+
+@{
+    ViewBag.Title = "Purchase Publication";
+    Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
+}
+
+@section Nav{
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publications</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/BrowsePublications">Browse Publications</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+            </ol>
+        </nav>
+    </div>
+    <h1 class="page-title text-white">@Model.Title</h1>
+    <div class="header-text">
+        <div class="d-flex star-rating">
+            <div class="rating">
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star_border</i>
+            </div>
+            <div class="mx-2">4.2 (104 ratings) <span class="reviews-text">99 reviews</span></div>
+        </div>
+    </div>
+}
+
+<div class="content-container">
+    <div class="container">
+        <div class="row">
+            <!-- column content left -->
+            <div class="col-lg-9">
+                <div class="col-content">
+                    <h4 class="color-darkblue">Purchase Information</h4>
+                    <div class="divtableStyle1">
+                        <div class="divTableWrap">
+                            <div class="divtableheader no-border">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="d-flex align-items-center">
+                                            <div class="cart_item">
+                                                <div>Item Name</div>
+                                            </div>
+                                            <div class="cart_format">
+                                                <div>Format</div>
+                                            </div>
+                                            <div class="cart_price">
+                                                <div>Price</div>
+                                            </div>
+                                            <div class="cart_quantity">
+                                                <div>Quantity</div>
+                                            </div>
+                                            <div class="cart_amount pr-0">
+                                                <div>Amount</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divtableBody">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="d-flex align-items-top">
+                                            <div class="cart_item">
+                                                <div class="itemname">@Model.Title</div>
+                                            </div>
+                                            <div class="cart_format">
+                                                <div>Digital</div>
+                                                <div>Hard Cover</div>
+                                                <div>Promotion 1+1</div>
+                                            </div>
+                                            <div class="cart_price">
+                                                <div>RM10.90</div>
+                                                <div>RM29.90</div>
+                                                <div>RM22.99</div>
+                                            </div>
+                                            <div class="cart_quantity">
+                                                <div>1</div>
+                                                <div>3</div>
+                                                <div>1</div>
+                                            </div>
+                                            <div class="cart_amount pr-0">
+                                                <div>RM10.90</div>
+                                                <div>RM89.70</div>
+                                                <div>RM22.99</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Table total -->
+                    <table class="table tableStyle1 table-foot mt-0 mb-5">
+                        <tfoot>
+                            <tr>
+                                <td class="text-right font-weight-bold"><span class="color-grey2 xs-small">Shipping Fee <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="If less than or equal 50 books / order = RM18 per delivery. If more than 50 books / oder = RM0.40 per book"><i class="la la-question-circle color-red align-middle" style="font-size: 17px;"></i></a></span> </td>
+                                <td class="text-right font-weight-bolder" style="width: 99px;"><span class="xs-small">RM1.60</span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bolder">Total</td>
+                                <td class="text-right font-weight-bolder" style="width: 99px;"><span class="color-red">RM123.59</span></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <h4 class="color-darkblue">Shipping Address</h4>
+                    <div class="form-container p-0">
+                        <div class="row">
+                            <div class="col-lg-6 form-group">
+                                <input type="text" name="" class="form-control" placeholder="First Name">
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <input type="text" name="" class="form-control" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <input id="street1" type="text" required="" class="form-control" placeholder="Street address line 1">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <input id="street2" type="text" required="" class="form-control" placeholder="Street address line 2">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 form-group">
+                                <input id="posscode" type="text" required="" class="form-control" placeholder="Poscode">
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <input id="city" type="text" required="" class="form-control" placeholder="City">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <span class="select-arrow">
+                                    <select class="custom-select">
+                                        <option selected="">Select State</option>
+                                        <option value="1">State 1</option>
+                                        <option value="2">State 2</option>
+                                        <option value="3">State 3</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                <input class="form-control" type="text" placeholder="Phone Number">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="custom-control custom-checkbox">
+                                <div class="form-group col-lg-12">
+                                    <input type="checkbox" class="custom-control-input" id="savethisinformation">
+                                    <label class="custom-control-label" for="savethisinformation">Save this information for next time</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Action Button -->
+                    <div class="border-top py-3 mt-5">
+                        <a class="btn btn-default font-weight-normal mr-2" href="@Url.Action("SelectFormat", "Home", new { area = "RnP", @id = Model.ID })">Back</a>
+                        <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#addtocart">Add to Cart</a>
+                    </div>
+                    <!-- Popup -->
+                    <div class="modal fade" id="addtocart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <img src="../img/icon-noti-email.svg" alt="image">
+                                    <p class="small mt-4">1 new item(s) have been added to your cart.</p>
+                                </div>
+                                <div class="divider-border"></div>
+                                <div class="m-4 text-center">
+                                    <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Continue Shopping</button>
+                                    <button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end column content left -->
+            <!-- column content right -->
+            <div class="col-lg-3">
+                <div class="right-sidebar">
+                    <div class="right-top">
+                        <div class="mb-4"><img src="../img/cover-publication-dummy.jpg"></div>
+                        <div class="card-group">
+                            <div class="lead color-darkblue mb-3 font-weight-bolder">Publication Details</div>
+                            <ul>
+                                <li><i class="la la-list-ul font-icon color-secondary" style="font-size: 17px;"></i>@Model.Category</li>
+                                <li><i class="la la-user font-icon color-secondary" style="font-size: 17px;"></i>@Model.Author</li>
+                                <li><i class="la la-calendar font-icon color-secondary" style="font-size: 19px;"></i>@Model.Year</li>
+                                <li><i class="la la-language font-icon color-secondary" style="font-size: 17px;"></i>@Model.Language</li>
+                                <li><i class="la la-barcode font-icon color-secondary" style="font-size: 17px;"></i>@Model.ISBN</li>
+                                <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Digital/Hardcover</li>
+                            </ul>
+                        </div>
+                        <!-- Share with friends -->
+                        <div class="card-group">
+                            <div class="lead color-darkblue mb-3 font-weight-bolder">Share with Friends</div>
+                            <div class="ms-share"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end column content right -->
+        </div>
+    </div>
+    <!-- Wrapper -->
+</div>

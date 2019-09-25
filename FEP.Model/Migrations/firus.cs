@@ -28,11 +28,11 @@ namespace FEP.Model.Migrations
             if (user1 == null)
             {
 
-                var role1 = db.Role.Local.Where(r => r.Name.Contains("Verifier R&P")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("Verifier R&P")).FirstOrDefault();
+                //var role1 = db.Role.Local.Where(r => r.Name.Contains("Verifier R&P")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("Verifier R&P")).FirstOrDefault();
 
-                List<UserRole> userroles = new List<UserRole>();
+                //List<UserRole> userroles = new List<UserRole>();
 
-                userroles.Add(new UserRole { Role = role1 });
+                //userroles.Add(new UserRole { Role = role1 });
 
                 db.User.Add(
                     new User
@@ -51,7 +51,7 @@ namespace FEP.Model.Migrations
                             LoginAttempt = 0,
                             LastPasswordChange = DateTime.Now,
                             LastLogin = DateTime.Now,
-                            UserRoles = userroles
+                            //UserRoles = userroles
                         },
                     }
                 );
@@ -64,11 +64,11 @@ namespace FEP.Model.Migrations
             if (user2 == null)
             {
 
-                var role2 = db.Role.Local.Where(r => r.Name.Contains("Approver R&P 1")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("Approver R&P 1")).FirstOrDefault();
+                //var role2 = db.Role.Local.Where(r => r.Name.Contains("Approver R&P 1")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("Approver R&P 1")).FirstOrDefault();
 
-                List<UserRole> userroles = new List<UserRole>();
+                //List<UserRole> userroles = new List<UserRole>();
 
-                userroles.Add(new UserRole { Role = role2 });
+                //userroles.Add(new UserRole { Role = role2 });
 
                 db.User.Add(
                     new User
@@ -87,7 +87,7 @@ namespace FEP.Model.Migrations
                             LoginAttempt = 0,
                             LastPasswordChange = DateTime.Now,
                             LastLogin = DateTime.Now,
-                            UserRoles = userroles
+                            //UserRoles = userroles
                         },
                     }
                 );
@@ -100,11 +100,11 @@ namespace FEP.Model.Migrations
             if (user3 == null)
             {
 
-                var role3 = db.Role.Local.Where(r => r.Name.Contains("Approver R&P 2")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("Approver R&P 2")).FirstOrDefault();
+                //var role3 = db.Role.Local.Where(r => r.Name.Contains("Approver R&P 2")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("Approver R&P 2")).FirstOrDefault();
 
-                List<UserRole> userroles = new List<UserRole>();
+                //List<UserRole> userroles = new List<UserRole>();
 
-                userroles.Add(new UserRole { Role = role3 });
+                //userroles.Add(new UserRole { Role = role3 });
 
                 db.User.Add(
                     new User
@@ -123,7 +123,7 @@ namespace FEP.Model.Migrations
                             LoginAttempt = 0,
                             LastPasswordChange = DateTime.Now,
                             LastLogin = DateTime.Now,
-                            UserRoles = userroles
+                            //UserRoles = userroles
                         },
                     }
                 );
@@ -136,11 +136,11 @@ namespace FEP.Model.Migrations
             if (user4 == null)
             {
 
-                var role4 = db.Role.Local.Where(r => r.Name.Contains("Approver R&P 3")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("Approver R&P 3")).FirstOrDefault();
+                //var role4 = db.Role.Local.Where(r => r.Name.Contains("Approver R&P 3")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("Approver R&P 3")).FirstOrDefault();
 
-                List<UserRole> userroles = new List<UserRole>();
+                //List<UserRole> userroles = new List<UserRole>();
 
-                userroles.Add(new UserRole { Role = role4 });
+                //userroles.Add(new UserRole { Role = role4 });
 
                 db.User.Add(
                     new User
@@ -159,7 +159,7 @@ namespace FEP.Model.Migrations
                             LoginAttempt = 0,
                             LastPasswordChange = DateTime.Now,
                             LastLogin = DateTime.Now,
-                            UserRoles = userroles
+                            //UserRoles = userroles
                         },
                     }
                 );

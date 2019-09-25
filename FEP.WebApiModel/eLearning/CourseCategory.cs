@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FEP.Helper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,6 +13,9 @@ namespace FEP.WebApiModel.eLearning
         public int Id { get; set; }
         [Display(Name = "FieldName", ResourceType = typeof(Language.eLearning.CourseCategory))]
         public string Name { get; set; }
+
+        [Display(Name = "Description", ResourceType = typeof(Language.eLearning.CourseCategory))]
+        public string Description { get; set; }
     }
 
     public class CreateCourseCategoryModel
@@ -19,6 +23,9 @@ namespace FEP.WebApiModel.eLearning
         [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.eLearning.CourseCategory))]
         [Display(Name = "FieldName", ResourceType = typeof(Language.eLearning.CourseCategory))]
         public string Name { get; set; }
+
+        [Display(Name = "Description", ResourceType = typeof(Language.eLearning.CourseCategory))]
+        public string Description { get; set; }
     }
 
     public class EditCourseCategoryModel
@@ -29,6 +36,9 @@ namespace FEP.WebApiModel.eLearning
         [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.eLearning.CourseCategory))]
         [Display(Name = "FieldName", ResourceType = typeof(Language.eLearning.CourseCategory))]
         public string Name { get; set; }
+
+        [Display(Name = "Description", ResourceType = typeof(Language.eLearning.CourseCategory))]
+        public string Description { get; set; }
     }
 
     public class DeleteCourseCategoryModel
@@ -38,5 +48,8 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "FieldName", ResourceType = typeof(Language.eLearning.CourseCategory))]
         public string Name { get; set; }
+
+        [Display(Name = "Description", ResourceType = typeof(Language.eLearning.CourseCategory))]
+        public string Description { get; set; }
     }
 }

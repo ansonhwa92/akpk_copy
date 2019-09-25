@@ -737,6 +737,7 @@
     <Content Include="Areas\eLearning\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Details.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Manage.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseCategory\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

@@ -135,6 +135,9 @@
   <data name="AlertSuccessUpdate" xml:space="preserve">
     <value>Course category successfully updated</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
   <data name="FieldName" xml:space="preserve">
     <value>Category Name</value>
   </data>
@@ -148,7 +151,7 @@
     <value>Course Category List</value>
   </data>
   <data name="TitleDescriptionList" xml:space="preserve">
-    <value />
+    <value>List</value>
   </data>
   <data name="TitleList" xml:space="preserve">
     <value>Course Category Parameter</value>

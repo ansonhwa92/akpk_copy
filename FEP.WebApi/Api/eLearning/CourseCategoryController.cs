@@ -32,7 +32,8 @@ namespace FEP.WebApi.Api.eLearning
             var categories = db.RefCourseCategories.Where(u => u.IsDisplayed).Select(s => new CourseCategoryModel
             {
                 Id = s.Id,
-                Name = s.Name
+                Name = s.Name,
+                Description = s.Description
             }).ToList();
 
             return Ok(categories);
@@ -44,7 +45,8 @@ namespace FEP.WebApi.Api.eLearning
             var category = db.RefCourseCategories.Where(u => u.IsDisplayed && u.Id == id).Select(s => new CourseCategoryModel
             {
                 Id = s.Id,
-                Name = s.Name
+                Name = s.Name,
+                Description = s.Description
             }).FirstOrDefault();
 
             if (category != null)
@@ -63,6 +65,7 @@ namespace FEP.WebApi.Api.eLearning
             var category = new RefCourseCategory
             {
                 Name = model.Name,
+                Description = model.Description,
                 IsDisplayed = true
             };
 
@@ -83,6 +86,7 @@ namespace FEP.WebApi.Api.eLearning
             if (category != null)
             {
                 category.Name = model.Name;
+                category.Description = model.Description;
 
                 db.Entry(category).State = EntityState.Modified;
                 db.Entry(category).Property(x => x.IsDisplayed).IsModified = false;

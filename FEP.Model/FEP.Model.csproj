@@ -81,9 +81,9 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201909240414047_initialdb.cs" />
-    <Compile Include="Migrations\201909240414047_initialdb.Designer.cs">
-      <DependentUpon>201909240414047_initialdb.cs</DependentUpon>
+    <Compile Include="Migrations\201909240705233_Initial-wawar.cs" />
+    <Compile Include="Migrations\201909240705233_Initial-wawar.Designer.cs">
+      <DependentUpon>201909240705233_Initial-wawar.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -111,8 +111,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909240414047_initialdb.resx">
-      <DependentUpon>201909240414047_initialdb.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909240705233_Initial-wawar.resx">
+      <DependentUpon>201909240705233_Initial-wawar.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

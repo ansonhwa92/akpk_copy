@@ -24,7 +24,8 @@ namespace FEP.WebApiModel.eEvent
 		[Required(ErrorMessage = "Please Insert Phone No")]
 		[DataType(DataType.PhoneNumber)]
 		[Display(Name = "ExhibitorPhoneNo", ResourceType = typeof(Language.Event))]
-		public int? PhoneNo { get; set; }
+		[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
+		public string PhoneNo { get; set; }
 
 		[Display(Name = "ExhibitorRemark", ResourceType = typeof(Language.Event))]
 		public string Remark { get; set; }
@@ -45,7 +46,8 @@ namespace FEP.WebApiModel.eEvent
 		[Required(ErrorMessage = "Please Insert Phone No")]
 		[DataType(DataType.PhoneNumber)]
 		[Display(Name = "ExhibitorPhoneNo", ResourceType = typeof(Language.Event))]
-		public int? PhoneNo { get; set; }
+		[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
+		public string PhoneNo { get; set; }
 
 		[Display(Name = "ExhibitorRemark", ResourceType = typeof(Language.Event))]
 		public string Remark { get; set; }
@@ -79,7 +81,8 @@ namespace FEP.WebApiModel.eEvent
 		[Required(ErrorMessage = "Please Insert Phone No")]
 		[DataType(DataType.PhoneNumber)]
 		[Display(Name = "ExhibitorPhoneNo", ResourceType = typeof(Language.Event))]
-		public int? PhoneNo { get; set; }
+		[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
+		public string PhoneNo { get; set; }
 
 		[Display(Name = "ExhibitorRemark", ResourceType = typeof(Language.Event))]
 		public string Remark { get; set; }

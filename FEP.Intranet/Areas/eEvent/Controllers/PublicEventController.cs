@@ -347,6 +347,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Remarks = model.Remarks,
 					SpeakerId = model.SpeakerId,
 					ExternalExhibitorId = model.ExternalExhibitorId,
+					RefNo = model.RefNo,
+					
 				};
 
 				db.Entry(eEvent).State = EntityState.Modified;
@@ -387,6 +389,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				if (model.origin == "fromlist")
 				{
 					return RedirectToAction("List");
+				}
+				else if (model.origin == "amendment")
+				{
+					return RedirectToAction("Details", new { area = "eEvent", id = model.Id , origin = model.origin});
 				}
 				else
 				{

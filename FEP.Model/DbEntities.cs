@@ -137,6 +137,9 @@ namespace FEP.Model
 		public DbSet<SpeakerFile> SpeakerFile { get; set; }
 		public DbSet<ExhibitionNominee> ExhibitionNominee { get; set; }
 
+		public DbSet<AssignedSpeaker> AssignedSpeaker { get; set; }
+		public DbSet<AssignedExternalExhibitor> AssignedExternalExhibitor { get; set; }
+
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();

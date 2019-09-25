@@ -141,10 +141,10 @@
 								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove3" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-eye text-muted"></i></i></a>'
 							}
 
-							if (row.EventStatus == 5) {
+							@*if (row.EventStatus == 5) {
 								//Approve By Approver3
 								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=fromamendment" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-eye text-muted"></i></i></a>'
-							}
+							}*@
 
 							if (row.EventStatus == 4 || row.EventStatus == 6) {
 								//Approved

@@ -368,7 +368,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                LogActivity(Modules.Admin, "Delete Individual User", new { id = id });
+               await LogActivity(Modules.Admin, "Delete Individual User", new { id = id });
 
                 TempData["SuccessMessage"] = "User account successfully delete.";
 

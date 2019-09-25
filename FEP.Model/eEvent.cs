@@ -79,7 +79,7 @@ namespace FEP.Model
 
 		public string Email { get; set; }
 
-		public int? PhoneNo { get; set; }
+		public string PhoneNo { get; set; }
 
 		public string Remark { get; set; }
 
@@ -183,6 +183,34 @@ namespace FEP.Model
 		public bool Display { get; set; }
 
 		public virtual ICollection<SpeakerFile> SpeakerFiles { get; set; }
+	}
+
+	[Table("AssignedSpeaker")]
+	public class AssignedSpeaker
+	{
+		[Key]
+		public int Id { get; set; }
+		public int PublicEventId { get; set; }
+		[ForeignKey("PublicEventId")] 
+		public virtual PublicEvent PublicEvent { get; set; }
+
+		public int EventSpeakerId { get; set; }
+		[ForeignKey("EventSpeakerId")] 
+		public virtual EventSpeaker EventSpeaker { get; set; }
+	}
+
+	[Table("AssignedExternalExhibitor")]
+	public class AssignedExternalExhibitor
+	{
+		[Key]
+		public int Id { get; set; }
+		public int ExternalExhibitorId { get; set; }
+		[ForeignKey("ExternalExhibitorId")] 
+		public virtual EventExternalExhibitor EventExternalExhibitor { get; set; }
+
+		public int PublicEventId { get; set; }
+		[ForeignKey("PublicEventId")]
+		public virtual PublicEvent PublicEvent { get; set; }
 	}
 
 	[Table("EventBooking")]

@@ -133,7 +133,8 @@ namespace FEP.WebApi.Api.Administration
                 Address2 = model.Address2,
                 City = model.City,
                 PostCode = model.PostCode,
-                State = model.State,
+                StateId = model.StateId,
+                StateName = model.State,
                 CompanyPhoneNo = model.CompanyPhoneNo
             };
 

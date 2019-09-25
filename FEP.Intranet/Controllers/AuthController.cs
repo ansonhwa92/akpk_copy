@@ -36,9 +36,21 @@ namespace FEP.Intranet.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult RegisterIndividual()
+        public async Task<ActionResult> RegisterIndividual()
         {
             var model = new RegisterIndividualModel();
+
+            model.IsMalaysian = true;
+
+            model.Citizenships = Enumerable.Empty<SelectListItem>();
+
+            var citizenResponse = await WepApiMethod.SendApiAsync<List<CountryModel>>(HttpVerbs.Get, $"Administration/Country");
+
+            if (citizenResponse.isSuccess)
+            {
+                model.Citizenships = new SelectList(citizenResponse.Data.OrderBy(o => o.Name), "Id", "Name", 0);
+            }
+
             return View(model);
         }
 
@@ -53,8 +65,21 @@ namespace FEP.Intranet.Controllers
 
             if (sectorResponse.isSuccess)
             {
-                model.Sectors = new SelectList(sectorResponse.Data, "Id", "Name", 0);
+                model.Sectors = new SelectList(sectorResponse.Data.OrderBy(o => o.Name), "Id", "Name", 0);
             }
+
+            model.States = Enumerable.Empty<SelectListItem>();
+
+            var stateResponse = await WepApiMethod.SendApiAsync<List<StateModel>>(HttpVerbs.Get, $"Administration/State");
+
+            if (sectorResponse.isSuccess)
+            {
+                model.States = new SelectList(stateResponse.Data.OrderBy(o => o.Name), "Id", "Name", 0);
+            }
+
+            model.States = Enumerable.Empty<SelectListItem>();
+
+           
 
             return View(model);
         }
@@ -64,19 +89,37 @@ namespace FEP.Intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RegisterIndividual(RegisterIndividualModel model)
         {
+            if (model.IsMalaysian)
+            {
+                ModelState.Remove("PassportNo");
+            }
+            else
+            {
+                ModelState.Remove("ICNo");
+            }
 
             var emailResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsEmailExist?id={null}&email={model.Email}");
 
             if (emailResponse.Data)
             {
-                ModelState.AddModelError("Email", "Email already registered in the system");
+                ModelState.AddModelError("Email", Language.Auth.ValidIsExistEmail);
             }
 
-            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={model.ICNo}");
+            var icno = model.ICNo;
+
+            if (!model.IsMalaysian)
+            {
+                icno = model.PassportNo;
+            }
+
+            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={icno}");
 
             if (icnoResponse.Data)
             {
-                ModelState.AddModelError("ICNo", "IC No/Passport No already registered in the system");
+                if (model.IsMalaysian)
+                    ModelState.AddModelError("ICNo", Language.Auth.ValidIsExistICNo);
+                else
+                    ModelState.AddModelError("PassportNo", Language.Auth.ValidIsExistPassportNo);
             }
 
             if (ModelState.IsValid)

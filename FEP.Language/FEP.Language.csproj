@@ -56,6 +56,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Country.Designer.cs">
+      <DependentUpon>Country.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="State.Designer.cs">
+      <DependentUpon>State.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Sector.Designer.cs">
       <DependentUpon>Sector.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -125,6 +135,14 @@
     <EmbeddedResource Include="CourseCategory.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CourseCategory.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Country.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Country.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="State.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>State.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Sector.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

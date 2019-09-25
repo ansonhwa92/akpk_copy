@@ -7,7 +7,7 @@
 
 @section ButtonBack{
 
-    <a href="@Url.Action("Register", "Auth", new { area = "" })" class="btn btn-outline-secondary"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a>
+    <a href="@Url.Action("Register", "Auth", new { area = "" })" class="btn btn-outline-secondary"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a>
 
 }
 
@@ -15,7 +15,20 @@
     
     <script type="text/javascript">
 
+        $(document).ready(function () {
 
+            $('input[type=radio][name=IsMalaysian]').change(function() {
+                if (this.value == 'true') {
+                    $("#malaysian").removeClass("d-none");
+					$("#non-malaysian").addClass("d-none");
+                }
+                else if (this.value == 'false') {
+                    $("#non-malaysian").removeClass("d-none");
+					$("#malaysian").addClass("d-none");
+                }
+            });
+
+        });
 
     </script>
     
@@ -33,6 +46,17 @@
                 {
                     @Html.AntiForgeryToken()
 
+                    <div class="form-inline mb-2">
+                        <div class="custom-control custom-radio">
+                            @Html.RadioButtonFor(m => m.IsMalaysian, "true", new { @class = "custom-control-input", id = "yes" })
+                            <label class="custom-control-label mr-3" for="yes">@Language.Auth.FieldMalaysian</label>
+                        </div>
+                        <div class="custom-control custom-radio ml-5">
+                            @Html.RadioButtonFor(m => m.IsMalaysian, "false", new { @class = "custom-control-input", id = "no" })
+                            <label class="custom-control-label" for="no">@Language.Auth.FieldNonMalaysian</label>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         @Html.FEPLabelFor(m => m.Name, htmlAttributes: new { @class = "form-label" })
                         <div class="input-group">
@@ -40,13 +64,27 @@
                             @Html.ValidationMessageFor(m => m.Name)
                         </div>
                     </div>
-                    <div class="form-group">
-                        @Html.FEPLabelFor(m => m.ICNo, htmlAttributes: new { @class = "form-label" })
-                        <div class="input-group">
-                            @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderICNo } })
-                            @Html.ValidationMessageFor(m => m.ICNo)
+
+                    <div id="malaysian" @if (!Model.IsMalaysian) { <text>class="d-none"</text> }>
+                        <div class="form-group">
+                            @Html.FEPLabelFor(m => m.ICNo, htmlAttributes: new { @class = "form-label" })
+                            <div class="input-group">
+                                @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderICNo } })
+                                @Html.ValidationMessageFor(m => m.ICNo)
+                            </div>
                         </div>
                     </div>
+                    
+                    <div id="non-malaysian" @if (Model.IsMalaysian) {  <text>class="d-none"</text> }>
+                        <div class="form-group">
+                            @Html.FEPLabelFor(m => m.PassportNo, htmlAttributes: new { @class = "form-label" })
+                            <div class="input-group">
+                                @Html.EditorFor(m => m.PassportNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderPassportNo } })
+                                @Html.ValidationMessageFor(m => m.PassportNo)
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         @Html.FEPLabelFor(m => m.MobileNo, htmlAttributes: new { @class = "form-label" })
                         <div class="input-group">
@@ -76,41 +114,22 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-secondary btn-block mt-3 mb-4">Sign Up</button>
-
                     <div class="form-group text-center mb-0">
-                        <div class="custom-control custom-checkbox">                            
+                        <div class="custom-control custom-checkbox">
                             @Html.EditorFor(m => m.IsTermAgreed, new { htmlAttributes = new { @class = "custom-control-input" } })
                             <label for="IsTermAgreed" class="custom-control-label">I agree to the <a href="#">Terms of Use</a></label>
-                            
+
                         </div>
                         @Html.ValidationMessageFor(m => m.IsTermAgreed)
                     </div>
+
+                    <button type="submit" class="btn btn-secondary btn-block mt-3 mb-4">Sign Up</button>
+
+
                 }
             </div>
             <div class="card-footer text-center">Already signed up? <a href="@Url.Action("Login", "Auth", new { area = "" })" class="font-weight-bold">Login</a></div>
-            <!-- Complete Registration trigger a popup modal-->
-            <div class="modal fade" id="registersuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body text-center">
-                            <img src="@BaseURL/img/icon-noti-email.svg" alt="image">
-                            <h4 class="color-darkblue mt-4">Registration received.</h4>
-                            <p class="small">Your registration information has been received and is waiting approval from the Administrator. Please check the email you used to register for this website for further instruction.</p>
-                        </div>
-                        <div class="divider-border"></div>
-                        <div class="m-4">
-                            <a href="@Url.Action("","")" class="btn btn-outline-primary float-right">Log in</a>
-                            <div class="small py-2">Already have an AKPK account?</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          
         </div>
     </div>
 </div>

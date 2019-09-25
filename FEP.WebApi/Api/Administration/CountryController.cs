@@ -11,8 +11,8 @@ using System.Web.Http;
 
 namespace FEP.WebApi.Api.Administration
 {
-    [Route("api/Administration/State")]
-    public class StateController : ApiController
+    [Route("api/Administration/Country")]
+    public class CountryController : ApiController
     {
 
         private DbEntities db = new DbEntities();
@@ -29,7 +29,7 @@ namespace FEP.WebApi.Api.Administration
 
         public IHttpActionResult Get()
         {
-            var states = db.State.Where(u => u.Display).Select(s => new StateModel
+            var states = db.Country.Where(u => u.Display).Select(s => new CountryModel
             {
                 Id = s.Id,
                 Name = s.Name
@@ -37,54 +37,54 @@ namespace FEP.WebApi.Api.Administration
 
             return Ok(states);
         }
-        
+
 
         public IHttpActionResult Get(int id)
         {
-            var state = db.State.Where(u => u.Display && u.Id == id).Select(s => new StateModel
+            var country = db.Country.Where(u => u.Display && u.Id == id).Select(s => new CountryModel
             {
                 Id = s.Id,
                 Name = s.Name
             }).FirstOrDefault();
 
-            if (state != null)
+            if (country != null)
             {
-                return Ok(state);
+                return Ok(country);
             }
 
             return NotFound();
         }
 
         [ValidationActionFilter]
-        public IHttpActionResult Post([FromBody]CreateStateModel model)
+        public IHttpActionResult Post([FromBody]CreateCountryModel model)
         {
 
-            var state = new State
+            var country = new Country
             {
                 Name = model.Name,
                 Display = true
             };
 
-            db.State.Add(state);
+            db.Country.Add(country);
             db.SaveChanges();
 
-            return Ok(state.Id);
+            return Ok(country.Id);
 
         }
 
 
         [ValidationActionFilter]
-        public IHttpActionResult Put(int id, [FromBody]EditStateModel model)
+        public IHttpActionResult Put(int id, [FromBody]EditCountryModel model)
         {
 
-            var state = db.State.Where(s => s.Id == id).FirstOrDefault();
+            var country = db.Country.Where(s => s.Id == id).FirstOrDefault();
 
-            if (state != null)
+            if (country != null)
             {
-                state.Name = model.Name;
+                country.Name = model.Name;
 
-                db.Entry(state).State = EntityState.Modified;
-                db.Entry(state).Property(x => x.Display).IsModified = false;
+                db.Entry(country).State = EntityState.Modified;
+                db.Entry(country).Property(x => x.Display).IsModified = false;
 
                 db.SaveChanges();
 
@@ -99,14 +99,14 @@ namespace FEP.WebApi.Api.Administration
 
         public IHttpActionResult Delete(int id)
         {
-            var state = db.State.Where(u => u.Id == id).FirstOrDefault();
+            var country = db.Country.Where(u => u.Id == id).FirstOrDefault();
 
-            if (state != null)
+            if (country != null)
             {
-                state.Display = false;
+                country.Display = false;
 
-                db.State.Attach(state);
-                db.Entry(state).Property(m => m.Display).IsModified = true;
+                db.Country.Attach(country);
+                db.Entry(country).Property(m => m.Display).IsModified = true;
                 db.Configuration.ValidateOnSaveEnabled = false;
 
                 db.SaveChanges();
@@ -120,18 +120,18 @@ namespace FEP.WebApi.Api.Administration
 
         }
 
-        [Route("api/Administration/State/IsNameExist")]
+        [Route("api/Administration/Country/IsNameExist")]
         [HttpGet]
         public IHttpActionResult IsNameExist(int? id, string name)
         {
             if (id == null)
             {
-                if (db.State.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Display))
+                if (db.Country.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Display))
                     return Ok(true);
             }
             else
             {
-                if (db.State.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
+                if (db.Country.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
                     return Ok(true);
             }
 

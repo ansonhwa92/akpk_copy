@@ -134,7 +134,7 @@ namespace FEP.WebApi.Api.Administration
                     Email = s.User.Email,
                     CompanyRegNo = s.CompanyRegNo,
                     Sector = s.Sector.Name,
-                    Status = s.User.UserAccount.IsEnable
+                    Status = s.User.UserAccount != null ? s.User.UserAccount.IsEnable : false
                 }).ToList();
 
             return Ok(new DataTableResponse
@@ -162,13 +162,13 @@ namespace FEP.WebApi.Api.Administration
                     Address2 = s.Address2,
                     PostCode = s.PostCode,
                     City = s.City,
-                    State = s.State,
+                    State = s.StateId != null ? s.State.Name : s.StateName,
                     CompanyPhoneNo = s.CompanyPhoneNo,
                     Name = s.User.Name,
                     Email = s.User.Email,
                     MobileNo = s.User.MobileNo,
                     ICNo = s.User.ICNo,
-                    Status = s.User.UserAccount.IsEnable
+                    Status = s.User.UserAccount != null ? s.User.UserAccount.IsEnable : false
                 })
                 .FirstOrDefault();
 
@@ -209,8 +209,8 @@ namespace FEP.WebApi.Api.Administration
                 Address1 = model.Address1,
                 Address2 = model.Address2,
                 City = model.City,
-                PostCode = model.PostCode,
-                State = model.State,
+                PostCode = model.PostCode,                
+                StateName = model.State,
                 CompanyPhoneNo = model.CompanyPhoneNo
             };
 
@@ -279,7 +279,7 @@ namespace FEP.WebApi.Api.Administration
             company.Address1 = model.Address1;
             company.Address2 = model.Address2;
             company.City = model.City;
-            company.State = model.State;
+            company.StateName = model.State;
             company.PostCode = model.PostCode;
             company.CompanyPhoneNo = model.CompanyPhoneNo;
 

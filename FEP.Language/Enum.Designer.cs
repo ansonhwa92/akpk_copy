@@ -104,5 +104,14 @@ namespace Language {
                 return ResourceManager.GetString("UserTypeStaff", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Admin.
+        /// </summary>
+        public static string UserTypeSystemAdmin {
+            get {
+                return ResourceManager.GetString("UserTypeSystemAdmin", resourceCulture);
+            }
+        }
     }
 }

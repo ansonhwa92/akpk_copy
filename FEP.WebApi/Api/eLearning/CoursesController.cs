@@ -4,9 +4,11 @@ using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace FEP.WebApi.Api.eLearning
@@ -25,6 +27,8 @@ namespace FEP.WebApi.Api.eLearning
                 cfg.CreateMap<CreateOrEditCourseModel, Course>();
 
                 cfg.CreateMap<Course, CreateOrEditCourseModel>();
+
+                cfg.CreateMap<CourseRuleModel, Course>();
             });
 
             _mapper = config.CreateMapper();
@@ -155,7 +159,23 @@ namespace FEP.WebApi.Api.eLearning
             if (ModelState.IsValid)
             {
                 var course = _mapper.Map<Course>(request);
+
+                course.Description = HttpUtility.HtmlEncode(request.Description);
+                course.Objectives = HttpUtility.HtmlEncode(request.Objectives);
+
                 course.CreatedDate = DateTime.Now;
+
+                // all course activity is log to table courseapprovallog
+
+                course.CourseApprovalLog = new List<CourseApprovalLog>
+                {
+                    new CourseApprovalLog
+                    {
+                        CreatedByName = request.CreatedByName,
+                        ActionDate = DateTime.Now,
+                        Remark = "Course " + request.Title + " created.",
+                    },
+                };
 
                 db.Courses.Add(course);
 
@@ -172,14 +192,55 @@ namespace FEP.WebApi.Api.eLearning
         [HttpGet]
         public async Task<IHttpActionResult> Get(int? id)
         {
-            var entity = await db.Courses.FirstOrDefaultAsync(x => x.Id == id.Value);
+            var entity = await db.Courses
+                   .Include(x => x.CourseApprovalLog)
+                   .FirstOrDefaultAsync(x => x.Id == id.Value);
 
             if (entity == null)
                 return NotFound();
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
+            model.CourseApprovalLogs = new List<CourseApprovalLog>();
+            model.CourseApprovalLogs = entity.CourseApprovalLog;
 
             return Ok(model);
+        }
+
+        /// <summary>
+        /// For use in index page, to list all the courses but with some fields only
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/eLearning/Courses/EditRules")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> EditRules([FromBody] CourseRuleModel request)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = await db.Courses.FirstOrDefaultAsync(x => x.Id == request.Id);
+
+                if (entity == null)
+                    return NotFound();
+
+                entity.TraversalRule = request.TraversalRule;
+                entity.CompletionCriteriaType = request.CompletionCriteriaType;
+                entity.ModulesCompleted = request.ModulesCompleted;
+                entity.LearningPath = request.LearningPath;
+                entity.PercentageCompletion = request.PercentageCompletion;
+                entity.ScoreCalculation = request.ScoreCalculation;
+                entity.TestsPassed = request.TestsPassed;
+                entity.TraversalRule = request.TraversalRule;
+
+                db.Entry(entity).State = EntityState.Modified;
+
+                await db.SaveChangesAsync();
+
+                return Ok(entity.Id.ToString());
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
     }
 }

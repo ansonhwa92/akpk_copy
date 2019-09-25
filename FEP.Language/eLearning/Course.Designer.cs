@@ -88,11 +88,29 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Completion Rules.
+        /// </summary>
+        public static string CompletionRule {
+            get {
+                return ResourceManager.GetString("CompletionRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 100% online course.
         /// </summary>
         public static string CourseMediumOnline {
             get {
                 return ResourceManager.GetString("CourseMediumOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created By.
+        /// </summary>
+        public static string CreatedByName {
+            get {
+                return ResourceManager.GetString("CreatedByName", resourceCulture);
             }
         }
         
@@ -142,6 +160,15 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Learning Path.
+        /// </summary>
+        public static string LearningPath {
+            get {
+                return ResourceManager.GetString("LearningPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Medium.
         /// </summary>
         public static string Medium {
@@ -156,6 +183,15 @@ namespace Language.eLearning {
         public static string Objectives {
             get {
                 return ResourceManager.GetString("Objectives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Percentage .
+        /// </summary>
+        public static string PercentageCompletion {
+            get {
+                return ResourceManager.GetString("PercentageCompletion", resourceCulture);
             }
         }
         
@@ -178,6 +214,15 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Score Calculated By.
+        /// </summary>
+        public static string ScoreCalculation {
+            get {
+                return ResourceManager.GetString("ScoreCalculation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string Status {
@@ -192,6 +237,15 @@ namespace Language.eLearning {
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Traversal Rules.
+        /// </summary>
+        public static string TraversalRule {
+            get {
+                return ResourceManager.GetString("TraversalRule", resourceCulture);
             }
         }
         

@@ -105,9 +105,9 @@ namespace FEP.Model.Migrations
                 db.Courses.Add(course);
 
                 // add modules
-                List<ModuleContent> moduleContents = new List<ModuleContent>();
+                List<CourseContent> moduleContents = new List<CourseContent>();
 
-                ModuleContent richText = new RichText
+                CourseContent richText = new RichText
                 {
                     Order = 2,
                     ContentType = CourseContentType.RichText,
@@ -124,7 +124,7 @@ namespace FEP.Model.Migrations
                 };
                 moduleContents.Add(richText);
 
-                ModuleContent video = new Video
+                CourseContent video = new Video
                 {
                     Order = 4,
                     ContentType = CourseContentType.Video,
@@ -136,7 +136,7 @@ namespace FEP.Model.Migrations
                 };
                 moduleContents.Add(video);
 
-                ModuleContent iframe = new IFrame
+                CourseContent iframe = new IFrame
                 {
                     Order = 5,
                     ContentType = CourseContentType.IFrame,
@@ -148,7 +148,7 @@ namespace FEP.Model.Migrations
                 };
                 moduleContents.Add(iframe);
 
-                ModuleContent doc = new Document
+                CourseContent doc = new Document
                 {
                     Order = 6,
                     ContentType = CourseContentType.Document,
@@ -179,7 +179,7 @@ namespace FEP.Model.Migrations
                         Description = "<p> Description Module</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
                         Title = "<h2>Module 2</h2>",
-                        ModuleContents = new List<ModuleContent> {
+                        ModuleContents = new List<CourseContent> {
                             new Video
                             {
                                 Order = 1,
@@ -199,7 +199,7 @@ namespace FEP.Model.Migrations
                         Description = "<p> Description Module</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
                         Title = "<h2>Module 3</h2>",
-                        ModuleContents = new List<ModuleContent> {
+                        ModuleContents = new List<CourseContent> {
                             new Video
                             {
                                 Order = 1,
@@ -219,7 +219,7 @@ namespace FEP.Model.Migrations
                         Description = "<p> Description Module</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
                         Title = "<h2>Module 1</h2>",
-                        ModuleContents = moduleContents.Where(x =>x.IsViewable).ToList().Select(x => new ModuleContent()).ToList(),
+                        ModuleContents = moduleContents.Where(x =>x.IsViewable).ToList().Select(x => new CourseContent()).ToList(),
                     },
                 };
 

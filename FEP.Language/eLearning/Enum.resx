@@ -117,70 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Category" xml:space="preserve">
-    <value>Category</value>
+  <data name="ApprovalLevelApprover1" xml:space="preserve">
+    <value>Approver 1</value>
   </data>
-  <data name="CategoryId" xml:space="preserve">
-    <value>Category</value>
+  <data name="ApprovalLevelApprover2" xml:space="preserve">
+    <value>Approver 2</value>
   </data>
-  <data name="Code" xml:space="preserve">
-    <value>Course Code</value>
+  <data name="ApprovalLevelApprover3" xml:space="preserve">
+    <value>Approver 3</value>
   </data>
-  <data name="CompletionRule" xml:space="preserve">
-    <value>Completion Rules</value>
+  <data name="ApprovalLevelNone" xml:space="preserve">
+    <value>Creation/Amendment</value>
   </data>
-  <data name="CourseMediumOnline" xml:space="preserve">
-    <value>100% online course</value>
+  <data name="ApprovalLevelVerifier" xml:space="preserve">
+    <value>Verifier</value>
   </data>
-  <data name="CreatedByName" xml:space="preserve">
-    <value>Created By</value>
+  <data name="ApprovalStatusApproved" xml:space="preserve">
+    <value>Approved</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
+  <data name="ApprovalStatusNone" xml:space="preserve">
+    <value>Select Status</value>
   </data>
-  <data name="Duration" xml:space="preserve">
-    <value>Course Duration</value>
+  <data name="ApprovalStatusRejected" xml:space="preserve">
+    <value>Rejected</value>
   </data>
-  <data name="DurationType" xml:space="preserve">
-    <value>Duration Type</value>
-  </data>
-  <data name="IsFree" xml:space="preserve">
-    <value>Is this a free course?</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="LearningPath" xml:space="preserve">
-    <value>Learning Path</value>
-  </data>
-  <data name="Medium" xml:space="preserve">
-    <value>Medium</value>
-  </data>
-  <data name="Objectives" xml:space="preserve">
-    <value>Objectives</value>
-  </data>
-  <data name="PercentageCompletion" xml:space="preserve">
-    <value>Percentage </value>
-  </data>
-  <data name="Price" xml:space="preserve">
-    <value>Price</value>
-  </data>
-  <data name="ScheduleType" xml:space="preserve">
-    <value>Schedule Type</value>
-  </data>
-  <data name="ScoreCalculation" xml:space="preserve">
-    <value>Score Calculated By</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Course Name</value>
-  </data>
-  <data name="TraversalRule" xml:space="preserve">
-    <value>Traversal Rules</value>
-  </data>
-  <data name="ViewCategory" xml:space="preserve">
-    <value>Viewable by</value>
+  <data name="ApprovalStatusSubmitted" xml:space="preserve">
+    <value>Submitted For Approval</value>
   </data>
 </root>

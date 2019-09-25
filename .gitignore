@@ -356,3 +356,4 @@ healthchecksdb
 !/FEP.Model/Migrations/mhafeez.cs
 !/FEP.Model/Migrations/firus.cs
 !/FEP.Model/Migrations/aiman.cs
+!/FEP.Model/Migrations/SeedElearning.cs

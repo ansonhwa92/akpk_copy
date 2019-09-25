@@ -39,51 +39,19 @@
 
     @*@Html.HiddenFor(m => m.Id)*@
     @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
-    @*<input type="hidden" name="CreatedBy" id="CreatedBy" value="@CurrentUser.UserId">*@
+
 
     <div class="row">
-        @*<div class="col-xl-3 col-md-3 col-sm-4 my-2">
-            <div class="sidebar-left">
-                <!-- Steps -->
-                <div class="sidebar-inner sticky">
-                    <ul class="steps steps-vertical">
-                        <li class="step-item active">
-                            <a href="" class="step-link">
-                                <span class="step-number">1</span>
-                                <span class="step-title">Fill in new course information</span>
-                            </a>
-                        </li>
-                        <li class="step-item disabled">
-                            <a href="" class="step-link">
-                                <span class="step-number">2</span>
-                                <span class="step-title">Configure Course Criteria</span>
-                            </a>
-                        </li>
-                        <li class="step-item disabled">
-                            <a href="" class="step-link">
-                                <span class="step-number">3</span>
-                                <span class="step-title">Add Contents</span>
-                            </a>
-                        </li>
-                        <li class="step-item disabled">
-                            <a href="" class="step-link">
-                                <span class="step-number">4</span>
-                                <span class="step-title">Review and Approvals</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- End Steps -->
-                </div>
-            </div>
-        </div>*@
+
+        @Html.Partial("_contentSidebar")
 
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
             <!-- Start Form -->
-            <div class="border-form rounded-top">
-                <div class="form-container">
-                    <p>Information mark with(<span class="t-red">*</span>) is mandatory.</p>
+            <div class="border-form rounded-top col-sm-12">
+                <div class="form-container form-container-w100">
+                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label" })<span class="t-red">*</span>
+                        @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
                         <div class="">
                             @Html.DropDownListFor(m => m.CategoryId, ViewBag.Categories as SelectList, "Select Category", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
@@ -91,18 +59,10 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })<span class="t-red">*</span>
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
                         <div class="">
                             @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })<span class="t-red">*</span>
-                        <div class="">
-                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -114,13 +74,27 @@
                         </div>
                     </div>
 
-                    @*<div class="form-group">
-            @Html.LabelFor(model => model.Objectives, htmlAttributes: new { @class = "control-label " })
-            <div class="">
-                @Html.TextAreaFor(model => model.Objectives, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Objectives, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
+                        <div class="">                            
+
+                            @Html.TextAreaFor(m => m.Description, new { @class = "summernote form-control" } )               
+
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Objectives, htmlAttributes: new { @class = "control-label " })
+                        <div class="">                            
+
+                            @Html.TextAreaFor(m => m.Objectives, new { @class = "summernote form-control" })
+
+                            @Html.ValidationMessageFor(model => model.Objectives, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.Medium, htmlAttributes: new { @class = "control-label " })
@@ -129,14 +103,6 @@
                             @Html.ValidationMessageFor(model => model.Medium, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
-                    @*<div class="form-group">
-            @Html.LabelFor(model => model.ScheduleType, htmlAttributes: new { @class = "control-label " })
-            <div class="">
-                @Html.EnumDropDownListFor(model => model.ScheduleType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ScheduleType, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label " })
@@ -189,26 +155,44 @@
                         </div>
                     </div>
 
-                    <div class="border-left border-right border-bottom p-3 rounded-bottom">
-                        <input type="submit" value="Create" class="btn btn-default" />
-                        @*  <button type="submit" class="btn btn-default" id="btnSave" name="Submittype" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save as Draft</button>*@
-                    </div>
-
-                    @*<div class="form-group">
-            <div class="col-md-offset-2 ">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>*@
                 </div>
             </div>
+
+
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+ 
+                <a class="btn btn-default" href="@Url.Action("Index", "Courses", new { area = "eLearning" })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
+                <button type="submit" class="btn btn-default pull-right" id="btnSave" name="Submittype" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save</button>
+                
+            </div>
+
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
+<style>
+    .form-container {
+        max-width: none !important;
+    }
+</style>
 
 @section ContentScript {
     @Scripts.Render("~/bundles/jqueryval")
+
+
+    <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
+    <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                placeholder: 'Type your text here.',
+                tabsize: 2,
+                height: 150,
+
+                //airMode : true,
+            });
+        });
+    </script>
 }

@@ -16,7 +16,7 @@ namespace FEP.Model.eLearning
         /// </summary>
         public int Order { get; set; }
         public int ModuleContentId { get; set; }
-        public ModuleContent ModuleContent { get; set; }
+        public CourseContent ModuleContent { get; set; }
 
         public CourseMaterialType FileType { get; set; }
 

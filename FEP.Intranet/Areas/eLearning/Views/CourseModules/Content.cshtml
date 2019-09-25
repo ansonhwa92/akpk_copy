@@ -1,14 +1,16 @@
 ﻿@using FEP.Model
 @using FEP.Model.eLearning
+@using System.Web
 
-@model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
+@model FEP.WebApiModel.eLearning.CreateOrEditModuleModel
 
 @{
-    ViewBag.Title = "Manage Course";
+    ViewBag.Title = "Manage Module";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 
     var name = Model.Title;
     var desc = Model.Description;
+    
 }
 
 @section Nav{
@@ -28,8 +30,11 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Manage Course : @name</h1>
-                    <div class="header-text">Manage a course by editing and adding contents.</div>
+                    <h1 class="page-title text-white">Manage Module : @name</h1>
+                    <div class="header-text">
+                        Manage a course by editing and adding contents.                        
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -37,19 +42,9 @@
 }
 
     <div class="row">
-        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
-            <div class="sidebar-left">
-                <!-- Steps -->
-                <div class="sidebar-inner sticky">
-                    <ul class="">
-                        <li><a href="#">Content</a></li>
-                        <li><a href="#">Rules and path</a></li>
-                        <li><a href="#">Users and progress</a></li>
-                    </ul>
-                    <!-- End Steps -->
-                </div>
-            </div>
-        </div>
+
+        @Html.Partial("_contentSidebar")
+        
 
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
             <!-- Start Form -->
@@ -58,19 +53,42 @@
                     <div>
                         <h2>@name</h2>
                         <br />
-                        @desc
+                        @*@Model.Description*@
+
+                        THIS IS MODULE
+
+                        @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
+
                     </div>
                     <div>
-                        Objectives
+                        @*@Model.Objectives*@
+                        @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
                     </div>
                     <div>
                         <div class="row">
-                            <a href="#">Add content</a>
-                            <a href="#">Edit course info</a>
-                            <a href="#">View as learner</a>
+                            <a class="btn btn-secondary dropdown-toggle m-2" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Add Content
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                @*   <a class="dropdown-item" href="@Url.Action("Create", "CourseModules", new { area = "eLearning", id = @Model.Id, courseTitle= Model.Title })">Module</a>*@
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+
+                            <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
+                            <a class="btn btn-secondary m-2" href="#">View as learner</a>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+<style>
+        .form-container {
+            max-width:none !important;
+        }
+
+    </style>
+    

@@ -41,6 +41,9 @@ namespace FEP.Model.eLearning
 
         public virtual ICollection<CourseModule> Modules { get; set; }
 
+        // For the front page, excluding modules, modules will be from Modules above
+        public virtual ICollection<CourseContent> FrontPageContents { get; set; }
+
         public CourseStatus Status { get; set; }
 
         public string IntroVideoPath { get; set; }
@@ -61,18 +64,19 @@ namespace FEP.Model.eLearning
         // ----- END RULES AND PATH
 
         //----- START APPROVAlS
-        public int? VerifierApprovalId { get; set; }
-        public virtual CourseApproval VerifierApproval { get; set; }
+        public ICollection<CourseApprovalLog> CourseApprovalLog { get; set; }
+        //public int? VerifierApprovalId { get; set; }
+        //public virtual CourseApproval VerifierApproval { get; set; }
 
-        public int? FirstApprovalId { get; set; }
+        //public int? FirstApprovalId { get; set; }
 
-        public virtual CourseApproval FirstApproval { get; set; }
+        //public virtual CourseApproval FirstApproval { get; set; }
 
-        public int? SecondApprovalId { get; set; }
-        public virtual CourseApproval SecondApproval { get; set; }
-        public int? ThirdApprovalId { get; set; }
+        //public int? SecondApprovalId { get; set; }
+        //public virtual CourseApproval SecondApproval { get; set; }
+        //public int? ThirdApprovalId { get; set; }
 
-        public virtual CourseApproval ThirdApproval { get; set; }
+        //public virtual CourseApproval ThirdApproval { get; set; }
         
         public int TotalModules { get; set; }
   
@@ -126,6 +130,10 @@ namespace FEP.Model.eLearning
         // ----- END COURSE COMPLETION CRITERIA
 
 
+        public string LearningPath { get; set; }
+
+
+        public string CreatedByName { get; set; }
         /// Evertyhing below is not used, here for reference/future use.
         //public CourseLevel RequiredLevel { get; set; }
 
@@ -140,14 +148,20 @@ namespace FEP.Model.eLearning
     {
         Draft,
         Trial,
+        Submitted,
         VerifierApproval,
+        Verified,
+        VerifierRejected,  // Should go back to draft
         FirstApproval,
+        ApproverRejected, // Should go back to draft
         SecondApproval,
         ThirdApproval,
         
         Approved, // Ready to publish
         Published, // Fit for consumption
-        Hidden //The course is hidden froom search and view, however the point given is still valid
+        Hidden, //The course is hidden froom search and view, however the point given is still valid
+        Deleted,
+
     }
 
     /// <summary>

@@ -143,11 +143,11 @@
                         }
                     },
                     {
-                        data: 'Code',
+                        data: 'Title',
                         sortable: true
                     },
                     {
-                        data: 'Title',
+                        data: 'Code',
                         sortable: true
                     },                    
                     {
@@ -193,7 +193,7 @@
                             action = '<div class="icon-action">';
 
                             if (canview) {
-                                action += '<a href="@Url.Action("Manage", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
+                                action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
                             }
 
                             if (row.Status == 0) {          // new

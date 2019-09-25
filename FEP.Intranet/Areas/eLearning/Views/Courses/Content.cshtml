@@ -1,0 +1,210 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
+
+@{
+    ViewBag.Title = "Manage Course";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    var name = Model.Title;
+
+    if (name.Length > 25)
+    {
+        name = String.Concat(name.Take(25)) + "...";
+    }
+
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/eLearning/Courses" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="#">Courses</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Manage Course : @name</h1>
+                    <div class="header-text">Manage a course by editing and adding contents.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+
+    @Html.Partial("_contentSidebar")
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
+            <div class="form-container tab-content">
+                <div class="tab-pane active" id="course-details">
+                    <div class="mb-4 mt-2 mr-auto">
+                        <h5 class="font-weight-bold float-right">Status : @Model.Status</h5>
+                        <span class="text-muted-light x-small font-italic">Course Name</span>
+                        <h2 class="color-darkblue mb-0">
+                            @name
+
+                        </h2>
+                    </div>
+                    <div class="descbox">
+                        <span class="text-muted-light x-small font-italic">Course Description</span>
+                        <br />
+
+                        @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
+                    </div>
+                    <br />
+                    <div class="descbox">
+                        <span class="text-muted-light x-small font-italic">Course Objectives</span>
+                        @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
+
+                    </div>
+
+                    <br />
+                    <div>
+                        <div class="row">
+                            @*<a class="btn btn-secondary dropdown-toggle m-2" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Add Content
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="@Url.Action("Create", "CourseModules", new { area = "eLearning", id = @Model.Id, courseTitle= Model.Title })">Module</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>*@
+
+                            <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
+                            <a class="btn btn-secondary m-2" href="#">View as learner</a>
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="tab-pane" id="amendment-history">
+                        <div class="mb-4 mt-2 mr-auto">
+                            <h4 class="color-darkblue mb-0">Amendment History</h4>
+                            <h6 class="font-weight-normal">Check amendment list here.</h6>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                <ul class="list-group list-group-fit">
+                                    @if (ViewBag.History.Count != 0)
+                                    {
+                                        var icount = 0;
+                                        foreach (var item in ViewBag.History)
+                                        {
+                                            if (item.Status == ApprovalStatus.Rejected)
+                                            {
+                                                icount++;
+                                                <li class="list-group-item pt-4">
+                                                    <div class="media align-items-top">
+                                                        <div class="media-left">
+                                                            <div class="card__avatar">
+                                                                <img src="assets/images/people/50/guy-6.jpg" alt="Avatar" class="card__avatar__image">
+                                                            </div>
+                                                        </div>
+                                                        <div class="media-body">
+                                                            <div class="card__name-wrap ml-0">
+                                                                <div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
+                                                                <div class="card__author-name">@item.UserName</div>
+                                                                <div class="card__text pb-3">@item.Remarks</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            }
+                                        }
+
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>*@
+                <!-- Popups -->
+                <!-- popups end -->
+            </div>
+
+            <!--  Start Action Log -->
+            <div class="action-log">
+                <h6 class="color-darkblue px-3"><i class="la la-comment color-secondary font-icon align-top"></i>Action Log</h6>
+                <!-- Kalau banyak action log akan jd scroll ke bwh -->
+                <div data-perfect-scrollbar class="position-relative">
+                    @if (Model.CourseApprovalLogs.Count != 0)
+                    {
+                        foreach (var item in Model.CourseApprovalLogs)
+                        {
+
+                            <div class="border-form rounded mb-2">
+                                <div class="small text-muted">
+                                    @item.CreatedDate.ToString("dd/MM/yyyy")
+                                    <span class="float-right">@item.CreatedDate.ToString("hh:mm tt")</span>
+                                </div>
+
+                                @{
+                                    switch (item.ApprovalStatus)
+                                    {
+                                        case ApprovalStatus.Approved:
+                                            <div class="small">
+                                                <span class="card__author-name color-darkblue">@item.ApprovedByName</span>
+                                                <br><strong>:Designation: Approval Result</strong>
+                                                <br>— <span class="color-green">Approved</span>
+                                            </div>
+                                            break;
+                                        case ApprovalStatus.Rejected:
+                                            <div class="small">
+                                                <span class="card__author-name color-darkblue">@item.ApprovedByName</span>
+                                                <br><strong>:Designation: Approval Result</strong>
+                                                <br>— <span class="color-yellow">Amendment Required</span>
+                                            </div>
+                                            break;
+                                        case ApprovalStatus.Submitted:
+                                            <div class="small">
+                                                <span class="card__author-name color-darkblue">@item.CreatedByName</span>
+                                                <br><strong>:Submission For Approval</strong><br>— <span class="color-yellow"></span>
+                                            </div>
+                                            break;
+                                        default:
+                                            <div class="small text-muted">
+                                                <span class="card__author-name color-darkblue">@item.CreatedByName</span>
+                                                <br><strong>:Activity</strong><br>— <span class="color-yellow"></span>
+                                            </div>
+                                            break;
+
+                                    }
+                                    if (item.Remark != "")
+                                    {
+                                        <div class="small mt-2"><strong>Remark:</strong> <em>@item.Remark</em></div>
+                                    }
+                                }
+                            </div>
+                        }
+
+                    }
+                </div>
+            </div>
+            <!--  End Action Log -->
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .descbox  {
+        display: block;
+        width: 100%;
+        height: 100px;
+        overflow: hidden;
+    }
+</style>
+
+
+<script>
+
+</script>

@@ -17,7 +17,6 @@ namespace FEP.Model.eLearning
         public string Description { get; set; }
 
         // order number of this module
-        [Required]
         public int Order { get; set; }
 
         public string Objectives { get; set; }
@@ -25,7 +24,7 @@ namespace FEP.Model.eLearning
         public int CourseId { get; set; }
         public virtual Course Course { get; set; }
 
-        public virtual ICollection<ModuleContent> ModuleContents { get; set; }
+        public virtual ICollection<CourseContent> ModuleContents { get; set; }
 
         public int TotalVideo { get; set; }
 

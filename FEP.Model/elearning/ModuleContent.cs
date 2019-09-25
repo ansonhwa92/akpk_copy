@@ -3,13 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FEP.Model.eLearning
 {
-    public class ModuleContent : BaseEntity
+    public class CourseContent : BaseEntity
     {
 
         public string Description { get; set; }
 
-        public int CourseModuleId { get; set; }
+        public int? CourseModuleId { get; set; }
         public virtual CourseModule CourseModule { get; set; }
+
+        public int? CourseId { get; set; }
+        public virtual Course Course{ get; set; }
 
         /// <summary>
         /// Whether the content is viewable or not
@@ -29,53 +32,53 @@ namespace FEP.Model.eLearning
         public int? Timer { get; set; } //completiontype timer in sec
     }
 
-    public class Video : ModuleContent
+    public class Video : CourseContent
     {
         public string VideoUrl { get; set; }
         public int? VideoFileId { get; set; }
         public virtual ContentFile VideoFile { get; set; }
     }
 
-    public class Audio : ModuleContent
+    public class Audio : CourseContent
     {
         public string AudioUrl { get; set; }
         public int? AudioFileId { get; set; }
         public virtual ContentFile AudioFile { get; set; }
     }
 
-    public class IFrame : ModuleContent
+    public class IFrame : CourseContent
     {
         public string IFrameUrl { get; set; }
         public ShowAs ShowAs { get; set; }
     }
 
-    public class Document : ModuleContent
+    public class Document : CourseContent
     {
         public string DocumentUrl { get; set; }
         public int? DocumentFileId { get; set; }
         public virtual ContentFile DocumentFile { get; set; }
     }
 
-    public class Section : ModuleContent
+    public class Section : CourseContent
     {
         public string Name { get; set; }
     }
 
-    public class RichText : ModuleContent
+    public class RichText : CourseContent
     {
         public string HtmlText { get; set; }
         public virtual ICollection<ContentFile> Images { get; set; }
     }
 
-    public class ModuleTest : ModuleContent
+    public class ModuleTest : CourseContent
     {
     }
 
-    public class Assignment : ModuleContent
+    public class Assignment : CourseContent
     {
     }
 
-    public class InstructorLed : ModuleContent
+    public class InstructorLed : CourseContent
     {
     }
 

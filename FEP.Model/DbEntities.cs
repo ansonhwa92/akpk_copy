@@ -147,7 +147,7 @@ namespace FEP.Model
         public DbSet<Course> Courses { get; set; }
 
         public DbSet<ContentFile> ContentFiles { get; set; }
-        public DbSet<CourseApproval> CourseApprovals { get; set; }
+        public DbSet<CourseApprovalLog> CourseApprovals { get; set; }
 
         public DbSet<CourseCertificate> CourseCertificates { get; set; }
 
@@ -159,7 +159,7 @@ namespace FEP.Model
         public DbSet<GamificationCriteria> GamificationCriteria { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupMember> GroupMembers { get; set; }
-        public DbSet<ModuleContent> ModuleContents { get; set; }
+        public DbSet<CourseContent> ModuleContents { get; set; }
         public DbSet<Learner> Learners { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<TrainerCourse> TrainerCourses { get; set; }

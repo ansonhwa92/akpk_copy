@@ -46,6 +46,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Course.resx</DependentUpon>
     </Compile>
+    <Compile Include="eLearning\Enum.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Enum.resx</DependentUpon>
+    </Compile>
+    <Compile Include="eLearning\Module.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Module.resx</DependentUpon>
+    </Compile>
     <Compile Include="EventCategory.Designer.cs">
       <DependentUpon>EventCategory.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -122,6 +132,14 @@
     <EmbeddedResource Include="eLearning\Course.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Course.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="eLearning\Enum.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Enum.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="eLearning\Module.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Module.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="EventCategory.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

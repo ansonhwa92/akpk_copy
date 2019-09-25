@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
+﻿using AutoMapper;
+using FEP.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
-using FEP.Helper;
-using System.Threading.Tasks;
 using FEP.WebApiModel.eLearning;
-using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eLearning.Controllers
 {
-    public static class ApiUrl
+    public static class CourseApiUrl
     {
         public const string GetCategory = "eLearning/CourseCategory/";
         public const string CreateCourse = "eLearning/Courses/Create";
         public const string GetCourse = "eLearning/Courses";
+        public const string EditRulesCourse = "eLearning/Courses/EditRules";
     }
 
     public class CoursesController : FEPController
     {
-
         private DbEntities db = new DbEntities();
         private readonly IMapper _mapper;
 
@@ -35,6 +32,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 cfg.CreateMap<CreateOrEditCourseModel, Course>();
 
                 cfg.CreateMap<Course, CreateOrEditCourseModel>();
+
+                cfg.CreateMap<CreateOrEditCourseModel, CourseRuleModel>();
             });
 
             _mapper = config.CreateMapper();
@@ -62,10 +61,10 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(course);
         }
 
+        [HasAccess(UserAccess.CourseCreate)]
         // GET: eLearning/Courses/Create
         public async Task<ActionResult> Create()
         {
-
             CreateOrEditCourseModel model = new CreateOrEditCourseModel();
 
             await GetCategories();
@@ -76,7 +75,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         private async Task GetCategories()
         {
             // this should be queried from webapi
-            var response = await WepApiMethod.SendApiAsync<IEnumerable<CourseCategoryModel>>(HttpVerbs.Get, ApiUrl.GetCategory);
+            var response = await WepApiMethod.SendApiAsync<IEnumerable<CourseCategoryModel>>(HttpVerbs.Get, CourseApiUrl.GetCategory);
 
             if (response.isSuccess)
                 ViewBag.Categories = new SelectList(response.Data, "Id", "Name");
@@ -89,11 +88,10 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 TempData["Error"] = "Cannot find any categories to display.";
             }
-
         }
 
         // POST: eLearning/Courses/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -101,10 +99,10 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 model.CreatedBy = CurrentUser.UserId.Value;
+                model.CreatedByName = CurrentUser.Name;
 
-                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, ApiUrl.CreateCourse, model);
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, CourseApiUrl.CreateCourse, model);
 
                 if (response.isSuccess)
                 {
@@ -114,12 +112,11 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                     //return RedirectToAction("Manage", new { area = "eLearning", id = model.Id });
 
-
                     var id = response.Data;
 
                     if (!String.IsNullOrEmpty(id))
 
-                        return RedirectToAction("Manage", "Courses", new { id = id });
+                        return RedirectToAction("Content", "Courses", new { id = id });
                     else
                         return RedirectToAction("Index", "Courses");
                 }
@@ -132,7 +129,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 //db.Courses.Add(course);
                 //await db.SaveChangesAsync();
                 //return RedirectToAction("Manage", "Courses", new { id = model.Id });
-
             }
 
             TempData["ErrorMessage"] = "Cannot add course. Please ensure all required fields are filled in.";
@@ -142,9 +138,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-
-
-        public async Task<ActionResult> Manage(int? id)
+        public async Task<ActionResult> Content(int? id)
         {
             if (id == null)
             {
@@ -154,21 +148,88 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             // get Model
             var model = await TryGetCourse(id.Value);
 
-            if(model == null)
+            if (model == null)
+            {
+                TempData["ErrorMessage"] = "No such course.";
+
+                return RedirectToAction("Index", "Courses");
+            }                      
+
+            return View(model);
+        }
+
+
+
+        [HasAccess(UserAccess.CourseCreate)]
+        public async Task<ActionResult> EditRules(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            // get Model
+            var course = await TryGetCourse(id.Value);
+
+            if (course == null)
             {
                 TempData["ErrorMessage"] = "No such course.";
 
                 return RedirectToAction("Index", "Courses");
             }
+            var model = _mapper.Map<CourseRuleModel>(course);
+
+            //var vm = new CourseRuleModel
+            //{
+            //    Id = model.Id,
+            //    Title = model.Title,
+            //    CompletionCriteriaType = model.CompletionCriteriaType,
+            //    ModulesCompleted = model.ModulesCompleted,
+            //    LearningPath = model.LearningPath,
+            //    PercentageCompletion = model.PercentageCompletion,
+            //    ScoreCalculation = model.ScoreCalculation,
+            //    TestsPassed = model.TestsPassed,
+            //    TraversalRule = model.TraversalRule
+            //};
 
             return View(model);
-
         }
 
+        [HasAccess(UserAccess.CourseCreate)]
+        [HttpPost]
+        public async Task<ActionResult> EditRules(CourseRuleModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                model.CreatedBy = CurrentUser.UserId.Value;
+
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, CourseApiUrl.EditRulesCourse, model);
+
+                if (response.isSuccess)
+                {
+                    TempData["SuccessMessage"] = "Course Rules successfully updated.";
+
+                    await LogActivity(Modules.Learning, "Update Course Rule : " + model.Title);                   
+
+                    var id = response.Data;
+
+                    if (!String.IsNullOrEmpty(id))
+
+                        return RedirectToAction("Content", "Courses", new { id = id });
+                    else
+                        return RedirectToAction("Index", "Courses");
+                }
+            }
+
+            TempData["ErrorMessage"] = "Cannot update course's rule.";
+
+            return View(model);            
+        }
 
         public async Task<CreateOrEditCourseModel> TryGetCourse(int id)
         {
-            var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Get, ApiUrl.GetCourse + $"?id={id}");
+            var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Get, CourseApiUrl.GetCourse + $"?id={id}");
 
             if (response.isSuccess)
             {
@@ -179,28 +240,32 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
 
+
         // GET: eLearning/Courses/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Course course = db.Courses.Find(id);
             if (course == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name", course.CategoryId);
-            ViewBag.FirstApprovalId = new SelectList(db.CourseApprovals, "Id", "Remark", course.FirstApprovalId);
-            ViewBag.SecondApprovalId = new SelectList(db.CourseApprovals, "Id", "Remark", course.SecondApprovalId);
-            ViewBag.ThirdApprovalId = new SelectList(db.CourseApprovals, "Id", "Remark", course.ThirdApprovalId);
-            ViewBag.VerifierApprovalId = new SelectList(db.CourseApprovals, "Id", "Remark", course.VerifierApprovalId);
-            return View(course);
+
+
+            CreateOrEditCourseModel model = _mapper.Map<CreateOrEditCourseModel>(course);
+
+
+            await GetCategories();
+
+            return View(model);            
         }
 
         // POST: eLearning/Courses/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -212,11 +277,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name", course.CategoryId);
-            ViewBag.FirstApprovalId = new SelectList(db.CourseApprovals, "Id", "Remark", course.FirstApprovalId);
-            ViewBag.SecondApprovalId = new SelectList(db.CourseApprovals, "Id", "Remark", course.SecondApprovalId);
-            ViewBag.ThirdApprovalId = new SelectList(db.CourseApprovals, "Id", "Remark", course.ThirdApprovalId);
-            ViewBag.VerifierApprovalId = new SelectList(db.CourseApprovals, "Id", "Remark", course.VerifierApprovalId);
+ 
             return View(course);
         }
 

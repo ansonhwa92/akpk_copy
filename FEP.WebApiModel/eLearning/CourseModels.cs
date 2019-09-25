@@ -1,9 +1,8 @@
-﻿using FEP.Model.eLearning;
+﻿using FEP.Helper;
+using FEP.Model.eLearning;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using FEP.Helper;
-using Language;
+using System.Web.Mvc;
 
 namespace FEP.WebApiModel.eLearning
 {
@@ -12,10 +11,8 @@ namespace FEP.WebApiModel.eLearning
     /// </summary>
     public class ReturnBriefCourseModel : BaseModel
     {
-
         [Display(Name = "Title", ResourceType = typeof(Language.eLearning.Course))]
         public string Title { get; set; }
-
 
         [Display(Name = "Code", ResourceType = typeof(Language.eLearning.Course))]
         public string Code { get; set; }
@@ -28,20 +25,17 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "Status", ResourceType = typeof(Language.eLearning.Course))]
         public CourseStatus Status { get; set; }
-       
     }
-    
+
     public class ReturnListCourseModel
     {
         public FilterCourseModel Filters { get; set; }
         public ReturnBriefCourseModel Courses { get; set; }
     }
 
- 
     // class for setting and returning filters for the datatable list of publications
     public class FilterCourseModel : DataTableModel
     {
-
         [Display(Name = "Category", ResourceType = typeof(Language.eLearning.Course))]
         public int CategoryId { get; set; }
 
@@ -50,7 +44,6 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "Code", ResourceType = typeof(Language.eLearning.Course))]
         public string Code { get; set; }
-
     }
 
     public class CreateOrEditCourseModel : BaseModel
@@ -60,6 +53,7 @@ namespace FEP.WebApiModel.eLearning
         public string Title { get; set; }
 
         [Required]
+        [AllowHtml]
         [Display(Name = "Description", ResourceType = typeof(Language.eLearning.Course))]
         public string Description { get; set; }
 
@@ -70,13 +64,12 @@ namespace FEP.WebApiModel.eLearning
         [Display(Name = "Code", ResourceType = typeof(Language.eLearning.Course))]
         public string Code { get; set; }
 
-
+        [AllowHtml]
         [Display(Name = "Objectives", ResourceType = typeof(Language.eLearning.Course))]
         public string Objectives { get; set; }
 
         [Display(Name = "Medium", ResourceType = typeof(Language.eLearning.Course))]
         public CourseMedium Medium { get; set; }
-
 
         [Display(Name = "ScheduleType", ResourceType = typeof(Language.eLearning.Course))]
         public CourseScheduleType ScheduleType { get; set; }
@@ -92,10 +85,88 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "IsFree", ResourceType = typeof(Language.eLearning.Course))]
         public bool IsFree { get; set; }
+
         [Display(Name = "Price", ResourceType = typeof(Language.eLearning.Course))]
         public decimal Price { get; set; }
+
         [Display(Name = "ViewCategory", ResourceType = typeof(Language.eLearning.Course))]
         public ViewCategory ViewCategory { get; set; }
+
+        // --- CourseRule --
+
+        [Display(Name = "TraversalRule", ResourceType = typeof(Language.eLearning.Course))]
+        public TraversalRule TraversalRule { get; set; }
+
+        [Display(Name = "ScoreCalculation", ResourceType = typeof(Language.eLearning.Course))]
+        public ScoreCalculation ScoreCalculation { get; set; }
+
+
+        [Display(Name = "CompletionRule", ResourceType = typeof(Language.eLearning.Course))]
+        public CompletionCriteriaType CompletionCriteriaType { get; set; } = CompletionCriteriaType.General;
+
+        /// <summary>
+        /// Contain list of modules to be completed that considered as course is complete
+        /// </summary>
+        public string ModulesCompleted { get; set; }
+
+        /// <summary>
+        /// Percentage of course that have been completd
+        /// </summary>
+        [Display(Name = "PercentageCompletion", ResourceType = typeof(Language.eLearning.Course))]
+        public decimal? PercentageCompletion { get; set; }
+
+        /// <summary>
+        /// Contain list of Tests to passed that considered as course is complete
+        /// </summary>
+        public string TestsPassed { get; set; }
+
+        [Display(Name = "LearningPath", ResourceType = typeof(Language.eLearning.Course))]
+        public string LearningPath { get; set; }
+
+        [Display(Name = "CreatedByName", ResourceType = typeof(Language.eLearning.Course))]
+        public string CreatedByName { get; set; }
+        [Display(Name = "Status", ResourceType = typeof(Language.eLearning.Course))]
+        public CourseStatus Status { get; set; }
+
+        public ICollection<CourseApprovalLog> CourseApprovalLogs { get; set; }
+
     }
 
+    public class CourseRuleModel : BaseModel
+    {
+        [Required]
+        [Display(Name = "Title", ResourceType = typeof(Language.eLearning.Course))]
+        public string Title { get; set; }
+
+        [Display(Name = "TraversalRule", ResourceType = typeof(Language.eLearning.Course))]
+        public TraversalRule TraversalRule { get; set; }
+
+        [Display(Name = "ScoreCalculation", ResourceType = typeof(Language.eLearning.Course))]
+        public ScoreCalculation ScoreCalculation { get; set; }
+
+
+        [Display(Name = "CompletionRule", ResourceType = typeof(Language.eLearning.Course))]
+        public CompletionCriteriaType CompletionCriteriaType { get; set; } = CompletionCriteriaType.General;
+
+        /// <summary>
+        /// Contain list of modules to be completed that considered as course is complete
+        /// </summary>
+        public string ModulesCompleted { get; set; }
+
+        /// <summary>
+        /// Percentage of course that have been completd
+        /// </summary>
+        [Display(Name = "PercentageCompletion", ResourceType = typeof(Language.eLearning.Course))]
+        public decimal? PercentageCompletion { get; set; }
+
+        /// <summary>
+        /// Contain list of Tests to passed that considered as course is complete
+        /// </summary>
+        public string TestsPassed { get; set; }
+
+        [Display(Name = "LearningPath", ResourceType = typeof(Language.eLearning.Course))]
+        public string LearningPath { get; set; }
+
+
+    }
 }

@@ -145,7 +145,7 @@
                                 }
                                 else if (Model.Auto.Status == PublicationStatus.Trashed)
                                 {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Deleted">
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Cancelled">
                                 }
                                 else if (Model.Auto.Status == PublicationStatus.NewWithdrawal)
                                 {
@@ -450,16 +450,17 @@
                             <div class="modal-content">
                                 <div class="m-4 text-center">
                                     <h4 class="color-darkblue mb-0" id="title_withdrawal">Withdraw Publication</h4>
+                                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <input type="hidden" class="form-control" name="ID" id="WithdrawID" value="@Model.Pub.ID" />
-                                        @Html.LabelFor(model => model.Withdrawal.WithdrawalReason, htmlAttributes: new { @class = "control-label" })
+                                        @Html.LabelFor(model => model.Withdrawal.WithdrawalReason, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                                         <textarea class="form-control" name="WithdrawalReason" id="WithdrawalReason" rows="4" placeholder=""></textarea>
                                         <span class="text-danger field-validation-error" id="span_reasonerror" style="display:none;">Please enter Reason for Withdrawal</span>
                                     </div>
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.Withdrawal.ProofOfWithdrawal, htmlAttributes: new { @class = "control-label" })
+                                        @Html.LabelFor(model => model.Withdrawal.ProofOfWithdrawal, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                                         <input type="text" class="form-control" name="ProofOfWithdrawal" id="ProofOfWithdrawal" placeholder="" />
                                         <span class="text-danger field-validation-error" id="span_prooferror" style="display:none;">Please upload Proof of Withdrawal</span>
                                     </div>
@@ -488,11 +489,12 @@
                                 <div class="modal-content">
                                     <div class="m-4 text-center">
                                         <h4 class="color-darkblue mb-0">Cancel Publication Request</h4>
+                                        <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <input type="hidden" class="form-control" name="ID" id="CancelID" value="@Model.Pub.ID" />
-                                            @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" })
+                                            @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                                             <textarea class="form-control" name="CancelRemark" id="CancelRemark" rows="4" placeholder=""></textarea>
                                             <span class="text-danger field-validation-error" id="span_remarkerror" style="display:none;">Please enter Remarks</span>
                                         </div>
@@ -521,11 +523,12 @@
                                 <div class="modal-content">
                                     <div class="m-4 text-center">
                                         <h4 class="color-darkblue mb-0">Cancel Publication Withdrawal</h4>
+                                        <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <input type="hidden" class="form-control" name="ID" id="CancelID" value="@Model.Pub.ID" />
-                                            @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" })
+                                            @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                                             <textarea class="form-control" name="CancelRemark" id="CancelRemark" rows="4" placeholder=""></textarea>
                                             <span class="text-danger field-validation-error" id="span_withdrawalremarkerror" style="display:none;">Please enter Remarks</span>
                                         </div>

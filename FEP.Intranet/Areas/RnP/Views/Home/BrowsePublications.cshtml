@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<FEP.WebApiModel.RnP.ReturnPublicationModel>
 
 @{
-    ViewBag.Title = "Publication";
+    ViewBag.Title = "Browse Publications";
     Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
 }
 
@@ -275,12 +275,12 @@
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="card__wrapper">
                                             <div class="card__top">
-                                                <div class="card__top__wapper"><img class="card__top__image" src="@coverpic1" alt="image"></div>
+                                                <div class="card__top__wapper"><img class="card__top__image" src="@coverpic1" style="width:516px;height:352px;" alt="image"></div>
                                             </div>
                                             <div class="card__body">
-                                                <a class="card__title" href="@Url.Action("PublicationDetails", "Home", new { area = "RnP" })">@item.Title</a>
+                                                <a class="card__title" href="@Url.Action("PublicationDetails", "Home", new { area = "RnP", @id = item.ID })">@item.Title</a>
                                                 <div class="card__author">
-                                                    <a class="card__col-left" href="@Url.Action("AuthorProfile", "Home", new { area = "RnP" })"><span class="card__avatar"><img class="card__avatar__image" src="@authorpic"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">@item.Author</span></span></a>
+                                                    <a class="card__col-left" href="@Url.Action("AuthorProfile", "Home", new { area = "RnP", @name = item.Author })"><span class="card__avatar"><img class="card__avatar__image" src="@authorpic"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">@item.Author</span></span></a>
                                                 </div>
                                                 <div class="card__info">
                                                     <div class="card__col-left">

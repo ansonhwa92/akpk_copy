@@ -1,0 +1,125 @@
+﻿@model FEP.WebApiModel.RnP.ReturnPublicationModel
+
+@{
+    ViewBag.Title = "Select Publication Format";
+    Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
+}
+
+@section Nav{
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publications</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/BrowsePublications">Browse Publications</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+            </ol>
+        </nav>
+    </div>
+    <h1 class="page-title text-white">@Model.Title</h1>
+    <div class="header-text">
+        <div class="d-flex star-rating">
+            <div class="rating">
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star_border</i>
+            </div>
+            <div class="mx-2">4.2 (104 ratings) <span class="reviews-text">99 reviews</span></div>
+        </div>
+    </div>
+}
+
+<div class="content-container">
+    <div class="container">
+        <div class="row">
+            <!-- column content left -->
+            <div class="col-lg-9">
+                <div class="col-content">
+                    <h4 class="color-darkblue">Select Publication Format</h4>
+                    <div class="row select-publication mb-4">
+                        <div class="col-lg-4">
+                            <div class="box-contain">
+                                <div class="card text-center">
+                                    <div class="mb-4"><img src="~/img/publications/icon-digital.svg" alt="image"></div>
+                                    <div class="color-secondary font-weight-bolder mb-1">Digital</div>
+                                    <h3 class="color-darkblue mb-0">RM10.90</h3>
+                                    <div class="badge text-muted"><s>RM11.99</s><span> 10% off</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="box-contain">
+                                <div class="card text-center">
+                                    <div class="mb-4"><img src="~/img/publications/icon-hard-cover.svg" alt="image"></div>
+                                    <div class="color-secondary font-weight-bolder mb-1">Hard Cover</div>
+                                    <h3 class="color-darkblue mb-5">RM29.90</h3>
+                                    <div class="touchspin-wrapper position-bottom"><input id="touch-spin-2" data-toggle="touch-spin" data-min="0" data-max="10" data-step="1" type="text" value="0" class="form-control" /></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="box-contain">
+                                <div class="card text-center">
+                                    <div class="mb-4"><img src="~/img/publications/icon-1-plus-1-promo.svg" alt="image"></div>
+                                    <div class="color-secondary font-weight-bolder mb-1">Promotion</div>
+                                    <h3 class="color-darkblue mb-5">RM22.99</h3>
+                                    <div class="xs-small position-bottom">Get 1 digital and 1 hard cover for a special price. </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <!-- Action Button -->
+                            <div class="border-top py-3 mt-5">
+                                <a class="btn btn-default font-weight-normal mr-2" href="@Url.Action("PublicationDetails", "Home", new { area = "RnP", @id = Model.ID })">Back</a>
+                                <a class="btn btn-secondary" href="@Url.Action("PurchasePublication", "Home", new { area = "RnP", @id = Model.ID })">Next</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end column content left -->
+            <!-- column content right -->
+            <div class="col-lg-3">
+                <div class="right-sidebar">
+                    <div class="mb-4"><img src="~/img/cover-publication-dummy.jpg"></div>
+                    <div class="card-group">
+                        <div class="lead color-darkblue mb-3 font-weight-bolder">Publication Details</div>
+                        <ul>
+                            <li><i class="la la-list-ul font-icon color-secondary" style="font-size: 17px;"></i>@Model.Category</li>
+                            <li><i class="la la-user font-icon color-secondary" style="font-size: 17px;"></i>@Model.Author</li>
+                            <li><i class="la la-calendar font-icon color-secondary" style="font-size: 19px;"></i>@Model.Year</li>
+                            <li><i class="la la-language font-icon color-secondary" style="font-size: 17px;"></i>@Model.Language</li>
+                            <li><i class="la la-barcode font-icon color-secondary" style="font-size: 17px;"></i>@Model.ISBN</li>
+                            <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Digital/Hardcover</li>
+                        </ul>
+                    </div>
+                    <!-- Share with friends -->
+                    <div class="card-group">
+                        <div class="lead color-darkblue mb-3 font-weight-bolder">Share with Friends</div>
+                        <div class="ms-share"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- end column content right -->
+        </div>
+    </div>
+    <!-- Wrapper -->
+</div>
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var selectPublication = $(".box-contain .card");
+            selectPublication.click(function () {
+                $(this).toggleClass('active');
+            });
+
+        });
+    </script>
+}

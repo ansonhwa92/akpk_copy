@@ -132,7 +132,7 @@
                                 }
                                 else if (Model.Pub.Status == PublicationStatus.Trashed)
                                 {
-                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Deleted">
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Cancelled">
                                 }
                                 else if (Model.Pub.Status == PublicationStatus.NewWithdrawal)
                                 {
@@ -459,14 +459,13 @@
                                             @Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
                                         }
                                     }
-                                    <div class="form-group">
-                                        <label>Remarks</label>
-                                        @Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" })
-                                        <textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
-                                        @*Html.TextAreaFor(model => model.Approval.Remarks, new { htmlAttributes = new { @class = "form-control" }, cols = 48, @rows = 5 })*@
-                                        @*Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })*@
-                                        <span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
-                                    </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                                                <textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
+                                                @*Html.TextAreaFor(model => model.Approval.Remarks, new { htmlAttributes = new { @class = "form-control" }, cols = 48, @rows = 5 })*@
+                                                @*Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })*@
+                                                <span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
+                                            </div>
                                 </div>
                                 <div class="divider-border"></div>
                                 <div class="m-4 text-center">
@@ -514,7 +513,7 @@
                             <div class="modal-content">
                                 <div class="modal-body">
                                     <h4 class="color-darkblue mt-4">Require Amendment</h4>
-                                    <label>Remarks</label>
+                                    <label>Remarks</label> <span class="text-danger">*</span>
                                     <textarea class="form-control" name="Reject.Remarks" id="Reject_Remarks" rows="4" placeholder=""></textarea>
                                     <span class="text-danger field-validation-error" id="span_rejectremarkserror" style="display:none;">Please enter Remarks</span>
                                 </div>

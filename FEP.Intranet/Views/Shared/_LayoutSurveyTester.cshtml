@@ -84,8 +84,8 @@
                                     </a>
                                 </li>
                                 <!-- <li class="nav-item">
-                                    <a class="nav-link" href="#"><i class="la la-heart-o"></i></a>
-                                </li> -->
+                            <a class="nav-link" href="#"><i class="la la-heart-o"></i></a>
+                        </li> -->
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">
                                         <span class="icon-top"><i class="la la-inbox"></i></span>
@@ -207,33 +207,33 @@
                                             <i class="la la-book color-secondary font-icon"></i> My Courses
                                         </a>
                                         @*<a class="dropdown-item" href="#">
-                                                <i class="la la-certificate color-secondary font-icon"></i> My Certifications
-                                            </a>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="la la-spinner color-secondary font-icon"></i> My Progress
-                                            </a>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="la la-group color-secondary font-icon"></i> My Groups
-                                            </a>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="la la-sitemap color-secondary font-icon"></i> My Branches
-                                            </a>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="la la-suitcase color-secondary font-icon"></i> My Files
-                                            </a>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="la la-calendar color-secondary font-icon"></i> My Events
-                                            </a>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="la la-pie-chart color-secondary font-icon"></i> My Researches
-                                            </a>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="la la-file-o color-secondary font-icon"></i> My Publications
-                                            </a>*@
+                                        <i class="la la-certificate color-secondary font-icon"></i> My Certifications
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="la la-spinner color-secondary font-icon"></i> My Progress
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="la la-group color-secondary font-icon"></i> My Groups
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="la la-sitemap color-secondary font-icon"></i> My Branches
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="la la-suitcase color-secondary font-icon"></i> My Files
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="la la-calendar color-secondary font-icon"></i> My Events
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="la la-pie-chart color-secondary font-icon"></i> My Researches
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="la la-file-o color-secondary font-icon"></i> My Publications
+                                    </a>*@
                                         <div class="dropdown-divider"></div>
                                         @*<a class="dropdown-item" href="#">
-                                                <i class="la la-life-saver color-secondary font-icon"></i> Help Center
-                                            </a>*@
+                                        <i class="la la-life-saver color-secondary font-icon"></i> Help Center
+                                    </a>*@
                                         <a class="dropdown-item" href="@Url.Action("MyProfile", "Home", new { area = "" })">
                                             <i class="la la-edit color-secondary font-icon"></i> My Profile
                                         </a>
@@ -258,22 +258,27 @@
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User & Role Management</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })">Individual</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "Company", new { area = "Administrator" })">Agency</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })"><i class="la la-user color-secondary font-icon"></i>Manage Individual</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Company", new { area = "Administrator" })"><i class="la la-group color-secondary font-icon"></i>Manage Agency</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "Role", new { area = "Administrator" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Role</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Event Management</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })">Internal Event</a>
+                                        <a class="dropdown-item" href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })"><i class="la la-calendar color-secondary font-icon"></i>Create Event</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Public Event</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Media Interview</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Exhibition/Roadshow Request</a>
+                                        <a class="dropdown-item" href="@Url.Action("Event_Setting", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Event Setting</a>
+
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">R&P Management</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="~/RnP/Publication"><i class="la la-search color-secondary font-icon"></i>Publication Management</a>
-                                        <a class="dropdown-item" href="~/RnP/Survey"><i class="la la-search color-secondary font-icon"></i>Survey Management</a>
-
+                                        <a class="dropdown-item" href="~/RnP/Publication"><i class="la la-book color-secondary font-icon"></i>Manage Publication</a>
+                                        <a class="dropdown-item" href="~/RnP/Survey"><i class="la la-search color-secondary font-icon"></i>Manage Survey</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
@@ -290,18 +295,21 @@
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Reports</a>
                                     <div class="dropdown-menu">
                                         @*<a class="dropdown-item" href="#">Menu 1</a>
-                                            <a class="dropdown-item" href="#">Menu 2</a>
-                                            <a class="dropdown-item" href="#">Menu 3</a>
-                                            <a class="dropdown-item" href="#">Menu 4</a>*@
+                                    <a class="dropdown-item" href="#">Menu 2</a>
+                                    <a class="dropdown-item" href="#">Menu 3</a>
+                                    <a class="dropdown-item" href="#">Menu 4</a>*@
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">System Settings</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="@Url.Action("List", "EventCategory", new { area = "eEvent" })">Event Category</a>
-                                        @*<a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })">User</a>*@
-                                        <a class="dropdown-item" href="#">Menu 3</a>
-                                        <a class="dropdown-item" href="#">Menu 4</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "EmailTemplates", new { area = "Template" })"><i class="la la-comment color-secondary font-icon"></i>Template Management</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "SLAReminders", new { area = "SLAReminder" })"><i class="la la-comment color-secondary font-icon"></i>SLA Reminder Settings</a>
+
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Account", new { area = "Setting" })">Account Setting</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "UserLog", new { area = "Logs" })">User Log</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "ErrorLog", new { area = "Logs" })">Error Log</a>
                                     </div>
                                 </li>
 

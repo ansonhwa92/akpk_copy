@@ -41,7 +41,7 @@ namespace FEP.Model
 
 		public int? ExternalExhibitorId { get; set; }
 		[ForeignKey("ExternalExhibitorId")]
-		public virtual EventSpeaker ExternalExhibitor { get; set; }
+		public virtual EventExternalExhibitor ExternalExhibitor { get; set; }
 
 
 		[ForeignKey("ApprovalId1")]

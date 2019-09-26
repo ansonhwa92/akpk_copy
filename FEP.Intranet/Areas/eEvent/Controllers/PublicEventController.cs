@@ -10,7 +10,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using EventSpeakerModel = FEP.WebApiModel.eEvent.EventSpeakerModel;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
 {
@@ -102,7 +101,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					SpeakerId = i.SpeakerId,
 					SpeakerName = i.EventSpeaker.User.Name,
 					ExternalExhibitorId = i.ExternalExhibitorId,
-					ExternalExhibitorName = i.ExternalExhibitor.User.Name,
+					ExternalExhibitorName = i.ExternalExhibitor.Name,
 					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 					origin = origin,
 					RefNo = i.RefNo,
@@ -286,7 +285,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					SpeakerName = i.EventSpeaker.User.Name,
 					RefNo = i.RefNo,
 					ExternalExhibitorId = i.ExternalExhibitorId,
-					ExternalExhibitorName = i.ExternalExhibitor.User.Name,
+					ExternalExhibitorName = i.ExternalExhibitor.Name,
 					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 					//GetFileName = eventfile.FileName
 
@@ -466,7 +465,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					SpeakerName = i.EventSpeaker.User.Name,
 
 					ExternalExhibitorId = i.ExternalExhibitorId,
-					ExternalExhibitorName = i.ExternalExhibitor.User.Name,
+					ExternalExhibitorName = i.ExternalExhibitor.Name,
 					GetFileName = i.EventFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 					//GetFileName = eventfile.FileName
 				}).FirstOrDefault();

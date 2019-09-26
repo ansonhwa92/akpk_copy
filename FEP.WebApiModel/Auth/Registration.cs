@@ -36,6 +36,36 @@ namespace FEP.WebApiModel.Auth
         [EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Auth))]
         public string Email { get; set; }
 
+        [Required(ErrorMessageResourceName = "ValidRequiredAddress", ErrorMessageResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Auth))]
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Auth))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericPostCode", ErrorMessageResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Auth))]
+        public string PostCodeMalaysian { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Auth))]
+        public string PostCodeNonMalaysian { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredCity", ErrorMessageResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldCity", ResourceType = typeof(Language.Auth))]
+        public string City { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Auth))]
+        public string State { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Auth))]
+        public int? StateId { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredCountryId", ErrorMessageResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Auth))]
+        public int CountryId { get; set; }
+
         [Required(ErrorMessageResourceName = "ValidRequiredPassword", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldPassword", ResourceType = typeof(Language.Auth))]
         [DataType(DataType.Password)]
@@ -51,10 +81,14 @@ namespace FEP.WebApiModel.Auth
         [Display(Name = "FieldIsTermAgreed", ResourceType = typeof(Language.Auth))]
         public bool IsTermAgreed { get; set; }
 
+        [Required(ErrorMessageResourceName = "ValidRequiredCitizenshipId", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldCitizenship", ResourceType = typeof(Language.Auth))]
         public int? CitizenshipId { get; set; }
 
         public IEnumerable<System.Web.Mvc.SelectListItem> Citizenships { get; set; }
+
+        public IEnumerable<System.Web.Mvc.SelectListItem> States { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> Countries { get; set; }
 
     }
 

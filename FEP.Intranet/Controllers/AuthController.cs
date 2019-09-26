@@ -43,12 +43,29 @@ namespace FEP.Intranet.Controllers
             model.IsMalaysian = true;
 
             model.Citizenships = Enumerable.Empty<SelectListItem>();
+            model.Countries = Enumerable.Empty<SelectListItem>();
+            model.States = Enumerable.Empty<SelectListItem>();
 
-            var citizenResponse = await WepApiMethod.SendApiAsync<List<CountryModel>>(HttpVerbs.Get, $"Administration/Country");
+            var countryResponse = await WepApiMethod.SendApiAsync<List<CountryModel>>(HttpVerbs.Get, $"Administration/Country");
 
-            if (citizenResponse.isSuccess)
+            if (countryResponse.isSuccess)
             {
-                model.Citizenships = new SelectList(citizenResponse.Data.OrderBy(o => o.Name), "Id", "Name", 0);
+                var countries = countryResponse.Data;
+               
+                model.Countries = new SelectList(countries.OrderBy(o => o.Name), "Id", "Name", 0);
+                
+                model.Citizenships = new SelectList(countries.Where(c => c.Name != "Malaysia").OrderBy(o => o.Name), "Id", "Name", 0);
+                
+            }
+
+            var stateResponse = await WepApiMethod.SendApiAsync<List<StateModel>>(HttpVerbs.Get, $"Administration/State");
+
+            if (stateResponse.isSuccess)
+            {
+                var states = stateResponse.Data;
+
+                model.States = new SelectList(states.OrderBy(o => o.Name), "Id", "Name", 0);
+
             }
 
             return View(model);
@@ -78,9 +95,7 @@ namespace FEP.Intranet.Controllers
             }
 
             model.States = Enumerable.Empty<SelectListItem>();
-
-           
-
+            
             return View(model);
         }
 

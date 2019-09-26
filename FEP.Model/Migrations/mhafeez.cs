@@ -183,22 +183,22 @@ namespace FEP.Model.Migrations
             if (!db.State.Any())
             {
                 db.State.AddOrUpdate(s => s.Name,
-                    new State { Name = "Johor" },
-                    new State { Name = "Kedah" },
-                    new State { Name = "Kelantan" },
-                    new State { Name = "Melaka" },
-                    new State { Name = "Negeri Sembilan" },
-                    new State { Name = "Pahang" },
-                    new State { Name = "Pulau Pinang" },
-                    new State { Name = "Perak" },
-                    new State { Name = "Perlis" },
-                    new State { Name = "Selangor" },
-                    new State { Name = "Terengganu" },
-                    new State { Name = "Sabah" },
-                    new State { Name = "Sarawak" },
-                    new State { Name = "Wilayah Persekutuan Kuala Lumpur" },
-                    new State { Name = "Wilayah Persekutuan Labuan" },
-                    new State { Name = "Wilayah Persekutuan Putrajaya" }
+                    new State { Name = "Johor", Display = true },
+                    new State { Name = "Kedah", Display = true },
+                    new State { Name = "Kelantan", Display = true },
+                    new State { Name = "Melaka", Display = true },
+                    new State { Name = "Negeri Sembilan", Display = true },
+                    new State { Name = "Pahang", Display = true },
+                    new State { Name = "Pulau Pinang", Display = true },
+                    new State { Name = "Perak", Display = true },
+                    new State { Name = "Perlis", Display = true },
+                    new State { Name = "Selangor", Display = true },
+                    new State { Name = "Terengganu", Display = true },
+                    new State { Name = "Sabah", Display = true },
+                    new State { Name = "Sarawak", Display = true },
+                    new State { Name = "Wilayah Persekutuan Kuala Lumpur", Display = true },
+                    new State { Name = "Wilayah Persekutuan Labuan", Display = true },
+                    new State { Name = "Wilayah Persekutuan Putrajaya", Display = true }
                 );
             }
 

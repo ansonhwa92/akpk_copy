@@ -174,7 +174,7 @@
   <data name="FieldConfirmPassword" xml:space="preserve">
     <value>Confirm Password</value>
   </data>
-  <data name="FieldCountry" xml:space="preserve">
+  <data name="FieldCountryId" xml:space="preserve">
     <value>Country</value>
   </data>
   <data name="FieldEmail" xml:space="preserve">
@@ -237,6 +237,9 @@
   <data name="PlaceholderAddress2" xml:space="preserve">
     <value>Street address line 2</value>
   </data>
+  <data name="PlaceholderCitizenship" xml:space="preserve">
+    <value>Select Citizenship</value>
+  </data>
   <data name="PlaceholderCity" xml:space="preserve">
     <value>City</value>
   </data>
@@ -249,6 +252,9 @@
   <data name="PlaceholderCompRegNo" xml:space="preserve">
     <value>e.g 104258-x</value>
   </data>
+  <data name="PlaceholderCountryId" xml:space="preserve">
+    <value>Country</value>
+  </data>
   <data name="PlaceholderEmail" xml:space="preserve">
     <value>example@gmail.com</value>
   </data>
@@ -259,7 +265,7 @@
     <value>eg. 0171234567</value>
   </data>
   <data name="PlaceholderName" xml:space="preserve">
-    <value>Your fullname as per IC</value>
+    <value>Your full name</value>
   </data>
   <data name="PlaceholderPassportNo" xml:space="preserve">
     <value>Passport No</value>
@@ -321,8 +327,14 @@
   <data name="ValidNumericMobileNo" xml:space="preserve">
     <value>Entered Mobile No must be number</value>
   </data>
+  <data name="ValidNumericPostCode" xml:space="preserve">
+    <value>Entered Postcode must be number</value>
+  </data>
   <data name="ValidRequiredAddress" xml:space="preserve">
     <value>Please enter Address</value>
+  </data>
+  <data name="ValidRequiredCitizenshipId" xml:space="preserve">
+    <value>Please select Citizenship</value>
   </data>
   <data name="ValidRequiredCity" xml:space="preserve">
     <value>Please enter City</value>
@@ -335,6 +347,9 @@
   </data>
   <data name="ValidRequiredCompanyRegNo" xml:space="preserve">
     <value>Please enter Company Regstration No</value>
+  </data>
+  <data name="ValidRequiredCountryId" xml:space="preserve">
+    <value>Please select Country</value>
   </data>
   <data name="ValidRequiredEmail" xml:space="preserve">
     <value>Please enter Email</value>

@@ -234,9 +234,9 @@ namespace Language {
         /// <summary>
         ///   Looks up a localized string similar to Country.
         /// </summary>
-        public static string FieldCountry {
+        public static string FieldCountryId {
             get {
-                return ResourceManager.GetString("FieldCountry", resourceCulture);
+                return ResourceManager.GetString("FieldCountryId", resourceCulture);
             }
         }
         
@@ -421,6 +421,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Citizenship.
+        /// </summary>
+        public static string PlaceholderCitizenship {
+            get {
+                return ResourceManager.GetString("PlaceholderCitizenship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City.
         /// </summary>
         public static string PlaceholderCity {
@@ -457,6 +466,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string PlaceholderCountryId {
+            get {
+                return ResourceManager.GetString("PlaceholderCountryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to example@gmail.com.
         /// </summary>
         public static string PlaceholderEmail {
@@ -484,7 +502,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your fullname as per IC.
+        ///   Looks up a localized string similar to Your full name.
         /// </summary>
         public static string PlaceholderName {
             get {
@@ -673,11 +691,29 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Entered Postcode must be number.
+        /// </summary>
+        public static string ValidNumericPostCode {
+            get {
+                return ResourceManager.GetString("ValidNumericPostCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter Address.
         /// </summary>
         public static string ValidRequiredAddress {
             get {
                 return ResourceManager.GetString("ValidRequiredAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select Citizenship.
+        /// </summary>
+        public static string ValidRequiredCitizenshipId {
+            get {
+                return ResourceManager.GetString("ValidRequiredCitizenshipId", resourceCulture);
             }
         }
         
@@ -714,6 +750,15 @@ namespace Language {
         public static string ValidRequiredCompanyRegNo {
             get {
                 return ResourceManager.GetString("ValidRequiredCompanyRegNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select Country.
+        /// </summary>
+        public static string ValidRequiredCountryId {
+            get {
+                return ResourceManager.GetString("ValidRequiredCountryId", resourceCulture);
             }
         }
         

@@ -19,15 +19,16 @@
 
             $('input[type=radio][name=IsMalaysian]').change(function() {
                 if (this.value == 'true') {
-                    $("#malaysian").removeClass("d-none");
-					$("#non-malaysian").addClass("d-none");
+                    $(".malaysian").removeClass("d-none");
+					$(".non-malaysian").addClass("d-none");
                 }
                 else if (this.value == 'false') {
-                    $("#non-malaysian").removeClass("d-none");
-					$("#malaysian").addClass("d-none");
+                    $(".non-malaysian").removeClass("d-none");
+					$(".malaysian").addClass("d-none");
                 }
             });
 
+            
         });
 
     </script>
@@ -57,6 +58,16 @@
                         </div>
                     </div>
 
+                    <div class="form-group non-malaysian @if (Model.IsMalaysian) { <text> d-none </text> }">
+                        @Html.FEPLabelFor(m => m.CitizenshipId, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            <span class="select-arrow">
+                                @Html.DropDownListFor(m => m.CitizenshipId, Model.Citizenships, Language.Auth.PlaceholderCitizenship, htmlAttributes: new { @class = "custom-select" })
+                            </span>
+                            @Html.ValidationMessageFor(m => m.CitizenshipId)
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         @Html.FEPLabelFor(m => m.Name, htmlAttributes: new { @class = "form-label" })
                         <div class="input-group">
@@ -65,7 +76,7 @@
                         </div>
                     </div>
 
-                    <div id="malaysian" @if (!Model.IsMalaysian) { <text>class="d-none"</text> }>
+                    <div class="malaysian  @if (!Model.IsMalaysian) { <text> d-none </text> }">
                         <div class="form-group">
                             @Html.FEPLabelFor(m => m.ICNo, htmlAttributes: new { @class = "form-label" })
                             <div class="input-group">
@@ -74,8 +85,8 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div id="non-malaysian" @if (Model.IsMalaysian) {  <text>class="d-none"</text> }>
+
+                    <div class="non-malaysian @if (Model.IsMalaysian) { <text> d-none </text> }">
                         <div class="form-group">
                             @Html.FEPLabelFor(m => m.PassportNo, htmlAttributes: new { @class = "form-label" })
                             <div class="input-group">
@@ -99,6 +110,66 @@
                             @Html.ValidationMessageFor(m => m.Email)
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.Address1, htmlAttributes: new { @class = "form-label" })
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    @Html.EditorFor(m => m.Address1, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderAddress1 } })
+                                    @Html.ValidationMessageFor(m => m.Address1)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    @Html.EditorFor(m => m.Address2, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderAddress2 } })
+                                    @Html.ValidationMessageFor(m => m.Address2)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col malaysian @if (Model.IsMalaysian) { <text>d-none</text> }">
+                                @Html.EditorFor(m => m.PostCodeMalaysian, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderPostCode } })
+                                @Html.ValidationMessageFor(m => m.PostCodeMalaysian)
+                            </div>
+                            <div class="col non-malaysian @if (!Model.IsMalaysian) { <text>d-none</text> }">
+                                @Html.EditorFor(m => m.PostCodeNonMalaysian, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderPostCode } })
+                                @Html.ValidationMessageFor(m => m.PostCodeNonMalaysian)
+                            </div>
+                            <div class="col">
+                                @Html.EditorFor(m => m.City, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderCity } })
+                                @Html.ValidationMessageFor(m => m.City)
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="input-group malaysian @if (!Model.IsMalaysian) { <text>d-none</text> }">
+                                    <span class="select-arrow">
+                                        @Html.DropDownListFor(m => m.StateId, Model.States, Language.Auth.PlaceholderStateId, htmlAttributes: new { @class = "custom-select" })
+                                    </span>
+                                    @Html.ValidationMessageFor(m => m.StateId)
+                                </div>
+                                <div class="input-group non-malaysian @if (Model.IsMalaysian) { <text>d-none</text> }">
+                                    @Html.EditorFor(m => m.State, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderStateId } })
+                                    @Html.ValidationMessageFor(m => m.State)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group">
+                                    <span class="select-arrow">
+                                        @Html.DropDownListFor(m => m.CountryId, Model.Countries, Language.Auth.PlaceholderCountryId, htmlAttributes: new { @class = "custom-select" })
+                                    </span>
+                                    @Html.ValidationMessageFor(m => m.CountryId)
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                   
                     <div class="form-group">
                         @Html.FEPLabelFor(m => m.Password, htmlAttributes: new { @class = "form-label" })
                         <div class="input-group">

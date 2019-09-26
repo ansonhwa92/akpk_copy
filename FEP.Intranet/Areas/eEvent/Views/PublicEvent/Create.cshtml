@@ -5,11 +5,6 @@
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-@section Contentscript{
-	<script type="text/javascript">
-	</script>
-}
-
 @section Nav {
 
 	<div class="title_header">
@@ -41,7 +36,9 @@
 {
 	@Html.AntiForgeryToken()
 	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+	@Html.HiddenFor(model => model.EventStatus)
 	@Html.HiddenFor(model => model.EventCategoryId)
+
 	<div class="row">
 		<div class="col-xl-3 col-md-3 col-sm-4 my-2">
 			<div class="sidebar-left">
@@ -105,7 +102,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								
+
 								<div class="row col-lg-12">
 									<div class="col-lg-6">
 										@Html.FEPLabelFor(model => model.StartDate)
@@ -118,6 +115,14 @@
 										@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
 									</div>
 								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.TotalDay)
+								@Html.EditorFor(model => model.TotalDay, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
+								@Html.ValidationMessageFor(model => model.TotalDay, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
@@ -179,7 +184,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.DocumentEvent)
+								@Html.FEPLabelFor(model => model.DocumentEvent)
 								@Html.TextBoxFor(model => model.DocumentEvent, "", new { type = "file", @class = "form-control multiple" })
 								@Html.ValidationMessageFor(model => model.DocumentEvent, "", new { @class = "text-danger" })
 							</div>
@@ -187,15 +192,15 @@
 
 
 						@*<div class="row">
-			<div class="form-group col-lg-12">
-				<label>Proof of Approval</label>
-				<div class="custom-file">
-					<input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-					<label class="custom-file-label" for="customFile">No file choosen</label>
-				</div>
-				<div id="fileList"></div>
-			</div>
-		</div>*@
+								<div class="form-group col-lg-12">
+									<label>Proof of Approval</label>
+									<div class="custom-file">
+										<input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
+										<label class="custom-file-label" for="customFile">No file choosen</label>
+									</div>
+									<div id="fileList"></div>
+								</div>
+							</div>*@
 
 					</div>
 				</form>

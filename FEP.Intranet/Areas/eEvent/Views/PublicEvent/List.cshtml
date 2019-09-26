@@ -18,10 +18,10 @@
                     "type": "post",
                     "url": '@(WebApiURL)eEvent/PublicEvent/GetEventList',
                     "data": function (filter) {
-                        filter.EventTitle = $('#Filter_EventTitle').val();
-                        //filter.ICNo = $('#Filter_ICNo').val();
-                        //filter.MobileNo = $('#Filter_MobileNo').val();
-                        //filter.Email = $('#Filter_Email').val();
+						filter.EventTitle = $('#Filter_EventTitle').val();
+						filter.EventStatus = $('#Filter_EventStatus').val();
+                        filter.EventObjective = $('#Filter_EventObjective').val();
+                        filter.Venue = $('#Filter_Venue').val();
                     }
                 },
 				columns: [
@@ -83,8 +83,30 @@
                     },
                     {
                         data: 'EventStatusDesc',
-                        sortable: false,
-
+						sortable: false,
+						render: function (data, type, row, meta) {
+						 if (row.EventStatus == 0) {
+                                return "<span class='color-blue font-weight-bold'>" + data + "</span>";
+                            }
+                            else if (row.EventStatus == 1) {
+                                return "<span class='color-primary font-weight-bold'>" + data + "</span>";
+                            }
+                            else if (row.EventStatus == 2) {
+                                return "<span class='color-primary font-weight-bold'>" + data + "</span>";
+                            }
+                            else if (row.EventStatus == 3) {
+                                return "<span class='color-primary font-weight-bold'>" + data + "</span>";
+                            }
+                            else if (row.EventStatus == 4) {
+                                return "<span class='color-green font-weight-bold'>" + data + "</span>";
+                            }
+                            else if (row.EventStatus == 5) {
+                                return "<span class='color-yellow font-weight-bold'>" + data + "</span>";
+                            }
+                            else if (row.EventStatus == 6) {
+                                return "<span class='color-red font-weight-bold'>" + data + "</span>";
+                            }
+						}
                     },
                     {
                         sortable: false,
@@ -93,28 +115,50 @@
                             var action = "";
 
                             action = '<div class="icon-action">'
-                            action +='<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '?origin=fromlist" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+
+							if (row.EventStatus == 0) {
+
+						    action +='<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '?origin=fromlist" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
                             action +='<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=fromlist" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
 							action += '<a href="@Url.Action("Delete", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
 
-							if (row.EventStatus == 0) {
 							//Verify By Admin Event
-							action +='<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toverify" data-toggle="tooltip" data-placement="top" title="Verify"><i class="la la-edit text-muted"></i></i></a>'
+							action +='<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toverify" data-toggle="tooltip" data-placement="top" title="Submit"><i class="la la-edit text-muted"></i></i></a>'
 							}
 
 							if (row.EventStatus == 1) {
 								//Approve By Approver1
-								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove1" data-toggle="tooltip" data-placement="top" title="Verify"><i class="la la-edit text-muted"></i></i></a>'
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove1" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-eye text-muted"></i></i></a>'
 							}
 
 							if (row.EventStatus == 2) {
 								//Approve By Approver2
-								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove2" data-toggle="tooltip" data-placement="top" title="Verify"><i class="la la-edit text-muted"></i></i></a>'
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove2" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-eye text-muted"></i></i></a>'
 							}
 
 							if (row.EventStatus == 3) {
 								//Approve By Approver3
-								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove3" data-toggle="tooltip" data-placement="top" title="Verify"><i class="la la-edit text-muted"></i></i></a>'
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove3" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-eye text-muted"></i></i></a>'
+							}
+
+							@*if (row.EventStatus == 5) {
+								//Approve By Approver3
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=fromamendment" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-eye text-muted"></i></i></a>'
+							}*@
+
+							if (row.EventStatus == 4 || row.EventStatus == 6) {
+								//Approved
+                                action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=approvedcancel" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+							}
+
+							if (row.EventStatus == 7) {
+								//Published
+                                action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=published" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+							}
+
+							if (row.EventStatus == 5) {
+								//require amendment
+						    action +='<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '?origin=amendment" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
 							}
 
 							action +='</div>';
@@ -181,7 +225,7 @@
 					<div id="breadcrumb">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item color-"><a href="#">Home</a></li>
 								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
 								<li class="breadcrumb-item"><a href="#">Manage Public Event</a></li>
 								<li class="breadcrumb-item active" aria-current="page"><a href="#">Event List</a></li>

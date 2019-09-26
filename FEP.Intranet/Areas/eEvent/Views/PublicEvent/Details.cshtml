@@ -5,25 +5,6 @@
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-@section ContentScript{
-	<script type="text/javascript">
-		$(document).ready(function () {
-
-			var scontent = $('#Contents').val();
-			surveyCreator.text = scontent;
-
-			$("#StartDate").flatpickr({
-				dateFormat: "d/m/Y",
-				maxDate: "31/12/2200",
-			});
-
-			$("#EndDate").flatpickr({
-				dateFormat: "d/m/Y",
-				maxDate: "31/12/2200",
-			});
-	</script>
-}
-
 @section Nav {
 
 	<div class="title_header">
@@ -125,12 +106,13 @@
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.StartDate)
 							<div class="row col-lg-12">
 								<div class="col-lg-6">
+									@Html.LabelFor(model => model.StartDate)
 									@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start", @disabled = "disabled" } })
 								</div>
 								<div class="col-lg-6">
+									@Html.LabelFor(model => model.EndDate)
 									@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End", @disabled = "disabled" } })
 								</div>
 							</div>
@@ -223,23 +205,31 @@
 				}
 				else if (Model.origin == "toapprove1")
 				{
+					<a href='@Url.Action("List")' class="btn btn-default">Back</a>
 					<a href='@Url.Action("FirstApproved", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-outline-primary">Approve, Submit to next Approval</a>
+					<a href='@Url.Action("RejectPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-warning">Require Amendment</a>
 				}
 				else if (Model.origin == "toapprove2")
 				{
+					<a href='@Url.Action("List")' class="btn btn-default">Back</a>
 					<a href='@Url.Action("SecondApproved", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-outline-primary">Approve, Submit to next Approval</a>
+					<a href='@Url.Action("RejectPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-warning">Require Amendment</a>
 				}
 				else if (Model.origin == "toapprove3")
 				{
+					<a href='@Url.Action("List")' class="btn btn-default">Back</a>
 					<a href='@Url.Action("FinalApproved", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-success">Approve</a>
-				}
-				else
-				{
-
-
-
 					<a href='@Url.Action("RejectPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-warning">Require Amendment</a>
+				}
+				else if (Model.origin == "amendment")
+				{
+					<a href='@Url.Action("List")' class="btn btn-default">Back</a>
+					<a href='@Url.Action("SubmitToVerify", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-primary">Submit for Verification</a>
 					<a href='@Url.Action("CancelPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-danger">Cancel</a>
+				}
+				else if (Model.origin == "approvedcancel")
+				{
+					<a href='@Url.Action("List")' class="btn btn-default">Back</a>
 				}
 			</div>
 		</div>

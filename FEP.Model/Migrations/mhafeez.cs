@@ -24,20 +24,20 @@ namespace FEP.Model.Migrations
 
         public static void Seed(DbEntities db)
         {
-            //notification
-            if (!db.NotificationSetting.Any())
-            {
-                foreach (NotificationType type in (NotificationType[])Enum.GetValues(typeof(NotificationType)))
-                {
-                    db.NotificationSetting.AddOrUpdate(
-                        t => new { t.NotificationType },
-                        new NotificationSetting { NotificationType = type }
-                    );
-                }
-            }
-            
-            //default setting
-            if (!db.SystemSetting.Any(m => m.Id == 0))
+			//notification
+			if (!db.NotificationSetting.Any())
+			{
+				foreach (NotificationType type in (NotificationType[])Enum.GetValues(typeof(NotificationType)))
+				{
+					db.NotificationSetting.AddOrUpdate(
+						t => new { t.NotificationType },
+						new NotificationSetting { NotificationType = type }
+					);
+				}
+			}
+
+			//default setting
+			if (!db.SystemSetting.Any(m => m.Id == 0))
             {
                 db.SystemSetting.Add(new SystemSetting { Id = 0, SystemTitle = "Financial Education Portal", ShortTitle = "FEP", SystemVersion = "1.0", SystemFooter = "<b>Copyright © 2017-2020</b> All rights reserved." });
             }
@@ -109,7 +109,37 @@ namespace FEP.Model.Migrations
                     }
                 );
 
+
             }
+            /*else
+            {
+                var role = db.Role.Local.Where(r => r.Name.Contains("All Access")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("All Access")).FirstOrDefault();
+
+                List<UserRole> userroles = new List<UserRole>();
+
+                userroles.Add(new UserRole { Role = role });
+                db.User.Add(
+                    new User
+                    {
+                        Name = "Tajul Admin",
+                        Email = "tajulzaid@gmail.com",
+                        UserType = UserType.SystemAdmin,
+                        CreatedDate = DateTime.Now,
+                        Display = true,
+                        UserAccount = new UserAccount
+                        {
+                            LoginId = "tajulzaid@gmail.com",
+                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==", //default abc123
+                            Salt = "/ZCqmg==",
+                            IsEnable = true,
+                            LoginAttempt = 0,
+                            LastPasswordChange = DateTime.Now,
+                            LastLogin = DateTime.Now,
+                            UserRoles = userroles
+                        },
+                    }
+                );
+            }*/
 
             AddRole(db, "Individual", "Default Individual");
             AddRole(db, "Individual with paper", "Individual with paper");
@@ -137,7 +167,7 @@ namespace FEP.Model.Migrations
             AddRole(db, "Verifier R&P", "Verifier R&P");
             AddRole(db, "Verifier eLearning", "Verifier eLearning");
            
-            AddRole(db, "Approver Event Level 1", "Approver Event Level 1");
+            AddRole(db, "Approver Event 1", "Approver Event 1");
             AddRole(db, "Approver R&P 1", "Approver R&P 1");
             AddRole(db, "Approver eLearning 1", "Approver eLearning 1");
 

@@ -714,6 +714,14 @@
     <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\Edit.cshtml" />
     <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\Delete.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Event_Setting.cshtml" />
+    <Content Include="Areas\SLAReminder\Views\SLAReminders\List.cshtml" />
+    <Content Include="Areas\SLAReminder\Views\web.config" />
+    <Content Include="Areas\Template\Views\EmailTemplates\Create.cshtml" />
+    <Content Include="Areas\Template\Views\EmailTemplates\Delete.cshtml" />
+    <Content Include="Areas\Template\Views\EmailTemplates\Details.cshtml" />
+    <Content Include="Areas\Template\Views\EmailTemplates\Edit.cshtml" />
+    <Content Include="Areas\Template\Views\EmailTemplates\List.cshtml" />
+    <Content Include="Areas\Template\Views\web.config" />
     <Content Include="Areas\RnP\Views\Home\Index_ori.cshtml" />
     <Content Include="Areas\RnP\Views\Home\BrowsePublications.cshtml" />
     <Content Include="Areas\RnP\Views\Home\PublicationDetails.cshtml" />

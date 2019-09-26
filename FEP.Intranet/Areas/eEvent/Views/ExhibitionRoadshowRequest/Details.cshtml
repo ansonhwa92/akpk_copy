@@ -132,8 +132,8 @@
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.NomineeId)
-							@Html.EditorFor(model => model.NomineeName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							@Html.FEPLabelFor(m => m.NomineeId)
+							@Html.ListBoxFor(m => m.NomineeId, Model.Nominees, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled", })
 						</div>
 					</div>
 

@@ -22,12 +22,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Required(ErrorMessage = "Please Insert Start Date")]
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "Start Date")]
 		public DateTime? StartDate { get; set; }
 
 		[Required(ErrorMessage = "Please Insert End Date")]
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
+		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "End Date")]
 		public DateTime? EndDate { get; set; }
 
@@ -40,6 +42,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public float? Fee { get; set; }
 
 		[Display(Name = "No. of Participant")]
+		[RegularExpression("([1-9][0-9]*)")]
 		public int? ParticipantAllowed { get; set; }
 
 		[Display(Name = "Targeted Group")]
@@ -113,10 +116,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		 
 		public string RefNo { get; set; }
 
+		[Display(Name = "Total Days")]
+		public string TotalDay { get; set; }
+
 
 		//File
-		[Display(Name = "Proof of Approval")]
-		public HttpPostedFileBase DocumentEvent { get; set; }
+		//[Required(ErrorMessage = "Please attach file")]
+		//[Display(Name = "Proof of Approval")]
+		//public HttpPostedFileBase DocumentEvent { get; set; }
 		[Display(Name = "File Name")]
 		public string FileName { get; set; }
 		[Display(Name = "File Description")]
@@ -128,6 +135,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 	public class CreatePublicEventModel : PublicEventModel
 	{
 		public CreatePublicEventModel() { }
+
+		[Required(ErrorMessage = "Please attach file")]
+		[Display(Name = "Proof of Approval")]
+		public HttpPostedFileBase DocumentEvent { get; set; }
 	}
 
 	public class EditPublicEventModel : PublicEventModel
@@ -136,6 +147,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public int Id { get; set; }
 
 		public string origin { get; set; }
+
+		//[Required(ErrorMessage = "Please attach file")]
+		[Display(Name = "Proof of Approval")]
+		public HttpPostedFileBase DocumentEvent { get; set; }
 	}
 
 	public class DetailsPublicEventModel : PublicEventModel

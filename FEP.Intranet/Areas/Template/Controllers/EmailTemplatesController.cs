@@ -153,19 +153,24 @@ namespace FEP.Intranet.Areas.Template.Controllers
                 paramToSend.EventName = "Hari Terbuka AKPK";
                 paramToSend.EventCode = "HTAKPK2019";
                 paramToSend.EventLocation = "Dewan Terbuka AKPK";
+                paramToSend.EventApproval = "APPROVED006";
 
                 CreateAutoReminder reminder = new CreateAutoReminder
                 {
                     NotificationType = NotificationType.Verify_Public_Event_Creation,
+                    NotificationCategory = NotificationCategory.Event,
                     ParameterListToSend = paramToSend,
                     StartNotificationDate = DateTime.Now,
-                    ReceiverId = new List<int> { 1 }
+                    ReceiverId = new List<int> { 2 }
                 };
 
-                var response = await WepApiMethod.SendApiAsync<string>
-                    (HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+                /*var response = await WepApiMethod.SendApiAsync<ReminderResponse>
+                    (HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);*/
 
-                
+                int SLAReminderStatusId = 26;
+                var response = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+                    (HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+
                 if (response.isSuccess)
                 {
                     await LogActivity(Modules.Setting, "Create Email Template");
@@ -272,7 +277,7 @@ namespace FEP.Intranet.Areas.Template.Controllers
             model.TemplateParameterTypeList = new List<ParameterList>();
             var response2 = await WepApiMethod.SendApiAsync<List<TemplateParameterType>>
                 (HttpVerbs.Get, $"Reminder/SLA/GetParameterList?id={(int)model.NotificationType}");
-            if (response2.isSuccess)
+            if (response2.isSuccess && response2.Data != null)
             {
                 foreach (var item in response2.Data)
                 {
@@ -299,6 +304,29 @@ namespace FEP.Intranet.Areas.Template.Controllers
         {
             if (ModelState.IsValid)
             {
+                List<string> ListA, ParamList;// = new List<string>();
+                ListA = new List<string>();
+                ParamList = new List<string>();
+                if (model.enableEmail)
+                {
+                    ParamList = ParamList.Union(ListA).ToList();
+                    if (model.TemplateSubject != null)
+                        ParamList = ParamList.Union(ParameterListing(model.TemplateSubject)).ToList();
+                    if (model.TemplateMessage != null)
+                        ParamList = ParamList.Union(ParameterListing(model.TemplateMessage)).ToList();
+                }
+                if (model.enableSMSMessage)
+                {
+                    if (model.SMSMessage != null)
+                        ParamList = ParamList.Union(ParameterListing(model.SMSMessage)).ToList();
+                }
+                if (model.enableWebMessage)
+                {
+                    if (model.WebMessage != null)
+                        ParamList = ParamList.Union(ParameterListing(model.WebMessage)).ToList();
+                }
+
+                model.ParameterList = ParamList;
                 model.TemplateMessage = Server.HtmlEncode(model.TemplateMessage);
                 var response = await WepApiMethod.SendApiAsync<EditNotificationTemplateModel>(HttpVerbs.Put, $"Template/Email?id={model.Id}", model);
                 if (response.isSuccess)

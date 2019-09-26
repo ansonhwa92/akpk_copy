@@ -83,7 +83,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Topic = i.Topic,
 					RepUserId = i.UserId,
 					RepUserName = i.User.Name,
-					RepDesignation = i.Designation,
+					//RepDesignation = i.User.Designation,
+					RepEmail = i.User.Email,
+					RepMobileNumber = i.User.MobileNo,
 					GetFileName = i.EventMediaFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 				}).FirstOrDefault();
 
@@ -138,7 +140,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Language = model.Language,
 					Topic = model.Topic,
 					UserId = model.RepUserId,
-					Designation = model.RepDesignation,
 					CreatedBy = null,
 					CreatedDate = DateTime.Now,
 					Display = true,
@@ -202,7 +203,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					origin = origin,
 					RepUserId = i.UserId,
 					RepUserName = i.User.Name,
-					RepDesignation = i.Designation,
+					//RepDesignation = i.User.Designation,
+					RepEmail = i.User.Email,
+					RepMobileNumber = i.User.MobileNo,
 					GetFileName = i.EventMediaFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 				}).FirstOrDefault();
 
@@ -249,8 +252,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Language = model.Language,
 					Topic = model.Topic,
 					UserId = model.RepUserId,
-					Designation = model.RepDesignation,
-
 				};
 
 				db.Entry(media).State = EntityState.Modified;
@@ -338,7 +339,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Topic = i.Topic,
 					RepUserId = i.UserId,
 					RepUserName = i.User.Name,
-					RepDesignation = i.Designation,
+					//RepDesignation = i.User.Designation,
+					RepEmail = i.User.Email,
+					RepMobileNumber = i.User.MobileNo,
 					GetFileName = i.EventMediaFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
 				}).FirstOrDefault();
 

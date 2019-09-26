@@ -212,13 +212,13 @@
 					<div class="row">
 						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.Time, htmlAttributes: new { @class = "control-label col-lg-12" })
-							@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect" , disabled = "disabled"} })
+							@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect", disabled = "disabled" } })
 							@Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
 						</div>
 
 						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label col-lg-12" })
-							@Html.EnumDropDownListFor(model => model.Language, "-Select Language-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" , disabled = "disabled"})
+							@Html.EnumDropDownListFor(model => model.Language, "-Select Language-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", disabled = "disabled" })
 							@Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
 						</div>
 					</div>
@@ -249,7 +249,7 @@
 						</div>
 					</div>
 
-					<div class="row">
+					@*<div class="row">
 						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.RepDesignation, htmlAttributes: new { @class = "control-label col-lg-12" })
 							<div class="col-lg-12">
@@ -257,7 +257,28 @@
 								@Html.ValidationMessageFor(model => model.RepDesignation, "", new { @class = "text-danger" })
 							</div>
 						</div>
+					</div>*@
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.RepMobileNumber, htmlAttributes: new { @class = "control-label col-lg-12" })
+							<div class="col-lg-12">
+								@Html.EditorFor(model => model.RepMobileNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.RepMobileNumber, "", new { @class = "text-danger" })
+							</div>
+						</div>
 					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.RepEmail, htmlAttributes: new { @class = "control-label col-lg-12" })
+							<div class="col-lg-12">
+								@Html.EditorFor(model => model.RepEmail, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.RepEmail, "", new { @class = "text-danger" })
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</form>
 		</div>

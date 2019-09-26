@@ -17,11 +17,20 @@ namespace FEP.Intranet
 {
     public static class WepApiMethod
     {
-
-        public static async Task<WebApiResponse<T>> SendApiAsync<T>(HttpVerbs httpVerbs, string requestURI, object obj = null)
+        public enum APIEngine
+        {
+            IntranetAPI,
+            EmailSMSAPI
+        }
+        public static async Task<WebApiResponse<T>> SendApiAsync<T>
+            (HttpVerbs httpVerbs, string requestURI, object obj = null, APIEngine APIEngine = APIEngine.IntranetAPI)
         {
             var url = GetWebApiUrl();
-
+            if(APIEngine == APIEngine.EmailSMSAPI)
+            {
+                url = GetEmailSMSApiUrl();
+            }
+            
             var res = new WebApiResponse<T>();
 
             if (string.IsNullOrEmpty(url))
@@ -50,7 +59,10 @@ namespace FEP.Intranet
                     if (httpVerbs == HttpVerbs.Post)
                     {
                         var content = new StringContent(payload, Encoding.UTF8, "application/json");
-                        response = await client.PostAsync(requestURI, content);
+                        if(APIEngine == APIEngine.EmailSMSAPI)
+                            response = await client.PostAsJsonAsync(requestURI, obj);
+                        else
+                            response = await client.PostAsync(requestURI, content);
                     }
                     else if (httpVerbs == HttpVerbs.Get)
                     {
@@ -99,6 +111,11 @@ namespace FEP.Intranet
         private static string GetWebApiUrl()
         {
             return WebConfigurationManager.AppSettings["WebApiURL"] != null ? WebConfigurationManager.AppSettings["WebApiURL"].ToString() : "";
+        }
+        private static string GetEmailSMSApiUrl()
+        {
+            string theURL = WebConfigurationManager.AppSettings["EmailSMSURL"] != null ? WebConfigurationManager.AppSettings["EmailSMSURL"].ToString() : "";
+            return theURL;
         }
 
     }

@@ -19,11 +19,22 @@
 								<li class="breadcrumb-item"><a href="#">Home</a></li>
 								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
 								<li class="breadcrumb-item"><a href="#">Manage Public Event</a></li>
+								@if (Model.origin == "amendment")
+								{
+									<li class="breadcrumb-item"><a href="#">Edit Public Event</a></li>
+								}
 								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
 							</ol>
 						</nav>
 					</div>
-					<h1 class="page-title text-white">Edit Event</h1>
+					@if (Model.origin == "amendment")
+					{
+						<h1 class="page-title text-white">Public Event Request Ref No: @Model.RefNo</h1>
+					}
+					else if (Model.origin == "fromlist")
+					{
+						<h1 class="page-title text-white">Edit Event</h1>
+					}
 					@*<div class="header-text">List of created event</div>*@
 				</div>
 			</div>
@@ -39,6 +50,8 @@
 	@Html.HiddenFor(model => model.Id)
 	@Html.HiddenFor(model => model.origin)
 	@Html.HiddenFor(model => model.EventStatus)
+	@Html.HiddenFor(model => model.EventCategoryId)
+	@Html.HiddenFor(model => model.RefNo)
 
 	<div class="row">
 		<div class="col-xl-3 col-md-3 col-sm-4 my-2">
@@ -96,6 +109,10 @@
 			<div class="border-form rounded-top">
 				<form>
 					<div class="form-container">
+						<div class="mt-2 mb-4 pb-1">
+							<h4 class="color-darkblue mb-0">Event Details</h4>
+							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						</div>
 						<div class="row">
 							<div class="form-group col-lg-12">
 								@Html.FEPLabelFor(model => model.EventTitle)
@@ -115,31 +132,13 @@
 						<div class="row">
 							<div class="form-group col-lg-6">
 								@Html.FEPLabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="dateSelect">
-									<input type="text" id="date_start" class="form-control" placeholder="Date End" data-input="flatpickr">
-									<a class="input-button calendar" title="toggle" data-toggle>
-										<i class="la la-calendar"></i>
-									</a>
-									<a class="input-button clear" title="clear" data-clear>
-										<i class="la la-times"></i>
-									</a>
-								</div>
-								@Html.HiddenFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Assigned" } })
+								@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Start Date" } })
 								@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
 							</div>
 
 							<div class="form-group col-lg-6">
 								@Html.FEPLabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-lg-12" })
-								<div class="dateSelect">
-									<input type="text" id="date_end" class="form-control" placeholder="Date End" data-input="flatpickr">
-									<a class="input-button calendar" title="toggle" data-toggle>
-										<i class="la la-calendar"></i>
-									</a>
-									<a class="input-button clear" title="clear" data-clear>
-										<i class="la la-times"></i>
-									</a>
-								</div>
-								@Html.HiddenFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date of Birth" } })
+								@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "End Date" } })
 								@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -223,6 +222,9 @@
 					</div>
 				</form>
 				<!-- End Form -->
+
+
+
 			</div>
 			<div class="border-left border-right border-bottom p-3 rounded-bottom">
 				@if (Model.origin == "fromlist")

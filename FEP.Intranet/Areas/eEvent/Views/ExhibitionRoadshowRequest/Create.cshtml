@@ -79,9 +79,13 @@
 			<div class="border-form rounded-top">
 				<form>
 					<div class="form-container">
+						<div class="mt-2 mb-4 pb-1">
+							<h4 class="color-darkblue mb-0">Exhibition / Roadshow Request Details</h4>
+							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						</div>
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.EventName, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.EventName, htmlAttributes: new { @class = "control-label col-md-12" })
 								<div class="col-md-12">
 									@Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control" } })
 									@Html.ValidationMessageFor(model => model.EventName, "", new { @class = "text-danger" })
@@ -91,7 +95,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Organiser, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.Organiser, htmlAttributes: new { @class = "control-label col-md-12" })
 								<div class="col-md-12">
 									@Html.EditorFor(model => model.Organiser, new { htmlAttributes = new { @class = "form-control" } })
 									@Html.ValidationMessageFor(model => model.Organiser, "", new { @class = "text-danger" })
@@ -101,7 +105,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-12" })
 								<div class="col-md-12">
 									@Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
 									@Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
@@ -111,13 +115,15 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-lg-12" })
+
 								<div class="row col-lg-12">
 									<div class="col-lg-6">
+										@Html.FEPLabelFor(model => model.StartDate)
 										@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start" } })
 										@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
 									</div>
 									<div class="col-lg-6">
+										@Html.FEPLabelFor(model => model.EndDate)
 										@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End" } })
 										@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
 									</div>
@@ -127,14 +133,16 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-lg-12" })
+
 								<div class="row col-lg-12">
 									<div class="col-lg-6">
-										@Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Time Start" } })
+										@Html.FEPLabelFor(model => model.StartTime)
+										@Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Date Start" } })
 										@Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
 									</div>
 									<div class="col-lg-6">
-										@Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Time End" } })
+										@Html.FEPLabelFor(model => model.EndTime)
+										@Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Date End" } })
 										@Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
 									</div>
 								</div>
@@ -143,7 +151,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.ParticipationRequirement, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.ParticipationRequirement, htmlAttributes: new { @class = "control-label col-md-12" })
 								<div class="col-md-6">
 									@Html.EditorFor(model => model.ParticipationRequirement, new { htmlAttributes = new { @class = "form-control", @placeholder = "No. of Participant" } })
 									@Html.ValidationMessageFor(model => model.ParticipationRequirement, "", new { @class = "text-danger" })
@@ -153,9 +161,9 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.NomineeId, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.NomineeId, htmlAttributes: new { @class = "control-label col-md-12" })
 								<div class="col-md-12">
-									@Html.DropDownListFor(model => model.NomineeId, Model.Nominees, "-Select Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+									@Html.ListBoxFor(model => model.NomineeId, Model.Nominees, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
 									@Html.ValidationMessageFor(model => model.NomineeId, "", new { @class = "text-danger" })
 								</div>
 							</div>
@@ -163,9 +171,9 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.ReceivedById, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.ReceivedById, htmlAttributes: new { @class = "control-label col-md-12" })
 								<div class="col-md-12">
-									@Html.DropDownListFor(model => model.ReceivedById, Model.ReceivedBys, "-Select Nominee Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+									@Html.DropDownListFor(model => model.ReceivedById, Model.ReceivedBys, "-Select Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
 									@Html.ValidationMessageFor(model => model.ReceivedById, "", new { @class = "text-danger" })
 								</div>
 							</div>
@@ -173,7 +181,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.ReceivedDate, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.ReceivedDate, htmlAttributes: new { @class = "control-label col-md-12" })
 								<div class="col-md-6">
 									@Html.EditorFor(model => model.ReceivedDate, new { htmlAttributes = new { @class = "form-control" } })
 									@Html.ValidationMessageFor(model => model.ReceivedDate, "", new { @class = "text-danger" })
@@ -183,7 +191,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Receive_Via, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.Receive_Via, htmlAttributes: new { @class = "control-label col-md-12" })
 								<div class="col-md-12">
 									@Html.EditorFor(model => model.Receive_Via, new { htmlAttributes = new { @class = "form-control" } })
 									@Html.ValidationMessageFor(model => model.Receive_Via, "", new { @class = "text-danger" })

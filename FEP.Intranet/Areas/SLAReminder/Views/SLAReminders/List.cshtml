@@ -12,11 +12,16 @@
             $('.onChangeSubmit').change(
                 function () {
                     $('.formSLA').attr('id', 'formSLA'+$(this).attr('id'));
-                    alert($('.formSLA').attr('id'));
                     
                     $('.formSLA').trigger('submit');
                 });
-            });
+
+            @if(ViewBag.pin != 0)
+            {
+                @:document.getElementById(@ViewBag.pin).scrollIntoView({behavior: 'auto',block: 'center'});
+            }
+
+        });
 
     </script>
 }
@@ -100,7 +105,7 @@
                                 <thead>
                                     <tr>
                                         <th>@Html.DisplayNameFor(model => model.filter.NotificationType)</th>
-                                        <th>@Html.DisplayNameFor(model => model.filter.ETCode)</th>
+                                        @*<th>@Html.DisplayNameFor(model => model.filter.ETCode)</th>*@
                                         <th>@Html.DisplayNameFor(model => model.filter.SLAResolutionTime)</th>
                                         <th>@Html.DisplayNameFor(model => model.filter.IntervalDuration)</th>
                                     </tr>
@@ -115,16 +120,22 @@
 
                                         @Html.HiddenFor(m => item.Id, new  { @form = "formSLA" + item.Id  })
 
-                                        <td>@Html.DisplayFor(m => item.StagesName)</td>
                                         <td>
-                                            @Html.EditorFor(m => item.ETCode, new { htmlAttributes = new { @class = "form-control onChangeSubmit", @form = "formSLA" + item.Id, @id=item.Id } })
-                                            @Html.ValidationMessageFor(m => item.ETCode, "", new { @class = "text-danger" })
+                                            @Html.DisplayFor(m => item.StagesName)
+                                            @if (ViewBag.pin == item.Id)
+                                            {
+                                                @:<span class="small text-success"><b>(Updated)</b></span>
+                                            }
                                         </td>
+                                        @*<td>
+                                            @Html.EditorFor(m => item.ETCode, new { htmlAttributes = new { @class = "form-control onChangeSubmit", @size="8", @form = "formSLA" + item.Id, @id=item.Id } })
+                                            @Html.ValidationMessageFor(m => item.ETCode, "", new { @class = "text-danger" })
+                                        </td>*@
                                         <td>
                                             <div class="d-flex align-items-center">
 
                                                 Less than
-                                                <input id="@item.Id" type="number" name="SLAResolutionTime" form="@formID" class="numericbox  ml-1 mr-1 form-control onChangeSubmit" min="0" max="10" value="@Html.DisplayFor(m => item.SLAResolutionTime)">
+                                                <input id="@item.Id" type="number" name="SLAResolutionTime" form="@formID" class="numericbox  ml-1 mr-1 form-control onChangeSubmit" min="0" max="5" size="3" value="@Html.DisplayFor(m => item.SLAResolutionTime)">
                                                 days
 
                                             </div>
@@ -133,11 +144,8 @@
                                         <td>
                                             <div class="d-flex align-items-center">
 
-                                                <span>Every</span>
-
-                                                <span class="numericbox ml-1 mr-1">
-                                                    <input id="@item.Id" type="number" name="IntervalDuration" form="@formID" class="form-control onChangeSubmit" min="0" value="@Html.DisplayFor(m => item.IntervalDuration)">
-                                                </span>
+                                                Every
+                                                <input id="@item.Id" type="number" name="IntervalDuration" form="@formID" class="numericbox  ml-1 mr-1 form-control onChangeSubmit" min="0" max="5" value="@Html.DisplayFor(m => item.IntervalDuration)">
 
                                                 <span class="select-arrow ml-1 mr-1">
 

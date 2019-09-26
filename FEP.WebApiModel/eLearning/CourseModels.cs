@@ -129,8 +129,12 @@ namespace FEP.WebApiModel.eLearning
         public CourseStatus Status { get; set; }
 
         public ICollection<CourseApprovalLog> CourseApprovalLogs { get; set; }
+        public ICollection<CourseContent> FrontPageContents { get; set; }
+        public ICollection<CourseModule> Modules { get; set; }
 
     }
+
+
 
     public class CourseRuleModel : BaseModel
     {

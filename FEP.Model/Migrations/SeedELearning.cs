@@ -107,12 +107,12 @@ namespace FEP.Model.Migrations
                 // add modules
                 List<CourseContent> moduleContents = new List<CourseContent>();
 
-                CourseContent richText = new RichText
+                CourseContent richText = new CourseContent
                 {
                     Order = 2,
                     ContentType = CourseContentType.RichText,
                     IsViewable = true,
-                    HtmlText = "<div><h2>What is Lorem Ipsum?</h2><p><strong>Lorem Ipsum</strong> is simply dummy text of the printing" +
+                    Text = "<div><h2>What is Lorem Ipsum?</h2><p><strong>Lorem Ipsum</strong> is simply dummy text of the printing" +
                         " and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an" +
                         " unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only " +
                         "five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised " +
@@ -120,43 +120,43 @@ namespace FEP.Model.Migrations
                         "publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p></div>",
                     CompletionType = ContentCompletionType.Timer,
                     Description = "<p> This is module content 1 </p>",
-                    Title = "<h2>Module Content 1</h2>",
+                    Title = "Module Content 1",
                 };
                 moduleContents.Add(richText);
 
-                CourseContent video = new Video
+                CourseContent video = new CourseContent
                 {
                     Order = 4,
                     ContentType = CourseContentType.Video,
                     IsViewable = true,
-                    VideoUrl = "https://www.youtube.com/watch?v=WEDIj9JBTC8",
+                    Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8",
                     CompletionType = ContentCompletionType.ClickButton,
                     Description = "<p> Watch the video</p>",
-                    Title = "<h2>Module Content 2 </h2>",
+                    Title = "Module Content 2",
                 };
                 moduleContents.Add(video);
 
-                CourseContent iframe = new IFrame
+                CourseContent iframe = new CourseContent
                 {
                     Order = 5,
                     ContentType = CourseContentType.IFrame,
                     IsViewable = true,
-                    IFrameUrl = "https://www.sinarharian.com.my/",
+                    Url = "https://www.sinarharian.com.my/",
                     CompletionType = ContentCompletionType.ClickButton,
                     Description = "<p> This is module content 3 </p>",
-                    Title = "<h2>Module 3</h2>",
+                    Title = "Module 3",
                 };
                 moduleContents.Add(iframe);
 
-                CourseContent doc = new Document
+                CourseContent doc = new CourseContent
                 {
                     Order = 6,
                     ContentType = CourseContentType.Document,
                     IsViewable = true,
-                    DocumentUrl = "http://www.its.caltech.edu/~rosentha/courses/BEM103/Readings/JWCh01.pdf",
+                    Url = "http://www.its.caltech.edu/~rosentha/courses/BEM103/Readings/JWCh01.pdf",
                     CompletionType = ContentCompletionType.ClickButton,
                     Description = "<p> Document </p>",
-                    Title = "<h2>Read this document</h2>",
+                    Title = "Read this document",
                 };
                 moduleContents.Add(doc);
 
@@ -169,7 +169,7 @@ namespace FEP.Model.Migrations
                         CourseId = course.Id,
                         Description = "<p> Description Module</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
-                        Title = "<h2>Module 1</h2>",
+                        Title = "Module 1>",
                         ModuleContents = moduleContents,
                     },
                     new CourseModule
@@ -178,17 +178,17 @@ namespace FEP.Model.Migrations
                         CourseId = course.Id,
                         Description = "<p> Description Module</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
-                        Title = "<h2>Module 2</h2>",
+                        Title = "Module 2",
                         ModuleContents = new List<CourseContent> {
-                            new Video
+                            new CourseContent
                             {
                                 Order = 1,
                                 ContentType = CourseContentType.Video,
                                 IsViewable = true,
-                                VideoUrl = "https://www.youtube.com/watch?v=WEDIj9JBTC8" ,
+                                Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8" ,
                                 CompletionType = ContentCompletionType.ClickButton,
                                 Description = "<p> Watch the video</p>",
-                                Title = "<h2>Module Content 2 </h2>",
+                                Title = "Module Content 2",
                             }
                         } ,
                     },
@@ -198,17 +198,17 @@ namespace FEP.Model.Migrations
                         CourseId = course.Id,
                         Description = "<p> Description Module</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
-                        Title = "<h2>Module 3</h2>",
+                        Title = "Module 3",
                         ModuleContents = new List<CourseContent> {
-                            new Video
+                            new CourseContent
                             {
                                 Order = 1,
                                 ContentType = CourseContentType.Video,
                                 IsViewable = true,
-                                VideoUrl = "https://www.youtube.com/watch?v=WEDIj9JBTC8" ,
+                                Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8" ,
                                 CompletionType = ContentCompletionType.ClickButton,
                                 Description = "<p> Watch the video</p>",
-                                Title = "<h2>Module Content 2 </h2>",
+                                Title = "Module Content 2",
                             }
                         } ,
                     },
@@ -218,7 +218,7 @@ namespace FEP.Model.Migrations
                         CourseId = course.Id,
                         Description = "<p> Description Module</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
-                        Title = "<h2>Module 1</h2>",
+                        Title = "Module 1",
                         ModuleContents = moduleContents.Where(x =>x.IsViewable).ToList().Select(x => new CourseContent()).ToList(),
                     },
                 };

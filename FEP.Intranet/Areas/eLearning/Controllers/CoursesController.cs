@@ -3,9 +3,11 @@ using FEP.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -17,6 +19,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string GetCategory = "eLearning/CourseCategory/";
         public const string CreateCourse = "eLearning/Courses/Create";
         public const string GetCourse = "eLearning/Courses";
+        public const string GetFrontContent = "eLearning/Courses/GetFrontContent";
+        public const string GetFrontCourse = "eLearning/Courses/GetFrontCourse";
         public const string EditRulesCourse = "eLearning/Courses/EditRules";
     }
 
@@ -146,14 +150,21 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             // get Model
-            var model = await TryGetCourse(id.Value);
+            var model = await TryGetFrontCourse(id.Value);
 
             if (model == null)
             {
                 TempData["ErrorMessage"] = "No such course.";
 
                 return RedirectToAction("Index", "Courses");
-            }                      
+            }
+
+            //var frontContent = await TryGetFrontContent(id.Value);
+
+            //if(frontContent != null)
+            //{
+            //    model.FrontPageContents = frontContent.ToList() ;
+            //}
 
             return View(model);
         }
@@ -239,6 +250,29 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return null;
         }
 
+        public async Task<CreateOrEditCourseModel> TryGetFrontCourse(int id)
+        {
+            var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Get, CourseApiUrl.GetFrontCourse + $"?id={id}");
+
+            if (response.isSuccess)
+            {
+                return response.Data;
+            }
+
+            return null;
+        }
+
+        public async Task<IEnumerable<CourseContent>> TryGetFrontContent(int id)
+        {
+            var response = await WepApiMethod.SendApiAsync<IEnumerable<CourseContent>>(HttpVerbs.Get, CourseApiUrl.GetFrontContent + $"?id={id}");
+
+            if (response.isSuccess)
+            {   
+                return response.Data;
+            }
+
+            return null;
+        }
 
 
         // GET: eLearning/Courses/Edit/5

@@ -192,18 +192,48 @@ namespace FEP.WebApi.Api.eLearning
         [HttpGet]
         public async Task<IHttpActionResult> Get(int? id)
         {
-            var entity = await db.Courses
-                   .Include(x => x.CourseApprovalLog)
+            var entity = await db.Courses                   
                    .FirstOrDefaultAsync(x => x.Id == id.Value);
 
             if (entity == null)
                 return NotFound();
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
-            model.CourseApprovalLogs = new List<CourseApprovalLog>();
-            model.CourseApprovalLogs = entity.CourseApprovalLog;
 
             return Ok(model);
+        }
+
+
+        [Route("api/eLearning/Courses/GetFrontCourse")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetFrontCourse(int? id)
+        {
+            var entity = await db.Courses
+                                .Include(x => x.CourseApprovalLog)
+                                .Include(x => x.FrontPageContents)
+                                .Include(x => x.Modules)
+                                .FirstOrDefaultAsync(x => x.Id == id.Value);
+
+            if (entity == null)
+                return NotFound();
+
+            var model = _mapper.Map<CreateOrEditCourseModel>(entity);
+            model.CourseApprovalLogs = entity.CourseApprovalLog;
+            model.FrontPageContents = entity.FrontPageContents;
+            model.Modules = entity.Modules;
+
+            return Ok(model);
+        }
+
+        [HttpGet]
+        public  IHttpActionResult GetFrontContent(int? id)
+        {
+            var entity = db.CourseContents.Where(x => x.CourseId == id.Value);
+
+            if (entity == null)
+                return NotFound();
+           
+            return Ok(entity);
         }
 
         /// <summary>

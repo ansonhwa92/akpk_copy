@@ -1,0 +1,39 @@
+﻿@using FEP.Model.eLearning
+@using FEP.Model
+
+<div class="col-xl-3 col-md-3 col-sm-4 my-2">
+    <div id="page-nav" class="sidebar-left page-nav">
+        <div data-perfect-scrollbar class="ps">
+            <div class="page-section">
+                <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                <ul class="nav page-nav__menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Module</a>
+                    </li>
+            </div>
+
+        </div>
+
+        <div data-perfect-scrollbar class="ps">
+            <div class="page-section">
+                <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Add content</h6>
+                <ul class="nav page-nav__menu">
+                    <li class="nav-item">
+                        <a href="@Url.Action("EditRules", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Web link </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("CreateFrontVideo", "CourseContents", new { area = "eLearning", id = @Model.Id })" class="nav-link">Video</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Users", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Audio</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+      
+
+
+    </div>
+</div>

@@ -53,37 +53,61 @@
                         <span class="text-muted-light x-small font-italic">Course Name</span>
                         <h2 class="color-darkblue mb-0">
                             @name
-
                         </h2>
                     </div>
-                    <div class="descbox">
-                        <span class="text-muted-light x-small font-italic">Course Description</span>
-                        <br />
-
-                        @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
-                    </div>
+                    <span class="text-muted-light x-small font-italic">Course Description</span>
                     <br />
-                    <div class="descbox">
-                        <span class="text-muted-light x-small font-italic">Course Objectives</span>
-                        @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
-
+                    <div>
+                        <div class="descbox">
+                            @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
+                        </div>
+                        <p id="afterDesc"></p>
                     </div>
 
+                    <br />
+                    <span class="text-muted-light x-small font-italic">Course Objectives</span>
+                    <div>
+                        <div class="objbox">
+                            @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
+                        </div>
+                        <p id="afterObj"></p>
+                    </div>
                     <br />
                     <div>
                         <div class="row">
-                            @*<a class="btn btn-secondary dropdown-toggle m-2" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Add Content
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="@Url.Action("Create", "CourseModules", new { area = "eLearning", id = @Model.Id, courseTitle= Model.Title })">Module</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>*@
 
                             <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
                             <a class="btn btn-secondary m-2" href="#">View as learner</a>
                         </div>
+                    </div>
+                    <hr />
+                    <div>
+                        @{
+                            foreach (var module in Model.Modules)
+                            {
+
+                                <div class="draggable-element module-box" >
+                                    <div class="row float-right">
+                                        <a href="@Url.Action("Edit", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                           data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>
+                                        <a href="@Url.Action("Delete", "CourseModules", new { area = "eLearning", id = module.Id})"
+                                           data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></a>
+                                    </div>
+
+                                    <div>
+                                        <h2>@module.Title</h2>
+                                        @module.Order
+                                        <div>
+                                            @Html.Raw(@module.Description)
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                            }
+                        }
                     </div>
                 </div>
 
@@ -194,17 +218,70 @@
     </div>
 </div>
 
-
 <style>
-    .descbox  {
-        display: block;
-        width: 100%;
-        height: 100px;
-        overflow: hidden;
+    .module-box {
+        border-radius: 10px;
+        border-width: thin;
+        padding: 10px;
+        border-style: solid;
+        border-color: #f7f7f7;
+        margin:5px;
     }
 </style>
 
+@section ContentScript {
+    <script src="~/Scripts/jquery.truncate.js"></script>
+    <script src="~/Scripts/draggable/drag-arrange.min.js"></script>
 
-<script>
+    <script>
 
-</script>
+        $(document).ready(function () {
+            truncate('descbox', 'afterDesc', 200);
+            //truncate2('descbox', 'after', 300);
+            truncate('objbox', 'afterObj', 200);
+
+            $('.draggable-element').arrangeable();
+        });
+
+        function truncate(elemClass, elemIdAfter, reqLen) {
+
+            var target = $("." + elemClass)[0];
+
+            var newTxt = jQuery.truncate(target, {
+                length: reqLen
+            });
+
+
+            $("#" + elemIdAfter).empty();
+
+            $("#" + elemIdAfter).append(newTxt);
+
+        }
+
+
+        function truncate2(elemClass, elemClassAfter, reqLen) {
+
+            var target = $("." + elemClass)[0];
+
+            var newTxt = jQuery.truncate(target, {
+                length: reqLen
+            });
+
+            //var elnew = $("." + elemClassAfter);
+
+            //console.log('elnew -',elnew);
+
+            var child = $("div.descbox").next("p");
+
+            console.log('child -', child);
+
+
+            $(child).empty();
+
+            $(child).append(newTxt);
+
+        }
+
+
+    </script>
+}

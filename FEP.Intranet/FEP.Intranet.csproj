@@ -753,6 +753,8 @@
     <Content Include="Areas\eLearning\Views\CourseContents\Details.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Edit.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Index.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\CreateFrontVideo.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseModules\_contentSidebar.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -773,6 +775,9 @@
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\draggable\drag-arrange.js" />
+    <Content Include="Scripts\draggable\drag-arrange.min.js" />
+    <Content Include="Scripts\draggable\examples\index.html" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -788,6 +793,7 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.truncate.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -1224,6 +1230,8 @@
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_LayoutPublic.cshtml" />
     <Content Include="Views\Shared\_LayoutLandingPagePublic.cshtml" />
+    <Content Include="Scripts\draggable\LICENSE" />
+    <Content Include="Scripts\draggable\README.md" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Views\Shared\_Layout1.cshtml" />

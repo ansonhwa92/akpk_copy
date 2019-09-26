@@ -5,14 +5,13 @@ namespace FEP.Model.eLearning
 {
     public class CourseContent : BaseEntity
     {
+        public string Title { get; set; }
 
         public string Description { get; set; }
 
-        public int? CourseModuleId { get; set; }
-        public virtual CourseModule CourseModule { get; set; }
+        public int? CourseModuleId { get; set; }        
 
-        public int? CourseId { get; set; }
-        public virtual Course Course{ get; set; }
+        public int? CourseId { get; set; }        
 
         /// <summary>
         /// Whether the content is viewable or not
@@ -21,8 +20,6 @@ namespace FEP.Model.eLearning
 
         public CourseContentType ContentType { get; set; }
 
-        public string Title { get; set; }
-
         public ContentCompletionType CompletionType { get; set; }
 
         public int? Order { get; set; }
@@ -30,59 +27,21 @@ namespace FEP.Model.eLearning
         public QuestionType? QuestionType { get; set; }
 
         public int? Timer { get; set; } //completiontype timer in sec
-    }
 
-    public class Video : CourseContent
-    {
-        public string VideoUrl { get; set; }
-        public int? VideoFileId { get; set; }
-        public virtual ContentFile VideoFile { get; set; }
-    }
+        public string Url { get; set; }
+        public int? FileId { get; set; }
+        public virtual ContentFile File { get; set; }
 
-    public class Audio : CourseContent
-    {
-        public string AudioUrl { get; set; }
-        public int? AudioFileId { get; set; }
-        public virtual ContentFile AudioFile { get; set; }
-    }
+        // for rich text, used with summernote
+        public string Text { get; set; }
+        public ShowIFrameAs ShowIFrameAs { get; set; }
 
-    public class IFrame : CourseContent
-    {
-        public string IFrameUrl { get; set; }
-        public ShowAs ShowAs { get; set; }
-    }
-
-    public class Document : CourseContent
-    {
-        public string DocumentUrl { get; set; }
-        public int? DocumentFileId { get; set; }
-        public virtual ContentFile DocumentFile { get; set; }
-    }
-
-    public class Section : CourseContent
-    {
-        public string Name { get; set; }
-    }
-
-    public class RichText : CourseContent
-    {
-        public string HtmlText { get; set; }
         public virtual ICollection<ContentFile> Images { get; set; }
+        public virtual ICollection<ContentFile> Files { get; set; }
     }
 
-    public class ModuleTest : CourseContent
-    {
-    }
 
-    public class Assignment : CourseContent
-    {
-    }
-
-    public class InstructorLed : CourseContent
-    {
-    }
-
-    public enum ShowAs
+    public enum ShowIFrameAs
     {
         Embedded,
         Popup,

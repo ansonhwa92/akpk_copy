@@ -192,9 +192,9 @@ namespace FEP.WebApi.Api.Administration
             var totalCount = query.Count();
 
             //advance search
-            query = query.Where(s => (request.Name == null || s.User.Name.Contains(request.Name))              
-               && (request.Email == null || s.User.Email.Contains(request.Email))
-               && (request.UserType == null || s.User.UserType == request.UserType)
+            query = query.Where(s => (request.Name == null || s.UserAccount.User.Name.Contains(request.Name))              
+               && (request.Email == null || s.UserAccount.User.Email.Contains(request.Email))
+               && (request.UserType == null || s.UserAccount.User.UserType == request.UserType)
                );
 
             //quick search 
@@ -202,8 +202,8 @@ namespace FEP.WebApi.Api.Administration
             {
                 var value = request.search.value.Trim();
 
-                query = query.Where(p => p.User.Name.Contains(value)                
-                || p.User.Email.Contains(value)               
+                query = query.Where(p => p.UserAccount.User.Name.Contains(value)                
+                || p.UserAccount.User.Email.Contains(value)               
                 );
             }
 
@@ -220,11 +220,11 @@ namespace FEP.WebApi.Api.Administration
 
                         if (sortAscending)
                         {
-                            query = query.OrderBy(o => o.User.Name);
+                            query = query.OrderBy(o => o.UserAccount.User.Name);
                         }
                         else
                         {
-                            query = query.OrderByDescending(o => o.User.Name);
+                            query = query.OrderByDescending(o => o.UserAccount.User.Name);
                         }
 
                         break;
@@ -233,11 +233,11 @@ namespace FEP.WebApi.Api.Administration
 
                         if (sortAscending)
                         {
-                            query = query.OrderBy(o => o.User.UserType);
+                            query = query.OrderBy(o => o.UserAccount.User.UserType);
                         }
                         else
                         {
-                            query = query.OrderByDescending(o => o.User.UserType);
+                            query = query.OrderByDescending(o => o.UserAccount.User.UserType);
                         }
 
                         break;
@@ -246,33 +246,33 @@ namespace FEP.WebApi.Api.Administration
 
                         if (sortAscending)
                         {
-                            query = query.OrderBy(o => o.User.Email);
+                            query = query.OrderBy(o => o.UserAccount.User.Email);
                         }
                         else
                         {
-                            query = query.OrderByDescending(o => o.User.Email);
+                            query = query.OrderByDescending(o => o.UserAccount.User.Email);
                         }
 
                         break;
 
                     default:
-                        query = query.OrderByDescending(o => o.User.Name);
+                        query = query.OrderByDescending(o => o.UserAccount.User.Name);
                         break;
                 }
 
             }
             else
             {
-                query = query.OrderByDescending(o => o.User.Name);
+                query = query.OrderByDescending(o => o.UserAccount.User.Name);
             }
 
             var data = query.Skip(request.start).Take(request.length)
                 .Select(s => new UserModel
                 {
                     Id = s.UserId,
-                    Name = s.User.Name,
-                    Email = s.User.Email,
-                    UserType = s.User.UserType
+                    Name = s.UserAccount.User.Name,
+                    Email = s.UserAccount.User.Email,
+                    UserType = s.UserAccount.User.UserType
                 }).ToList();
 
             data.ForEach(item => { item.UserTypeDesc = item.UserType.GetDisplayName(); });

@@ -125,7 +125,9 @@ namespace FEP.Model.Migrations
 		{
 			if (!db.NotificationTemplates.Any())
 			{
-				foreach (NotificationType notifyType in Enum.GetValues(typeof(NotificationType)))
+                var user = db.User.Local.Where(r => r.Name.Contains("System Admin")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("System Admin")).FirstOrDefault();
+
+                foreach (NotificationType notifyType in Enum.GetValues(typeof(NotificationType)))
 				{
 					db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
 						new NotificationTemplate
@@ -141,7 +143,7 @@ namespace FEP.Model.Migrations
 							enableWebMessage = true,
 							WebMessage = "Web Message Template",
 							CreatedDate = DateTime.Now,
-							CreatedBy = db.User.Where(u => u.Name == "System Admin").FirstOrDefault().Id,
+							User = user,
 							Display = true
 						});
 				}

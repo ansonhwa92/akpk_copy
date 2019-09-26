@@ -49,6 +49,7 @@ namespace FEP.Model.Migrations
 		public static void AddUserEvent(DbEntities db, string Name, string Email, string ICNo, string MobileNo, UserType UserType)
 		{
 			var eventadmin = db.User.Local.Where(r => r.Name.Contains(Name)).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains(Name)).FirstOrDefault();
+
 			if (eventadmin == null)
 			{
 				//var role = db.Role.Local.Where(r => r.Name.Contains("")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("")).FirstOrDefault();

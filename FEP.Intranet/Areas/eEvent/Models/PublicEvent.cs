@@ -116,11 +116,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		 
 		public string RefNo { get; set; }
 
+		[Display(Name = "Total Days")]
+		public string TotalDay { get; set; }
+
 
 		//File
-		[Required(ErrorMessage = "Please attach file")]
-		[Display(Name = "Proof of Approval")]
-		public HttpPostedFileBase DocumentEvent { get; set; }
+		//[Required(ErrorMessage = "Please attach file")]
+		//[Display(Name = "Proof of Approval")]
+		//public HttpPostedFileBase DocumentEvent { get; set; }
 		[Display(Name = "File Name")]
 		public string FileName { get; set; }
 		[Display(Name = "File Description")]
@@ -132,6 +135,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 	public class CreatePublicEventModel : PublicEventModel
 	{
 		public CreatePublicEventModel() { }
+
+		[Required(ErrorMessage = "Please attach file")]
+		[Display(Name = "Proof of Approval")]
+		public HttpPostedFileBase DocumentEvent { get; set; }
 	}
 
 	public class EditPublicEventModel : PublicEventModel
@@ -140,6 +147,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public int Id { get; set; }
 
 		public string origin { get; set; }
+
+		//[Required(ErrorMessage = "Please attach file")]
+		[Display(Name = "Proof of Approval")]
+		public HttpPostedFileBase DocumentEvent { get; set; }
 	}
 
 	public class DetailsPublicEventModel : PublicEventModel

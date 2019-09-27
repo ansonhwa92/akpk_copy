@@ -36,7 +36,7 @@ namespace FEP.WebApi.Api.eEvent
 
 			//advance search
 			query = query.Where(s => (request.Name == null || s.Name.Contains(request.Name))
-			&& (request.PhoneNo == null || s.PhoneNo.Contains(request.PhoneNo))
+			&& (request.PhoneNo == null || s.PhoneNo == (request.PhoneNo))
 			&& (request.Email == null || s.Email.Contains(request.Email))
 			);
 

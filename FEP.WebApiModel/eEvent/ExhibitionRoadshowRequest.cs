@@ -59,7 +59,7 @@ namespace FEP.WebApiModel.eEvent
 		public IEnumerable<SelectListItem> ReceivedBys { get; set; }
 
 		[Display(Name = "ExRoadNomineeId", ResourceType = typeof(Language.Event))]
-		public int? NomineeId { get; set; }
+		public int[] NomineeId { get; set; }
 		[Display(Name = "ExRoadNomineeName", ResourceType = typeof(Language.Event))]
 		public string NomineeName { get; set; }
 		public IEnumerable<SelectListItem> Nominees { get; set; }
@@ -124,16 +124,19 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadEndDate", ResourceType = typeof(Language.Event))]
 		public DateTime? EndDate { get; set; }
 
+		[Required(ErrorMessage = "Please insert Start Time")]
 		[DataType(DataType.Time)]
 		[UIHint("Time")]
 		[Display(Name = "ExRoadStartTime", ResourceType = typeof(Language.Event))]
 		public DateTime? StartTime { get; set; }
 
+		[Required(ErrorMessage = "Please insert End Time")]
 		[DataType(DataType.Time)]
 		[UIHint("Time")]
 		[Display(Name = "ExRoadEndTime", ResourceType = typeof(Language.Event))]
 		public DateTime? EndTime { get; set; }
 
+		[Required(ErrorMessage = "Please insert Participant Requirement")]
 		[Display(Name = "ExRoadParticipantRequirement", ResourceType = typeof(Language.Event))]
 		public int? ParticipationRequirement { get; set; }
 
@@ -143,27 +146,33 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadExhibitionStatusDesc", ResourceType = typeof(Language.Event))]
 		public string ExhibitionStatusDesc { get; set; }
 
+		[Required(ErrorMessage = "Please insert Receive By")]
 		[Display(Name = "ExRoadReceivedById", ResourceType = typeof(Language.Event))]
 		public int? ReceivedById { get; set; }
 
 		[Display(Name = "ExRoadReceivedByName", ResourceType = typeof(Language.Event))]
 		public string ReceivedByName { get; set; }
 
+		[Required(ErrorMessage = "Please insert Receive Date")]
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
 		[Display(Name = "ExRoadReceivedDate", ResourceType = typeof(Language.Event))]
 		public DateTime? ReceivedDate { get; set; }
 
+		[Required(ErrorMessage = "Please insert Receive Via")]
 		[Display(Name = "ExRoadReceive_Via", ResourceType = typeof(Language.Event))]
 		public string Receive_Via { get; set; }
 
 		[Display(Name = "ExRoadReceivedBys", ResourceType = typeof(Language.Event))]
-		public IEnumerable<SelectListItem> ReceivedBys { get; set; } 
+		public IEnumerable<SelectListItem> ReceivedBys { get; set; }
 
+		[Required(ErrorMessage = "Please select Nominees")]
 		[Display(Name = "ExRoadNomineeId", ResourceType = typeof(Language.Event))]
-		public int? NomineeId { get; set; }
+		public int[] NomineeId { get; set; }
+
 		[Display(Name = "ExRoadNomineeName", ResourceType = typeof(Language.Event))]
 		public string NomineeName { get; set; }
+
 		public IEnumerable<SelectListItem> Nominees { get; set; }
 	}
 

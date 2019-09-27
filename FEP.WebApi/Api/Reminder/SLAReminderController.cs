@@ -78,6 +78,10 @@ namespace FEP.WebApi.Api.Reminder
         public IHttpActionResult GetParameterList(int id)
         {
             var getNotifyTpe = db.SLAReminder.Where(n => (int)n.NotificationType == id).FirstOrDefault();
+            if (getNotifyTpe == null)
+            {
+                return Ok();
+            }
             var paramList = db.ParameterGroup.Where(p => p.SLAEventType == getNotifyTpe.SLAEventType).ToList();
 
             List<TemplateParameterType> paramTypeList = new List<TemplateParameterType>();
@@ -270,13 +274,14 @@ namespace FEP.WebApi.Api.Reminder
                     foreach (var receiver in reminder.ReceiverId)
                     {
                         string receiverEmailAddress = db.User.Find(receiver).Email;
+						int counter = 1;
                         //send notification mengikut jadual
                         foreach (var notifyDate in ScheduleMessage)
                         {
                             // --> CALL EMAIL API HERE---
                             //                          |   send received notificationId here
                             //                         \|/
-                            var response = await sendEmailUsingAPIAsync(notifyDate, (int)reminder.NotificationCategory, (int)reminder.NotificationType, receiverEmailAddress, emailSubject, emailBody);
+                            var response = await sendEmailUsingAPIAsync(notifyDate, (int)reminder.NotificationCategory, (int)reminder.NotificationType, receiverEmailAddress, emailSubject, emailBody, counter);
                             if (response != null) { 
                                 string EmailNotificationId = response.datID; //assumed returned Id
                                 // --> CALL insert BulkNotificationGroup API (NotificationMedium : Email, int [SLAReminderStatusId])
@@ -289,6 +294,7 @@ namespace FEP.WebApi.Api.Reminder
 
                                 var responseEmailNotificationGroup = RegisterBulkNotificationGroupFunc(objEmailNotification);
                             }
+							counter++;
                         }
                     }
 
@@ -300,14 +306,14 @@ namespace FEP.WebApi.Api.Reminder
                     foreach (var receiver in reminder.ReceiverId)
                     {
                         string receiverPhoneNo = db.User.Find(receiver).MobileNo;
-
-                        foreach (var notifyDate in ScheduleMessage)
+						int counter = 1;
+						foreach (var notifyDate in ScheduleMessage)
                         {
                             string SMSToSend = generateSMSMessage(template.SMSMessage, template.NotificationType, reminder.ParameterListToSend);
                             // --> CALL SMS API HERE-----
                             //                          |   send received notificationId here
                             //                         \|/
-                            var response = await sendSMSUsingAPIAsync(notifyDate, (int)reminder.NotificationCategory, (int)reminder.NotificationType, receiverPhoneNo, null, SMSToSend);
+                            var response = await sendSMSUsingAPIAsync(notifyDate, (int)reminder.NotificationCategory, (int)reminder.NotificationType, receiverPhoneNo, null, SMSToSend, counter);
                             if (response != null)
                             {
                                 string SMSNotificationId = response.datID; //assumed returned Id
@@ -321,7 +327,8 @@ namespace FEP.WebApi.Api.Reminder
 
                                 var responseSMSNotificationGroup = RegisterBulkNotificationGroupFunc(objSMSNotification);
                             }
-                        }
+							counter++;
+						}
                     }
                 }
 
@@ -472,13 +479,13 @@ namespace FEP.WebApi.Api.Reminder
 
         [NonAction]
         public async Task<EmailClass> sendEmailUsingAPIAsync
-            (DateTime emailDate, int notifyCategory, int notifyType, string emailAddress, string emailSubject, string emailBody)
+            (DateTime emailDate, int notifyCategory, int notifyType, string emailAddress, string emailSubject, string emailBody, int counter)
         {
             DateTime myTimeNow = DateTime.Now;
-            int epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+            int epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
             EmailClass emailObj = new EmailClass
             {
-                datID = emailAddress + "-email-" + epoch.ToString(),
+                datID = emailAddress + "-email" + counter + "-" + epoch.ToString(),
                 datType = notifyCategory,
                 datNotify = notifyType,
                 dtInsert = myTimeNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
@@ -496,38 +503,17 @@ namespace FEP.WebApi.Api.Reminder
             else
                 return null;
         }
-        [NonAction]
-        public async Task<EmailClass> StopEmailUsingAPI (string emailId)
-        {
-            var response = await WepApiMethod.SendApiAsync<EmailClass>
-                (HttpVerbs.Delete, $"BulkEmail/"+emailId, null, WepApiMethod.APIEngine.EmailSMSAPI);
-
-            if (response.isSuccess)
-                return response.Data;
-            else
-                return null;
-        }
-        [NonAction]
-        public async Task<EmailClass> StopSMSUsingAPI(string smsId)
-        {
-            var response = await WepApiMethod.SendApiAsync<EmailClass>
-                (HttpVerbs.Delete, $"BulkSMS/" + smsId, null, WepApiMethod.APIEngine.EmailSMSAPI);
-
-            if (response.isSuccess)
-                return response.Data;
-            else
-                return null;
-        }
+        
 
         [NonAction]
         public async Task<SMSClass> sendSMSUsingAPIAsync
-            (DateTime smsDate, int notifyCategory, int notifyType, string phoneNo, string smsSubject, string smsBody)
+            (DateTime smsDate, int notifyCategory, int notifyType, string phoneNo, string smsSubject, string smsBody, int counter)
         {
             DateTime myTimeNow = DateTime.Now;
-            int epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+            int epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
             SMSClass smsObj = new SMSClass
             {
-                datID = phoneNo + "-sms-" + epoch.ToString(),
+                datID = phoneNo + "-sms" + counter + "-" + epoch.ToString(),
                 datType = notifyCategory,
                 datNotify = notifyType,
                 dtInsert = myTimeNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
@@ -545,6 +531,29 @@ namespace FEP.WebApi.Api.Reminder
             else
                 return null;
         }
-        //--------------------------------------------------------------------------------------------------
-    }
+
+		[NonAction]
+		public async Task<EmailClass> StopEmailUsingAPI(string emailId)
+		{
+			var response = await WepApiMethod.SendApiAsync<EmailClass>
+				(HttpVerbs.Delete, $"BulkEmail/" + emailId, null, WepApiMethod.APIEngine.EmailSMSAPI);
+
+			if (response.isSuccess)
+				return response.Data;
+			else
+				return null;
+		}
+		[NonAction]
+		public async Task<EmailClass> StopSMSUsingAPI(string smsId)
+		{
+			var response = await WepApiMethod.SendApiAsync<EmailClass>
+				(HttpVerbs.Delete, $"BulkSMS/" + smsId, null, WepApiMethod.APIEngine.EmailSMSAPI);
+
+			if (response.isSuccess)
+				return response.Data;
+			else
+				return null;
+		}
+		//--------------------------------------------------------------------------------------------------
+	}
 }

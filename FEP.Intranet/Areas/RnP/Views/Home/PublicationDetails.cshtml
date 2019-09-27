@@ -1,0 +1,312 @@
+﻿@model FEP.WebApiModel.RnP.ReturnPublicationModel
+
+@{
+    ViewBag.Title = "Publication Details";
+    Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
+}
+
+@section Nav{
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publications</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/BrowsePublications">Browse Publications</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+            </ol>
+        </nav>
+    </div>
+    <h1 class="page-title text-white">@Model.Title</h1>
+    <div class="header-text">
+        <div class="d-flex star-rating">
+            <div class="rating">
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star_border</i>
+            </div>
+            <div class="mx-2">4.2 (104 ratings) <span class="reviews-text">99 reviews</span></div>
+        </div>
+    </div>
+}
+
+<div class="content-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Anchor tab -->
+                <div class="custom-tab mb-4">
+                    <ul class="nav nav-line" id="myTab">
+                        <li class="nav-item">
+                            <a class="nav-link scrollLink active" id="about-book-tab" href="#about-book" role="tab">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link scrollLink" id="reviews-tab" href="#reviews" role="tab">Reviews</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- column content left -->
+            <div class="col-lg-9">
+                <div class="col-content">
+                    <div id="about-book">
+                        <h4 class="color-darkblue">About This Publication</h4>
+                        <p class="img-responsive"><img src="../img/cover-publication-dummy-2.jpg" alt="image"></p>
+                        <p>@Model.Description</p>
+                    </div>
+                    <div id="reviews">
+                        <h4 class="color-darkblue mt-5">Reviews</h4>
+                        <div class="card">
+                            <div class="row pt-4">
+                                <div class="col-lg-4 text-center">
+                                    <div class="main-rating">4.2</div>
+                                    <div class="rating">
+                                        <i class="material-icons">star</i>
+                                        <i class="material-icons">star</i>
+                                        <i class="material-icons">star</i>
+                                        <i class="material-icons">star</i>
+                                        <i class="material-icons">star_border</i>
+                                    </div>
+                                    <div class="small my-2">rating of <span class="font-weight-bold">102</span> reviews</div>
+                                </div>
+                                <div class="col-lg-8 py-4">
+                                    <div class="d-flex rating-progress">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-green" role="progressbar" style="width: 56%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="rating mx-2">
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                        </div>
+                                        <div class="ratingpercent small">56%</div>
+                                    </div>
+                                    <div class="d-flex rating-progress">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-blue" role="progressbar" style="width: 34%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="rating mx-2">
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star_border</i>
+                                        </div>
+                                        <div class="ratingpercent small">34%</div>
+                                    </div>
+                                    <div class="d-flex rating-progress">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-cyan" role="progressbar" style="width: 8%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="rating mx-2">
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star_border</i>
+                                            <i class="material-icons">star_border</i>
+                                        </div>
+                                        <div class="ratingpercent small">8%</div>
+                                    </div>
+                                    <div class="d-flex rating-progress">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-orange" role="progressbar" style="width: 2%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="rating mx-2">
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star_border</i>
+                                            <i class="material-icons">star_border</i>
+                                            <i class="material-icons">star_border</i>
+                                        </div>
+                                        <div class="ratingpercent small">2%</div>
+                                    </div>
+                                    <div class="d-flex rating-progress">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-red" role="progressbar" style="width: 1%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="rating mx-2">
+                                            <i class="material-icons">star</i>
+                                            <i class="material-icons">star_border</i>
+                                            <i class="material-icons">star_border</i>
+                                            <i class="material-icons">star_border</i>
+                                            <i class="material-icons">star_border</i>
+                                        </div>
+                                        <div class="ratingpercent small">1%</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 text-right small px-5 py-3"><span class="font-weight-bolder">1-5</span> of <span class="font-weight-bolder">80</span> reviews</div>
+                            </div>
+                            <div class="border-bottom mb-4"></div>
+                            <div class="card__body reviews-list">
+                                <div class="review-comment">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-6">
+                                            <a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">1 min ago</span><span class="card__author-name">Richard N.Kartz</span></span></a>
+                                        </div>
+                                        <div class="col-lg-8 col-sm-6">
+                                            <div class="rating mb-2">
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star_border</i>
+                                            </div>
+                                            <div class="small">I already understood the fundamentals from a Java course i'd taken a while ago, this allowed me to re-touch base and learn a hell of alot more.</div>
+                                            <button class="btn btn-default btn-sm my-4"><i class="la la-thumbs-o-up color-secondary font-icon" style="font-size: 17px;"></i>This is helpful</button>
+                                        </div>
+                                    </div>
+                                    <div class="border-bottom mb-4"></div>
+                                </div>
+                                <div class="review-comment">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-6">
+                                            <a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">1 hour ago</span><span class="card__author-name">Cynthia Golden</span></span></a>
+                                        </div>
+                                        <div class="col-lg-8 col-sm-6">
+                                            <div class="rating mb-2">
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                            </div>
+                                            <div class="small">Really greate crash course and nice refresher as i've been working with Java over the past few years. I especially appreciated the naming conventions lecture and the way you kept referring to the Microsoft Developer Docs as becoming familiar with the proper resources is critical to become self sufficient.</div>
+                                            <button class="btn btn-default btn-sm my-4"><i class="la la-thumbs-o-up color-secondary font-icon" style="font-size: 17px;"></i>This is helpful</button>
+                                        </div>
+                                    </div>
+                                    <div class="border-bottom mb-4"></div>
+                                </div>
+                                <div class="review-comment">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-6">
+                                            <a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">1 day ago</span><span class="card__author-name">Diana G.Oblinger</span></span></a>
+                                        </div>
+                                        <div class="col-lg-8 col-sm-6">
+                                            <div class="rating mb-2">
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star_border</i>
+                                            </div>
+                                            <div class="small">Will be a very good Crash course to get people used to c# after coming from the Java masterclass once all the content is here.</div>
+                                            <button class="btn btn-default btn-sm my-4"><i class="la la-thumbs-o-up color-secondary font-icon" style="font-size: 17px;"></i>This is helpful</button>
+                                        </div>
+                                    </div>
+                                    <div class="border-bottom mb-4"></div>
+                                </div>
+                                <div class="review-comment">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-6">
+                                            <a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">21 days ago</span><span class="card__author-name">Mark Luker</span></span></a>
+                                        </div>
+                                        <div class="col-lg-8 col-sm-6">
+                                            <div class="rating mb-2">
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star_border</i>
+                                                <i class="material-icons">star_border</i>
+                                            </div>
+                                            <div class="small">It isn't bad course, it's actually a pretty good one but it feels incomplete; the last chapter refers to future chapters that aren't there.</div>
+                                            <button class="btn btn-default btn-sm my-4"><i class="la la-thumbs-o-up color-secondary font-icon" style="font-size: 17px;"></i>This is helpful</button>
+                                        </div>
+                                    </div>
+                                    <div class="border-bottom mb-4"></div>
+                                </div>
+                                <div class="review-comment">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-6">
+                                            <a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">21 days ago</span><span class="card__author-name">Ahmad Azham</span></span></a>
+                                        </div>
+                                        <div class="col-lg-8 col-sm-6">
+                                            <div class="rating mb-2">
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                            </div>
+                                            <div class="small">This course helped me a lot with my projects. Emma go directly to the point and make you save a lot of time.</div>
+                                            <button class="btn btn-default btn-sm my-4"><i class="la la-thumbs-o-up color-secondary font-icon" style="font-size: 17px;"></i>This is helpful</button>
+                                        </div>
+                                    </div>
+                                    <div class="border-bottom mb-4"></div>
+                                </div>
+                                <div class="review-comment">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-6">
+                                            <a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">21 days ago</span><span class="card__author-name">Lincon Thomas</span></span></a>
+                                        </div>
+                                        <div class="col-lg-8 col-sm-6">
+                                            <div class="rating mb-2">
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star</i>
+                                                <i class="material-icons">star_border</i>
+                                                <i class="material-icons">star_border</i>
+                                            </div>
+                                            <div class="small">It isn't bad course, it's actually a pretty good one but it feels incomplete; the last chapter refers to future chapters that aren't there.</div>
+                                            <button class="btn btn-default btn-sm my-4"><i class="la la-thumbs-o-up color-secondary font-icon" style="font-size: 17px;"></i>This is helpful</button>
+                                        </div>
+                                    </div>
+                                    <div class="border-bottom mb-4"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end column content left -->
+            <!-- column content right -->
+            <div class="col-lg-3">
+                <div class="right-sidebar">
+                    <div class="card-group">
+                        <div class="lead color-darkblue mb-3 font-weight-bolder">Publication Details</div>
+                        <ul>
+                            <li><i class="la la-list-ul font-icon color-secondary" style="font-size: 17px;"></i>@Model.Category</li>
+                            <li><i class="la la-user font-icon color-secondary" style="font-size: 17px;"></i>@Model.Author</li>
+                            <li><i class="la la-calendar font-icon color-secondary" style="font-size: 19px;"></i>@Model.Year</li>
+                            <li><i class="la la-language font-icon color-secondary" style="font-size: 17px;"></i>@Model.Language</li>
+                            <li><i class="la la-barcode font-icon color-secondary" style="font-size: 17px;"></i>@Model.ISBN</li>
+                            <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Digital/Hardcover</li>
+                        </ul>
+                    </div>
+                    <!-- Buy Courses -->
+                    <div class="card text-center mb-5">
+                        <div class="card__body">
+                            <h2 class="color-darkblue mb-0">RM29.90</h2>
+                            <div class="mt-3">
+                                <a href="@Url.Action("SelectFormat", "Home", new { area = "RnP", @id = Model.ID })" class="btn btn-default color-secondary d-block mb-2">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Share with friends -->
+                    <div class="card-group">
+                        <div class="lead color-darkblue mb-3 font-weight-bolder">Share with Friends</div>
+                        <div class="ms-share"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- end column content right -->
+        </div>
+    </div>
+    <!-- Wrapper -->
+</div>
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('.reviews-list').simpleLoadMore({
+                item: '.review-comment',
+                count: 5,
+                btnHTML: '<div class="col-lg-8 float-right"><a href="#" class="load-more__btn btn btn-outline-secondary">See more reviews</a></div>'
+            });
+
+        });
+    </script>
+}

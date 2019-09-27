@@ -5,11 +5,6 @@
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-@section Contentscript{
-	<script type="text/javascript">
-	</script>
-}
-
 @section Nav {
 
 	<div class="title_header">
@@ -120,6 +115,14 @@
 										@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
 									</div>
 								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.TotalDay)
+								@Html.EditorFor(model => model.TotalDay, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
+								@Html.ValidationMessageFor(model => model.TotalDay, "", new { @class = "text-danger" })
 							</div>
 						</div>
 

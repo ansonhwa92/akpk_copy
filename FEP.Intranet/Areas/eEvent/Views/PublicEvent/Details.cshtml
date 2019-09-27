@@ -5,25 +5,6 @@
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-@section ContentScript{
-	<script type="text/javascript">
-		$(document).ready(function () {
-
-			var scontent = $('#Contents').val();
-			surveyCreator.text = scontent;
-
-			$("#StartDate").flatpickr({
-				dateFormat: "d/m/Y",
-				maxDate: "31/12/2200",
-			});
-
-			$("#EndDate").flatpickr({
-				dateFormat: "d/m/Y",
-				maxDate: "31/12/2200",
-			});
-	</script>
-}
-
 @section Nav {
 
 	<div class="title_header">
@@ -240,7 +221,7 @@
 					<a href='@Url.Action("FinalApproved", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-success">Approve</a>
 					<a href='@Url.Action("RejectPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-warning">Require Amendment</a>
 				}
-				else if (Model.origin == "fromamendment")
+				else if (Model.origin == "amendment")
 				{
 					<a href='@Url.Action("List")' class="btn btn-default">Back</a>
 					<a href='@Url.Action("SubmitToVerify", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-primary">Submit for Verification</a>

@@ -5,22 +5,6 @@
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-
-@section ContentScript {
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$("#DateAssigned").flatpickr({
-				dateFormat: "d-m-Y",
-				maxDate: "31-01-3000",
-			});
-			$("#DateOfBirth").flatpickr({
-				dateFormat: "d-m-Y",
-				maxDate: "31-01-3000",
-			});
-		});
-	</script>
-}
-
 @section Nav {
 
 	<div class="title_header">
@@ -90,17 +74,18 @@
 		<div class="border-form rounded-top">
 			<form>
 				<div class="form-container">
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.UserId)
-							@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%", @disabled = "disabled" })
-						</div>
-					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.SpeakerType)
 							@Html.EnumDropDownListFor(model => model.SpeakerType, "-Select Speaker Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.UserId)
+							@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%", @disabled = "disabled" })
 						</div>
 					</div>
 
@@ -161,18 +146,18 @@
 					</div>
 
 					@*<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.SpeakerPicture)
-							@Html.EditorFor(model => model.SpeakerPictureName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
+			<div class="form-group col-lg-12">
+				@Html.LabelFor(model => model.SpeakerPicture)
+				@Html.EditorFor(model => model.SpeakerPictureName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+			</div>
+		</div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.SpeakerAttachment)
-							@Html.EditorFor(model => model.SpeakerAttachmentName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>*@
+		<div class="row">
+			<div class="form-group col-lg-12">
+				@Html.LabelFor(model => model.SpeakerAttachment)
+				@Html.EditorFor(model => model.SpeakerAttachmentName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+			</div>
+		</div>*@
 
 					<div class="row">
 						<div class="form-group col-lg-12">

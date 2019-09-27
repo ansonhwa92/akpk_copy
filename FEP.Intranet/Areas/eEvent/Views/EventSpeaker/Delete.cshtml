@@ -80,17 +80,18 @@
 		<div class="border-form rounded-top">
 			<form>
 				<div class="form-container">
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.UserId)
-							@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%", @disabled = "disabled" })
-						</div>
-					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.SpeakerType)
 							@Html.EnumDropDownListFor(model => model.SpeakerType, "-Select Speaker Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.UserId)
+							@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%", @disabled = "disabled" })
 						</div>
 					</div>
 
@@ -104,24 +105,24 @@
 					<div class="row">
 						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.DateAssigned, htmlAttributes: new { @class = "control-label col-lg-12" })
-							@Html.EditorFor(model => model.DateAssigned, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Assigned", @readonly = "readonly" } })
+							@Html.EditorFor(model => model.DateAssigned, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Assigned", @disabled = "disabled" } })
 						</div>
 
 						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-lg-12" })
-							@Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date of Birth", @readonly = "readonly" } })
+							@Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date of Birth", @disabled = "disabled" } })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.AddressStreet1)
-							@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 1" , @disabled = "disabled"} })
+							@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 1", @disabled = "disabled" } })
 							@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
 						</div>
 
 						<div class="form-group col-lg-12">
-							@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 2" , @disabled = "disabled"} })
+							@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 2", @disabled = "disabled" } })
 							@Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
 						</div>
 					</div>
@@ -153,18 +154,18 @@
 					</div>
 
 					@*<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.SpeakerPicture)
-							@Html.EditorFor(model => model.SpeakerPictureName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
+			<div class="form-group col-lg-12">
+				@Html.LabelFor(model => model.SpeakerPicture)
+				@Html.EditorFor(model => model.SpeakerPictureName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+			</div>
+		</div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.SpeakerAttachment)
-							@Html.EditorFor(model => model.SpeakerAttachmentName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>*@
+		<div class="row">
+			<div class="form-group col-lg-12">
+				@Html.LabelFor(model => model.SpeakerAttachment)
+				@Html.EditorFor(model => model.SpeakerAttachmentName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+			</div>
+		</div>*@
 
 					<div class="row">
 						<div class="form-group col-lg-12">

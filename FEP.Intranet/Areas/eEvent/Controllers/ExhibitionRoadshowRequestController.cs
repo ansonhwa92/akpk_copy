@@ -105,13 +105,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		public async Task<ActionResult> Edit(EditExhibitionRoadshowRequestModel model)
 		{
 
-			var nameResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/IsEventNameExist?id={model.Id}&name={model.EventName}");
+			//var nameResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/IsEventNameExist?id={model.Id}&name={model.EventName}");
 
-			if (nameResponse.isSuccess)
-			{
-				TempData["ErrorMessage"] = "Event Name already exist in the system";
-				return RedirectToAction("List");
-			}
+			//if (nameResponse.isSuccess)
+			//{
+			//	TempData["ErrorMessage"] = "Event Name already exist in the system";
+			//	return RedirectToAction("List");
+			//}
 
 			if (ModelState.IsValid)
 			{

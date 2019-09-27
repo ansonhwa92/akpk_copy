@@ -181,10 +181,11 @@ namespace FEP.WebApi.Api.RnP
         }
 
         // Alternative function for listing (all)
-        // GET: api/RnP/Publication (misc list) - CURRENTLY NOT USED
+        // GET: api/RnP/Publication (misc list) - CURRENTLY USED FOR ANONYMOUS BROWSING
         public List<ReturnPublicationModel> Get()
         {
-            var publications = db.Publication.OrderBy(p => p.Status).OrderBy(p => p.Title).Select(s => new ReturnPublicationModel
+            // TODO: published only
+            var publications = db.Publication.Where(p => p.Status <= PublicationStatus.Published).OrderByDescending(p => p.DateAdded).OrderBy(p => p.Title).Select(s => new ReturnPublicationModel
             {
                 ID = s.ID,
                 CategoryID = s.CategoryID,

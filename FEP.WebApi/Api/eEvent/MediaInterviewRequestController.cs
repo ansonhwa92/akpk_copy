@@ -194,9 +194,11 @@ namespace FEP.WebApi.Api.eEvent
 				Location = i.Location,
 				Language = i.Language,
 				Topic = i.Topic,
-				Designation = i.Designation,
 				UserId = i.UserId,
 				UserName = i.User.Name,
+				//RepDesignation = i.User.Designation,
+				RepEmail = i.User.Email,
+				RepMobileNumber = i.User.MobileNo,
 				ContactPerson = i.ContactPerson,
 			}).ToList();
 
@@ -223,9 +225,11 @@ namespace FEP.WebApi.Api.eEvent
 				Location = i.Location,
 				Language = i.Language,
 				Topic = i.Topic,
-				Designation = i.Designation,
 				UserId = i.UserId,
 				UserName = i.User.Name,
+				//RepDesignation = i.User.Designation,
+				RepEmail = i.User.Email,
+				RepMobileNumber = i.User.MobileNo,
 				ContactPerson = i.ContactPerson,
 				CreatedBy = i.CreatedBy,
 				CreatedDate = i.CreatedDate

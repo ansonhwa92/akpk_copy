@@ -86,7 +86,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                     await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), new EmailAddress { DisplayName = model.Name, Address = model.Email });
 
-                    LogActivity(Modules.Admin, "Create Individual User", model);
+                    await LogActivity(Modules.Admin, "Create Individual User", model);
 
                     TempData["SuccessMessage"] = "User successfully registered. User will receive email with sign in details and link to activate the account.";
 
@@ -368,7 +368,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                LogActivity(Modules.Admin, "Delete Individual User", new { id = id });
+               await LogActivity(Modules.Admin, "Delete Individual User", new { id = id });
 
                 TempData["SuccessMessage"] = "User account successfully delete.";
 

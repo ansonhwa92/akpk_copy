@@ -23,20 +23,18 @@ namespace FEP.Model
 
 	public enum MediaType
 	{
-		[Display(Name = "Broadcast")]
-		Broadcast,
+		[Display(Name = "Televisyen")]
+		Televisyen,
 
-		[Display(Name = "Internet")]
-		Internet,
+		[Display(Name = "Radio")]
+		Radio,
 
-		[Display(Name = "Magazine")]
-		Magazine,
+		[Display(Name = "Online")]
+		Online,
 
-		[Display(Name = "Newspaper")]
-		Newspaper,
+		[Display(Name = "Magazine / Newspaper")]
+		MagazineNewspaper,
 
-		[Display(Name = "Pres Agency")]
-		PressAgency
 	}
 
 	public enum EventStatus
@@ -60,7 +58,10 @@ namespace FEP.Model
 		RejectNeedToEdit, //If Approver 3 Rejected
 
 		[Display(Name = "Rejected")]
-		Cancelled //If Admin Cancel Public Event 
+		Cancelled, //If Admin Cancel Public Event 
+
+		[Display(Name = "Published")]
+		Published //If Admin Event who creates Public Event 
 	}
 
 	public enum Ticket
@@ -150,7 +151,7 @@ namespace FEP.Model
 	{
 		Islam,
 		Hindu,
-		Buddha, 
+		Buddha,
 		Christian
 	}
 

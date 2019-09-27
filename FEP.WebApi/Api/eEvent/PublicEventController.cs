@@ -418,7 +418,26 @@ namespace FEP.WebApi.Api.eEvent
 			return "";
 		}
 
+		//Published Public Event 
+		[Route("api/eEvent/PublicEvent/PublishedPublicEvent")]
+		public string PublishedPublicEvent(int id)
+		{
 
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.Published;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return publicevent.RefNo;
+			}
+			return "";
+		}
 
 	}
 }

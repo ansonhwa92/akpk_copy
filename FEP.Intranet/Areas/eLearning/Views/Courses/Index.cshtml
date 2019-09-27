@@ -198,7 +198,8 @@
 
                             if (row.Status == 0) {          // new
                                 if (canedit) {
-                                    action += '<a href="@Url.Action("Edit", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
+                                    //action += '<a href="@Url.Action("Edit", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
+                                    action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
                                     action += '<a href="@Url.Action("Delete", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>';
                                 }
                             }

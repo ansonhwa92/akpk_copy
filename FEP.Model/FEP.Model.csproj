@@ -85,21 +85,13 @@
     <Compile Include="Migrations\201909240705233_Initial-wawar.Designer.cs">
       <DependentUpon>201909240705233_Initial-wawar.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201909240822494_addlearningpathtocourse.cs" />
-    <Compile Include="Migrations\201909240822494_addlearningpathtocourse.Designer.cs">
-      <DependentUpon>201909240822494_addlearningpathtocourse.cs</DependentUpon>
+    <Compile Include="Migrations\201909260234537_UpdateCourses.cs" />
+    <Compile Include="Migrations\201909260234537_UpdateCourses.Designer.cs">
+      <DependentUpon>201909260234537_UpdateCourses.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201909240934522_makeordernoformodulenotrequired.cs" />
-    <Compile Include="Migrations\201909240934522_makeordernoformodulenotrequired.Designer.cs">
-      <DependentUpon>201909240934522_makeordernoformodulenotrequired.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909250430057_makeordernoformodulenotrequired2.cs" />
-    <Compile Include="Migrations\201909250430057_makeordernoformodulenotrequired2.Designer.cs">
-      <DependentUpon>201909250430057_makeordernoformodulenotrequired2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909250847564_makeordernoformodulenotrequired3.cs" />
-    <Compile Include="Migrations\201909250847564_makeordernoformodulenotrequired3.Designer.cs">
-      <DependentUpon>201909250847564_makeordernoformodulenotrequired3.cs</DependentUpon>
+    <Compile Include="Migrations\201909260754247_AddDisplayFieldForCourse.cs" />
+    <Compile Include="Migrations\201909260754247_AddDisplayFieldForCourse.Designer.cs">
+      <DependentUpon>201909260754247_AddDisplayFieldForCourse.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -130,17 +122,11 @@
     <EmbeddedResource Include="Migrations\201909240705233_Initial-wawar.resx">
       <DependentUpon>201909240705233_Initial-wawar.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909240822494_addlearningpathtocourse.resx">
-      <DependentUpon>201909240822494_addlearningpathtocourse.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909260234537_UpdateCourses.resx">
+      <DependentUpon>201909260234537_UpdateCourses.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909240934522_makeordernoformodulenotrequired.resx">
-      <DependentUpon>201909240934522_makeordernoformodulenotrequired.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909250430057_makeordernoformodulenotrequired2.resx">
-      <DependentUpon>201909250430057_makeordernoformodulenotrequired2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909250847564_makeordernoformodulenotrequired3.resx">
-      <DependentUpon>201909250847564_makeordernoformodulenotrequired3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909260754247_AddDisplayFieldForCourse.resx">
+      <DependentUpon>201909260754247_AddDisplayFieldForCourse.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

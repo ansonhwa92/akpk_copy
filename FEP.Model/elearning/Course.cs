@@ -137,6 +137,9 @@ namespace FEP.Model.eLearning
         /// Evertyhing below is not used, here for reference/future use.
         //public CourseLevel RequiredLevel { get; set; }
 
+        public bool Display { get; set; }
+
+
     }
 
 

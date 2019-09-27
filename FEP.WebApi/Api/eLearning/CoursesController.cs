@@ -57,7 +57,7 @@ namespace FEP.WebApi.Api.eLearning
         public IHttpActionResult Post(FilterCourseModel request)
         {
             var query = db.Courses.Where(x => (String.IsNullOrEmpty(request.Title) || x.Title.Contains(request.Title)) &&
-                                    (String.IsNullOrEmpty(request.Code) || x.Title.Contains(request.Code)));
+                                    (String.IsNullOrEmpty(request.Code) || x.Title.Contains(request.Code)) && x.Display != false);
 
             var totalCount = query.Count();
 
@@ -164,6 +164,7 @@ namespace FEP.WebApi.Api.eLearning
                 course.Objectives = HttpUtility.HtmlEncode(request.Objectives);
 
                 course.CreatedDate = DateTime.Now;
+                course.Display = true;
 
                 // all course activity is log to table courseapprovallog
 
@@ -206,11 +207,68 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(model);
         }
 
-        /// <summary>
-        /// For use in index page, to list all the courses but with some fields only
-        /// </summary>
-        /// <returns></returns>
-        [Route("api/eLearning/Courses/EditRules")]
+        [Route("api/eLearning/Courses/Delete")]
+        public string Delete(int id)
+        {
+            Course course = db.Courses.Find(id);
+
+            if (course != null)
+            {
+                string ptitle = course.Title;
+
+                course.Display = false;
+
+                db.Courses.Attach(course);
+                db.Entry(course).Property(m => m.Display).IsModified = true;
+
+                db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();
+
+                return ptitle;
+            }
+
+            return "";
+        }
+
+        [Route("api/eLearning/Courses/Edit")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public string Edit([FromBody] CreateOrEditCourseModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = db.Courses.Where(x => x.Id == model.Id).FirstOrDefault();
+
+                if (entity != null)
+                {
+
+                    entity.CategoryId = model.CategoryId;
+                    entity.Title = model.Title;
+                    entity.Code = model.Code;
+                    entity.Description = model.Description;
+                    entity.Objectives = model.Objectives;
+                    entity.Medium = model.Medium;
+                    entity.Duration = model.Duration;
+                    entity.DurationType = model.DurationType;
+                    entity.Language = model.Language;
+                    entity.IsFree = model.IsFree;
+                    entity.ViewCategory = model.ViewCategory;
+                    entity.Price = model.Price;
+                    db.Entry(entity).State = EntityState.Modified;
+
+                    db.SaveChanges();
+
+                    return model.Title;
+                }
+            }
+            return "";            
+        }
+
+    /// <summary>
+    /// For use in index page, to list all the courses but with some fields only
+    /// </summary>
+    /// <returns></returns>
+    [Route("api/eLearning/Courses/EditRules")]
         [HttpPost]
         [ValidationActionFilter]
         public async Task<IHttpActionResult> EditRules([FromBody] CourseRuleModel request)

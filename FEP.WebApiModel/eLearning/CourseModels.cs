@@ -130,6 +130,9 @@ namespace FEP.WebApiModel.eLearning
 
         public ICollection<CourseApprovalLog> CourseApprovalLogs { get; set; }
 
+        public bool Display { get; set; }
+
+
     }
 
     public class CourseRuleModel : BaseModel

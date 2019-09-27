@@ -25,7 +25,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         // GET: eLearning/CourseModules
         public async Task<ActionResult> Index()
         {
-            var courseModules = db.CourseModules.Include(c => c.Course);
+            var courseModules = db.CourseModules;
             return View(await courseModules.ToListAsync());
         }
 
@@ -81,8 +81,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     var id = response.Data;
 
                     if (!String.IsNullOrEmpty(id))
-
-                        return RedirectToAction("Content", "Modules", new { id = id });
+                        return RedirectToAction("Content", "CourseModules", new { id = id });
                     else
                         return RedirectToAction("Index", "Courses");
                 }

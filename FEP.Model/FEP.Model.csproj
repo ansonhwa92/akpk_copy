@@ -71,7 +71,7 @@
     <Compile Include="elearning\Discussion.cs" />
     <Compile Include="elearning\Lookups.cs" />
     <Compile Include="elearning\ContentFile.cs" />
-    <Compile Include="elearning\ModuleContent.cs" />
+    <Compile Include="elearning\CourseContent.cs" />
     <Compile Include="elearning\CourseModule.cs" />
     <Compile Include="elearning\Learner.cs" />
     <Compile Include="elearning\Trainer.cs" />
@@ -81,18 +81,16 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201909240705233_Initial-wawar.cs" />
-    <Compile Include="Migrations\201909240705233_Initial-wawar.Designer.cs">
-      <DependentUpon>201909240705233_Initial-wawar.cs</DependentUpon>
+    <Compile Include="Migrations\201909251047111_initialdb.cs" />
+    <Compile Include="Migrations\201909251047111_initialdb.Designer.cs">
+      <DependentUpon>201909251047111_initialdb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201909260234537_UpdateCourses.cs" />
     <Compile Include="Migrations\201909260234537_UpdateCourses.Designer.cs">
       <DependentUpon>201909260234537_UpdateCourses.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201909260754247_AddDisplayFieldForCourse.cs" />
     <Compile Include="Migrations\201909260754247_AddDisplayFieldForCourse.Designer.cs">
       <DependentUpon>201909260754247_AddDisplayFieldForCourse.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
@@ -119,15 +117,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909240705233_Initial-wawar.resx">
-      <DependentUpon>201909240705233_Initial-wawar.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909251047111_initialdb.resx">
+      <DependentUpon>201909251047111_initialdb.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909260234537_UpdateCourses.resx">
       <DependentUpon>201909260234537_UpdateCourses.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909260754247_AddDisplayFieldForCourse.resx">
       <DependentUpon>201909260754247_AddDisplayFieldForCourse.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

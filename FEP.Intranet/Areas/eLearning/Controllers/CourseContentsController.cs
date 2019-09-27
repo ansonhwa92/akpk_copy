@@ -9,17 +9,18 @@ using System.Web;
 using System.Web.Mvc;
 using FEP.Model;
 using FEP.Model.eLearning;
+using FEP.Helper;
 
 namespace FEP.Intranet.Areas.eLearning.Controllers
 {
-    public class CourseContentsController : Controller
+    public class CourseContentsController : FEPController
     {
         private DbEntities db = new DbEntities();
 
         // GET: eLearning/CourseContents
         public async Task<ActionResult> Index()
         {
-            var moduleContents = db.ModuleContents.Include(c => c.Course).Include(c => c.CourseModule);
+            var moduleContents = db.CourseContents;
             return View(await moduleContents.ToListAsync());
         }
 
@@ -30,7 +31,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CourseContent courseContent = await db.ModuleContents.FindAsync(id);
+            CourseContent courseContent = await db.CourseContents.FindAsync(id);
             if (courseContent == null)
             {
                 return HttpNotFound();
@@ -46,6 +47,28 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View();
         }
 
+
+        // GET: eLearning/CourseContents/Create
+        public async Task<ActionResult> CreateFrontVideo(int? id)
+        {
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            CourseContent model = new CourseContent
+            {
+                CourseId = id.Value,
+                ContentType = CourseContentType.Video,
+                CompletionType = ContentCompletionType.ClickButton
+
+            };
+
+
+            return View(model);
+        }
+
         // POST: eLearning/CourseContents/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -55,7 +78,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ModuleContents.Add(courseContent);
+                db.CourseContents.Add(courseContent);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -72,7 +95,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CourseContent courseContent = await db.ModuleContents.FindAsync(id);
+            CourseContent courseContent = await db.CourseContents.FindAsync(id);
             if (courseContent == null)
             {
                 return HttpNotFound();
@@ -107,7 +130,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CourseContent courseContent = await db.ModuleContents.FindAsync(id);
+            CourseContent courseContent = await db.CourseContents.FindAsync(id);
             if (courseContent == null)
             {
                 return HttpNotFound();
@@ -120,8 +143,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            CourseContent courseContent = await db.ModuleContents.FindAsync(id);
-            db.ModuleContents.Remove(courseContent);
+            CourseContent courseContent = await db.CourseContents.FindAsync(id);
+            db.CourseContents.Remove(courseContent);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }

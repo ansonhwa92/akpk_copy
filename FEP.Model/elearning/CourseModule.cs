@@ -22,8 +22,7 @@ namespace FEP.Model.eLearning
         public string Objectives { get; set; }
         
         public int CourseId { get; set; }
-        public virtual Course Course { get; set; }
-
+        
         public virtual ICollection<CourseContent> ModuleContents { get; set; }
 
         public int TotalVideo { get; set; }

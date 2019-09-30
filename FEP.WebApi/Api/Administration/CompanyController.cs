@@ -233,7 +233,7 @@ namespace FEP.WebApi.Api.Administration
                 var userrole = new UserRole
                 {
                     RoleId = roleid,
-                    User = user,
+                    UserAccount = account,
                 };
 
                 db.UserRole.Add(userrole);

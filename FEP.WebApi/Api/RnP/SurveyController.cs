@@ -721,8 +721,15 @@ namespace FEP.WebApi.Api.RnP
                     db.SurveyApproval.Add(sapproval);
                     db.SaveChanges();
 
-                    //return model.Title;
-                    return survey.Title;
+                    //return survey.Title;
+                    if (survey.Type == SurveyType.Public)
+                    {
+                        return survey.Title + "|" + "Public Mass" + "|" + survey.RefNo;
+                    }
+                    else
+                    {
+                        return survey.Title + "|" + "Targeted Groups" + "|" + survey.RefNo;
+                    }
                 }
             }
             return "";
@@ -757,8 +764,15 @@ namespace FEP.WebApi.Api.RnP
                 db.SurveyApproval.Add(sapproval);
                 db.SaveChanges();
 
-                //return model.Title;
-                return survey.Title;
+                //return survey.Title;
+                if (survey.Type  == SurveyType.Public)
+                {
+                    return survey.Title + "|" + "Public Mass" + "|" + survey.RefNo;
+                }
+                else
+                {
+                    return survey.Title + "|" + "Targeted Groups" + "|" + survey.RefNo;
+                }
             }
             return "";
         }
@@ -911,7 +925,15 @@ namespace FEP.WebApi.Api.RnP
 
                     db.SaveChanges();
 
-                    return survey.Title;
+                    //return survey.Title;
+                    if (survey.Type == SurveyType.Public)
+                    {
+                        return survey.Title + "|" + "Public Mass" + "|" + survey.RefNo;
+                    }
+                    else
+                    {
+                        return survey.Title + "|" + "Targeted Groups" + "|" + survey.RefNo;
+                    }
                 }
             }
             return "";
@@ -969,6 +991,201 @@ namespace FEP.WebApi.Api.RnP
                 return "ok";
             }
             return "";
+        }
+
+        // Function to get notification receivers based on notification category and type.
+        // Called when sending notifications
+        // TO CONSIDER: Currently cancellations notify all approvers.
+        // GET: api/RnP/Survey/GetNotificationReceivers/
+        [Route("api/RnP/Survey/GetNotificationReceivers")]
+        public List<int> GetNotificationReceivers(NotificationCategory cat, NotificationType type, SurveyApprovalStatus status, bool forward)
+        {
+            List<int> receivers = new List<int> { };
+
+            // prepare
+            bool toadmin = false;
+            bool toverifier = false;
+            bool toapprover1 = false;
+            bool toapprover2 = false;
+            bool toapprover3 = false;
+
+            if (type == NotificationType.Submit_Survey_Creation)
+            {
+                toverifier = true;
+            }
+            else if (type == NotificationType.Submit_Survey_Cancellation)
+            {
+                toverifier = true;
+                toapprover1 = true;
+                toapprover2 = true;
+                toapprover3 = true;
+            }
+            else if (type == NotificationType.Submit_Survey_Publication)
+            {
+                toverifier = true;
+                toapprover1 = true;
+                toapprover2 = true;
+                toapprover3 = true;
+            }
+            else if (type == NotificationType.Verify_Survey_Creation)
+            {
+                if (status == SurveyApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                }
+                else
+                {
+                    toapprover1 = true;
+                }
+            }
+            else if (type == NotificationType.Approve_Survey_Creation_1)
+            {
+                if (status == SurveyApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toverifier = true;
+                }
+                else
+                {
+                    if (forward)
+                    {
+                        toapprover2 = true;
+                    }
+                    else
+                    {
+                        toadmin = true;
+                        toverifier = true;
+                    }
+                }
+            }
+            else if (type == NotificationType.Approve_Survey_Creation_2)
+            {
+                if (status == SurveyApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toverifier = true;
+                    toapprover1 = true;
+                }
+                else
+                {
+                    if (forward)
+                    {
+                        toapprover3 = true;
+                    }
+                    else
+                    {
+                        toadmin = true;
+                        toverifier = true;
+                        toapprover1 = true;
+                    }
+                }
+            }
+            else if (type == NotificationType.Approve_Survey_Creation_3)
+            {
+                if (status == SurveyApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toverifier = true;
+                    toapprover1 = true;
+                    toapprover2 = true;
+                }
+                else
+                {
+                    toadmin = true;
+                    toverifier = true;
+                    toapprover1 = true;
+                    toapprover2 = true;
+                }
+            }
+
+            // get list of users
+            var allusers = db.User.Where(u => u.Display).ToList();
+
+            foreach (FEP.Model.User myuser in allusers)
+            {
+                if (myuser.UserAccount.IsEnable)
+                {
+                    // get list of roles
+                    var myroles = myuser.UserAccount.UserRoles;
+                    foreach (UserRole myrole in myroles)
+                    {
+                        var myroleid = myrole.RoleId;
+                        // get list of access
+                        var myaccesses = db.RoleAccess.Where(ra => ra.RoleId == myroleid).ToList();
+                        foreach (RoleAccess myaccess in myaccesses)
+                        {
+                            UserAccess myfunction = myaccess.UserAccess;
+                            if (myfunction == UserAccess.RnPSurveyEdit)
+                            {
+                                if (toadmin)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPSurveyVerify)
+                            {
+                                if (toverifier)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPSurveyApprove1)
+                            {
+                                if (toapprover1)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPSurveyApprove2)
+                            {
+                                if (toapprover2)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPSurveyApprove3)
+                            {
+                                if (toapprover3)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // return unique ids
+            if (receivers.Count > 0)
+            {
+                List<int> uniquereceivers = receivers.Distinct().ToList();
+                receivers = uniquereceivers;
+            }
+            return receivers;
+        }
+
+        // Function to save notification ID.
+        // Called when sending notifications
+        // GET: api/RnP/Survey/SaveNotificationID/
+        [Route("api/RnP/Survey/SaveNotificationID")]
+        public bool SaveNotificationID(int id, int notificationid)
+        {
+            var survey = db.Survey.Where(p => p.ID == id).FirstOrDefault();
+
+            if (survey != null)
+            {
+                survey.NotificationID = notificationid;
+
+                db.Entry(survey).State = EntityState.Modified;
+                //db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

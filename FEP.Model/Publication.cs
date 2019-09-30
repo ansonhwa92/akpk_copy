@@ -59,6 +59,7 @@ namespace FEP.Model
         public int PurchaseCount { get; set; }
         // DMS integration (TODO)............................................................................................
         public string DmsPath { get; set; }
+        public int NotificationID { get; set; }
         // foreign keys......................................................................................................
         [ForeignKey("CategoryID")]
         public virtual PublicationCategory Category { get; set; }

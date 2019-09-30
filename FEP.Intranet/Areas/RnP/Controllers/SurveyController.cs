@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 //using FEP.WebApiModel;
 using FEP.Model;
 using FEP.WebApiModel.RnP;
+using FEP.WebApiModel.SLAReminder;
 using System.Net;
 
 namespace FEP.Intranet.Areas.RnP.Controllers
@@ -462,6 +463,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
+                    string[] resparray = response.Data.Split('|');
+                    string title = resparray[0];
+                    string type = resparray[1];
+                    string refno = resparray[2];
+
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
@@ -469,11 +475,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                     TempData["SuccessMessage"] = "Survey titled " + response.Data + " submitted successfully for verification.";
 
+                    await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Creation, model.Survey.Title, type, refno, "Survey Submitted", SurveyApprovalStatus.None, false);
+
                     // dashboard
-
-                    //SendEmail("New Survey Submitted", "A new Survey has been submitted for verification." + "\n" + "Please login to AKPK-FEP and review the submission.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
-
-                    // sms
 
                     return RedirectToAction("Index", "Survey", new { area = "RnP" });
                 }
@@ -503,6 +507,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             if (response.isSuccess)
             {
+                string[] resparray = response.Data.Split('|');
+                string title = resparray[0];
+                string type = resparray[1];
+                string refno = resparray[2];
+
                 // log trail/system success notification/dashboard notification/email/sms upon submission
                 // log trail/system success/dashboard notification upon saving as draft
 
@@ -510,11 +519,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 TempData["SuccessMessage"] = "Survey titled " + response.Data + " submitted successfully for verification.";
 
+                await SendNotification(id.Value, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Creation, title, type, refno, "Survey Submitted", SurveyApprovalStatus.None, false);
+
                 // dashboard
-
-                //SendEmail("New Survey Submitted", "A new Survey has been submitted for verification." + "\n" + "Please login to AKPK-FEP and review the submission.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
-
-                // sms
 
                 return RedirectToAction("Index", "Survey", new { area = "RnP" });
             }
@@ -754,6 +761,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
+                    string[] resparray = response.Data.Split('|');
+                    string title = resparray[0];
+                    string type = resparray[1];
+                    string refno = resparray[2];
+
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
@@ -761,11 +773,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                     TempData["SuccessMessage"] = "Survey titled " + response.Data + " successfully cancelled.";
 
+                    await SendNotification(model.ID, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Cancellation, title, type, refno, "Survey Cancelled", SurveyApprovalStatus.None, false);
+
                     // dashboard
-
-                    //SendEmail("New Survey Created", "A new Survey has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
-
-                    // sms
 
                     return RedirectToAction("Index", "Survey", new { area = "RnP" });
                 }
@@ -869,6 +879,15 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
+                    string stype;
+                    if (model.Survey.Type == SurveyType.Public)
+                    {
+                        stype = "Public Mass";
+                    }
+                    else
+                    {
+                        stype = "Targeted Groups";
+                    }
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
@@ -878,26 +897,67 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                         {
                             await LogActivity(Modules.RnP, "Verify Survey: " + response.Data, model);
                             TempData["SuccessMessage"] = "Survey titled " + response.Data + " updated as Verified.";
-                            //SendEmail("Survey Approved", "A new Survey has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
-                            // sms
+
+                            await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Survey_Creation, model.Survey.Title, stype, model.Survey.RefNo, "Verified and Pending Approval", model.Approval.Status, model.Approval.RequireNext);
+                            // dashboard
                         }
                         else
                         {
                             await LogActivity(Modules.RnP, "Approve Survey: " + response.Data, model);
                             TempData["SuccessMessage"] = "Survey titled " + response.Data + " updated as Approved.";
-                            //SendEmail("Survey Approved", "A new Survey has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
-                            // sms
+
+                            if (model.Approval.Level == SurveyApprovalLevels.Approver1)
+                            {
+                                if (model.Approval.RequireNext)
+                                {
+                                    await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, model.Survey.Title, stype, model.Survey.RefNo, "Approved by 1st-Level Approver and Pending 2nd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
+                                }
+                                else
+                                {
+                                    await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, model.Survey.Title, stype, model.Survey.RefNo, "Approved by 1st-Level Approver", model.Approval.Status, model.Approval.RequireNext);
+                                }
+                            }
+                            else if (model.Approval.Level == SurveyApprovalLevels.Approver2)
+                            {
+                                if (model.Approval.RequireNext)
+                                {
+                                    await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, model.Survey.Title, stype, model.Survey.RefNo, "Approved by 2nd-Level Approver and Pending 3rd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
+                                }
+                                else
+                                {
+                                    await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, model.Survey.Title, stype, model.Survey.RefNo, "Approved by 2nd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
+                                }
+                            }
+                            else if (model.Approval.Level == SurveyApprovalLevels.Approver3)
+                            {
+                                await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_3, model.Survey.Title, stype, model.Survey.RefNo, "Approved by 3rd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
+                            }
+                            // dashboard
                         }
                     }
                     else
                     {
                         await LogActivity(Modules.RnP, "Survey Requires Amendment: " + response.Data, model);
                         TempData["SuccessMessage"] = "Survey titled " + response.Data + " updated as Requires Amendment.";
-                        //SendEmail("Survey Approved", "A new Survey has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
-                        // sms
-                    }
 
-                    // dashboard
+                        if (model.Approval.Level == SurveyApprovalLevels.Verifier)
+                        {
+                            await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Survey_Creation, model.Survey.Title, stype, model.Survey.RefNo, "Amendment Requested by Verifier", model.Approval.Status, false);
+                        }
+                        else if (model.Approval.Level == SurveyApprovalLevels.Approver1)
+                        {
+                            await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, model.Survey.Title, stype, model.Survey.RefNo, "Amendment Requested by 1st-Level Approver", model.Approval.Status, false);
+                        }
+                        else if (model.Approval.Level == SurveyApprovalLevels.Approver2)
+                        {
+                            await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, model.Survey.Title, stype, model.Survey.RefNo, "Amendment Requested by 2nd-Level Approver", model.Approval.Status, false);
+                        }
+                        else if (model.Approval.Level == SurveyApprovalLevels.Approver3)
+                        {
+                            await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_3, model.Survey.Title, stype, model.Survey.RefNo, "Amendment Requested by 3rd-Level Approver", model.Approval.Status, false);
+                        }
+                        // dashboard
+                    }
 
                     return RedirectToAction("Index", "Survey", new { area = "RnP" });
                 }
@@ -1094,6 +1154,91 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             return View(model);
+        }
+
+        // Private functions
+
+        // get notification receiver IDs
+        // called by SendNotification
+        private async Task<List<int>> GetNotificationReceivers(NotificationCategory ncat, NotificationType ntype, SurveyApprovalStatus status, bool forward)
+        {
+            List<int> result = new List<int> { };
+            var response = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"RnP/Survey/GetNotificationReceivers/?cat={ncat}&type={ntype}&status={status}&forward={forward}");
+            if (response.isSuccess)
+            {
+                result = response.Data;
+            }
+            else
+            {
+                await LogError(Modules.RnP, "Failed to get Auto Notification receivers");
+            }
+            return result;
+        }
+
+        // save notification ID
+        // called by SendNotification
+        private async Task<bool> SaveNotificationID(int id, int notification_id)
+        {
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Survey/SaveNotificationID/?id={id}&notificationid={notification_id}");
+            if (!response.isSuccess)
+            {
+                await LogError(Modules.RnP, "Failed to save Auto Notification ID (API Error)");
+            }
+            else
+            {
+                if (response.Data == false)
+                {
+                    await LogError(Modules.RnP, "Failed to save Auto Notification ID (Survey Error)");
+                }
+            }
+            return response.isSuccess;
+        }
+
+        // Send notifications
+        private async Task<bool> SendNotification(int id, NotificationCategory ncat, NotificationType ntype, string title, string type, string code, string approvalmessage, SurveyApprovalStatus appstatus, bool forward)
+        {
+            try
+            {
+                var receivers = await GetNotificationReceivers(ncat, ntype, appstatus, forward);
+                Console.Write(receivers);
+                if (receivers.Count > 0)
+                {
+                    ParameterListToSend paramToSend = new ParameterListToSend();
+                    paramToSend.SurveyTitle = title;
+                    paramToSend.SurveyType = type;
+                    paramToSend.SurveyCode = code;
+                    paramToSend.SurveyApproval = approvalmessage;
+
+                    CreateAutoReminder reminder = new CreateAutoReminder
+                    {
+                        NotificationType = ntype,
+                        NotificationCategory = ncat,
+                        ParameterListToSend = paramToSend,
+                        StartNotificationDate = DateTime.Now,
+                        ReceiverId = receivers
+                        // new List<int> { 2, 3, 4, 5 }
+                    };
+                    Console.Write(reminder);
+                    var response = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+                    int saveThisID = response.Data.SLAReminderStatusId;
+
+                    //save saveThisID back into survey table
+                    var ressave = await SaveNotificationID(id, saveThisID);
+
+                    return true;
+
+                }
+                else
+                {
+                    await LogError(Modules.RnP, "Failed to generate Auto Notification (No Receivers Found)");
+                    return false;
+                }
+            }
+            catch
+            {
+                await LogError(Modules.RnP, "Failed to generate Auto Notification");
+                return false;
+            }
         }
 
         /*

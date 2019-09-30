@@ -377,7 +377,7 @@ namespace FEP.WebApi.Api.RnP
                 WithdrawalReason = s.WithdrawalReason,
                 ProofOfWithdrawal = s.ProofOfWithdrawal,
                 WithdrawalDate = s.WithdrawalDate,
-                CancelRemark = s.CancelRemark, 
+                CancelRemark = s.CancelRemark,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
                 RefNo = s.RefNo,
@@ -789,7 +789,7 @@ namespace FEP.WebApi.Api.RnP
                     db.SaveChanges();
 
                     //return model.Title;
-                    return publication.Title;
+                    return publication.Title + "|" + publication.RefNo;
                 }
             }
             return "";
@@ -825,7 +825,7 @@ namespace FEP.WebApi.Api.RnP
                 db.SaveChanges();
 
                 //return model.Title;
-                return publication.Title;
+                return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
             }
             return "";
         }
@@ -846,8 +846,8 @@ namespace FEP.WebApi.Api.RnP
 
                 db.SaveChanges();
 
-                //return model.Title;
-                return publication.Title;
+                //return publication.Title;
+                return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
             }
             return "";
         }
@@ -1000,7 +1000,8 @@ namespace FEP.WebApi.Api.RnP
 
                     db.SaveChanges();
 
-                    return publication.Title;
+                    //return publication.Title;
+                    return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                 }
             }
             return "";
@@ -1050,7 +1051,8 @@ namespace FEP.WebApi.Api.RnP
                     db.PublicationWithdrawal.Add(pwithdrawal);
                     db.SaveChanges();
 
-                    return publication.Title;
+                    //return publication.Title;
+                    return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                 }
             }
 
@@ -1080,7 +1082,8 @@ namespace FEP.WebApi.Api.RnP
                     //db.Configuration.ValidateOnSaveEnabled = false;
                     db.SaveChanges();
 
-                    return publication.Title;
+                    //return publication.Title;
+                    return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                 }
             }
             return "";
@@ -1186,5 +1189,206 @@ namespace FEP.WebApi.Api.RnP
             return "";
         }
 
+        // Function to get notification receivers based on notification category and type.
+        // Called when sending notifications
+        // TO CONSIDER: Currently cancellations notify all approvers.
+        // GET: api/RnP/Publication/GetNotificationReceivers/
+        [Route("api/RnP/Publication/GetNotificationReceivers")]
+        public List<int> GetNotificationReceivers(NotificationCategory cat, NotificationType type, PublicationApprovalStatus status, bool forward)
+        {
+            List<int> receivers = new List<int> { };
+
+            // prepare
+            bool toadmin = false;
+            bool toverifier = false;
+            bool toapprover1 = false;
+            bool toapprover2 = false;
+            bool toapprover3 = false;
+
+            if ((type == NotificationType.Submit_Publication_Creation) || (type == NotificationType.Submit_Publication_Modification) || (type == NotificationType.Submit_Publication_Withdrawal))
+            {
+                toverifier = true;
+            }
+            else if ((type == NotificationType.Submit_Publication_Cancellation) || (type == NotificationType.Submit_Publication_Modification_Cancellation) || (type == NotificationType.Submit_Publication_Withdrawal_Cancellation))
+            {
+                toverifier = true;
+                toapprover1 = true;
+                toapprover2 = true;
+                toapprover3 = true;
+            }
+            else if (type == NotificationType.Submit_Publication_Publication)
+            {
+                toverifier = true;
+                toapprover1 = true;
+                toapprover2 = true;
+                toapprover3 = true;
+            }
+            else if ((type == NotificationType.Verify_Publication_Creation) || (type == NotificationType.Verify_Publication_Modification) || (type == NotificationType.Verify_Publication_Withdrawal))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                }
+                else
+                {
+                    toapprover1 = true;
+                }
+            }
+            else if ((type == NotificationType.Approve_Publication_Creation_1) || (type == NotificationType.Approve_Publication_Modification_1) || (type == NotificationType.Approve_Publication_Withdrawal_1))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toverifier = true;
+                }
+                else
+                {
+                    if (forward)
+                    {
+                        toapprover2 = true;
+                    }
+                    else
+                    {
+                        toadmin = true;
+                        toverifier = true;
+                    }
+                }
+            }
+            else if ((type == NotificationType.Approve_Publication_Creation_2) || (type == NotificationType.Approve_Publication_Modification_2) || (type == NotificationType.Approve_Publication_Withdrawal_2))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toverifier = true;
+                    toapprover1 = true;
+                }
+                else
+                {
+                    if (forward)
+                    {
+                        toapprover3 = true;
+                    }
+                    else
+                    {
+                        toadmin = true;
+                        toverifier = true;
+                        toapprover1 = true;
+                    }
+                }
+            }
+            else if ((type == NotificationType.Approve_Publication_Creation_3) || (type == NotificationType.Approve_Publication_Modification_3) || (type == NotificationType.Approve_Publication_Withdrawal_3))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toverifier = true;
+                    toapprover1 = true;
+                    toapprover2 = true;
+                }
+                else
+                {
+                    toadmin = true;
+                    toverifier = true;
+                    toapprover1 = true;
+                    toapprover2 = true;
+                }
+            }
+
+            // get list of users
+            var allusers = db.User.Where(u => u.Display).ToList();
+
+            foreach (FEP.Model.User myuser in allusers)
+            {
+                if (myuser.UserAccount.IsEnable)
+                {
+                    // get list of roles
+                    var myroles = myuser.UserAccount.UserRoles;
+                    foreach (UserRole myrole in myroles)
+                    {
+                        var myroleid = myrole.RoleId;
+                        // get list of access
+                        var myaccesses = db.RoleAccess.Where(ra => ra.RoleId == myroleid).ToList();
+                        foreach (RoleAccess myaccess in myaccesses)
+                        {
+                            UserAccess myfunction = myaccess.UserAccess;
+                            if (myfunction == UserAccess.RnPPublicationEdit)
+                            {
+                                if (toadmin)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationWithdraw)
+                            {
+                                if (toadmin)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationVerify)
+                            {
+                                if (toverifier)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationApprove1)
+                            {
+                                if (toapprover1)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationApprove2)
+                            {
+                                if (toapprover2)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationApprove3)
+                            {
+                                if (toapprover3)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // return unique ids
+            if (receivers.Count > 0)
+            {
+                List<int> uniquereceivers = receivers.Distinct().ToList();
+                receivers = uniquereceivers;
+            }
+            return receivers;
+        }
+
+        // Function to save notification ID.
+        // Called when sending notifications
+        // GET: api/RnP/Publication/SaveNotificationID/
+        [Route("api/RnP/Publication/SaveNotificationID")]
+        public bool SaveNotificationID(int id, int notificationid)
+        {
+            var publication = db.Publication.Where(p => p.ID == id).FirstOrDefault();
+
+            if (publication != null)
+            {
+                publication.NotificationID = notificationid;
+
+                db.Entry(publication).State = EntityState.Modified;
+                //db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

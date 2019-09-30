@@ -93,13 +93,48 @@ namespace FEP.Model
         VerifyCourses,
         [Display(Name = "Approve Courses")]
         ApproveCourses,
+
+        // survey
+        [Display(Name = "Submit Survey")]
+        SubmitSurvey,
+        [Display(Name = "Cancel Survey")]
+        CancelSurvey,
+        [Display(Name = "Publish Survey")]
+        PublishSurvey,
+
         [Display(Name = "Verify Survey")]
         VerifySurvey,
         [Display(Name = "Approve Survey")]
         ApproveSurvey,
+
+        // publication
+        [Display(Name = "Submit Publication")]
+        SubmitPublication,
+        [Display(Name = "Cancel Publication")]
+        CancelPublication,
+        [Display(Name = "Publish Publication")]
+        PublishPublication,
+        [Display(Name = "Modify Publication")]
+        ModifyPublication,
+        [Display(Name = "Withdraw Publication")]
+        WithdrawPublication,
+        [Display(Name = "Cancel Modify Publication")]
+        CancelModifyPublication,
+        [Display(Name = "Cancel Withdraw Publication")]
+        CancelWithdrawPublication,
+
         [Display(Name = "Verify Publication")]
         VerifyPublication,
+        [Display(Name = "Verify Publication Modification")]
+        VerifyPublicationModification,
+        [Display(Name = "Verify Publication Withdrawal")]
+        VerifyPublicationWithdrawal,
+
         [Display(Name = "Approve Publication")]
-        ApprovePublication
+        ApprovePublication,
+        [Display(Name = "Approve Publication Modification")]
+        ApprovePublicationModification,
+        [Display(Name = "Approve Publication Withdrawal")]
+        ApprovePublicationWithdrawal
     }
 }

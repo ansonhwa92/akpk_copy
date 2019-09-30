@@ -180,6 +180,17 @@ namespace FEP.WebApiModel.SLAReminder
         public string PaymentRefNo { get; set; }
         public string PaymentStatus { get; set; }
 
+        //101-120 for Survey
+        public string SurveyTitle { get; set; }
+        public string SurveyType { get; set; }
+        public string SurveyCode { get; set; }
+        public string SurveyApproval { get; set; }
+
+        //121-140 for Publication
+        public string PublicationTitle { get; set; }
+        public string PublicationAuthor { get; set; }
+        public string PublicationCode { get; set; }
+        public string PublicationApproval { get; set; }
 
     }
 

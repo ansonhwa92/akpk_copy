@@ -235,7 +235,8 @@ namespace FEP.WebApi.Api.eEvent
 		//Details
 		public PublicEventModel Get(int id)
 		{
-			var model = db.PublicEvent.Where(i => i.Display && i.Id == id).Select(i => new PublicEventModel
+			var model = db.PublicEvent.Where(i => i.Display && i.Id == id)
+				.Select(i => new PublicEventModel
 			{
 				Id = i.Id,
 				EventTitle = i.EventTitle,
@@ -249,48 +250,158 @@ namespace FEP.WebApi.Api.eEvent
 				EventCategoryName = i.EventCategory.CategoryName,
 				TargetedGroup = i.TargetedGroup,
 				ParticipantAllowed = i.ParticipantAllowed,
-				Reasons = i.Reasons,
 				Remarks = i.Remarks,
-				Display = i.Display,
-				CreatedBy = i.CreatedBy,
-				CreatedDate = i.CreatedDate
 			}).FirstOrDefault();
 
 			return model;
 		}
 
 		//Create
-		public HttpResponseMessage Post([FromBody]string value)
+		[HttpPost]
+		public IHttpActionResult Post([FromBody] CreatePublicEventModel model)
 		{
-			HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
-			return response;
+			var publicevent = new PublicEvent
+			{
+				EventTitle = model.EventTitle,
+				EventObjective = model.EventObjective,
+				StartDate = model.StartDate,
+				EndDate = model.EndDate,
+				Venue = model.Venue,
+				Fee = model.Fee,
+				EventStatus = model.EventStatus,
+				EventCategoryId = model.EventCategoryId,
+				TargetedGroup = model.TargetedGroup,
+				ParticipantAllowed = model.ParticipantAllowed,
+				Remarks = model.Remarks,
+				CreatedBy = null,
+				Display = true,
+				CreatedDate = DateTime.Now,
+			};
+
+			foreach (var speakerid in model.SpeakerId)
+			{
+				var assignedsp = new AssignedSpeaker
+				{
+					EventSpeakerId = speakerid,
+					PublicEvent = publicevent,
+				};
+
+				db.AssignedSpeaker.Add(assignedsp);
+			}
+
+			db.PublicEvent.Add(publicevent);
+
+			foreach (var externalexhibitorid in model.SpeakerId)
+			{
+				var assignedex = new AssignedExternalExhibitor
+				{
+					ExternalExhibitorId = externalexhibitorid,
+					PublicEvent = publicevent,
+				};
+
+				db.AssignedExternalExhibitor.Add(assignedex);
+			}
+
+			db.PublicEvent.Add(publicevent);
+
+			db.SaveChanges();
+
+			//---running number----//
+			var refno = "EVP/" + DateTime.Now.ToString("yyMM");
+			refno += "/" + publicevent.Id.ToString("D4");
+			publicevent.RefNo = refno;
+			db.Entry(publicevent).State = EntityState.Modified;
+			db.SaveChanges();
+
+			return Ok(publicevent.Id);
 		}
+
 
 		//Edit
-		public HttpResponseMessage Put(int id, [FromBody]string value)
+		public IHttpActionResult Put(int id, [FromBody] EditPublicEventModel model)
 		{
-			HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
+			var publicevent = db.PublicEvent.Where(u => u.Id == id).FirstOrDefault();
 
-			return response;
-		}
-
-		//Delete
-		public bool Delete(int id)
-		{
-			var model = db.PublicEvent.Where(u => u.Id == id).FirstOrDefault();
-			if (model != null)
+			if (publicevent == null)
 			{
-				model.Display = false;
-				db.PublicEvent.Attach(model);
-				db.Entry(model).Property(m => m.Display).IsModified = true;
-				db.Configuration.ValidateOnSaveEnabled = false;
-				db.SaveChanges();
-				return true;
+				return NotFound();
 			}
-			return false;
+
+			publicevent.EventTitle = model.EventTitle;
+			publicevent.EventObjective = model.EventObjective;
+			publicevent.StartDate = model.StartDate;
+			publicevent.EndDate = model.EndDate;
+			publicevent.Venue = model.Venue;
+			publicevent.Fee = model.Fee;
+			publicevent.EventStatus = model.EventStatus;
+			publicevent.EventCategoryId = model.EventCategoryId;
+			publicevent.TargetedGroup = model.TargetedGroup;
+			publicevent.ParticipantAllowed = model.ParticipantAllowed;
+			publicevent.Remarks = model.Remarks;
+			publicevent.RefNo = model.RefNo;
+
+			db.PublicEvent.Attach(publicevent);
+			db.Entry(publicevent).Property(x => x.EventTitle).IsModified = true;
+			db.Entry(publicevent).Property(x => x.EventObjective).IsModified = true;
+			db.Entry(publicevent).Property(x => x.StartDate).IsModified = true;
+			db.Entry(publicevent).Property(x => x.EndDate).IsModified = true;
+			db.Entry(publicevent).Property(x => x.Venue).IsModified = true;
+			db.Entry(publicevent).Property(x => x.Fee).IsModified = true;
+			db.Entry(publicevent).Property(x => x.EventStatus).IsModified = true;
+			db.Entry(publicevent).Property(x => x.EventCategoryId).IsModified = true;
+			db.Entry(publicevent).Property(x => x.TargetedGroup).IsModified = true;
+			db.Entry(publicevent).Property(x => x.ParticipantAllowed).IsModified = true;
+			db.Entry(publicevent).Property(x => x.Remarks).IsModified = true;
+			db.Entry(publicevent).Property(x => x.Display).IsModified = false;
+			db.Entry(publicevent).Property(x => x.Id).IsModified = false;
+			db.Entry(publicevent).Property(x => x.RefNo).IsModified = false;
+
+			db.AssignedSpeaker.RemoveRange(db.AssignedSpeaker.Where(u => u.PublicEventId == id));//remove all
+			foreach (var assignedspeakerid in model.SpeakerId)
+			{
+				var assignedsp = new AssignedSpeaker
+				{
+					EventSpeakerId = assignedspeakerid,
+					PublicEventId = id,
+				};
+
+				db.AssignedSpeaker.Add(assignedsp);
+			}
+
+			db.AssignedExternalExhibitor.RemoveRange(db.AssignedExternalExhibitor.Where(u => u.PublicEventId == id));//remove all
+			foreach (var externalexhibitorid in model.ExternalExhibitorId)
+			{
+				var assignedsp = new AssignedExternalExhibitor
+				{
+					ExternalExhibitorId = externalexhibitorid,
+					PublicEventId = id,
+				};
+
+				db.AssignedExternalExhibitor.Add(assignedsp);
+			}
+
+
+			db.Configuration.ValidateOnSaveEnabled = true;
+			db.SaveChanges();
+
+			return Ok(true);
 		}
 
+		public IHttpActionResult Delete(int id)
+		{
+			var publicEvent = db.PublicEvent.Where(r => r.Id == id && r.Display).FirstOrDefault();
 
+			if (publicEvent == null)
+			{
+				return NotFound();
+			}
+
+			publicEvent.Display = false;
+			db.Entry(publicEvent).State = EntityState.Modified;
+
+			db.SaveChanges();
+			return Ok(true);
+		}
 
 		//Submit Public Event for Verification
 		[Route("api/eEvent/PublicEvent/SubmitToVerify")] 
@@ -438,6 +549,5 @@ namespace FEP.WebApi.Api.eEvent
 			}
 			return "";
 		}
-
 	}
 }

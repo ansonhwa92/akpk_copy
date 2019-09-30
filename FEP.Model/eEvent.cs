@@ -22,52 +22,29 @@ namespace FEP.Model
 		public float? Fee { get; set; }
 		public int? ParticipantAllowed { get; set; }
 		public EventTargetGroup? TargetedGroup { get; set; }
-
-		public int? ApprovalId1 { get; set; }
-		public int? ApprovalId2 { get; set; }
-		public int? ApprovalId3 { get; set; }
-		public int? ApprovalId4 { get; set; }
-
-		public EventStatus? EventStatus { get; set; }
-		public string Reasons { get; set; } //Modification and Cancellation
-
-		public int? EventCategoryId { get; set; }
-		[ForeignKey("EventCategoryId")]
-		public virtual EventCategory EventCategory { get; set; }
-
-		public int? SpeakerId { get; set; }
-		[ForeignKey("SpeakerId")]
-		public virtual EventSpeaker EventSpeaker { get; set; }
-
-		public int? ExternalExhibitorId { get; set; }
-		[ForeignKey("ExternalExhibitorId")]
-		public virtual EventExternalExhibitor ExternalExhibitor { get; set; }
-
-
-		[ForeignKey("ApprovalId1")]
-		public virtual EventApproval Approval1 { get; set; }
-		[ForeignKey("ApprovalId2")]
-		public virtual EventApproval Approval2 { get; set; }
-		[ForeignKey("ApprovalId3")]
-		public virtual EventApproval Approval3 { get; set; }
-		[ForeignKey("ApprovalId4")]
-		public virtual EventApproval Approval4 { get; set; }
 		public string Remarks { get; set; }
-
-		[ForeignKey("CreatedBy")]
-		public virtual User CreatedByUser { get; set; }
+		public EventStatus? EventStatus { get; set; }
+		public int? EventCategoryId { get; set; }
+		//public int? SpeakerId { get; set; }
+		//public int? ExternalExhibitorId { get; set; }
 		public int? CreatedBy { get; set; }
-
 		public DateTime? CreatedDate { get; set; }
 		public bool Display { get; set; }
 		public int? SLAReminderStatusId { get; set; }
 
-		public virtual ICollection<EventVerifier> EventVerifier { get; set; }
+		//----ForeignKey----
+		[ForeignKey("EventCategoryId")]
+		public virtual EventCategory EventCategory { get; set; }
+		//[ForeignKey("SpeakerId")]
+		//public virtual EventSpeaker EventSpeaker { get; set; }
+		//[ForeignKey("ExternalExhibitorId")]
+		//public virtual EventExternalExhibitor ExternalExhibitor { get; set; }
+		[ForeignKey("CreatedBy")]
+		public virtual User CreatedByUser { get; set; }
+	
+
 		public virtual ICollection<EventFile> EventFiles { get; set; }
 		public virtual ICollection<EventAgenda> EventAgendas { get; set; }
-		public virtual ICollection<EventSpeaker> EventSpeakers { get; set; }
-		public virtual ICollection<EventExternalExhibitor> EventExternalExhibitors { get; set; }
-		public virtual ICollection<EventObjective> EventObjectives { get; set; }
 	}
 
 	[Table("EventExternalExhibitor")]
@@ -82,28 +59,6 @@ namespace FEP.Model
 		public string PhoneNo { get; set; }
 
 		public string Remark { get; set; }
-
-		public int? EventId { get; set; }
-		[ForeignKey("EventId")]
-		public virtual PublicEvent Event { get; set; }
-
-		[ForeignKey("CreatedBy")]
-		public virtual User CreatedByUser { get; set; }
-		public int? CreatedBy { get; set; }
-		public DateTime? CreatedDate { get; set; }
-		public bool Display { get; set; }
-	}
-
-	[Table("EventObjective")]
-	public class EventObjective
-	{
-		[Key]
-		public int Id { get; set; }
-		public string ObjectiveTitle { get; set; }
-
-		public int? EventId { get; set; }
-		[ForeignKey("EventId")]
-		public virtual PublicEvent Event { get; set; }
 
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
@@ -413,24 +368,7 @@ namespace FEP.Model
 		public virtual PublicEvent Event { get; set; }
 	}
 
-	[Table("EventVerifier")]
-	public class EventVerifier
-	{
-		[Key]
-		public int Id { get; set; }
-		public DateTime? VerifiedDate { get; set; }
-		public string Remark { get; set; }
-		public VerifyType VerifyType { get; set; }
-
-		public int VerifierId { get; set; }
-		[ForeignKey("VerifierId")]
-		public virtual User User { get; set; }
-
-		public int? EventId { get; set; }
-		[ForeignKey("EventId")]
-		public virtual PublicEvent Event { get; set; }
-	}
-
+	
 	[Table("EventExhibitionRequest")]
 	public class EventExhibitionRequest
 	{

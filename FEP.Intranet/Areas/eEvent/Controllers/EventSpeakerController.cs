@@ -94,9 +94,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 				if (response.isSuccess)
 				{
-					//LogActivity("Create Event Speaker");
+					await LogActivity(Modules.Event, "Create Event Speaker", model);
 
-					TempData["SuccessMessage"] = "Event Speaker successfully added";
+					TempData["SuccessMessage"] = "Event Speaker successfully created";
 
 					return RedirectToAction("List");
 				}
@@ -256,9 +256,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			}
 
 			TempData["ErrorMessage"] = "Fail to delete Event Speaker";
-
 			return RedirectToAction("List", "EventSpeaker", new { area = "eEvent" });
-
 		}
 
 		[NonAction]

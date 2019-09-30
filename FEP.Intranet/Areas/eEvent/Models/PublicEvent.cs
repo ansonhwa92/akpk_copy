@@ -76,6 +76,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Status")]
 		public EventStatus? EventStatus { get; set; }
 
+		[Required(ErrorMessage = "Please Select Event Category")]
 		[Display(Name = "Event Category")]
 		public int? EventCategoryId { get; set; }
 
@@ -92,7 +93,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string Remarks { get; set; }
 
 		[Display(Name = "Speaker")]
-		public int? SpeakerId { get; set; }
+		public int[] SpeakerId { get; set; }
 
 		[Display(Name = "Speaker")]
 		public string SpeakerName { get; set; }
@@ -101,7 +102,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public IEnumerable<SelectListItem> SpeakerList { get; set; }
 
 		[Display(Name = "External Exhibitor")] 
-		public int? ExternalExhibitorId { get; set; }
+		public int[] ExternalExhibitorId { get; set; }
 
 		[Display(Name = "External Exhibitor")]
 		public string ExternalExhibitorName { get; set; }
@@ -121,9 +122,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 
 		//File
-		//[Required(ErrorMessage = "Please attach file")]
-		//[Display(Name = "Proof of Approval")]
-		//public HttpPostedFileBase DocumentEvent { get; set; }
+		
 		[Display(Name = "File Name")]
 		public string FileName { get; set; }
 		[Display(Name = "File Description")]

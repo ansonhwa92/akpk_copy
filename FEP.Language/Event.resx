@@ -243,4 +243,55 @@
   <data name="ExRoadNomineeName" xml:space="preserve">
     <value>Nominee</value>
   </data>
+  <data name="PubEventCategoryId" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="PubEventCategoryName" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="PubEventEndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="PubEventExternalExhibitorId" xml:space="preserve">
+    <value>External Exhibitors</value>
+  </data>
+  <data name="PubEventExternalExhibitorName" xml:space="preserve">
+    <value>External Exhibitors</value>
+  </data>
+  <data name="PubEventFee" xml:space="preserve">
+    <value>Fee</value>
+  </data>
+  <data name="PubEventObjective" xml:space="preserve">
+    <value>Event Objective</value>
+  </data>
+  <data name="PubEventParticipantAllowed" xml:space="preserve">
+    <value>Participant Allowed</value>
+  </data>
+  <data name="PubEventRemarks" xml:space="preserve">
+    <value>Remarks</value>
+  </data>
+  <data name="PubEventStartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="PubEventStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="PubEventStatusDesc" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="PubEventTargetedGroup" xml:space="preserve">
+    <value>Targeted Group</value>
+  </data>
+  <data name="PubEventTitle" xml:space="preserve">
+    <value>Event Title </value>
+  </data>
+  <data name="PubEventVenue" xml:space="preserve">
+    <value>Venue</value>
+  </data>
+  <data name="PubEventSpeakerId" xml:space="preserve">
+    <value>Speakers</value>
+  </data>
+  <data name="PubEventSpeakerName" xml:space="preserve">
+    <value>Speakers</value>
+  </data>
 </root>

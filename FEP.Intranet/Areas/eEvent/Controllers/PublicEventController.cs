@@ -99,7 +99,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			};
 
 			model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
-			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "Name", 0);
+			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
 			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
 
 			return View(model);
@@ -179,7 +179,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				//GetFileName = response.Data.GetFileName
 			};
 
-			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "Name", 0);
+			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
 			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
 
 			return View(model);
@@ -203,7 +203,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					return RedirectToAction("List");
 				}
 			}
-			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "Name", 0);
+			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
 			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
 
 			TempData["ErrorMessage"] = "Fail to update Event Speaker";
@@ -252,7 +252,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "Name", 0);
+			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
 			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
 
 			return View(model);

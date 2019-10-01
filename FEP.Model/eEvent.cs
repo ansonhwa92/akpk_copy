@@ -230,7 +230,7 @@ namespace FEP.Model
 		public int? ContactNo { get; set; }
 		public string AddressStreet1 { get; set; }
 		public string AddressStreet2 { get; set; }
-		public int? AddressPoscode { get; set; }
+		public string AddressPoscode { get; set; }
 		public string AddressCity { get; set; }
 		public MediaState? State { get; set; }
 		public string Email { get; set; }

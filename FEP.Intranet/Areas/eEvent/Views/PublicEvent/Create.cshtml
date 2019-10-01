@@ -111,7 +111,6 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-
 								<div class="row col-lg-12">
 									<div class="col-lg-6">
 										@Html.FEPLabelFor(model => model.StartDate)
@@ -145,7 +144,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.ParticipantAllowed)
+								@Html.FEPLabelFor(model => model.ParticipantAllowed)
 								@Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" } })
 								@Html.ValidationMessageFor(model => model.ParticipantAllowed, "", new { @class = "text-danger" })
 							</div>
@@ -153,7 +152,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.TargetedGroup)
+								@Html.FEPLabelFor(model => model.TargetedGroup)
 								@Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
 								@Html.ValidationMessageFor(model => model.TargetedGroup, "", new { @class = "text-danger" })
 							</div>
@@ -163,16 +162,16 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.ExternalExhibitorId)
-								@Html.DropDownListFor(model => model.ExternalExhibitorId, Model.ExternalExhibitorList, "-Select External Exhibitor-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+								@Html.FEPLabelFor(model => model.ExternalExhibitorId)
+								@Html.ListBoxFor(m => m.ExternalExhibitorId, Model.ExternalExhibitorList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
 								@Html.ValidationMessageFor(model => model.ExternalExhibitorId, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.SpeakerId)
-								@Html.DropDownListFor(model => model.SpeakerId, Model.SpeakerList, "-Select Speaker-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+								@Html.FEPLabelFor(model => model.SpeakerId)
+								@Html.ListBoxFor(m => m.SpeakerId, Model.SpeakerList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
 								@Html.ValidationMessageFor(model => model.SpeakerId, "", new { @class = "text-danger" })
 							</div>
 						</div>

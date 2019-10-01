@@ -41,36 +41,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Fee (RM) per Person")]
 		public float? Fee { get; set; }
 
+		[Required(ErrorMessage = "Please Insert No of Participant")]
 		[Display(Name = "No. of Participant")]
 		[RegularExpression("([1-9][0-9]*)")]
 		public int? ParticipantAllowed { get; set; }
 
+		[Required(ErrorMessage = "Please Select Targeted Group")]
 		[Display(Name = "Targeted Group")]
 		public EventTargetGroup? TargetedGroup { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public int? ApprovalId1 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public string ApprovalName1 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public int? ApprovalId2 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public string ApprovalName2 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public int? ApprovalId3 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public string ApprovalName3 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public int? ApprovalId4 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public string ApprovalName4 { get; set; }
 
 		[Required(ErrorMessage = "Please Select Event Status")]
 		[Display(Name = "Status")]
@@ -92,7 +70,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Remarks")]
 		public string Remarks { get; set; }
 
-		[Display(Name = "Speaker")]
+		[Required(ErrorMessage = "Please Select Event Speaker")]
+		[Display(Name = "Speakers")]
 		public int[] SpeakerId { get; set; }
 
 		[Display(Name = "Speaker")]
@@ -101,7 +80,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Speaker")]
 		public IEnumerable<SelectListItem> SpeakerList { get; set; }
 
-		[Display(Name = "External Exhibitor")] 
+		[Required(ErrorMessage = "Please Select Event External Exhibitor")]
+		[Display(Name = "External Exhibitors")] 
 		public int[] ExternalExhibitorId { get; set; }
 
 		[Display(Name = "External Exhibitor")]

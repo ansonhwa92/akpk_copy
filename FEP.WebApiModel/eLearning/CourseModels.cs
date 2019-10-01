@@ -132,7 +132,7 @@ namespace FEP.WebApiModel.eLearning
         public ICollection<CourseContent> FrontPageContents { get; set; }
         public ICollection<CourseModule> Modules { get; set; }
 
-        public bool Display { get; set; }
+        public bool IsDeleted { get; set; }
 
 
     }

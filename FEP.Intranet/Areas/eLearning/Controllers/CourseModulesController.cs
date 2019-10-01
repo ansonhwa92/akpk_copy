@@ -1,4 +1,5 @@
-﻿using FEP.Helper;
+﻿using AutoMapper;
+using FEP.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
@@ -21,6 +22,21 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     public class CourseModulesController : FEPController
     {
         private DbEntities db = new DbEntities();
+        private readonly IMapper _mapper;
+
+        public CourseModulesController()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<CreateOrEditModuleModel, CourseModule>();
+
+                cfg.CreateMap<CourseModule, CreateOrEditModuleModel>();
+
+                //cfg.CreateMap<CreateOrEditModuleModel, CourseRuleModel>();
+            });
+
+            _mapper = config.CreateMapper();
+        }
 
         // GET: eLearning/CourseModules
         public async Task<ActionResult> Index()
@@ -125,25 +141,53 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 return HttpNotFound();
             }
+
+            Course course = await db.Courses.FindAsync(courseModule.CourseId);
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+
+            CreateOrEditModuleModel model = _mapper.Map<CreateOrEditModuleModel>(courseModule);
+
+            ViewBag.CourseTitle = course.Title;
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Title", courseModule.CourseId);
-            return View(courseModule);
+            return View(model);
         }
 
-        // POST: eLearning/CourseModules/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Description,Order,Objectives,CourseId,TotalVideo,TotalAudio,TotalTest,TotalAssignment,CreatedBy,CreatedDate,UpdatedBy,UpdatedDate")] CourseModule courseModule)
+        public async Task<ActionResult> Edit(CreateOrEditModuleModel model, string Submittype)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(courseModule).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eLearning/CourseModules/Edit", model);
+
+                if (response.isSuccess)
+                {
+                    await LogActivity(Modules.Learning, "Edit Module: " + response.Data, model);
+
+                    if (Submittype == "Save")
+                    {
+                        TempData["SuccessMessage"] = "Module titled " + response.Data + " updated successfully and saved as draft.";
+
+                        return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.Id });
+                    }
+                    else
+                    {
+
+                        return RedirectToAction("Review", "Courses", new { area = "eLearning", @id = model.Id });
+                    }
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Failed to edit Course.";
+
+                    return RedirectToAction("Details", "Courses", new { area = "eLearning", @id = model.Id });
+                }
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Title", courseModule.CourseId);
-            return View(courseModule);
+            return View(model);
         }
 
         // GET: eLearning/CourseModules/Delete/5
@@ -153,23 +197,54 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CourseModule courseModule = await db.CourseModules.FindAsync(id);
-            if (courseModule == null)
+            var course = await WepApiMethod.SendApiAsync<CreateOrEditModuleModel>(HttpVerbs.Get, $"eLearning/CourseModules?id={id}");
+
+            if (!course.isSuccess)
             {
                 return HttpNotFound();
             }
-            return View(courseModule);
+
+            var vm = course.Data;
+
+            if (vm == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.CourseTitle = vm.Title;
+
+            return View(vm);
+          
         }
 
-        // POST: eLearning/CourseModules/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int? id)
         {
-            CourseModule courseModule = await db.CourseModules.FindAsync(id);
-            db.CourseModules.Remove(courseModule);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var module = db.CourseModules.Where(p => p.Id == id).FirstOrDefault();
+
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Delete, $"eLearning/CourseModules/Delete?id={id}");
+
+            if (response.isSuccess)
+            {
+
+                await LogActivity(Modules.Learning, "Delete Module: " + response.Data);
+
+                TempData["SuccessMessage"] = "Module titled " + response.Data + " successfully deleted.";
+
+                return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = module.CourseId });
+            }
+            else
+            {
+                TempData["SuccessMessage"] = "Failed to delete module.";
+
+                return RedirectToAction("Details", "Courses", new { area = "eLearning", @id = id });
+            }
         }
 
         protected override void Dispose(bool disposing)

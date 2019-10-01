@@ -358,7 +358,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         {
             if (id == null)
             {
-                return HttpNotFound();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             var course = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Get, $"eLearning/Courses?id={id}");
@@ -405,19 +405,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 return RedirectToAction("Details", "Courses", new { area = "eLearning", @id = id });
             }
-
-            //Course course = db.Courses.Find(id);
-
-            //course.Display = false;
-
-            //db.Courses.Attach(course);
-            //db.Entry(course).Property(m => m.Display).IsModified = true;
-
-            //db.Configuration.ValidateOnSaveEnabled = false;
-            //db.SaveChanges();
-
-            //TempData["SuccessMessage"] = "Public Event successfully deleted.";
-            //return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

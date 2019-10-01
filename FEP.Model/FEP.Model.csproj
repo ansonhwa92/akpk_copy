@@ -81,16 +81,10 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201909251047111_initialdb.cs" />
-    <Compile Include="Migrations\201909251047111_initialdb.Designer.cs">
-      <DependentUpon>201909251047111_initialdb.cs</DependentUpon>
+    <Compile Include="Migrations\201909270703386_initialDB.cs" />
+    <Compile Include="Migrations\201909270703386_initialDB.Designer.cs">
+      <DependentUpon>201909270703386_initialDB.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201909260234537_UpdateCourses.cs" />
-    <Compile Include="Migrations\201909260234537_UpdateCourses.Designer.cs">
-      <DependentUpon>201909260234537_UpdateCourses.cs</DependentUpon>
-    <Compile Include="Migrations\201909260754247_AddDisplayFieldForCourse.cs" />
-    <Compile Include="Migrations\201909260754247_AddDisplayFieldForCourse.Designer.cs">
-      <DependentUpon>201909260754247_AddDisplayFieldForCourse.cs</DependentUpon>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
@@ -117,13 +111,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909251047111_initialdb.resx">
-      <DependentUpon>201909251047111_initialdb.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909270703386_initialDB.resx">
+      <DependentUpon>201909270703386_initialDB.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909260234537_UpdateCourses.resx">
-      <DependentUpon>201909260234537_UpdateCourses.cs</DependentUpon>
-    <EmbeddedResource Include="Migrations\201909260754247_AddDisplayFieldForCourse.resx">
-      <DependentUpon>201909260754247_AddDisplayFieldForCourse.cs</DependentUpon>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

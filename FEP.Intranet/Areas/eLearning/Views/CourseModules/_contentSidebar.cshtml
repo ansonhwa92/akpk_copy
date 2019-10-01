@@ -8,8 +8,11 @@
                 <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
                 <ul class="nav page-nav__menu">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Module</a>
+                        @*<a href="#" class="nav-link">Module</a>*@
+                        <a href="@Url.Action("Content", "Courses", new { area = "eLearning", id = @Model.CourseId })" class="nav-link"> Module </a>
+
                     </li>
+                   </ul>
             </div>
 
         </div>

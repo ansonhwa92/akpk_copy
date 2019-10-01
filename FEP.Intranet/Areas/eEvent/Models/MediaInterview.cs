@@ -19,8 +19,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Media Type")]
 		public MediaType? MediaType { get; set; }
 
-		[Required(ErrorMessage = "Please Insert Contact Person")]
-		[DataType(DataType.PhoneNumber)]
+		[Required(ErrorMessage = "Please Insert Contact Person")]		
 		[Display(Name = "Contact Person")]
 		public string ContactPerson { get; set; }
 
@@ -47,13 +46,13 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Email")]
 		public string Email { get; set; }
 
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
+		//[DataType(DataType.Date)]
+		//[UIHint("Date")]
 		[Display(Name = "Event Date")]
 		public DateTime? DateStart { get; set; }
 
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
+		//[DataType(DataType.Date)]
+		//[UIHint("Date")]
 		[Display(Name = "Event Date")]
 		public DateTime? DateEnd { get; set; }
 

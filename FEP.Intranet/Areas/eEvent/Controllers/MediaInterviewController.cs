@@ -120,6 +120,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Create(CreateMediaInterviewModel model)
 		{
+            if (model.DateStart > model.DateEnd)
+            {
+                ModelState.AddModelError("DateEnd", "Start Date must less or equal to End Date");
+            }
+
 			if (ModelState.IsValid)
 			{
 				EventMediaInterviewRequest media = new EventMediaInterviewRequest

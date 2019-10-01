@@ -117,68 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AlertLoginFail" xml:space="preserve">
-    <value>Sign in fail. Please use your login id and correct password.</value>
+  <data name="AlertActivateFail" xml:space="preserve">
+    <value>Fail to activate user account</value>
   </data>
-  <data name="AlertLoginInactive" xml:space="preserve">
-    <value>Your account is inactive. Please contact system admin.</value>
+  <data name="AlertActivateSuccess" xml:space="preserve">
+    <value>User account successfully activated</value>
   </data>
-  <data name="AlertResetPasswordFail" xml:space="preserve">
-    <value>Click 'Forgot Password' to reset password.</value>
+  <data name="AlertCreateFail" xml:space="preserve">
+    <value>Fail to register user</value>
   </data>
-  <data name="AlertResetPasswordSuccess" xml:space="preserve">
-    <value>Instruction to reset password was successfully sent to your email. Please check your email.</value>
+  <data name="AlertCreateSuccess" xml:space="preserve">
+    <value>User successfully registered. User will receive email with sign in details and link to activate the account.</value>
   </data>
-  <data name="AlertSetPasswordFail" xml:space="preserve">
-    <value>Click 'Forgot Password' to reset password.</value>
+  <data name="AlertDeactivateFail" xml:space="preserve">
+    <value>Fail to disable user account</value>
   </data>
-  <data name="AlertSetPasswordSuccess" xml:space="preserve">
-    <value>Your password successfully change. Please use new password to sign in.</value>
+  <data name="AlertDeactivateSuccess" xml:space="preserve">
+    <value>User account successfully disable</value>
   </data>
-  <data name="ButtonForgotPassword" xml:space="preserve">
-    <value>Forgot Password</value>
+  <data name="AlertDeleteFail" xml:space="preserve">
+    <value>Fail to delete user account</value>
   </data>
-  <data name="ButtonResetPassword" xml:space="preserve">
-    <value>Reset Password</value>
+  <data name="AlertDeleteSuccess" xml:space="preserve">
+    <value>User account successfully delete</value>
   </data>
-  <data name="ButtonSignIn" xml:space="preserve">
-    <value>Log In</value>
+  <data name="AlertEditFail" xml:space="preserve">
+    <value>Fail to update user record</value>
   </data>
-  <data name="EmailResetPasswordBody" xml:space="preserve">
-    <value>Dear {{name}}, &lt;br /&gt; You can set new password here.</value>
+  <data name="AlertEditSuccess" xml:space="preserve">
+    <value>User record successfully updated</value>
   </data>
-  <data name="EmailResetPasswordSubject" xml:space="preserve">
-    <value>FE Portal Reset Password</value>
+  <data name="AlertResetFail" xml:space="preserve">
+    <value>Fail to reset user account password</value>
+  </data>
+  <data name="AlertResetSuccess" xml:space="preserve">
+    <value>User account password successfully reset. User will receive email with link to reset account password</value>
   </data>
   <data name="FieldAddress" xml:space="preserve">
     <value>Address</value>
-  </data>
-  <data name="FieldAgencyName" xml:space="preserve">
-    <value>Agency Name</value>
   </data>
   <data name="FieldCitizenship" xml:space="preserve">
     <value>Citizenship</value>
   </data>
   <data name="FieldCity" xml:space="preserve">
     <value>City</value>
-  </data>
-  <data name="FieldCompanyAddress" xml:space="preserve">
-    <value>Address</value>
-  </data>
-  <data name="FieldCompanyName" xml:space="preserve">
-    <value>Company Name</value>
-  </data>
-  <data name="FieldCompanyPhoneNo" xml:space="preserve">
-    <value>Contact No</value>
-  </data>
-  <data name="FieldCompanyRegNo" xml:space="preserve">
-    <value>Company Registration No</value>
-  </data>
-  <data name="FieldCompanyType" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="FieldConfirmPassword" xml:space="preserve">
-    <value>Confirm Password</value>
   </data>
   <data name="FieldCountryId" xml:space="preserve">
     <value>Country</value>
@@ -187,34 +169,25 @@
     <value>Email</value>
   </data>
   <data name="FieldICNo" xml:space="preserve">
-    <value>IC No</value>
+    <value>IC Number</value>
   </data>
-  <data name="FieldIsTermAgreed" xml:space="preserve">
-    <value>I agree to the Terms of Use</value>
-  </data>
-  <data name="FieldLoginId" xml:space="preserve">
-    <value>Email</value>
+  <data name="FieldICPassportNo" xml:space="preserve">
+    <value>IC / Passport Number</value>
   </data>
   <data name="FieldMalaysian" xml:space="preserve">
     <value>Malaysian</value>
   </data>
-  <data name="FieldMinistryId" xml:space="preserve">
-    <value>Ministry</value>
-  </data>
   <data name="FieldMobileNo" xml:space="preserve">
-    <value>Mobile No</value>
+    <value>Mobile Number</value>
   </data>
   <data name="FieldName" xml:space="preserve">
     <value>Name</value>
-  </data>
-  <data name="FieldNewPassword" xml:space="preserve">
-    <value>New Password</value>
   </data>
   <data name="FieldNonMalaysian" xml:space="preserve">
     <value>Non Malaysian</value>
   </data>
   <data name="FieldPassportNo" xml:space="preserve">
-    <value>Passport No</value>
+    <value>Passport Number</value>
   </data>
   <data name="FieldPassword" xml:space="preserve">
     <value>Password</value>
@@ -222,23 +195,14 @@
   <data name="FieldPostCode" xml:space="preserve">
     <value>Postcode</value>
   </data>
-  <data name="FieldRequiredIsTermAgreed" xml:space="preserve">
-    <value>Please agree to Terms of Use</value>
-  </data>
-  <data name="FieldResetPasswordEmail" xml:space="preserve">
-    <value>Please enter your email</value>
-  </data>
-  <data name="FieldRetypePassword" xml:space="preserve">
-    <value>Retype Password</value>
-  </data>
-  <data name="FieldSector" xml:space="preserve">
-    <value>Sector</value>
-  </data>
-  <data name="FieldSectorId" xml:space="preserve">
-    <value>Sector</value>
+  <data name="FieldRole" xml:space="preserve">
+    <value>Role</value>
   </data>
   <data name="FieldStateId" xml:space="preserve">
     <value>State</value>
+  </data>
+  <data name="FieldStatus" xml:space="preserve">
+    <value>Status</value>
   </data>
   <data name="PlaceholderAddress1" xml:space="preserve">
     <value>Street address line 1</value>
@@ -246,113 +210,53 @@
   <data name="PlaceholderAddress2" xml:space="preserve">
     <value>Street address line 2</value>
   </data>
-  <data name="PlaceholderAgencyName" xml:space="preserve">
-    <value>Agency Name</value>
-  </data>
   <data name="PlaceholderCitizenship" xml:space="preserve">
     <value>Select Citizenship</value>
   </data>
   <data name="PlaceholderCity" xml:space="preserve">
-    <value>City</value>
-  </data>
-  <data name="PlaceholderCompanyName" xml:space="preserve">
-    <value>Company Name</value>
-  </data>
-  <data name="PlaceholderCompanyPhoneNo" xml:space="preserve">
-    <value>eg. 031234567</value>
-  </data>
-  <data name="PlaceholderCompRegNo" xml:space="preserve">
-    <value>e.g 104258-x</value>
+    <value>Enter City</value>
   </data>
   <data name="PlaceholderCountryId" xml:space="preserve">
     <value>Country</value>
   </data>
   <data name="PlaceholderEmail" xml:space="preserve">
-    <value>example@gmail.com</value>
+    <value>Enter Email</value>
   </data>
   <data name="PlaceholderICNo" xml:space="preserve">
-    <value>IC Number without -</value>
-  </data>
-  <data name="PlaceholderMinistry" xml:space="preserve">
-    <value>Select Ministry</value>
+    <value>Enter IC Number</value>
   </data>
   <data name="PlaceholderMobileNo" xml:space="preserve">
-    <value>eg. 0171234567</value>
+    <value>Enter Mobile Number</value>
   </data>
   <data name="PlaceholderName" xml:space="preserve">
-    <value>Your full name</value>
+    <value>Enter Name</value>
   </data>
   <data name="PlaceholderPassportNo" xml:space="preserve">
-    <value>Passport No</value>
-  </data>
-  <data name="PlaceholderPassword" xml:space="preserve">
-    <value>Type your password</value>
+    <value>Enter Passport Number</value>
   </data>
   <data name="PlaceholderPostCode" xml:space="preserve">
-    <value>Postcode</value>
-  </data>
-  <data name="PlaceholderRetypePassword" xml:space="preserve">
-    <value>Retype your password</value>
-  </data>
-  <data name="PlaceholderSectorId" xml:space="preserve">
-    <value>Select Sector</value>
+    <value>Enter Postcode</value>
   </data>
   <data name="PlaceholderStateId" xml:space="preserve">
     <value>State</value>
-  </data>
-  <data name="PlaceholderType" xml:space="preserve">
-    <value>Select Agency Type</value>
-  </data>
-  <data name="TextForeign" xml:space="preserve">
-    <value>Non Malaysian Company</value>
-  </data>
-  <data name="TextGovernment" xml:space="preserve">
-    <value>Government Agency</value>
-  </data>
-  <data name="TextLocal" xml:space="preserve">
-    <value>Malaysian Company</value>
-  </data>
-  <data name="TextResetPassword" xml:space="preserve">
-    <value>Enter your IC No. We'll send you an email with a link to reset your password.</value>
-  </data>
-  <data name="TextSetPassword" xml:space="preserve">
-    <value>Save your new password</value>
-  </data>
-  <data name="TextSignIn" xml:space="preserve">
-    <value>Log In</value>
-  </data>
-  <data name="TitleLogin" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="TitleResetPassword" xml:space="preserve">
-    <value>Reset Password</value>
-  </data>
-  <data name="ValidCompareConfirmPassword" xml:space="preserve">
-    <value>Confirm password not match with new password.</value>
-  </data>
-  <data name="ValidCompareRetypePassword" xml:space="preserve">
-    <value>Password and Retype Password do not match</value>
   </data>
   <data name="ValidIsExistEmail" xml:space="preserve">
     <value>Email already registered in the system</value>
   </data>
   <data name="ValidIsExistICNo" xml:space="preserve">
-    <value>IC No already registered in the system</value>
+    <value>IC Number already registered in the system</value>
   </data>
   <data name="ValidIsExistPassportNo" xml:space="preserve">
-    <value>Passport No already registered in the system</value>
+    <value>Passport Number already registered in the system</value>
   </data>
   <data name="ValidLengthICNo" xml:space="preserve">
-    <value>Entered IC No digit length must be 12</value>
-  </data>
-  <data name="ValidNumericCompanyPhoneNo" xml:space="preserve">
-    <value>Entered Contact No must be number</value>
+    <value>Entered IC Number digit length must be 12</value>
   </data>
   <data name="ValidNumericICNo" xml:space="preserve">
-    <value>Entered IC No must be number</value>
+    <value>Entered IC Number must be number</value>
   </data>
   <data name="ValidNumericMobileNo" xml:space="preserve">
-    <value>Entered Mobile No must be number</value>
+    <value>Entered Mobile Number must be number</value>
   </data>
   <data name="ValidNumericPostCode" xml:space="preserve">
     <value>Entered Postcode must be number</value>
@@ -360,23 +264,11 @@
   <data name="ValidRequiredAddress" xml:space="preserve">
     <value>Please enter Address</value>
   </data>
-  <data name="ValidRequiredAgencyName" xml:space="preserve">
-    <value>Please enter Agency Name</value>
-  </data>
   <data name="ValidRequiredCitizenshipId" xml:space="preserve">
     <value>Please select Citizenship</value>
   </data>
   <data name="ValidRequiredCity" xml:space="preserve">
     <value>Please enter City</value>
-  </data>
-  <data name="ValidRequiredCompanyName" xml:space="preserve">
-    <value>Please enter Company Name</value>
-  </data>
-  <data name="ValidRequiredCompanyPhoneNo" xml:space="preserve">
-    <value>Please enter Contact No</value>
-  </data>
-  <data name="ValidRequiredCompanyRegNo" xml:space="preserve">
-    <value>Please enter Company Registration No</value>
   </data>
   <data name="ValidRequiredCountryId" xml:space="preserve">
     <value>Please select Country</value>
@@ -385,22 +277,16 @@
     <value>Please enter Email</value>
   </data>
   <data name="ValidRequiredICNo" xml:space="preserve">
-    <value>Please enter IC No</value>
-  </data>
-  <data name="ValidRequiredLoginId" xml:space="preserve">
-    <value>Please enter Email</value>
-  </data>
-  <data name="ValidRequiredMinistryId" xml:space="preserve">
-    <value>Please select Ministry</value>
+    <value>Please enter IC Number</value>
   </data>
   <data name="ValidRequiredMobileNo" xml:space="preserve">
-    <value>Please enter Mobile No</value>
+    <value>Please enter Mobile Number</value>
   </data>
   <data name="ValidRequiredName" xml:space="preserve">
     <value>Please enter Name</value>
   </data>
   <data name="ValidRequiredPassportNo" xml:space="preserve">
-    <value>Please enter Passport No</value>
+    <value>Please enter Passport Number</value>
   </data>
   <data name="ValidRequiredPassword" xml:space="preserve">
     <value>Please enter Password</value>
@@ -411,8 +297,8 @@
   <data name="ValidRequiredRetypePassword" xml:space="preserve">
     <value>Please Retype Password</value>
   </data>
-  <data name="ValidRequiredSectorId" xml:space="preserve">
-    <value>Please select Sector</value>
+  <data name="ValidRequiredRole" xml:space="preserve">
+    <value>Please select at least one Role</value>
   </data>
   <data name="ValidRequiredStateId" xml:space="preserve">
     <value>Please enter State</value>

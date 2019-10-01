@@ -117,31 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CompanyTypeGovernment" xml:space="preserve">
-    <value>Government Agency</value>
+  <data name="AlertFailCreate" xml:space="preserve">
+    <value>Fail to add new ministry</value>
   </data>
-  <data name="CompanyTypeMalaysianCompany" xml:space="preserve">
-    <value>Malaysian Company</value>
+  <data name="AlertFailDelete" xml:space="preserve">
+    <value>Fail to delete ministry</value>
   </data>
-  <data name="CompanyTypeNonMalaysianCompany" xml:space="preserve">
-    <value>Non Malaysian Company</value>
+  <data name="AlertFailUpdate" xml:space="preserve">
+    <value>Fail to update ministry</value>
   </data>
-  <data name="NotificationTypeActivateAccount" xml:space="preserve">
-    <value>Activate Account</value>
+  <data name="AlertSuccessCreate" xml:space="preserve">
+    <value>Ministry successfully added</value>
   </data>
-  <data name="NotificationTypeResetPassword" xml:space="preserve">
-    <value>Reset Account Password</value>
+  <data name="AlertSuccessDelete" xml:space="preserve">
+    <value>Ministry successfully deleted</value>
   </data>
-  <data name="UserTypeCompany" xml:space="preserve">
-    <value>Company</value>
+  <data name="AlertSuccessUpdate" xml:space="preserve">
+    <value>Ministry successfully updated</value>
   </data>
-  <data name="UserTypeIndividual" xml:space="preserve">
-    <value>Individual</value>
+  <data name="FieldName" xml:space="preserve">
+    <value>Ministry Name</value>
   </data>
-  <data name="UserTypeStaff" xml:space="preserve">
-    <value>Staff</value>
+  <data name="PlaceholderName" xml:space="preserve">
+    <value>Enter Ministry Name</value>
   </data>
-  <data name="UserTypeSystemAdmin" xml:space="preserve">
-    <value>System Admin</value>
+  <data name="SidebarMinistry" xml:space="preserve">
+    <value>Ministry</value>
+  </data>
+  <data name="SidebarMinistryList" xml:space="preserve">
+    <value>Ministry List</value>
+  </data>
+  <data name="TitleDescriptionList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TitleList" xml:space="preserve">
+    <value>Ministry Parameter</value>
+  </data>
+  <data name="ValidExistName" xml:space="preserve">
+    <value>Ministry Name already registered in the system</value>
+  </data>
+  <data name="ValidRequiredName" xml:space="preserve">
+    <value>Please enter Ministry Name</value>
   </data>
 </root>

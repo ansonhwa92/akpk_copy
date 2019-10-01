@@ -179,6 +179,9 @@ namespace FEP.Model.Migrations
             AddRole(db, "Approver R&P 3", "Approver R&P 3");
             AddRole(db, "Approver eLearning 3", "Approver eLearning 3");
 
+           //sfdsf
+
+            
 
             if (!db.State.Any())
             {
@@ -200,6 +203,39 @@ namespace FEP.Model.Migrations
                     new State { Name = "Wilayah Persekutuan Labuan", Display = true },
                     new State { Name = "Wilayah Persekutuan Putrajaya", Display = true }
                 );
+            }
+
+            if (!db.Ministry.Any())
+            {
+                db.Ministry.AddOrUpdate(s => s.Name,
+                    new Ministry { Name = "Jabatan Perdana Menteri Malaysia(JPM)", Display = true },
+                    new Ministry { Name = "Kementerian Kewangan Malaysia(MOF)", Display = true },
+                    new Ministry { Name = "Kementerian Dalam Negeri Malaysia(KDN)", Display = true },
+                    new Ministry { Name = "Kementerian Hal Ehwal Ekonomi Malaysia(MEA)", Display = true },
+                    new Ministry { Name = "Kementerian Perdagangan Dalam Negeri dan Hal Ehwal Pengguna Malaysia(KPDNHEP)", Display = true },
+                    new Ministry { Name = "Kementerian Luar Negeri Malaysia(KLN)", Display = true },
+                    new Ministry { Name = "Kementerian Pertahanan Malaysia(MINDEF)", Display = true },
+                    new Ministry { Name = "Kementerian Pendidikan Malaysia(KPM)", Display = true },
+                    new Ministry { Name = "Kementerian Pembangunan Luar Bandar Malaysia(KPLB)", Display = true },
+                    new Ministry { Name = "Kementerian Kerja Raya Malaysia(KKR)", Display = true },
+                    new Ministry { Name = "Kementerian Kesihatan Malaysia(KKM)", Display = true },
+                    new Ministry { Name = "Kementerian Komunikasi dan Multimedia Malaysia(KKMM)", Display = true },
+                    new Ministry { Name = "Kementerian Pembangunan Usahawan Malaysia(MED)", Display = true },
+                    new Ministry { Name = "Kementerian Perumahan dan Kerajaan Tempatan Malaysia(KPKT)", Display = true },
+                    new Ministry { Name = "Kementerian Pelancongan dan Kebudayaan Malaysia(MOTAC)", Display = true },
+                    new Ministry { Name = "Kementerian Pengangkutan Malaysia(MOT)", Display = true },
+                    new Ministry { Name = "Kementerian Pembangunan Wanita, Keluarga dan Masyarakat Malaysia(KPWKM)", Display = true },
+                    new Ministry { Name = "Kementerian Pertanian dan Industri Asas Tani Malaysia(MOA)", Display = true },
+                    new Ministry { Name = "Kementerian Industri Utama Malaysia(MPI)", Display = true },
+                    new Ministry { Name = "Kementerian Perdagangan Antarabangsa dan Industri Malaysia(MITI)", Display = true },
+                    new Ministry { Name = "Kementerian Sains, Teknologi, Inovasi, Sumber Asli dan Perubahan Iklim Malaysia(MESTECC)", Display = true },
+                    new Ministry { Name = "Kementerian Sumber Manusia Malaysia(KSM)", Display = true },
+                    new Ministry { Name = "Kementerian Air, Sumber Asli dan Tanah Malaysia(KATS)", Display = true },
+                    new Ministry { Name = "Kementerian Wilayah Persekutuan Malaysia(KWP)", Display = true },
+                    new Ministry { Name = "Mahkamah", Display = true },
+                    new Ministry { Name = "Suruhanjaya", Display = true }
+                    );
+
             }
 
             if (!db.Sector.Any())

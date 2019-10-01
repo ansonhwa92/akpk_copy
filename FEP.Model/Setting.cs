@@ -11,7 +11,8 @@ namespace FEP.Model
     public enum SystemMode
     {
         Development = 0,
-        Production = 1
+        Production = 1,
+        Maintenance = 2
     }
 
     [Table("SystemSetting")]

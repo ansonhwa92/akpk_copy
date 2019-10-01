@@ -78,51 +78,82 @@
             <div class="form-container">
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.CompanyName)
-                        @Html.EditorFor(m => m.CompanyName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.FEPLabelFor(m => m.Type, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(m => m.Type, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="row @if (Model.Type != CompanyType.Government) { <text>d-none</text> }">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(m => m.Ministry, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(m => m.Ministry.Name, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="row @if (Model.Type == CompanyType.Government) { <text>d-none</text> }">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(m => m.Sector, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(m => m.Sector.Name, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.CompanyRegNo)
-                        @Html.EditorFor(m => m.CompanyRegNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="form-group col-lg-12 @if (Model.Type == CompanyType.Government) { <text>d-none</text> }">
+                        @Html.FEPLabelFor(m => m.CompanyName, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(m => m.CompanyName, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
+                    </div>
+
+                    <div class="form-group col-lg-12 @if (Model.Type != CompanyType.Government) { <text>d-none</text> }">
+                        @Html.FEPLabelFor(m => m.AgencyName, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(m => m.AgencyName, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
                     </div>
                 </div>
-                <div class="row">
+
+                <div class="row companyregno @if (Model.Type != CompanyType.MalaysianCompany) { <text>d-none</text> }">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.Sector)
-                        @Html.EditorFor(m => m.Sector, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.FEPLabelFor(m => m.CompanyRegNo, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(m => m.CompanyRegNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.Address1)
-                        @Html.EditorFor(m => m.Address1, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+                <div class="form-group">
+                    @Html.FEPLabelFor(m => m.Address1, htmlAttributes: new { @class = "form-label" })
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group mb-3">
+                                @Html.EditorFor(m => m.Address1, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group mb-3">
+                                @Html.EditorFor(m => m.Address2, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col @if (Model.Type == CompanyType.NonMalaysianCompany) { <text>d-none</text> }">
+                            @Html.EditorFor(m => m.PostCodeMalaysian, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
+                        </div>
+                        <div class="col @if (Model.Type != CompanyType.NonMalaysianCompany) { <text>d-none</text> }">
+                            @Html.EditorFor(m => m.PostCodeNonMalaysian, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
+                        </div>
+                        <div class="col">
+                            @Html.EditorFor(m => m.City, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            @Html.EditorFor(m => m.State.Name, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group">
+                                @Html.EditorFor(m => m.Country.Name, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-lg-12">
-                        @Html.EditorFor(m => m.Address2, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.PostCode)
-                        @Html.EditorFor(m => m.PostCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.City)
-                        @Html.EditorFor(m => m.City, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.State)
-                        @Html.EditorFor(m => m.State, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
+
                 <div class="row">
                     <div class="form-group col-lg-12">
                         @Html.FEPLabelFor(m => m.CompanyPhoneNo)
@@ -137,9 +168,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.ICNo)
-                        @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="form-group col-lg-12 @if (Model.Type == CompanyType.NonMalaysianCompany) { <text>d-none</text> }">
+                        @Html.FEPLabelFor(m => m.ICNo, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
+                    </div>
+                    <div class="form-group col-lg-12 @if (Model.Type != CompanyType.NonMalaysianCompany) { <text>d-none</text> }">
+                        @Html.FEPLabelFor(m => m.PassportNo, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(m => m.PassportNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", @readonly = "readonly" } })
                     </div>
                 </div>
                 <div class="row">
@@ -156,8 +191,13 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.RoleIds)
-                        @Html.ListBoxFor(m => m.RoleIds, Model.Roles, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled", })
+                        @Html.FEPLabelFor(m => m.Roles)
+                        <div class="input-group">
+                            @foreach (var role in Model.Roles)
+                            {
+                                <span class="badge badge-pill badge-primary ml-1" data-toggle="tooltip" title="@role.Description">@role.Name</span>
+                            }
+                        </div>
                     </div>
                 </div>
                 <div class="row">

@@ -58,7 +58,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group non-malaysian @if (Model.IsMalaysian) { <text> d-none </text> }">
+                    <div class="form-group non-malaysian @if (Model.IsMalaysian) { <text>d-none</text> }">
                         @Html.FEPLabelFor(m => m.CitizenshipId, htmlAttributes: new { @class = "form-label" })
                         <div class="input-group">
                             <span class="select-arrow">
@@ -76,7 +76,7 @@
                         </div>
                     </div>
 
-                    <div class="malaysian  @if (!Model.IsMalaysian) { <text> d-none </text> }">
+                    <div class="malaysian  @if (!Model.IsMalaysian) { <text>d-none</text> }">
                         <div class="form-group">
                             @Html.FEPLabelFor(m => m.ICNo, htmlAttributes: new { @class = "form-label" })
                             <div class="input-group">
@@ -86,7 +86,7 @@
                         </div>
                     </div>
 
-                    <div class="non-malaysian @if (Model.IsMalaysian) { <text> d-none </text> }">
+                    <div class="non-malaysian @if (Model.IsMalaysian) { <text>d-none</text> }">
                         <div class="form-group">
                             @Html.FEPLabelFor(m => m.PassportNo, htmlAttributes: new { @class = "form-label" })
                             <div class="input-group">
@@ -130,11 +130,11 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col malaysian @if (Model.IsMalaysian) { <text>d-none</text> }">
+                            <div class="col malaysian @if (!Model.IsMalaysian) { <text>d-none</text> }">
                                 @Html.EditorFor(m => m.PostCodeMalaysian, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderPostCode } })
                                 @Html.ValidationMessageFor(m => m.PostCodeMalaysian)
                             </div>
-                            <div class="col non-malaysian @if (!Model.IsMalaysian) { <text>d-none</text> }">
+                            <div class="col non-malaysian @if (Model.IsMalaysian) { <text>d-none</text> }">
                                 @Html.EditorFor(m => m.PostCodeNonMalaysian, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Auth.PlaceholderPostCode } })
                                 @Html.ValidationMessageFor(m => m.PostCodeNonMalaysian)
                             </div>
@@ -159,12 +159,16 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <div class="input-group">
+                                <div class="input-group malaysian @if (!Model.IsMalaysian) { <text>d-none</text> }">
+                                    @Html.TextBox("Country", "Malaysia", htmlAttributes: new { @class = "form-control", @readonly = "readonly" } )
+                                    @Html.HiddenFor(m => m.MalaysiaCountryId)
+                                </div>
+                                <div class="input-group non-malaysian @if (Model.IsMalaysian) { <text>d-none</text> }">
                                     <span class="select-arrow">
                                         @Html.DropDownListFor(m => m.CountryId, Model.Countries, Language.Auth.PlaceholderCountryId, htmlAttributes: new { @class = "custom-select" })
                                     </span>
                                     @Html.ValidationMessageFor(m => m.CountryId)
-                                </div>
+                                </div>                                                         
                             </div>
                         </div>
 
@@ -194,7 +198,7 @@
                         @Html.ValidationMessageFor(m => m.IsTermAgreed)
                     </div>
 
-                    <button type="submit" class="btn btn-secondary btn-block mt-3 mb-4">Sign Up</button>
+                    <button type="submit" class="btn btn-secondary btn-block mt-3">Sign Up</button>
 
 
                 }

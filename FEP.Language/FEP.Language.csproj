@@ -41,6 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Company.Designer.cs">
+      <DependentUpon>Company.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Individual.Designer.cs">
+      <DependentUpon>Individual.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="EventCategory.Designer.cs">
       <DependentUpon>EventCategory.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -58,6 +68,11 @@
     </Compile>
     <Compile Include="Country.Designer.cs">
       <DependentUpon>Country.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Ministry.Designer.cs">
+      <DependentUpon>Ministry.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -124,6 +139,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Company.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Company.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Individual.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Individual.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="EventCategory.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EventCategory.Designer.cs</LastGenOutput>
@@ -139,6 +162,10 @@
     <EmbeddedResource Include="Country.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Country.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ministry.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Ministry.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="State.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

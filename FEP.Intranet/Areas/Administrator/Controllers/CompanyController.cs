@@ -44,7 +44,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var model = response.Data;
 
-            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+            //model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
 
             return View(model);
         }
@@ -54,29 +54,69 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         {
             var model = new CreateCompanyModel();
 
+            model.Type = CompanyType.Government;
+
+            var countries = await GetCountries();
+
+            model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+
             model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
-
+            model.States = new SelectList(await GetStates(), "Id", "Name", 0);
+            model.Ministries = new SelectList(await GetMinistry(), "Id", "Name", 0);
+            model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);           
             model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
-
+                        
             return View(model);
         }
 
         [HttpPost]
         public async Task<ActionResult> Create(CreateCompanyModel model)
         {
+            if (model.Type == CompanyType.Government)
+            {
+                ModelState.Remove("PassportNo");
+                ModelState.Remove("PostCodeNonMalaysian");
+                ModelState.Remove("State");
+                ModelState.Remove("CountryId");
+                ModelState.Remove("CompanyName");
+                ModelState.Remove("CompanyRegNo");
+                ModelState.Remove("SectorId");
+
+                model.CountryId = model.MalaysiaCountryId;
+            }
+            else if (model.Type == CompanyType.MalaysianCompany)
+            {
+                ModelState.Remove("PassportNo");
+                ModelState.Remove("PostCodeNonMalaysian");
+                ModelState.Remove("State");
+                ModelState.Remove("CountryId");
+                ModelState.Remove("AgencyName");
+                ModelState.Remove("MinistryId");
+
+                model.CountryId = model.MalaysiaCountryId;
+            }
+            else
+            {
+                ModelState.Remove("ICNo");
+                ModelState.Remove("PostCodeMalaysian");
+                ModelState.Remove("StateId");
+                ModelState.Remove("AgencyName");
+                ModelState.Remove("MinistryId");
+                ModelState.Remove("CompanyRegNo");
+            }
 
             var emailResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsEmailExist?id={null}&email={model.Email}");
 
             if (emailResponse.isSuccess)
             {
-                ModelState.AddModelError("Email", "Email already registered in the system");
+                ModelState.AddModelError("Email", Language.Company.ValidIsExistEmail);
             }
 
             var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={model.ICNo}");
 
             if (icnoResponse.isSuccess)
             {
-                ModelState.AddModelError("ICNo", "IC No already registered in the system");
+                ModelState.AddModelError("ICNo", Language.Company.ValidIsExistICNo);
             }
 
             if (ModelState.IsValid)
@@ -93,24 +133,30 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                     await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), new EmailAddress { DisplayName = model.Name, Address = model.Email });
 
-                    LogActivity(Modules.Admin, "Create Agency User", model);
+                    await LogActivity(Modules.Admin, "Create Agency User", model);
 
-                    TempData["SuccessMessage"] = "User successfully registered. User will receive email with sign in details and link to activate the account.";
+                    TempData["SuccessMessage"] = Language.Company.AlertCreateSuccess;
 
                     return RedirectToAction("List", "Company", new { area = "Administrator" });
 
                 }
                 else
                 {
-                    TempData["SuccessMessage"] = "Fail to register user.";
+                    TempData["SuccessMessage"] = Language.Company.AlertCreateFail;
 
                     return RedirectToAction("List", "Company", new { area = "Administrator" });
                 }
 
             }
 
-            model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+            var countries = await GetCountries();
 
+            model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+
+            model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+            model.States = new SelectList(await GetStates(), "Id", "Name", 0);
+            model.Ministries = new SelectList(await GetMinistry(), "Id", "Name", 0);
+            model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
             model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
 
             return View(model);
@@ -125,16 +171,48 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            var response = await WepApiMethod.SendApiAsync<EditCompanyModel>(HttpVerbs.Get, $"Administration/Company?id={id}");
+            var response = await WepApiMethod.SendApiAsync<DetailsCompanyModel>(HttpVerbs.Get, $"Administration/Company?id={id}");
 
             if (!response.isSuccess)
             {
                 return HttpNotFound();
             }
 
-            var model = response.Data;
+            var model = new EditCompanyModel
+            {
+                Id = response.Data.Id,
+                Type = response.Data.Type,
+                CompanyName = response.Data.CompanyName,
+                AgencyName = response.Data.AgencyName,
+                MinistryId = response.Data.Ministry != null ? response.Data.Ministry.Id : (int?) null,
+                SectorId = response.Data.Sector != null ? response.Data.Sector.Id : (int?) null,
+                CompanyRegNo = response.Data.CompanyRegNo,
+                Address1 = response.Data.Address1,
+                Address2 = response.Data.Address2,
+                PostCodeMalaysian = response.Data.PostCodeMalaysian,
+                PostCodeNonMalaysian = response.Data.PostCodeNonMalaysian,
+                City = response.Data.City,
+                StateId = response.Data.State.Id,
+                State = response.Data.State.Name,
+                CountryId = response.Data.Country.Id,
+                CompanyPhoneNo = response.Data.CompanyPhoneNo,
+                Name = response.Data.Name,
+                ICNo = response.Data.ICNo,
+                PassportNo = response.Data.PassportNo,
+                Email = response.Data.Email,
+                MobileNo = response.Data.MobileNo,
+                RoleIds = response.Data.Roles.Select(s => s.Id).ToArray(),
+                Status = response.Data.Status
+            };
+
+            var countries = await GetCountries();
+
+            model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
 
             model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+            model.States = new SelectList(await GetStates(), "Id", "Name", 0);
+            model.Ministries = new SelectList(await GetMinistry(), "Id", "Name", 0);
+            model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
             model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
 
             return View(model);
@@ -143,18 +221,52 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(EditCompanyModel model)
         {
+
+            if (model.Type == CompanyType.Government)
+            {
+                ModelState.Remove("PassportNo");
+                ModelState.Remove("PostCodeNonMalaysian");
+                ModelState.Remove("State");
+                ModelState.Remove("CountryId");
+                ModelState.Remove("CompanyName");
+                ModelState.Remove("CompanyRegNo");
+                ModelState.Remove("SectorId");
+
+                model.CountryId = model.MalaysiaCountryId;
+            }
+            else if (model.Type == CompanyType.MalaysianCompany)
+            {
+                ModelState.Remove("PassportNo");
+                ModelState.Remove("PostCodeNonMalaysian");
+                ModelState.Remove("State");
+                ModelState.Remove("CountryId");
+                ModelState.Remove("AgencyName");
+                ModelState.Remove("MinistryId");
+
+                model.CountryId = model.MalaysiaCountryId;
+            }
+            else
+            {
+                ModelState.Remove("ICNo");
+                ModelState.Remove("PostCodeMalaysian");
+                ModelState.Remove("StateId");
+                ModelState.Remove("AgencyName");
+                ModelState.Remove("MinistryId");
+                ModelState.Remove("CompanyRegNo");
+            }
+
             var emailResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsEmailExist?id={model.Id}&email={model.Email}");
 
             if (emailResponse.isSuccess)
             {
-                ModelState.AddModelError("Email", "Email already registered in the system");
+                ModelState.AddModelError("Email", Language.Company.ValidIsExistEmail);
             }
 
             var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={model.Id}&icno={model.ICNo}");
 
             if (icnoResponse.isSuccess)
             {
-                ModelState.AddModelError("ICNo", "IC No already registered in the system");
+                ModelState.AddModelError("ICNo", Language.Company.ValidIsExistICNo);
             }
 
             if (ModelState.IsValid)
@@ -163,23 +275,29 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 if (response.Data)
                 {
-                    LogActivity(Modules.Admin, "Update Agency User", model);
+                    await LogActivity(Modules.Admin, "Update Agency User", model);
 
-                    TempData["SuccessMessage"] = "User record successfully updated.";
+                    TempData["SuccessMessage"] = Language.Company.AlertEditSuccess;
 
                     return RedirectToAction("Details", "Company", new { area = "Administrator", @id = model.Id });
                 }
                 else
                 {
-                    TempData["SuccessMessage"] = "Fail to update user record.";
+                    TempData["SuccessMessage"] = Language.Company.AlertEditFail;
 
                     return RedirectToAction("Details", "Company", new { area = "Administrator", @id = model.Id });
                 }
 
             }
 
-            model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+            var countries = await GetCountries();
 
+            model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+
+            model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+            model.States = new SelectList(await GetStates(), "Id", "Name", 0);
+            model.Ministries = new SelectList(await GetMinistry(), "Id", "Name", 0);
+            model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
             model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
 
             return View(model);
@@ -203,8 +321,6 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var model = response.Data;
 
-            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
-
             return View(model);
         }
 
@@ -221,16 +337,16 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.Data)
             {
-                LogActivity(Modules.Admin, "Activate Agency User Account", new { id = id });
+                await LogActivity(Modules.Admin, "Activate Agency User Account", new { id = id });
 
-                TempData["SuccessMessage"] = "User account successfully activate.";
+                TempData["SuccessMessage"] = Language.Company.AlertActivateSuccess;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = "Fail to activate user account.";
+                TempData["ErrorMessage"] = Language.Company.AlertActivateFail;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
@@ -254,8 +370,6 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var model = response.Data;
 
-            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
-
             return View(model);
         }
 
@@ -272,16 +386,16 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                LogActivity(Modules.Admin, "Disable Agency User Account", new { id = id});
+                await LogActivity(Modules.Admin, "Disable Agency User Account", new { id = id});
 
-                TempData["SuccessMessage"] = "User account successfully disable.";
+                TempData["SuccessMessage"] = Language.Company.AlertDeactivateSuccess;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = "Fail to disable user account.";
+                TempData["ErrorMessage"] = Language.Company.AlertActivateFail;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
@@ -303,8 +417,6 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             }
 
             var model = response.Data;
-
-            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
 
             return View(model);
         }
@@ -330,16 +442,16 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                                
                 await EmailMethod.SendEmail("FE Portal Password Reset By Admin", body.ToString(), new EmailAddress { DisplayName = response.Data.Name, Address = Email });
 
-                LogActivity(Modules.Admin, "Reset Agency User Account Password", new { id = id });
+                await LogActivity(Modules.Admin, "Reset Agency User Account Password", new { id = id });
 
-                TempData["SuccessMessage"] = "User account password successfully reset. User will receive email with link to reset account password.";
+                TempData["SuccessMessage"] = Language.Company.AlertResetSuccess;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = "Fail to reset user account password.";
+                TempData["ErrorMessage"] = Language.Company.AlertResetFail;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
@@ -363,7 +475,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var model = response.Data;
 
-            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+            //model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
 
             return View(model);
         }
@@ -381,16 +493,16 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                LogActivity(Modules.Admin, "Delete Agency User", new { id = id });
+                await LogActivity(Modules.Admin, "Delete Agency User", new { id = id });
 
-                TempData["SuccessMessage"] = "User account successfully delete.";
+                TempData["SuccessMessage"] = Language.Company.AlertDeleteSuccess;
 
                 return RedirectToAction("List", "Company", new { area = "Administrator" });
             }
             else
             {
 
-                TempData["ErrorMessage"] = "Fail to delete user account.";
+                TempData["ErrorMessage"] = Language.Company.AlertDeleteFail;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
@@ -424,8 +536,6 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var model = response.Data;
 
-            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
-
             return View(model);
 
         }
@@ -444,6 +554,54 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             }
 
             return sectors;
+
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<MinistryModel>> GetMinistry()
+        {
+            var ministries = Enumerable.Empty<MinistryModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<MinistryModel>>(HttpVerbs.Get, $"Administration/Ministry");
+
+            if (response.isSuccess)
+            {
+                ministries = response.Data.OrderBy(o => o.Name);
+            }
+
+            return ministries;
+
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<StateModel>> GetStates()
+        {
+            var states = Enumerable.Empty<StateModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<StateModel>>(HttpVerbs.Get, $"Administration/State");
+
+            if (response.isSuccess)
+            {
+                states = response.Data.OrderBy(o => o.Name);
+            }
+
+            return states;
+
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<CountryModel>> GetCountries()
+        {
+            var countries = Enumerable.Empty<CountryModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<CountryModel>>(HttpVerbs.Get, $"Administration/Country");
+
+            if (response.isSuccess)
+            {
+                countries = response.Data.OrderBy(o => o.Name);
+            }
+
+            return countries;
 
         }
 

@@ -109,9 +109,10 @@ namespace FEP.Model
     {
         [Key, ForeignKey("User")]
         public int UserId { get; set; }
-        public bool IsLocal { get; set; }
+        public CompanyType Type { get; set; }
         public string CompanyName { get; set; }
-        public int SectorId { get; set; }
+        public int? SectorId { get; set; }
+        public int? MinistryId { get; set; }
         public string CompanyRegNo { get; set; }//form malaysian
         public string Address1 { get; set; }
         public string Address2 { get; set; }
@@ -121,35 +122,32 @@ namespace FEP.Model
         public string StateName { get; set; }//for non malaysian
         public int CountryId { get; set; }//non malaysian
         public string CompanyPhoneNo { get; set; }
-
-        public bool RepIsMalaysian { get; set; }
-        public int? RepCitizenshipId { get; set; }
-        public string RepAddress1 { get; set; }
-        public string RepAddress2 { get; set; }
-        public string RepPostCode { get; set; }
-        public string RepCity { get; set; }
-        public int? RepStateId { get; set; }//for malaysian
-        public string RepStateName { get; set; }
-        public int RepCountryId { get; set; }
-
-
+        
         public virtual User User { get; set; }
 
         [ForeignKey("SectorId")]
         public virtual Sector Sector { get; set; }
+
+        [ForeignKey("MinistryId")]
+        public virtual Ministry Ministry { get; set; }
 
         [ForeignKey("StateId")]
         public virtual State State { get; set; }
 
         [ForeignKey("CountryId")]
         public virtual Country Country { get; set; }
-             
-        [ForeignKey("RepStateId")]
-        public virtual State RepState { get; set; }
+        
 
-        [ForeignKey("RepCountryId")]
-        public virtual Country RepCountry { get; set; }
+    }
 
+    public enum CompanyType
+    {
+        [Display(Name = "CompanyTypeGovernment", ResourceType = typeof(Language.Enum))]
+        Government,
+        [Display(Name = "CompanyTypeMalaysianCompany", ResourceType = typeof(Language.Enum))]
+        MalaysianCompany,
+        [Display(Name = "CompanyTypeNonMalaysianCompany", ResourceType = typeof(Language.Enum))]
+        NonMalaysianCompany
     }
 
     [Table("StaffProfile")]
@@ -206,6 +204,15 @@ namespace FEP.Model
 
     [Table("Sector")]
     public class Sector
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool Display { get; set; }
+    }
+
+    [Table("Ministry")]
+    public class Ministry
     {
         [Key]
         public int Id { get; set; }

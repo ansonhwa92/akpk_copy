@@ -29,6 +29,7 @@ namespace FEP.Model
         public DbSet<StaffProfile> StaffProfile { get; set; }
         public DbSet<IndividualProfile> IndividualProfile { get; set; }
 
+        public DbSet<Ministry> Ministry { get; set; }
         public DbSet<Sector> Sector { get; set; }
         public DbSet<State> State { get; set; }
         public DbSet<Country> Country { get; set; }

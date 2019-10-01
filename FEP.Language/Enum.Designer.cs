@@ -61,6 +61,33 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Government Agency.
+        /// </summary>
+        public static string CompanyTypeGovernment {
+            get {
+                return ResourceManager.GetString("CompanyTypeGovernment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Malaysian Company.
+        /// </summary>
+        public static string CompanyTypeMalaysianCompany {
+            get {
+                return ResourceManager.GetString("CompanyTypeMalaysianCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Non Malaysian Company.
+        /// </summary>
+        public static string CompanyTypeNonMalaysianCompany {
+            get {
+                return ResourceManager.GetString("CompanyTypeNonMalaysianCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate Account.
         /// </summary>
         public static string NotificationTypeActivateAccount {

@@ -22,14 +22,14 @@ namespace Language {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Auth {
+    public class Company {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Auth() {
+        internal Company() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Language {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Language.Auth", typeof(Auth).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Language.Company", typeof(Company).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,101 +61,110 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sign in fail. Please use your login id and correct password..
+        ///   Looks up a localized string similar to Fail to activate user account.
         /// </summary>
-        public static string AlertLoginFail {
+        public static string AlertActivateFail {
             get {
-                return ResourceManager.GetString("AlertLoginFail", resourceCulture);
+                return ResourceManager.GetString("AlertActivateFail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your account is inactive. Please contact system admin..
+        ///   Looks up a localized string similar to User account successfully activated.
         /// </summary>
-        public static string AlertLoginInactive {
+        public static string AlertActivateSuccess {
             get {
-                return ResourceManager.GetString("AlertLoginInactive", resourceCulture);
+                return ResourceManager.GetString("AlertActivateSuccess", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Click &apos;Forgot Password&apos; to reset password..
+        ///   Looks up a localized string similar to Fail to register user.
         /// </summary>
-        public static string AlertResetPasswordFail {
+        public static string AlertCreateFail {
             get {
-                return ResourceManager.GetString("AlertResetPasswordFail", resourceCulture);
+                return ResourceManager.GetString("AlertCreateFail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Instruction to reset password was successfully sent to your email. Please check your email..
+        ///   Looks up a localized string similar to User successfully registered. User will receive email with sign in details and link to activate the account..
         /// </summary>
-        public static string AlertResetPasswordSuccess {
+        public static string AlertCreateSuccess {
             get {
-                return ResourceManager.GetString("AlertResetPasswordSuccess", resourceCulture);
+                return ResourceManager.GetString("AlertCreateSuccess", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Click &apos;Forgot Password&apos; to reset password..
+        ///   Looks up a localized string similar to Fail to disable user account.
         /// </summary>
-        public static string AlertSetPasswordFail {
+        public static string AlertDeactivateFail {
             get {
-                return ResourceManager.GetString("AlertSetPasswordFail", resourceCulture);
+                return ResourceManager.GetString("AlertDeactivateFail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your password successfully change. Please use new password to sign in..
+        ///   Looks up a localized string similar to User account successfully disable.
         /// </summary>
-        public static string AlertSetPasswordSuccess {
+        public static string AlertDeactivateSuccess {
             get {
-                return ResourceManager.GetString("AlertSetPasswordSuccess", resourceCulture);
+                return ResourceManager.GetString("AlertDeactivateSuccess", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forgot Password.
+        ///   Looks up a localized string similar to Fail to delete user account.
         /// </summary>
-        public static string ButtonForgotPassword {
+        public static string AlertDeleteFail {
             get {
-                return ResourceManager.GetString("ButtonForgotPassword", resourceCulture);
+                return ResourceManager.GetString("AlertDeleteFail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reset Password.
+        ///   Looks up a localized string similar to User account successfully delete.
         /// </summary>
-        public static string ButtonResetPassword {
+        public static string AlertDeleteSuccess {
             get {
-                return ResourceManager.GetString("ButtonResetPassword", resourceCulture);
+                return ResourceManager.GetString("AlertDeleteSuccess", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log In.
+        ///   Looks up a localized string similar to Fail to update user record.
         /// </summary>
-        public static string ButtonSignIn {
+        public static string AlertEditFail {
             get {
-                return ResourceManager.GetString("ButtonSignIn", resourceCulture);
+                return ResourceManager.GetString("AlertEditFail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dear {{name}}, &lt;br /&gt; You can set new password here..
+        ///   Looks up a localized string similar to User record successfully updated.
         /// </summary>
-        public static string EmailResetPasswordBody {
+        public static string AlertEditSuccess {
             get {
-                return ResourceManager.GetString("EmailResetPasswordBody", resourceCulture);
+                return ResourceManager.GetString("AlertEditSuccess", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FE Portal Reset Password.
+        ///   Looks up a localized string similar to Fail to reset user account password.
         /// </summary>
-        public static string EmailResetPasswordSubject {
+        public static string AlertResetFail {
             get {
-                return ResourceManager.GetString("EmailResetPasswordSubject", resourceCulture);
+                return ResourceManager.GetString("AlertResetFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User account password successfully reset. User will receive email with link to reset account password.
+        /// </summary>
+        public static string AlertResetSuccess {
+            get {
+                return ResourceManager.GetString("AlertResetSuccess", resourceCulture);
             }
         }
         
@@ -214,7 +223,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contact No.
+        ///   Looks up a localized string similar to Contact Number.
         /// </summary>
         public static string FieldCompanyPhoneNo {
             get {
@@ -268,7 +277,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IC No.
+        ///   Looks up a localized string similar to IC Number.
         /// </summary>
         public static string FieldICNo {
             get {
@@ -313,7 +322,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mobile No.
+        ///   Looks up a localized string similar to Mobile Number.
         /// </summary>
         public static string FieldMobileNo {
             get {
@@ -349,7 +358,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Passport No.
+        ///   Looks up a localized string similar to Passport Number.
         /// </summary>
         public static string FieldPassportNo {
             get {
@@ -372,42 +381,6 @@ namespace Language {
         public static string FieldPostCode {
             get {
                 return ResourceManager.GetString("FieldPostCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please agree to Terms of Use.
-        /// </summary>
-        public static string FieldRequiredIsTermAgreed {
-            get {
-                return ResourceManager.GetString("FieldRequiredIsTermAgreed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please enter your email.
-        /// </summary>
-        public static string FieldResetPasswordEmail {
-            get {
-                return ResourceManager.GetString("FieldResetPasswordEmail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Retype Password.
-        /// </summary>
-        public static string FieldRetypePassword {
-            get {
-                return ResourceManager.GetString("FieldRetypePassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sector.
-        /// </summary>
-        public static string FieldSector {
-            get {
-                return ResourceManager.GetString("FieldSector", resourceCulture);
             }
         }
         
@@ -448,7 +421,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agency Name.
+        ///   Looks up a localized string similar to Enter Agency Name.
         /// </summary>
         public static string PlaceholderAgencyName {
             get {
@@ -466,7 +439,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to City.
+        ///   Looks up a localized string similar to Enter City.
         /// </summary>
         public static string PlaceholderCity {
             get {
@@ -475,7 +448,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Company Name.
+        ///   Looks up a localized string similar to Enter Company Name.
         /// </summary>
         public static string PlaceholderCompanyName {
             get {
@@ -484,7 +457,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to eg. 031234567.
+        ///   Looks up a localized string similar to Enter Company Contact Number.
         /// </summary>
         public static string PlaceholderCompanyPhoneNo {
             get {
@@ -493,7 +466,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to e.g 104258-x.
+        ///   Looks up a localized string similar to Enter Company Registration Number.
         /// </summary>
         public static string PlaceholderCompRegNo {
             get {
@@ -502,7 +475,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Country.
+        ///   Looks up a localized string similar to Select Country.
         /// </summary>
         public static string PlaceholderCountryId {
             get {
@@ -511,7 +484,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to example@gmail.com.
+        ///   Looks up a localized string similar to Enter Email.
         /// </summary>
         public static string PlaceholderEmail {
             get {
@@ -520,7 +493,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IC Number without -.
+        ///   Looks up a localized string similar to Enter IC Number.
         /// </summary>
         public static string PlaceholderICNo {
             get {
@@ -538,7 +511,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to eg. 0171234567.
+        ///   Looks up a localized string similar to Enter Mobile Number.
         /// </summary>
         public static string PlaceholderMobileNo {
             get {
@@ -547,7 +520,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your full name.
+        ///   Looks up a localized string similar to Enter Representative Name.
         /// </summary>
         public static string PlaceholderName {
             get {
@@ -646,51 +619,6 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter your IC No. We&apos;ll send you an email with a link to reset your password..
-        /// </summary>
-        public static string TextResetPassword {
-            get {
-                return ResourceManager.GetString("TextResetPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save your new password.
-        /// </summary>
-        public static string TextSetPassword {
-            get {
-                return ResourceManager.GetString("TextSetPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Log In.
-        /// </summary>
-        public static string TextSignIn {
-            get {
-                return ResourceManager.GetString("TextSignIn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Login.
-        /// </summary>
-        public static string TitleLogin {
-            get {
-                return ResourceManager.GetString("TitleLogin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reset Password.
-        /// </summary>
-        public static string TitleResetPassword {
-            get {
-                return ResourceManager.GetString("TitleResetPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Confirm password not match with new password..
         /// </summary>
         public static string ValidCompareConfirmPassword {
@@ -718,7 +646,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IC No already registered in the system.
+        ///   Looks up a localized string similar to IC Number already registered in the system.
         /// </summary>
         public static string ValidIsExistICNo {
             get {
@@ -727,7 +655,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Passport No already registered in the system.
+        ///   Looks up a localized string similar to Passport Number already registered in the system.
         /// </summary>
         public static string ValidIsExistPassportNo {
             get {
@@ -736,7 +664,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entered IC No digit length must be 12.
+        ///   Looks up a localized string similar to Entered IC Number digit length must be 12.
         /// </summary>
         public static string ValidLengthICNo {
             get {
@@ -745,7 +673,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entered Contact No must be number.
+        ///   Looks up a localized string similar to Entered Contact Number must be number.
         /// </summary>
         public static string ValidNumericCompanyPhoneNo {
             get {
@@ -763,7 +691,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entered Mobile No must be number.
+        ///   Looks up a localized string similar to Entered Mobile Number must be number.
         /// </summary>
         public static string ValidNumericMobileNo {
             get {
@@ -826,7 +754,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter Contact No.
+        ///   Looks up a localized string similar to Please enter Contact Number.
         /// </summary>
         public static string ValidRequiredCompanyPhoneNo {
             get {
@@ -862,7 +790,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter IC No.
+        ///   Looks up a localized string similar to Please enter IC Number.
         /// </summary>
         public static string ValidRequiredICNo {
             get {
@@ -889,7 +817,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter Mobile No.
+        ///   Looks up a localized string similar to Please enter Mobile Number.
         /// </summary>
         public static string ValidRequiredMobileNo {
             get {
@@ -907,7 +835,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter Passport No.
+        ///   Looks up a localized string similar to Please enter Passport Number.
         /// </summary>
         public static string ValidRequiredPassportNo {
             get {
@@ -939,6 +867,15 @@ namespace Language {
         public static string ValidRequiredRetypePassword {
             get {
                 return ResourceManager.GetString("ValidRequiredRetypePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select at least one Role.
+        /// </summary>
+        public static string ValidRequiredRole {
+            get {
+                return ResourceManager.GetString("ValidRequiredRole", resourceCulture);
             }
         }
         

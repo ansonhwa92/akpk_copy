@@ -11,6 +11,12 @@ using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eLearning.Controllers
 {
+    public static class FileApiUrl
+    {
+        public const string Upload = "eLearning/File/UploadInfo";
+
+    }
+
     public class FileController : Controller
     {
 

@@ -81,24 +81,9 @@
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                    @{
-                        switch (Model.ContentType)
-                        {
-                            case FEP.Model.eLearning.CourseContentType.Video:
+                    @Html.Partial($"_create{Model.ContentType.ToString()}", Model)
 
-                                @Html.Partial("_createVideo", Model)
-                                break;
-
-                            case FEP.Model.eLearning.CourseContentType.RichText:
-
-                                @Html.Partial("_createRichText", Model)
-                                break;
-
-                            default:
-                                break;
-
-                        }
-                    }
+              
                 </div>
             </div>
 

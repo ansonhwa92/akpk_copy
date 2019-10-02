@@ -4,6 +4,8 @@ using FEP.Intranet.Areas.eLearning.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -72,6 +74,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 model.CreatedBy = CurrentUser.UserId.Value;
 
+                // TODO : FOR NOW DISABLE FILE UPLOAD, NEED TO GET THE PLAN HOW TO DO THIS
+                model.FileName = null;
+
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, ContentApiUrl.Create, model);
 
                 if (response.isSuccess)
@@ -80,77 +85,67 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                     await LogActivity(Modules.Learning, "Create content : " + model.Title);
 
-                    var id = response.Data;
+                    var contentId = response.Data;
+
+                    // Check if this creation include fileupload, which will require us to save the file
+                    if (((model.ContentType == CourseContentType.Video && model.VideoType == VideoType.UploadVideo) ||
+                        (model.ContentType == CourseContentType.Audio) ||
+                        (model.ContentType == CourseContentType.Document)) &&
+                        model.FileName != null)
+                    {
+                        JsonResult result = new FileController().UploadFile(model.FileName);
+
+                        if (result.Data != null)
+                        {
+                            var fileDocument = JsonConvert.DeserializeObject<FileDocument>(result.Data.ToString());
+
+                            fileDocument.FileType = model.ContentType.ToString();
+                            fileDocument.CreatedBy = CurrentUser.UserId.Value;
+                            fileDocument.CreatedDate = DateTime.Now;
+
+                            var vm = new FileDocumentModel
+                            {
+                                ContentFileType = model.FileType,
+                                CourseId = model.CourseId,
+                                CreatedBy = fileDocument.CreatedBy,
+                                FileType = fileDocument.FileType,
+                                CreatedDate = fileDocument.CreatedDate,
+                                FileName = fileDocument.FileName,
+                                FileNameOnStorage = fileDocument.FileNameOnStorage,
+                                FilePath = fileDocument.FilePath,
+                                FileSize = fileDocument.FileSize,
+                                FileTag = fileDocument.FileTag,
+                                User = fileDocument.User,
+                                ContentId = int.Parse(contentId)
+                            };
+
+                            var resultUpload = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, FileApiUrl.Upload, vm);
+
+                            if (resultUpload.isSuccess)
+                            {
+                            }
+                            else
+                            {
+                                TempData["ErrorMessage"] = "Cannot upload file";
+                            }
+                        }
+                    }
 
                     if (model.CreateContentFrom == CreateContentFrom.CourseFrontPage)
                         return RedirectToAction("Content", "Courses", new { id = model.CourseId });
                     else
                         return RedirectToAction("Content", "CourseModules", new { id = model.CourseModuleId });
                 }
-
-                //// --- FOR TESTING ONLY ----
-                ///
-
-                // check if the request come from front page, then create a new module then create the content.
-                // if it comes from the module, then create the content there
-                // differentiate by CreateContentFrom
-
-                //var content = _mapper.Map<CourseContent>(model);
-                //if (model.CreateContentFrom == CreateContentFrom.CourseFrontPage)
-                //{
-                //    var course = await db.Courses
-                //        .Include(x => x.Modules)
-                //        .FirstOrDefaultAsync(x => x.Id.Equals(model.CourseId));
-
-                //    if (course == null)
-                //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-                //    var module = new CourseModule
-                //    {
-                //        CourseId = model.CourseId,
-                //        Objectives = "Objective",
-                //        Description = "Description",
-                //        Title = model.Title,
-                //        Order = course.Modules != null ? (course.Modules.Max(x => x.Order) + 1) : 1
-                //    };
-
-                //    module.ModuleContents = new List<CourseContent>();
-                //    module.ModuleContents.Add(content);
-
-                //    course.Modules.Add(module);
-
-                //    await db.SaveChangesAsync();
-
-                //    return RedirectToAction("Content", "Courses", new { id = model.CourseId });
-                //}
-                //else
-                //{
-                //    var module = await db.CourseModules
-                //        .Include(x => x.ModuleContents)
-                //        .FirstOrDefaultAsync(x => x.Id.Equals(model.CourseModuleId));
-
-                //    if (module == null)
-                //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-                //    module.ModuleContents = new List<CourseContent>();
-                //    module.ModuleContents.Add(content);
-
-                //    return RedirectToAction("Content", "ModuleCourses", new { id = model.CourseModuleId });
-                //}
             }
 
-            TempData["ErrorMessage"] = "Cannot add content. Please ensure all required fields are filled in.";
+            TempData["ErrorMessage"] = "Cannot add content.";
 
             await GetAllQuestions(model.CourseId);
 
             return View(model);
-
-            //return View(new { courseId = model.CourseId, moduleId = model.CourseModuleId,
-            //    createContentFrom = model.CreateContentFrom,
-            //    courseContentType = model.ContentType, courseTitle = model.PageTitle });
         }
 
-        [HttpPost]        
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Complete(CreateOrEditContentModel model)
         {
@@ -173,7 +168,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     else
                         return RedirectToAction("Content", "CourseContents", new { id = nextContent });
                 }
-
             }
             TempData["ErrorMessage"] = "Cannot add content. Please ensure all required fields are filled in.";
 
@@ -215,7 +209,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-        
         public async Task<ActionResult> ViewVideo(int id)
         {
             //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
@@ -232,10 +225,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 else
                 {
                     // TODO : get the uploaded file info
-
                 }
                 return View(content);
-
             }
             else
             {
@@ -250,9 +241,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (content != null)
             {
-
                 return View(content);
-
             }
             else
             {
@@ -267,9 +256,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (content != null)
             {
-
                 return View(content);
-
             }
             else
             {
@@ -284,9 +271,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (content != null)
             {
-
                 return View(content);
-
             }
             else
             {
@@ -301,9 +286,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (content != null)
             {
-
                 return View(content);
-
             }
             else
             {
@@ -317,16 +300,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             var content = await TryGetContent(id);
 
             if (content != null)
-            {                               
+            {
                 return View(content);
-
             }
             else
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
         }
-
 
         public async Task<ActionResult> ViewTest(int id)
         {
@@ -335,16 +316,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (content != null)
             {
-
                 return View(content);
-
             }
             else
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
         }
-
 
         public async Task<ActionResult> ViewAssignment(int id)
         {
@@ -353,9 +331,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (content != null)
             {
-
                 return View(content);
-
             }
             else
             {
@@ -380,7 +356,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 else
                 {
                     // TODO : get the uploaded file info
-
                 }
                 return PartialView("_video", content);
             }
@@ -397,7 +372,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (content != null)
             {
-
                 return PartialView("_richText", content);
             }
             else
@@ -413,7 +387,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (content != null)
             {
-
                 return PartialView("_document", content);
             }
             else
@@ -422,7 +395,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
         }
 
-
         [ChildActionOnly]
         public ActionResult IFrame(int id)
         {
@@ -430,7 +402,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (content != null)
             {
-
                 return PartialView("_iframe", content);
             }
             else
@@ -446,7 +417,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (content != null)
             {
-
                 return PartialView("_audio", content);
             }
             else
@@ -455,7 +425,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
         }
 
-
         [ChildActionOnly]
         public ActionResult Weblink(int id)
         {
@@ -463,7 +432,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (content != null)
             {
-
                 return PartialView("_weblink", content);
             }
             else

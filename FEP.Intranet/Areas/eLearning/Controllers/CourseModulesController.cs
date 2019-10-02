@@ -16,8 +16,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     {
         public const string Create = "eLearning/CourseModules/Create";
         public const string GetModule = "eLearning/CourseModules";
-        
-                public const string Content = "eLearning/CourseModules/Content";
+
+        public const string Content = "eLearning/CourseModules/Content";
     }
 
     [Authorize]
@@ -130,7 +130,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-
         // GET: eLearning/CourseModules/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
@@ -157,7 +156,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(CreateOrEditModuleModel model, string Submittype)
@@ -178,7 +176,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     }
                     else
                     {
-
                         return RedirectToAction("Review", "Courses", new { area = "eLearning", @id = model.Id });
                     }
                 }
@@ -216,7 +213,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             ViewBag.CourseTitle = vm.Title;
 
             return View(vm);
-          
         }
 
         [HttpPost, ActionName("Delete")]
@@ -234,7 +230,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (response.isSuccess)
             {
-
                 await LogActivity(Modules.Learning, "Delete Module: " + response.Data);
 
                 TempData["SuccessMessage"] = "Module titled " + response.Data + " successfully deleted.";
@@ -278,7 +273,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-        
         [HttpPost]
         public async Task<ActionResult> Content(int? Id, int CreatedBy, string order)
         {
@@ -317,13 +311,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 return RedirectToAction("Content", "CourseModules", new { id = Id.Value });
             }
-            
+
             vm.ModuleContents = vm.ModuleContents.OrderBy(x => x.Order).ToList();
 
             return View(vm);
         }
 
-        
         public async Task<CreateOrEditModuleModel> TryGetModule(int id)
         {
             var response = await WepApiMethod.SendApiAsync<CreateOrEditModuleModel>(HttpVerbs.Get, ModuleApiUrl.GetModule + $"?id={id}");
@@ -335,6 +328,5 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             return null;
         }
-
     }
 }

@@ -155,9 +155,9 @@ namespace FEP.Model
     {
         [Key, ForeignKey("User")]
         public int UserId { get; set; }
-        public int DepartmentId { get; set; }
-        public int BranchId { get; set; }
-        public int DesignationId { get; set; }
+        public int? DepartmentId { get; set; }
+        public int? BranchId { get; set; }
+        public int? DesignationId { get; set; }
         public virtual User User { get; set; }
 
         [ForeignKey("DepartmentId")]
@@ -176,6 +176,7 @@ namespace FEP.Model
     {
         [Key]
         public int Id { get; set; }
+        public string BranchId { get; set; }
         public int StateId { get; set; }
         public string Name { get; set; }
         public bool Display { get; set; }
@@ -189,6 +190,7 @@ namespace FEP.Model
     {
         [Key]
         public int Id { get; set; }
+        public string DeptId { get; set; }
         public string Name { get; set; }
         public bool Display { get; set; }
     }
@@ -198,6 +200,7 @@ namespace FEP.Model
     {
         [Key]
         public int Id { get; set; }
+        public string DesignationId { get; set; }
         public string Name { get; set; }
         public bool Display { get; set; }
     }

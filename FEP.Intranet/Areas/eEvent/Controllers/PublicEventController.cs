@@ -66,14 +66,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 		// GET: PublicEvent/Details/5
 		[HttpGet]
-		public async Task<ActionResult> Details(int? id)
+		public async Task<ActionResult> Details(int? id, string origin)
 		{
 			if (id == null)
 			{
 				return HttpNotFound();
 			}
 
-			var response = await WepApiMethod.SendApiAsync<DetailsPublicEventModel>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest?id={id}");
+			var response = await WepApiMethod.SendApiAsync<DetailsPublicEventModel>(HttpVerbs.Get, $"eEvent/PublicEvent?id={id}");
 
 			if (!response.isSuccess)
 			{
@@ -176,9 +176,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				Remarks = response.Data.Remarks,
 				origin = origin,
 				RefNo = response.Data.RefNo,
+				SpeakerId = response.Data.SpeakerId,
+				SpeakerName = response.Data.SpeakerName,
+				ExternalExhibitorId = response.Data.ExternalExhibitorId,
+				ExternalExhibitorName = response.Data.ExternalExhibitorName,
 				//GetFileName = response.Data.GetFileName
 			};
 
+			model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
 			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
 			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
 
@@ -193,7 +198,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			if (ModelState.IsValid)
 			{
 
-				var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/EventSpeaker?id={model.Id}", model);
+				var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/PublicEvent?id={model.Id}", model);
 
 				if (response.isSuccess)
 				{
@@ -203,6 +208,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					return RedirectToAction("List");
 				}
 			}
+
+			model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
 			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
 			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
 
@@ -252,6 +259,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
+			model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
 			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
 			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
 
@@ -262,7 +270,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> DeleteConfirm(int id)
 		{
-			var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Delete, $"eEvent/EventSpeaker?id={id}");
+			var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Delete, $"eEvent/PublicEvent?id={id}");
 
 			if (response.isSuccess)
 			{
@@ -675,23 +683,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
 			}
 		}
-
-		//[NonAction]
-		//private async Task<IEnumerable<UserModel>> GetUsers()
-		//{
-
-		//	var roles = Enumerable.Empty<UserModel>();
-
-		//	var response = await WepApiMethod.SendApiAsync<List<UserModel>>(HttpVerbs.Get, $"Administration/User");
-
-		//	if (response.isSuccess)
-		//	{
-		//		roles = response.Data.OrderBy(o => o.Name);
-		//	}
-
-		//	return roles;
-
-		//}
 
 		[NonAction]
 		private async Task<IEnumerable<EventSpeakerModel>> GetSpeaker()

@@ -186,7 +186,7 @@
 						<div class="row">
 							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.ExternalExhibitorId)
-								@Html.DropDownListFor(model => model.ExternalExhibitorId, Model.ExternalExhibitorList, "-Select External Exhibitor-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+								@Html.ListBoxFor(m => m.ExternalExhibitorId, Model.ExternalExhibitorList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
 								@Html.ValidationMessageFor(model => model.ExternalExhibitorId, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -194,7 +194,7 @@
 						<div class="row">
 							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.SpeakerId)
-								@Html.DropDownListFor(model => model.SpeakerId, Model.SpeakerList, "-Select Speaker-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+								@Html.ListBoxFor(m => m.SpeakerId, Model.SpeakerList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
 								@Html.ValidationMessageFor(model => model.SpeakerId, "", new { @class = "text-danger" })
 							</div>
 						</div>

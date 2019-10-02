@@ -94,11 +94,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string GetFileName { get; set; }
 
 		public string origin { get; set; }
-		 
 		public string RefNo { get; set; }
-
-		[Display(Name = "Total Days")]
-		public string TotalDay { get; set; }
 
 
 		//File

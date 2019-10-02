@@ -233,10 +233,10 @@ namespace FEP.WebApi.Api.eEvent
 		//}
 
 		//Details
-		public PublicEventModel Get(int id)
+		public IHttpActionResult Get(int id)
 		{
 			var model = db.PublicEvent.Where(i => i.Display && i.Id == id)
-				.Select(i => new PublicEventModel
+				.Select(i => new DetailsPublicEventModel
 			{
 				Id = i.Id,
 				EventTitle = i.EventTitle,
@@ -251,9 +251,19 @@ namespace FEP.WebApi.Api.eEvent
 				TargetedGroup = i.TargetedGroup,
 				ParticipantAllowed = i.ParticipantAllowed,
 				Remarks = i.Remarks,
-			}).FirstOrDefault();
+					//SpeakerId = i.
+					//ExternalExhibitorId
+				}).FirstOrDefault();
 
-			return model;
+			if (model == null)
+			{
+				return NotFound();
+			}
+
+			model.SpeakerId = db.AssignedSpeaker.Where(u => u.PublicEventId == id).Select(s => s.EventSpeakerId).ToArray();
+			model.ExternalExhibitorId = db.AssignedExternalExhibitor.Where(u => u.PublicEventId == id).Select(s => s.ExternalExhibitorId).ToArray();
+
+			return Ok(model);
 		}
 
 		//Create
@@ -303,7 +313,6 @@ namespace FEP.WebApi.Api.eEvent
 			}
 
 			db.PublicEvent.Add(publicevent);
-
 			db.SaveChanges();
 
 			//---running number----//

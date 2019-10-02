@@ -108,7 +108,7 @@ namespace FEP.WebApiModel.PublicEvent
 		public string RefNo { get; set; }
 
 
-
+		public IEnumerable<SelectListItem> CategoryList { get; set; }
 		public IEnumerable<SelectListItem> SpeakerList { get; set; }
 		public IEnumerable<SelectListItem> ExternalExhibitorList { get; set; }
 	}

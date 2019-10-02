@@ -61,6 +61,15 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to With a question.
+        /// </summary>
+        public static string AnswerQuestion {
+            get {
+                return ResourceManager.GetString("AnswerQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approver 1.
         /// </summary>
         public static string ApprovalLevelApprover1 {
@@ -138,6 +147,132 @@ namespace Language.eLearning {
         public static string ApprovalStatusSubmitted {
             get {
                 return ResourceManager.GetString("ApprovalStatusSubmitted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assignment.
+        /// </summary>
+        public static string Assignment {
+            get {
+                return ResourceManager.GetString("Assignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audio.
+        /// </summary>
+        public static string Audio {
+            get {
+                return ResourceManager.GetString("Audio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press complete button.
+        /// </summary>
+        public static string ClickButton {
+            get {
+                return ResourceManager.GetString("ClickButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document.
+        /// </summary>
+        public static string Document {
+            get {
+                return ResourceManager.GetString("Document", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You Tube Video.
+        /// </summary>
+        public static string ExternalVideo {
+            get {
+                return ResourceManager.GetString("ExternalVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IFrame.
+        /// </summary>
+        public static string IFrame {
+            get {
+                return ResourceManager.GetString("IFrame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instructor.
+        /// </summary>
+        public static string Instructor {
+            get {
+                return ResourceManager.GetString("Instructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload a presentation.
+        /// </summary>
+        public static string Presentation {
+            get {
+                return ResourceManager.GetString("Presentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rich Text.
+        /// </summary>
+        public static string RichText {
+            get {
+                return ResourceManager.GetString("RichText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test/Quiz.
+        /// </summary>
+        public static string Test {
+            get {
+                return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After a period of time.
+        /// </summary>
+        public static string Timer {
+            get {
+                return ResourceManager.GetString("Timer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload a video.
+        /// </summary>
+        public static string UploadVideo {
+            get {
+                return ResourceManager.GetString("UploadVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video.
+        /// </summary>
+        public static string Video {
+            get {
+                return ResourceManager.GetString("Video", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web Link.
+        /// </summary>
+        public static string WebLink {
+            get {
+                return ResourceManager.GetString("WebLink", resourceCulture);
             }
         }
     }

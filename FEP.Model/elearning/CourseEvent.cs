@@ -48,9 +48,9 @@ namespace FEP.Model.eLearning
         // TODO : May need to have conditional validation at ModelView
         //https://stackoverflow.com/questions/2417113/asp-net-mvc-conditional-validation 
         public decimal AllowablePercentageBeforeWithdraw { get; set; } = 0.0m;
-        public int? CertificateId { get; set; }
-        public virtual CourseCertificate Certificate { get; set; }        
-        public virtual ICollection<Trainer> Trainers { get; set; }
+        //public int? CertificateId { get; set; }
+        //public virtual CourseCertificate Certificate { get; set; }        
+        //public virtual ICollection<Trainer> Trainers { get; set; }
         // ----- End value from Course
 
 

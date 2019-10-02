@@ -21,7 +21,6 @@
                     </li>
                 </ul>
             </div>
-
         </div>
 
         <div data-perfect-scrollbar class="ps">
@@ -31,18 +30,66 @@
                     <li class="nav-item">
                         <a class="dropdown-item" href="@Url.Action("Create", "CourseModules", new { area = "eLearning", id = @Model.Id, courseTitle= Model.Title })">Module</a>
                     </li>
+
                     <li class="nav-item">
-                        <a href="@Url.Action("EditRules", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Web link </a>
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.RichText,
+                                    createContentFrom = (int) CreateContentFrom.CourseFrontPage})" class="nav-link">
+                            Rich Text
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="@Url.Action("CreateFrontVideo", "CourseContents", new { area = "eLearning", id = @Model.Id })" class="nav-link">Video</a>
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.IFrame,
+                                    createContentFrom = (int) CreateContentFrom.CourseFrontPage})" class="nav-link">
+                            IFrame
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.Document,
+                                    createContentFrom = (int) CreateContentFrom.CourseFrontPage})" class="nav-link">
+                            Document
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="@Url.Action("Users", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Audio</a>
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.WebLink,
+                                    createContentFrom = (int) CreateContentFrom.CourseFrontPage})" class="nav-link">
+                            Web link
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.Video,
+                                    createContentFrom = (int) CreateContentFrom.CourseFrontPage})" class="nav-link">
+                            Video
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.Audio,
+                                    createContentFrom = (int) CreateContentFrom.CourseFrontPage})" class="nav-link">
+                            Audio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.Test,
+                                    createContentFrom = (int) CreateContentFrom.CourseFrontPage})" class="nav-link">
+                            Test
+                        </a>
                     </li>
                 </ul>
             </div>
-
         </div>
 
         <div>
@@ -74,7 +121,5 @@
                 }
             }
         </div>
-
-
     </div>
 </div>

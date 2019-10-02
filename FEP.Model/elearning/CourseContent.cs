@@ -5,37 +5,52 @@ namespace FEP.Model.eLearning
 {
     public class CourseContent : BaseEntity
     {
+        [Display(Name = "Title", ResourceType = typeof(Language.eLearning.Course))]
         public string Title { get; set; }
 
         public string Description { get; set; }
 
-        public int? CourseModuleId { get; set; }        
+        public int CourseModuleId { get; set; }
 
-        public int? CourseId { get; set; }        
+        [Required]
+        public int CourseId { get; set; }
 
-        /// <summary>
-        /// Whether the content is viewable or not
-        /// </summary>
-        public bool IsViewable { get; set; }
-
+        [Required]
         public CourseContentType ContentType { get; set; }
 
+        [Display(Name = "CompletionCriteria", ResourceType = typeof(Language.eLearning.Content))]
         public ContentCompletionType CompletionType { get; set; }
 
-        public int? Order { get; set; }
+        public int Order { get; set; }
 
         public QuestionType? QuestionType { get; set; }
 
-        public int? Timer { get; set; } //completiontype timer in sec
+        // -- START For use with completion Type
+        public int? ContentQuestionId { get; set; }
+        public virtual ContentQuestion ContentQuestion { get; set; }
+        public int Timer { get; set; } //completiontype timer in sec
+        // -- END For use with completion Type
 
+        // -- START For use with single item in the page
+        public VideoType? VideoType { get; set; }
         public string Url { get; set; }
-        public int? FileId { get; set; }
-        public virtual ContentFile File { get; set; }
 
-        // for rich text, used with summernote
+        //  upload file
+        public int? ContentFileId { get; set; }
+        public virtual ContentFile ContentFile { get; set; }
+
+
+        //public int? FileDocumentId { get; set; }
+        //public virtual FileDocument FileDocument { get; set; }
+        // -- END
+
+        // for rich text
         public string Text { get; set; }
+
+        // for Iframe
         public ShowIFrameAs ShowIFrameAs { get; set; }
 
+        // for other images and files
         public virtual ICollection<ContentFile> Images { get; set; }
         public virtual ICollection<ContentFile> Files { get; set; }
     }
@@ -69,18 +84,33 @@ namespace FEP.Model.eLearning
 
     public enum CourseContentType
     {
-       // Section,
+        // Section,
+        [Display(Name = "RichText", ResourceType = typeof(Language.eLearning.Enum))]
         RichText,
+
+        [Display(Name = "WebLink", ResourceType = typeof(Language.eLearning.Enum))]
         WebLink,
+
+        [Display(Name = "Document", ResourceType = typeof(Language.eLearning.Enum))]
         Document,
+
+        [Display(Name = "Audio", ResourceType = typeof(Language.eLearning.Enum))]
         Audio,
+
+        [Display(Name = "Video", ResourceType = typeof(Language.eLearning.Enum))]
         Video,
+
+        [Display(Name = "IFrame", ResourceType = typeof(Language.eLearning.Enum))]
         IFrame,
 
         // FLAG ISSUE : HOW TO DO CONTENT FOR TEST? THIS IS ONE BIG ITEM
+        [Display(Name = "Test", ResourceType = typeof(Language.eLearning.Enum))]
         Test,
 
+        [Display(Name = "Assignment", ResourceType = typeof(Language.eLearning.Enum))]
         Assignment,
+
+        [Display(Name = "Instructor", ResourceType = typeof(Language.eLearning.Enum))]
         Instructor
     }
 
@@ -91,5 +121,22 @@ namespace FEP.Model.eLearning
 
         AnswerQuestion,
         Timer
+    }
+
+
+    public enum CreateContentFrom
+    {
+        CourseFrontPage,
+        Module
+    }
+
+    public enum VideoType
+    {
+        [Display(Name = "Instructor", ResourceType = typeof(Language.eLearning.Enum))]
+        ExternalVideo,
+
+        [Display(Name = "Instructor", ResourceType = typeof(Language.eLearning.Enum))]
+        UploadVideo,
+        //Presentation
     }
 }

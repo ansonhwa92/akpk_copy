@@ -151,7 +151,7 @@ namespace FEP.Model
 
         public DbSet<CourseCertificate> CourseCertificates { get; set; }
 
-        //public DbSet<CourseCompletionCriteria> CourseCompletionCriteria { get; set; }
+        public DbSet<CourseCertificateTemplate> CourseCertificateTemplates { get; set; }
         public DbSet<CourseModule> CourseModules { get; set; }
 
         public DbSet<CourseEvent> CourseEvents { get; set; }
@@ -165,6 +165,14 @@ namespace FEP.Model
         public DbSet<TrainerCourse> TrainerCourses { get; set; }
         public DbSet<TrainerGroup> TrainerGroups { get; set; }
         public DbSet<CourseProgress> CourseProgress { get; set; }
+
+        // Quiz, questions
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<MultipleChoiceAnswer> MultipleChoiceAnswers { get; set; }
+        public DbSet<OrderAnswer> OrderAnswers { get; set; }
+        public DbSet<FreeTextAnswer> FreeTextAnswers { get; set; }
+        public DbSet<ContentQuestion> ContentQuestions { get; set; }
+
 
         // Elearning Discussion
         public DbSet<Discussion> Discussions { get; set; }
@@ -186,6 +194,17 @@ namespace FEP.Model
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+        }
+
+
+        public virtual void SetModified(object entity)
+        {
+            this.Entry(entity).State = EntityState.Modified;
+        }
+
+        public virtual void SetDeleted(object entity)
+        {
+            this.Entry(entity).State = EntityState.Deleted;
         }
     }
 

@@ -1,0 +1,77 @@
+﻿@using  FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    var name = Model.Title;
+
+    var desc = Model.ContentType.ToString();
+
+}
+
+@Html.Partial("_viewNav")
+
+<div class="row">
+
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar class="ps">
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">@Model.ContentType</a>
+                        </li>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
+            <div class="form-container">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    <h3>@Model.Title</h3>
+                </div>
+
+                @Html.Raw(Model.Description)
+
+                <!-- Play youtube video-->
+                @if (Model.VideoType == VideoType.ExternalVideo)
+                {
+
+                    <iframe width="560" height="315" src="@Model.Url" frameborder="0" allow="accelerometer; ; encrypted-media;
+            gyroscope; picture-in-picture" allowfullscreen></iframe>
+                }
+                else
+                {
+                    <video width="320" height="240" controls>
+                        <source src="movie.mp4" type="video/mp4">
+                        <source src="movie.ogg" type="video/ogg">
+                        Your browser does not support the video tag.
+                    </video>
+
+                }
+
+                @Html.Partial("_contentCompletionView", Model)
+            </div>
+        </div>
+
+        @Html.Partial("_viewBack")
+    </div>
+</div>
+
+<style>
+
+    .form-container {
+        max-width: none !important;
+    }
+</style>
+@section ContentScript {
+
+}

@@ -3,7 +3,6 @@ using FEP.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -22,6 +21,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string GetFrontContent = "eLearning/Courses/GetFrontContent";
         public const string GetFrontCourse = "eLearning/Courses/GetFrontCourse";
         public const string EditRulesCourse = "eLearning/Courses/EditRules";
+        public const string Content = "eLearning/Courses/Content";
     }
 
     public class CoursesController : FEPController
@@ -96,7 +96,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         // POST: eLearning/Courses/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateOrEditCourseModel model)
@@ -142,6 +142,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// For the front page of a course
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HasAccess(UserAccess.CourseCreate)]
         public async Task<ActionResult> Content(int? id)
         {
             if (id == null)
@@ -149,7 +155,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // get Model
             var model = await TryGetFrontCourse(id.Value);
 
             if (model == null)
@@ -159,17 +164,55 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return RedirectToAction("Index", "Courses");
             }
 
-            //var frontContent = await TryGetFrontContent(id.Value);
-
-            //if(frontContent != null)
-            //{
-            //    model.FrontPageContents = frontContent.ToList() ;
-            //}
+            //model.FrontPageContents = model.FrontPageContents.OrderBy(x => x.Order).ToList();
+            model.Modules = model.Modules.OrderBy(x => x.Order).ToList();
 
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Content(int? Id, int CreatedBy, string order)
+        {
+            if (Id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
+            if (String.IsNullOrEmpty(order))
+            {
+                RedirectToAction("Content", new { id = Id.Value });
+            }
+
+            var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Post,
+                CourseApiUrl.Content + $"?Id={Id}&CreatedBy={CreatedBy}&order={order}");
+
+            if (response.isSuccess)
+            {
+                TempData["SuccessMessage"] = "Changes saved";
+
+                var model = response.Data;
+
+                await LogActivity(Modules.Learning, "Update Course Content : " + model.Title);
+
+                return View(model);
+            }
+
+            TempData["ErrorMessage"] = "Error in saving order..";
+
+            // get Model
+            var vm = await TryGetFrontCourse(Id.Value);
+
+            if (vm == null)
+            {
+                TempData["ErrorMessage"] = "No such course.";
+
+                return RedirectToAction("Index", "Courses");
+            }
+            
+            vm.Modules = vm.Modules.OrderBy(x => x.Order).ToList();
+
+            return View(vm);
+        }
 
         [HasAccess(UserAccess.CourseCreate)]
         public async Task<ActionResult> EditRules(int? id)
@@ -210,7 +253,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [HttpPost]
         public async Task<ActionResult> EditRules(CourseRuleModel model)
         {
-
             if (ModelState.IsValid)
             {
                 model.CreatedBy = CurrentUser.UserId.Value;
@@ -221,7 +263,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 {
                     TempData["SuccessMessage"] = "Course Rules successfully updated.";
 
-                    await LogActivity(Modules.Learning, "Update Course Rule : " + model.Title);                   
+                    await LogActivity(Modules.Learning, "Update Course Rule : " + model.Title);
 
                     var id = response.Data;
 
@@ -235,7 +277,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             TempData["ErrorMessage"] = "Cannot update course's rule.";
 
-            return View(model);            
+            return View(model);
         }
 
         public async Task<CreateOrEditCourseModel> TryGetCourse(int id)
@@ -262,19 +304,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return null;
         }
 
-        public async Task<IEnumerable<CourseContent>> TryGetFrontContent(int id)
-        {
-            var response = await WepApiMethod.SendApiAsync<IEnumerable<CourseContent>>(HttpVerbs.Get, CourseApiUrl.GetFrontContent + $"?id={id}");
-
-            if (response.isSuccess)
-            {   
-                return response.Data;
-            }
-
-            return null;
-        }
-
-
         // GET: eLearning/Courses/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
@@ -289,13 +318,11 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return HttpNotFound();
             }
 
-
             CreateOrEditCourseModel model = _mapper.Map<CreateOrEditCourseModel>(course);
-
 
             await GetCategories();
 
-            return View(model);            
+            return View(model);
         }
 
         // POST: eLearning/Courses/Edit/5
@@ -311,7 +338,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
- 
+
             return View(course);
         }
 

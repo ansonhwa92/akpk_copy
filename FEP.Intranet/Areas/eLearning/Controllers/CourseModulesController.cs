@@ -1,9 +1,7 @@
 ﻿using FEP.Helper;
 using FEP.Model;
-using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -15,34 +13,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     {
         public const string Create = "eLearning/CourseModules/Create";
         public const string GetModule = "eLearning/CourseModules";
+
+        public const string Content = "eLearning/CourseModules/Content";
     }
 
     [Authorize]
     public class CourseModulesController : FEPController
     {
         private DbEntities db = new DbEntities();
-
-        // GET: eLearning/CourseModules
-        public async Task<ActionResult> Index()
-        {
-            var courseModules = db.CourseModules;
-            return View(await courseModules.ToListAsync());
-        }
-
-        // GET: eLearning/CourseModules/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CourseModule courseModule = await db.CourseModules.FindAsync(id);
-            if (courseModule == null)
-            {
-                return HttpNotFound();
-            }
-            return View(courseModule);
-        }
 
         // GET: eLearning/CourseModules/Create
         public ActionResult Create(int? id, string courseTitle)
@@ -112,66 +90,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-
-        // GET: eLearning/CourseModules/Edit/5
-        public async Task<ActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CourseModule courseModule = await db.CourseModules.FindAsync(id);
-            if (courseModule == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Title", courseModule.CourseId);
-            return View(courseModule);
-        }
-
-        // POST: eLearning/CourseModules/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Description,Order,Objectives,CourseId,TotalVideo,TotalAudio,TotalTest,TotalAssignment,CreatedBy,CreatedDate,UpdatedBy,UpdatedDate")] CourseModule courseModule)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(courseModule).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Title", courseModule.CourseId);
-            return View(courseModule);
-        }
-
-        // GET: eLearning/CourseModules/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CourseModule courseModule = await db.CourseModules.FindAsync(id);
-            if (courseModule == null)
-            {
-                return HttpNotFound();
-            }
-            return View(courseModule);
-        }
-
-        // POST: eLearning/CourseModules/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
-            CourseModule courseModule = await db.CourseModules.FindAsync(id);
-            db.CourseModules.Remove(courseModule);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -198,7 +116,53 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return RedirectToAction("Index", "CourseModules");
             }
 
+            model.ModuleContents = model.ModuleContents.OrderBy(x => x.Order).ToList();
+
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Content(int? Id, int CreatedBy, string order)
+        {
+            if (Id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (String.IsNullOrEmpty(order))
+            {
+                RedirectToAction("Content", new { id = Id.Value });
+            }
+
+            var response = await WepApiMethod.SendApiAsync<CreateOrEditModuleModel>(HttpVerbs.Post,
+                ModuleApiUrl.Content + $"?Id={Id}&CreatedBy={CreatedBy}&order={order}");
+
+            if (response.isSuccess)
+            {
+                TempData["SuccessMessage"] = "Changes saved";
+
+                var model = response.Data;
+
+                await LogActivity(Modules.Learning, "Update Module Content : " + model.Title);
+
+                return View(model);
+            }
+
+            TempData["ErrorMessage"] = "Error in saving order.";
+
+            // get Model
+            var vm = await TryGetModule(Id.Value);
+
+            if (vm == null)
+            {
+                TempData["ErrorMessage"] = "No such module.";
+
+                return RedirectToAction("Content", "CourseModules", new { id = Id.Value });
+            }
+            
+            vm.ModuleContents = vm.ModuleContents.OrderBy(x => x.Order).ToList();
+
+            return View(vm);
         }
 
         public async Task<CreateOrEditModuleModel> TryGetModule(int id)
@@ -212,6 +176,5 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             return null;
         }
-
     }
 }

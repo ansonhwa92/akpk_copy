@@ -29,9 +29,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         [ChildActionOnly]
         public ActionResult Menu()
-        {
-
-         //   var user = db.User.FirstOrDefault(x => x.Name == User.Identity.Name);        
+        {         
 
             return PartialView("_Menu");
         }

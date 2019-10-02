@@ -27,6 +27,7 @@ namespace FEP.Model
         public int CreatedBy { get; set; }
 
         public DateTime CreatedDate { get; set; }
+        public string FileNameOnStorage { get; set; }
 
         [ForeignKey("CreatedBy")]
         public User User { get; set; }

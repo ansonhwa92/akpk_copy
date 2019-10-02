@@ -192,7 +192,7 @@ namespace FEP.WebApi.Api.eLearning
         [HttpGet]
         public async Task<IHttpActionResult> Get(int? id)
         {
-            var entity = await db.Courses                   
+            var entity = await db.Courses
                    .FirstOrDefaultAsync(x => x.Id == id.Value);
 
             if (entity == null)
@@ -203,14 +203,18 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(model);
         }
 
-
+        /// <summary>
+        /// For getting the front page of the course
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("api/eLearning/Courses/GetFrontCourse")]
         [HttpGet]
         public async Task<IHttpActionResult> GetFrontCourse(int? id)
         {
             var entity = await db.Courses
                                 .Include(x => x.CourseApprovalLog)
-                                .Include(x => x.FrontPageContents)
+                                //.Include(x => x.FrontPageContents)
                                 .Include(x => x.Modules)
                                 .FirstOrDefaultAsync(x => x.Id == id.Value);
 
@@ -219,23 +223,13 @@ namespace FEP.WebApi.Api.eLearning
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
             model.CourseApprovalLogs = entity.CourseApprovalLog;
-            model.FrontPageContents = entity.FrontPageContents;
+            //model.FrontPageContents = entity.FrontPageContents;
             model.Modules = entity.Modules;
 
             return Ok(model);
         }
 
-        [HttpGet]
-        public  IHttpActionResult GetFrontContent(int? id)
-        {
-            var entity = db.CourseContents.Where(x => x.CourseId == id.Value);
-
-            if (entity == null)
-                return NotFound();
-           
-            return Ok(entity);
-        }
-
+  
         /// <summary>
         /// For use in index page, to list all the courses but with some fields only
         /// </summary>
@@ -271,6 +265,58 @@ namespace FEP.WebApi.Api.eLearning
             {
                 return BadRequest(ModelState);
             }
+        }
+
+        /// <summary>
+        /// To save the front page of course, basically the order of the modules
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("api/eLearning/Courses/Content")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> Content(int? Id, int CreatedBy, string order)
+        {
+            if (Id == null)
+            {
+                return BadRequest();
+            }
+
+            var entity = await db.Courses
+              .Include(x => x.CourseApprovalLog)             
+              .Include(x => x.Modules)
+              .FirstOrDefaultAsync(x => x.Id == Id.Value);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+            
+            entity.Modules = entity.Modules.OrderBy(x => x.Order).ToList();
+
+            var splitOrder = order.Split(',').ToArray();
+
+            if (entity.Modules.Count() == splitOrder.Count())
+            {
+                int i = 0;
+                foreach (var module in entity.Modules)
+                {
+                    module.Order = int.Parse(splitOrder[i]);
+
+                    i++;
+                }
+            }
+
+            db.SetModified(entity);
+
+            await db.SaveChangesAsync();
+
+            var model = _mapper.Map<CreateOrEditCourseModel>(entity);
+            model.CourseApprovalLogs = entity.CourseApprovalLog;
+            //model.FrontPageContents = entity.FrontPageContents;
+            model.Modules = entity.Modules;
+
+            return Ok(model);
         }
     }
 }

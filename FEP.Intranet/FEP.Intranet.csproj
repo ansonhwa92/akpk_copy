@@ -167,12 +167,13 @@
     <Compile Include="Areas\eLearning\Controllers\CourseContentsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseModulesController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CoursesController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\FileController.cs" />
     <Compile Include="Areas\eLearning\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventSpeakerController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventExternalExhibitorController.cs" />
     <Compile Include="Areas\eEvent\Models\EventSpeaker.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
-    <Compile Include="Areas\eLearning\Services\IeLearningDbAccess.cs" />
+    <Compile Include="Areas\eLearning\Helper\YouTubeUrlHelper.cs" />
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />
     <Compile Include="Areas\Logs\Controllers\UserLogController.cs" />
     <Compile Include="Areas\Logs\LogsAreaRegistration.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\AppSettings.cs" />
     <Compile Include="Method.cs" />
     <Compile Include="Models\Auth.cs" />
     <Compile Include="Models\Home.cs" />
@@ -205,6 +207,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\eLearning\Views\CourseContents\_createVideo.cshtml" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -480,6 +483,7 @@
     <Content Include="img\stats\icon-stats-enrolled.svg" />
     <Content Include="img\stats\icon-stats-event.svg" />
     <Content Include="img\stats\icon-stats-rnp.svg" />
+    <Content Include="js\elearn.js" />
     <Content Include="js\index.js" />
     <Content Include="js\jquery.countTo.js" />
     <Content Include="js\jquery.simpleLoadMore.js" />
@@ -753,8 +757,37 @@
     <Content Include="Areas\eLearning\Views\CourseContents\Details.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Edit.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Index.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\CreateFrontVideo.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\_contentSidebar.cshtml" />
+    <Content Include="libman.json" />
+    <Content Include="Areas\eLearning\Views\Courses\_actionLog.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_amendmentHistory.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\CreateVideo.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_video.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\View.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_contentCompletion.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_contentCompletionView.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_richText.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_iframe.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_audio.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_document.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_weblink.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createRichText.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createIFrame.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createDocument.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createWebLink.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createAudio.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createTest.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createAssignment.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\ViewVideo.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewNav.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewBack.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\ViewRichText.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\ViewDocument.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\ViewIFrame.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\ViewWebLink.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\ViewAudio.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\ViewTest.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\ViewAssignment.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -775,9 +808,6 @@
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bootstrap.min.js.map" />
-    <Content Include="Scripts\draggable\drag-arrange.js" />
-    <Content Include="Scripts\draggable\drag-arrange.min.js" />
-    <Content Include="Scripts\draggable\examples\index.html" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -811,6 +841,7 @@
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\popper.min.js.map" />
     <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\Sortable\jquery-sortable.js" />
     <Content Include="Scripts\summernote\lang\summernote-ar-AR.js" />
     <Content Include="Scripts\summernote\lang\summernote-bg-BG.js" />
     <Content Include="Scripts\summernote\lang\summernote-ca-ES.js" />
@@ -1230,8 +1261,6 @@
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_LayoutPublic.cshtml" />
     <Content Include="Views\Shared\_LayoutLandingPagePublic.cshtml" />
-    <Content Include="Scripts\draggable\LICENSE" />
-    <Content Include="Scripts\draggable\README.md" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Views\Shared\_Layout1.cshtml" />
@@ -1256,7 +1285,6 @@
     <Folder Include="Areas\Administrator\Models\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
-    <Folder Include="Areas\eLearning\Models\" />
     <Folder Include="Areas\Logs\Models\" />
     <Folder Include="Areas\Logs\Views\Shared\" />
     <Folder Include="Areas\Setting\Models\" />

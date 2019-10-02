@@ -10,10 +10,16 @@ using Language;
 namespace FEP.Model.eLearning
 {
     public class CourseCertificate : BaseEntity
+    {        
+        public string Description { get; set; }
+        public string BackgroundImageFilename { get; set; }
+
+    }
+
+    public class CourseCertificateTemplate : BaseEntity
     {
         public string Description { get; set; }
-        public string BackgroundImage { get; set; }
         public string Template { get; set; }
-        public int CourseId { get; set; }
+        
     }
 }

@@ -1,0 +1,15 @@
+﻿@using FEP.Model.eLearning
+
+@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+@*@model FEP.Model.eLearning.CourseContent*@
+
+
+<div class="form-group">
+    <h3>@Model.Title</h3>
+
+    @Html.Raw(Model.Description)
+
+    <br />
+    @Html.Raw(Model.Text)
+
+</div>

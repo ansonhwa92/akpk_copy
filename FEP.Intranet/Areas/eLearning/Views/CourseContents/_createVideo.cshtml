@@ -1,0 +1,60 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })
+    <div class="">
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
+    <div class="">
+        @Html.TextAreaFor(model => model.Description, new { @class = "summernote form-control" })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+@Html.Partial("_contentCompletion", Model)
+<div>
+
+    <div class="form-group">
+        <label>@Language.eLearning.Content.SelectVideo</label>
+        <div class="">
+
+            <!-- Default inline 1-->
+            <div class="custom-control video-radio custom-control-inline">
+
+                <input type="radio" class="custom-control-input exVideo" checked="checked" value=@VideoType.ExternalVideo id="defaultInline1"
+                       name="VideoType">
+                <label class="custom-control-label" for="defaultInline1">@Language.eLearning.Enum.ExternalVideo</label>
+            </div>
+            <!-- Default inline 2-->
+            <div class="custom-control video-radio custom-control-inline">
+
+                <input type="radio" class="custom-control-input upVideo" value=@VideoType.UploadVideo id="defaultInline2"
+                       name="VideoType">
+                <label class="custom-control-label" for="defaultInline2">@Language.eLearning.Enum.UploadVideo</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group exVideoWrapper">
+
+        @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control", @placeholder = "YouTube Url" } })
+        @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group upVideoWrapper">
+
+        <div class="custom-file">
+            <input name="FileName" id="FileName" type="file" class="custom-file-input">
+            <label for="FileName" class="custom-file-label text-truncate">Choose file...</label>
+        </div>
+
+        @Html.ValidationMessageFor(model => model.FileName, "", new { @class = "text-danger" })
+    </div>
+</div>

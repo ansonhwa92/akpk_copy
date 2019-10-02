@@ -15,7 +15,11 @@ namespace FEP.Model.eLearning
         public static string eLearningApprover2 = "Approver eLearning 2";
         public static string eLearningApprover3 = "Approver eLearning 3";
         public static string eLearningLearner = "Learner";
+    }
 
-
+    public static class Constants
+    { 
+        // This is for content that belong to a course, not a module.
+        public static int DefaultModule = -9999;
     }
 }

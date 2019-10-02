@@ -1,6 +1,7 @@
 ﻿using FEP.Model.eLearning;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 
@@ -10,19 +11,131 @@ namespace FEP.Model.Migrations
     {
         public static void Seed(DbEntities db)
         {
+            SeedRoles(db);
+            SeedDefaultData(db);
+            SeedSampleUsers(db);
+            SeedSampleCategories(db);
+
+            SeedSampleData(db);
+
+            SeedSampleQuestions(db);
+
+            SeedAssignTrainerToCourse(db);
+
+            SeedSampleCertificateAndTemplate(db);
+
+            SeedAssignTrainerToGroup(db);
+
+        }
+
+        private static void SeedDefaultData(DbEntities db)
+        {
+        }
+
+        private static void SeedSampleCertificateAndTemplate(DbEntities db)
+        {
+            if (!db.CourseCertificates.Any())
+            {
+                db.CourseCertificates.Add(new CourseCertificate
+                {
+                    BackgroundImageFilename = "img1.jpg",
+                    Description = "Image 1",
+                });
+
+                db.SaveChanges();
+
+                db.CourseCertificates.Add(new CourseCertificate
+                {
+                    BackgroundImageFilename = "img2.jpg",
+                    Description = "Image 2",
+                });
+
+                db.SaveChanges();
+            }
+
+            if (!db.CourseCertificateTemplates.Any())
+            {
+                db.CourseCertificateTemplates.Add(new CourseCertificateTemplate
+                {
+                    Description = "Template 1",
+                    Template = "<h2>CERTIFICATE FOR </h2>"
+                });
+
+                db.SaveChanges();
+            }
+        }
+
+        private static void SeedAssignTrainerToCourse(DbEntities db)
+        {
+            //if (System.Diagnostics.Debugger.IsAttached == false)
+            //    System.Diagnostics.Debugger.Launch();
+
+            // Get the  course
+            var course = db.Courses.Include(x => x.Trainers).First();
+
+            if (course.Trainers == null)
+            {
+                course.Trainers = new List<Trainer>();
+            }
+
+            var userRole = db.UserRole.FirstOrDefault(x => x.Role.Name == RoleNames.eLearningTrainer);
+
+            var user = db.User.FirstOrDefault(x => x.Id == userRole.UserId);
+
+
+            db.TrainerCourses.Add(new TrainerCourse
+            {
+                Trainer = new Trainer { User = user },
+                Course = course
+            });
+
+            db.SaveChanges();
+        }
+
+        private static void SeedAssignTrainerToGroup(DbEntities db)
+        {
+            //if (System.Diagnostics.Debugger.IsAttached == false)
+            //    System.Diagnostics.Debugger.Launch();
+
+            // Get the  course
+            //var course = db.Courses.Include(x => x.Trainers).First();
+
+            //if (course.Trainers == null)
+            //{
+            //    course.Trainers = new List<Trainer>();
+            //}
+
+            //var userRole = db.UserRole.FirstOrDefault(x => x.Role.Name == RoleNames.eLearningTrainer);
+
+            //var user = db.User.FirstOrDefault(x => x.Id == userRole.UserId);
+
+
+            //if(!db.Groups)
+
+            //db.TrainerCourses.Add(new TrainerCourse
+            //{
+            //    Trainer = new Trainer { User = user },
+            //    Course = course
+            //});
+
+            //db.SaveChanges();
+        }
+
+        private static void SeedRoles(DbEntities db)
+        {
             // Seed Role and Access
             AddRoleAndAccess(db, RoleNames.eLearningTrainer, "Default Trainer",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseDiscussionGroupCreate, UserAccess.CourseGroupCreate,
                 UserAccess.CourseEdit, UserAccess.CourseAddDocument);
-            AddRoleAndAccess(db, RoleNames.eLearningAdmin, "Admin eLearning", 
+            AddRoleAndAccess(db, RoleNames.eLearningAdmin, "Admin eLearning",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
-                UserAccess.CourseCreate, UserAccess.CourseEdit, 
+                UserAccess.CourseCreate, UserAccess.CourseEdit,
                 UserAccess.CoursePublish, UserAccess.CoursePublish);
-            AddRoleAndAccess(db, RoleNames.eLearningVerifier, "Verifier eLearning", 
+            AddRoleAndAccess(db, RoleNames.eLearningVerifier, "Verifier eLearning",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseVerify);
-            AddRoleAndAccess(db, RoleNames.eLearningApprover1, "Approver eLearning 1", 
+            AddRoleAndAccess(db, RoleNames.eLearningApprover1, "Approver eLearning 1",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseApproval1);
             AddRoleAndAccess(db, RoleNames.eLearningApprover2, "Approver eLearning 2",
@@ -32,20 +145,32 @@ namespace FEP.Model.Migrations
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseApproval3);
             AddRoleAndAccess(db, RoleNames.eLearningLearner, "Learner",
-                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, 
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseEnroll);
+        }
 
+        private static void SeedSampleUsers(DbEntities db)
+        {
             // Seed User
             AddUser(db, "eladmin@fep.com", "eladmin@fep.com", UserType.Individual, RoleNames.eLearningTrainer, RoleNames.eLearningAdmin);
             AddUser(db, "eltrainer1@fep.com", "eltrainer1@fep.com", UserType.Individual, RoleNames.eLearningTrainer);
             AddUser(db, "eltrainer2@fep.com", "eltrainer2@fep.com", UserType.Individual, RoleNames.eLearningTrainer);
+            AddUser(db, "eltrainer3@fep.com", "eltrainer3@fep.com", UserType.Individual, RoleNames.eLearningTrainer);
+            AddUser(db, "eltrainer4@fep.com", "eltrainer4@fep.com", UserType.Individual, RoleNames.eLearningTrainer);
+
             AddUser(db, "elverifier@fep.com", "elverifier@fep.com", UserType.Individual, RoleNames.eLearningAdmin);
             AddUser(db, "elapprover1@fep.com", "elapprover1@fep.com", UserType.Individual, RoleNames.eLearningApprover1);
             AddUser(db, "elapprover2@fep.com", "elapprover2@fep.com", UserType.Individual, RoleNames.eLearningApprover2);
             AddUser(db, "elapprover3@fep.com", "elapprover3@fep.com", UserType.Individual, RoleNames.eLearningApprover3);
             AddUser(db, "ellearner1@fep.com", "learner1@fep.com", UserType.Individual, RoleNames.eLearningLearner);
             AddUser(db, "ellearner2@fep.com", "learner2@fep.com", UserType.Individual, RoleNames.eLearningLearner);
+            AddUser(db, "ellearner3@fep.com", "learner3@fep.com", UserType.Individual, RoleNames.eLearningLearner);
+            AddUser(db, "ellearner4@ep.com", "learner4@fep.com", UserType.Individual, RoleNames.eLearningLearner);
+            AddUser(db, "ellearner5@fep.com", "learner5@fep.com", UserType.Individual, RoleNames.eLearningLearner);
+        }
 
+        private static void SeedSampleCategories(DbEntities db)
+        {
             // Seed Category
             if (!db.RefCourseCategories.Any())
             {
@@ -78,6 +203,21 @@ namespace FEP.Model.Migrations
         {
             if (!db.Courses.Any())
             {
+                // add a front page video
+                var fileDocument = new FileDocument
+                {
+                    FileName = "Test.mp4",
+                    FileNameOnStorage = "Test.mp4",
+                    FilePath = "D:\\FEPDoc",
+                    FileType = FileType.Video.ToString(),
+                    CreatedDate = DateTime.Now,
+                    User = db.User.FirstOrDefault(x => x.Id == 1)
+                };
+
+                db.FileDocument.Add(fileDocument);
+
+                db.SaveChanges();
+
                 // Add a course
                 Course course = new Course
                 {
@@ -99,10 +239,14 @@ namespace FEP.Model.Migrations
                              "<li> Instill commitment towards loan - repayment to avoid future financial challenges.</li></ul>",
                     ScheduleType = CourseScheduleType.NoTimeLimit,
                     Title = "Kembara Bijak Wang",
-                    Status = CourseStatus.Draft
+                    Status = CourseStatus.Draft,
+                    IntroMaterialId = fileDocument.Id,
+                    IntroMaterial = fileDocument
                 };
 
                 db.Courses.Add(course);
+
+                db.SaveChanges();
 
                 // add modules
                 List<CourseContent> moduleContents = new List<CourseContent>();
@@ -110,8 +254,8 @@ namespace FEP.Model.Migrations
                 CourseContent richText = new CourseContent
                 {
                     Order = 2,
+                    CourseId = course.Id,
                     ContentType = CourseContentType.RichText,
-                    IsViewable = true,
                     Text = "<div><h2>What is Lorem Ipsum?</h2><p><strong>Lorem Ipsum</strong> is simply dummy text of the printing" +
                         " and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an" +
                         " unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only " +
@@ -119,31 +263,31 @@ namespace FEP.Model.Migrations
                         "in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop " +
                         "publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p></div>",
                     CompletionType = ContentCompletionType.Timer,
-                    Description = "<p> This is module content 1 </p>",
-                    Title = "Module Content 1",
+                    Description = "<p> This is Content 1 </p>",
+                    Title = "Content 1",
                 };
                 moduleContents.Add(richText);
 
                 CourseContent video = new CourseContent
                 {
                     Order = 4,
+                    CourseId = course.Id,
                     ContentType = CourseContentType.Video,
-                    IsViewable = true,
                     Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8",
                     CompletionType = ContentCompletionType.ClickButton,
                     Description = "<p> Watch the video</p>",
-                    Title = "Module Content 2",
+                    Title = "Content 2",
                 };
                 moduleContents.Add(video);
 
                 CourseContent iframe = new CourseContent
                 {
                     Order = 5,
+                    CourseId = course.Id,
                     ContentType = CourseContentType.IFrame,
-                    IsViewable = true,
                     Url = "https://www.sinarharian.com.my/",
                     CompletionType = ContentCompletionType.ClickButton,
-                    Description = "<p> This is module content 3 </p>",
+                    Description = "<p> This is Content 3 </p>",
                     Title = "Module 3",
                 };
                 moduleContents.Add(iframe);
@@ -151,8 +295,8 @@ namespace FEP.Model.Migrations
                 CourseContent doc = new CourseContent
                 {
                     Order = 6,
+                    CourseId = course.Id,
                     ContentType = CourseContentType.Document,
-                    IsViewable = true,
                     Url = "http://www.its.caltech.edu/~rosentha/courses/BEM103/Readings/JWCh01.pdf",
                     CompletionType = ContentCompletionType.ClickButton,
                     Description = "<p> Document </p>",
@@ -169,7 +313,7 @@ namespace FEP.Model.Migrations
                         CourseId = course.Id,
                         Description = "<p> Description Module</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
-                        Title = "Module 1>",
+                        Title = "Module 1",
                         ModuleContents = moduleContents,
                     },
                     new CourseModule
@@ -184,11 +328,10 @@ namespace FEP.Model.Migrations
                             {
                                 Order = 1,
                                 ContentType = CourseContentType.Video,
-                                IsViewable = true,
                                 Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8" ,
                                 CompletionType = ContentCompletionType.ClickButton,
                                 Description = "<p> Watch the video</p>",
-                                Title = "Module Content 2",
+                                Title = "Content 2",
                             }
                         } ,
                     },
@@ -204,11 +347,10 @@ namespace FEP.Model.Migrations
                             {
                                 Order = 1,
                                 ContentType = CourseContentType.Video,
-                                IsViewable = true,
                                 Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8" ,
                                 CompletionType = ContentCompletionType.ClickButton,
                                 Description = "<p> Watch the video</p>",
-                                Title = "Module Content 2",
+                                Title = "Content 2",
                             }
                         } ,
                     },
@@ -219,9 +361,154 @@ namespace FEP.Model.Migrations
                         Description = "<p> Description Module</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
                         Title = "Module 1",
-                        ModuleContents = moduleContents.Where(x =>x.IsViewable).ToList().Select(x => new CourseContent()).ToList(),
+                        ModuleContents = moduleContents.ToList().Select(x => new CourseContent()).ToList(),
                     },
                 };
+
+                db.SaveChanges();
+
+                course.CourseApprovalLog = new List<CourseApprovalLog>
+                {
+                    new CourseApprovalLog
+                    {
+                        CreatedByName = "system",
+                        ActionDate = DateTime.Now,
+                        Remark = "Course " + course.Title + " created.",
+                    },
+                };
+
+                db.Entry(course).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+        }
+
+        public static void SeedSampleQuestions(DbEntities db)
+        {
+            if (!db.ContentQuestions.Any())
+            {
+                // Get the  course
+                var courseId = db.Courses.Select(x => x.Id).First();
+
+                var question = new Question
+                {
+                    CourseId = courseId,
+                    QuestionType = QuestionType.MultipleChoice,
+                    Name = "If a = 2 and b = 4, then what is a * b?",
+                    MultipleChoiceAnswerId = 2,
+                };
+
+                question.MultipleChoiceAnswers = new List<MultipleChoiceAnswer>
+                {
+                    new MultipleChoiceAnswer
+                    { Id= 1, Order = 1, Answer = "24"  },
+                    new MultipleChoiceAnswer
+                    { Id= 2, Order = 2, Answer = "8"  },
+                    new MultipleChoiceAnswer
+                    { Id= 3, Order = 3, Answer = "42"  },
+                    new MultipleChoiceAnswer
+                    { Id= 4, Order = 4, Answer = "4"  },
+                };
+
+                db.Questions.Add(question);
+
+                db.SaveChanges();
+
+                var question2 = new Question
+                {
+                    CourseId = courseId,
+                    QuestionType = QuestionType.MultipleChoice,
+                    Name = "What does RM stand for?",
+                    MultipleChoiceAnswerId = 8,
+                };
+
+                question2.MultipleChoiceAnswers = new List<MultipleChoiceAnswer>
+                {
+                    new MultipleChoiceAnswer
+                    { Id= 5, Order = 1, Answer = "Rumah Merah"  },
+                    new MultipleChoiceAnswer
+                    { Id= 6, Order = 2, Answer = "Risk Management"  },
+                    new MultipleChoiceAnswer
+                    { Id= 7, Order = 3, Answer = "Russian Mafia"  },
+                    new MultipleChoiceAnswer
+                    { Id= 8, Order = 4, Answer = "Ringgit Malaysia"  },
+                };
+
+                db.Questions.Add(question2);
+
+                db.SaveChanges();
+
+                var module = db.CourseModules
+                    .Include(x => x.ModuleContents)
+                    .FirstOrDefault(x => x.CourseId == courseId);
+
+                var order = module.ModuleContents.Max(x => x.Order);
+
+                var content = new CourseContent
+                {
+                    ContentType = CourseContentType.Test,
+                    CourseId = courseId,
+                    Order = ++order,
+                    QuestionType = question.QuestionType,
+                    Title = "Question 1",
+                    Description = "Question 1"
+                };
+
+                if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
+
+                module.ModuleContents.Add(content);
+
+                db.SaveChanges();
+
+
+                var contentQuestion = new ContentQuestion
+                {
+                    Order = 1,
+                    ContentId = content.Id,
+                    CourseId = courseId,
+                    Question = question,
+                    QuestionId = question.Id,
+                };
+
+                db.ContentQuestions.Add(contentQuestion);
+                db.SaveChanges();
+
+                content.ContentQuestionId = contentQuestion.Id;
+
+                db.SetModified(content);
+
+                db.SaveChanges();
+
+                var content2 = new CourseContent
+                {
+                    ContentType = CourseContentType.Test,
+                    CourseId = courseId,
+                    Order = ++order,
+                    QuestionType = question2.QuestionType,
+                    Title = "Question 2",
+                    Description = "Question 2"
+                };
+
+                if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
+
+                module.ModuleContents.Add(content2);
+
+                db.SaveChanges();
+
+                var contentQuestion2 = new ContentQuestion
+                {
+                    Order = 2,
+                    ContentId = content2.Id,
+                    CourseId = courseId,
+                    Question = question2,
+                    QuestionId = question2.Id,
+                };
+
+                db.ContentQuestions.Add(contentQuestion2);
+                db.SaveChanges();
+
+                content2.ContentQuestionId = contentQuestion2.Id;
+
+                db.SetModified(content2);
 
                 db.SaveChanges();
             }

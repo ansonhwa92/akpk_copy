@@ -42,11 +42,12 @@ namespace FEP.Model.eLearning
         public virtual ICollection<CourseModule> Modules { get; set; }
 
         // For the front page, excluding modules, modules will be from Modules above
-        public virtual ICollection<CourseContent> FrontPageContents { get; set; }
+        //public virtual ICollection<CourseContent> FrontPageContents { get; set; }
 
         public CourseStatus Status { get; set; }
-
-        public string IntroVideoPath { get; set; }
+        
+        public int? IntroMaterialId { get; set; }
+        public virtual FileDocument IntroMaterial { get; set; }
 
         /// <summary>
         /// Used the course is offered multiple times to different set of people and to public,
@@ -65,19 +66,7 @@ namespace FEP.Model.eLearning
 
         //----- START APPROVAlS
         public ICollection<CourseApprovalLog> CourseApprovalLog { get; set; }
-        //public int? VerifierApprovalId { get; set; }
-        //public virtual CourseApproval VerifierApproval { get; set; }
-
-        //public int? FirstApprovalId { get; set; }
-
-        //public virtual CourseApproval FirstApproval { get; set; }
-
-        //public int? SecondApprovalId { get; set; }
-        //public virtual CourseApproval SecondApproval { get; set; }
-        //public int? ThirdApprovalId { get; set; }
-
-        //public virtual CourseApproval ThirdApproval { get; set; }
-        
+      
         public int TotalModules { get; set; }
   
 
@@ -86,17 +75,17 @@ namespace FEP.Model.eLearning
 
         // ----- Default Course Item
         /// <summary>
-        /// Default certificate for this course. May change for Targetted users.
-        /// This value may be copied over to CourseEvent when CourseEvent is created
+        /// Certificate for this course. 
         /// </summary>
-        public int? CertificateId { get; set; }
+        public int? CourseCertificateId { get; set; }
         public virtual CourseCertificate DefaultCertificate { get; set; }
+        public int? CourseCertificateTemplateId { get; set; }
+        public virtual CourseCertificateTemplate CourseCertificateTemplate { get; set; }
 
         /// <summary>
-        /// Default trainers for this course. May change for Targetted users.
-        /// This value may be copied over to CourseEvent when CourseEvent is created
+        /// Trainers for this course.
         /// </summary>
-        public virtual ICollection<Trainer> DefaultTrainers { get; set; }
+        public virtual ICollection<Trainer> Trainers { get; set; }
 
         /// <summary>
         /// Default completion percentage before allowing learnet to withdraw.

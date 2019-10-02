@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using FEP.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
-using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,13 +23,11 @@ namespace FEP.WebApi.Api.eLearning
             {
                 cfg.CreateMap<CreateOrEditModuleModel, CourseModule>();
 
-                cfg.CreateMap<CourseModule, CreateOrEditModuleModel>();                
-
+                cfg.CreateMap<CourseModule, CreateOrEditModuleModel>();
             });
 
             _mapper = config.CreateMapper();
         }
-
 
         protected override void Dispose(bool disposing)
         {
@@ -49,7 +46,6 @@ namespace FEP.WebApi.Api.eLearning
         [HttpPost]
         public IHttpActionResult Post(FilterCourseModel request)
         {
-
             return Ok();
         }
 
@@ -63,8 +59,16 @@ namespace FEP.WebApi.Api.eLearning
         public async Task<IHttpActionResult> Create([FromBody] CreateOrEditModuleModel request)
         {
             if (ModelState.IsValid)
-            {                
-                var courseModules = db.CourseModules.Where(x => x.CourseId == request.CourseId);
+            {
+                var course = await db.Courses
+                        .Include(x => x.Modules)
+                        .FirstOrDefaultAsync(x => x.Id.Equals(request.CourseId));
+
+                if (course == null)
+                    return BadRequest();
+
+                if (course.Modules == null)
+                    course.Modules = new List<CourseModule>();
 
                 var module = new CourseModule
                 {
@@ -72,15 +76,14 @@ namespace FEP.WebApi.Api.eLearning
                     Objectives = request.Objectives,
                     Description = request.Description,
                     Title = request.Title,
-                    Order = courseModules != null ? (courseModules.Count() + 1) : 0
+                    Order = course.Modules.Max(x => x.Order) + 1
                 };
 
-
-                var vm = db.CourseModules.Add(module);
+                course.Modules.Add(module);
 
                 await db.SaveChangesAsync();
 
-                return Ok(vm.Id.ToString());
+                return Ok(module.Id);
             }
             else
             {
@@ -91,16 +94,66 @@ namespace FEP.WebApi.Api.eLearning
         [HttpGet]
         public async Task<IHttpActionResult> Get(int? id)
         {
-            var entity = await db.CourseModules.FirstOrDefaultAsync(x => x.Id == id.Value);
+            var entity = await db.CourseModules
+                .Include(x => x.ModuleContents)
+                .FirstOrDefaultAsync(x => x.Id == id.Value );
 
             if (entity == null)
                 return NotFound();
 
             var model = _mapper.Map<CreateOrEditModuleModel>(entity);
+            model.ModuleContents = entity.ModuleContents;
 
             return Ok(model);
         }
 
+        /// <summary>
+        /// To save the front page of modiles, basically the order of the contents
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("api/eLearning/CourseModules/Content")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> Content(int? Id, int CreatedBy, string order)
+        {
+            if (Id == null)
+            {
+                return BadRequest();
+            }
 
+            var entity = await db.CourseModules
+              .Include(x => x.ModuleContents)
+              .FirstOrDefaultAsync(x => x.Id == Id.Value);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            entity.ModuleContents = entity.ModuleContents.OrderBy(x => x.Order).ToList();
+
+            var splitOrder = order.Split(',').ToArray();
+
+            if (entity.ModuleContents.Count() == splitOrder.Count())
+            {
+                int i = 0;
+                foreach (var module in entity.ModuleContents)
+                {
+                    module.Order = int.Parse(splitOrder[i]);
+
+                    i++;
+                }
+            }
+
+            db.SetModified(entity);
+
+            await db.SaveChangesAsync();
+
+            var model = _mapper.Map<CreateOrEditModuleModel>(entity);                
+            model.ModuleContents = entity.ModuleContents;
+
+            return Ok(model);
+        }
     }
 }

@@ -16,22 +16,26 @@ namespace FEP.Model.eLearning
         /// </summary>
         public int Order { get; set; }
         public int ModuleContentId { get; set; }
-        public CourseContent ModuleContent { get; set; }
+        public virtual CourseContent ModuleContent { get; set; }
 
-        public CourseMaterialType FileType { get; set; }
+        public FileType FileType { get; set; }
 
-        public int FileId { get; set; }
-        public FileDocument File { get; set; }
+        public string FileName { get; set; }
+
+        public int FileDocumentId { get; set; }
+        public virtual FileDocument FileDocument { get; set; }
+
+        public int CourseId { get; set; }
 
     }
 
-    public enum CourseMaterialType
-    {
-        Document,
-        Image,
-        Slide,
-        Video,
-        Audio,
-        Flash
-    }
+    //public enum CourseMaterialType
+    //{
+    //    Document,
+    //    Image,
+    //    Slide,
+    //    Video,
+    //    Audio,
+    //    Flash
+    //}
 }

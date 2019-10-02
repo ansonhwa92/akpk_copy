@@ -1,0 +1,140 @@
+﻿@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    var name = Model.Title;
+
+    var desc = Model.ContentType.ToString();
+
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5">
+
+                    <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-outline-primary text-white">
+                        <span class="align-middle">
+                            <i class="la la-long-arrow-left">&nbsp;</i>
+                        </span>
+                        Back
+                    </a>
+                </div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Courses</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId">Module</a></li>
+                                <li class="breadcrumb-item"><a href="#">Content</a></li>
+
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@name : View @desc</h1>
+                    <div class="header-text">View @desc.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar class="ps">
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">@Model.ContentType</a>
+                        </li>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
+            <div class="form-container">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @{
+                    switch (Model.ContentType)
+                    {
+                        case FEP.Model.eLearning.CourseContentType.Video:
+
+                            @Html.Action("Video", "CourseContents", new { id = @Model.Id })
+
+                            break;
+
+                        case FEP.Model.eLearning.CourseContentType.RichText:
+
+                            @Html.Action("RichText", "CourseContents", new { id = @Model.Id })
+
+                            break;
+                        case FEP.Model.eLearning.CourseContentType.IFrame:
+
+                            @Html.Action("IFrame", "CourseContents", new { id = @Model.Id })
+
+                            break;
+                        case FEP.Model.eLearning.CourseContentType.Audio:
+
+                            @Html.Action("Audio", "CourseContents", new { id = @Model.Id })
+
+                            break;
+                        case FEP.Model.eLearning.CourseContentType.Document:
+
+                            @Html.Action("Document", "CourseContents", new { id = @Model.Id })
+
+                            break;
+                        case FEP.Model.eLearning.CourseContentType.WebLink:
+
+                            @Html.Action("WebLink", "CourseContents", new { id = @Model.Id })
+
+                            break;
+                        case FEP.Model.eLearning.CourseContentType.Test:
+
+                            @Html.Action("Test", "CourseContents", new { id = @Model.Id })
+
+                            break;
+                        case FEP.Model.eLearning.CourseContentType.Assignment:
+
+                            @Html.Action("Assignment", "CourseContents", new { id = @Model.Id })
+
+                            break;
+
+                        default:
+                            @Html.Action("RichText", "CourseContents", new { id = @Model.Id })
+
+                            break;
+
+                    }
+                }
+                @Html.Partial("_contentCompletionView", Model)
+            </div>
+        </div>
+
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+
+            <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+               title="Back">@Language.General.ButtonBack</a>
+        </div>
+    </div>
+</div>
+
+<style>
+</style>
+
+@section ContentScript {
+
+}

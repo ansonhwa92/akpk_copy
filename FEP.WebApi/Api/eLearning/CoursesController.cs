@@ -57,7 +57,7 @@ namespace FEP.WebApi.Api.eLearning
         public IHttpActionResult Post(FilterCourseModel request)
         {
             var query = db.Courses.Where(x => (String.IsNullOrEmpty(request.Title) || x.Title.Contains(request.Title)) &&
-                                    (String.IsNullOrEmpty(request.Code) || x.Title.Contains(request.Code)) && x.IsDeleted == false);
+                                    (String.IsNullOrEmpty(request.Code) || x.Title.Contains(request.Code)) && x.IsDeleted != true);
 
             var totalCount = query.Count();
 
@@ -164,7 +164,7 @@ namespace FEP.WebApi.Api.eLearning
                 course.Objectives = HttpUtility.HtmlEncode(request.Objectives);
 
                 course.CreatedDate = DateTime.Now;
-                course.IsDeleted = true;
+                course.IsDeleted = false;
 
                 // all course activity is log to table courseapprovallog
 

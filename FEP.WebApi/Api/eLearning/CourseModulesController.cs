@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace FEP.WebApi.Api.eLearning
@@ -76,7 +77,7 @@ namespace FEP.WebApi.Api.eLearning
                     Objectives = request.Objectives,
                     Description = request.Description,
                     Title = request.Title,
-                    Order = course.Modules.Max(x => x.Order) + 1
+                    Order = course.Modules.Count() > 0 ? course.Modules.Max(x => x.Order) + 1 : 1
                 };
 
                 course.Modules.Add(module);

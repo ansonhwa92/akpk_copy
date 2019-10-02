@@ -41,32 +41,65 @@
                     <div class="row select-publication mb-4">
                         <div class="col-lg-4">
                             <div class="box-contain">
-                                <div class="card text-center">
-                                    <div class="mb-4"><img src="~/img/publications/icon-digital.svg" alt="image"></div>
-                                    <div class="color-secondary font-weight-bolder mb-1">Digital</div>
-                                    <h3 class="color-darkblue mb-0">RM10.90</h3>
-                                    <div class="badge text-muted"><s>RM11.99</s><span> 10% off</span></div>
-                                </div>
+                                @if (Model.Digitalcopy)
+                                {
+                                    <div class="card text-center" id="card_digital" data-selected="no" data-active="yes">
+                                        <div class="mb-4"><img src="~/img/publications/icon-digital.svg" alt="image"></div>
+                                        <div class="color-secondary font-weight-bolder mb-1">Digital</div>
+                                        <h3 class="color-darkblue mb-5">RM @Model.DPrice.ToString("0.00")</h3>
+                                        <!--<div class="badge text-muted"><s>RM11.99</s><span> 10% off</span></div>-->
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="card text-center" id="card_digital" data-selected="no" data-active="no">
+                                        <div class="mb-4"><img src="~/img/publications/icon-digital.svg" alt="image"></div>
+                                        <div class="color-secondary font-weight-bolder mb-1">Digital</div>
+                                        <h3 class="color-red mb-5">Not Available</h3>
+                                    </div>
+                                }
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="box-contain">
-                                <div class="card text-center">
-                                    <div class="mb-4"><img src="~/img/publications/icon-hard-cover.svg" alt="image"></div>
-                                    <div class="color-secondary font-weight-bolder mb-1">Hard Cover</div>
-                                    <h3 class="color-darkblue mb-5">RM29.90</h3>
-                                    <div class="touchspin-wrapper position-bottom"><input id="touch-spin-2" data-toggle="touch-spin" data-min="0" data-max="10" data-step="1" type="text" value="0" class="form-control" /></div>
-                                </div>
+                                @if (Model.Hardcopy)
+                                {
+                                    <div class="card text-center" id="card_hardcopy" data-selected="no" data-active="yes">
+                                        <div class="mb-4"><img src="~/img/publications/icon-hard-cover.svg" alt="image"></div>
+                                        <div class="color-secondary font-weight-bolder mb-1">Hard Cover</div>
+                                        <h3 class="color-darkblue mb-5">RM @Model.HPrice.ToString("0.00")</h3>
+                                        <div class="touchspin-wrapper position-bottom"><input id="touch-spin-2" data-toggle="touch-spin" data-min="0" data-max="10" data-step="1" type="text" value="0" class="form-control" /></div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="card text-center" id="card_hardcopy" data-selected="no" data-active="no">
+                                        <div class="mb-4"><img src="~/img/publications/icon-hard-cover.svg" alt="image"></div>
+                                        <div class="color-secondary font-weight-bolder mb-1">Hard Cover</div>
+                                        <h3 class="color-red mb-5">Not Available</h3>
+                                    </div>
+                                }
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="box-contain">
-                                <div class="card text-center">
-                                    <div class="mb-4"><img src="~/img/publications/icon-1-plus-1-promo.svg" alt="image"></div>
-                                    <div class="color-secondary font-weight-bolder mb-1">Promotion</div>
-                                    <h3 class="color-darkblue mb-5">RM22.99</h3>
-                                    <div class="xs-small position-bottom">Get 1 digital and 1 hard cover for a special price. </div>
-                                </div>
+                                @if (Model.HDcopy)
+                                {
+                                    <div class="card text-center" id="card_both" data-selected="no" data-active="yes">
+                                        <div class="mb-4"><img src="~/img/publications/icon-1-plus-1-promo.svg" alt="image"></div>
+                                        <div class="color-secondary font-weight-bolder mb-1">Promotion</div>
+                                        <h3 class="color-darkblue mb-5">RM @Model.HDPrice.ToString("0.00")</h3>
+                                        <div class="xs-small position-bottom">Get 1 digital and 1 hard cover for a special price. </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="card text-center" id="card_both" data-selected="no" data-active="no">
+                                        <div class="mb-4"><img src="~/img/publications/icon-1-plus-1-promo.svg" alt="image"></div>
+                                        <div class="color-secondary font-weight-bolder mb-1">Promotion</div>
+                                        <h3 class="color-red mb-5">Not Available</h3>
+                                    </div>
+                                }
                             </div>
                         </div>
                         <div class="clearfix">&nbsp;</div>
@@ -75,8 +108,18 @@
                         <div class="col-lg-12">
                             <!-- Action Button -->
                             <div class="border-top py-3 mt-5">
+                                @using (Html.BeginForm("PurchasePublication", "Home", new { area = "RnP" }, FormMethod.Post, new { id = "myform" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden" name="puid" id="puid" value="@Model.ID" />
+                                    <input type="hidden" name="dbuy" id="dbuy" value="" />
+                                    <input type="hidden" name="hbuy" id="hbuy" value="" />
+                                    <input type="hidden" name="hbil" id="hbil" value="" />
+                                    <input type="hidden" name="pbuy" id="pbuy" value="" />
+                                }
                                 <a class="btn btn-default font-weight-normal mr-2" href="@Url.Action("PublicationDetails", "Home", new { area = "RnP", @id = Model.ID })">Back</a>
-                                <a class="btn btn-secondary" href="@Url.Action("PurchasePublication", "Home", new { area = "RnP", @id = Model.ID })">Next</a>
+                                <a class="btn btn-secondary" id="btnNext" href="#">Next</a>
                             </div>
                         </div>
                     </div>
@@ -86,7 +129,12 @@
             <!-- column content right -->
             <div class="col-lg-3">
                 <div class="right-sidebar">
-                    <div class="mb-4"><img src="~/img/cover-publication-dummy.jpg"></div>
+                    <div class="card__wrapper">
+                        <div class="card__top">
+                            <div class="card__top__wapper"><img class="card__top__image" src="~/img/cover-buku-1.jpg" alt="image"></div>
+                        </div>
+                    </div>
+                    <!--<div class="mb-4"><img src="~/img/cover-buku-x.jpg"></div>-->
                     <div class="card-group">
                         <div class="lead color-darkblue mb-3 font-weight-bolder">Publication Details</div>
                         <ul>
@@ -117,7 +165,60 @@
 
             var selectPublication = $(".box-contain .card");
             selectPublication.click(function () {
-                $(this).toggleClass('active');
+                var active = $(this).data('active');
+                if (active == 'yes') {
+                    $(this).toggleClass('active');
+                    if ($(this).hasClass('active')) {
+                        $(this).css('background-color', 'lightblue');
+                        $(this).data('selected', 'yes');
+                    } else {
+                        $(this).css('background-color', 'white');
+                        $(this).data('selected', 'no');
+                    }
+                }
+            });
+
+            $("#touch-spin-2").click(function (e) {
+                e.stopPropagation();
+            });
+
+            $("#btnNext").click(function () {
+                var sd = $("#card_digital").data('selected');
+                var sh = $("#card_hardcopy").data('selected');
+                var sb = $("#card_both").data('selected');
+                if ((sd == "no") && (sh == "no") && (sb == "no")) {
+                    alert("Please select at least one (1) format!");
+                    return false;
+                }
+                $("#dbuy").val(sd);
+                $("#hbuy").val(sh);
+                $("#pbuy").val(sb);
+                if (sh == "yes") {
+                    var bil = $("#touch-spin-2").val();
+                    if ($.isNumeric(bil)) {
+                        if (Math.floor(bil) == bil) {
+                            if (parseInt(bil) > 0) {
+                                $("#hbil").val(bil);
+                            }
+                            else {
+                                alert("Please enter a valid number of copies!");
+                                return false;
+                            }
+                        }
+                        else {
+                            alert("Please enter a valid number of copies!");
+                            return false;
+                        }
+                    }
+                    else {
+                        alert("Please enter a valid number of copies!");
+                        return false;
+                    }
+                }
+                else {
+                    $("#hbil").val('0');
+                }
+                $("#myform").submit();
             });
 
         });

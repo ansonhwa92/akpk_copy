@@ -261,16 +261,13 @@ html {
     background: linear-gradient(180deg, #330C69 0%, #319BB4 100%), #3D1099;
 }
 
-[dir="ltr"] .no-gradient {
-    background: #32186f;
-}
-
 [dir="ltr"] .bg-green {
     background: #5ad65a;
 }
 
 [dir="ltr"] .bg-blue {
     background: #579fdd;
+    ;
 }
 
 [dir="ltr"] .bg-red {
@@ -717,10 +714,6 @@ html {
     color: #04ace7;
 }
 
-[dir="ltr"] .btn-outline-secondary:hover .color-secondary {
-    color: #fff;
-}
-
 [dir="ltr"] .btn-link:hover {
     border-color: #04ace7;
     text-decoration: none;
@@ -1086,7 +1079,7 @@ select:-moz-focusring {
     max-width: none !important;
 }
 
-[dir="ltr"] label {
+[dir="ltr"] .form-container label {
     font-size: .875rem;
     color: #13335b;
     font-weight: 500;

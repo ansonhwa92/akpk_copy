@@ -169,10 +169,11 @@ namespace FEP.WebApi.Api.RnP
         }
 
         // Alternative function for listing (all)
-        // GET: api/RnP/Survey (list) - CURRENTLY NOT USED
+        // GET: api/RnP/Survey (list) - CURRENTLY USED FOR ANONYMOUS BROWSING
         public List<ReturnSurveyModel> Get()
         {
-            var surveys = db.Survey.OrderBy(v => v.Title).Select(s => new ReturnSurveyModel
+            // TODO: not expired and active only
+            var surveys = db.Survey.Where(v => v.Status == SurveyStatus.Published && v.Type == SurveyType.Public).OrderBy(v => v.StartDate).OrderBy(v => v.Title).Select(s => new ReturnSurveyModel
             {
                 ID = s.ID,
                 Type = s.Type,
@@ -185,9 +186,17 @@ namespace FEP.WebApi.Api.RnP
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
+                Pictures = s.Pictures,
                 ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
-                Status = s.Status
+                Status = s.Status,
+                CancelRemark = s.CancelRemark,
+                CreatorId = s.CreatorId,
+                RefNo = s.RefNo,
+                DateCancelled = s.DateCancelled,
+                DmsPath = s.DmsPath,
+                InviteCount = s.InviteCount,
+                SubmitCount = s.SubmitCount
             }).ToList();
 
             return surveys;
@@ -212,9 +221,17 @@ namespace FEP.WebApi.Api.RnP
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
+                Pictures = s.Pictures,
                 ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
-                Status = s.Status
+                Status = s.Status,
+                CancelRemark = s.CancelRemark,
+                CreatorId = s.CreatorId,
+                RefNo = s.RefNo,
+                DateCancelled = s.DateCancelled,
+                DmsPath = s.DmsPath,
+                InviteCount = s.InviteCount,
+                SubmitCount = s.SubmitCount                
             }).FirstOrDefault();
 
             if (survey == null)
@@ -777,6 +794,35 @@ namespace FEP.WebApi.Api.RnP
             return "";
         }
 
+        // Function to publish a survey from details page.
+        // GET: api/RnP/Survey/PublishByID
+        [Route("api/RnP/Survey/PublishByID")]
+        public string PublishByID(int id)
+        {
+
+            var survey = db.Survey.Where(p => p.ID == id).FirstOrDefault();
+
+            if (survey != null)
+            {
+                survey.Status = SurveyStatus.Published;
+
+                db.Entry(survey).State = EntityState.Modified;
+
+                db.SaveChanges();
+
+                //return publication.Title;
+                if (survey.Type == SurveyType.Public)
+                {
+                    return survey.Title + "|" + "Public Mass" + "|" + survey.RefNo;
+                }
+                else
+                {
+                    return survey.Title + "|" + "Targeted Groups" + "|" + survey.RefNo;
+                }
+            }
+            return "";
+        }
+
         // Function to delete an unsubmitted survey after viewing on delete screen.
         // Can also be called from the Discard button at the review screen (in which case confirmation is via prompt).
         // GET: api/RnP/Survey/Delete/5
@@ -825,6 +871,7 @@ namespace FEP.WebApi.Api.RnP
                     // requirenext is always set to true when coming from verifier approval, and always false from approver3
 
                     db.Entry(sapproval).State = EntityState.Modified;
+                    // HERE
                     db.SaveChanges();
 
                     var survey = db.Survey.Where(p => p.ID == sapproval.SurveyID).FirstOrDefault();
@@ -890,12 +937,20 @@ namespace FEP.WebApi.Api.RnP
                                 };
 
                                 db.SurveyApproval.Add(snewapproval);
+                                // HERE
                                 db.SaveChanges();
                             }
 
                         }
 
-                        return survey.Title;
+                        if (survey.Type == SurveyType.Public)
+                        {
+                            return survey.ID + "|" + survey.Title + "|" + "Public Mass" + "|" + survey.RefNo;
+                        }
+                        else
+                        {
+                            return survey.ID + "|" + survey.Title + "|" + "Targeted Groups" + "|" + survey.RefNo;
+                        }
                     }
                 }
             }

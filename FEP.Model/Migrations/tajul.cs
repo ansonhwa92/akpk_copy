@@ -19,8 +19,8 @@ namespace FEP.Model.Migrations
 
 		public static void DefaultSLAReminder(DbEntities db)
 		{
-			if (!db.SLAReminder.Any())
-			{
+			//if (!db.SLAReminder.Any())
+			//{
 				db.SLAReminder.AddOrUpdate(s => s.NotificationType,
                     new SLAReminder { SLAEventType = SLAEventType.VerifyPublicEvent, NotificationType = NotificationType.Verify_Public_Event_Creation, ETCode = "ET001APE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 					new SLAReminder { SLAEventType = SLAEventType.VerifyPublicEvent, NotificationType = NotificationType.Verify_Public_Event_Published_Changed, ETCode = "ET001BPE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
@@ -75,8 +75,8 @@ namespace FEP.Model.Migrations
                     new SLAReminder { SLAEventType = SLAEventType.PublishPublication, NotificationType = NotificationType.Submit_Publication_Publication, ETCode = "ET203RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
                     new SLAReminder { SLAEventType = SLAEventType.ModifyPublication, NotificationType = NotificationType.Submit_Publication_Modification, ETCode = "ET204RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
                     new SLAReminder { SLAEventType = SLAEventType.WithdrawPublication, NotificationType = NotificationType.Submit_Publication_Withdrawal, ETCode = "ET205RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                    new SLAReminder { SLAEventType = SLAEventType.WithdrawPublication, NotificationType = NotificationType.Submit_Publication_Modification_Cancellation, ETCode = "ET206RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                    new SLAReminder { SLAEventType = SLAEventType.WithdrawPublication, NotificationType = NotificationType.Submit_Publication_Withdrawal_Cancellation, ETCode = "ET207RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                    new SLAReminder { SLAEventType = SLAEventType.CancelModifyPublication, NotificationType = NotificationType.Submit_Publication_Modification_Cancellation, ETCode = "ET206RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                    new SLAReminder { SLAEventType = SLAEventType.CancelWithdrawPublication, NotificationType = NotificationType.Submit_Publication_Withdrawal_Cancellation, ETCode = "ET207RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
                     new SLAReminder { SLAEventType = SLAEventType.VerifyPublication, NotificationType = NotificationType.Verify_Publication_Creation, ETCode = "ET211RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 					new SLAReminder { SLAEventType = SLAEventType.VerifyPublicationModification, NotificationType = NotificationType.Verify_Publication_Modification, ETCode = "ET212RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
                     new SLAReminder { SLAEventType = SLAEventType.VerifyPublicationWithdrawal, NotificationType = NotificationType.Verify_Publication_Withdrawal, ETCode = "ET213RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
@@ -97,13 +97,13 @@ namespace FEP.Model.Migrations
                     new SLAReminder { SLAEventType = SLAEventType.System, NotificationType = NotificationType.ResetPassword, ETCode = "ET002SY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days }
 
                     );
-			}
+			//}
 		}
 
 		public static void DefaultParameterGroup(DbEntities db)
 		{
-			if (!db.ParameterGroup.Any())
-			{
+			//if (!db.ParameterGroup.Any())
+			//{
 				foreach (TemplateParameterType paramType in Enum.GetValues(typeof(TemplateParameterType)))
 				{
 					SLAEventType EventType;
@@ -137,14 +137,14 @@ namespace FEP.Model.Migrations
 					db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
 						new ParameterGroup { SLAEventType = EventType, TemplateParameterType = paramType });
 				}
-			}
+			//}
 
 		}
 
 		public static void DefaultTemplate(DbEntities db)
 		{
-			if (!db.NotificationTemplates.Any())
-			{
+			//if (!db.NotificationTemplates.Any())
+			//{
 				foreach (NotificationType notifyType in Enum.GetValues(typeof(NotificationType)))
 				{
 					db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
@@ -165,7 +165,7 @@ namespace FEP.Model.Migrations
 							Display = true
 						});
 				}
-			}
+			//}
 
 		}
 	}

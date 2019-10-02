@@ -52,7 +52,27 @@
                 <div class="col-content">
                     <div id="about-book">
                         <h4 class="color-darkblue">About This Publication</h4>
-                        <p class="img-responsive"><img src="../img/cover-publication-dummy-2.jpg" alt="image"></p>
+                        @{
+                            var coverpic1 = "";
+                            var coverpic2 = "";
+                            var authorpic = "";
+                        }
+                        @if (Model.Pictures != "")
+                        {
+                            coverpic1 = BaseURL + "/" + "img" + "/" + Model.Pictures;
+                            coverpic2 = BaseURL + "/" + "img" + "/" + Model.Pictures;
+                            authorpic = BaseURL + "/" + "img" + "/" + Model.Pictures;
+                            coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                            coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                            authorpic = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                        }
+                        else
+                        {
+                            coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                            coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                            authorpic = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                        }
+                        <p class="img-responsive"><img src="@coverpic1" alt="image"></p>
                         <p>@Model.Description</p>
                     </div>
                     <div id="reviews">
@@ -278,9 +298,27 @@
                     <!-- Buy Courses -->
                     <div class="card text-center mb-5">
                         <div class="card__body">
-                            <h2 class="color-darkblue mb-0">RM29.90</h2>
+                            @if (Model.Hardcopy)
+                            {
+                                <h2 class="color-darkblue mb-0">RM @Model.HPrice.ToString("0.00")</h2>
+                            }
+                            else if (Model.Digitalcopy)
+                            {
+                                <h2 class="color-darkblue mb-0">RM @Model.DPrice.ToString("0.00")</h2>
+                            }
+                            else
+                            {
+                                <h2 class="color-darkblue mb-0">RM @Model.HDPrice.ToString("0.00")</h2>
+                            }
                             <div class="mt-3">
-                                <a href="@Url.Action("SelectFormat", "Home", new { area = "RnP", @id = Model.ID })" class="btn btn-default color-secondary d-block mb-2">Add to Cart</a>
+                                @if (CurrentUser.IsAuthenticated())
+                                {
+                                    <a href="@Url.Action("SelectFormat", "Home", new { area = "RnP", @id = Model.ID })" class="btn btn-default color-secondary d-block mb-2">Add to Cart</a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("LoginAndReturn", "Auth", new { area = "", @returnurl = "~/RnP/Home/SelectFormat/" + Model.ID })" class="btn btn-default color-secondary d-block mb-2">Add to Cart</a>
+                                }
                             </div>
                         </div>
                     </div>

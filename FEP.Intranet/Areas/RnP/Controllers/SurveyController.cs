@@ -471,11 +471,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
-                    await LogActivity(Modules.RnP, "Submit Survey: " + response.Data, model);
+                    await LogActivity(Modules.RnP, "Submit Survey: " + title, model);
 
-                    TempData["SuccessMessage"] = "Survey titled " + response.Data + " submitted successfully for verification.";
+                    TempData["SuccessMessage"] = "Survey titled " + title + " submitted successfully for verification.";
 
-                    await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Creation, model.Survey.Title, type, refno, "Survey Submitted", SurveyApprovalStatus.None, false);
+                    await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Creation, title, type, refno, "Survey Submitted", SurveyApprovalStatus.None, false);
 
                     // dashboard
 
@@ -515,9 +515,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 // log trail/system success notification/dashboard notification/email/sms upon submission
                 // log trail/system success/dashboard notification upon saving as draft
 
-                await LogActivity(Modules.RnP, "Submit Survey: " + response.Data);
+                await LogActivity(Modules.RnP, "Submit Survey: " + title);
 
-                TempData["SuccessMessage"] = "Survey titled " + response.Data + " submitted successfully for verification.";
+                TempData["SuccessMessage"] = "Survey titled " + title + " submitted successfully for verification.";
 
                 await SendNotification(id.Value, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Creation, title, type, refno, "Survey Submitted", SurveyApprovalStatus.None, false);
 
@@ -528,6 +528,47 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             else
             {
                 TempData["SuccessMessage"] = "Failed to submit Survey.";
+
+                return RedirectToAction("Details", "Survey", new { area = "RnP", @id = id });
+            }
+        }
+
+        // Process publishing from details page
+        // Called for direct publishing via id
+        // GET: RnP/Survey/PublishByID/5
+        [HasAccess(UserAccess.RnPSurveyPublish)]
+        public async Task<ActionResult> PublishByID(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/PublishByID?id={id}");
+
+            if (response.isSuccess)
+            {
+                string[] resparray = response.Data.Split('|');
+                string title = resparray[0];
+                string type = resparray[1];
+                string refno = resparray[2];
+
+                // log trail/system success notification/dashboard notification/email/sms upon submission
+                // log trail/system success/dashboard notification upon saving as draft
+
+                await LogActivity(Modules.RnP, "Publish Survey: " + title);
+
+                TempData["SuccessMessage"] = "Survey titled " + title + " published successfully.";
+
+                await SendNotification(id.Value, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Publication, title, type, refno, "Survey Published", SurveyApprovalStatus.None, false);
+
+                // dashboard
+
+                return RedirectToAction("Index", "Survey", new { area = "RnP" });
+            }
+            else
+            {
+                TempData["SuccessMessage"] = "Failed to publish Survey.";
 
                 return RedirectToAction("Details", "Survey", new { area = "RnP", @id = id });
             }
@@ -769,9 +810,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
-                    await LogActivity(Modules.RnP, "Cancel Survey: " + response.Data, model);
+                    await LogActivity(Modules.RnP, "Cancel Survey: " + title, model);
 
-                    TempData["SuccessMessage"] = "Survey titled " + response.Data + " successfully cancelled.";
+                    TempData["SuccessMessage"] = "Survey titled " + title + " successfully cancelled.";
 
                     await SendNotification(model.ID, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Cancellation, title, type, refno, "Survey Cancelled", SurveyApprovalStatus.None, false);
 
@@ -879,15 +920,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
-                    string stype;
-                    if (model.Survey.Type == SurveyType.Public)
-                    {
-                        stype = "Public Mass";
-                    }
-                    else
-                    {
-                        stype = "Targeted Groups";
-                    }
+                    string[] resparray = response.Data.Split('|');
+                    int sid = int.Parse(resparray[0]);
+                    string title = resparray[1];
+                    string type = resparray[2];
+                    string refno = resparray[3];
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
@@ -895,66 +932,66 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     {
                         if (model.Approval.Level == SurveyApprovalLevels.Verifier)
                         {
-                            await LogActivity(Modules.RnP, "Verify Survey: " + response.Data, model);
-                            TempData["SuccessMessage"] = "Survey titled " + response.Data + " updated as Verified.";
+                            await LogActivity(Modules.RnP, "Verify Survey: " + title, model);
+                            TempData["SuccessMessage"] = "Survey titled " + title + " updated as Verified.";
 
-                            await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Survey_Creation, model.Survey.Title, stype, model.Survey.RefNo, "Verified and Pending Approval", model.Approval.Status, model.Approval.RequireNext);
+                            await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Survey_Creation, title, type, refno, "Verified and Pending Approval", model.Approval.Status, model.Approval.RequireNext);
                             // dashboard
                         }
                         else
                         {
-                            await LogActivity(Modules.RnP, "Approve Survey: " + response.Data, model);
-                            TempData["SuccessMessage"] = "Survey titled " + response.Data + " updated as Approved.";
+                            await LogActivity(Modules.RnP, "Approve Survey: " + title, model);
+                            TempData["SuccessMessage"] = "Survey titled " + title + " updated as Approved.";
 
                             if (model.Approval.Level == SurveyApprovalLevels.Approver1)
                             {
                                 if (model.Approval.RequireNext)
                                 {
-                                    await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, model.Survey.Title, stype, model.Survey.RefNo, "Approved by 1st-Level Approver and Pending 2nd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
+                                    await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, title, type, refno, "Approved by 1st-Level Approver and Pending 2nd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
                                 }
                                 else
                                 {
-                                    await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, model.Survey.Title, stype, model.Survey.RefNo, "Approved by 1st-Level Approver", model.Approval.Status, model.Approval.RequireNext);
+                                    await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, title, type, refno, "Approved by 1st-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                                 }
                             }
                             else if (model.Approval.Level == SurveyApprovalLevels.Approver2)
                             {
                                 if (model.Approval.RequireNext)
                                 {
-                                    await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, model.Survey.Title, stype, model.Survey.RefNo, "Approved by 2nd-Level Approver and Pending 3rd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
+                                    await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, title, type, refno, "Approved by 2nd-Level Approver and Pending 3rd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
                                 }
                                 else
                                 {
-                                    await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, model.Survey.Title, stype, model.Survey.RefNo, "Approved by 2nd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
+                                    await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, title, type, refno, "Approved by 2nd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                                 }
                             }
                             else if (model.Approval.Level == SurveyApprovalLevels.Approver3)
                             {
-                                await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_3, model.Survey.Title, stype, model.Survey.RefNo, "Approved by 3rd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
+                                await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_3, title, type, refno, "Approved by 3rd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                             }
                             // dashboard
                         }
                     }
                     else
                     {
-                        await LogActivity(Modules.RnP, "Survey Requires Amendment: " + response.Data, model);
-                        TempData["SuccessMessage"] = "Survey titled " + response.Data + " updated as Requires Amendment.";
+                        await LogActivity(Modules.RnP, "Survey Requires Amendment: " + title, model);
+                        TempData["SuccessMessage"] = "Survey titled " + title + " updated as Requires Amendment.";
 
                         if (model.Approval.Level == SurveyApprovalLevels.Verifier)
                         {
-                            await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Survey_Creation, model.Survey.Title, stype, model.Survey.RefNo, "Amendment Requested by Verifier", model.Approval.Status, false);
+                            await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Survey_Creation, title, type, refno, "Amendment Requested by Verifier", model.Approval.Status, false);
                         }
                         else if (model.Approval.Level == SurveyApprovalLevels.Approver1)
                         {
-                            await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, model.Survey.Title, stype, model.Survey.RefNo, "Amendment Requested by 1st-Level Approver", model.Approval.Status, false);
+                            await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, title, type, refno, "Amendment Requested by 1st-Level Approver", model.Approval.Status, false);
                         }
                         else if (model.Approval.Level == SurveyApprovalLevels.Approver2)
                         {
-                            await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, model.Survey.Title, stype, model.Survey.RefNo, "Amendment Requested by 2nd-Level Approver", model.Approval.Status, false);
+                            await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, title, type, refno, "Amendment Requested by 2nd-Level Approver", model.Approval.Status, false);
                         }
                         else if (model.Approval.Level == SurveyApprovalLevels.Approver3)
                         {
-                            await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_3, model.Survey.Title, stype, model.Survey.RefNo, "Amendment Requested by 3rd-Level Approver", model.Approval.Status, false);
+                            await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_3, title, type, refno, "Amendment Requested by 3rd-Level Approver", model.Approval.Status, false);
                         }
                         // dashboard
                     }
@@ -965,7 +1002,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 {
                     TempData["SuccessMessage"] = "Failed to process Survey.";
 
-                    return RedirectToAction("Evaluate", "Survey", new { area = "RnP", @id = model.Survey.ID });
+                    return RedirectToAction("Evaluate", "Survey", new { area = "RnP", @id = model.Approval.SurveyID });
                 }
             }
 
@@ -1104,7 +1141,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             var vmresp = new UpdateSurveyResponseModel
-            {
+            {                
                 SurveyID = surveyinfo.ID,
                 Type = SurveyResponseTypes.Actual,
                 UserId = uid,
@@ -1179,7 +1216,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // called by SendNotification
         private async Task<bool> SaveNotificationID(int id, int notification_id)
         {
-            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Survey/SaveNotificationID/?id={id}&notificationid={notification_id}");
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"RnP/Survey/SaveNotificationID?id={id}&notificationid={notification_id}");
             if (!response.isSuccess)
             {
                 await LogError(Modules.RnP, "Failed to save Auto Notification ID (API Error)");
@@ -1200,7 +1237,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             try
             {
                 var receivers = await GetNotificationReceivers(ncat, ntype, appstatus, forward);
-                Console.Write(receivers);
+                //Console.Write(receivers);
                 if (receivers.Count > 0)
                 {
                     ParameterListToSend paramToSend = new ParameterListToSend();
@@ -1218,15 +1255,28 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                         ReceiverId = receivers
                         // new List<int> { 2, 3, 4, 5 }
                     };
-                    Console.Write(reminder);
-                    var response = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-                    int saveThisID = response.Data.SLAReminderStatusId;
-
-                    //save saveThisID back into survey table
-                    var ressave = await SaveNotificationID(id, saveThisID);
-
-                    return true;
-
+                    //Console.Write(reminder);
+                    try
+                    {
+                        var response = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+                        if (response.isSuccess)
+                        {
+                            int saveThisID = response.Data.SLAReminderStatusId;
+                            //save saveThisID back into survey table
+                            var ressave = await SaveNotificationID(id, saveThisID);
+                            return true;
+                        }
+                        else
+                        {
+                            await LogError(Modules.RnP, "Failed to generate Auto Notification (API Call Returned Failure)");
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        await LogError(Modules.RnP, "Failed to generate Auto Notification (API Call Failed)");
+                        return false;
+                    }
                 }
                 else
                 {

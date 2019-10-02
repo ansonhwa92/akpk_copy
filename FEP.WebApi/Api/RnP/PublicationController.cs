@@ -184,8 +184,7 @@ namespace FEP.WebApi.Api.RnP
         // GET: api/RnP/Publication (misc list) - CURRENTLY USED FOR ANONYMOUS BROWSING
         public List<ReturnPublicationModel> Get()
         {
-            // TODO: published only
-            var publications = db.Publication.Where(p => p.Status <= PublicationStatus.Published).OrderByDescending(p => p.DateAdded).OrderBy(p => p.Title).Select(s => new ReturnPublicationModel
+            var publications = db.Publication.Where(p => p.Status == PublicationStatus.Published).OrderByDescending(p => p.DateAdded).OrderBy(p => p.Title).Select(s => new ReturnPublicationModel
             {
                 ID = s.ID,
                 CategoryID = s.CategoryID,
@@ -899,7 +898,8 @@ namespace FEP.WebApi.Api.RnP
                     // requirenext is always set to true when coming from verifier approval, and always false from approver3
 
                     db.Entry(papproval).State = EntityState.Modified;
-                    db.SaveChanges();
+                    // HERE
+                    //db.SaveChanges();
 
                     var publication = db.Publication.Where(p => p.ID == papproval.PublicationID).FirstOrDefault();
                     if (publication != null)
@@ -964,12 +964,14 @@ namespace FEP.WebApi.Api.RnP
                                 };
 
                                 db.PublicationApproval.Add(pnewapproval);
-                                db.SaveChanges();
+                                // HERE
+                                //db.SaveChanges();
                             }
 
                         }
 
-                        return publication.Title;
+                        //return publication.Title;
+                        return publication.ID + "|" + publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                     }
                 }
             }
@@ -1181,7 +1183,8 @@ namespace FEP.WebApi.Api.RnP
 
                         }
 
-                        return publication.Title;
+                        //return publication.Title;
+                        return publication.ID + "|" + publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                     }
                 }
             }

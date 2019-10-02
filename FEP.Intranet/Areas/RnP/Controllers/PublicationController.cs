@@ -958,6 +958,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
+                    string[] resparray = response.Data.Split('|');
+                    int pid = int.Parse(resparray[0]);
+                    string title = resparray[1];
+                    string author = resparray[2];
+                    string refno = resparray[3];
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
@@ -965,66 +970,66 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     {
                         if (model.Approval.Level == PublicationApprovalLevels.Verifier)
                         {
-                            await LogActivity(Modules.RnP, "Verify Publication: " + response.Data, model);
-                            TempData["SuccessMessage"] = "Publication titled " + response.Data + " updated as Verified.";
+                            await LogActivity(Modules.RnP, "Verify Publication: " + title, model);
+                            TempData["SuccessMessage"] = "Publication titled " + title + " updated as Verified.";
 
-                            await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Publication_Creation, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Verified and Pending Approval", model.Approval.Status, model.Approval.RequireNext);
+                            await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Publication_Creation, title, author, refno, "Verified and Pending Approval", model.Approval.Status, model.Approval.RequireNext);
                             // dashboard
                         }
                         else
                         {
-                            await LogActivity(Modules.RnP, "Approve Publication: " + response.Data, model);
-                            TempData["SuccessMessage"] = "Publication titled " + response.Data + " updated as Approved.";
+                            await LogActivity(Modules.RnP, "Approve Publication: " + title, model);
+                            TempData["SuccessMessage"] = "Publication titled " + title + " updated as Approved.";
 
                             if (model.Approval.Level == PublicationApprovalLevels.Approver1)
                             {
                                 if (model.Approval.RequireNext)
                                 {
-                                    await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_1, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Approved by 1st-Level Approver and Pending 2nd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
+                                    await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_1, title, author, refno, "Approved by 1st-Level Approver and Pending 2nd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
                                 }
                                 else
                                 {
-                                    await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_1, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Approved by 1st-Level Approver", model.Approval.Status, model.Approval.RequireNext);
+                                    await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_1, title, author, refno, "Approved by 1st-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                                 }
                             }
                             else if (model.Approval.Level == PublicationApprovalLevels.Approver2)
                             {
                                 if (model.Approval.RequireNext)
                                 {
-                                    await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_2, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Approved by 2nd-Level Approver and Pending 3rd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
+                                    await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_2, title, author, refno, "Approved by 2nd-Level Approver and Pending 3rd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
                                 }
                                 else
                                 {
-                                    await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_2, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Approved by 2nd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
+                                    await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_2, title, author, refno, "Approved by 2nd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                                 }
                             }
                             else if (model.Approval.Level == PublicationApprovalLevels.Approver3)
                             {
-                                await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_3, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Approved by 3rd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
+                                await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_3, title, author, refno, "Approved by 3rd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                             }
                             // dashboard
                         }
                     }
                     else
                     {
-                        await LogActivity(Modules.RnP, "Publication Requires Amendment: " + response.Data, model);
-                        TempData["SuccessMessage"] = "Publication titled " + response.Data + " updated as Requires Amendment.";
+                        await LogActivity(Modules.RnP, "Publication Requires Amendment: " + title, model);
+                        TempData["SuccessMessage"] = "Publication titled " + title + " updated as Requires Amendment.";
 
                         if (model.Approval.Level == PublicationApprovalLevels.Verifier)
                         {
-                            await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Publication_Creation, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Amendment Requested by Verifier", model.Approval.Status, false);
+                            await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Publication_Creation, title, author, refno, "Amendment Requested by Verifier", model.Approval.Status, false);
                         }
                         else if (model.Approval.Level == PublicationApprovalLevels.Approver1)
                         {
-                            await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_1, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Amendment Requested by 1st-Level Approver", model.Approval.Status, false);
+                            await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_1, title, author, refno, "Amendment Requested by 1st-Level Approver", model.Approval.Status, false);
                         }
                         else if (model.Approval.Level == PublicationApprovalLevels.Approver2)
                         {
-                            await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_2, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Amendment Requested by 2nd-Level Approver", model.Approval.Status, false);
+                            await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_2, title, author, refno, "Amendment Requested by 2nd-Level Approver", model.Approval.Status, false);
                         }
                         else if (model.Approval.Level == PublicationApprovalLevels.Approver3)
                         {
-                            await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_3, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Amendment Requested by 3rd-Level Approver", model.Approval.Status, false);
+                            await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Creation_3, title, author, refno, "Amendment Requested by 3rd-Level Approver", model.Approval.Status, false);
                         }
                         // dashboard
                     }
@@ -1035,7 +1040,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 {
                     TempData["SuccessMessage"] = "Failed to process Publication.";
 
-                    return RedirectToAction("Evaluate", "Publication", new { area = "RnP", @id = model.Pub.ID });
+                    return RedirectToAction("Evaluate", "Publication", new { area = "RnP", @id = model.Approval.PublicationID });
                 }
             }
 
@@ -1163,6 +1168,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
+                    string[] resparray = response.Data.Split('|');
+                    int pid = int.Parse(resparray[0]);
+                    string title = resparray[1];
+                    string author = resparray[2];
+                    string refno = resparray[3];
                     // log trail/system success notification/dashboard notification/email/sms upon submission
                     // log trail/system success/dashboard notification upon saving as draft
 
@@ -1170,66 +1180,66 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     {
                         if (model.Approval.Level == PublicationApprovalLevels.Verifier)
                         {
-                            await LogActivity(Modules.RnP, "Verify Publication Withdrawal: " + response.Data, model);
-                            TempData["SuccessMessage"] = "Withdrawal of Publication titled " + response.Data + " updated as Verified.";
+                            await LogActivity(Modules.RnP, "Verify Publication Withdrawal: " + title, model);
+                            TempData["SuccessMessage"] = "Withdrawal of Publication titled " + title + " updated as Verified.";
 
-                            await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Publication_Withdrawal, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Withdrawal Verified and Pending Approval", model.Approval.Status, model.Approval.RequireNext);
+                            await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Publication_Withdrawal, title, author, refno, "Withdrawal Verified and Pending Approval", model.Approval.Status, model.Approval.RequireNext);
                             // dashboard
                         }
                         else
                         {
-                            await LogActivity(Modules.RnP, "Approve Publication Withdrawal: " + response.Data, model);
-                            TempData["SuccessMessage"] = "Withdrawal of Publication titled " + response.Data + " updated as Approved.";
+                            await LogActivity(Modules.RnP, "Approve Publication Withdrawal: " + title, model);
+                            TempData["SuccessMessage"] = "Withdrawal of Publication titled " + title + " updated as Approved.";
 
                             if (model.Approval.Level == PublicationApprovalLevels.Approver1)
                             {
                                 if (model.Approval.RequireNext)
                                 {
-                                    await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_1, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Withdrawal Approved by 1st-Level Approver and Pending 2nd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
+                                    await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_1, title, author, refno, "Withdrawal Approved by 1st-Level Approver and Pending 2nd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
                                 }
                                 else
                                 {
-                                    await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_1, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Withdrawal Approved by 1st-Level Approver", model.Approval.Status, model.Approval.RequireNext);
+                                    await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_1, title, author, refno, "Withdrawal Approved by 1st-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                                 }
                             }
                             else if (model.Approval.Level == PublicationApprovalLevels.Approver2)
                             {
                                 if (model.Approval.RequireNext)
                                 {
-                                    await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_2, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Withdrawal Approved by 2nd-Level Approver and Pending 3rd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
+                                    await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_2, title, author, refno, "Withdrawal Approved by 2nd-Level Approver and Pending 3rd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
                                 }
                                 else
                                 {
-                                    await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_2, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Withdrawal Approved by 2nd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
+                                    await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_2, title, author, refno, "Withdrawal Approved by 2nd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                                 }
                             }
                             else if (model.Approval.Level == PublicationApprovalLevels.Approver3)
                             {
-                                await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_3, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Withdrawal Approved by 3rd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
+                                await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_3, title, author, refno, "Withdrawal Approved by 3rd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                             }
                             // dashboard
                         }
                     }
                     else
                     {
-                        await LogActivity(Modules.RnP, "Publication Withdrawal Requires Amendment: " + response.Data, model);
-                        TempData["SuccessMessage"] = "Withdrawal of Publication titled " + response.Data + " updated as Requires Amendment.";
+                        await LogActivity(Modules.RnP, "Publication Withdrawal Requires Amendment: " + title, model);
+                        TempData["SuccessMessage"] = "Withdrawal of Publication titled " + title + " updated as Requires Amendment.";
 
                         if (model.Approval.Level == PublicationApprovalLevels.Verifier)
                         {
-                            await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Publication_Withdrawal, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Withdrawal Amendment Requested by Verifier", model.Approval.Status, false);
+                            await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Publication_Withdrawal, title, author, refno, "Withdrawal Amendment Requested by Verifier", model.Approval.Status, false);
                         }
                         else if (model.Approval.Level == PublicationApprovalLevels.Approver1)
                         {
-                            await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_1, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Withdrawal Amendment Requested by 1st-Level Approver", model.Approval.Status, false);
+                            await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_1, title, author, refno, "Withdrawal Amendment Requested by 1st-Level Approver", model.Approval.Status, false);
                         }
                         else if (model.Approval.Level == PublicationApprovalLevels.Approver2)
                         {
-                            await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_2, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Withdrawal Amendment Requested by 2nd-Level Approver", model.Approval.Status, false);
+                            await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_2, title, author, refno, "Withdrawal Amendment Requested by 2nd-Level Approver", model.Approval.Status, false);
                         }
                         else if (model.Approval.Level == PublicationApprovalLevels.Approver3)
                         {
-                            await SendNotification(model.Pub.ID, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_3, model.Pub.Title, model.Pub.Author, model.Pub.RefNo, "Withdrawal Amendment Requested by 3rd-Level Approver", model.Approval.Status, false);
+                            await SendNotification(pid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Publication_Withdrawal_3, title, author, refno, "Withdrawal Amendment Requested by 3rd-Level Approver", model.Approval.Status, false);
                         }
                         // dashboard
                     }
@@ -1240,12 +1250,118 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 {
                     TempData["SuccessMessage"] = "Failed to process Publication Withdrawal.";
 
-                    return RedirectToAction("EvaluateWithdrawal", "Publication", new { area = "RnP", @id = model.Pub.ID });
+                    return RedirectToAction("EvaluateWithdrawal", "Publication", new { area = "RnP", @id = model.Approval.PublicationID });
                 }
             }
 
             //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
             return View(model);
+        }
+
+        // Visitor functions (registered)
+
+        // Browse publications
+        // TODO: Handle search/filtering, include star rating
+        // GET: RnP/Publication/BrowsePublications
+        [AllowAnonymous]
+        public async Task<ActionResult> BrowsePublications()
+        {
+            var resPubs = await WepApiMethod.SendApiAsync<IEnumerable<ReturnPublicationModel>>(HttpVerbs.Get, $"RnP/Publication");
+
+            if (!resPubs.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var publications = resPubs.Data;
+
+            if (publications == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(publications);
+        }
+
+        // Publication details
+        // TODO: include ratings and reviews info
+        // GET: RnP/Publication/PublicationDetails
+        [AllowAnonymous]
+        public async Task<ActionResult> PublicationDetails(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resPub = await WepApiMethod.SendApiAsync<ReturnPublicationModel>(HttpVerbs.Get, $"RnP/Publication?id={id}");
+
+            if (!resPub.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var publication = resPub.Data;
+
+            if (publication == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(publication);
+        }
+
+        // Select format to purchase
+        // GET: RnP/Publication/SelectFormat
+        public async Task<ActionResult> SelectFormat(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resPub = await WepApiMethod.SendApiAsync<ReturnPublicationModel>(HttpVerbs.Get, $"RnP/Publication?id={id}");
+
+            if (!resPub.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var publication = resPub.Data;
+
+            if (publication == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(publication);
+        }
+
+        // Purchase publication
+        // GET: RnP/Publication/PurchasePublication
+        [AllowAnonymous]
+        public async Task<ActionResult> PurchasePublication(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resPub = await WepApiMethod.SendApiAsync<ReturnPublicationModel>(HttpVerbs.Get, $"RnP/Publication?id={id}");
+
+            if (!resPub.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var publication = resPub.Data;
+
+            if (publication == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(publication);
         }
 
         // Private functions
@@ -1270,7 +1386,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // called by SendNotification
         private async Task<bool> SaveNotificationID(int id, int notification_id)
         {
-            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/SaveNotificationID/?id={id}&notificationid={notification_id}");
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"RnP/Publication/SaveNotificationID?id={id}&notificationid={notification_id}");
             if (!response.isSuccess)
             {
                 await LogError(Modules.RnP, "Failed to save Auto Notification ID (API Error)");
@@ -1308,14 +1424,27 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                         ReceiverId = receivers
                         // new List<int> { 2, 3, 4, 5 }
                     };
-                    var response = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-                    int saveThisID = response.Data.SLAReminderStatusId;
-
-                    //save saveThisID back into publication table
-                    var ressave = await SaveNotificationID(id, saveThisID);
-
-                    return true;
-
+                    try
+                    {
+                        var response = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+                        if (response.isSuccess)
+                        {
+                            int saveThisID = response.Data.SLAReminderStatusId;
+                            //save saveThisID back into survey table
+                            var ressave = await SaveNotificationID(id, saveThisID);
+                            return true;
+                        }
+                        else
+                        {
+                            await LogError(Modules.RnP, "Failed to generate Auto Notification (API Call Returned Failure)");
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        await LogError(Modules.RnP, "Failed to generate Auto Notification (API Call Failed)");
+                        return false;
+                    }
                 }
                 else
                 {

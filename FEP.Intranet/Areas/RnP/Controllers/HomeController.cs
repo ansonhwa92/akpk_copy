@@ -81,7 +81,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Select format to purchase
         // GET: RnP/Home/SelectFormat
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<ActionResult> SelectFormat(int? id)
         {
             if (id == null)
@@ -108,13 +108,17 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Purchase publication
         // GET: RnP/Home/PurchasePublication
-        [AllowAnonymous]
-        public async Task<ActionResult> PurchasePublication(int? id)
+        //[AllowAnonymous]
+        //public async Task<ActionResult> PurchasePublication(int? id, string formats)
+        public async Task<ActionResult> PurchasePublication(string puid, string dbuy, string hbuy, string hbil, string pbuy)
         {
+            var id = int.Parse(puid);
+            /*
             if (id == null)
             {
                 return HttpNotFound();
             }
+            */
 
             var resPub = await WepApiMethod.SendApiAsync<ReturnPublicationModel>(HttpVerbs.Get, $"RnP/Publication?id={id}");
 
@@ -130,7 +134,205 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.DBuy = dbuy;
+            ViewBag.HBuy = hbuy;
+            ViewBag.HBil = hbil;
+            ViewBag.PBuy = pbuy;
+
+            if (dbuy == "yes")
+            {
+                ViewBag.DAmt = publication.DPrice;
+            }
+            else
+            {
+                ViewBag.DAmt = 0;
+            }
+            if (hbuy == "yes")
+            {
+                ViewBag.HAmt = (publication.HPrice * int.Parse(hbil));
+            }
+            else
+            {
+                ViewBag.HAmt = 0;
+            }
+            if (pbuy == "yes")
+            {
+                ViewBag.PAmt = publication.HDPrice;
+            }
+            else
+            {
+                ViewBag.PAmt = 0;
+            }
+
+            ViewBag.TAmt = ViewBag.DAmt + ViewBag.HAmt + ViewBag.PAmt;
+
             return View(publication);
+        }
+
+        // Browse surveys
+        // TODO: Handle search/filtering, include star rating
+        // GET: RnP/Home/BrowseSurveys
+        [AllowAnonymous]
+        public async Task<ActionResult> BrowseSurveys()
+        {
+            var resSurveys = await WepApiMethod.SendApiAsync<IEnumerable<ReturnSurveyModel>>(HttpVerbs.Get, $"RnP/Survey");
+
+            if (!resSurveys.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var surveys = resSurveys.Data;
+
+            if (surveys == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(surveys);
+        }
+
+        // Answer public survey
+        // GET: RnP/Home/PublicSurvey
+        [AllowAnonymous]
+        public async Task<ActionResult> PublicSurvey(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey?id={id}");
+
+            if (!resSurvey.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var survey = resSurvey.Data;
+
+            if (survey == null)
+            {
+                return HttpNotFound();
+            }
+
+            var sresp = new UpdateSurveyResponseModel
+            {
+                SurveyID = survey.ID,
+                Type = Model.SurveyResponseTypes.Actual,
+                Contents = ""                
+            };
+
+            var srmodel = new ReturnSurveyResponseModel
+            {
+                Survey = survey,
+                Response = sresp
+            };
+
+            return View(srmodel);
+        }
+
+        // Answer targeted survey
+        // GET: RnP/Home/PrivateSurvey
+        public async Task<ActionResult> PrivateSurvey(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey?id={id}");
+
+            if (!resSurvey.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var survey = resSurvey.Data;
+
+            if (survey == null)
+            {
+                return HttpNotFound();
+            }
+
+            var sresp = new UpdateSurveyResponseModel
+            {
+                SurveyID = survey.ID,
+                Type = Model.SurveyResponseTypes.Actual,
+                Contents = ""
+            };
+
+            var srmodel = new ReturnSurveyResponseModel
+            {
+                Survey = survey,
+                Response = sresp
+            };
+
+            return View(srmodel);
+        }
+
+        // Thank you for filling in (public?) survey
+        // GET: RnP/Home/ThankYou
+        [AllowAnonymous]
+        public async Task<ActionResult> ThankYou(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey?id={id}");
+
+            if (!resSurvey.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var survey = resSurvey.Data;
+
+            if (survey == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(survey);
+        }
+
+        // Process survey answers (actual) submission
+        // Redirects to thank you page?
+        // POST: Survey/SubmitAnswers/5
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SubmitSurvey(UpdateSurveyResponseModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/SubmitAnswers", model);
+
+                if (response.isSuccess)
+                {
+                    // log trail/system success notification/dashboard notification/email/sms upon submission
+                    // log trail/system success/dashboard notification upon saving as draft
+
+                    await LogActivity(Model.Modules.RnP, "Response submitted for Survey", model);      // titled: " + response.Data, model);
+
+                    TempData["SuccessMessage"] = "Response submitted successfully for Survey";   // titled: " + response.Data + ".";
+
+                    // dashboard
+
+                    return RedirectToAction("ThankYou", "Home", new { area = "RnP", @id = model.SurveyID });
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Failed to submit response for survey.";
+
+                    return RedirectToAction("BrowseSurveys", "Home", new { area = "RnP" });
+                }
+            }
+
+            return View(model);
         }
     }
 }

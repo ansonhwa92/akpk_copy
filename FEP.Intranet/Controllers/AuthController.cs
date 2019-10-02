@@ -29,6 +29,14 @@ namespace FEP.Intranet.Controllers
             return View();
         }
 
+        // firus
+        [AllowAnonymous]
+        public ActionResult LoginAndReturn(string returnurl)
+        {
+            ViewBag.returnurl = returnurl;
+            return View();
+        }
+
         [AllowAnonymous]
         public ActionResult Register()
         {

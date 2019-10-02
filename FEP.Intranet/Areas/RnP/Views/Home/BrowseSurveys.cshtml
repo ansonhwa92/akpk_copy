@@ -1,7 +1,7 @@
-﻿@model IEnumerable<FEP.WebApiModel.RnP.ReturnPublicationModel>
+﻿@model IEnumerable<FEP.WebApiModel.RnP.ReturnSurveyModel>
 
 @{
-    ViewBag.Title = "Browse Publications";
+    ViewBag.Title = "Browse Surveys";
     Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
 }
 
@@ -15,8 +15,8 @@
             </ol>
         </nav>
     </div>
-    <h1 class="page-title text-white">Browse Publications</h1>
-    <div class="header-text">Browse and purchase publications</div>
+    <h1 class="page-title text-white">Browse Surveys</h1>
+    <div class="header-text">Browse and respond to surveys</div>
 }
 
 <main id="landing-inner" class="rellax" data-rellax-speed="0">
@@ -155,90 +155,16 @@
                             <div class="dropdown-menu">
                                 <div class="listing-filter-inner">
                                     <div class="filter-type">
-                                        <h4 class="color-darkblue">Published Type</h4>
+                                        <h4 class="color-darkblue">Survey Category</h4>
+                                        <!--
                                         <div class="custom-control custom-radio">
                                             <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" checked>
-                                            <label class="custom-control-label" for="customRadio1">All Type</label>
+                                            <label class="custom-control-label" for="customRadio1">Surveys for Me</label>
                                         </div>
+                                        -->
                                         <div class="custom-control custom-radio">
                                             <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio2">Books</label>
-                                        </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio3">Fact Sheet</label>
-                                        </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="customRadio4" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio4">Journal</label>
-                                        </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="customRadio5" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio5">Literature Reviews</label>
-                                        </div>
-                                    </div>
-                                    <div class="filter-type">
-                                        <h4 class="color-darkblue">Published Year</h4>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                            <label class="custom-control-label" for="customCheck1">2019</label>
-                                            <span class="filter-counter">(100)</span>
-                                        </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck2">
-                                            <label class="custom-control-label" for="customCheck2">2018</label>
-                                            <span class="filter-counter">(430)</span>
-                                        </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck3">
-                                            <label class="custom-control-label" for="customCheck3">2017</label>
-                                            <span class="filter-counter">(29)</span>
-                                        </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck4">
-                                            <label class="custom-control-label" for="customCheck4">2016</label>
-                                            <span class="filter-counter">(560)</span>
-                                        </div>
-                                    </div>
-                                    <div class="filter-type">
-                                        <h4 class="color-darkblue">Format</h4>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck5">
-                                            <label class="custom-control-label" for="customCheck5">Digital</label>
-                                            <span class="filter-counter">(13)</span>
-                                        </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                            <label class="custom-control-label" for="customCheck6">Hard Copy</label>
-                                            <span class="filter-counter">(30)</span>
-                                        </div>
-                                    </div>
-                                    <div class="filter-type">
-                                        <h4 class="color-darkblue">Language</h4>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck9">
-                                            <label class="custom-control-label" for="customCheck9">English</label>
-                                            <span class="filter-counter">(3666)</span>
-                                        </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck10">
-                                            <label class="custom-control-label" for="customCheck10">Bahasa</label>
-                                            <span class="filter-counter">(100)</span>
-                                        </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                            <label class="custom-control-label" for="customCheck11">Chinese</label>
-                                            <span class="filter-counter">(63)</span>
-                                        </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                            <label class="custom-control-label" for="customCheck12">Tamil</label>
-                                            <span class="filter-counter">(54)</span>
-                                        </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck13">
-                                            <label class="custom-control-label" for="customCheck13">Multi-language</label>
-                                            <span class="filter-counter">(20)</span>
+                                            <label class="custom-control-label" for="customRadio2">Public Surveys</label>
                                         </div>
                                     </div>
                                 </div>
@@ -278,15 +204,15 @@
                                         coverpic1 = BaseURL + "/" + "img" + "/" + item.Pictures;
                                         coverpic2 = BaseURL + "/" + "img" + "/" + item.Pictures;
                                         authorpic = BaseURL + "/" + "img" + "/" + item.Pictures;
-                                        coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
-                                        coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
-                                        authorpic = BaseURL + "/" + "img" + "/8.jpg";
+                                        coverpic1 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
+                                        coverpic2 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
+                                        authorpic = BaseURL + "/" + "img" + "/47.jpg";
                                     }
                                     else
                                     {
-                                        coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
-                                        coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
-                                        authorpic = BaseURL + "/" + "img" + "/8.jpg";
+                                        coverpic1 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
+                                        coverpic2 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
+                                        authorpic = BaseURL + "/" + "img" + "/47.jpg";
                                     }
 
                                     <div class="col-lg-4 col-sm-6">
@@ -295,16 +221,25 @@
                                                 <div class="card__top__wapper"><img class="card__top__image" src="@coverpic1" alt="image"></div>
                                             </div>
                                             <div class="card__body">
-                                                <a class="card__title" href="@Url.Action("PublicationDetails", "Home", new { area = "RnP", @id = item.ID })">@item.Title</a>
+                                                @if (item.Type == SurveyType.Public)
+                                                {
+                                                    <a class="card__title" href="@Url.Action("PublicSurvey", "Home", new { area = "RnP", @id = item.ID })">@item.Title</a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="card__title" href="@Url.Action("PrivateSurvey", "Home", new { area = "RnP", @id = item.ID })">@item.Title</a>
+                                                }
                                                 <div class="card__author">
-                                                    <a class="card__col-left" href="@Url.Action("AuthorProfile", "Home", new { area = "RnP", @name = item.Author })"><span class="card__avatar"><img class="card__avatar__image" src="@authorpic"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">@item.Author</span></span></a>
+                                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@authorpic"></span><span class="card__name-wrap"><span class="card__instructby">Survey for</span><span class="card__author-name">@if (item.Type == SurveyType.Public)
+                                                    {<text>Public</text> }
+                                                else
+                                                { <text>Targeted Groups</text>}</span></span></a>
                                                 </div>
                                                 <div class="card__info">
                                                     <div class="card__col-left">
-                                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">@item.Category</span></span></div>
-                                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">@item.Year</span></span></div>
+                                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Survey Category"><span class="d-inline-block">@item.Category</span></span></div>
+                                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Expires On"><span class="d-inline-block">@item.EndDate.ToString("dd/MM/yyyy")</span></span></div>
                                                     </div>
-                                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -321,7 +256,7 @@
     <section id="search-result" class="publications">
         <div class="container">
             <div class="row">
-                <a class="btn btn-secondary block font-weight-normal mr-2" href="@Url.Action("BrowseSurveys", "Home", new { area = "RnP" })">Browse Surveys</a>
+                <a class="btn btn-secondary block font-weight-normal mr-2" href="@Url.Action("BrowsePublications", "Home", new { area = "RnP" })">Browse Publications</a>
             </div>
         </div>
     </section>

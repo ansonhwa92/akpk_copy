@@ -38,6 +38,7 @@
             <div class="col-lg-9">
                 <div class="col-content">
                     <h4 class="color-darkblue">Purchase Information</h4>
+                    <!--
                     <div class="divtableStyle1">
                         <div class="divTableWrap">
                             <div class="divtableheader no-border">
@@ -96,16 +97,73 @@
                             </div>
                         </div>
                     </div>
+                    -->
+                    <table class="table tableStyle1 table-foot mt-0 mb-5">
+                        <tfoot>
+                            <tr>
+                                <td class="text-left font-weight-bolder">Item Name</td>
+                                <td class="text-left font-weight-bolder">Format</td>
+                                <td class="text-right font-weight-bolder">Price</td>
+                                <td class="text-right font-weight-bolder">Quantity</td>
+                                <td class="text-right font-weight-bolder">Amount</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left font-weight-bold">@Model.Title</td>
+                                <td class="text-left font-weight-bold">Digital</td>
+                                <td class="text-right font-weight-bold">@Model.DPrice.ToString("0.00")</td>
+                                @if (ViewBag.DBuy == "yes")
+                                {
+                                    <td class="text-right font-weight-bold">1</td>
+                                    <td class="text-right font-weight-bold">@Model.DPrice.ToString("0.00")</td>
+                                }
+                                else
+                                {
+                                    <td class="text-right font-weight-bold">0</td>
+                                    <td class="text-right font-weight-bold">0.00</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold"></td>
+                                <td class="text-left font-weight-bold">Hard Cover</td>
+                                <td class="text-right font-weight-bold">@Model.HPrice.ToString("0.00")</td>
+                                @if (ViewBag.HBuy == "yes")
+                                {
+                                    <td class="text-right font-weight-bold">@ViewBag.HBil</td>
+                                    <td class="text-right font-weight-bold">@ViewBag.HAmt.ToString("0.00")</td>
+                                }
+                                else
+                                {
+                                    <td class="text-right font-weight-bold">0</td>
+                                    <td class="text-right font-weight-bold">0.00</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold"></td>
+                                <td class="text-left font-weight-bold">Promotion 1+1</td>
+                                <td class="text-right font-weight-bold">@Model.HDPrice.ToString("0.00")</td>
+                                @if (ViewBag.PBuy == "yes")
+                                {
+                                    <td class="text-right font-weight-bold">1</td>
+                                    <td class="text-right font-weight-bold">@Model.HDPrice.ToString("0.00")</td>
+                                }
+                                else
+                                {
+                                    <td class="text-right font-weight-bold">0</td>
+                                    <td class="text-right font-weight-bold">0.00</td>
+                                }
+                            </tr>
+                        </tfoot>
+                    </table>
                     <!-- Table total -->
                     <table class="table tableStyle1 table-foot mt-0 mb-5">
                         <tfoot>
                             <tr>
                                 <td class="text-right font-weight-bold"><span class="color-grey2 xs-small">Shipping Fee <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="If less than or equal 50 books / order = RM18 per delivery. If more than 50 books / oder = RM0.40 per book"><i class="la la-question-circle color-red align-middle" style="font-size: 17px;"></i></a></span> </td>
-                                <td class="text-right font-weight-bolder" style="width: 99px;"><span class="xs-small">RM1.60</span></td>
+                                <td class="text-right font-weight-bolder" style="width: 150px;"><span class="xs-small">RM 0.00</span></td>
                             </tr>
                             <tr>
                                 <td class="text-right font-weight-bolder">Total</td>
-                                <td class="text-right font-weight-bolder" style="width: 99px;"><span class="color-red">RM123.59</span></td>
+                                <td class="text-right font-weight-bolder" style="width: 150px;"><span class="color-red">RM @ViewBag.TAmt.ToString("0.00")</span></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -196,7 +254,12 @@
             <div class="col-lg-3">
                 <div class="right-sidebar">
                     <div class="right-top">
-                        <div class="mb-4"><img src="../img/cover-publication-dummy.jpg"></div>
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="card__top__wapper"><img class="card__top__image" src="~/img/cover-buku-1.jpg" alt="image"></div>
+                            </div>
+                        </div>
+                        <!--<div class="mb-4"><img src="../img/cover-publication-dummy.jpg"></div>-->
                         <div class="card-group">
                             <div class="lead color-darkblue mb-3 font-weight-bolder">Publication Details</div>
                             <ul>

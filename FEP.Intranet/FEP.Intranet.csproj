@@ -727,6 +727,9 @@
     <Content Include="Areas\RnP\Views\Home\PublicationDetails.cshtml" />
     <Content Include="Areas\RnP\Views\Home\SelectFormat.cshtml" />
     <Content Include="Areas\RnP\Views\Home\PurchasePublication.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\BrowseSurveys.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\PublicSurvey.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\ThankYou.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1216,6 +1219,9 @@
     <Content Include="Scripts\summernote\font\summernote.eot" />
     <Content Include="Scripts\summernote\font\summernote.ttf" />
     <Content Include="Scripts\summernote\font\summernote.woff" />
+    <Content Include="Views\Auth\LoginAndReturn.cshtml" />
+    <Content Include="Views\Shared\_LayoutPrivateSurvey.cshtml" />
+    <Content Include="Views\Shared\_LayoutPublicSurvey.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

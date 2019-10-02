@@ -57,7 +57,7 @@ namespace FEP.WebApi.Api.eLearning
         public IHttpActionResult Post(FilterCourseModel request)
         {
             var query = db.Courses.Where(x => (String.IsNullOrEmpty(request.Title) || x.Title.Contains(request.Title)) &&
-                                    (String.IsNullOrEmpty(request.Code) || x.Title.Contains(request.Code)) && x.IsDeleted != false);
+                                    (String.IsNullOrEmpty(request.Code) || x.Title.Contains(request.Code)) && x.IsDeleted == false);
 
             var totalCount = query.Count();
 

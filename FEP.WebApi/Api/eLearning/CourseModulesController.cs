@@ -91,6 +91,51 @@ namespace FEP.WebApi.Api.eLearning
             }
         }
 
+        [Route("api/eLearning/CourseModules/Edit")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public string Edit([FromBody] CreateOrEditModuleModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = db.CourseModules.Where(x => x.Id == model.Id).FirstOrDefault();
+
+                if (entity != null)
+                {
+
+                    entity.Title = model.Title;
+                    entity.Description = model.Description;
+                    entity.Objectives = model.Objectives;
+        
+                    db.Entry(entity).State = EntityState.Modified;
+
+                    db.SaveChanges();
+
+                    return model.Title;
+                }
+            }
+            return "";
+        }
+
+        [Route("api/eLearning/CourseModules/Delete")]
+        public string Delete(int id)
+        {
+            var module = db.CourseModules.Where(p => p.Id == id).FirstOrDefault();
+
+            if (module != null)
+            {
+                string ptitle = module.Title;
+
+                db.CourseModules.Remove(module);
+              
+                db.SaveChanges();
+
+                return ptitle;
+            }
+
+            return "";
+        }
+
         [HttpGet]
         public async Task<IHttpActionResult> Get(int? id)
         {

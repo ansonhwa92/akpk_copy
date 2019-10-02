@@ -1,281 +1,189 @@
-﻿@model FEP.Model.eLearning.Course
+﻿@model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
 
 @{
     ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h2>Delete</h2>
+@section ContentScript{
+    <script type="text/javascript">
+    </script>
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "Courses", new { area = "eLearning"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Course</a></li>
+                                <li class="breadcrumb-item"><a href="#">Delete Course</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Delete Course</h1>
+                    @*<div class="header-text">List of created event</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
 
 <h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Course</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Category.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstApproval.Remark)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FirstApproval.Remark)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SecondApproval.Remark)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SecondApproval.Remark)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ThirdApproval.Remark)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ThirdApproval.Remark)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.VerifierApproval.Remark)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.VerifierApproval.Remark)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Code)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Code)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Objectives)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Objectives)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Medium)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Medium)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ScheduleType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ScheduleType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DurationType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DurationType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Language)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Language)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsFree)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsFree)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IntroVideoPath)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IntroVideoPath)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TraversalRule)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TraversalRule)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ScoreCalculation)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ScoreCalculation)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalModules)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TotalModules)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CertificateId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CertificateId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DefaultAllowablePercentageBeforeWithdraw)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DefaultAllowablePercentageBeforeWithdraw)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ViewCategory)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ViewCategory)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CompletionCriteriaType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CompletionCriteriaType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ModulesCompleted)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ModulesCompleted)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PercentageCompletion)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PercentageCompletion)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TestsPassed)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TestsPassed)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedDate)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div class="sidebar-left">
+            <!-- Steps -->
+            <div class="sidebar-inner sticky">
+                <ul class="steps steps-vertical">
+
+
+                    <li class="step-item complete">
+                        <a href="" class="step-link">
+                            <span class="step-number">1</span>
+                            <span class="step-title">List Of Course</span>
+                        </a>
+                    </li>
+
+                    <li class="step-item active">
+                        <a href="" class="step-link">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Delete Course</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- End Steps -->
+            </div>
         </div>
-    }
+    </div>
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <div class="border-form rounded-top">
+
+            <form>
+                <div class="form-container">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.CategoryId)
+                            @Html.EditorFor(model => model.CategoryId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Title)
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Code)
+                            @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Description)
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Objectives)
+                            @Html.EditorFor(model => model.Objectives, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Medium)
+                            @Html.EditorFor(model => model.Medium, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Duration)
+                            @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ScheduleType)
+                            @Html.EditorFor(model => model.ScheduleType, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.DurationType)
+                            @Html.EditorFor(model => model.DurationType, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Language)
+                            @Html.EditorFor(model => model.Language, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.Label("Is this a free course?", htmlAttributes: new { @class = "control-label " })
+                        <div class="">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.IsFree)
+                                Yes
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Price)
+                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Status)
+                            @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+
+                <a href='@Url.Action("List")' style="text-decoration: none;" class="btn btn-warning btn-flat">Cancel</a>
+                <button type="submit" class="btn btn-primary">Delete</button>
+            }
+        </div>
+    </div>
 </div>

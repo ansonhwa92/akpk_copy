@@ -318,7 +318,7 @@
       <Name>FEP.Intranet</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEP.Model\FEP.Model.csproj">
-      <Project>{2A1A9157-1C94-4B4A-96A4-52648BD8076A}</Project>
+      <Project>{2a1a9157-1c94-4b4a-96a4-52648bd8076a}</Project>
       <Name>FEP.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEP.WebApiModel\FEP.WebApiModel.csproj">

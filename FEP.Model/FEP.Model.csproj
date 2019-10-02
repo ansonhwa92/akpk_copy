@@ -82,9 +82,9 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201910020651148_initialdb.cs" />
-    <Compile Include="Migrations\201910020651148_initialdb.Designer.cs">
-      <DependentUpon>201910020651148_initialdb.cs</DependentUpon>
+    <Compile Include="Migrations\201909270703386_initialDB.cs" />
+    <Compile Include="Migrations\201909270703386_initialDB.Designer.cs">
+      <DependentUpon>201909270703386_initialDB.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -112,8 +112,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910020651148_initialdb.resx">
-      <DependentUpon>201910020651148_initialdb.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909270703386_initialDB.resx">
+      <DependentUpon>201909270703386_initialDB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

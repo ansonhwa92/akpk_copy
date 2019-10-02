@@ -3,6 +3,7 @@ using FEP.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -22,6 +23,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string GetFrontCourse = "eLearning/Courses/GetFrontCourse";
         public const string EditRulesCourse = "eLearning/Courses/EditRules";
         public const string Content = "eLearning/Courses/Content";
+        public const string DeleteCourse = "eLearning/Courses/Delete";
+
     }
 
     public class CoursesController : FEPController
@@ -325,47 +328,111 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-        // POST: eLearning/Courses/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit([Bind(Include = "Id,Title,Description,Code,Objectives,Medium,ScheduleType,Duration,DurationType,Language,CategoryId,IsFree,Price,Status,IntroVideoPath,TraversalRule,ScoreCalculation,VerifierApprovalId,FirstApprovalId,SecondApprovalId,ThirdApprovalId,TotalModules,CertificateId,DefaultAllowablePercentageBeforeWithdraw,ViewCategory,CompletionCriteriaType,ModulesCompleted,PercentageCompletion,TestsPassed,CreatedBy,CreatedDate,UpdatedBy,UpdatedDate")] Course course)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(course).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    return View(course);
+        //}
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,Code,Objectives,Medium,ScheduleType,Duration,DurationType,Language,CategoryId,IsFree,Price,Status,IntroVideoPath,TraversalRule,ScoreCalculation,VerifierApprovalId,FirstApprovalId,SecondApprovalId,ThirdApprovalId,TotalModules,CertificateId,DefaultAllowablePercentageBeforeWithdraw,ViewCategory,CompletionCriteriaType,ModulesCompleted,PercentageCompletion,TestsPassed,CreatedBy,CreatedDate,UpdatedBy,UpdatedDate")] Course course)
+        public async Task<ActionResult> Edit(CreateOrEditCourseModel model, string Submittype)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(course).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eLearning/Courses/Edit", model);
+
+                if (response.isSuccess)
+                {
+                    await LogActivity(Modules.Learning, "Edit Course: " + response.Data, model);
+
+                    if (Submittype == "Save")
+                    {
+                        TempData["SuccessMessage"] = "Course titled " + response.Data + " updated successfully and saved as draft.";
+
+                        return RedirectToAction("Index", "Courses", new { area = "eLearning" });
+                    }
+                    else
+                    {
+                       
+                        return RedirectToAction("Review", "Courses", new { area = "eLearning", @id = model.Id });
+                    }
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Failed to edit Course.";
+
+                    return RedirectToAction("Details", "Courses", new { area = "eLearning", @id = model.Id });
+                }
             }
 
-            return View(course);
+            //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
+            return View(model);
+
         }
 
-        // GET: eLearning/Courses/Delete/5
-        public ActionResult Delete(int? id)
+
+        public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = db.Courses.Find(id);
-            if (course == null)
+
+            var course = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Get, $"eLearning/Courses?id={id}");
+
+            if (!course.isSuccess)
             {
                 return HttpNotFound();
             }
-            return View(course);
+
+            var vm = course.Data;
+
+            if (vm == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(vm);
         }
 
         // POST: eLearning/Courses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int? id)
         {
-            Course course = db.Courses.Find(id);
-            db.Courses.Remove(course);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Delete, $"eLearning/Courses/Delete?id={id}");
+
+            if (response.isSuccess)
+            {
+                
+                await LogActivity(Modules.Learning, "Delete Course: " + response.Data);
+
+                TempData["SuccessMessage"] = "Course titled " + response.Data + " successfully deleted.";
+               
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
+            }
+            else
+            {
+                TempData["SuccessMessage"] = "Failed to delete Course.";
+
+                return RedirectToAction("Details", "Courses", new { area = "eLearning", @id = id });
+            }
         }
 
         protected override void Dispose(bool disposing)

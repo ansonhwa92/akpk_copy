@@ -19,8 +19,8 @@ namespace FEP.Model.Migrations
 
 		public static void DefaultSLAReminder(DbEntities db)
 		{
-			//if (!db.SLAReminder.Any())
-			//{
+			if (!db.SLAReminder.Any())
+			{
 				db.SLAReminder.AddOrUpdate(s => s.NotificationType,
                     new SLAReminder { SLAEventType = SLAEventType.VerifyPublicEvent, NotificationType = NotificationType.Verify_Public_Event_Creation, ETCode = "ET001APE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 					new SLAReminder { SLAEventType = SLAEventType.VerifyPublicEvent, NotificationType = NotificationType.Verify_Public_Event_Published_Changed, ETCode = "ET001BPE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
@@ -97,13 +97,13 @@ namespace FEP.Model.Migrations
                     new SLAReminder { SLAEventType = SLAEventType.System, NotificationType = NotificationType.ResetPassword, ETCode = "ET002SY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days }
 
                     );
-			//}
+			}
 		}
 
 		public static void DefaultParameterGroup(DbEntities db)
 		{
-			//if (!db.ParameterGroup.Any())
-			//{
+			if (!db.ParameterGroup.Any())
+			{
 				foreach (TemplateParameterType paramType in Enum.GetValues(typeof(TemplateParameterType)))
 				{
 					SLAEventType EventType;
@@ -137,14 +137,14 @@ namespace FEP.Model.Migrations
 					db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
 						new ParameterGroup { SLAEventType = EventType, TemplateParameterType = paramType });
 				}
-			//}
+			}
 
 		}
 
 		public static void DefaultTemplate(DbEntities db)
 		{
-			//if (!db.NotificationTemplates.Any())
-			//{
+			if (!db.NotificationTemplates.Any())
+			{
 				foreach (NotificationType notifyType in Enum.GetValues(typeof(NotificationType)))
 				{
 					db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
@@ -165,7 +165,7 @@ namespace FEP.Model.Migrations
 							Display = true
 						});
 				}
-			//}
+			}
 
 		}
 	}

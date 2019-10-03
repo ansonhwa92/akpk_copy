@@ -72,6 +72,7 @@
     <Compile Include="Administration\Sector.cs" />
     <Compile Include="Administration\User.cs" />
     <Compile Include="Auth\Registration.cs" />
+    <Compile Include="Commerce\Cart.cs" />
     <Compile Include="eEvent\EventExternalExhibitor.cs" />
     <Compile Include="eEvent\EventSpeaker.cs" />
     <Compile Include="eEvent\ExhibitionRoadshowRequest.cs" />

@@ -78,6 +78,19 @@ namespace FEP.WebApi.Api.RnP
 
                 switch (sortBy)
                 {
+                    case "RefNo":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.RefNo);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.RefNo);
+                        }
+
+                        break;
+
                     case "Title":
 
                         if (sortAscending)
@@ -145,6 +158,7 @@ namespace FEP.WebApi.Api.RnP
                 .Select(s => new ReturnBriefSurveyModel
                 {
                     ID = s.ID,
+                    RefNo = s.RefNo,
                     Title = s.Title,
                     Type = s.Type,
                     StartDate = s.StartDate,

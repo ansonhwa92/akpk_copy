@@ -1,4 +1,4 @@
-﻿@model FEP.WebApiModel.RnP.ReturnPublicationModel
+﻿@model FEP.WebApiModel.RnP.UpdatePublicationDeliveryModel
 
 @{
     ViewBag.Title = "Purchase Publication";
@@ -16,7 +16,7 @@
             </ol>
         </nav>
     </div>
-    <h1 class="page-title text-white">@Model.Title</h1>
+    <h1 class="page-title text-white">@ViewBag.PubTitle</h1>
     <div class="header-text">
         <div class="d-flex star-rating">
             <div class="rating">
@@ -69,7 +69,7 @@
                                     <div class="col-lg-12">
                                         <div class="d-flex align-items-top">
                                             <div class="cart_item">
-                                                <div class="itemname">@Model.Title</div>
+                                                <div class="itemname">@ViewBag.PubTitle</div>
                                             </div>
                                             <div class="cart_format">
                                                 <div>Digital</div>
@@ -108,13 +108,13 @@
                                 <td class="text-right font-weight-bolder">Amount</td>
                             </tr>
                             <tr>
-                                <td class="text-left font-weight-bold">@Model.Title</td>
+                                <td class="text-left font-weight-bold">@ViewBag.PubTitle</td>
                                 <td class="text-left font-weight-bold">Digital</td>
-                                <td class="text-right font-weight-bold">@Model.DPrice.ToString("0.00")</td>
+                                <td class="text-right font-weight-bold">@ViewBag.PubDPrice.ToString("0.00")</td>
                                 @if (ViewBag.DBuy == "yes")
                                 {
                                     <td class="text-right font-weight-bold">1</td>
-                                    <td class="text-right font-weight-bold">@Model.DPrice.ToString("0.00")</td>
+                                    <td class="text-right font-weight-bold">@ViewBag.PubDPrice.ToString("0.00")</td>
                                 }
                                 else
                                 {
@@ -125,7 +125,7 @@
                             <tr>
                                 <td class="text-right font-weight-bold"></td>
                                 <td class="text-left font-weight-bold">Hard Cover</td>
-                                <td class="text-right font-weight-bold">@Model.HPrice.ToString("0.00")</td>
+                                <td class="text-right font-weight-bold">@ViewBag.PubHPrice.ToString("0.00")</td>
                                 @if (ViewBag.HBuy == "yes")
                                 {
                                     <td class="text-right font-weight-bold">@ViewBag.HBil</td>
@@ -140,11 +140,11 @@
                             <tr>
                                 <td class="text-right font-weight-bold"></td>
                                 <td class="text-left font-weight-bold">Promotion 1+1</td>
-                                <td class="text-right font-weight-bold">@Model.HDPrice.ToString("0.00")</td>
+                                <td class="text-right font-weight-bold">@ViewBag.PubHDPrice.ToString("0.00")</td>
                                 @if (ViewBag.PBuy == "yes")
                                 {
                                     <td class="text-right font-weight-bold">1</td>
-                                    <td class="text-right font-weight-bold">@Model.HDPrice.ToString("0.00")</td>
+                                    <td class="text-right font-weight-bold">@ViewBag.PubHDPrice.ToString("0.00")</td>
                                 }
                                 else
                                 {
@@ -223,8 +223,8 @@
                     </div>
                     <!-- Action Button -->
                     <div class="border-top py-3 mt-5">
-                        <a class="btn btn-default font-weight-normal mr-2" href="@Url.Action("SelectFormat", "Home", new { area = "RnP", @id = Model.ID })">Back</a>
-                        <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#addtocart">Add to Cart</a>
+                        <a class="btn btn-default font-weight-normal mr-2" href="@Url.Action("SelectFormat", "Home", new { area = "RnP", @id = ViewBag.PubID })">Back</a>
+                        <a class="btn btn-secondary" id="btnAddtoCart" href="#" data-toggle="modal" data-target="#addtocart">Add to Cart</a>
                     </div>
                     <!-- Popup -->
                     <div class="modal fade" id="addtocart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -263,11 +263,11 @@
                         <div class="card-group">
                             <div class="lead color-darkblue mb-3 font-weight-bolder">Publication Details</div>
                             <ul>
-                                <li><i class="la la-list-ul font-icon color-secondary" style="font-size: 17px;"></i>@Model.Category</li>
-                                <li><i class="la la-user font-icon color-secondary" style="font-size: 17px;"></i>@Model.Author</li>
-                                <li><i class="la la-calendar font-icon color-secondary" style="font-size: 19px;"></i>@Model.Year</li>
-                                <li><i class="la la-language font-icon color-secondary" style="font-size: 17px;"></i>@Model.Language</li>
-                                <li><i class="la la-barcode font-icon color-secondary" style="font-size: 17px;"></i>@Model.ISBN</li>
+                                <li><i class="la la-list-ul font-icon color-secondary" style="font-size: 17px;"></i>@ViewBag.PubCategory</li>
+                                <li><i class="la la-user font-icon color-secondary" style="font-size: 17px;"></i>@ViewBag.PubAuthor</li>
+                                <li><i class="la la-calendar font-icon color-secondary" style="font-size: 19px;"></i>@ViewBag.PubYear</li>
+                                <li><i class="la la-language font-icon color-secondary" style="font-size: 17px;"></i>@ViewBag.PubLanguage</li>
+                                <li><i class="la la-barcode font-icon color-secondary" style="font-size: 17px;"></i>@ViewBag.PubISBN</li>
                                 <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Digital/Hardcover</li>
                             </ul>
                         </div>

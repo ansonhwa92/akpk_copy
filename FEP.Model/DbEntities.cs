@@ -108,7 +108,7 @@ namespace FEP.Model
         public DbSet<PublicationWithdrawal> PublicationWithdrawal { get; set; }
         public DbSet<PublicationRank> PublicationRank { get; set; }
         public DbSet<PublicationReview> PublicationReview { get; set; }
-        public DbSet<PublicationPurchase> PublicationPurchase { get; set; }
+        public DbSet<PublicationDelivery> PublicationDelivery { get; set; }
         public DbSet<PublicationPurchaseItem> PublicationPurchaseItem { get; set; }
         public DbSet<PublicationRefund> PublicationRefund { get; set; }
 

@@ -95,16 +95,17 @@
 	<!-- Table -->
 	<table class="table tableStyle1 tabledata">
 		<thead>
-			<tr>
-				<th>#</th>
-				<th>@Html.DisplayNameFor(model => model.Surveys.Title)</th>
-				<th>@Html.DisplayNameFor(model => model.Surveys.Type)</th>
-				<th>Duration</th>
-				<th>Response</th>
-				<!--<th>@*Html.DisplayNameFor(model => model.Surveys.Active)*@</th>-->
-				<th>@Html.DisplayNameFor(model => model.Surveys.Status)</th>
-				<th>Action</th>
-			</tr>
+            <tr>
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.Surveys.RefNo)</th>
+                <th>@Html.DisplayNameFor(model => model.Surveys.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Surveys.Type)</th>
+                <th>Duration</th>
+                <th>Response</th>
+                <!--<th>@*Html.DisplayNameFor(model => model.Surveys.Active)*@</th>-->
+                <th>@Html.DisplayNameFor(model => model.Surveys.Status)</th>
+                <th>Action</th>
+            </tr>
 		</thead>
 	</table>
 </div>
@@ -140,6 +141,10 @@
                         render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
+                    },
+                    {
+                        data: 'RefNo',
+                        sortable: true
                     },
                     {
                         data: 'Title',
@@ -180,7 +185,7 @@
                         sortable: false,
                         render: function (data, type, row, meta) {
                             //return "<span>" + row.SubmitCount + " / " + row.InviteCount + "</span>";
-                            return "<progress max='" + row.SubmitCount + "' value='" + row.InviteCount + "'></progress>";
+                            return "<progress max='" + row.SubmitCount + "' value='" + row.InviteCount + "' style='width:100px;'></progress>";
                             // TODO: return progress bar
                         }
                     },

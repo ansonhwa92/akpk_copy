@@ -134,14 +134,39 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.PubID = publication.ID;
+            ViewBag.PubCategory = publication.Category;
+            ViewBag.PubTitle = publication.Title;
+            ViewBag.PubAuthor = publication.Author;
+            ViewBag.PubYear = publication.Year;
+            ViewBag.PubLanguage = publication.Language;
+            ViewBag.PubISBN = publication.ISBN ;
+            //ViewBag.PubFormats = publication.Hardcopy;
+
+            ViewBag.PubDPrice = publication.DPrice;
+            ViewBag.PubHPrice = publication.HPrice;
+            ViewBag.PubHDPrice = publication.HDPrice;
+
             ViewBag.DBuy = dbuy;
             ViewBag.HBuy = hbuy;
             ViewBag.HBil = hbil;
             ViewBag.PBuy = pbuy;
 
+            var pitems = new List<PublicationPurchaseItemModel> { };
+
             if (dbuy == "yes")
             {
                 ViewBag.DAmt = publication.DPrice;
+                var item1 = new PublicationPurchaseItemModel
+                {
+                    UserId = CurrentUser.UserId.Value,
+                    PurchaseOrderId = 0,
+                    PublicationID = publication.ID,
+                    Format = Model.PublicationFormats.Digital,
+                    Price = publication.DPrice,
+                    Quantity = 1
+                };
+                pitems.Add(item1);
             }
             else
             {
@@ -150,6 +175,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             if (hbuy == "yes")
             {
                 ViewBag.HAmt = (publication.HPrice * int.Parse(hbil));
+                var item2 = new PublicationPurchaseItemModel
+                {
+                    UserId = CurrentUser.UserId.Value,
+                    PurchaseOrderId = 0,
+                    PublicationID = publication.ID,
+                    Format = Model.PublicationFormats.Hardcopy,
+                    Price = publication.HPrice,
+                    Quantity = int.Parse(hbil)
+                };
+                pitems.Add(item2);
             }
             else
             {
@@ -158,6 +193,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             if (pbuy == "yes")
             {
                 ViewBag.PAmt = publication.HDPrice;
+                var item3 = new PublicationPurchaseItemModel
+                {
+                    UserId = CurrentUser.UserId.Value,
+                    PurchaseOrderId = 0,
+                    PublicationID = publication.ID,
+                    Format = Model.PublicationFormats.Promotion,
+                    Price = publication.HDPrice,
+                    Quantity = 1
+                };
+                pitems.Add(item3);
             }
             else
             {
@@ -166,7 +211,27 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             ViewBag.TAmt = ViewBag.DAmt + ViewBag.HAmt + ViewBag.PAmt;
 
-            return View(publication);
+            var resDel = await WepApiMethod.SendApiAsync<PublicationDeliveryModel>(HttpVerbs.Get, $"RnP/Publication/GetDeliveryInfo?userid={CurrentUser.UserId.Value}");
+
+            if (!resDel.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var pdelivery = resDel.Data;
+
+            if (pdelivery == null)
+            {
+                return HttpNotFound();
+            }
+
+            var purchase = new UpdatePublicationDeliveryModel
+            {
+                Items = pitems,
+                Delivery = pdelivery
+            };
+
+            return View(purchase);
         }
 
         // Browse surveys

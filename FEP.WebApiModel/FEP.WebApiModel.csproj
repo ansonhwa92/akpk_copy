@@ -70,7 +70,10 @@
     <Compile Include="Administration\Department.cs" />
     <Compile Include="Administration\FileDocument.cs" />
     <Compile Include="Administration\Role.cs" />
+    <Compile Include="Administration\Ministry.cs" />
     <Compile Include="Administration\Sector.cs" />
+    <Compile Include="Administration\Country.cs" />
+    <Compile Include="Administration\State.cs" />
     <Compile Include="Administration\User.cs" />
     <Compile Include="Auth\Registration.cs" />
     <Compile Include="eEvent\EventExternalExhibitor.cs" />

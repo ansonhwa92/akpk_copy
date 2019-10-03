@@ -152,6 +152,7 @@
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
     <Compile Include="Areas\Administrator\Controllers\CompanyController.cs" />
     <Compile Include="Areas\Administrator\Controllers\IndividualController.cs" />
+    <Compile Include="Areas\Administrator\Controllers\MinistryController.cs" />
     <Compile Include="Areas\Administrator\Controllers\RoleController.cs" />
     <Compile Include="Areas\Administrator\Controllers\SectorController.cs" />
     <Compile Include="Areas\Administrator\Controllers\StaffController.cs" />
@@ -728,6 +729,10 @@
     <Content Include="Areas\RnP\Views\Home\SelectFormat.cshtml" />
     <Content Include="Areas\RnP\Views\Home\PurchasePublication.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\Administrator\Views\Ministry\_Create.cshtml" />
+    <Content Include="Areas\Administrator\Views\Ministry\_Delete.cshtml" />
+    <Content Include="Areas\Administrator\Views\Ministry\_Edit.cshtml" />
+    <Content Include="Areas\Administrator\Views\Ministry\List.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

@@ -27,12 +27,16 @@ namespace FEP.Model
 
         public DbSet<CompanyProfile> CompanyProfile { get; set; }
         public DbSet<StaffProfile> StaffProfile { get; set; }
+        public DbSet<IndividualProfile> IndividualProfile { get; set; }
 
+        public DbSet<Ministry> Ministry { get; set; }
         public DbSet<Sector> Sector { get; set; }
         public DbSet<State> State { get; set; }
+        public DbSet<Country> Country { get; set; }
 
         public DbSet<Department> Department { get; set; }
         public DbSet<Branch> Branch { get; set; }
+        public DbSet<Designation> Designation { get; set; }
 
         //access
         public DbSet<Access> Access { get; set; }

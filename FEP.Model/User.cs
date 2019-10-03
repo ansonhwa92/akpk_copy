@@ -12,17 +12,18 @@ namespace FEP.Model
     public class User
     {
         [Key]
-        public int Id { get; set; }        
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string ICNo { get; set; }
         public string MobileNo { get; set; }
         public UserType UserType { get; set; }        
-        public virtual UserAccount UserAccount { get; set; }
         public bool Display { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
 
+        public virtual UserAccount UserAccount { get; set; }
+        public virtual IndividualProfile IndividualProfile { get; set; }
         public virtual CompanyProfile CompanyProfile { get; set; }
         public virtual StaffProfile StaffProfile { get; set; }
     }
@@ -77,28 +78,76 @@ namespace FEP.Model
         public virtual User User { get; set; }
     }
 
+    [Table("IndividualProfile")]
+    public class IndividualProfile
+    {
+        [Key, ForeignKey("User")]
+        public int UserId { get; set; }
+        public bool IsMalaysian { get; set; }
+        public int? CitizenshipId { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string PostCode { get; set; }
+        public string City { get; set; }
+        public int? StateId { get; set; }//for malaysian
+        public string StateName { get; set; }
+        public int CountryId { get; set; }
+        public virtual User User { get; set; }
+
+        [ForeignKey("CitizenshipId")]
+        public virtual Country Citizenship { get; set; }
+
+        [ForeignKey("StateId")]
+        public virtual State State { get; set; }
+
+        [ForeignKey("CountryId")]
+        public virtual Country Country { get; set; }
+    }
+
     [Table("CompanyProfile")]
     public class CompanyProfile
     {
         [Key, ForeignKey("User")]
         public int UserId { get; set; }
+        public CompanyType Type { get; set; }
         public string CompanyName { get; set; }
-        public int SectorId { get; set; }
-        public string CompanyRegNo { get; set; }
+        public int? SectorId { get; set; }
+        public int? MinistryId { get; set; }
+        public string CompanyRegNo { get; set; }//form malaysian
         public string Address1 { get; set; }
         public string Address2 { get; set; }
         public string PostCode { get; set; }
         public string City { get; set; }
-        public string State { get; set; }
+        public int? StateId { get; set; }//for malaysian
+        public string StateName { get; set; }//for non malaysian
+        public int CountryId { get; set; }//non malaysian
         public string CompanyPhoneNo { get; set; }
-
+        
         public virtual User User { get; set; }
-
-        //[ForeignKey("StateId")]
-        //public virtual State State { get; set; }
 
         [ForeignKey("SectorId")]
         public virtual Sector Sector { get; set; }
+
+        [ForeignKey("MinistryId")]
+        public virtual Ministry Ministry { get; set; }
+
+        [ForeignKey("StateId")]
+        public virtual State State { get; set; }
+
+        [ForeignKey("CountryId")]
+        public virtual Country Country { get; set; }
+        
+
+    }
+
+    public enum CompanyType
+    {
+        [Display(Name = "CompanyTypeGovernment", ResourceType = typeof(Language.Enum))]
+        Government,
+        [Display(Name = "CompanyTypeMalaysianCompany", ResourceType = typeof(Language.Enum))]
+        MalaysianCompany,
+        [Display(Name = "CompanyTypeNonMalaysianCompany", ResourceType = typeof(Language.Enum))]
+        NonMalaysianCompany
     }
 
     [Table("StaffProfile")]
@@ -106,14 +155,19 @@ namespace FEP.Model
     {
         [Key, ForeignKey("User")]
         public int UserId { get; set; }
-        public int DepartmentId { get; set; }
-        public int BranchId { get; set; }
+        public int? DepartmentId { get; set; }
+        public int? BranchId { get; set; }
+        public int? DesignationId { get; set; }
         public virtual User User { get; set; }
 
         [ForeignKey("DepartmentId")]
         public virtual Department Department { get; set; }
+
         [ForeignKey("BranchId")]
         public virtual Branch Branch { get; set; }
+
+        [ForeignKey("DesignationId")]
+        public virtual Designation Designation { get; set; }
 
     }
 
@@ -122,8 +176,13 @@ namespace FEP.Model
     {
         [Key]
         public int Id { get; set; }
+        public string BranchId { get; set; }
+        public int StateId { get; set; }
         public string Name { get; set; }
         public bool Display { get; set; }
+
+        [ForeignKey("StateId")]
+        public virtual State State { get; set; }
     }
 
     [Table("Department")]
@@ -131,6 +190,17 @@ namespace FEP.Model
     {
         [Key]
         public int Id { get; set; }
+        public string DeptId { get; set; }
+        public string Name { get; set; }
+        public bool Display { get; set; }
+    }
+
+    [Table("Designation")]
+    public class Designation
+    {
+        [Key]
+        public int Id { get; set; }
+        public string DesignationId { get; set; }
         public string Name { get; set; }
         public bool Display { get; set; }
     }
@@ -144,24 +214,42 @@ namespace FEP.Model
         public bool Display { get; set; }
     }
 
+    [Table("Ministry")]
+    public class Ministry
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool Display { get; set; }
+    }
+
     [Table("State")]
     public class State
     {
         [Key]
         public int Id { get; set; }
-        public string Code { get; set; }
         public string Name { get; set; }
+        public bool Display { get; set; }
     }
-        
+
+    [Table("Country")]
+    public class Country
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool Display { get; set; }
+    }
+
     public enum UserType
     {
-        [Display(Name = "System Admin")]
+        [Display(Name = "UserTypeSystemAdmin", ResourceType = typeof(Language.Enum))]
         SystemAdmin = 0,
-        [Display(Name = "Individual")]
+        [Display(Name = "UserTypeIndividual", ResourceType = typeof(Language.Enum))]
         Individual = 1,
-        [Display(Name = "Agency")]
+        [Display(Name = "UserTypeAgency", ResourceType = typeof(Language.Enum))]
         Company = 2,
-        [Display(Name = "Staff")]
+        [Display(Name = "UserTypeStaff", ResourceType = typeof(Language.Enum))]
         Staff = 3
     }
 }

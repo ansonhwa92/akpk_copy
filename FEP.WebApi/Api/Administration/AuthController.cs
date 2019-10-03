@@ -60,112 +60,181 @@ namespace FEP.WebApi.Api.Administration
         }
 
         [Route("api/Auth/RegisterIndividual")]
-        [HttpPost]
-        [ValidationActionFilter]
+        [HttpPost]        
         public IHttpActionResult RegisterIndividual([FromBody] RegisterIndividualModel model)
         {
 
-            Authentication.GeneratePassword(model.Password);
-
-            var account = new UserAccount
+            if (model.IsMalaysian)
             {
-                LoginId = model.Email,
-                IsEnable = false,
-                HashPassword = Authentication.HashPassword,
-                Salt = Authentication.Salt,
-                LoginAttempt = 0
-            };
-
-            var user = new User
+                ModelState.Remove("model.PassportNo");
+                ModelState.Remove("model.CitizenshipId");
+                ModelState.Remove("model.PostCodeNonMalaysian");
+                ModelState.Remove("model.State");                              
+            }
+            else
             {
-                UserType = UserType.Individual,
-                Name = model.Name,
-                Email = model.Email,
-                ICNo = model.ICNo,
-                MobileNo = model.MobileNo,
-                Display = true,
-                CreatedBy = null,
-                CreatedDate = DateTime.Now,
-                UserAccount = account
-            };
+                ModelState.Remove("model.ICNo");
+                ModelState.Remove("model.PostCodeMalaysian");
+                ModelState.Remove("model.StateId");
+            }
 
-            db.User.Add(user);
-
-            ActivateAccount activateaccount = new ActivateAccount
+            if (ModelState.IsValid)
             {
-                UID = Authentication.RandomString(50, true),//random alphanumeric
-                UserId = user.Id,
-                CreatedDate = DateTime.Now,
-                IsActivate = false
-            };
+                
+                Authentication.GeneratePassword(model.Password);
 
-            db.ActivateAccount.Add(activateaccount);
+                var account = new UserAccount
+                {
+                    LoginId = model.Email,
+                    IsEnable = false,
+                    HashPassword = Authentication.HashPassword,
+                    Salt = Authentication.Salt,
+                    LoginAttempt = 0
+                };
 
-            db.SaveChanges();
+                var individual = new IndividualProfile
+                {
+                    IsMalaysian = model.IsMalaysian,
+                    CitizenshipId = model.CitizenshipId,
+                    Address1 = model.Address1,
+                    Address2 = model.Address2,
+                    PostCode = model.IsMalaysian ? model.PostCodeMalaysian : model.PostCodeNonMalaysian,
+                    City = model.City,
+                    StateName = model.State,
+                    StateId = model.StateId,
+                    CountryId = model.CountryId                    
+                };
 
-            return Ok(activateaccount.UID);
+                var user = new User
+                {
+                    UserType = UserType.Individual,
+                    Name = model.Name,
+                    Email = model.Email,
+                    ICNo = model.ICNo,
+                    MobileNo = model.MobileNo,
+                    Display = true,
+                    CreatedBy = null,
+                    CreatedDate = DateTime.Now,
+                    UserAccount = account,
+                    IndividualProfile = individual
+                };
+                                
+                db.User.Add(user);
+
+                ActivateAccount activateaccount = new ActivateAccount
+                {
+                    UID = Authentication.RandomString(50, true),//random alphanumeric
+                    UserId = user.Id,
+                    CreatedDate = DateTime.Now,
+                    IsActivate = false
+                };
+
+                db.ActivateAccount.Add(activateaccount);
+
+                db.SaveChanges();
+
+                return Ok(activateaccount.UID);
+            }
+
+            return BadRequest(ModelState);
 
         }
 
         [Route("api/Auth/RegisterAgency")]
         [HttpPost]
-        [ValidationActionFilter]
         public IHttpActionResult RegisterAgency([FromBody] RegisterAgencyModel model)
         {
-
-            Authentication.GeneratePassword(model.Password);
-
-            var account = new UserAccount
+            if (model.Type == CompanyType.Government)
             {
-                LoginId = model.Email,
-                IsEnable = false,
-                HashPassword = Authentication.HashPassword,
-                Salt = Authentication.Salt,
-                LoginAttempt = 0
-            };
-
-            var company = new CompanyProfile
+                ModelState.Remove("model.PassportNo");
+                ModelState.Remove("model.PostCodeNonMalaysian");
+                ModelState.Remove("model.State");
+                ModelState.Remove("model.CountryId");
+                ModelState.Remove("model.CompanyName");
+                ModelState.Remove("model.CompanyRegNo");
+                ModelState.Remove("model.SectorId");               
+            }
+            else if (model.Type == CompanyType.MalaysianCompany)
             {
-                CompanyName = model.CompanyName,
-                CompanyRegNo = model.CompanyRegNo,
-                SectorId = model.SectorId,
-                Address1 = model.Address1,
-                Address2 = model.Address2,
-                City = model.City,
-                PostCode = model.PostCode,
-                State = model.State,
-                CompanyPhoneNo = model.CompanyPhoneNo
-            };
-
-            var user = new User
+                ModelState.Remove("model.PassportNo");
+                ModelState.Remove("model.PostCodeNonMalaysian");
+                ModelState.Remove("model.State");
+                ModelState.Remove("model.CountryId");
+                ModelState.Remove("model.AgencyName");
+                ModelState.Remove("model.MinistryId");                
+            }
+            else
             {
-                UserType = UserType.Company,
-                Name = model.Name,
-                Email = model.Email,
-                ICNo = model.ICNo,
-                MobileNo = model.MobileNo,
-                Display = true,
-                CreatedBy = null,
-                CreatedDate = DateTime.Now,
-                UserAccount = account,
-                CompanyProfile = company
-            };
+                ModelState.Remove("model.ICNo");
+                ModelState.Remove("model.PostCodeMalaysian");
+                ModelState.Remove("model.StateId");
+                ModelState.Remove("model.AgencyName");
+                ModelState.Remove("model.MinistryId");
+                ModelState.Remove("model.CompanyRegNo");
+            }
 
-            db.User.Add(user);
-
-            ActivateAccount activateaccount = new ActivateAccount
+            if (ModelState.IsValid)
             {
-                UID = Authentication.RandomString(50, true),//random alphanumeric
-                UserId = user.Id,
-                CreatedDate = DateTime.Now,
-                IsActivate = false
-            };
+                Authentication.GeneratePassword(model.Password);
 
-            db.ActivateAccount.Add(activateaccount);
+                var account = new UserAccount
+                {
+                    LoginId = model.Email,
+                    IsEnable = false,
+                    HashPassword = Authentication.HashPassword,
+                    Salt = Authentication.Salt,
+                    LoginAttempt = 0
+                };
 
-            db.SaveChanges();
+                var company = new CompanyProfile
+                {
+                    Type = model.Type,
+                    CompanyName = model.Type == CompanyType.Government ? model.AgencyName : model.CompanyName,
+                    MinistryId = model.MinistryId,
+                    CompanyRegNo = model.CompanyRegNo,
+                    SectorId = model.SectorId,
+                    Address1 = model.Address1,
+                    Address2 = model.Address2,
+                    City = model.City,
+                    PostCode = model.Type == CompanyType.NonMalaysianCompany ? model.PostCodeNonMalaysian : model.PostCodeMalaysian,
+                    StateId = model.StateId,
+                    StateName = model.State,
+                    CountryId = model.CountryId,
+                    CompanyPhoneNo = model.CompanyPhoneNo
+                };
 
-            return Ok(activateaccount.UID);
+                var user = new User
+                {
+                    UserType = UserType.Company,
+                    Name = model.Name,
+                    Email = model.Email,
+                    ICNo = model.Type == CompanyType.NonMalaysianCompany ? model.PassportNo : model.ICNo,
+                    MobileNo = model.MobileNo,
+                    Display = true,
+                    CreatedBy = null,
+                    CreatedDate = DateTime.Now,
+                    UserAccount = account,
+                    CompanyProfile = company
+                };
+
+                db.User.Add(user);
+
+                ActivateAccount activateaccount = new ActivateAccount
+                {
+                    UID = Authentication.RandomString(50, true),//random alphanumeric
+                    UserId = user.Id,
+                    CreatedDate = DateTime.Now,
+                    IsActivate = false
+                };
+
+                db.ActivateAccount.Add(activateaccount);
+
+                db.SaveChanges();
+
+                return Ok(activateaccount.UID);
+            }
+
+            return BadRequest(ModelState);
         }
 
         [Route("api/Auth/ActivateAccount")]

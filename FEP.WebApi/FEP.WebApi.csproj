@@ -136,12 +136,15 @@
     <Compile Include="Api\Administration\AuthController.cs" />
     <Compile Include="Api\Administration\BranchController.cs" />
     <Compile Include="Api\Administration\CompanyController.cs" />
+    <Compile Include="Api\Administration\CountryController.cs" />
     <Compile Include="Api\Administration\DepartmentController.cs" />
     <Compile Include="Api\Administration\FileDocumentController.cs" />
     <Compile Include="Api\Administration\IndividualController.cs" />
+    <Compile Include="Api\Administration\MinistryController.cs" />
     <Compile Include="Api\Administration\RoleController.cs" />
     <Compile Include="Api\Administration\SectorController.cs" />
     <Compile Include="Api\Administration\StaffController.cs" />
+    <Compile Include="Api\Administration\StateController.cs" />
     <Compile Include="Api\Administration\UserController.cs" />
     <Compile Include="Api\eEvent\EventCategoryController.cs" />
     <Compile Include="Api\eEvent\EventExternalExhibitorController.cs" />
@@ -198,6 +201,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Method\FEPMethod.cs" />
     <Compile Include="Models\Auth.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Publication.cs" />

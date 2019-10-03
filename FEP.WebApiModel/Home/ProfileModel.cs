@@ -15,7 +15,7 @@ namespace FEP.WebApiModel.Home
         public string CompanyName { get; set; }
         
         [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Auth))]
-        public int SectorId { get; set; }
+        public int? SectorId { get; set; }
 
         [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Auth))]
         public string Sector { get; set; }
@@ -98,7 +98,7 @@ namespace FEP.WebApiModel.Home
 
         [Required]
         [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Auth))]
-        public int SectorId { get; set; }
+        public int? SectorId { get; set; }
 
         [Required]
         [Display(Name = "FieldCompanyRegNo", ResourceType = typeof(Language.Auth))]

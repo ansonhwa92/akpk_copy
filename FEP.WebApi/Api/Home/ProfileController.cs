@@ -57,7 +57,7 @@ namespace FEP.WebApi.Api.Home
                     Address2 = s.CompanyProfile.Address2,
                     City = s.CompanyProfile.City,
                     PostCode = s.CompanyProfile.PostCode,
-                    State = s.CompanyProfile.State,
+                    State = s.CompanyProfile.StateName,
                     CompanyPhoneNo = s.CompanyProfile.CompanyPhoneNo,
                     Name = s.Name,
                     Email = s.Email,
@@ -112,7 +112,7 @@ namespace FEP.WebApi.Api.Home
             company.Address2 = model.Address2;
             company.City = model.Address2;
             company.PostCode = model.PostCode;
-            company.State = model.State;
+            company.StateName = model.State;
             company.CompanyPhoneNo = model.CompanyPhoneNo;
 
             db.Entry(company).State = EntityState.Modified;

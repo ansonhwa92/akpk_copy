@@ -41,6 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Company.Designer.cs">
+      <DependentUpon>Company.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Individual.Designer.cs">
+      <DependentUpon>Individual.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="eEvent_MessageAlert.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -58,6 +68,21 @@
     </Compile>
     <Compile Include="CourseCategory.Designer.cs">
       <DependentUpon>CourseCategory.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Country.Designer.cs">
+      <DependentUpon>Country.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Ministry.Designer.cs">
+      <DependentUpon>Ministry.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="State.Designer.cs">
+      <DependentUpon>State.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -123,6 +148,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>eEvent_MessageAlert.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Company.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Company.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Individual.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Individual.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="EventCategory.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EventCategory.Designer.cs</LastGenOutput>
@@ -134,6 +167,18 @@
     <EmbeddedResource Include="CourseCategory.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CourseCategory.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Country.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Country.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ministry.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Ministry.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="State.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>State.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Sector.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

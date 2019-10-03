@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CompanyTypeGovernment" xml:space="preserve">
+    <value>Government Agency</value>
+  </data>
+  <data name="CompanyTypeMalaysianCompany" xml:space="preserve">
+    <value>Malaysian Company</value>
+  </data>
+  <data name="CompanyTypeNonMalaysianCompany" xml:space="preserve">
+    <value>Non Malaysian Company</value>
+  </data>
   <data name="NotificationTypeActivateAccount" xml:space="preserve">
     <value>Activate Account</value>
   </data>
@@ -131,5 +140,8 @@
   </data>
   <data name="UserTypeStaff" xml:space="preserve">
     <value>Staff</value>
+  </data>
+  <data name="UserTypeSystemAdmin" xml:space="preserve">
+    <value>System Admin</value>
   </data>
 </root>

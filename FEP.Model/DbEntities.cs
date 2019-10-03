@@ -155,5 +155,10 @@ namespace FEP.Model
         public DbSet<SLAReminderStatus> SLAReminderStatus { get; set; }
         public DbSet<BulkNotification> BulkNotification { get; set; }
         public DbSet<ParameterGroup> ParameterGroup { get; set; }
+
+        public DbSet<ActivityDummy> ActivityDummy { get; set; }
+        public DbSet<RewardActivityPoint> RewardActivityPoint { get; set; }
+        public DbSet<RewardRedemption> RewardRedemption { get; set; }
+        public DbSet<UserRewardPoints> UserRewardPoints { get; set; }
     }
 }

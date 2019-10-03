@@ -61,9 +61,21 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201909261337279_x.cs" />
-    <Compile Include="Migrations\201909261337279_x.Designer.cs">
-      <DependentUpon>201909261337279_x.cs</DependentUpon>
+    <Compile Include="Migrations\201909281320577_tajul.cs" />
+    <Compile Include="Migrations\201909281320577_tajul.Designer.cs">
+      <DependentUpon>201909281320577_tajul.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909290226139_tajul2.cs" />
+    <Compile Include="Migrations\201909290226139_tajul2.Designer.cs">
+      <DependentUpon>201909290226139_tajul2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909290232261_tajul3.cs" />
+    <Compile Include="Migrations\201909290232261_tajul3.Designer.cs">
+      <DependentUpon>201909290232261_tajul3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909301348364_tajul4.cs" />
+    <Compile Include="Migrations\201909301348364_tajul4.Designer.cs">
+      <DependentUpon>201909301348364_tajul4.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -74,6 +86,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publication.cs" />
     <Compile Include="Research.cs" />
+    <Compile Include="Reward.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="SLAReminder.cs" />
@@ -90,8 +103,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909261337279_x.resx">
-      <DependentUpon>201909261337279_x.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909281320577_tajul.resx">
+      <DependentUpon>201909281320577_tajul.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909290226139_tajul2.resx">
+      <DependentUpon>201909290226139_tajul2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909290232261_tajul3.resx">
+      <DependentUpon>201909290232261_tajul3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909301348364_tajul4.resx">
+      <DependentUpon>201909301348364_tajul4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

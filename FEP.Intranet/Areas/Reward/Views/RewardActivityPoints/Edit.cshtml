@@ -1,0 +1,101 @@
+﻿@model FEP.WebApiModel.Reward.EditRewardActivityPointModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                @*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Reward</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Activity Points</h1>
+                    @*<div class="header-text">List of registered user as individual</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Activity Points</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Details", "RewardActivityPoints", new { area = "Reward", id = Model.Id })" class="nav-link">View</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Edit", "RewardActivityPoints", new { area = "Reward", id = Model.Id })" class="active nav-link">Edit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Delete", "RewardActivityPoints", new { area = "Reward", id = Model.Id })" class="nav-link">Delete</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
+        {
+            <div class="border-form rounded-top">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.Id)
+
+                <div class="form-container form-container-w100">
+                    <div class="mb-4 mt-2">
+                        <h4 class="color-darkblue mb-0">Editing : Activity Points</h4>
+                        <h6 class="font-weight-normal">@Model.ActivityName</h6>
+
+                    </div>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <label>@Html.DisplayNameFor(model => model.ActivityDummyList)</label>
+                            <div class="col-lg-12 pl-0">
+                                @Html.DropDownListFor(model => model.ActivityId, Model.ActivityDummyList, "-Select Activity-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+                                @Html.ValidationMessageFor(model => model.ActivityId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Value, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12 pl-0">
+                            @Html.EditorFor(model => model.Value, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    
+
+                    @Html.HiddenFor(model => model.CreatedBy)
+                </div>
+
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a href="@Url.Action("List")" class="btn btn-default mr-2">Back</a>
+                <button class="btn btn-secondary" type="submit">Save</button>
+            </div>
+        }
+    </div>
+</div>
+

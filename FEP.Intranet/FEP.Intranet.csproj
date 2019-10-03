@@ -169,6 +169,9 @@
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />
     <Compile Include="Areas\Logs\Controllers\UserLogController.cs" />
     <Compile Include="Areas\Logs\LogsAreaRegistration.cs" />
+    <Compile Include="Areas\Reward\Controllers\RewardActivityPointsController.cs" />
+    <Compile Include="Areas\Reward\Controllers\RewardRedemptionsController.cs" />
+    <Compile Include="Areas\Reward\RewardAreaRegistration.cs" />
     <Compile Include="Areas\RnP\Controllers\HomeController.cs" />
     <Compile Include="Areas\RnP\Controllers\PublicationController.cs" />
     <Compile Include="Areas\RnP\Controllers\SurveyController.cs" />
@@ -727,6 +730,17 @@
     <Content Include="Areas\RnP\Views\Home\PublicationDetails.cshtml" />
     <Content Include="Areas\RnP\Views\Home\SelectFormat.cshtml" />
     <Content Include="Areas\RnP\Views\Home\PurchasePublication.cshtml" />
+    <Content Include="Areas\Reward\Views\web.config" />
+    <Content Include="Areas\Reward\Views\RewardActivityPoints\Create.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardActivityPoints\List.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardActivityPoints\Details.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardActivityPoints\Edit.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardActivityPoints\Delete.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardRedemptions\List.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardRedemptions\Create.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardRedemptions\Details.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardRedemptions\Edit.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardRedemptions\Delete.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1226,6 +1240,8 @@
     <Folder Include="Areas\eLearning\Views\Shared\" />
     <Folder Include="Areas\Logs\Models\" />
     <Folder Include="Areas\Logs\Views\Shared\" />
+    <Folder Include="Areas\Reward\Models\" />
+    <Folder Include="Areas\Reward\Views\Shared\" />
     <Folder Include="Areas\Setting\Models\" />
     <Folder Include="Areas\Setting\Views\Shared\" />
     <Folder Include="Areas\SLAReminder\Models\" />

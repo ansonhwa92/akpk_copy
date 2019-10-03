@@ -82,10 +82,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			var model = response.Data;
 
-			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "Name", 0);
-			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
+            model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
+            model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
+            model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
 
-			return View(model);
+            return View(model);
 		}
 
 
@@ -111,7 +112,12 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Create(FEP.Intranet.Areas.eEvent.Models.CreatePublicEventModel model)
 		{
-			if (ModelState.IsValid)
+            if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
+            {
+                ModelState.AddModelError("Attachments", "Please upload file");
+            }
+
+            if (ModelState.IsValid)
 			{
 				var modelapi = new CreatePublicEventModel
 				{
@@ -126,14 +132,26 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventStatus = model.EventStatus,
 					EventCategoryId = model.EventCategoryId,
 					SpeakerId = model.SpeakerId,
+                    ExternalExhibitorId = model.ExternalExhibitorId,
 					Remarks = model.Remarks,
 				};
 
-				var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eEvent/PublicEvent", modelapi);
+                //attachment
+                if (model.AttachmentFiles.Count() > 0)
+                {
+                    var responseFile = await WepApiMethod.SendApiAsync<List<FileDocument>>($"File?userId={CurrentUser.UserId}", model.AttachmentFiles.ToList());
+
+                    if (responseFile.isSuccess)
+                    {
+                        modelapi.FilesId = responseFile.Data.Select(f => f.Id).ToList();
+                    }
+                }
+
+                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eEvent/PublicEvent", modelapi);
 
 				if (response.isSuccess)
 				{
-					await LogActivity(Modules.Event, "Create Public Event", model);
+                    await LogActivity(Modules.Event, "Create Public Event", model);
 
 					TempData["SuccessMessage"] = "Public Event successfully created";
 
@@ -141,8 +159,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				}
 			}
 
-			TempData["ErrorMessage"] = "Fail to add new Public Event";
-			return RedirectToAction("List");
+            model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
+            model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
+            model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
+
+            return View(model);
 		}
 
 
@@ -176,11 +197,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				Remarks = response.Data.Remarks,
 				origin = origin,
 				RefNo = response.Data.RefNo,
-				SpeakerId = response.Data.SpeakerId,
-				SpeakerName = response.Data.SpeakerName,
-				ExternalExhibitorId = response.Data.ExternalExhibitorId,
-				ExternalExhibitorName = response.Data.ExternalExhibitorName,
-				//GetFileName = response.Data.GetFileName
+				SpeakerId = response.Data.SpeakerId,				
+				ExternalExhibitorId = response.Data.ExternalExhibitorId,				
+				Attachments = response.Data.Attachments
 			};
 
 			model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
@@ -193,15 +212,52 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		// POST: PublicEvent/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Edit(EditPublicEventModel model)
+		public async Task<ActionResult> Edit(FEP.Intranet.Areas.eEvent.Models.EditPublicEventModel model)
 		{
+
+            if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
+            {
+                ModelState.AddModelError("Attachments", "Please upload file");
+            }
+
 			if (ModelState.IsValid)
 			{
+                var modelapi = new EditPublicEventModel
+                {
+                    Id = model.Id,
+                    EventTitle = model.EventTitle,
+                    EventObjective = model.EventObjective,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    Venue = model.Venue,
+                    Fee = model.Fee,
+                    ParticipantAllowed = model.ParticipantAllowed,
+                    TargetedGroup = model.TargetedGroup,
+                    EventStatus = model.EventStatus,
+                    EventCategoryId = model.EventCategoryId,
+                    SpeakerId = model.SpeakerId,
+                    ExternalExhibitorId = model.ExternalExhibitorId,                    
+                    Remarks = model.Remarks,
+                    Attachments = model.Attachments,
+                };
 
-				var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/PublicEvent?id={model.Id}", model);
+                //attachment
+                if (model.AttachmentFiles.Count() > 0)
+                {
+                    var responseFile = await WepApiMethod.SendApiAsync<List<FileDocument>>($"File?userId={CurrentUser.UserId}", model.AttachmentFiles.ToList());
+
+                    if (responseFile.isSuccess)
+                    {
+                        modelapi.FilesId = responseFile.Data.Select(f => f.Id).ToList();
+                    }
+
+                }
+
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/PublicEvent?id={model.Id}", modelapi);
 
 				if (response.isSuccess)
 				{
+
 					await LogActivity(Modules.Event, "Edit Public Event", model);
 					TempData["SuccessMessage"] = "Event Speaker successfully updated";
 
@@ -213,9 +269,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
 			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
 
-			TempData["ErrorMessage"] = "Fail to update Event Speaker";
-
-			return RedirectToAction("List");
+			return View(model);
 		}
 
 
@@ -251,7 +305,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				Remarks = response.Data.Remarks,
 				origin = response.Data.origin,
 				RefNo = response.Data.RefNo,
-				//GetFileName = eventfile.FileName
+                Attachments = response.Data.Attachments,
+                SpeakerId = response.Data.SpeakerId,
+                ExternalExhibitorId = response.Data.ExternalExhibitorId				
 			};
 
 			if (model == null)

@@ -13,26 +13,24 @@ namespace FEP.Model
 	{
 		[Key]
 		public int Id { get; set; }
-		public string FileName { get; set; }
-		public string FilePath { get; set; }
-		public long FileSize { get; set; }
-		public string FileDescription { get; set; }
-		public FileCategory? Category { get; set; }
+		
+        public EventFileCategory FileCategory { get; set; }
 
-		public DateTime? UploadedDate { get; set; }
-		public int? CreatedBy { get; set; }
-		public bool Display { get; set; }
+        public int FileId { get; set; }
 
-		public int? EventId { get; set; }
-		[ForeignKey("EventId")]
-		public virtual PublicEvent Event { get; set; }
+		public int ParentId { get; set; }
+
+        [ForeignKey("FileId")]
+        public virtual FileDocument FileDocument { get; set; }
+        
 	}
 
-	public enum FileCategory
+	public enum EventFileCategory
 	{
-		NewFile,
-		CancellationFile,
-		ModificationFIle
+		PublicEvent,
+        MediaInterview,
+        ExhibitionRoadshow,
+        EventSpeaker
 	}
 
 	[Table("MediaFile")]

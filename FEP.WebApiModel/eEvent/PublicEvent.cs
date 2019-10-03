@@ -1,5 +1,6 @@
 ﻿using FEP.Helper;
 using FEP.Model;
+using FEP.WebApiModel.FileDocument;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,7 +23,10 @@ namespace FEP.WebApiModel.PublicEvent
 		[Display(Name = "PubEventTitle", ResourceType = typeof(Language.Event))]
 		public string EventTitle { get; set; }
 
-		[Display(Name = "PubEventCategory", ResourceType = typeof(Language.Event))]
+        [Display(Name = "PubEventRefNo", ResourceType = typeof(Language.Event))]
+        public string RefNo { get; set; }
+
+        [Display(Name = "PubEventCategory", ResourceType = typeof(Language.Event))]
 		public int? EventCategoryId { get; set; }
 
 		[Display(Name = "Event Category", ResourceType = typeof(Language.Event))]
@@ -107,33 +111,47 @@ namespace FEP.WebApiModel.PublicEvent
 		public string origin { get; set; }
 		public string RefNo { get; set; }
 
+        
+
 
 		public IEnumerable<SelectListItem> CategoryList { get; set; }
 		public IEnumerable<SelectListItem> SpeakerList { get; set; }
 		public IEnumerable<SelectListItem> ExternalExhibitorList { get; set; }
+
+
+
 	}
 
 
 	public class DetailsPublicEventModel : PublicEventModel
 	{
 		public DetailsPublicEventModel() { }
-
-		public int Id { get; set; }
-	}
+        
+        public IEnumerable<Attachment> Attachments { get; set; }
+    }
 
 
 	public class CreatePublicEventModel : PublicEventModel
 	{
-		public CreatePublicEventModel() { }
-	}
+		public CreatePublicEventModel() 
+        {
+            FilesId = new List<int>();
+        }
+
+        public List<int> FilesId { get; set; }
+    }
 
 
 	public class EditPublicEventModel : CreatePublicEventModel
 	{
-		public EditPublicEventModel() { }
+		public EditPublicEventModel() 
+        {
+            FilesId = new List<int>();
+        }
+        
+        public IEnumerable<Attachment> Attachments { get; set; }
 
-		public int Id { get; set; }
-	}
+    }
 
 
 	public class DeletePublicEventModel : PublicEventModel

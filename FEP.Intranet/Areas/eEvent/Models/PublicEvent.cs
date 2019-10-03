@@ -1,4 +1,6 @@
-﻿using FEP.Model;
+﻿using FEP.Intranet.Models;
+using FEP.Model;
+using FEP.WebApiModel.FileDocument;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -109,24 +111,38 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 	public class CreatePublicEventModel : PublicEventModel
 	{
-		public CreatePublicEventModel() { }
+		public CreatePublicEventModel() 
+        {
+            Attachments = new List<Attachment>();
+            AttachmentFiles = new List<HttpPostedFileBase>();
+        }
+        		
+        [Required]
+        [Display(Name = "Proof of Approval")]
+        public IEnumerable<Attachment> Attachments { get; set; }
 
-		[Required(ErrorMessage = "Please attach file")]
-		[Display(Name = "Proof of Approval")]
-		public HttpPostedFileBase DocumentEvent { get; set; }
-	}
+        public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
+    }
 
 	public class EditPublicEventModel : PublicEventModel
 	{
-		[Required]
+        public EditPublicEventModel()
+        {
+            Attachments = new List<Attachment>();
+            AttachmentFiles = new List<HttpPostedFileBase>();
+        }
+
+        [Required]
 		public int Id { get; set; }
 
 		public string origin { get; set; }
 
-		//[Required(ErrorMessage = "Please attach file")]
-		[Display(Name = "Proof of Approval")]
-		public HttpPostedFileBase DocumentEvent { get; set; }
-	}
+        [Required]
+        [Display(Name = "Proof of Approval")]
+        public IEnumerable<Attachment> Attachments { get; set; }
+
+        public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
+    }
 
 	public class DetailsPublicEventModel : PublicEventModel
 	{
@@ -141,7 +157,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[DataType(DataType.Date)]
 		[Display(Name = "Created Date")]
 		public DateTime CreatedDate { get; set; }
-	}
+
+        [Display(Name = "Proof of Approval")]
+        public IEnumerable<Attachment> Attachments { get; set; }
+    }
 
 	public class DeletePublicEventModel : DetailsPublicEventModel
 	{
@@ -165,8 +184,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Title")]
 		public string EventTitle { get; set; }
 
-		[Display(Name = "Objective")]
-		public string EventObjective { get; set; }
+		[Display(Name = "RefNo")]
+		public string RefNo { get; set; }
 
 
 		[DataType(DataType.Date)]

@@ -24,6 +24,14 @@ namespace FEP.Intranet.Controllers
     {
 
         [AllowAnonymous]
+        public async Task<ActionResult> Test()
+        {
+            var response = await WepApiMethod.SendApiAsync<FileDocument>(HttpVerbs.Get, $"File?id={1}");
+
+            return Content(response.ToString());
+        }
+
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();

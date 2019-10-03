@@ -42,8 +42,6 @@ namespace FEP.Model
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
 	
-
-		public virtual ICollection<EventFile> EventFiles { get; set; }
 		public virtual ICollection<EventAgenda> EventAgendas { get; set; }
 	}
 

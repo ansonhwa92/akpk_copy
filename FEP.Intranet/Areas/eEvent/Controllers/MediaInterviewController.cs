@@ -288,21 +288,21 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				//		db.MediaFile.Remove(getIdFile);
 				//	}
 
-				//	EventFile eventfile = new EventFile
-				//	{
-				//		FileDescription = model.FileDescription,
-				//		FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.DocumentMedia.FileName,
-				//		FilePath = path,
-				//		UploadedDate = DateTime.Now,
-				//		Display = true,
-				//		CreatedBy = CurrentUser.UserId,
-				//		Category = FileCategory.NewFile,
-				//		EventId = model.Id,
-				//		Id = getIdFile.Id
-				//	};
+					//EventFile eventfile = new EventFile
+					//{
+					//	FileDescription = model.FileDescription,
+					//	FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.DocumentMedia.FileName,
+					//	FilePath = path,
+					//	UploadedDate = DateTime.Now,
+					//	Display = true,
+					//	CreatedBy = CurrentUser.UserId,
+					//	Category = FileCategory.NewFile,
+					//	EventId = model.Id,
+					//	Id = getIdFile.Id
+					//};
 
-				//	db.EventFile.Add(eventfile);
-				//};
+					//db.EventFile.Add(eventfile);
+				};
 				db.SaveChanges();
 
 				//LogActivity();

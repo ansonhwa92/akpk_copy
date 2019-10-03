@@ -137,6 +137,7 @@
     <Compile Include="Api\Administration\BranchController.cs" />
     <Compile Include="Api\Administration\CompanyController.cs" />
     <Compile Include="Api\Administration\DepartmentController.cs" />
+    <Compile Include="Api\Administration\FileDocumentController.cs" />
     <Compile Include="Api\Administration\IndividualController.cs" />
     <Compile Include="Api\Administration\RoleController.cs" />
     <Compile Include="Api\Administration\SectorController.cs" />
@@ -256,7 +257,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\Temp_Upload\" />
     <Folder Include="bin\" />
     <Folder Include="Views\Auth\" />
     <Folder Include="Views\Client\" />

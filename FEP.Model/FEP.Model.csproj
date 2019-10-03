@@ -61,9 +61,33 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201910010643131_x.cs" />
-    <Compile Include="Migrations\201910010643131_x.Designer.cs">
-      <DependentUpon>201910010643131_x.cs</DependentUpon>
+    <Compile Include="Migrations\201910020904244_x.cs" />
+    <Compile Include="Migrations\201910020904244_x.Designer.cs">
+      <DependentUpon>201910020904244_x.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910021334307_x1.cs" />
+    <Compile Include="Migrations\201910021334307_x1.Designer.cs">
+      <DependentUpon>201910021334307_x1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910021710190_x2.cs" />
+    <Compile Include="Migrations\201910021710190_x2.Designer.cs">
+      <DependentUpon>201910021710190_x2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910030843425_x3.cs" />
+    <Compile Include="Migrations\201910030843425_x3.Designer.cs">
+      <DependentUpon>201910030843425_x3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910030853216_x4.cs" />
+    <Compile Include="Migrations\201910030853216_x4.Designer.cs">
+      <DependentUpon>201910030853216_x4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910031215260_x5.cs" />
+    <Compile Include="Migrations\201910031215260_x5.Designer.cs">
+      <DependentUpon>201910031215260_x5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910031417231_x6.cs" />
+    <Compile Include="Migrations\201910031417231_x6.Designer.cs">
+      <DependentUpon>201910031417231_x6.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201910021416027_x1.cs" />
     <Compile Include="Migrations\201910021416027_x1.Designer.cs">
@@ -110,8 +134,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910010643131_x.resx">
-      <DependentUpon>201910010643131_x.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910020904244_x.resx">
+      <DependentUpon>201910020904244_x.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910021334307_x1.resx">
+      <DependentUpon>201910021334307_x1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910021710190_x2.resx">
+      <DependentUpon>201910021710190_x2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910030843425_x3.resx">
+      <DependentUpon>201910030843425_x3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910030853216_x4.resx">
+      <DependentUpon>201910030853216_x4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910031215260_x5.resx">
+      <DependentUpon>201910031215260_x5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910031417231_x6.resx">
+      <DependentUpon>201910031417231_x6.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910021416027_x1.resx">
       <DependentUpon>201910021416027_x1.cs</DependentUpon>

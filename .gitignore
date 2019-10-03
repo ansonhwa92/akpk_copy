@@ -356,3 +356,6 @@ healthchecksdb
 !/FEP.Model/Migrations/mhafeez.cs
 !/FEP.Model/Migrations/firus.cs
 !/FEP.Model/Migrations/aiman.cs
+
+# App_Data
+/FEP.WebApi/App_Data/*

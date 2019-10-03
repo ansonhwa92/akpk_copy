@@ -236,6 +236,19 @@ namespace FEP.WebApi.Api.eEvent
 		}
 
 
+		[HttpGet]
+		public IHttpActionResult Get()
+		{
+			var exhibitor = db.EventExternalExhibitor.Where(u => u.Display).Select(s => new EventExternalExhibitorModel
+			{
+				Id = s.Id,
+				Name = s.Name,
+				Email = s.Email,
+				PhoneNo = s.PhoneNo
+			}).ToList();
+
+			return Ok(exhibitor);
+		}
 
 	}
 }

@@ -16,12 +16,13 @@ using Newtonsoft.Json;
 namespace FEP.Intranet
 {
     public static class WepApiMethod
-    {
+    {        
         public enum APIEngine
         {
             IntranetAPI,
             EmailSMSAPI
         }
+
         public static async Task<WebApiResponse<T>> SendApiAsync<T>
             (HttpVerbs httpVerbs, string requestURI, object obj = null, APIEngine APIEngine = APIEngine.IntranetAPI)
         {
@@ -51,7 +52,7 @@ namespace FEP.Intranet
                     client.BaseAddress = new Uri(url);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+                                        
                     var payload = JsonConvert.SerializeObject(obj);
 
                     HttpResponseMessage response = null;
@@ -78,6 +79,84 @@ namespace FEP.Intranet
                         response = await client.DeleteAsync(requestURI);
                     }
 
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = await response.Content.ReadAsAsync<T>();
+
+                        res.isSuccess = true;
+                        res.ErrorMessage = "";
+                        res.Data = result;
+                    }
+                    else
+                    {
+                        var str = await response.Content.ReadAsStringAsync();
+
+                        res.isSuccess = false;
+                        res.Data = default(T);
+                        res.ErrorMessage = str;
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                res.isSuccess = false;
+                res.Data = default(T);
+                res.ErrorMessage = ex.Message;
+            }
+
+            return res;
+        }
+
+        public static async Task<WebApiResponse<T>> SendApiAsync<T>(string requestURI, List<HttpPostedFileBase> files)
+        {
+            var url = GetWebApiUrl();
+            
+            var res = new WebApiResponse<T>();
+
+            if (string.IsNullOrEmpty(url))
+            {
+                res.isSuccess = false;
+                res.Data = default(T);
+                res.ErrorMessage = "Web API Url not found";
+                return res;
+            }
+
+            if (files.Count == 0)
+            {
+                res.isSuccess = false;
+                res.Data = default(T);
+                res.ErrorMessage = "File not found";
+                return res;
+            }
+
+            try
+            {
+
+                using (var client = new HttpClient())
+                {
+                    T result;
+
+                    client.BaseAddress = new Uri(url);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    HttpResponseMessage response = null;
+
+                    var content = new MultipartFormDataContent();
+
+                    foreach (var file in files)
+                    {
+                        byte[] Bytes = new byte[file.InputStream.Length + 1];
+                        file.InputStream.Read(Bytes, 0, Bytes.Length);
+                        var fileContent = new ByteArrayContent(Bytes);
+                        fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = file.FileName };
+                        content.Add(fileContent);
+                    }
+                                                             
+                    response = await client.PostAsync(requestURI, content);
+                                        
                     if (response.IsSuccessStatusCode)
                     {
                         result = await response.Content.ReadAsAsync<T>();

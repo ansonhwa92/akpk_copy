@@ -96,9 +96,9 @@ namespace FEP.Model
 	public enum SpeakerType
 	{
 		[Display(Name = "Internal")]
-		FEP,
+		Internal, //FEP STAFF
 		[Display(Name = "External")]
-		OBS
+		External //OBS SPEAKER
 	}
 
 	public enum MediaState

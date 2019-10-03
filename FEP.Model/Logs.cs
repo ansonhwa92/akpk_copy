@@ -29,9 +29,8 @@ namespace FEP.Model
     public class ErrorLog
     {
         [Key]
-        public long Id { get; set; }
-        
-        public Modules Module { get; set; }
+        public long Id { get; set; }        
+        public Modules? Module { get; set; }
         public int? UserId { get; set; }
         public string Source { get; set; }
         public string IPAddress { get; set; }

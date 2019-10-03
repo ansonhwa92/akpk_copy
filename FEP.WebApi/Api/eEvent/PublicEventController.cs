@@ -1,6 +1,7 @@
 ﻿using FEP.Helper;
 using FEP.Model;
 using FEP.WebApiModel;
+using FEP.WebApiModel.FileDocument;
 using FEP.WebApiModel.PublicEvent;
 using System;
 using System.Collections.Generic;
@@ -37,10 +38,10 @@ namespace FEP.WebApi.Api.eEvent
 
 			//advance search
 			query = query.Where(s => (request.EventTitle == null || s.EventTitle.Contains(request.EventTitle))
-			   //&& (request.EventCategoryId == null || s.EventCategoryId == request.EventCategoryId)
-			   //&& (request.TargetedGroup == null || s.TargetedGroup == request.TargetedGroup)
-			   //&& (request.EventStatus.GetDisplayName() == null || s.EventStatus.GetDisplayName() == request.EventStatus.GetDisplayName())
-			   );
+               && (request.RefNo == null || s.RefNo.Contains(request.RefNo))
+               //&& (request.TargetedGroup == null || s.TargetedGroup == request.TargetedGroup)
+               //&& (request.EventStatus.GetDisplayName() == null || s.EventStatus.GetDisplayName() == request.EventStatus.GetDisplayName())
+               );
 
 			//quick search 
 			if (!string.IsNullOrEmpty(request.search.value))
@@ -77,15 +78,15 @@ namespace FEP.WebApi.Api.eEvent
 
 						break;
 
-					case "EventObjective":
+					case "RefNo":
 
 						if (sortAscending)
 						{
-							query = query.OrderBy(o => o.EventObjective);
+							query = query.OrderBy(o => o.RefNo);
 						}
 						else
 						{
-							query = query.OrderByDescending(o => o.EventObjective);
+							query = query.OrderByDescending(o => o.RefNo);
 						}
 
 						break;
@@ -195,6 +196,7 @@ namespace FEP.WebApi.Api.eEvent
 					EventObjective = s.EventObjective,
 					Venue = s.Venue,
 					Fee = s.Fee,
+                    RefNo = s.RefNo
 				}).ToList();
 
 			data.ForEach(s => s.EventStatusDesc = s.EventStatus.GetDisplayName());
@@ -233,9 +235,10 @@ namespace FEP.WebApi.Api.eEvent
 		//}
 
 		//Details
-		public PublicEventModel Get(int id)
+		public IHttpActionResult Get(int id)
 		{
-			var model = db.PublicEvent.Where(i => i.Display && i.Id == id).Select(i => new PublicEventModel
+			var model = db.PublicEvent.Where(i => i.Display && i.Id == id)
+				.Select(i => new DetailsPublicEventModel
 			{
 				Id = i.Id,
 				EventTitle = i.EventTitle,
@@ -249,48 +252,216 @@ namespace FEP.WebApi.Api.eEvent
 				EventCategoryName = i.EventCategory.CategoryName,
 				TargetedGroup = i.TargetedGroup,
 				ParticipantAllowed = i.ParticipantAllowed,
-				Reasons = i.Reasons,
-				Remarks = i.Remarks,
-				Display = i.Display,
-				CreatedBy = i.CreatedBy,
-				CreatedDate = i.CreatedDate
-			}).FirstOrDefault();
+				Remarks = i.Remarks                
+				}).FirstOrDefault();
 
-			return model;
+			if (model == null)
+			{
+				return NotFound();
+			}
+
+			model.SpeakerId = db.AssignedSpeaker.Where(u => u.PublicEventId == id).Select(s => s.EventSpeakerId).ToArray();
+			model.ExternalExhibitorId = db.AssignedExternalExhibitor.Where(u => u.PublicEventId == id).Select(s => s.ExternalExhibitorId).ToArray();
+
+            model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.PublicEvent && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+
+			return Ok(model);
 		}
 
 		//Create
-		public HttpResponseMessage Post([FromBody]string value)
+		[HttpPost]
+		public IHttpActionResult Post([FromBody] CreatePublicEventModel model)
 		{
-			HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
-			return response;
+			var publicevent = new PublicEvent
+			{
+				EventTitle = model.EventTitle,
+				EventObjective = model.EventObjective,
+				StartDate = model.StartDate,
+				EndDate = model.EndDate,
+				Venue = model.Venue,
+				Fee = model.Fee,
+				EventStatus = model.EventStatus,
+				EventCategoryId = model.EventCategoryId,
+				TargetedGroup = model.TargetedGroup,
+				ParticipantAllowed = model.ParticipantAllowed,
+				Remarks = model.Remarks,
+				CreatedBy = null,
+				Display = true,
+				CreatedDate = DateTime.Now,
+			};
+
+			foreach (var speakerid in model.SpeakerId)
+			{
+				var assignedsp = new AssignedSpeaker
+				{
+					EventSpeakerId = speakerid,
+					PublicEvent = publicevent,
+				};
+
+				db.AssignedSpeaker.Add(assignedsp);
+			}
+
+			db.PublicEvent.Add(publicevent);
+
+			foreach (var externalexhibitorid in model.ExternalExhibitorId)
+			{
+				var assignedex = new AssignedExternalExhibitor
+				{
+					ExternalExhibitorId = externalexhibitorid,
+					PublicEvent = publicevent,
+				};
+
+				db.AssignedExternalExhibitor.Add(assignedex);
+			}
+
+            db.PublicEvent.Add(publicevent);
+            db.SaveChanges();
+
+            //files
+            foreach (var fileid in model.FilesId)
+            {
+                var eventfile = new EventFile
+                {
+                    FileCategory = EventFileCategory.PublicEvent,
+                    FileId = fileid,
+                    ParentId = publicevent.Id
+                };
+
+                db.EventFile.Add(eventfile);
+            }
+
+            //---running number----//
+            var refno = "EVP/" + DateTime.Now.ToString("yyMM");
+            refno += "/" + publicevent.Id.ToString("D4");
+            publicevent.RefNo = refno;
+            db.Entry(publicevent).State = EntityState.Modified;
+            
+            db.SaveChanges();
+
+			return Ok(publicevent.Id);
 		}
+
 
 		//Edit
-		public HttpResponseMessage Put(int id, [FromBody]string value)
+		public IHttpActionResult Put(int id, [FromBody] EditPublicEventModel model)
 		{
-			HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, new { isSuccess = true });
+			var publicevent = db.PublicEvent.Where(u => u.Id == id).FirstOrDefault();
 
-			return response;
-		}
-
-		//Delete
-		public bool Delete(int id)
-		{
-			var model = db.PublicEvent.Where(u => u.Id == id).FirstOrDefault();
-			if (model != null)
+			if (publicevent == null)
 			{
-				model.Display = false;
-				db.PublicEvent.Attach(model);
-				db.Entry(model).Property(m => m.Display).IsModified = true;
-				db.Configuration.ValidateOnSaveEnabled = false;
-				db.SaveChanges();
-				return true;
+				return NotFound();
 			}
-			return false;
+
+			publicevent.EventTitle = model.EventTitle;
+			publicevent.EventObjective = model.EventObjective;
+			publicevent.StartDate = model.StartDate;
+			publicevent.EndDate = model.EndDate;
+			publicevent.Venue = model.Venue;
+			publicevent.Fee = model.Fee;
+			publicevent.EventStatus = model.EventStatus;
+			publicevent.EventCategoryId = model.EventCategoryId;
+			publicevent.TargetedGroup = model.TargetedGroup;
+			publicevent.ParticipantAllowed = model.ParticipantAllowed;
+			publicevent.Remarks = model.Remarks;
+			publicevent.RefNo = model.RefNo;
+
+            db.Entry(publicevent).State = EntityState.Modified;
+          
+			db.Entry(publicevent).Property(x => x.Display).IsModified = false;			
+			db.Entry(publicevent).Property(x => x.RefNo).IsModified = false;
+
+			db.AssignedSpeaker.RemoveRange(db.AssignedSpeaker.Where(u => u.PublicEventId == id));//remove all
+			foreach (var assignedspeakerid in model.SpeakerId)
+			{
+				var assignedsp = new AssignedSpeaker
+				{
+					EventSpeakerId = assignedspeakerid,
+					PublicEventId = id,
+				};
+
+				db.AssignedSpeaker.Add(assignedsp);
+			}
+
+			db.AssignedExternalExhibitor.RemoveRange(db.AssignedExternalExhibitor.Where(u => u.PublicEventId == id));//remove all
+			foreach (var externalexhibitorid in model.ExternalExhibitorId)
+			{
+				var assignedsp = new AssignedExternalExhibitor
+				{
+					ExternalExhibitorId = externalexhibitorid,
+					PublicEventId = id,
+				};
+
+				db.AssignedExternalExhibitor.Add(assignedsp);
+			}
+
+            //remove file 
+            var attachments = db.EventFile.Where(s => s.FileCategory == EventFileCategory.PublicEvent && s.ParentId == model.Id).ToList();
+
+            if (attachments != null) 
+            {
+                //delete all
+                if (model.Attachments == null)
+                {
+                    foreach (var attachment in attachments)
+                    {
+                        attachment.FileDocument.Display = false;
+                        db.FileDocument.Attach(attachment.FileDocument);
+                        db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+
+                        db.EventFile.Remove(attachment);                        
+                    }
+                }
+                else
+                {
+                    foreach (var attachment in attachments)
+                    {
+                        if (!model.Attachments.Any(u => u.Id == attachment.FileDocument.Id))//delete if not exist anymore
+                        {
+                            attachment.FileDocument.Display = false;
+                            db.FileDocument.Attach(attachment.FileDocument);
+                            db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+
+                            db.EventFile.Remove(attachment);                            
+                        }
+                    }
+                }
+            }
+
+            //add new file
+            //files
+            foreach (var fileid in model.FilesId)
+            {
+                var eventfile = new EventFile
+                {
+                    FileCategory = EventFileCategory.PublicEvent,
+                    FileId = fileid,
+                    ParentId = publicevent.Id
+                };
+
+                db.EventFile.Add(eventfile);
+            }
+            
+            db.Configuration.ValidateOnSaveEnabled = true;
+			db.SaveChanges();
+
+			return Ok(true);
 		}
 
+		public IHttpActionResult Delete(int id)
+		{
+			var publicEvent = db.PublicEvent.Where(r => r.Id == id && r.Display).FirstOrDefault();
 
+			if (publicEvent == null)
+			{
+				return NotFound();
+			}
+
+			publicEvent.Display = false;
+			db.Entry(publicEvent).State = EntityState.Modified;
+
+			db.SaveChanges();
+			return Ok(true);
+		}
 
 		//Submit Public Event for Verification
 		[Route("api/eEvent/PublicEvent/SubmitToVerify")] 
@@ -438,6 +609,5 @@ namespace FEP.WebApi.Api.eEvent
 			}
 			return "";
 		}
-
 	}
 }

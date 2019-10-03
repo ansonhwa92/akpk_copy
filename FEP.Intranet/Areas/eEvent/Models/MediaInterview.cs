@@ -20,7 +20,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public MediaType? MediaType { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Contact Person")]
-		[DataType(DataType.PhoneNumber)]
 		[Display(Name = "Contact Person")]
 		public string ContactPerson { get; set; }
 
@@ -35,7 +34,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Required(ErrorMessage = "Please Insert Address")]
 		public string AddressStreet2 { get; set; }
 		[Required(ErrorMessage = "Please Insert Poscode")]
-		public int? AddressPoscode { get; set; }
+		public string AddressPoscode { get; set; }
 		[Required(ErrorMessage = "Please Insert City")]
 		public string AddressCity { get; set; }
 		[Required(ErrorMessage = "Please Select State")]

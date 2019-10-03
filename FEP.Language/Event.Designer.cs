@@ -250,6 +250,168 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category.
+        /// </summary>
+        public static string PubEventCategoryId {
+            get {
+                return ResourceManager.GetString("PubEventCategoryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category.
+        /// </summary>
+        public static string PubEventCategoryName {
+            get {
+                return ResourceManager.GetString("PubEventCategoryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Date.
+        /// </summary>
+        public static string PubEventEndDate {
+            get {
+                return ResourceManager.GetString("PubEventEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External Exhibitors.
+        /// </summary>
+        public static string PubEventExternalExhibitorId {
+            get {
+                return ResourceManager.GetString("PubEventExternalExhibitorId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External Exhibitors.
+        /// </summary>
+        public static string PubEventExternalExhibitorName {
+            get {
+                return ResourceManager.GetString("PubEventExternalExhibitorName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fee.
+        /// </summary>
+        public static string PubEventFee {
+            get {
+                return ResourceManager.GetString("PubEventFee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Objective.
+        /// </summary>
+        public static string PubEventObjective {
+            get {
+                return ResourceManager.GetString("PubEventObjective", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Participant Allowed.
+        /// </summary>
+        public static string PubEventParticipantAllowed {
+            get {
+                return ResourceManager.GetString("PubEventParticipantAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ref No.
+        /// </summary>
+        public static string PubEventRefNo {
+            get {
+                return ResourceManager.GetString("PubEventRefNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remarks.
+        /// </summary>
+        public static string PubEventRemarks {
+            get {
+                return ResourceManager.GetString("PubEventRemarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speakers.
+        /// </summary>
+        public static string PubEventSpeakerId {
+            get {
+                return ResourceManager.GetString("PubEventSpeakerId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speakers.
+        /// </summary>
+        public static string PubEventSpeakerName {
+            get {
+                return ResourceManager.GetString("PubEventSpeakerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Date.
+        /// </summary>
+        public static string PubEventStartDate {
+            get {
+                return ResourceManager.GetString("PubEventStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string PubEventStatus {
+            get {
+                return ResourceManager.GetString("PubEventStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string PubEventStatusDesc {
+            get {
+                return ResourceManager.GetString("PubEventStatusDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Targeted Group.
+        /// </summary>
+        public static string PubEventTargetedGroup {
+            get {
+                return ResourceManager.GetString("PubEventTargetedGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Title .
+        /// </summary>
+        public static string PubEventTitle {
+            get {
+                return ResourceManager.GetString("PubEventTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Venue.
+        /// </summary>
+        public static string PubEventVenue {
+            get {
+                return ResourceManager.GetString("PubEventVenue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address.
         /// </summary>
         public static string SpAddress1 {

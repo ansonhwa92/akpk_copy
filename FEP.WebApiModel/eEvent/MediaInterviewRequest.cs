@@ -26,7 +26,7 @@ namespace FEP.WebApiModel
 		[Display(Name = "Address")]
 		public string AddressStreet1 { get; set; }
 		public string AddressStreet2 { get; set; }
-		public int? AddressPoscode { get; set; }
+		public string AddressPoscode { get; set; }
 		public string AddressCity { get; set; }
 		public MediaState? State { get; set; }
 

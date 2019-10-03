@@ -728,6 +728,7 @@
     <Content Include="Areas\RnP\Views\Home\PublicationDetails.cshtml" />
     <Content Include="Areas\RnP\Views\Home\SelectFormat.cshtml" />
     <Content Include="Areas\RnP\Views\Home\PurchasePublication.cshtml" />
+    <Content Include="Areas\eEvent\Views\PublicEvent\_AttachmentDetails.cshtml" />
     <Content Include="Areas\Administrator\Views\Ministry\_Create.cshtml" />
     <Content Include="Areas\Administrator\Views\Ministry\_Delete.cshtml" />
     <Content Include="Areas\Administrator\Views\Ministry\_Edit.cshtml" />
@@ -1221,6 +1222,7 @@
     <Content Include="Scripts\summernote\font\summernote.eot" />
     <Content Include="Scripts\summernote\font\summernote.ttf" />
     <Content Include="Scripts\summernote\font\summernote.woff" />
+    <Content Include="Areas\eEvent\Views\PublicEvent\_Attachment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

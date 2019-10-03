@@ -331,5 +331,18 @@ namespace FEP.WebApi.Api.eEvent
 			db.SaveChanges();
 			return Ok(true);
 		}
+
+		[HttpGet]
+		public IHttpActionResult Get()
+		{
+			var speakers = db.EventSpeaker.Where(u => u.Display && (u.SpeakerType == SpeakerType.Internal || u.SpeakerType == SpeakerType.External)).Select(s => new EventSpeakerModel
+			{
+				Id = s.Id,
+				UserName = s.User.Name,
+				Email = s.Email,
+			}).ToList();
+
+			return Ok(speakers);
+		}
 	}
 }

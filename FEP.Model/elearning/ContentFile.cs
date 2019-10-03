@@ -15,7 +15,7 @@ namespace FEP.Model.eLearning
         /// Order of appearance in the content
         /// </summary>
         public int Order { get; set; }
-        public int ModuleContentId { get; set; }
+        public int? ModuleContentId { get; set; }
         public virtual CourseContent ModuleContent { get; set; }
 
         public FileType FileType { get; set; }

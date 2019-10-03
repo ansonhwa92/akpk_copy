@@ -166,6 +166,7 @@
     <Compile Include="Api\eLearning\CourseCategoryController.cs" />
     <Compile Include="Api\eLearning\FileController.cs" />
     <Compile Include="Api\eLearning\QuestionController.cs" />
+    <Compile Include="Api\eLearning\VideoController.cs" />
     <Compile Include="Api\Home\ProfileController.cs" />
     <Compile Include="Api\Logs\ErrorLogController.cs" />
     <Compile Include="Api\Logs\UserLogController.cs" />

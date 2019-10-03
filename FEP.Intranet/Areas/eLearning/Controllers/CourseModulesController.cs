@@ -309,7 +309,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 TempData["ErrorMessage"] = "No such module.";
 
-                return RedirectToAction("Content", "CourseModules", new { id = Id.Value });
+                return RedirectToAction("Content", "CourseModules", new { area="eLearning", @id = Id.Value });
             }
 
             vm.ModuleContents = vm.ModuleContents.OrderBy(x => x.Order).ToList();

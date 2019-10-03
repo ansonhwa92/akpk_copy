@@ -1,40 +1,34 @@
 ﻿using FEP.Intranet.Helper;
-using FEP.Model;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eLearning.Controllers
 {
     public static class FileApiUrl
     {
-        public const string Upload = "eLearning/File/UploadInfo";
+        public const string UploadInfo = "eLearning/File/UploadInfo";
 
+        public const string Upload = "eLearning/File";
     }
 
     public class FileController : Controller
     {
-
         public string storageDir = "";
-
-
 
         public FileController()
         {
             storageDir = AppSettings.FileDocPath;
-
         }
-
 
         [HttpPost]
         public JsonResult UploadFile(HttpPostedFileBase file)
         {
-
             if (file == null)
                 return Json("error", "text/html");
 
@@ -49,7 +43,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 var bytes = new byte[length];
                 file.InputStream.Read(bytes, 0, length);
 
-
                 // Check location to save
                 if (!Directory.Exists(storageDir))
                 {
@@ -61,17 +54,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 fileStream.Write(bytes, 0, length);
                 fileStream.Close();
 
-                result = new 
+                result = new
                 {
                     FileName = fileName,
                     FilePath = Path.Combine(storageDir, fileId),
                     FileSize = file.ContentLength,
                     FileNameOnStorage = fileId
-
                 };
 
                 result = JsonConvert.SerializeObject(result);
-
             }
             catch (System.IO.IOException)
             {
@@ -84,45 +75,74 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return Json(result, "text/html");
-
         }
-
 
         public FileResult Download(string fileNameOnStorage, string fileNameFromDb)
         {
-
             var fileFullPath = Path.Combine(storageDir, fileNameOnStorage);
-
 
             return File(fileFullPath, MimeMapping.GetMimeMapping(fileNameFromDb), fileNameFromDb);
         }
 
+        // FOR API CALL
+        public async Task<WebApiResponse<T>> UploadToApi<T>(HttpPostedFileBase file)
+        {
+            var res = new WebApiResponse<T>();
 
+            T result;
+            var url = GetWebApiUrl();
 
-        //[HttpPost]
-        //public JsonResult UploadFile(HttpPostedFileBase file)
-        //{
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    using (var content = new MultipartFormDataContent())
+                    {
+                        byte[] Bytes = new byte[file.InputStream.Length + 1];
+                        file.InputStream.Read(Bytes, 0, Bytes.Length);
+                        var fileContent = new ByteArrayContent(Bytes);
+                        fileContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+                        { FileName = file.FileName };
 
-        //    if (file == null)
-        //        return Json("error", "text/html");
+                        content.Add(fileContent);
+                        var requestUri = $"{url}{FileApiUrl.Upload}";
 
+                        var response = await client.PostAsync(requestUri, content);
 
-        //    var length = Request.ContentLength;
-        //    var bytes = new byte[length];
-        //    Request.InputStream.Read(bytes, 0, length);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            result = await response.Content.ReadAsAsync<T>();
 
-        //    var fileName = Request.Headers["X-File-Name"];
-        //    var fileSize = Request.Headers["X-File-Size"];
-        //    var fileType = Request.Headers["X-File-Type"];
+                            res.isSuccess = true;
+                            res.ErrorMessage = "";
+                            res.Data = result;
+                        }
+                        else
+                        {
+                            var str = await response.Content.ReadAsStringAsync();
+                            res.isSuccess = false;
+                            res.Data = default(T);
+                            res.ErrorMessage = str;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                res.isSuccess = false;
+                res.Data = default(T);
+                res.ErrorMessage = ex.Message;
+            }
 
-        //    var saveToFileLoc = "\\\\adcyngctg\\HRMS\\Images\\" + fileName;
+            return res;
+            
+        }
 
-        //    // save the file.
-        //    var fileStream = new FileStream(saveToFileLoc, FileMode.Create, FileAccess.ReadWrite);
-        //    fileStream.Write(bytes, 0, length);
-        //    fileStream.Close();
-
-        //    return string.Format("{0} bytes uploaded", bytes.Length);
-        //}
+        private static string GetWebApiUrl()
+        {
+            return WebConfigurationManager.AppSettings["WebApiURL"] != null ? WebConfigurationManager.AppSettings["WebApiURL"].ToString() : "";
+        }
     }
+
+
 }

@@ -4,9 +4,8 @@ using FEP.Intranet.Areas.eLearning.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -65,6 +64,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// create a content. If the content have a file to upload, then we will make 2 calls to API.
+        /// 1. Call to create content. However, FileName is set to null first, otherwise json error
+        /// 2. Call to upload the file.
+        /// Can this be done in 1 call? of course can. I am just too lazy to do it.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         // POST: eLearning/CourseModules/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -74,7 +81,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 model.CreatedBy = CurrentUser.UserId.Value;
 
-                // TODO : FOR NOW DISABLE FILE UPLOAD, NEED TO GET THE PLAN HOW TO DO THIS
+                var currentFileName = model.FileName;
+                string contentId = null;
+
                 model.FileName = null;
 
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, ContentApiUrl.Create, model);
@@ -85,57 +94,51 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                     await LogActivity(Modules.Learning, "Create content : " + model.Title);
 
-                    var contentId = response.Data;
+                    contentId = response.Data;
+                }
 
-                    // Check if this creation include fileupload, which will require us to save the file
-                    if (((model.ContentType == CourseContentType.Video && model.VideoType == VideoType.UploadVideo) ||
-                        (model.ContentType == CourseContentType.Audio) ||
-                        (model.ContentType == CourseContentType.Document)) &&
-                        model.FileName != null)
+                // Check if this creation include fileupload, which will require us to save the file
+                model.FileName = currentFileName;
+                if (((model.ContentType == CourseContentType.Video && model.VideoType == VideoType.UploadVideo) ||
+                    (model.ContentType == CourseContentType.Audio) ||
+                    (model.ContentType == CourseContentType.Document)) &&
+                    model.FileName != null)
+                {
+                    // upload the file
+
+                    var result = await new FileController().UploadToApi<List<FileDocumentModel>>(model.FileName);
+
+                    if (result.isSuccess)
                     {
-                        JsonResult result = new FileController().UploadFile(model.FileName);
+                        var data = result.Data; // JsonConvert.DeserializeObject<List<FileDocumentModel>>(result.Data);
 
-                        if (result.Data != null)
+                        var fileDocument = data[0];
+
+                        fileDocument.FileType = model.ContentType.ToString();
+                        fileDocument.CreatedBy = CurrentUser.UserId.Value;
+                        fileDocument.ContentFileType = model.FileType;
+                        fileDocument.CourseId = model.CourseId;
+
+                        if (!string.IsNullOrEmpty(contentId))
+                            fileDocument.ContentId = int.Parse(contentId);
+
+                        var resultUpload = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, FileApiUrl.UploadInfo, fileDocument);
+
+                        if (resultUpload.isSuccess)
                         {
-                            var fileDocument = JsonConvert.DeserializeObject<FileDocument>(result.Data.ToString());
-
-                            fileDocument.FileType = model.ContentType.ToString();
-                            fileDocument.CreatedBy = CurrentUser.UserId.Value;
-                            fileDocument.CreatedDate = DateTime.Now;
-
-                            var vm = new FileDocumentModel
-                            {
-                                ContentFileType = model.FileType,
-                                CourseId = model.CourseId,
-                                CreatedBy = fileDocument.CreatedBy,
-                                FileType = fileDocument.FileType,
-                                CreatedDate = fileDocument.CreatedDate,
-                                FileName = fileDocument.FileName,
-                                FileNameOnStorage = fileDocument.FileNameOnStorage,
-                                FilePath = fileDocument.FilePath,
-                                FileSize = fileDocument.FileSize,
-                                FileTag = fileDocument.FileTag,
-                                User = fileDocument.User,
-                                ContentId = int.Parse(contentId)
-                            };
-
-                            var resultUpload = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, FileApiUrl.Upload, vm);
-
-                            if (resultUpload.isSuccess)
-                            {
-                            }
-                            else
-                            {
-                                TempData["ErrorMessage"] = "Cannot upload file";
-                            }
+                            model.ContentFileId = int.Parse(resultUpload.Data);
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = "Cannot upload file";
                         }
                     }
-
-                    if (model.CreateContentFrom == CreateContentFrom.CourseFrontPage)
-                        return RedirectToAction("Content", "Courses", new { id = model.CourseId });
-                    else
-                        return RedirectToAction("Content", "CourseModules", new { id = model.CourseModuleId });
                 }
+
+                if (model.CreateContentFrom == CreateContentFrom.CourseFrontPage)
+                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = model.CourseId });
+                else
+                    return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
             }
 
             TempData["ErrorMessage"] = "Cannot add content.";
@@ -164,9 +167,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     var nextContent = response.Data;
 
                     if (nextContent < 0) // go to index, no more content this module
-                        return RedirectToAction("Content", "CourseModules", new { id = model.CourseId });
+                        return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseId });
                     else
-                        return RedirectToAction("Content", "CourseContents", new { id = nextContent });
+                        return RedirectToAction("Content", "CourseContents", new { area = "eLearning", @id = nextContent });
                 }
             }
             TempData["ErrorMessage"] = "Cannot add content. Please ensure all required fields are filled in.";
@@ -192,26 +195,29 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
         }
 
-        public async Task<ActionResult> View(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+        //public async Task<ActionResult> View(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
 
-            var model = await TryGetContent(id.Value);
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
 
-            if (model == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+        //    var model = await TryGetContent(id.Value);
 
-            return View(model);
-        }
+        //    if (model == null)
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
+
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+
+        //    return View(model);
+        //}
 
         public async Task<ActionResult> ViewVideo(int id)
-        {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
+        {            
             var content = await TryGetContent(id);
 
             if (content != null)
@@ -225,18 +231,40 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 else
                 {
                     // TODO : get the uploaded file info
+                    // content.Fil
+
+                    var contentFile = await db.ContentFiles.FirstOrDefaultAsync(x => x.Id == content.ContentFileId);
+
+                    if (contentFile == null)
+                    {
+                        TempData["ErrorMessage"] = "Could not find the content.";
+
+                        return Redirect(Request.UrlReferrer.ToString());
+                    }
+
+                    var fileDocument = await db.FileDocument.FirstOrDefaultAsync(x => x.Id == contentFile.FileDocumentId);
+
+                    if (fileDocument == null)
+                    {
+                        TempData["ErrorMessage"] = "Could not find the content.";
+
+                        return Redirect(Request.UrlReferrer.ToString());
+                    }
+
+                    content.FileDocument = fileDocument;
                 }
                 return View(content);
             }
             else
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
             }
         }
 
         public async Task<ActionResult> ViewRichText(int id)
         {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
             var content = await TryGetContent(id);
 
             if (content != null)
@@ -245,13 +273,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
             }
         }
 
         public async Task<ActionResult> ViewDocument(int id)
         {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
             var content = await TryGetContent(id);
 
             if (content != null)
@@ -260,13 +289,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
             }
         }
 
         public async Task<ActionResult> ViewIFrame(int id)
         {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
             var content = await TryGetContent(id);
 
             if (content != null)
@@ -275,13 +305,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
             }
         }
 
         public async Task<ActionResult> ViewAudio(int id)
         {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
             var content = await TryGetContent(id);
 
             if (content != null)
@@ -290,13 +321,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
             }
         }
 
         public async Task<ActionResult> ViewWebLink(int id)
         {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
             var content = await TryGetContent(id);
 
             if (content != null)
@@ -305,13 +337,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
             }
         }
 
         public async Task<ActionResult> ViewTest(int id)
         {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
             var content = await TryGetContent(id);
 
             if (content != null)
@@ -320,13 +353,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
             }
         }
 
         public async Task<ActionResult> ViewAssignment(int id)
         {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
             var content = await TryGetContent(id);
 
             if (content != null)
@@ -335,110 +369,124 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
             }
         }
 
-        [ChildActionOnly]
-        public async Task<ActionResult> Video(int id)
-        {
-            var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-            //var content = await TryGetContent(id);
+        //[ChildActionOnly]
+        //public async Task<ActionResult> Video(int id)
+        //{
+        //    var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
+        //    //var content = await TryGetContent(id);
 
-            if (content != null)
-            {
-                // If its youtube video ensure the word 'embed' is there, if not, put it in
-                // ex https://www.youtube.com/watch?v=WEDIj9JBTC8
-                if (content.VideoType == VideoType.ExternalVideo)
-                {
-                    content.Url = YouTubeUrlHelper.ConvertToEmbeddedUrl(content.Url);
-                }
-                else
-                {
-                    // TODO : get the uploaded file info
-                }
-                return PartialView("_video", content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
+        //    if (content != null)
+        //    {
+        //        // If its youtube video ensure the word 'embed' is there, if not, put it in
+        //        // ex https://www.youtube.com/watch?v=WEDIj9JBTC8
+        //        if (content.VideoType == VideoType.ExternalVideo)
+        //        {
+        //            content.Url = YouTubeUrlHelper.ConvertToEmbeddedUrl(content.Url);
+        //        }
+        //        else
+        //        {
+        //            // TODO : get the uploaded file info
+        //        }
+        //        return PartialView("_video", content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
 
-        [ChildActionOnly]
-        public ActionResult RichText(int id)
-        {
-            var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
 
-            if (content != null)
-            {
-                return PartialView("_richText", content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
+        //[ChildActionOnly]
+        //public ActionResult RichText(int id)
+        //{
+        //    var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
 
-        [ChildActionOnly]
-        public ActionResult Document(int id)
-        {
-            var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
+        //    if (content != null)
+        //    {
+        //        return PartialView("_richText", content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
 
-            if (content != null)
-            {
-                return PartialView("_document", content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
 
-        [ChildActionOnly]
-        public ActionResult IFrame(int id)
-        {
-            var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
+        //[ChildActionOnly]
+        //public ActionResult Document(int id)
+        //{
+        //    var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
 
-            if (content != null)
-            {
-                return PartialView("_iframe", content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
+        //    if (content != null)
+        //    {
+        //        return PartialView("_document", content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
 
-        [ChildActionOnly]
-        public ActionResult Audio(int id)
-        {
-            var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
 
-            if (content != null)
-            {
-                return PartialView("_audio", content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
+        //[ChildActionOnly]
+        //public ActionResult IFrame(int id)
+        //{
+        //    var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
 
-        [ChildActionOnly]
-        public ActionResult Weblink(int id)
-        {
-            var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
+        //    if (content != null)
+        //    {
+        //        return PartialView("_iframe", content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
 
-            if (content != null)
-            {
-                return PartialView("_weblink", content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
+
+        //[ChildActionOnly]
+        //public ActionResult Audio(int id)
+        //{
+        //    var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
+
+        //    if (content != null)
+        //    {
+        //        return PartialView("_audio", content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
+
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
+
+        //[ChildActionOnly]
+        //public ActionResult Weblink(int id)
+        //{
+        //    var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
+
+        //    if (content != null)
+        //    {
+        //        return PartialView("_weblink", content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
+
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
 
         public async Task<CreateOrEditContentModel> TryGetContent(int id)
         {

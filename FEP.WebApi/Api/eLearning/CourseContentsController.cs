@@ -84,9 +84,7 @@ namespace FEP.WebApi.Api.eLearning
                 var content = _mapper.Map<CourseContent>(request);
 
                 if (request.CreateContentFrom == CreateContentFrom.CourseFrontPage)
-                {
-                    
-
+                {                   
                     var course = await db.Courses
                         .Include(x => x.Modules)
                         .FirstOrDefaultAsync(x => x.Id.Equals(request.CourseId));
@@ -94,13 +92,18 @@ namespace FEP.WebApi.Api.eLearning
                     if (course == null)
                         return BadRequest();
 
+                    if(course.Modules == null)
+                    {
+                        course.Modules = new List<CourseModule>();
+                    }
+
                     var module = new CourseModule
                     {
                         CourseId = request.CourseId,
                         Objectives = "Objective",
                         Description = "Description",
                         Title = request.Title,
-                        Order = course.Modules != null ? (course.Modules.Max(x => x.Order) + 1) : 1
+                        Order = course.Modules.Count() > 0 ? (course.Modules.Max(x => x.Order) + 1) : 1
                     };
 
                     content.Order = 1;

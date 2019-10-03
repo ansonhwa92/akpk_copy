@@ -761,7 +761,6 @@
     <Content Include="libman.json" />
     <Content Include="Areas\eLearning\Views\Courses\_actionLog.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\_amendmentHistory.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\CreateVideo.cshtml" />
     <Content Include="Areas\eLearning\Views\Shared\_video.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\View.cshtml" />
     <Content Include="Areas\eLearning\Views\Shared\_contentCompletion.cshtml" />

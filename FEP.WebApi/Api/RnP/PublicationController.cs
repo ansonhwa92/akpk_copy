@@ -83,6 +83,19 @@ namespace FEP.WebApi.Api.RnP
 
                 switch (sortBy)
                 {
+                    case "RefNo":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.RefNo);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.RefNo);
+                        }
+
+                        break;
+
                     case "Category":
 
                         if (sortAscending)
@@ -163,6 +176,7 @@ namespace FEP.WebApi.Api.RnP
                 .Select(s => new ReturnBriefPublicationModel
                 {
                     ID = s.ID,
+                    RefNo = s.RefNo,
                     Author = s.Author,
                     Title = s.Title,
                     ISBN = s.ISBN,
@@ -184,8 +198,7 @@ namespace FEP.WebApi.Api.RnP
         // GET: api/RnP/Publication (misc list) - CURRENTLY USED FOR ANONYMOUS BROWSING
         public List<ReturnPublicationModel> Get()
         {
-            // TODO: published only
-            var publications = db.Publication.Where(p => p.Status <= PublicationStatus.Published).OrderByDescending(p => p.DateAdded).OrderBy(p => p.Title).Select(s => new ReturnPublicationModel
+            var publications = db.Publication.Where(p => p.Status == PublicationStatus.Published).OrderByDescending(p => p.DateAdded).OrderBy(p => p.Title).Select(s => new ReturnPublicationModel
             {
                 ID = s.ID,
                 CategoryID = s.CategoryID,
@@ -377,7 +390,7 @@ namespace FEP.WebApi.Api.RnP
                 WithdrawalReason = s.WithdrawalReason,
                 ProofOfWithdrawal = s.ProofOfWithdrawal,
                 WithdrawalDate = s.WithdrawalDate,
-                CancelRemark = s.CancelRemark, 
+                CancelRemark = s.CancelRemark,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
                 RefNo = s.RefNo,
@@ -789,7 +802,7 @@ namespace FEP.WebApi.Api.RnP
                     db.SaveChanges();
 
                     //return model.Title;
-                    return publication.Title;
+                    return publication.Title + "|" + publication.RefNo;
                 }
             }
             return "";
@@ -825,7 +838,7 @@ namespace FEP.WebApi.Api.RnP
                 db.SaveChanges();
 
                 //return model.Title;
-                return publication.Title;
+                return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
             }
             return "";
         }
@@ -846,8 +859,8 @@ namespace FEP.WebApi.Api.RnP
 
                 db.SaveChanges();
 
-                //return model.Title;
-                return publication.Title;
+                //return publication.Title;
+                return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
             }
             return "";
         }
@@ -899,6 +912,7 @@ namespace FEP.WebApi.Api.RnP
                     // requirenext is always set to true when coming from verifier approval, and always false from approver3
 
                     db.Entry(papproval).State = EntityState.Modified;
+                    // HERE
                     db.SaveChanges();
 
                     var publication = db.Publication.Where(p => p.ID == papproval.PublicationID).FirstOrDefault();
@@ -964,12 +978,14 @@ namespace FEP.WebApi.Api.RnP
                                 };
 
                                 db.PublicationApproval.Add(pnewapproval);
+                                // HERE
                                 db.SaveChanges();
                             }
 
                         }
 
-                        return publication.Title;
+                        //return publication.Title;
+                        return publication.ID + "|" + publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                     }
                 }
             }
@@ -1000,7 +1016,8 @@ namespace FEP.WebApi.Api.RnP
 
                     db.SaveChanges();
 
-                    return publication.Title;
+                    //return publication.Title;
+                    return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                 }
             }
             return "";
@@ -1050,7 +1067,8 @@ namespace FEP.WebApi.Api.RnP
                     db.PublicationWithdrawal.Add(pwithdrawal);
                     db.SaveChanges();
 
-                    return publication.Title;
+                    //return publication.Title;
+                    return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                 }
             }
 
@@ -1080,7 +1098,8 @@ namespace FEP.WebApi.Api.RnP
                     //db.Configuration.ValidateOnSaveEnabled = false;
                     db.SaveChanges();
 
-                    return publication.Title;
+                    //return publication.Title;
+                    return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                 }
             }
             return "";
@@ -1178,7 +1197,8 @@ namespace FEP.WebApi.Api.RnP
 
                         }
 
-                        return publication.Title;
+                        //return publication.Title;
+                        return publication.ID + "|" + publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                     }
                 }
             }
@@ -1186,5 +1206,361 @@ namespace FEP.WebApi.Api.RnP
             return "";
         }
 
+        /*
+         * The following API calls are for Publication purchasing operations (prior to cart), including:
+         * 1. 
+         * 2. 
+         */
+
+        // Function for getting existing delivery address
+        // GET: api/RnP/Publication/GetDeliveryInfo/5
+        [Route("api/RnP/Publication/GetDeliveryInfo")]
+        public PublicationDeliveryModel GetDeliveryInfo(int userid)
+        {
+            var info = db.PublicationDelivery.Where(d => d.UserId == userid).FirstOrDefault();
+
+            if (info != null)
+            {
+                var newinfo = new PublicationDeliveryModel
+                {
+                    ID = info.ID,
+                    UserId = info.UserId,
+                    FirstName = info.FirstName,
+                    LastName = info.LastName,
+                    Address1 = info.Address1,
+                    Address2 = info.Address2,
+                    Postcode = info.Postcode,
+                    City = info.City,
+                    State = info.State,
+                    PhoneNumber = info.PhoneNumber
+                };
+                return newinfo;
+            }
+            else
+            {
+                var newinfo = new PublicationDeliveryModel
+                {
+                    UserId = userid,
+                    FirstName = "",
+                    LastName = "",
+                    Address1 = "",
+                    Address2 = "",
+                    Postcode = "",
+                    City = "",
+                    State = DeliveryStates.Johor,
+                    PhoneNumber = ""
+                };
+                return newinfo;
+            }
+
+        }
+
+        // Function for creating/upating delivery address for publication purchases
+        // POST: api/RnP/Publication/UpdateDeliveryInfo
+        [Route("api/RnP/Publication/UpdateDeliveryInfo")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool UpdateDeliveryInfo([FromBody] PublicationDeliveryModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var info = db.PublicationDelivery.Where(d => d.UserId == model.UserId).FirstOrDefault();
+
+                if (info != null)
+                {
+                    info.UserId = model.UserId;
+                    info.FirstName = model.FirstName;
+                    info.LastName = model.LastName;
+                    info.Address1 = model.Address1;
+                    info.Address2 = model.Address2;
+                    info.Postcode = model.Postcode;
+                    info.City = model.City;
+                    info.State = model.State;
+                    info.PhoneNumber = model.PhoneNumber;
+
+                    db.Entry(info).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return true;
+                }
+                else
+                {
+                    var newinfo = new PublicationDelivery
+                    {
+                        UserId = model.UserId,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Address1 = model.Address1,
+                        Address2 = model.Address2,
+                        Postcode = model.Postcode,
+                        City = model.City,
+                        State = model.State,
+                        PhoneNumber = model.PhoneNumber
+                    };
+
+                    db.PublicationDelivery.Add(newinfo);
+                    db.SaveChanges();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // Function for adding order item when publication purchase selection is finalised
+        // called by Add to Cart button at PurchasePublication page
+        // the caller must also call api/Commerce/Cart/AddItem
+        // POST: api/RnP/Publication/AddOrderItem
+        [Route("api/RnP/Publication/AddOrderItem")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool AddOrderItem([FromBody] PublicationPurchaseItemModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var pitem = new PublicationPurchaseItem
+                {
+                    UserId = model.UserId,
+                    PublicationID = model.PublicationID,
+                    Format = model.Format,
+                    Price = model.Price,
+                    Quantity = model.Quantity
+                };
+
+                db.PublicationPurchaseItem.Add(pitem);
+                db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        // Remove order item
+        // POST: api/RnP/Publication/RemoveOrderItem
+        [Route("api/RnP/Publication/RemoveOrderItem")]
+        public bool RemoveOrderItem(int itemid)
+        {
+            var item = db.PublicationPurchaseItem.Where(pi => pi.ID == itemid).FirstOrDefault();
+
+            if (item != null)
+            {
+                db.PublicationPurchaseItem.Remove(item);
+                db.SaveChanges();
+            }
+
+            return true;
+        }
+
+        /*
+         * The following API calls are for SLAReminder/Notifications including:
+         * 1. Get notification receiver IDs
+         * 2. Save notification ID (to publication table)
+         * The functions are called by SendNotification function from Intranet
+         */
+
+        // Function to get notification receivers based on notification category and type.
+        // Called when sending notifications
+        // TO CONSIDER: Currently cancellations notify all approvers.
+        // GET: api/RnP/Publication/GetNotificationReceivers/
+        [Route("api/RnP/Publication/GetNotificationReceivers")]
+        public List<int> GetNotificationReceivers(NotificationCategory cat, NotificationType type, PublicationApprovalStatus status, bool forward)
+        {
+            List<int> receivers = new List<int> { };
+
+            // prepare
+            bool toadmin = false;
+            bool toverifier = false;
+            bool toapprover1 = false;
+            bool toapprover2 = false;
+            bool toapprover3 = false;
+
+            if ((type == NotificationType.Submit_Publication_Creation) || (type == NotificationType.Submit_Publication_Modification) || (type == NotificationType.Submit_Publication_Withdrawal))
+            {
+                toverifier = true;
+            }
+            else if ((type == NotificationType.Submit_Publication_Cancellation) || (type == NotificationType.Submit_Publication_Modification_Cancellation) || (type == NotificationType.Submit_Publication_Withdrawal_Cancellation))
+            {
+                toverifier = true;
+                toapprover1 = true;
+                toapprover2 = true;
+                toapprover3 = true;
+            }
+            else if (type == NotificationType.Submit_Publication_Publication)
+            {
+                toverifier = true;
+                toapprover1 = true;
+                toapprover2 = true;
+                toapprover3 = true;
+            }
+            else if ((type == NotificationType.Verify_Publication_Creation) || (type == NotificationType.Verify_Publication_Modification) || (type == NotificationType.Verify_Publication_Withdrawal))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                }
+                else
+                {
+                    toapprover1 = true;
+                }
+            }
+            else if ((type == NotificationType.Approve_Publication_Creation_1) || (type == NotificationType.Approve_Publication_Modification_1) || (type == NotificationType.Approve_Publication_Withdrawal_1))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toverifier = true;
+                }
+                else
+                {
+                    if (forward)
+                    {
+                        toapprover2 = true;
+                    }
+                    else
+                    {
+                        toadmin = true;
+                        toverifier = true;
+                    }
+                }
+            }
+            else if ((type == NotificationType.Approve_Publication_Creation_2) || (type == NotificationType.Approve_Publication_Modification_2) || (type == NotificationType.Approve_Publication_Withdrawal_2))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toverifier = true;
+                    toapprover1 = true;
+                }
+                else
+                {
+                    if (forward)
+                    {
+                        toapprover3 = true;
+                    }
+                    else
+                    {
+                        toadmin = true;
+                        toverifier = true;
+                        toapprover1 = true;
+                    }
+                }
+            }
+            else if ((type == NotificationType.Approve_Publication_Creation_3) || (type == NotificationType.Approve_Publication_Modification_3) || (type == NotificationType.Approve_Publication_Withdrawal_3))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toverifier = true;
+                    toapprover1 = true;
+                    toapprover2 = true;
+                }
+                else
+                {
+                    toadmin = true;
+                    toverifier = true;
+                    toapprover1 = true;
+                    toapprover2 = true;
+                }
+            }
+
+            // get list of users
+            var allusers = db.User.Where(u => u.Display).ToList();
+
+            foreach (FEP.Model.User myuser in allusers)
+            {
+                if (myuser.UserAccount.IsEnable)
+                {
+                    // get list of roles
+                    var myroles = myuser.UserAccount.UserRoles;
+                    foreach (UserRole myrole in myroles)
+                    {
+                        var myroleid = myrole.RoleId;
+                        // get list of access
+                        var myaccesses = db.RoleAccess.Where(ra => ra.RoleId == myroleid).ToList();
+                        foreach (RoleAccess myaccess in myaccesses)
+                        {
+                            UserAccess myfunction = myaccess.UserAccess;
+                            if (myfunction == UserAccess.RnPPublicationEdit)
+                            {
+                                if (toadmin)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationWithdraw)
+                            {
+                                if (toadmin)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationVerify)
+                            {
+                                if (toverifier)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationApprove1)
+                            {
+                                if (toapprover1)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationApprove2)
+                            {
+                                if (toapprover2)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationApprove3)
+                            {
+                                if (toapprover3)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // return unique ids
+            if (receivers.Count > 0)
+            {
+                List<int> uniquereceivers = receivers.Distinct().ToList();
+                receivers = uniquereceivers;
+            }
+            return receivers;
+        }
+
+        // Function to save notification ID.
+        // Called when sending notifications
+        // GET: api/RnP/Publication/SaveNotificationID/
+        [Route("api/RnP/Publication/SaveNotificationID")]
+        public bool SaveNotificationID(int id, int notificationid)
+        {
+            var publication = db.Publication.Where(p => p.ID == id).FirstOrDefault();
+
+            if (publication != null)
+            {
+                publication.NotificationID = notificationid;
+
+                db.Entry(publication).State = EntityState.Modified;
+                //db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

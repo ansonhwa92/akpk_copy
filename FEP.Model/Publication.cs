@@ -59,6 +59,7 @@ namespace FEP.Model
         public int PurchaseCount { get; set; }
         // DMS integration (TODO)............................................................................................
         public string DmsPath { get; set; }
+        public int NotificationID { get; set; }
         // foreign keys......................................................................................................
         [ForeignKey("CategoryID")]
         public virtual PublicationCategory Category { get; set; }
@@ -135,20 +136,20 @@ namespace FEP.Model
     // NOTE: sample publication catalog also has "Like" icon on featured publications!
     // which means another child table with publication ID and user ID
 
-    [Table("PublicationPurchase")]
-    public class PublicationPurchase
+    [Table("PublicationDelivery")]
+    public class PublicationDelivery
     {
         [Key]
         public int ID { get; set; }
-        public int UserId { get; set; }     // also determines payment from individual/agency
-        //[Required(ErrorMessageResourceName = "ValidRequiredDeliveryAddress", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        //[Display(Name = "PubPurchaseDeliveryAddress", ResourceType = typeof(Language.RnPForm))]
-        public string DeliveryAddress { get; set; }
-        public string DiscountCode { get; set; }
-        public string InvoiceNo { get; set; }
-        public PublicationPaymentModes PaymentMode { get; set; }
-        public DateTime CreatedDate { get; set; }
-        // guarantee letter? (per agency)
+        public int UserId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string Postcode { get; set; }
+        public string City { get; set; }
+        public DeliveryStates State { get; set; }
+        public string PhoneNumber { get; set; }
     }
 
     [Table("PublicationPurchaseItem")]
@@ -156,17 +157,19 @@ namespace FEP.Model
     {
         [Key]
         public int ID { get; set; }
-        public int PublicationPurchaseID { get; set; }
+        public int UserId { get; set; }
+        public int? PurchaseOrderId { get; set; }
         public int PublicationID { get; set; }
         public PublicationFormats Format { get; set; }
         public float Price { get; set; }
         public int Quantity { get; set; }
 
-        [ForeignKey("PublicationPurchaseID")]
-        public virtual PublicationPurchase PublicationPurchase { get; set; }
+        // from cart
+        //[ForeignKey("PurchaseOrderID")]
+        //public virtual PurchaseOrder PurchaseOrder { get; set; }
 
-        [ForeignKey("PublicationID")]
-        public virtual Publication Publication { get; set; }
+        //[ForeignKey("PublicationID")]
+        //public virtual Publication Publication { get; set; }
     }
 
     [Table("PublicationRefund")]
@@ -279,6 +282,7 @@ namespace FEP.Model
         Rejected
     }
 
+    /*
     public enum PublicationPaymentModes
     {
         [Display(Name = "PubPaymentModeOnline", ResourceType = typeof(Language.RnPEnum))]
@@ -286,15 +290,16 @@ namespace FEP.Model
         [Display(Name = "PubPaymentModeOffline", ResourceType = typeof(Language.RnPEnum))]
         Offline
     }
+    */
 
     public enum PublicationFormats
     {
-        [Display(Name = "PubFormatHardcopy", ResourceType = typeof(Language.RnPEnum))]
-        Hardcopy,
         [Display(Name = "PubFormatDigital", ResourceType = typeof(Language.RnPEnum))]
         Digital,
+        [Display(Name = "PubFormatHardcopy", ResourceType = typeof(Language.RnPEnum))]
+        Hardcopy,
         [Display(Name = "PubFormatBoth", ResourceType = typeof(Language.RnPEnum))]
-        Both
+        Promotion
     }
 
     public enum PublicationRefundStatus
@@ -303,5 +308,41 @@ namespace FEP.Model
         Incomplete,
         [Display(Name = "PubRefundStatusComplete", ResourceType = typeof(Language.RnPEnum))]
         Complete
+    }
+
+    public enum DeliveryStates
+    {
+        [Display(Name = "Johor")]
+        Johor,
+        [Display(Name = "Kedah")]
+        Kedah,
+        [Display(Name = "Kelantan")]
+        Kelantan,
+        [Display(Name = "Melaka")]
+        Melaka,
+        [Display(Name = "Negeri Sembilan")]
+        NegeriSembilan,
+        [Display(Name = "Pahang")]
+        Pahang,
+        [Display(Name = "Perak")]
+        Perak,
+        [Display(Name = "Perlis")]
+        Perlis,
+        [Display(Name = "Pulau Pinang")]
+        PulauPinang,
+        [Display(Name = "Sabah")]
+        Sabah,
+        [Display(Name = "Sarawak")]
+        Sarawak,
+        [Display(Name = "Selangor")]
+        Selangor,
+        [Display(Name = "Terengganu")]
+        Terengganu,
+        [Display(Name = "Kuala Lumpur")]
+        WilayahKL,
+        [Display(Name = "Wilayah Persekutuan Labuan")]
+        WilayahLabuan,
+        [Display(Name = "Putrajaya")]
+        WilayahPutrajaya
     }
 }

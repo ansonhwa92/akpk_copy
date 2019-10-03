@@ -157,6 +157,8 @@
     <Compile Include="Areas\Administrator\Controllers\SectorController.cs" />
     <Compile Include="Areas\Administrator\Controllers\StaffController.cs" />
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
+    <Compile Include="Areas\Commerce\CommerceAreaRegistration.cs" />
+    <Compile Include="Areas\Commerce\Controllers\CartController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventCategoryController.cs" />
     <Compile Include="Areas\eEvent\Controllers\ExhibitionRoadshowRequestController.cs" />
     <Compile Include="Areas\eEvent\Controllers\HomeController.cs" />
@@ -733,6 +735,10 @@
     <Content Include="Areas\Administrator\Views\Ministry\_Delete.cshtml" />
     <Content Include="Areas\Administrator\Views\Ministry\_Edit.cshtml" />
     <Content Include="Areas\Administrator\Views\Ministry\List.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\BrowseSurveys.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\PublicSurvey.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\ThankYou.cshtml" />
+    <Content Include="Areas\Commerce\Views\web.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1223,10 +1229,16 @@
     <Content Include="Scripts\summernote\font\summernote.ttf" />
     <Content Include="Scripts\summernote\font\summernote.woff" />
     <Content Include="Areas\eEvent\Views\PublicEvent\_Attachment.cshtml" />
+    <Content Include="Views\Auth\LoginAndReturn.cshtml" />
+    <Content Include="Views\Shared\_LayoutPrivateSurvey.cshtml" />
+    <Content Include="Views\Shared\_LayoutPublicSurvey.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administrator\Models\" />
+    <Folder Include="Areas\Commerce\Models\" />
+    <Folder Include="Areas\Commerce\Views\Cart\" />
+    <Folder Include="Areas\Commerce\Views\Shared\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Areas\eLearning\Models\" />

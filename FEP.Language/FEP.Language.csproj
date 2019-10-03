@@ -61,6 +61,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Cart.Designer.cs">
+      <DependentUpon>Cart.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="General.Designer.cs">
       <DependentUpon>General.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -159,6 +164,10 @@
     <EmbeddedResource Include="EventCategory.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EventCategory.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cart.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Cart.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="General.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

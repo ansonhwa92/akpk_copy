@@ -146,6 +146,7 @@
     <Compile Include="Api\Administration\StaffController.cs" />
     <Compile Include="Api\Administration\StateController.cs" />
     <Compile Include="Api\Administration\UserController.cs" />
+    <Compile Include="Api\Commerce\CartController.cs" />
     <Compile Include="Api\eEvent\EventCategoryController.cs" />
     <Compile Include="Api\eEvent\EventExternalExhibitorController.cs" />
     <Compile Include="Api\eEvent\EventSpeakerController.cs" />
@@ -264,6 +265,7 @@
     <Folder Include="App_Data\Temp_Upload\" />
     <Folder Include="bin\" />
     <Folder Include="Views\Auth\" />
+    <Folder Include="Views\Cart\" />
     <Folder Include="Views\Client\" />
     <Folder Include="Views\EventCategory\" />
     <Folder Include="Views\MediaInterviewRequest\" />

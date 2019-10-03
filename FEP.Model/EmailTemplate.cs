@@ -91,7 +91,25 @@ namespace FEP.Model
         [Display(Name = "Payment Status")]
         PaymentStatus = 43,
 
+        //101-120 for Survey
+        [Display(Name = "Survey Title")]
+        SurveyTitle = 101,
+        [Display(Name = "Survey Type")]
+        SurveyType = 102,
+        [Display(Name = "Survey Code")]
+        SurveyCode = 103,
+        [Display(Name = "Survey Approval")]
+        SurveyApproval = 104,
 
+        //121-140 for Publication
+        [Display(Name = "Publication Title")]
+        PublicationTitle = 121,
+        [Display(Name = "Publication Author")]
+        PublicationAuthor = 122,
+        [Display(Name = "Publication Code")]
+        PublicationCode = 123,
+        [Display(Name = "Publication Approval")]
+        PublicationApproval = 124,
 
     }
 

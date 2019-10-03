@@ -10,10 +10,13 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="~/RnP/Home"><a href="#">Research & Publications</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
             </ol>
         </nav>
     </div>
+    <h1 class="page-title text-white">Browse Publications</h1>
+    <div class="header-text">Browse and purchase publications</div>
 }
 
 <main id="landing-inner" class="rellax" data-rellax-speed="0">
@@ -53,6 +56,7 @@
     <!-- =====================
         Our Publications
     ========================-->
+    <!--
     <section id="ourpublications">
         <div class="container">
             <a href="#" class="btn btn-outline-secondary btn-rounded pull-right">VIEW ALL</a>
@@ -131,6 +135,7 @@
         </div>
     </section>
     <hr>
+    -->
     <!-- =====================
        Searching Result
     ========================-->
@@ -268,14 +273,26 @@
                                 @foreach (var item in Model)
                                 {
                                     icount++;
-                                    coverpic1 = BaseURL + "/" + "img" + "/" + item.Pictures;
-                                    coverpic2 = BaseURL + "/" + "img" + "/" + item.Pictures;
-                                    authorpic = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                    if (item.Pictures != "")
+                                    {
+                                        coverpic1 = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                        coverpic2 = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                        authorpic = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                        coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                                        coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                                        authorpic = BaseURL + "/" + "img" + "/8.jpg";
+                                    }
+                                    else
+                                    {
+                                        coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                                        coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                                        authorpic = BaseURL + "/" + "img" + "/8.jpg";
+                                    }
 
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="card__wrapper">
                                             <div class="card__top">
-                                                <div class="card__top__wapper"><img class="card__top__image" src="@coverpic1" style="width:516px;height:352px;" alt="image"></div>
+                                                <div class="card__top__wapper"><img class="card__top__image" src="@coverpic1" alt="image"></div>
                                             </div>
                                             <div class="card__body">
                                                 <a class="card__title" href="@Url.Action("PublicationDetails", "Home", new { area = "RnP", @id = item.ID })">@item.Title</a>
@@ -300,8 +317,15 @@
             </div>
         </div>
     </section>
-    <hr>
-
+    <hr />
+    <section id="search-result" class="publications">
+        <div class="container">
+            <div class="row">
+                <a class="btn btn-secondary block font-weight-normal mr-2" href="@Url.Action("BrowseSurveys", "Home", new { area = "RnP" })">Browse Surveys</a>
+            </div>
+        </div>
+    </section>
+    <hr />
     @Html.Partial("_NewsArticle")
 </main>
 

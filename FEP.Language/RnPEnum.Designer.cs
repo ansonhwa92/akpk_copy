@@ -187,7 +187,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hard &amp; Digital Copy.
+        ///   Looks up a localized string similar to Promotion (1+1).
         /// </summary>
         public static string PubFormatBoth {
             get {

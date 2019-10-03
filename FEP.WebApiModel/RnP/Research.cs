@@ -148,6 +148,9 @@ namespace FEP.WebApiModel.RnP
     {
         public int ID { get; set; }
 
+        [Display(Name = "PubRefNo", ResourceType = typeof(Language.RnPForm))]
+        public string RefNo { get; set; }
+
         [Display(Name = "SurveyType", ResourceType = typeof(Language.RnPForm))]
         public SurveyType? Type { get; set; }
 

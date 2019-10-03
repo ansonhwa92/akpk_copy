@@ -172,6 +172,9 @@ namespace FEP.WebApiModel.RnP
         //[Display(Name = "PubCategoryID", ResourceType = typeof(Language.RnPForm))]
         //public int CategoryID { get; set; }
 
+        [Display(Name = "PubRefNo", ResourceType = typeof(Language.RnPForm))]
+        public string RefNo { get; set; }
+
         [Display(Name = "PubAuthor", ResourceType = typeof(Language.RnPForm))]
         public string Author { get; set; }
 
@@ -590,4 +593,78 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "PubApprovalRequireNext", ResourceType = typeof(Language.RnPForm))]
         public bool RequireNext { get; set; }
     }
+
+    // class for returning/updating delivery address for publication ordering
+    public class PublicationDeliveryModel
+    {
+        public int ID { get; set; }
+
+        public int UserId { get; set; }
+
+        [Display(Name = "First Name")]
+        [Required]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        [Required]
+        public string LastName { get; set; }
+
+        [Display(Name = "Street Address 1")]
+        [Required]
+        public string Address1 { get; set; }
+
+        [Display(Name = "Street Address 2")]
+        public string Address2 { get; set; }
+
+        [Display(Name = "Postcode")]
+        [Required]
+        public string Postcode { get; set; }
+
+        [Display(Name = "City")]
+        [Required]
+        public string City { get; set; }
+
+        [Display(Name = "State")]
+        [Required]
+        public DeliveryStates State { get; set; }
+
+        [Display(Name = "Contact No.")]
+        [Required]
+        public string PhoneNumber { get; set; }
+    }
+
+    // class for updating delivery information + adding item to order
+    public class UpdatePublicationDeliveryModel
+    {
+        public List<PublicationPurchaseItemModel> Items { get; set; }
+        public PublicationDeliveryModel Delivery { get; set; }
+    }
+
+    // class for returning/updating publication purchase item
+    // filled in by system
+    public class PublicationPurchaseItemModel
+    {
+        public int ID { get; set; }
+
+        public int UserId { get; set; }
+
+        public int? PurchaseOrderId { get; set; }
+
+        [Display(Name = "Publication Title")]
+        [Required]
+        public int PublicationID { get; set; }
+
+        [Display(Name = "Format")]
+        [Required]
+        public PublicationFormats Format { get; set; }
+
+        [Display(Name = "Unit Price")]
+        [Required]
+        public float Price { get; set; }
+
+        [Display(Name = "Quantity")]
+        [Required]
+        public int Quantity { get; set; }
+    }
+
 }

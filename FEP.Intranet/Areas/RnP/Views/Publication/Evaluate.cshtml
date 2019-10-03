@@ -32,514 +32,515 @@
 }
 
 <div class="row">
-	<div class="col-xl-3 col-md-3 col-sm-4 my-2">
-		<div id="page-nav" class="sidebar-left page-nav">
-			<div data-perfect-scrollbar>
-				<div class="page-section">
-					<h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Request Information</h6>
-					<ul class="nav page-nav__menu">
-						<li class="nav-item">
-							<a id="tab_details" href="#publication-details" data-toggle="tab" class="nav-link active">Publication Details</a>
-						</li>
-						<li class="nav-item">
-							<a id="tab_history" href="#amendment-history" data-toggle="tab" class="nav-link active">Amendment History</a>
-						</li>
-					</ul>
-				</div>
-				<div>
-					@{ if (Model.Pub.Status == PublicationStatus.Submitted)
-						{
-							if (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))
-							{
-								<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
-								<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
-							}
-						}
-						else if (Model.Pub.Status == PublicationStatus.Verified)
-						{
-							if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1) && Model.Approval.Level == PublicationApprovalLevels.Approver1)
-							{
-								<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
-								<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
-							}
-							else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2) && Model.Approval.Level == PublicationApprovalLevels.Approver2)
-							{
-								<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
-								<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
-							}
-							else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3) && Model.Approval.Level == PublicationApprovalLevels.Approver3)
-							{
-								<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
-								<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
-							}
-						}
-					}
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-		<!-- Start Form -->
-		<div class="border-form rounded-top">
-			<div class="form-container tab-content">
-				<div class="tab-pane active" id="publication-details">
-					<div class="mb-4 mt-2 mr-auto">
-						<h4 class="color-darkblue mb-0">Publication Details</h4>
-						<h6 class="font-weight-normal">View publication request details below.</h6>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.Pub.RefNo, htmlAttributes: new { @class = "control-label" })
-							@Html.EditorFor(model => model.Pub.RefNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.Pub.Status, htmlAttributes: new { @class = "control-label" })
-							@*Html.EditorFor(model => model.Pub.Status, new { htmlAttributes = new { @class = "form-control bg-warning-ccd", @readonly = "readonly" } })*@
-							@{ if (Model.Pub.Status == PublicationStatus.New)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Draft">
-								}
-								else if (Model.Pub.Status == PublicationStatus.Submitted)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Verification">
-								}
-								else if (Model.Pub.Status == PublicationStatus.VerifierRejected)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Amendment">
-								}
-								else if (Model.Pub.Status == PublicationStatus.Verified)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Approval">
-								}
-								else if (Model.Pub.Status == PublicationStatus.ApproverRejected)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Amendment">
-								}
-								else if (Model.Pub.Status == PublicationStatus.Approved)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Approved">
-								}
-								else if (Model.Pub.Status == PublicationStatus.Published)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Published">
-								}
-								else if (Model.Pub.Status == PublicationStatus.Unpublished)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Unpublished">
-								}
-								else if (Model.Pub.Status == PublicationStatus.Trashed)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Cancelled">
-								}
-								else if (Model.Pub.Status == PublicationStatus.NewWithdrawal)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Draft Withdrawal">
-								}
-								else if (Model.Pub.Status == PublicationStatus.WithdrawalSubmitted)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Verification">
-								}
-								else if (Model.Pub.Status == PublicationStatus.WithdrawalVerifierRejected)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Amendment">
-								}
-								else if (Model.Pub.Status == PublicationStatus.WithdrawalVerified)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Approval">
-								}
-								else if (Model.Pub.Status == PublicationStatus.WithdrawalApproverRejected)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Amendment">
-								}
-								else if (Model.Pub.Status == PublicationStatus.WithdrawalApproved)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Approved">
-								}
-								else if (Model.Pub.Status == PublicationStatus.Withdrawn)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawn">
-								}
-								else if (Model.Pub.Status == PublicationStatus.WithdrawalTrashed)
-								{
-									<input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Cancelled">
-								}
-							}
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Pub.CategoryID, htmlAttributes: new { @class = "control-label" })
-							@Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Pub.Author, htmlAttributes: new { @class = "control-label" })
-							@Html.EditorFor(model => model.Pub.Author, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Pub.Coauthor, htmlAttributes: new { @class = "control-label" })
-							@Html.EditorFor(model => model.Pub.Coauthor, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Pub.Title, htmlAttributes: new { @class = "control-label" })
-							@Html.EditorFor(model => model.Pub.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.Pub.Year, htmlAttributes: new { @class = "control-label" })
-							@Html.EditorFor(model => model.Pub.Year, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-						<div class="form-group col-lg-6">
-							&nbsp;
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Pub.Description, htmlAttributes: new { @class = "control-label" })
-							@*Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly", cols = 48, @rows = 5 })*@
-							<textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Pub.Description)</textarea>
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Pub.Language, htmlAttributes: new { @class = "control-label" })
-							<select class="js-example-basic-multiple" id="pub_lang" name="pub_langs[]" multiple="multiple" style="width: 100%;" disabled="disabled">
-								<option value="Bahasa Malaysia">Bahasa Malaysia</option>
-								<option value="English">English</option>
-							</select>
-							@Html.HiddenFor(model => model.Pub.Language, new { htmlAttributes = new { @class = "form-control" } })
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Pub.ISBN, htmlAttributes: new { @class = "control-label" })
-							@Html.EditorFor(model => model.Pub.ISBN, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-4">
-							Format
-						</div>
-						<div class="form-group col-lg-4">
-							Free?
-						</div>
-						<div class="form-group col-lg-4">
-							Price (RM)
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-4">
-							<div class="custom-control custom-checkbox">
-								@Html.EditorFor(model => model.Pub.Hardcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-								@Html.LabelFor(model => model.Pub.Hardcopy, htmlAttributes: new { @class = "custom-control-label" })
-							</div>
-						</div>
-						<div class="form-group col-lg-4">
-							<div class="custom-control custom-checkbox">
-								@Html.EditorFor(model => model.Pub.FreeHCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-								@Html.LabelFor(model => model.Pub.FreeHCopy, htmlAttributes: new { @class = "custom-control-label" })
-							</div>
-						</div>
-						<div class="form-group col-lg-4">
-							@Html.EditorFor(model => model.Pub.HPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-4">
-							<div class="custom-control custom-checkbox">
-								@Html.EditorFor(model => model.Pub.Digitalcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-								@Html.LabelFor(model => model.Pub.Digitalcopy, htmlAttributes: new { @class = "custom-control-label" })
-							</div>
-						</div>
-						<div class="form-group col-lg-4">
-							<div class="custom-control custom-checkbox">
-								@Html.EditorFor(model => model.Pub.FreeDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-								@Html.LabelFor(model => model.Pub.FreeDCopy, htmlAttributes: new { @class = "custom-control-label" })
-							</div>
-						</div>
-						<div class="form-group col-lg-4">
-							@Html.EditorFor(model => model.Pub.DPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-4">
-							<div class="custom-control custom-checkbox">
-								@Html.EditorFor(model => model.Pub.HDcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-								@Html.LabelFor(model => model.Pub.HDcopy, htmlAttributes: new { @class = "custom-control-label" })
-							</div>
-						</div>
-						<div class="form-group col-lg-4">
-							<div class="custom-control custom-checkbox">
-								@Html.EditorFor(model => model.Pub.FreeHDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-								@Html.LabelFor(model => model.Pub.FreeHDCopy, htmlAttributes: new { @class = "custom-control-label" })
-							</div>
-						</div>
-						<div class="form-group col-lg-4">
-							@Html.EditorFor(model => model.Pub.HDPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-					<!--
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Pub.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-							<div class="custom-file">
-								@Html.EditorFor(model => model.Pub.ProofOfApproval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								<input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-								<label class="custom-file-label" for="customFile">No file choosen</label>
-							</div>
-							<div id="fileList"></div>
-						</div>
-					</div>
-					-->
-					<div class="row" style="display:none;">
-						<div class="form-group col-lg-12">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Request Information</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a id="tab_details" href="#publication-details" data-toggle="tab" class="nav-link active">Publication Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab_history" href="#amendment-history" data-toggle="tab" class="nav-link active">Amendment History</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    @{ if (Model.Pub.Status == PublicationStatus.Submitted)
+                        {
+                            if (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))
+                            {
+                                <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+                                <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                            }
+                        }
+                        else if (Model.Pub.Status == PublicationStatus.Verified)
+                        {
+                            if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1) && Model.Approval.Level == PublicationApprovalLevels.Approver1)
+                            {
+                                <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+                                <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                            }
+                            else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2) && Model.Approval.Level == PublicationApprovalLevels.Approver2)
+                            {
+                                <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+                                <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                            }
+                            else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3) && Model.Approval.Level == PublicationApprovalLevels.Approver3)
+                            {
+                                <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+                                <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                            }
+                        }
+                    }
+                    <p><a class="btn btn-default btn-block" id="btnTest" href="@Url.Action("PublicationDetails", "Home", new { area = "RnP", @id = Model.Pub.ID })" target="_blank">Preview Publication</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
+            <div class="form-container tab-content">
+                <div class="tab-pane active" id="publication-details">
+                    <div class="mb-4 mt-2 mr-auto">
+                        <h4 class="color-darkblue mb-0">Publication Details</h4>
+                        <h6 class="font-weight-normal">View publication request details below.</h6>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Pub.RefNo, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pub.RefNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Pub.Status, htmlAttributes: new { @class = "control-label" })
+                            @*Html.EditorFor(model => model.Pub.Status, new { htmlAttributes = new { @class = "form-control bg-warning-ccd", @readonly = "readonly" } })*@
+                            @{ if (Model.Pub.Status == PublicationStatus.New)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Draft">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.Submitted)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Verification">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.VerifierRejected)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Amendment">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.Verified)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Approval">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.ApproverRejected)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Amendment">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.Approved)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Approved">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.Published)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Published">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.Unpublished)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Unpublished">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.Trashed)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Cancelled">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.NewWithdrawal)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Draft Withdrawal">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.WithdrawalSubmitted)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Verification">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.WithdrawalVerifierRejected)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Amendment">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.WithdrawalVerified)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Approval">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.WithdrawalApproverRejected)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Amendment">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.WithdrawalApproved)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Approved">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.Withdrawn)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawn">
+                                }
+                                else if (Model.Pub.Status == PublicationStatus.WithdrawalTrashed)
+                                {
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Cancelled">
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.CategoryID, htmlAttributes: new { @class = "control-label" })
+                            @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.Author, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pub.Author, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.Coauthor, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pub.Coauthor, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.Title, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pub.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Pub.Year, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pub.Year, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.Description, htmlAttributes: new { @class = "control-label" })
+                            @*Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly", cols = 48, @rows = 5 })*@
+                            <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Pub.Description)</textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.Language, htmlAttributes: new { @class = "control-label" })
+                            <select class="js-example-basic-multiple" id="pub_lang" name="pub_langs[]" multiple="multiple" style="width: 100%;" disabled="disabled">
+                                <option value="Bahasa Malaysia">Bahasa Malaysia</option>
+                                <option value="English">English</option>
+                            </select>
+                            @Html.HiddenFor(model => model.Pub.Language, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.ISBN, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pub.ISBN, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            Format
+                        </div>
+                        <div class="form-group col-lg-4">
+                            Free?
+                        </div>
+                        <div class="form-group col-lg-4">
+                            Price (RM)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.Pub.Hardcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.Pub.Hardcopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.Pub.FreeHCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.Pub.FreeHCopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @Html.EditorFor(model => model.Pub.HPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.Pub.Digitalcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.Pub.Digitalcopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.Pub.FreeDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.Pub.FreeDCopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @Html.EditorFor(model => model.Pub.DPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.Pub.HDcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.Pub.HDcopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.Pub.FreeHDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.Pub.FreeHDCopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @Html.EditorFor(model => model.Pub.HDPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <!--
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            <div class="custom-file">
+                                @Html.EditorFor(model => model.Pub.ProofOfApproval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
+                                <label class="custom-file-label" for="customFile">No file choosen</label>
+                            </div>
+                            <div id="fileList"></div>
+                        </div>
+                    </div>
+                    -->
+                    <div class="row" style="display:none;">
+                        <div class="form-group col-lg-12">
 
-							@Html.LabelFor(model => model.Pub.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-							@Html.EditorFor(model => model.Pub.ProofOfApproval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Pub.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pub.ProofOfApproval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
 
-							@Html.LabelFor(model => model.Pub.StockBalance, htmlAttributes: new { @class = "control-label" })
-							@Html.EditorFor(model => model.Pub.StockBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-						<div class="form-group col-lg-6">
-							&nbsp;
-						</div>
-					</div>
-				</div>
-				<div class="tab-pane" id="amendment-history">
-					<div class="mb-4 mt-2 mr-auto">
-						<h4 class="color-darkblue mb-0">Amendment History</h4>
-						<h6 class="font-weight-normal">Check amendment list here.</h6>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-12">
-							<ul class="list-group list-group-fit">
-								@if (ViewBag.History.Count != 0)
-								{
-									var icount = 0;
-									foreach (var item in ViewBag.History)
-									{
-										if (item.Status == PublicationApprovalStatus.Rejected)
-										{
-											icount++;
-											<li class="list-group-item pt-4">
-												<div class="media align-items-top">
-													<div class="media-left">
-														<div class="card__avatar">
-															<img src="assets/images/people/50/guy-6.jpg" alt="Avatar" class="card__avatar__image">
-														</div>
-													</div>
-													<div class="media-body">
-														<div class="card__name-wrap ml-0">
-															<div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
-															<div class="card__author-name">@item.UserName</div>
-															<div class="card__text pb-3">@item.Remarks</div>
-														</div>
-													</div>
-												</div>
-											</li>
-										}
-									}
+                            @Html.LabelFor(model => model.Pub.StockBalance, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pub.StockBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="amendment-history">
+                    <div class="mb-4 mt-2 mr-auto">
+                        <h4 class="color-darkblue mb-0">Amendment History</h4>
+                        <h6 class="font-weight-normal">Check amendment list here.</h6>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <ul class="list-group list-group-fit">
+                                @if (ViewBag.History.Count != 0)
+                                {
+                                    var icount = 0;
+                                    foreach (var item in ViewBag.History)
+                                    {
+                                        if (item.Status == PublicationApprovalStatus.Rejected)
+                                        {
+                                            icount++;
+                                            <li class="list-group-item pt-4">
+                                                <div class="media align-items-top">
+                                                    <div class="media-left">
+                                                        <div class="card__avatar">
+                                                            <img src="assets/images/people/50/guy-6.jpg" alt="Avatar" class="card__avatar__image">
+                                                        </div>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="card__name-wrap ml-0">
+                                                            <div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
+                                                            <div class="card__author-name">@item.UserName</div>
+                                                            <div class="card__text pb-3">@item.Remarks</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
 
-								}
-							</ul>
-						</div>
-					</div>
-				</div>
-				<!-- Popups -->
-				<!-- Start Form -->
-				@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myform" }))
-				{
-					@Html.AntiForgeryToken()
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Popups -->
+                <!-- Start Form -->
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myform" }))
+                {
+                    @Html.AntiForgeryToken()
 
-					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-					<div style="display:none;">
-						@Html.EditorFor(model => model.Approval.ID, new { htmlAttributes = new { @class = "form-control" } })
-						@Html.EditorFor(model => model.Approval.PublicationID, new { htmlAttributes = new { @class = "form-control" } })
-						@Html.EditorFor(model => model.Approval.Level, new { htmlAttributes = new { @class = "form-control" } })
-						@Html.EditorFor(model => model.Approval.ApproverId, new { htmlAttributes = new { @class = "form-control" } })
-						@Html.EditorFor(model => model.Approval.Status, new { htmlAttributes = new { @class = "form-control" } })
-						@*Html.ValidationMessageFor(model => model.Approval.Status, "", new { @class = "text-danger" })*@
-					</div>
+                    <div style="display:none;">
+                        @Html.EditorFor(model => model.Approval.ID, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Approval.PublicationID, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Approval.Level, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Approval.ApproverId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Approval.Status, new { htmlAttributes = new { @class = "form-control" } })
+                        @*Html.ValidationMessageFor(model => model.Approval.Status, "", new { @class = "text-danger" })*@
+                    </div>
 
-					<div class="modal fade" id="modalApprove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-sm" role="document">
-							<div class="modal-content">
-								<div class="modal-body">
-									@if (Model.Pub.Status == PublicationStatus.Submitted)
-									{
-										if (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))
-										{
-											<h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
-											@Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
-										}
-									}
-									else if (Model.Pub.Status == PublicationStatus.Verified)
-									{
-										if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1) || CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2))
-										{
-											<h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
-											<h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
-											<div class="form-group">
-												<div class="ml-4">
-													<div class="custom-control custom-radio">
-														@Html.RadioButtonFor(model => model.Approval.RequireNext, true, new { @id = "option1" })
-														<label for="option1">Yes, submit to next level approval</label>
-													</div>
-													<div class="custom-control custom-radio">
-														@Html.RadioButtonFor(model => model.Approval.RequireNext, false, new { @id = "option2" })
-														<label for="option2">No, skip and approve this Publication</label>
-													</div>
-												</div>
-											</div>
-										}
-										else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3))
-										{
-											@Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
-										}
-									}
-									<div class="form-group">
-										@Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-										<textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
-										@*Html.TextAreaFor(model => model.Approval.Remarks, new { htmlAttributes = new { @class = "form-control" }, cols = 48, @rows = 5 })*@
-										@*Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })*@
-										<span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
-									</div>
-								</div>
-								<div class="divider-border"></div>
-								<div class="m-4 text-center">
-									<button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
-									<button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#approvalsent" id="btnApproveConfirm">Send</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="modal fade" id="modalApproveSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-sm" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">×</span>
-									</button>
-								</div>
-								<div class="modal-body text-center">
-									@if (Model.Pub.Status == PublicationStatus.Submitted)
-									{
-										<!-- verification (always forwarded) -->
-										<img src="~/img/icon-noti-email.svg" alt="image">
-										<h4 class="color-darkblue mt-4">Approval Request Sent</h4>
-										<p class="small">Your publication approval request has been sent to HOD.</p>
-									}
-									else if (Model.Pub.Status == PublicationStatus.Verified)
-									{
-										<!-- approval -->
-										<!-- forwarding -->
-										<img src="~/img/icon-approval.svg" alt="image">
-										<h4 class="color-darkblue mt-4">Approval Request Sent</h4>
-										<p class="small">Your publication approval request has been sent to the next Approver.</p>
-										<!-- not forwarding -->
-										<img src="~/img/icon-approval.svg" alt="image">
-										<h4 class="color-darkblue mt-4">Publication Approved</h4>
-										<p class="small">Your publication approval has been notified to CCD.</p>
-									}
-								</div>
-								<!-- Bila xde modal footer -->
-								<div class="modal-footer py-0">&nbsp;</div>
-							</div>
-						</div>
-					</div>
-					<div class="modal fade" id="modalReject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-sm" role="document">
-							<div class="modal-content">
-								<div class="modal-body">
-									<h4 class="color-darkblue mt-4">Require Amendment</h4>
-									<label>Remarks</label> <span class="text-danger">*</span>
-									<textarea class="form-control" name="Reject.Remarks" id="Reject_Remarks" rows="4" placeholder=""></textarea>
-									<span class="text-danger field-validation-error" id="span_rejectremarkserror" style="display:none;">Please enter Remarks</span>
-								</div>
-								<div class="divider-border"></div>
-								<div class="m-4 text-center">
-									<button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
-									<button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#amendmentsent" id="btnRejectConfirm">Send</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="modal fade" id="modalRejectSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-sm" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">×</span>
-									</button>
-								</div>
-								<div class="modal-body text-center">
-									<img src="../img/icon-noti-email.svg" alt="image">
-									<h4 class="color-darkblue mt-4">Ammendment Sent</h4>
-									<p class="small">Your ammendment request has been sent to CCD.</p>
-								</div>
-								<!-- Bila xde modal footer -->
-								<div class="modal-footer py-0">&nbsp;</div>
-							</div>
-						</div>
-					</div>
-				}
-				<!-- popups end -->
-			</div>
-			<!--  Start Action Log -->
-			<div class="action-log">
-				<h6 class="color-darkblue px-3"><i class="la la-comment color-secondary font-icon align-top"></i>Action Log</h6>
-				<!-- Kalau banyak action log akan jd scroll ke bwh -->
-				<div data-perfect-scrollbar class="position-relative">
-					@if (ViewBag.History.Count != 0)
-					{
-						var icount = 0;
-						foreach (var item in ViewBag.History)
-						{
-							icount++;
-							<div class="border-form rounded mb-2">
-								<div class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="float-right">@item.ApprovalDate.ToString("hh:mm tt")</span></div>
-								@if (item.Status == PublicationApprovalStatus.Approved)
-								{
-									<div class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-green">Approved</span></div>
-								}
-								else
-								{
-									<div class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-yellow">Amendment Required</span></div>
-								}
-								@if (item.Remarks != "")
-								{
-									<div class="small mt-2"><strong>Remark:</strong> <em>@item.Remarks</em></div>
-								}
-							</div>
-						}
+                    <div class="modal fade" id="modalApprove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    @if (Model.Pub.Status == PublicationStatus.Submitted)
+                                    {
+                                        if (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))
+                                        {
+                                            <h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
+                                            @Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+                                        }
+                                    }
+                                    else if (Model.Pub.Status == PublicationStatus.Verified)
+                                    {
+                                        if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1) || CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2))
+                                        {
+                                            <h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
+                                            <h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
+                                            <div class="form-group">
+                                                <div class="ml-4">
+                                                    <div class="custom-control custom-radio">
+                                                        @Html.RadioButtonFor(model => model.Approval.RequireNext, true, new { @id = "option1" })
+                                                        <label for="option1">Yes, submit to next level approval</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio">
+                                                        @Html.RadioButtonFor(model => model.Approval.RequireNext, false, new { @id = "option2" })
+                                                        <label for="option2">No, skip and approve this Publication</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3))
+                                        {
+                                            @Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+                                        }
+                                    }
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                                                <textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
+                                                @*Html.TextAreaFor(model => model.Approval.Remarks, new { htmlAttributes = new { @class = "form-control" }, cols = 48, @rows = 5 })*@
+                                                @*Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })*@
+                                                <span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
+                                            </div>
+                                </div>
+                                <div class="divider-border"></div>
+                                <div class="m-4 text-center">
+                                    <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                    <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#approvalsent" id="btnApproveConfirm">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalApproveSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    @if (Model.Pub.Status == PublicationStatus.Submitted)
+                                    {
+                                        <!-- verification (always forwarded) -->
+                                        <img src="~/img/icon-noti-email.svg" alt="image">
+                                        <h4 class="color-darkblue mt-4">Approval Request Sent</h4>
+                                        <p class="small">Your publication approval request has been sent to HOD.</p>
+                                    }
+                                    else if (Model.Pub.Status == PublicationStatus.Verified)
+                                    {
+                                        <!-- approval -->
+                                        <!-- forwarding -->
+                                        <img src="~/img/icon-approval.svg" alt="image">
+                                        <h4 class="color-darkblue mt-4">Approval Request Sent</h4>
+                                        <p class="small">Your publication approval request has been sent to the next Approver.</p>
+                                        <!-- not forwarding -->
+                                        <img src="~/img/icon-approval.svg" alt="image">
+                                        <h4 class="color-darkblue mt-4">Publication Approved</h4>
+                                        <p class="small">Your publication approval has been notified to CCD.</p>
+                                    }
+                                </div>
+                                <!-- Bila xde modal footer -->
+                                <div class="modal-footer py-0">&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalReject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <h4 class="color-darkblue mt-4">Require Amendment</h4>
+                                    <label>Remarks</label> <span class="text-danger">*</span>
+                                    <textarea class="form-control" name="Reject.Remarks" id="Reject_Remarks" rows="4" placeholder=""></textarea>
+                                    <span class="text-danger field-validation-error" id="span_rejectremarkserror" style="display:none;">Please enter Remarks</span>
+                                </div>
+                                <div class="divider-border"></div>
+                                <div class="m-4 text-center">
+                                    <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                    <button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#amendmentsent" id="btnRejectConfirm">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalRejectSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <img src="../img/icon-noti-email.svg" alt="image">
+                                    <h4 class="color-darkblue mt-4">Ammendment Sent</h4>
+                                    <p class="small">Your ammendment request has been sent to CCD.</p>
+                                </div>
+                                <!-- Bila xde modal footer -->
+                                <div class="modal-footer py-0">&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <!-- popups end -->
+            </div>
+            <!--  Start Action Log -->
+            <div class="action-log">
+                <h6 class="color-darkblue px-3"><i class="la la-comment color-secondary font-icon align-top"></i>Action Log</h6>
+                <!-- Kalau banyak action log akan jd scroll ke bwh -->
+                <div data-perfect-scrollbar class="position-relative">
+                    @if (ViewBag.History.Count != 0)
+                    {
+                        var icount = 0;
+                        foreach (var item in ViewBag.History)
+                        {
+                            icount++;
+                            <div class="border-form rounded mb-2">
+                                <div class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="float-right">@item.ApprovalDate.ToString("hh:mm tt")</span></div>
+                                @if (item.Status == PublicationApprovalStatus.Approved)
+                                {
+                                    <div class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-green">Approved</span></div>
+                                }
+                                else
+                                {
+                                    <div class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-yellow">Amendment Required</span></div>
+                                }
+                                @if (item.Remarks != "")
+                                {
+                                    <div class="small mt-2"><strong>Remark:</strong> <em>@item.Remarks</em></div>
+                                }
+                            </div>
+                        }
 
-					}
-					<div class="border-form rounded mg-2">
-						<div class="small text-muted">@Model.Pub.DateAdded.ToString("dd/MM/yyyy")<span class="float-right">@Model.Pub.DateAdded.ToString("hh:mm tt")</span></div>
-						<div class="small"><span class="card__author-name color-darkblue">@Model.Pub.CreatorName</span><br>created the Publication.</div>
-					</div>
-				</div>
-			</div>
-			<!--  End Action Log -->
-			<!--/form-->
-			<!-- End Form -->
-		</div>
-	</div>
+                    }
+                    <div class="border-form rounded mg-2">
+                        <div class="small text-muted">@Model.Pub.DateAdded.ToString("dd/MM/yyyy")<span class="float-right">@Model.Pub.DateAdded.ToString("hh:mm tt")</span></div>
+                        <div class="small"><span class="card__author-name color-darkblue">@Model.Pub.CreatorName</span><br>created the Publication.</div>
+                    </div>
+                </div>
+            </div>
+            <!--  End Action Log -->
+            <!--/form-->
+            <!-- End Form -->
+        </div>
+    </div>
 </div>
 
 @section ContentScript {
-	<script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
 
             var selectedLang = $('#Pub_Language').val();
@@ -632,12 +633,11 @@
                 else if (applevel == "Approver3") {
                     $('#Approval_RequireNext').val('False');
                 }
-				$('#myform').submit();
-				
+                $('#myform').submit();
 
             });
         });
-	</script>
+    </script>
 }
 
 

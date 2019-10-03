@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Shopping Cart</title>
+    <!-- Favicons -->
+    <link href="../img/favicon.png" rel="icon">
+    <!-- Perfect Scrollbar -->
+    <link type="text/css" href="assets/vendor/perfect-scrollbar.css" rel="stylesheet">
+    <!-- Material Design Icons -->
+    <link type="text/css" href="assets/css/material-icons.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/material-icons.rtl.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link type="text/css" href="assets/css/fontawesome.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/fontawesome.rtl.css" rel="stylesheet">
+    <link href="../lib/line-awesome/css/line-awesome.min.css" rel="stylesheet">
+    <!-- Select 2 form -->
+    <link href="../css/select2.min.css" rel="stylesheet">
+    <!-- Flatpickr -->
+    <link type="text/css" href="assets/css/flatpickr.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/flatpickr.rtl.css" rel="stylesheet">
+    <!-- Social media share -->
+    <link href="../css/jssocials.css" rel="stylesheet">
+    <!-- Slider -->
+    <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <!-- App CSS -->
+    <link type="text/css" href="assets/css/app.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/app.rtl.css" rel="stylesheet">
+    <link type="text/css" href="assets/css/bootstrap-touchspin.rtl.css" rel="stylesheet">
+    <!-- Main css -->
+    <link type="text/css" href="../css/base.css" rel="stylesheet">
+    <link type="text/css" href="../css/custom-admin.css" rel="stylesheet">
+</head>
+
+<body class="fixed-layout">
+    <div class="preloader">
+        <div class="sk-double-bounce">
+            <div class="sk-child sk-double-bounce1"></div>
+            <div class="sk-child sk-double-bounce2"></div>
+        </div>
+    </div>
+    <!-- Header Layout -->
+    <div class="bg-gradient">
+        <!-- Header -->
+        <div class="header-container">
+            <div id="header" class="mdk-header m-0" data-fixed data-effects="waterfall">
+                <div class="header__content">
+                    <!-- Navbar -->
+                    <nav id="default-navbar" class="navbar navbar-expand m-0">
+                        <div class="container">
+                            <div class="menu-admin">
+                                <div class="wrapper-menu" data-toggle="collapse" href="#menu-collapse" aria-expanded="false" role="button">
+                                    <div class="line-menu half end"></div>
+                                    <div class="line-menu"></div>
+                                    <div class="line-menu short end"></div>
+                                </div>
+                            </div>
+                            <a href="fixed-student-dashboard.html" class="navbar-brand">
+                                <a href="#" class="logo-akpk"><img src="../img/logo-akpk.svg" alt="logo" title="logo akpk"></a>
+                            </a>
+                            <!-- Search -->
+                            <form class="search-form d-none d-md-flex mx-2 col-lg-4">
+                                <input type="search" class="form-control" placeholder="Search for online courses, event, etc..">
+                                <button class="btn mw-auto" type="button"><i class="fas fa-search"></i></button>
+                            </form>
+                            <!-- // END Search -->
+                            <div class="flex"></div>
+                            <!-- Menu -->
+                            <ul class="nav navbar-nav flex-nowrap d-none d-lg-flex">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <span class="icon-top"><i class="la la-shopping-cart"></i></span>
+                                        <span class="badge badge-notifications point"> </span>
+                                    </a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="la la-heart-o"></i></a>
+                                </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <span class="icon-top"><i class="la la-inbox"></i></span>
+                                        <span class="badge badge-notifications point"> </span>
+                                    </a>
+                                </li>
+                                <!-- Notifications dropdown -->
+                                <li class="nav-item dropdown dropdown-notifications dropdown-menu-sm-full">
+                                    <button class="nav-link btn-flush dropdown-toggle" type="button" data-toggle="dropdown" data-dropdown-disable-document-scroll data-caret="false">
+                                        <span class="icon-top"><i class="la la-bell-o"></i></span>
+                                        <span class="badge badge-notifications point"> </span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <div data-perfect-scrollbar class="position-relative">
+                                            <div class="dropdown-header"><strong>Messages</strong></div>
+                                            <div class="list-group list-group-flush mb-0">
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action unread">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">5 minutes ago</small>
+                                                        <span class="ml-auto unread-indicator bg-primary"></span>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <img src="assets/images/people/110/woman-5.jpg" alt="people" class="avatar-img rounded-circle">
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <strong>Michelle</strong>
+                                                            <span class="text-black-70">Clients loved the new design.</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action unread">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">5 minutes ago</small>
+                                                        <span class="ml-auto unread-indicator bg-primary"></span>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <img src="assets/images/people/110/woman-5.jpg" alt="people" class="avatar-img rounded-circle">
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <strong>Michelle</strong>
+                                                            <span class="text-black-70">🔥 Superb job..</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <div class="dropdown-header"><strong>System notifications</strong></div>
+                                            <div class="list-group list-group-flush mb-0">
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action border-left-3 border-left-danger">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">3 minutes ago</small>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <span class="avatar-title rounded-circle bg-light">
+                                                                <i class="material-icons font-size-16pt text-danger">account_circle</i>
+                                                            </span>
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <span class="text-black-70">Your profile information has not been synced correctly.</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">5 hours ago</small>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <span class="avatar-title rounded-circle bg-light">
+                                                                <i class="material-icons font-size-16pt text-success">group_add</i>
+                                                            </span>
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <strong>Adrian. D</strong>
+                                                            <span class="text-black-70">Wants to join your private group.</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action">
+                                                    <span class="d-flex align-items-center mb-1">
+                                                        <small class="text-muted">1 day ago</small>
+                                                    </span>
+                                                    <span class="d-flex">
+                                                        <span class="avatar avatar-xs mr-2">
+                                                            <span class="avatar-title rounded-circle bg-light">
+                                                                <i class="material-icons font-size-16pt text-warning">storage</i>
+                                                            </span>
+                                                        </span>
+                                                        <span class="flex d-flex flex-column">
+                                                            <span class="text-black-70">Your deploy was successful.</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- // END Notifications dropdown -->
+                            </ul>
+                            <!-- Menu -->
+                            <ul class="nav navbar-nav flex-nowrap dropdown-profile">
+                                <span class="badge badge-profile mt-2">User</span>
+                                <!-- User dropdown -->
+                                <li class="nav-item dropdown ml-1">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"><img src="assets/images/people/50/guy-6.jpg" alt="Avatar" class="rounded-circle rounded-color" width="40"><span class="dropdown-custom"><i class="fas fa-chevron-down"></i></span></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <div class="card__author pt-0"><a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="assets/images/people/50/guy-6.jpg" alt="image"></span>
+                                                <span class="card__name-wrap">
+                                                    <span class="card__author-name">Jones Smith</span>
+                                                    <span class="card__instructby">User</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-book color-secondary font-icon"></i> My Courses
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-certificate color-secondary font-icon"></i> My Certifications
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-spinner color-secondary font-icon"></i> My Progress
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-group color-secondary font-icon"></i> My Groups
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-sitemap color-secondary font-icon"></i> My Branches
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-suitcase color-secondary font-icon"></i> My Files
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-calendar color-secondary font-icon"></i> My Events
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-pie-chart color-secondary font-icon"></i> My Researches
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-file-o color-secondary font-icon"></i> My Publications
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-life-saver color-secondary font-icon"></i> Help Center
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-edit color-secondary font-icon"></i> Edit Profile
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-sign-out color-secondary font-icon"></i> Log out
+                                        </a>
+                                    </div>
+                                </li>
+                                <!-- // END User dropdown -->
+                            </ul>
+                            <!-- // END Menu -->
+                        </div>
+                    </nav>
+                    <!-- // END Navbar -->
+                </div>
+            </div>
+            <div class="collapse-wrapper collapse" id="menu-collapse">
+                <div class="navbar navbar-expand-sm d-none2">
+                    <div class="container">
+                        <div class="navbar-collapse collapse main-menu-dropdown">
+                            <ul class="nav navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Events</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="4.1.2.ccd-amend-3.html">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Research & Publications</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                        <a class="dropdown-item" href="#">Menu 4</a>
+                                        <a class="dropdown-item" href="#">Menu 5</a>
+                                        <a class="dropdown-item" href="#">Menu 6</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Learning</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#"><i class="la la-search color-secondary font-icon"></i>Browse Courses</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-user color-secondary font-icon"></i>Instructors</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-group color-secondary font-icon"></i>Groups</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-comments-o color-secondary font-icon"></i>Discussions</a>
+                                        <a class="dropdown-item" href="#"><i class="la la-calendar color-secondary font-icon"></i>Calendar</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Online booking System</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                        <a class="dropdown-item" href="#">Menu 4</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Get Help</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Menu 1</a>
+                                        <a class="dropdown-item" href="#">Menu 2</a>
+                                        <a class="dropdown-item" href="#">Menu 3</a>
+                                        <a class="dropdown-item" href="#">Menu 4</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">
+                            <span class="material-icons">menu</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Header Layout Content -->
+        <!-- // END Header Layout Content -->
+        <div class="title_header">
+            <div class="title-header-container">
+                <div class="container">
+                    <div class="header-col-left">
+                        <div id="breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <h1 class="page-title text-white">Shopping Cart</h1>
+                        <div class="header-text">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- // END Header -->
+    </div>
+    <!-- Start Content -->
+    <div class="content-container">
+        <div class="container">
+            <div class="row">
+                <!-- column content left -->
+                <div class="col-lg-9">
+                    <div class="col-content">
+                        <h4 class="color-darkblue">Items in Cart</h4>
+                        <div id="tableCart">
+                            <div class="divtableStyle1 div-font-075">
+                                <div class="divTableWrap card">
+                                    <div class="divtableheader no-border">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="cart_checkbox">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#tableCart" id="customCheckAll">
+                                                            <label class="custom-control-label" for="customCheckAll"><span class="sr-only">Toggle all</span></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cart_item">
+                                                        <div>Item Name</div>
+                                                    </div>
+                                                    <div class="cart_format">
+                                                        <div>&nbsp;</div>
+                                                    </div>
+                                                    <div class="cart_price">
+                                                        <div>Price</div>
+                                                    </div>
+                                                    <div class="cart_quantity">
+                                                        <div>Quantity</div>
+                                                    </div>
+                                                    <div class="cart_amount">
+                                                        <div>Amount</div>
+                                                    </div>
+                                                    <div class="cart_action">
+                                                        <div>&nbsp;</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="publicationCart">
+                                <div class="divtableStyle1">
+                                    <div class="divTableWrap">
+                                        <div class="divtableheader bg-white">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="cart_checkbox">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#publicationCart" id="customCheckAllPublication">
+                                                                <label class="custom-control-label" for="customCheckAllPublication"><span class="sr-only">Toggle all</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col sub-Title color-darkblue pl-0 mb-0">Publications</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="divtableBody border-bottom">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="d-flex align-items-top">
+                                                        <div class="cart_checkbox">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input js-check-selected-row" id="customCheck1_1" data-domfactory-upgraded="check-selected-row">
+                                                                <label class="custom-control-label" for="customCheck1_1"><span class="sr-only">Check</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="cart_item">
+                                                            <div class="itemname">Innocent: The True Story of Siblings Struggling to Survive</div>
+                                                        </div>
+                                                        <div class="cart_format">
+                                                            <div>Digital</div>
+                                                            <div>Hard Cover</div>
+                                                            <div>Promotion 1+1</div>
+                                                        </div>
+                                                        <div class="cart_price">
+                                                            <div>RM10.90</div>
+                                                            <div>RM29.90</div>
+                                                            <div>RM22.99</div>
+                                                        </div>
+                                                        <div class="cart_quantity">
+                                                            <div>1</div>
+                                                            <div class="touchspin-wrapper"><input id="touch-spin-1" data-toggle="touch-spin" data-min="0" data-max="10" data-step="1" type="text" value="3" class="form-control" /></div>
+                                                            <div>1</div>
+                                                        </div>
+                                                        <div class="cart_amount">
+                                                            <div>RM10.90</div>
+                                                            <div>RM89.70</div>
+                                                            <div>RM22.99</div>
+                                                        </div>
+                                                        <div class="cart_action">
+                                                            <div><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="la la-trash-o text-muted"></i></a></div>
+                                                            <div><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="la la-trash-o text-muted"></i></a></div>
+                                                            <div><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="la la-trash-o text-muted"></i></a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="divtableBody border-bottom">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="d-flex align-items-top">
+                                                        <div class="cart_checkbox">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input js-check-selected-row" id="customCheck1_2" data-domfactory-upgraded="check-selected-row">
+                                                                <label class="custom-control-label" for="customCheck1_2"><span class="sr-only">Check</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="cart_item">
+                                                            <div class="itemname">The Very Hungry Caterpillar</div>
+                                                        </div>
+                                                        <div class="cart_format">
+                                                            <div>Hard Cover</div>
+                                                        </div>
+                                                        <div class="cart_price">
+                                                            <div>RM9.90</div>
+                                                        </div>
+                                                        <div class="cart_quantity">
+                                                            <div class="touchspin-wrapper"><input id="touch-spin-2" data-toggle="touch-spin" data-min="0" data-max="10" data-step="1" type="text" value="2" class="form-control" /></div>
+                                                        </div>
+                                                        <div class="cart_amount">
+                                                            <div>RM9.90</div>
+                                                        </div>
+                                                        <div class="cart_action">
+                                                            <div><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="la la-trash-o text-muted"></i></a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="divtableBody border-bottom">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="d-flex align-items-top">
+                                                        <div class="cart_checkbox">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input js-check-selected-row" id="customCheck1_3" data-domfactory-upgraded="check-selected-row">
+                                                                <label class="custom-control-label" for="customCheck1_3"><span class="sr-only">Check</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="cart_item">
+                                                            <div class="itemname">Where the Crawdads Sing</div>
+                                                        </div>
+                                                        <div class="cart_format">
+                                                            <div>Digital</div>
+                                                            <div>Hard Cover</div>
+                                                        </div>
+                                                        <div class="cart_price">
+                                                            <div>RM12.90</div>
+                                                            <div>RM19.90</div>
+                                                        </div>
+                                                        <div class="cart_quantity">
+                                                            <div>1</div>
+                                                            <div class="touchspin-wrapper"><input id="touch-spin-2" data-toggle="touch-spin" data-min="0" data-max="10" data-step="1" type="text" value="1" class="form-control" /></div>
+                                                        </div>
+                                                        <div class="cart_amount">
+                                                            <div>RM12.90</div>
+                                                            <div>RM19.70</div>
+                                                        </div>
+                                                        <div class="cart_action">
+                                                            <div><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="la la-trash-o text-muted"></i></a></div>
+                                                            <div><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="la la-trash-o text-muted"></i></a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Table total -->
+                                <table class="table tableStyle1 table-foot mt-0 mb-3 py-2">
+                                    <tfoot>
+                                        <tr>
+                                            <td class="text-right font-weight-bold"><span class="color-grey2 xs-small">Shipping Fee <i class="la la-question-circle color-red" style="font-size: 17px;"></i></span> </td>
+                                            <td class="text-right font-weight-bolder" style="width: 99px;"><span class="xs-small">RM18.00</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right font-weight-bolder">Total</td>
+                                            <td class="text-right font-weight-bolder" style="width: 99px;"><span class="color-red">RM184.10</span></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div id="eventCart">
+                                <div class="divtableStyle1">
+                                    <div class="divTableWrap">
+                                        <div class="divtableheader bg-white">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="cart_checkbox">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#eventCart" id="customCheckAllEvent">
+                                                                <label class="custom-control-label" for="customCheckAllEvent"><span class="sr-only">Toggle all</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col sub-Title color-darkblue pl-0 mb-0">Events</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="divtableBody border-bottom">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="d-flex align-items-top">
+                                                        <div class="cart_checkbox">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input js-check-selected-row" id="customCheck1_4" data-domfactory-upgraded="check-selected-row">
+                                                                <label class="custom-control-label" for="customCheck1_4"><span class="sr-only">Check</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="cart_item">
+                                                            <div class="itemname">International Coaching & Leadership Summit 2019</div>
+                                                        </div>
+                                                        <div class="cart_format">
+                                                            <div>Individual</div>
+                                                            <div>For Agencies</div>
+                                                        </div>
+                                                        <div class="cart_price">
+                                                            <div>RM200.00</div>
+                                                            <div>RM200.90</div>
+                                                        </div>
+                                                        <div class="cart_quantity">
+                                                            <div>1</div>
+                                                            <div class="touchspin-wrapper"><input id="touch-spin-1" data-toggle="touch-spin" data-min="0" data-max="10" data-step="1" type="text" value="3" class="form-control" /></div>
+                                                        </div>
+                                                        <div class="cart_amount">
+                                                            <div>RM200.00</div>
+                                                            <div>RM600.00</div>
+                                                        </div>
+                                                        <div class="cart_action">
+                                                            <div><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="la la-trash-o text-muted"></i></a></div>
+                                                            <div><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="la la-trash-o text-muted"></i></a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Table total -->
+                                <table class="table tableStyle1 table-foot mt-0 mb-3 py-2">
+                                    <tfoot>
+                                        <tr>
+                                            <td class="text-right font-weight-bolder">Order Total</td>
+                                            <td class="text-right font-weight-bolder" style="width: 99px;"><span class="color-red">RM800.00</span></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div id="coursesCart">
+                                <div class="divtableStyle1">
+                                    <div class="divTableWrap">
+                                        <div class="divtableheader bg-white">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="cart_checkbox">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#coursesCart" id="customCheckAllCourses">
+                                                                <label class="custom-control-label" for="customCheckAllCourses"><span class="sr-only">Toggle all</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col sub-Title color-darkblue pl-0 mb-0">Courses</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="divtableBody border-bottom">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="d-flex align-items-top">
+                                                        <div class="cart_checkbox">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input js-check-selected-row" id="customCheck1_5" data-domfactory-upgraded="check-selected-row">
+                                                                <label class="custom-control-label" for="customCheck1_5"><span class="sr-only">Check</span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="cart_item">
+                                                            <div class="itemname">Master of Computer Science</div>
+                                                        </div>
+                                                        <div class="cart_format">
+                                                            <div></div>
+                                                        </div>
+                                                        <div class="cart_price">
+                                                            <div>RM1900.00</div>
+                                                        </div>
+                                                        <div class="cart_quantity">
+                                                            <div>1</div>
+                                                        </div>
+                                                        <div class="cart_amount">
+                                                            <div>RM1900.00</div>
+                                                        </div>
+                                                        <div class="cart_action">
+                                                            <div><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="la la-trash-o text-muted"></i></a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Table total -->
+                                <table class="table tableStyle1 table-foot mt-0 mb-3 py-2">
+                                    <tfoot>
+                                        <tr>
+                                            <td class="text-right font-weight-bolder">Order Total</td>
+                                            <td class="text-right font-weight-bolder" style="width: 99px;"><span class="color-red">RM800.00</span></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end column content left -->
+                <!-- column content right -->
+                <div class="col-lg-3">
+                    <div class="right-sidebar mt-md-0 mt-5">
+                        <div class="lead color-darkblue mb-3 font-weight-bolder">Order Summary</div>
+                        <div class="card">
+                            <div class="p-3">
+                                <div class="media xs-small mb-2">
+                                    <div class="media-body color-grey2">
+                                        Subtotal(0 item)
+                                    </div>
+                                    <div class="media-right font-weight-bolder">RM0.00</div>
+                                </div>
+                                <div class="media xs-small mb-2">
+                                    <div class="media-body color-grey2">
+                                        Shipping Fee <i class="la la-question-circle color-red" style="font-size: 17px;"></i>
+                                    </div>
+                                    <div class="media-right font-weight-bolder">RM0.00</div>
+                                </div>
+                                <div class="media xs-small">
+                                    <div class="media-body color-grey2">Tax 0%</div>
+                                    <div class="media-right font-weight-bolder">RM0.00</div>
+                                </div>
+                            </div>
+                            <!-- Total -->
+                            <div class="border-top">
+                                <div class="media small p-3">
+                                    <div class="media-body font-weight-bolder">Order Total</div>
+                                    <div class="media-right font-weight-bolder color-red">RM0.00</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Button -->
+                        <div><a href="#" class="btn btn-secondary btn-block">Proceed to Checkout</a></div>
+                    </div>
+                </div>
+                <!-- end column content right -->
+            </div>
+        </div>
+        <!-- Wrapper -->
+    </div>
+    <a href="#" class="back-to-top text-white"><i class="fa fa-angle-up"></i></a>
+    <!-- // END Header Layout -->
+    <!-- jQuery -->
+    <script src="assets/vendor/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="assets/vendor/popper.min.js"></script>
+    <script src="assets/vendor/bootstrap.min.js"></script>
+    <script src="../lib/easing/easing.min.js"></script>
+    <!-- Perfect Scrollbar -->
+    <script src="assets/vendor/perfect-scrollbar.min.js"></script>
+    <!-- MDK -->
+    <script src="assets/vendor/dom-factory.js"></script>
+    <script src="assets/vendor/material-design-kit.js"></script>
+    <!-- App JS -->
+    <script src="assets/js/app.js"></script>
+    <script src="../js/select2.min.js"></script>
+    <!-- Tables -->
+    <script src="assets/js/toggle-check-all.js"></script>
+    <script src="assets/js/check-selected-row.js"></script>
+    <!-- Date Flatpickr -->
+    <script src="assets/vendor/flatpickr/flatpickr.min.js"></script>
+    <script src="assets/js/flatpickr.js"></script>
+    <!-- Slider -->
+    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../js/jquery.simpleLoadMore.js"></script>
+    <!-- Touchspin -->
+    <script src="assets/vendor/jquery.bootstrap-touchspin.js"></script>
+    <script src="assets/js/touchspin.js"></script>
+    <!-- Global Settings -->
+    <script src="../js/jssocials.min.js"></script>
+    <script src="../js/script-admin.js"></script>
+   
+</body>
+
+</html>

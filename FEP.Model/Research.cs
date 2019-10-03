@@ -40,6 +40,7 @@ namespace FEP.Model
         public int SubmitCount { get; set; }
         // DMS integration (TODO)............................................................................................
         public string DmsPath { get; set; }
+        public int NotificationID { get; set; }
         // sub-tables
         public virtual ICollection<SurveyApproval> Approvals { get; set; }
     }

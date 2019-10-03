@@ -91,33 +91,77 @@ namespace FEP.Model
 		[Display(Name = "Approve Courses Participant Withdraw")]
 		Approve_Courses_Participant_Withdraw,
 
-		//Verify Survey
-		[Display(Name = "Verify Survey Creation")]
-		Verify_Survey_Creation,
-		[Display(Name = "Verify Survey Published Cancelled")]
-		Verify_Survey_Published_Cancelled,
+        //Survey
+        [Display(Name = "Submit Survey Creation")]
+        Submit_Survey_Creation,
+        [Display(Name = "Submit Survey Cancellation")]
+        Submit_Survey_Cancellation,
+        [Display(Name = "Submit Survey Publication")]
+        Submit_Survey_Publication,
 
-		//Approve Survey
-		[Display(Name = "Approve Survey Creation")]
-		Approve_Survey_Creation,
-		[Display(Name = "Approve Survey Published Cancelled")]
-		Approve_Survey_Published_Cancelled,
+        //Verify Survey
+        [Display(Name = "Verify Survey Creation")]
+        Verify_Survey_Creation,
 
-		//VerifyPublication
-		[Display(Name = "Verify Publication Creation")]
-		Verify_Publication_Creation,
-		[Display(Name = "Verify Publication Published Change")]
-		Verify_Publication_Published_Change,
-		[Display(Name = "Verify Publication Published Withdraw")]
-		Verify_Publication_Published_Withdraw,
+        //Approve Survey
+        [Display(Name = "Approve Survey Creation 1")]
+        Approve_Survey_Creation_1,
+        [Display(Name = "Approve Survey Creation 2")]
+        Approve_Survey_Creation_2,
+        [Display(Name = "Approve Survey Creation 3")]
+        Approve_Survey_Creation_3,
+        [Display(Name = "Approve Survey Creation Final")]
+        Approve_Survey_Creation_Final,
 
-		//Approve Publication
-		[Display(Name = "Approve Publication Creation")]
-		Approve_Publication_Creation,
-		[Display(Name = "Approve Publication Published Change")]
-		Approve_Publication_Published_Change,
-		[Display(Name = "Approve Publication Published Withdraw")]
-		Approve_Publication_Published_Withdraw,
+        //Publication
+        [Display(Name = "Submit Publication Creation")]
+        Submit_Publication_Creation,
+        [Display(Name = "Submit Publication Cancellation")]
+        Submit_Publication_Cancellation,
+        [Display(Name = "Submit Publication Publication")]
+        Submit_Publication_Publication,
+        [Display(Name = "Submit Publication Modification")]
+        Submit_Publication_Modification,
+        [Display(Name = "Submit Publication Withdrawal")]
+        Submit_Publication_Withdrawal,
+        [Display(Name = "Submit Publication Modification Cancellation")]
+        Submit_Publication_Modification_Cancellation,
+        [Display(Name = "Submit Publication Withdrawal Cancellation")]
+        Submit_Publication_Withdrawal_Cancellation,
+
+        //VerifyPublication
+        [Display(Name = "Verify Publication Creation")]
+        Verify_Publication_Creation,
+        [Display(Name = "Verify Publication Modification")]
+        Verify_Publication_Modification,
+        [Display(Name = "Verify Publication Withdrawal")]
+        Verify_Publication_Withdrawal,
+
+        //Approve Publication
+        [Display(Name = "Approve Publication Creation 1")]
+        Approve_Publication_Creation_1,
+        [Display(Name = "Approve Publication Creation 2")]
+        Approve_Publication_Creation_2,
+        [Display(Name = "Approve Publication Creation 3")]
+        Approve_Publication_Creation_3,
+        [Display(Name = "Approve Publication Creation Final")]
+        Approve_Publication_Creation_Final,
+        [Display(Name = "Approve Publication Modification 1")]
+        Approve_Publication_Modification_1,
+        [Display(Name = "Approve Publication Modification 2")]
+        Approve_Publication_Modification_2,
+        [Display(Name = "Approve Publication Modification 3")]
+        Approve_Publication_Modification_3,
+        [Display(Name = "Approve Publication Modification Final")]
+        Approve_Publication_Modification_Final,
+        [Display(Name = "Approve Publication Withdrawal 1")]
+        Approve_Publication_Withdrawal_1,
+        [Display(Name = "Approve Publication Withdrawal 2")]
+        Approve_Publication_Withdrawal_2,
+        [Display(Name = "Approve Publication Withdrawal 3")]
+        Approve_Publication_Withdrawal_3,
+        [Display(Name = "Approve Publication Withdrawal Final")]
+        Approve_Publication_Withdrawal_Final,
 
 		//Media Interview
 		[Display(Name = "Submit External Request Media Interview")] 

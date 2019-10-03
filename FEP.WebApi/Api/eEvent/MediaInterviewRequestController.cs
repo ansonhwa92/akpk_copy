@@ -1,8 +1,10 @@
 ﻿using FEP.Helper;
+using FEP.Intranet.Areas.eEvent.Models;
 using FEP.Model;
 using FEP.WebApiModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -59,6 +61,19 @@ namespace FEP.WebApi.Api.eEvent
 
 				switch (sortBy)
 				{
+					case "RefNo":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.RefNo);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.RefNo);
+						}
+
+						break;
+
 					case "MediaName":
 
 						if (sortAscending)
@@ -151,6 +166,7 @@ namespace FEP.WebApi.Api.eEvent
 				.Select(s => new MediaInterviewRequestApiModel
 				{
 					Id = s.Id,
+					RefNo = s.RefNo,
 					MediaName = s.MediaName,
 					MediaType = s.MediaType,
 					ContactPerson = s.ContactPerson,
@@ -205,38 +221,81 @@ namespace FEP.WebApi.Api.eEvent
 			return model;
 		}
 
-		public MediaInterviewRequestApiModel Get(int id)
-		{
-			var model = db.EventMediaInterviewRequest.Where(i => i.Display && i.Id == id).Select(i => new MediaInterviewRequestApiModel
-			{
-				Id = i.Id,
-				MediaName = i.MediaName,
-				MediaType = i.MediaType,
-				ContactNo = i.ContactNo,
-				AddressStreet1 = i.AddressStreet1,
-				AddressStreet2 = i.AddressStreet2,
-				AddressPoscode = i.AddressPoscode,
-				AddressCity = i.AddressCity,
-				State = i.State,
-				Email = i.Email,
-				DateStart = i.DateStart,
-				DateEnd = i.DateEnd,
-				Time = i.Time,
-				Location = i.Location,
-				Language = i.Language,
-				Topic = i.Topic,
-				UserId = i.UserId,
-				UserName = i.User.Name,
-				//RepDesignation = i.User.Designation,
-				RepEmail = i.User.Email,
-				RepMobileNumber = i.User.MobileNo,
-				ContactPerson = i.ContactPerson,
-				CreatedBy = i.CreatedBy,
-				CreatedDate = i.CreatedDate
-			}).FirstOrDefault();
+		//public MediaInterviewRequestApiModel Get(int id)
+		//{
+		//	var model = db.EventMediaInterviewRequest.Where(i => i.Display && i.Id == id).Select(i => new MediaInterviewRequestApiModel
+		//	{
+		//		Id = i.Id,
+		//		MediaName = i.MediaName,
+		//		MediaType = i.MediaType,
+		//		ContactNo = i.ContactNo,
+		//		AddressStreet1 = i.AddressStreet1,
+		//		AddressStreet2 = i.AddressStreet2,
+		//		AddressPoscode = i.AddressPoscode,
+		//		AddressCity = i.AddressCity,
+		//		State = i.State,
+		//		Email = i.Email,
+		//		DateStart = i.DateStart,
+		//		DateEnd = i.DateEnd,
+		//		Time = i.Time,
+		//		Location = i.Location,
+		//		Language = i.Language,
+		//		Topic = i.Topic,
+		//		UserId = i.UserId,
+		//		UserName = i.User.Name,
+		//		//RepDesignation = i.User.Designation,
+		//		RepEmail = i.User.Email,
+		//		RepMobileNumber = i.User.MobileNo,
+		//		ContactPerson = i.ContactPerson,
+		//		CreatedBy = i.CreatedBy,
+		//		CreatedDate = i.CreatedDate
+		//	}).FirstOrDefault();
 
-			return model;
+		//	return model;
+		//}
+
+
+
+		public IHttpActionResult Get(int id)
+		{
+			var media = db.EventMediaInterviewRequest.Where(u => u.Id == id)
+				.Select(i => new DetailsMediaInterviewRequestApiModel
+				{
+					Id = i.Id,
+					MediaName = i.MediaName,
+					MediaType = i.MediaType,
+					ContactNo = i.ContactNo,
+					AddressStreet1 = i.AddressStreet1,
+					AddressStreet2 = i.AddressStreet2,
+					AddressPoscode = i.AddressPoscode,
+					AddressCity = i.AddressCity,
+					State = i.State,
+					Email = i.Email,
+					DateStart = i.DateStart,
+					DateEnd = i.DateEnd,
+					Time = i.Time,
+					Location = i.Location,
+					Language = i.Language,
+					Topic = i.Topic,
+					UserId = i.UserId,
+					UserName = i.User.Name,
+					RepEmail = i.User.Email,
+					RepMobileNumber = i.User.MobileNo,
+					ContactPerson = i.ContactPerson,
+					CreatedBy = i.CreatedBy,
+					CreatedDate = i.CreatedDate
+				}).FirstOrDefault();
+
+			if (media == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(media);
 		}
+
+
+
 
 		public HttpResponseMessage Post([FromBody]string value)
 		{
@@ -271,8 +330,159 @@ namespace FEP.WebApi.Api.eEvent
 			}
 
 			return false;
-
 		}
+
+
+		//Submit Public Event for Verification
+		[Route("api/eEvent/MediaInterviewRequest/SubmitToVerify")]
+		public string SubmitToVerify(int id)
+		{
+			var media = db.EventMediaInterviewRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (media != null)
+			{
+				media.MediaStatus = MediaStatus.PendingVerified;
+				db.EventMediaInterviewRequest.Attach(media);
+				db.Entry(media).Property(m => m.MediaStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return media.RefNo;
+			}
+			return "";
+		}
+
+		[Route("api/eEvent/MediaInterviewRequest/Verified")]
+		public string Verified(int id)
+		{
+			var media = db.EventMediaInterviewRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (media != null)
+			{
+				media.MediaStatus = MediaStatus.Verified;
+				db.EventMediaInterviewRequest.Attach(media);
+				db.Entry(media).Property(m => m.MediaStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return media.RefNo;
+			}
+			return "";
+		}
+
+
+		[Route("api/eEvent/MediaInterviewRequest/RejectVerified")]
+		public string RejectVerified(int id)
+		{
+			var media = db.EventMediaInterviewRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (media != null)
+			{
+				media.MediaStatus = MediaStatus.NotVerified;
+				db.EventMediaInterviewRequest.Attach(media);
+				db.Entry(media).Property(m => m.MediaStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return media.RefNo;
+			}
+			return "";
+		}
+
+		//First Approved Public Event 
+		[Route("api/eEvent/MediaInterviewRequest/FirstApproved")]
+		public string FirstApproved(int id)
+		{
+
+			var media = db.EventMediaInterviewRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (media != null)
+			{
+				media.MediaStatus = MediaStatus.ApprovedByApprover1;
+				db.EventMediaInterviewRequest.Attach(media);
+				db.Entry(media).Property(m => m.MediaStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return media.RefNo;
+			}
+			return "";
+		}
+
+		//Second Approved Public Event 
+		[Route("api/eEvent/MediaInterviewRequest/SecondApproved")]
+		public string SecondApproved(int id)
+		{
+
+			var media = db.EventMediaInterviewRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (media != null)
+			{
+				media.MediaStatus = MediaStatus.ApprovedByApprover2;
+				db.EventMediaInterviewRequest.Attach(media);
+				db.Entry(media).Property(m => m.MediaStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return media.RefNo;
+			}
+			return "";
+		}
+
+		//Final Approved Public Event 
+		[Route("api/eEvent/MediaInterviewRequest/FinalApproved")]
+		public string FinalApproved(int id)
+		{
+
+			var media = db.EventMediaInterviewRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (media != null)
+			{
+				media.MediaStatus = MediaStatus.ApprovedByApprover3;
+				db.EventMediaInterviewRequest.Attach(media);
+				db.Entry(media).Property(m => m.MediaStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return media.RefNo;
+			}
+			return "";
+		}
+
+
+		[Route("api/eEvent/MediaInterviewRequest/Evaluate")]
+		[HttpPost]
+		[ValidationActionFilter]
+		public string Evaluate([FromBody] MediaInterviewApprovalModel model, int id)
+		{
+			if (ModelState.IsValid)
+			{
+				var mediaapproval = db.EventMediaInterviewApproval.Where(x => x.Id == id).FirstOrDefault();
+
+				if (mediaapproval != null)
+				{
+					mediaapproval.ApproverId = model.ApproverId;
+					mediaapproval.Status = model.Status;
+					mediaapproval.ApprovedDate = DateTime.Now;
+					mediaapproval.Remark = model.Remarks;
+					mediaapproval.RequireNext = model.RequireNext;
+					mediaapproval.MediaId = id;
+					mediaapproval.Level = model.Level;
+
+					db.Entry(mediaapproval).State = EntityState.Modified;
+					db.SaveChanges();
+
+				}
+			}
+			return "";
+		}
+
 
 	}
 }

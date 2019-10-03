@@ -25,8 +25,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Required(ErrorMessage = "Please Insert Contact Number")]
 		[DataType(DataType.PhoneNumber)]
+		[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
 		[Display(Name = "Contact Number")]
-		public int? ContactNo { get; set; }
+		public string ContactNo { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Address")]
 		[Display(Name = "Address")]
@@ -46,11 +47,13 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Email")]
 		public string Email { get; set; }
 
+		[Required(ErrorMessage = "Please Insert Start Date")]
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
 		[Display(Name = "Event Date")]
 		public DateTime? DateStart { get; set; }
 
+		[Required(ErrorMessage = "Please Insert End Date")]
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
 		[Display(Name = "Event Date")]
@@ -62,6 +65,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Time")]
 		public DateTime? Time { get; set; }
 
+		[Required(ErrorMessage = "Please Select Language")]
 		[Display(Name = "Language")]
 		public MediaLanguage? Language { get; set; }
 
@@ -87,6 +91,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Display(Name = "Status")]
 		public MediaStatus? MediaStatus { get; set; }
+
+		[Display(Name = "Reference No")]
+		public string RefNo { get; set; }
 
 		public IEnumerable<SelectListItem> RepresentativeList { get; set; }
 
@@ -125,15 +132,18 @@ namespace FEP.Intranet.Areas.eEvent.Models
 	{
 		public DetailsMediaInterviewModel() { }
 
+		public MediaInterviewApprovalModel Approval { get; set; }
+
 		[Required]
 		public int Id { get; set; }
 
 		public bool Display { get; set; }
 		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
 
 		[DataType(DataType.Date)]
 		[Display(Name = "Created Date")]
-		public DateTime CreatedDate { get; set; }
+		public DateTime? CreatedDate { get; set; }
 	}
 
 	public class DeleteMediaInterviewModel : DetailsMediaInterviewModel
@@ -175,5 +185,33 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		{
 			this.MediaInterviewList = ListMediaInterview;
 		}
+	}
+
+	public class MediaInterviewApprovalModel
+	{
+		[Required]
+		public int Id { get; set; }
+
+		[Required]
+		public int MediaId { get; set; }
+
+		[Required]
+		[Display(Name = "Level")]
+		public ApprovalLevel Level { get; set; }
+
+		[Required]
+		public int ApproverId { get; set; }
+
+		[Required]
+		[Range((int)(ApprovalStatus.Approved), (int)(ApprovalStatus.Rejected), ErrorMessage = "Please Select")]
+		[Display(Name = "PubApprovalStatus")]
+		public ApprovalStatus Status { get; set; }
+
+		[Required]
+		[Display(Name = "Remarks")]
+		public string Remarks { get; set; }
+
+		[Display(Name = "Require Next")]
+		public bool RequireNext { get; set; }
 	}
 }

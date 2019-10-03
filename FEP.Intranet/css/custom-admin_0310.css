@@ -11,7 +11,7 @@
 }
 
 [dir=ltr] .title-header-container {
-    padding: 3rem 0;
+    padding: 4rem 0;
     position: relative;
 }
 
@@ -481,26 +481,13 @@ body.mobile-nav-active #mobile-nav-toggle {
     min-width: 150px;
 }
 
-[dir="ltr"] .table-font-075 th,
 [dir="ltr"] .table-font-075 td {
     font-size: .75rem !important;
 }
 
-[dir="ltr"] .divtableStyle1.div-font-075 .divtableheader {
-    font-size: .75rem !important;
-}
-
 [dir="ltr"] .tableStyle1.table-foot {
+    border-radius: 0;
     border-top: 0;
-    border-bottom-right-radius: .25rem;
-    border-bottom-left-radius: .25rem;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
-}
-
-[dir="ltr"] .divTableWrap .divtableBody.border-bottom:last-child {
-    border-bottom: 0px !important;
 }
 
 
@@ -1017,7 +1004,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .divtableBody .cart_action div {
-    padding: .55rem 0;
+    padding: .5rem 0;
 }
 
 .divtableBody .cart_quantity div.touchspin-wrapper {

@@ -32,6 +32,10 @@
                         }
                     },
                     {
+                        data: 'RefNo',
+                        sortable: true
+					},
+					{
                         data: 'MediaName',
                         sortable: true
                     },
@@ -76,19 +80,59 @@
                     {
                         data: 'MediaStatusDesc',
                         sortable: false,
-                       
+						render: function (data, type, row, meta) {
+							if(row.MediaStatus == 0) {
+                                return "<span class='color-blue font-weight-bold'>" + data + "</span>";
+                            }
+                            else if (row.MediaStatus == 1) {
+                                return "<span class='color-green font-weight-bold'>" + data + "</span>";
+							}
+							else if (row.MediaStatus == 2) {
+                                return "<span class='color-red font-weight-bold'>" + data + "</span>";
+                            }
+                            else if (row.MediaStatus == 3) {
+                                return "<span class='color-primary font-weight-bold'>" + data + "</span>";
+                            }
+                            else if (row.MediaStatus == 4) {
+                                return "<span class='color-primary font-weight-bold'>" + data + "</span>";
+                            }
+                            else if (row.MediaStatus == 5) {
+                                return "<span class='color-yellow font-weight-bold'>" + data + "</span>";
+							}
+							else if (row.MediaStatus == 6) {
+                                return "<span class='color-primary font-weight-bold'>" + data + "</span>";
+							}
+							else if (row.MediaStatus == 7) {
+                                return "<span class='color-primary font-weight-bold'>" + data + "</span>";
+                            }
+                            else if (row.MediaStatus == 8) {
+                                return "<span class='color-green font-weight-bold'>" + data + "</span>";
+                            }
+						}
                     },
                     {
                         sortable: false,
                         render: function (data, type, row, meta) {
 
-                            var action = "";
+							var action = "";
 
-                            action = '<div class="icon-action">'
-                                    +   '<a href="@Url.Action("Edit", "MediaInterview", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Details", "MediaInterview", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Delete", "MediaInterview", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
-                                    + '</div>';
+							 action = '<div class="icon-action">'
+
+							if (row.MediaStatus == 0) {
+
+								action += '<a href="@Url.Action("Edit", "MediaInterview", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+								action += '<a href="@Url.Action("Details", "MediaInterview", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+								action += '<a href="@Url.Action("Delete", "MediaInterview", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+							} else
+							{
+							action += '<a href="@Url.Action("Details", "MediaInterview", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+							}
+
+
+
+
+
+							  action += '</div>';
 
                             return action;
                         }
@@ -251,6 +295,7 @@
 						</div>
 					</th>*@
 				<th>#</th>
+				<th>@Html.DisplayNameFor(model => model.List.RefNo)</th>
 				<th>@Html.DisplayNameFor(model => model.List.MediaName)</th>
 				<th>@Html.DisplayNameFor(model => model.List.MediaTypeDesc)</th>
 				<th>@Html.DisplayNameFor(model => model.List.ContactPerson)</th>

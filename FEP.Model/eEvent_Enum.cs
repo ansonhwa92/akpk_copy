@@ -39,7 +39,7 @@ namespace FEP.Model
 
 	public enum EventStatus
 	{
-		[Display(Name = "New")]
+		[Display(Name = "Draft")]
 		New, //If Saved Public Event
 
 		[Display(Name = "Pending Approval")]
@@ -79,18 +79,26 @@ namespace FEP.Model
 		Withdraw
 	}
 
-	public enum ApprovalType
+	public enum ApprovalLevel
 	{
-		NewEvent,
-		ModifyEvent,
-		CancelEvent
+		[Display(Name = "Verifier")]
+		Verifier,
+		[Display(Name = "Approver 1")]
+		Approver1,
+		[Display(Name = "Approver 2")]
+		Approver2,
+		[Display(Name = "Approver 3")]
+		Approver3
 	}
 
-	public enum VerifyType
+	public enum ApprovalStatus
 	{
-		NewEvent,
-		ModifyEvent,
-		CancelEvent
+		[Display(Name = "None")]
+		None,
+		[Display(Name = "Approved")]
+		Approved,
+		[Display(Name = "Rejected")]
+		Rejected
 	}
 
 	public enum SpeakerType
@@ -124,12 +132,24 @@ namespace FEP.Model
 
 	public enum MediaStatus
 	{
+		[Display(Name = "Draft")]
 		New,
 		[Display(Name = "Representative Available")]
 		RepAvailable,
 		[Display(Name = "Representative Not Available")]
 		RepNotAvailable,
-
+		[Display(Name = "Pending Verification")]
+		PendingVerified,
+		[Display(Name = "Pending Approval 1")]
+		Verified,
+		[Display(Name = "Require Amendment")]
+		NotVerified,
+		[Display(Name = "Pending Approval 2")]
+		ApprovedByApprover1,
+		[Display(Name = "Pending Approval 3")]
+		ApprovedByApprover2,
+		[Display(Name = "Approved")]
+		ApprovedByApprover3,
 	}
 
 	public enum ExhibitionStatus

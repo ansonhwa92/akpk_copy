@@ -129,7 +129,8 @@ namespace FEP.Model
 		public DbSet<ManuscriptSubmission> ManuscriptSubmission { get; set; }
 		public DbSet<ParticipantFeedback> ParticipantFeedback { get; set; }
 		public DbSet<EventMember> EventMember { get; set; }
-		public DbSet<EventApproval> EventApproval { get; set; }
+		public DbSet<PublicEventApproval> PublicEventApproval { get; set; }
+		public DbSet<EventMediaInterviewApproval> EventMediaInterviewApproval { get; set; }
 		public DbSet<EventExhibitionRequest> EventExhibitionRequest { get; set; }
 		public DbSet<EventFile> EventFile { get; set; }
 		public DbSet<EventExternalExhibitor> EventExternalExhibitor { get; set; }

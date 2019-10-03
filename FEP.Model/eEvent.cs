@@ -227,7 +227,7 @@ namespace FEP.Model
 		public string MediaName { get; set; }
 		public MediaType? MediaType { get; set; }
 		public string ContactPerson { get; set; }
-		public int? ContactNo { get; set; }
+		public string ContactNo { get; set; }
 		public string AddressStreet1 { get; set; }
 		public string AddressStreet2 { get; set; }
 		public string AddressPoscode { get; set; }
@@ -252,6 +252,7 @@ namespace FEP.Model
 		public int? CreatedBy { get; set; }
 		public DateTime? CreatedDate { get; set; }
 		public bool Display { get; set; }
+		public int? SLAReminderStatusId { get; set; }
 
 		public virtual ICollection<MediaFile> EventMediaFiles { get; set; }
 		//public virtual ICollection<User> Representatives { get; set; }
@@ -349,14 +350,14 @@ namespace FEP.Model
 		public bool Display { get; set; }
 	}
 
-	[Table("EventApproval")]
-	public class EventApproval
+	[Table("PublicEventApproval")]
+	public class PublicEventApproval
 	{
 		[Key]
 		public int Id { get; set; }
 		public DateTime? ApprovedDate { get; set; }
 		public string Remark { get; set; }
-		public ApprovalType ApprovalType { get; set; }
+		public ApprovalLevel ApprovalLevel { get; set; }
 		public bool RequireNext { get; set; }
 
 		public int ApproverId { get; set; }
@@ -368,7 +369,27 @@ namespace FEP.Model
 		public virtual PublicEvent Event { get; set; }
 	}
 
-	
+	[Table("EventMediaInterviewApproval")]
+	public class EventMediaInterviewApproval
+	{
+		[Key]
+		public int Id { get; set; }
+		public DateTime? ApprovedDate { get; set; }
+		public string Remark { get; set; }
+		public ApprovalLevel Level { get; set; } 
+		public ApprovalStatus Status { get; set; }
+		public bool RequireNext { get; set; }
+
+		public int ApproverId { get; set; }
+		[ForeignKey("ApproverId")]
+		public virtual User User { get; set; }
+
+		public int? MediaId { get; set; }
+		[ForeignKey("MediaId")]
+		public virtual EventMediaInterviewRequest MediaInterview { get; set; }
+	}
+
+
 	[Table("EventExhibitionRequest")]
 	public class EventExhibitionRequest
 	{

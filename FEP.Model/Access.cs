@@ -55,11 +55,32 @@ namespace FEP.Model
         [Display(Name = "Internal Event Menu")]
         EventIntenalEventMenu = 1002,
 
+		[Display(Name = "Media Interview - Submit Media Interview For Verification")]
+		Submit_MediaInterview_ForVerification = 1011,
 
+		[Display(Name = "Media Interview - Reject Media Interview")]
+		Reject_MediaInterview_ForVerification = 1012,
 
+		[Display(Name = "Media Interview - Verified Media Interview")]
+		Verified_MediaInterview_ForVerification = 1013,
 
-        //research 2001 - 3000
-        [Display(Name = "R&P Management Menu")]
+		[Display(Name = "Media Interview - Approve Media Interview Approver 1")]
+		Approved_MediaInterview_ByApprover1 = 1014,
+
+		[Display(Name = "Media Interview - Approve Media Interview Approver 2")]
+		Approved_MediaInterview_ByApprover2 = 1015,
+
+		[Display(Name = "Media Interview - Approve Media Interview Approver 3")]
+		Approved_MediaInterview_ByApprover3 = 1016,
+
+		[Display(Name = "Media Interview - Update Representative Available")]
+		Submit_MediaInterview_RepAvailable = 1017,
+
+		[Display(Name = "Media Interview - Update Representative Not Available")]
+		Submit_MediaInterview_RepNotAvailable = 1018,
+
+		//research 2001 - 3000
+		[Display(Name = "R&P Management Menu")]
         RnPMenu = 2001,
         [Display(Name = "Publication Menu")]
         RnPPublicationMenu = 2002,

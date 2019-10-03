@@ -85,10 +85,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Topic = i.Topic,
 					RepUserId = i.UserId,
 					RepUserName = i.User.Name,
-					//RepDesignation = i.User.Designation,
+					RefNo = i.RefNo,
 					RepEmail = i.User.Email,
 					RepMobileNumber = i.User.MobileNo,
+					MediaStatus = i.MediaStatus,
 					GetFileName = i.EventMediaFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
+					CreatedBy = i.CreatedBy,
+					CreatedByName = i.User.Name,
+					CreatedDate = i.CreatedDate,
 				}).FirstOrDefault();
 
 			if (media == null)
@@ -104,8 +108,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		{
 			CreateMediaInterviewModel model = new CreateMediaInterviewModel() { };
 
-			//var getuser = db.User.Where(c => c.Display && c.UserType == UserType.Staff)
-			var getuser = db.User.Where(c => c.Display) //temporary boleh select admin
+			var getuser = db.User.Where(c => c.Display && c.UserType == UserType.Staff)
 				.Select(i => new
 				{
 					Id = i.Id,
@@ -122,10 +125,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Create(CreateMediaInterviewModel model)
 		{
-            if (model.DateStart > model.DateEnd)
-            {
-                ModelState.AddModelError("DateEnd", "Start Date must less or equal to End Date");
-            }
+			if (model.DateStart > model.DateEnd)
+			{
+				ModelState.AddModelError("DateEnd", "End Date must greater or equal than Start Date");
+			}
 
 			if (ModelState.IsValid)
 			{
@@ -147,7 +150,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Language = model.Language,
 					Topic = model.Topic,
 					UserId = model.RepUserId,
-					CreatedBy = null,
+					CreatedBy = CurrentUser.UserId,
 					CreatedDate = DateTime.Now,
 					Display = true,
 					MediaStatus = MediaStatus.New
@@ -210,7 +213,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					origin = origin,
 					RepUserId = i.UserId,
 					RepUserName = i.User.Name,
-					//RepDesignation = i.User.Designation,
+					MediaStatus = i.MediaStatus,
+					RefNo = i.RefNo,
 					RepEmail = i.User.Email,
 					RepMobileNumber = i.User.MobileNo,
 					GetFileName = i.EventMediaFiles.Where(w => w.EventId == i.Id).Select(s => s.FileName).FirstOrDefault(),
@@ -238,6 +242,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(EditMediaInterviewModel model)
 		{
+			if (model.DateStart > model.DateEnd)
+			{
+				ModelState.AddModelError("DateEnd", "End Date must greater or equal than Start Date");
+			}
+
 			if (ModelState.IsValid)
 			{
 				EventMediaInterviewRequest media = new EventMediaInterviewRequest
@@ -259,6 +268,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Language = model.Language,
 					Topic = model.Topic,
 					UserId = model.RepUserId,
+					MediaStatus = model.MediaStatus,
+					RefNo = model.RefNo
 				};
 
 				db.Entry(media).State = EntityState.Modified;
@@ -267,43 +278,36 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				db.Configuration.ValidateOnSaveEnabled = true;
 
 
-				string path = "FileUploaded/";
-				if (model.DocumentMedia != null)
-				{
-					var getIdFile = db.MediaFile.Where(s => s.EventId == model.Id).FirstOrDefault();
+				//string path = "FileUploaded/";
+				//if (model.DocumentMedia != null)
+				//{
+				//	var getIdFile = db.MediaFile.Where(s => s.EventId == model.Id).FirstOrDefault();
 
-					if (getIdFile != null)
-					{
-						db.MediaFile.Remove(getIdFile);
-					}
+				//	if (getIdFile != null)
+				//	{
+				//		db.MediaFile.Remove(getIdFile);
+				//	}
 
-					EventFile eventfile = new EventFile
-					{
-						FileDescription = model.FileDescription,
-						FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.DocumentMedia.FileName,
-						FilePath = path,
-						UploadedDate = DateTime.Now,
-						Display = true,
-						CreatedBy = CurrentUser.UserId,
-						Category = FileCategory.NewFile,
-						EventId = model.Id,
-						Id = getIdFile.Id
-					};
+				//	EventFile eventfile = new EventFile
+				//	{
+				//		FileDescription = model.FileDescription,
+				//		FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.DocumentMedia.FileName,
+				//		FilePath = path,
+				//		UploadedDate = DateTime.Now,
+				//		Display = true,
+				//		CreatedBy = CurrentUser.UserId,
+				//		Category = FileCategory.NewFile,
+				//		EventId = model.Id,
+				//		Id = getIdFile.Id
+				//	};
 
-					db.EventFile.Add(eventfile);
-				};
+				//	db.EventFile.Add(eventfile);
+				//};
 				db.SaveChanges();
 
 				//LogActivity();
 				TempData["SuccessMessage"] = "Media Interview Request successfully updated.";
-				if (model.origin == "fromlist")
-				{
-					return RedirectToAction("List");
-				}
-				else
-				{
-					return RedirectToAction("Details", new { area = "eEvent", id = model.Id });
-				}
+				return RedirectToAction("List");
 			}
 
 			var getuser = db.User.Where(c => c.Display) //temporary boleh select admin
@@ -382,71 +386,86 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 
-		// Submit Public Event for Verification
+		// Submit for Verification
 		public async Task<ActionResult> SubmitToVerify(int? id)
 		{
 			if (id == null)
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SubmitToVerify?id={id}");
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/SubmitToVerify?id={id}");
 			if (response.isSuccess)
 			{
-				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
+				var getmedia = db.EventMediaInterviewRequest.Where(e => e.Id == id).FirstOrDefault(); // will change webapi
 
-				await LogActivity(Modules.Event, "Submit Public Event Ref No: " + response.Data + " for verification.");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully submitted for verification.";
+				//var getmediaresponse = await WepApiMethod.SendApiAsync<DetailsMediaInterviewModel>(HttpVerbs.Get, $"eEvent/MediaInterviewRequest?id={id}");
 
 				ParameterListToSend paramToSend = new ParameterListToSend();
 				paramToSend.EventCode = response.Data;
-				paramToSend.EventName = getevent.EventTitle;
-				paramToSend.EventApproval = "Pending Approval";
+				paramToSend.EventName = getmedia.MediaName;
+				paramToSend.EventApproval = "Pending Verification";
 
-				CreateAutoReminder reminder = new CreateAutoReminder
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Submit_MediaInterview_ForVerification}");
+				if (receiveresponse.isSuccess)
 				{
-					NotificationType = NotificationType.Verify_Public_Event_Creation,
-					NotificationCategory = NotificationCategory.Event,
-					ParameterListToSend = paramToSend,
-					StartNotificationDate = DateTime.Now,
-					ReceiverId = new List<int> { 2, 3, 4, 5 },
-				};
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Submit_Verify_External_Request_Media_Interview,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
 
-				var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-				int saveThisID = response2.Data.SLAReminderStatusId;
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-				//save saveThisID dalam table public event
-
-				if (getevent != null)
-				{
-					getevent.SLAReminderStatusId = saveThisID;
-					db.PublicEvent.Attach(getevent);
-					db.Entry(getevent).Property(m => m.SLAReminderStatusId).IsModified = true;
-					db.Configuration.ValidateOnSaveEnabled = false;
-					db.SaveChanges();
+						//save saveThisID dalam table public event
+						if (getmedia != null)
+						{
+							getmedia.SLAReminderStatusId = saveThisID;
+							db.EventMediaInterviewRequest.Attach(getmedia);
+							db.Entry(getmedia).Property(m => m.SLAReminderStatusId).IsModified = true;
+							db.Configuration.ValidateOnSaveEnabled = false;
+							db.SaveChanges();
+						}
+					}
 				}
 
-				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+				await LogActivity(Modules.Event, "Submit Media Interview Ref No: " + response.Data + " for verification.");
+				TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data + ", successfully submitted for verification.";
+				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
 			}
 			else
 
 			{
-				TempData["ErrorMessage"] = "Failed to submit Public Event.";
-				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+				TempData["ErrorMessage"] = "Failed to submit Media Interview.";
+				return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
 			}
 		}
 
-		//First Approved Public Event 
-		public async Task<ActionResult> FirstApproved(int? id)
+		//Verified
+		//[HttpPost]
+		//[ValidateAntiForgeryToken]
+		//public async Task<ActionResult> Verified(int? id, MediaInterviewApprovalModel model)
+		public async Task<ActionResult> Verified(int? id)
 		{
 			if (id == null)
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/FirstApproved?id={id}");
+
+			//var actionlogresponse = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/Evaluate", model);
+			//if (actionlogresponse.isSuccess)
+			//{
+
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/Verified?id={id}");
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
+				var getSLAId = db.EventMediaInterviewRequest.Where(e => e.Id == id).FirstOrDefault();
 
 				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
 				var response3 = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
@@ -457,43 +476,118 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 				//--------------------------------------------------Send Email---------------------------------------------//
 
-				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
+				var getmedia = db.EventMediaInterviewRequest.Where(e => e.Id == id).FirstOrDefault();
 
 				ParameterListToSend paramToSend = new ParameterListToSend();
 				paramToSend.EventCode = response.Data;
-				paramToSend.EventName = getevent.EventTitle;
-				paramToSend.EventApproval = "Pending Approval";
+				paramToSend.EventName = getmedia.MediaName;
+				paramToSend.EventApproval = "Verified";
 
-				CreateAutoReminder reminder = new CreateAutoReminder
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verified_MediaInterview_ForVerification}");
+				if (receiveresponse.isSuccess)
 				{
-					NotificationType = NotificationType.Approve_Public_Event_Creation1,
-					NotificationCategory = NotificationCategory.Event,
-					ParameterListToSend = paramToSend,
-					StartNotificationDate = DateTime.Now,
-					ReceiverId = new List<int> { 2, 3, 4, 5 }
-				};
-				var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-				int saveThisID = response2.Data.SLAReminderStatusId;
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Verified_External_Request_Media_Interview,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
 
-				//save saveThisID dalam table public event
+					//save saveThisID dalam table public event
 
-				if (getevent != null)
-				{
-					getevent.SLAReminderStatusId = saveThisID;
-					db.PublicEvent.Attach(getevent);
-					db.Entry(getevent).Property(m => m.SLAReminderStatusId).IsModified = true;
-					db.Configuration.ValidateOnSaveEnabled = false;
-					db.SaveChanges();
+					if (getmedia != null)
+					{
+						getmedia.SLAReminderStatusId = saveThisID;
+						db.EventMediaInterviewRequest.Attach(getmedia);
+						db.Entry(getmedia).Property(m => m.SLAReminderStatusId).IsModified = true;
+						db.Configuration.ValidateOnSaveEnabled = false;
+						db.SaveChanges();
+					}
 				}
 
-				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved on first level.");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
-				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+				await LogActivity(Modules.Event, "Media Interview Ref No: " + response.Data + " is verified.");
+				TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data + ", successfully verified.";
+				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
+			}
+
+			//	TempData["ErrorMessage"] = "Failed to verified Media Interview.";
+			//	return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
+			//}
+
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to verified Media Interview.";
+				return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
+			}
+		}
+
+		//First Approved 
+		public async Task<ActionResult> FirstApproved(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/FirstApproved?id={id}");
+			if (response.isSuccess)
+			{
+				//--------------------------------------------------Stop Previous Email---------------------------------------------//
+				var getSLAId = db.EventMediaInterviewRequest.Where(e => e.Id == id).FirstOrDefault();
+
+				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
+				var response3 = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+					(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+
+				List<BulkNotificationModel> myNotification = response3.Data;
+				//myNotification[0].NotificationId;
+
+				//--------------------------------------------------Send Email---------------------------------------------//
+
+				var getmedia = db.EventMediaInterviewRequest.Where(e => e.Id == id).FirstOrDefault();
+
+				ParameterListToSend paramToSend = new ParameterListToSend();
+				paramToSend.EventCode = response.Data;
+				paramToSend.EventName = getmedia.MediaName;
+				paramToSend.EventApproval = "Pending Approval";
+
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_MediaInterview_ByApprover1}");
+				if (receiveresponse.isSuccess)
+				{
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Approve1_External_Request_Media_Interview,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
+
+					//save saveThisID dalam table public event
+
+					if (getmedia != null)
+					{
+						getmedia.SLAReminderStatusId = saveThisID;
+						db.EventMediaInterviewRequest.Attach(getmedia);
+						db.Entry(getmedia).Property(m => m.SLAReminderStatusId).IsModified = true;
+						db.Configuration.ValidateOnSaveEnabled = false;
+						db.SaveChanges();
+					}
+				}
+
+				await LogActivity(Modules.Event, "Media Interview Ref No: " + response.Data + " is approved on first level.");
+				TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
+				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
 			}
 			else
 			{
-				TempData["ErrorMessage"] = "Failed to approve Public Event.";
-				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+				TempData["ErrorMessage"] = "Failed to approve Media Interview.";
+				return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
 			}
 		}
 
@@ -504,11 +598,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SecondApproved?id={id}");
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/SecondApproved?id={id}");
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
+				var getSLAId = db.EventMediaInterviewRequest.Where(e => e.Id == id).FirstOrDefault();
 
 				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
 				var response3 = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
@@ -519,58 +613,62 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 				//--------------------------------------------------Send Email---------------------------------------------//
 
-				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
+				var getmedia = db.EventMediaInterviewRequest.Where(e => e.Id == id).FirstOrDefault();
 
 				ParameterListToSend paramToSend = new ParameterListToSend();
 				paramToSend.EventCode = response.Data;
-				paramToSend.EventName = getevent.EventTitle;
+				paramToSend.EventName = getmedia.MediaName;
 				paramToSend.EventApproval = "Pending Approval";
 
-				CreateAutoReminder reminder = new CreateAutoReminder
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_MediaInterview_ByApprover2}");
+				if (receiveresponse.isSuccess)
 				{
-					NotificationType = NotificationType.Approve_Public_Event_Creation2,
-					NotificationCategory = NotificationCategory.Event,
-					ParameterListToSend = paramToSend,
-					StartNotificationDate = DateTime.Now,
-					ReceiverId = new List<int> { 2, 3, 4, 5 }
-				};
-				var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-				int saveThisID = response2.Data.SLAReminderStatusId;
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Approve2_External_Request_Media_Interview,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
 
-				//save saveThisID dalam table public event
+					//save saveThisID dalam table public event
 
-				if (getevent != null)
-				{
-					getevent.SLAReminderStatusId = saveThisID;
-					db.PublicEvent.Attach(getevent);
-					db.Entry(getevent).Property(m => m.SLAReminderStatusId).IsModified = true;
-					db.Configuration.ValidateOnSaveEnabled = false;
-					db.SaveChanges();
+					if (getmedia != null)
+					{
+						getmedia.SLAReminderStatusId = saveThisID;
+						db.EventMediaInterviewRequest.Attach(getmedia);
+						db.Entry(getmedia).Property(m => m.SLAReminderStatusId).IsModified = true;
+						db.Configuration.ValidateOnSaveEnabled = false;
+						db.SaveChanges();
+					}
 				}
 
-				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved on first level.");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
-				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+				await LogActivity(Modules.Event, "Media Interview Ref No: " + response.Data + " is approved on first level.");
+				TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
+				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
 			}
 			else
 			{
-				TempData["ErrorMessage"] = "Failed to approve Public Event.";
-				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+				TempData["ErrorMessage"] = "Failed to approve Media Interview.";
+				return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
 			}
 		}
 
-		//Final Approved Public Event 
+		//Final Approved 
 		public async Task<ActionResult> FinalApproved(int? id)
 		{
 			if (id == null)
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/FinalApproved?id={id}");
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/FinalApproved?id={id}");
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
+				var getSLAId = db.EventMediaInterviewRequest.Where(e => e.Id == id).FirstOrDefault();
 
 				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
 				var response3 = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
@@ -581,58 +679,62 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 				//--------------------------------------------------Send Email---------------------------------------------//
 
-				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
+				var getmedia = db.EventMediaInterviewRequest.Where(e => e.Id == id).FirstOrDefault();
 
 				ParameterListToSend paramToSend = new ParameterListToSend();
 				paramToSend.EventCode = response.Data;
-				paramToSend.EventName = getevent.EventTitle;
+				paramToSend.EventName = getmedia.MediaName;
 				paramToSend.EventApproval = "Approved";
 
-				CreateAutoReminder reminder = new CreateAutoReminder
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_MediaInterview_ByApprover3}");
+				if (receiveresponse.isSuccess)
 				{
-					NotificationType = NotificationType.Approve_Public_Event_Creation3,
-					NotificationCategory = NotificationCategory.Event,
-					ParameterListToSend = paramToSend,
-					StartNotificationDate = DateTime.Now,
-					ReceiverId = new List<int> { 2, 3, 4, 5 }
-				};
-				var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-				int saveThisID = response2.Data.SLAReminderStatusId;
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Approve3_External_Request_Media_Interview,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
 
-				//save saveThisID dalam table public event
+					//save saveThisID dalam table public event
 
-				if (getevent != null)
-				{
-					getevent.SLAReminderStatusId = saveThisID;
-					db.PublicEvent.Attach(getevent);
-					db.Entry(getevent).Property(m => m.SLAReminderStatusId).IsModified = true;
-					db.Configuration.ValidateOnSaveEnabled = false;
-					db.SaveChanges();
+					if (getmedia != null)
+					{
+						getmedia.SLAReminderStatusId = saveThisID;
+						db.EventMediaInterviewRequest.Attach(getmedia);
+						db.Entry(getmedia).Property(m => m.SLAReminderStatusId).IsModified = true;
+						db.Configuration.ValidateOnSaveEnabled = false;
+						db.SaveChanges();
+					}
 				}
 
-				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved.";
-				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+				await LogActivity(Modules.Event, "Media Interview Ref No: " + response.Data + " is approved on first level.");
+				TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
+				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
 			}
 			else
 			{
-				TempData["ErrorMessage"] = "Failed to approve Public Event.";
-				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+				TempData["ErrorMessage"] = "Failed to approve Media Interview.";
+				return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
 			}
 		}
 
-		//Reject Approved Public Event 
-		public async Task<ActionResult> RejectPublicEvent(int? id)
+		//Reject and Require amendment
+		public async Task<ActionResult> Reject(int? id)
 		{
 			if (id == null)
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/RejectPublicEvent?id={id}");
+			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/RejectVerified?id={id}");
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
+				var getSLAId = db.EventMediaInterviewRequest.Where(e => e.Id == id).FirstOrDefault();
 
 				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
 				var response3 = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
@@ -643,138 +745,49 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 				//--------------------------------------------------Send Email---------------------------------------------//
 
-				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
+				var getmedia = db.EventMediaInterviewRequest.Where(e => e.Id == id).FirstOrDefault();
 
 				ParameterListToSend paramToSend = new ParameterListToSend();
 				paramToSend.EventCode = response.Data;
-				paramToSend.EventName = getevent.EventTitle;
-				paramToSend.EventApproval = "Require Amendment";
+				paramToSend.EventName = getmedia.MediaName;
+				paramToSend.EventApproval = "Approved";
 
-				CreateAutoReminder reminder = new CreateAutoReminder
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Reject_MediaInterview_ForVerification}");
+				if (receiveresponse.isSuccess)
 				{
-					NotificationType = NotificationType.Approve_Public_Event_Published_Changed,
-					NotificationCategory = NotificationCategory.Event,
-					ParameterListToSend = paramToSend,
-					StartNotificationDate = DateTime.Now,
-					ReceiverId = new List<int> { 2, 3, 4, 5 }
-				};
-				var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-				int saveThisID = response2.Data.SLAReminderStatusId;
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Reject_Verify_External_Request_Media_Interview,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
 
-				//save saveThisID dalam table public event
+					//save saveThisID dalam table public event
 
-				if (getevent != null)
-				{
-					getevent.SLAReminderStatusId = saveThisID;
-					db.PublicEvent.Attach(getevent);
-					db.Entry(getevent).Property(m => m.SLAReminderStatusId).IsModified = true;
-					db.Configuration.ValidateOnSaveEnabled = false;
-					db.SaveChanges();
+					if (getmedia != null)
+					{
+						getmedia.SLAReminderStatusId = saveThisID;
+						db.EventMediaInterviewRequest.Attach(getmedia);
+						db.Entry(getmedia).Property(m => m.SLAReminderStatusId).IsModified = true;
+						db.Configuration.ValidateOnSaveEnabled = false;
+						db.SaveChanges();
+					}
 				}
 
-
-				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is rejected and require amendment.");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully rejected and require amendment.";
-				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+				await LogActivity(Modules.Event, "Media Interview Ref No: " + response.Data + " is rejected.");
+				TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data + ", successfully rejected and require amendment.";
+				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
 			}
 			else
 			{
-				TempData["ErrorMessage"] = "Failed to reject Public Event.";
-				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+				TempData["ErrorMessage"] = "Failed to reject Media Interview.";
+				return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
 			}
 		}
-
-		//Cancel Approved Public Event
-		public async Task<ActionResult> CancelPublicEvent(int? id)
-		{
-			if (id == null)
-			{
-				return HttpNotFound();
-			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/CancelPublicEvent?id={id}");
-			if (response.isSuccess)
-			{
-				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
-				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
-				var response3 = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
-					(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
-
-				List<BulkNotificationModel> myNotification = response3.Data;
-				//myNotification[0].NotificationId;
-
-				//--------------------------------------------------Send Email---------------------------------------------//
-
-				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
-				ParameterListToSend paramToSend = new ParameterListToSend();
-				paramToSend.EventCode = response.Data;
-				paramToSend.EventName = getevent.EventTitle;
-				paramToSend.EventApproval = "Cancelled";
-
-				CreateAutoReminder reminder = new CreateAutoReminder
-				{
-					NotificationType = NotificationType.Approve_Public_Event_Published_Cancelled,
-					NotificationCategory = NotificationCategory.Event,
-					ParameterListToSend = paramToSend,
-					StartNotificationDate = DateTime.Now,
-					ReceiverId = new List<int> { 2, 3, 4, 5 }
-				};
-				var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-				int saveThisID = response2.Data.SLAReminderStatusId;
-
-				//save saveThisID dalam table public event
-
-				if (getevent != null)
-				{
-					getevent.SLAReminderStatusId = saveThisID;
-					db.PublicEvent.Attach(getevent);
-					db.Entry(getevent).Property(m => m.SLAReminderStatusId).IsModified = true;
-					db.Configuration.ValidateOnSaveEnabled = false;
-					db.SaveChanges();
-				}
-
-
-				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is cancelled.");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully cancelled.";
-				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
-			}
-			else
-			{
-				TempData["ErrorMessage"] = "Failed to cancel Public Event.";
-				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
-			}
-		}
-
-		//Publised Public Event
-		public async Task<ActionResult> PublishedPublicEvent(int? id)
-		{
-			if (id == null)
-			{
-				return HttpNotFound();
-			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/PublishedPublicEvent?id={id}");
-			if (response.isSuccess)
-			{
-				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is Published.");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully Published.";
-				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
-			}
-			else
-			{
-				TempData["ErrorMessage"] = "Failed to publish Public Event.";
-				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
-			}
-		}
-
-
-
-
-
-
-
-
 
 	}
 }

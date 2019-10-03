@@ -5,13 +5,102 @@
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
+@section ContentScript {
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+			$('#btnApprove').click(function (event) {
+                $("#modalApprove").modal();
+                return false;
+            });
+
+            function ValidApprove() {
+                var aremarks = $('#Approval_Remarks').val();
+                $('#span_approveremarkserror').hide();
+                if (aremarks.trim() == "") {
+                    $('#span_approveremarkserror').show();
+                    return false;
+                }
+                return true;
+            }
+
+            $('#btnApproveConfirm').click(function (event) {
+                // ajax call for approval
+                if (!ValidApprove()) {
+                    return false;
+                }
+                $('#Approval_Status').val('1');
+                $('#Approval_ApproverId').val('@CurrentUser.UserId');
+                var applevel = $('#btnApprove').data('level');
+                if (applevel == "0") {
+                    $('#Approval_RequireNext').val('True');
+                }
+                else if (applevel == "Approver3") {
+                    $('#Approval_RequireNext').val('False');
+				}
+
+
+				if (applevel == "0") {
+					$('#myform').attr("action", "@Url.Action("Verified", "MediaInterview", new { id = Model.Id })");
+				} else if
+					(applevel == "1") {
+					$('#myform').attr("action", "@Url.Action("FirstApproved", "MediaInterview", new { id = Model.Id })");
+				}
+				else if (applevel == "2") {
+					$('#myform').attr("action", "@Url.Action("SecondApproved", "MediaInterview", new { id = Model.Id })");
+				}
+				else if (applevel == "3") {
+					$('#myform').attr("action", "@Url.Action("FinalApproved", "MediaInterview", new { id = Model.Id })");
+				}
+
+				$('#myform').submit();
+            });
+
+            $('#btnReject').click(function (event) {
+                $("#modalReject").modal();
+                return false;
+            });
+
+            function ValidReject() {
+                var rremarks = $('#Reject_Remarks').val();
+                $('#span_rejectremarkserror').hide();
+                if (rremarks.trim() == "") {
+                    $('#span_rejectremarkserror').show();
+                    return false;
+                }
+                return true;
+            }
+
+            $('#btnRejectConfirm').click(function (event) {
+                // ajax call for approval
+                if (!ValidReject()) {
+                    return false;
+                }
+                var rejecttext = $('#Reject_Remarks').val();
+                $('#Approval_Remarks').val(rejecttext);
+                $('#Approval_Status').val('2');
+                $('#Approval_ApproverId').val('@CurrentUser.UserId');
+                var applevel = $('#Approval_Level').val();
+                if (applevel == "Verifier") {
+                    $('#Approval_RequireNext').val('True');
+                }
+                else if (applevel == "Approver3") {
+                    $('#Approval_RequireNext').val('False');
+                }
+                $('#myform').submit();
+
+            });
+		});
+	</script>
+}
+
 @section Nav {
 
 	<div class="title_header">
 		<div class="title-header-container">
 			<div class="container">
 				<!-- if have button -->
-				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "MediaInterview", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "MediaInterview", new { area = "eEvent" })' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
 				<div class="header-col-left">
 					<div id="breadcrumb">
 						<nav aria-label="breadcrumb">
@@ -23,7 +112,7 @@
 							</ol>
 						</nav>
 					</div>
-					<h1 class="page-title text-white">Media Interview Details</h1>
+					<h1 class="page-title text-white">Media Interview Request Ref No: @Model.RefNo</h1>
 					@*<div class="header-text">List of created media interview</div>*@
 				</div>
 			</div>
@@ -36,6 +125,7 @@
 	<div class="col-xl-3 col-md-3 col-sm-4 my-2">
 		<div id="page-nav" class="sidebar-left page-nav">
 			<div data-perfect-scrollbar>
+
 				<div class="sidebar-inner">
 					<ul class="steps steps-vertical nav">
 						<li class="step-item complete">
@@ -71,6 +161,42 @@
 					</ul>
 					<!-- End Steps -->
 				</div>
+				<!-- Buttons Div -->
+
+				<br />
+				<div>
+					@{if ((CurrentUser.HasAccess(FEP.Model.UserAccess.Submit_MediaInterview_ForVerification)) && Model.MediaStatus == FEP.Model.MediaStatus.New)
+						{
+							<a href='@Url.Action("SubmitToVerify", "MediaInterview", new { id = Model.Id })' class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
+						}
+						else if ((CurrentUser.HasAccess(FEP.Model.UserAccess.Verified_MediaInterview_ForVerification)) && Model.MediaStatus == FEP.Model.MediaStatus.PendingVerified)
+						{
+							@*<button class="btn btn-secondary btn-block mb-2" id="btnApprove" data-level="0">Submit for Approval</button>*@
+							<a href='@Url.Action("Verified", "MediaInterview", new { id = Model.Id })' class="btn btn-secondary btn-block mb-2" id="btnApprove23">Submit for Approval</a>
+							<br />
+							@*<button class="btn btn-warning btn-block mb-2" id="btnReject" data-level="0">Require Amendment</button>*@
+							<a href='@Url.Action("Reject", "MediaInterview", new { id = Model.Id })' class="btn btn-warning btn-block mb-2">Require Amendment</a>
+						}
+						else if ((CurrentUser.HasAccess(FEP.Model.UserAccess.Approved_MediaInterview_ByApprover1)) && Model.MediaStatus == FEP.Model.MediaStatus.Verified)
+						{
+							@*<button class="btn btn-secondary btn-block mb-2" id="btnApprove" data-level="1">Submit for Approval</button>*@
+							<a href='@Url.Action("FirstApproved", "MediaInterview", new { id = Model.Id })' class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+						}
+						else if ((CurrentUser.HasAccess(FEP.Model.UserAccess.Approved_MediaInterview_ByApprover2)) && Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1)
+						{
+							@*<button class="btn btn-secondary btn-block mb-2" id="btnApprove" data-level="2">Submit for Approval</button>*@
+							<a href='@Url.Action("SecondApproved", "MediaInterview", new { id = Model.Id })' class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+						}
+						else if ((CurrentUser.HasAccess(FEP.Model.UserAccess.Approved_MediaInterview_ByApprover3)) && Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover2)
+						{
+							@*<button class="btn btn-success btn-block mb-2" id="btnApprove" data-level="3">Approve</button>*@
+							<a href='@Url.Action("FinalApproved", "MediaInterview", new { id = Model.Id })' class="btn btn-success btn-block mb-2">Approved</a>
+						}
+					}
+				</div>
+
+
+
 			</div>
 		</div>
 	</div>
@@ -82,141 +208,168 @@
 				<div class="form-container">
 					<div class="mt-2 mb-4 pb-1">
 						<h4 class="color-darkblue mb-0">Invitation Details</h4>
-						<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						<h6 class="font-weight-normal">View Invitation details below.</h6>
 					</div>
+
+
 					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.MediaName, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.MediaName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.MediaName, "", new { @class = "text-danger" })
-							</div>
+						<div class="form-group col-lg-6">
+							@Html.LabelFor(model => model.RefNo)
+							@Html.EditorFor(model => model.RefNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Reference No", @readonly = "readonly" } })
+							@Html.ValidationMessageFor(model => model.RefNo, "", new { @class = "text-danger" })
+						</div>
+						<div class="form-group col-lg-6">
+							@Html.LabelFor(model => model.MediaStatus)
+							@*@Html.EditorFor(model => model.MediaStatus, new { htmlAttributes = new { @class = "form-control bg-warning-ccd", @placeholder = "Status", @readonly = "readonly" } })*@
+							@{ if (Model.MediaStatus == FEP.Model.MediaStatus.New)
+								{
+									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Draft">
+								}
+								else if (Model.MediaStatus == FEP.Model.MediaStatus.RepAvailable)
+								{
+									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Representative Available">
+								}
+								else if (Model.MediaStatus == FEP.Model.MediaStatus.RepNotAvailable)
+								{
+									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Representative Not Available">
+								}
+								else if (Model.MediaStatus == FEP.Model.MediaStatus.PendingVerified)
+								{
+									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Verification">
+								}
+								else if (Model.MediaStatus == FEP.Model.MediaStatus.Verified)
+								{
+									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 1">
+								}
+								else if (Model.MediaStatus == FEP.Model.MediaStatus.NotVerified)
+								{
+									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Require Amendment">
+								}
+								else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1)
+								{
+									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 2">
+								}
+								else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover2)
+								{
+									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 3">
+								}
+								else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover3)
+								{
+									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Approved">
+								}
+								
+							}
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.MediaType, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EnumDropDownListFor(model => model.MediaType, "-Select Media Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", disabled = "disabled" })
-								@Html.ValidationMessageFor(model => model.MediaType, "", new { @class = "text-danger" })
-							</div>
+							@Html.LabelFor(model => model.MediaName)
+							@Html.EditorFor(model => model.MediaName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							@Html.ValidationMessageFor(model => model.MediaName, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.ContactPerson, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.ContactPerson, "", new { @class = "text-danger" })
-							</div>
+							@Html.LabelFor(model => model.MediaType)
+							@Html.EnumDropDownListFor(model => model.MediaType, "-Select Media Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", disabled = "disabled" })
+							@Html.ValidationMessageFor(model => model.MediaType, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.ContactNo, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
-							</div>
+							@Html.LabelFor(model => model.ContactPerson)
+							@Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							@Html.ValidationMessageFor(model => model.ContactPerson, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.AddressStreet1, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
-							</div>
+							@Html.LabelFor(model => model.ContactNo)
+							@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							@Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
-							</div>
+							@Html.LabelFor(model => model.AddressStreet1)
+							@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1", @readonly = "readonly" } })
+							@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							<div class="row col-lg-12">
-								<div class="col-lg-6">
-									@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode", @readonly = "readonly" } })
-									@Html.ValidationMessageFor(model => model.AddressPoscode, "", new { @class = "text-danger" })
-								</div>
-								<div class="col-lg-6">
-									@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City", @readonly = "readonly" } })
-									@Html.ValidationMessageFor(model => model.AddressCity, "", new { @class = "text-danger" })
-								</div>
-							</div>
+							@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1", @readonly = "readonly" } })
+							@Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-6">
+							@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode", @readonly = "readonly" } })
+							@Html.ValidationMessageFor(model => model.AddressPoscode, "", new { @class = "text-danger" })
+						</div>
+						<div class="form-group col-lg-6">
+							@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City", @readonly = "readonly" } })
+							@Html.ValidationMessageFor(model => model.AddressCity, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", disabled = "disabled" })
-								@Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
-							</div>
+							@Html.LabelFor(model => model.State)
+							@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", disabled = "disabled" })
+							@Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-							</div>
+							@Html.LabelFor(model => model.Email)
+							@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.GetFileName, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.GetFileName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "None" } })
-								@Html.ValidationMessageFor(model => model.GetFileName, "", new { @class = "text-danger" })
-							</div>
+							@Html.LabelFor(model => model.GetFileName)
+							@Html.EditorFor(model => model.GetFileName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "None" } })
+							@Html.ValidationMessageFor(model => model.GetFileName, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
 					<hr />
 					<h4 class="color-darkblue mb-0">Interview Details</h4>
-					<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+					<h6 class="font-weight-normal">View Interview details below.</h6>
 
 					<div class="row">
-						<div class="form-group col-lg-12">
+						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.DateStart, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="row col-lg-12">
-								<div class="col-lg-6">
-									@Html.EditorFor(model => model.DateStart, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start", disabled = "disabled" } })
-									@Html.ValidationMessageFor(model => model.DateStart, "", new { @class = "text-danger" })
-								</div>
-								<div class="col-lg-6">
-									@Html.EditorFor(model => model.DateEnd, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End", disabled = "disabled" } })
-									@Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
-								</div>
-							</div>
+							@Html.EditorFor(model => model.DateStart, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start", disabled = "disabled" } })
+							@Html.ValidationMessageFor(model => model.DateStart, "", new { @class = "text-danger" })
+						</div>
+						<div class="form-group col-lg-6">
+							@Html.LabelFor(model => model.DateStart)
+							@Html.EditorFor(model => model.DateEnd, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End", disabled = "disabled" } })
+							@Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.Time, htmlAttributes: new { @class = "control-label col-lg-12" })
+							@Html.LabelFor(model => model.Time)
 							@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect", disabled = "disabled" } })
 							@Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
 						</div>
 
 						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label col-lg-12" })
+							@Html.LabelFor(model => model.Language)
 							@Html.EnumDropDownListFor(model => model.Language, "-Select Language-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", disabled = "disabled" })
 							@Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
 						</div>
@@ -224,69 +377,190 @@
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Topic, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.Topic, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.Topic, "", new { @class = "text-danger" })
-							</div>
+							@Html.LabelFor(model => model.Topic)
+							@Html.EditorFor(model => model.Topic, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+							@Html.ValidationMessageFor(model => model.Topic, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
 					<hr />
 					<div class="mt-2 mb-4 pb-1">
 						<h4 class="color-darkblue mb-0">Recommended Rep. Details</h4>
-						<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						<h6 class="font-weight-normal">View Recommended Representative details below.</h6>
 					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.RepUserId, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.RepUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.RepUserId, "", new { @class = "text-danger" })
-							</div>
+							@Html.LabelFor(model => model.RepUserId)
+							@Html.EditorFor(model => model.RepUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							@Html.ValidationMessageFor(model => model.RepUserId, "", new { @class = "text-danger" })
 						</div>
 					</div>
-
-					@*<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.RepDesignation, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.RepDesignation, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.RepDesignation, "", new { @class = "text-danger" })
-							</div>
-						</div>
-					</div>*@
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.RepMobileNumber, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.RepMobileNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.RepMobileNumber, "", new { @class = "text-danger" })
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.RepEmail, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.RepEmail, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.RepEmail, "", new { @class = "text-danger" })
-							</div>
-						</div>
-					</div>
-
 				</div>
-			</form>
 
+				<!-- action log start -->
+				<div class="action-log pull-right">
+					<h5 class="color-darkblue mr-auto mb-0"><i class="la la-comment color-secondary"></i>&nbsp;&nbsp;Action Log</h5>
+					<div data-perfect-scrollbar class="position-relative">
+						<div class="border-form rounded mg-b-10">
+							<p class="small text-muted">@Model.CreatedDate</p>
+							<p class="small"><span class="card__author-name color-darkblue">@*@Model.CreatedBy*@</span><br>Media Interview created.</p>
+						</div>
+					</div>
+				</div>
+				<!-- action log end -->
+
+			</form>
 		</div>
 		<div class="border-left border-right border-bottom p-3 rounded-bottom">
 			<div class="col-xs-12">
 				<a href='@Url.Action("List")' class="btn btn-warning">Back</a>
-				<a href='@Url.Action("Edit",new { id = Model.Id })' class="btn btn-primary">Edit</a>
+				@if (Model.MediaStatus == FEP.Model.MediaStatus.NotVerified || Model.MediaStatus == FEP.Model.MediaStatus.New)
+				{
+					<a href='@Url.Action("Edit", new { id = Model.Id })' class="btn btn-primary">Edit</a>
+				}
 			</div>
 		</div>
 	</div>
 </div>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myform" }))
+{
+	@Html.AntiForgeryToken()
+
+	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+	<div style="display:none;">
+		@Html.EditorFor(model => model.Approval.Id, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.EditorFor(model => model.Approval.MediaId, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.EditorFor(model => model.Approval.Level, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.EditorFor(model => model.Approval.ApproverId, new { htmlAttributes = new { @class = "form-control" } })
+		@Html.EditorFor(model => model.Approval.Status, new { htmlAttributes = new { @class = "form-control" } })
+	</div>
+
+	<div class="modal fade" id="modalApprove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					@if (Model.MediaStatus == FEP.Model.MediaStatus.PendingVerified)
+					{
+						if (CurrentUser.HasAccess(FEP.Model.UserAccess.Verified_MediaInterview_ForVerification))
+						{
+							<h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
+							@Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+						}
+					}
+					else if (Model.MediaStatus == FEP.Model.MediaStatus.Verified)
+					{
+						if (CurrentUser.HasAccess(FEP.Model.UserAccess.Approved_MediaInterview_ByApprover1) || CurrentUser.HasAccess(FEP.Model.UserAccess.Approved_MediaInterview_ByApprover2))
+						{
+							<h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
+							<h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
+							<div class="form-group">
+								<div class="ml-4">
+									<div class="custom-control custom-radio">
+										@Html.RadioButtonFor(model => model.Approval.RequireNext, true, new { @id = "option1" })
+										<label for="option1">Yes, submit to next level approval</label>
+									</div>
+									<div class="custom-control custom-radio">
+										@Html.RadioButtonFor(model => model.Approval.RequireNext, false, new { @id = "option2" })
+										<label for="option2">No, skip and approve this Publication</label>
+									</div>
+								</div>
+							</div>
+						}
+						else if (CurrentUser.HasAccess(FEP.Model.UserAccess.Approved_MediaInterview_ByApprover3))
+						{
+							@Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+						}
+					}
+					<div class="form-group">
+						@Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+						<textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
+						<span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
+					</div>
+				</div>
+				<div class="divider-border"></div>
+				<div class="m-4 text-center">
+					<button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+					<button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#approvalsent" id="btnApproveConfirm">Send</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="modalApproveSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body text-center">
+					@if (Model.MediaStatus == FEP.Model.MediaStatus.PendingVerified)
+					{
+						<!-- verification (always forwarded) -->
+						<img src="~/img/icon-noti-email.svg" alt="image">
+						<h4 class="color-darkblue mt-4">Approval Request Sent</h4>
+						<p class="small">Your media interview approval request has been sent to HOD.</p>
+					}
+					else if (Model.MediaStatus == FEP.Model.MediaStatus.Verified)
+					{
+						<!-- approval -->
+						<!-- forwarding -->
+						<img src="~/img/icon-approval.svg" alt="image">
+						<h4 class="color-darkblue mt-4">Approval Request Sent</h4>
+						<p class="small">Your media interview approval request has been sent to the next Approver.</p>
+						<!-- not forwarding -->
+						<img src="~/img/icon-approval.svg" alt="image">
+						<h4 class="color-darkblue mt-4">Publication Approved</h4>
+						<p class="small">Your media interview approval has been notified to CCD.</p>
+					}
+				</div>
+				<!-- Bila xde modal footer -->
+				<div class="modal-footer py-0">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="modalReject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h4 class="color-darkblue mt-4">Require Amendment</h4>
+					<label>Remarks</label> <span class="text-danger">*</span>
+					<textarea class="form-control" name="Reject.Remarks" id="Reject_Remarks" rows="4" placeholder=""></textarea>
+					<span class="text-danger field-validation-error" id="span_rejectremarkserror" style="display:none;">Please enter Remarks</span>
+				</div>
+				<div class="divider-border"></div>
+				<div class="m-4 text-center">
+					<button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+					<button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#amendmentsent" id="btnRejectConfirm">Send</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="modalRejectSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body text-center">
+					<img src="../img/icon-noti-email.svg" alt="image">
+					<h4 class="color-darkblue mt-4">Ammendment Sent</h4>
+					<p class="small">Your ammendment request has been sent to CCD.</p>
+				</div>
+				<!-- Bila xde modal footer -->
+				<div class="modal-footer py-0">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+}

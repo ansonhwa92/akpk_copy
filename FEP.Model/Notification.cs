@@ -58,16 +58,14 @@ namespace FEP.Model
 		Payment_Pending_Refund,
 
 		//Verify External Request
-		[Display(Name = "Verify External Request Media Interview")]
-		Verify_External_Request_Media_Interview,
+		
 		[Display(Name = "Verify External RequestExhibition ESS")]
 		Verify_External_Request_Exhibition_ESS,
 		[Display(Name = "Verify External RequestDuty Roster")]
 		Verify_External_Request_Duty_Roster,
 
 		//Approve External Request
-		[Display(Name = "Approve External Request Media Interview")]
-		Approve_External_Request_Media_Interview,
+		
 		[Display(Name = "Approve External Request Exhibition Participation")]
 		Approve_External_Request_Exhibition_Participation,
 		[Display(Name = "Approve External Request Duty Roster")]
@@ -120,6 +118,22 @@ namespace FEP.Model
 		Approve_Publication_Published_Change,
 		[Display(Name = "Approve Publication Published Withdraw")]
 		Approve_Publication_Published_Withdraw,
+
+		//Media Interview
+		[Display(Name = "Submit External Request Media Interview")] 
+		Submit_Verify_External_Request_Media_Interview,
+		[Display(Name = "Verify External Request Media Interview")]
+		Verified_External_Request_Media_Interview,
+		[Display(Name = "Reject Verify External Request Media Interview")]
+		Reject_Verify_External_Request_Media_Interview,
+
+		[Display(Name = "Approver1 External Request Media Interview")]
+		Approve1_External_Request_Media_Interview,
+		[Display(Name = "Approver2 External Request Media Interview")]
+		Approve2_External_Request_Media_Interview,
+		[Display(Name = "Approver3 External Request Media Interview")]
+		Approve3_External_Request_Media_Interview,
+
 
 		//---------------------------------------------------
 	}

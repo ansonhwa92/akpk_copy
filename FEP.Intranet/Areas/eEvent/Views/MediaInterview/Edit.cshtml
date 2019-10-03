@@ -5,6 +5,35 @@
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
+@section ContentScript {
+
+	<script type="text/javascript">
+
+
+		$("#DateStart").flatpickr({
+			dateFormat: "d/m/Y",
+			enableTime: false,
+			minDate: "today",
+			onValueUpdate: function (dObj, dStr, fp, dayElem) {
+				debugger;
+				$("#DateEnd").flatpickr({
+					dateFormat: "d/m/Y",
+					enableTime: false,
+					minDate: dStr,
+				});
+			}
+		});
+
+		$("#DateEnd").flatpickr({
+			dateFormat: "d/m/Y",
+			enableTime: false,
+			minDate: "today",
+		});
+
+	</script>
+
+}
+
 @section Nav {
 
 	<div class="title_header">
@@ -38,6 +67,8 @@
 	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 	@Html.HiddenFor(model => model.Id)
 	@Html.HiddenFor(model => model.origin)
+	@Html.HiddenFor(model => model.MediaStatus)
+	@Html.HiddenFor(model => model.RefNo)
 
 	<div class="row">
 
@@ -57,12 +88,12 @@
 							}
 							else
 							{
-							<li class="step-item complete">
-								<a href="#step1" class="step-link" data-toggle="tab">
-									<span class="step-number">1</span>
-									<span class="step-title">View Invitation Details</span>
-								</a>
-							</li>
+								<li class="step-item complete">
+									<a href="#step1" class="step-link" data-toggle="tab">
+										<span class="step-number">1</span>
+										<span class="step-title">View Invitation Details</span>
+									</a>
+								</li>
 							}
 							<li class="step-item active">
 								<a href="#step2" class="step-link" data-toggle="tab">
@@ -83,11 +114,11 @@
 								</a>
 							</li>
 							@*<li class="step-item disabled">
-			<a href="#step5" class="step-link" data-toggle="tab">
-				<span class="step-number">5</span>
-				<span class="step-title">Review & Submission</span>
-			</a>
-		</li>*@
+									<a href="#step5" class="step-link" data-toggle="tab">
+										<span class="step-number">5</span>
+										<span class="step-title">Review & Submission</span>
+									</a>
+								</li>*@
 						</ul>
 						<!-- End Steps -->
 					</div>

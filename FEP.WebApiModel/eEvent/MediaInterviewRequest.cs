@@ -21,8 +21,9 @@ namespace FEP.WebApiModel
 		[Display(Name = "Contact Person")]
 		public string ContactPerson { get; set; }
 		[DataType(DataType.PhoneNumber)]
+		[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
 		[Display(Name = "Contact No")]
-		public int? ContactNo { get; set; }
+		public string ContactNo { get; set; }
 		[Display(Name = "Address")]
 		public string AddressStreet1 { get; set; }
 		public string AddressStreet2 { get; set; }
@@ -49,7 +50,7 @@ namespace FEP.WebApiModel
 		public string Location { get; set; }
 		public MediaLanguage? Language { get; set; }
 		public string Topic { get; set; }
-
+		public string RefNo { get; set; }
 
 		public int? UserId { get; set; }
 		public string UserName { get; set; }
@@ -90,5 +91,30 @@ namespace FEP.WebApiModel
 
 		[Display(Name = "Status")]
 		public MediaStatus? MediaStatus { get; set; }
+
+		[Display(Name = "Reference No")]
+		public string RefNo { get; set; }
+	}
+
+	public class DetailsMediaInterviewRequestApiModel : MediaInterviewRequestApiModel
+	{
+		public DetailsMediaInterviewRequestApiModel() { }
+	}
+
+	public class CreateMediaInterviewRequestApiModel
+	{
+		public CreateMediaInterviewRequestApiModel() { }
+	}
+
+	public class EditMediaInterviewRequestApiModel : CreateMediaInterviewRequestApiModel
+	{
+		public EditMediaInterviewRequestApiModel() { }
+		public int Id { get; set; }
+	}
+
+
+	public class DeleteMediaInterviewRequestApiModel : MediaInterviewRequestApiModel
+	{
+		public DeleteMediaInterviewRequestApiModel() { }
 	}
 }

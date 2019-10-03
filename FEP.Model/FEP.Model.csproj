@@ -65,6 +65,26 @@
     <Compile Include="Migrations\201910010643131_x.Designer.cs">
       <DependentUpon>201910010643131_x.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910021416027_x1.cs" />
+    <Compile Include="Migrations\201910021416027_x1.Designer.cs">
+      <DependentUpon>201910021416027_x1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910030608364_x2.cs" />
+    <Compile Include="Migrations\201910030608364_x2.Designer.cs">
+      <DependentUpon>201910030608364_x2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910031013279_x3.cs" />
+    <Compile Include="Migrations\201910031013279_x3.Designer.cs">
+      <DependentUpon>201910031013279_x3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910031138476_x4.cs" />
+    <Compile Include="Migrations\201910031138476_x4.Designer.cs">
+      <DependentUpon>201910031138476_x4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910031353472_x5.cs" />
+    <Compile Include="Migrations\201910031353472_x5.Designer.cs">
+      <DependentUpon>201910031353472_x5.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
@@ -92,6 +112,21 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201910010643131_x.resx">
       <DependentUpon>201910010643131_x.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910021416027_x1.resx">
+      <DependentUpon>201910021416027_x1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910030608364_x2.resx">
+      <DependentUpon>201910030608364_x2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910031013279_x3.resx">
+      <DependentUpon>201910031013279_x3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910031138476_x4.resx">
+      <DependentUpon>201910031138476_x4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910031353472_x5.resx">
+      <DependentUpon>201910031353472_x5.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

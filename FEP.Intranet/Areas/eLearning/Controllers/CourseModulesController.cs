@@ -267,7 +267,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 TempData["ErrorMessage"] = "No such module.";
 
-                return RedirectToAction("Index", "CourseModules");
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
             }
 
             return View(model);

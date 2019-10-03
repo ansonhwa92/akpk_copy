@@ -132,7 +132,8 @@ namespace FEP.WebApi.Api.eLearning
                         module.ModuleContents = new List<CourseContent>();
                     }
 
-                    content.Order = module.ModuleContents.Max(x => x.Order) + 1;                    
+                    content.Order = module.ModuleContents.Max(x => x.Order) + 1;   
+                    
                     module.ModuleContents.Add(content);
 
                     try

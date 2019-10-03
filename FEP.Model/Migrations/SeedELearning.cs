@@ -94,31 +94,7 @@ namespace FEP.Model.Migrations
 
         private static void SeedAssignTrainerToGroup(DbEntities db)
         {
-            //if (System.Diagnostics.Debugger.IsAttached == false)
-            //    System.Diagnostics.Debugger.Launch();
-
-            // Get the  course
-            //var course = db.Courses.Include(x => x.Trainers).First();
-
-            //if (course.Trainers == null)
-            //{
-            //    course.Trainers = new List<Trainer>();
-            //}
-
-            //var userRole = db.UserRole.FirstOrDefault(x => x.Role.Name == RoleNames.eLearningTrainer);
-
-            //var user = db.User.FirstOrDefault(x => x.Id == userRole.UserId);
-
-
-            //if(!db.Groups)
-
-            //db.TrainerCourses.Add(new TrainerCourse
-            //{
-            //    Trainer = new Trainer { User = user },
-            //    Course = course
-            //});
-
-            //db.SaveChanges();
+          //  Get the  course
         }
 
         private static void SeedRoles(DbEntities db)
@@ -153,20 +129,28 @@ namespace FEP.Model.Migrations
         {
             // Seed User
             AddUser(db, "eladmin@fep.com", "eladmin@fep.com", UserType.Individual, RoleNames.eLearningTrainer, RoleNames.eLearningAdmin);
-            AddUser(db, "eltrainer1@fep.com", "eltrainer1@fep.com", UserType.Individual, RoleNames.eLearningTrainer);
-            AddUser(db, "eltrainer2@fep.com", "eltrainer2@fep.com", UserType.Individual, RoleNames.eLearningTrainer);
-            AddUser(db, "eltrainer3@fep.com", "eltrainer3@fep.com", UserType.Individual, RoleNames.eLearningTrainer);
-            AddUser(db, "eltrainer4@fep.com", "eltrainer4@fep.com", UserType.Individual, RoleNames.eLearningTrainer);
-
-            AddUser(db, "elverifier@fep.com", "elverifier@fep.com", UserType.Individual, RoleNames.eLearningAdmin);
+            AddUser(db, "elverifier@fep.com", "elverifier@fep.com", UserType.Individual, RoleNames.eLearningVerifier);
             AddUser(db, "elapprover1@fep.com", "elapprover1@fep.com", UserType.Individual, RoleNames.eLearningApprover1);
             AddUser(db, "elapprover2@fep.com", "elapprover2@fep.com", UserType.Individual, RoleNames.eLearningApprover2);
             AddUser(db, "elapprover3@fep.com", "elapprover3@fep.com", UserType.Individual, RoleNames.eLearningApprover3);
-            AddUser(db, "ellearner1@fep.com", "learner1@fep.com", UserType.Individual, RoleNames.eLearningLearner);
-            AddUser(db, "ellearner2@fep.com", "learner2@fep.com", UserType.Individual, RoleNames.eLearningLearner);
-            AddUser(db, "ellearner3@fep.com", "learner3@fep.com", UserType.Individual, RoleNames.eLearningLearner);
-            AddUser(db, "ellearner4@ep.com", "learner4@fep.com", UserType.Individual, RoleNames.eLearningLearner);
-            AddUser(db, "ellearner5@fep.com", "learner5@fep.com", UserType.Individual, RoleNames.eLearningLearner);
+
+
+            for (int i = 1; i <= 20; i++)
+            {
+                var trainer = $"eltrainer{i}@fep.com";
+
+                AddUser(db, trainer, trainer, UserType.Individual, RoleNames.eLearningTrainer);
+            }
+
+
+            for (int i = 1; i <= 20; i++)
+            {
+                var student = $"elstudent{i}@fep.com";
+
+                AddUser(db, student, student, UserType.Individual, RoleNames.eLearningLearner);
+
+            }
+
         }
 
         private static void SeedSampleCategories(DbEntities db)

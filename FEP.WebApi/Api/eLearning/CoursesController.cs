@@ -200,6 +200,8 @@ namespace FEP.WebApi.Api.eLearning
                 return NotFound();
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
+            model.Description = HttpUtility.HtmlDecode(model.Description);
+            model.Objectives = HttpUtility.HtmlDecode(model.Objectives);
 
             return Ok(model);
         }

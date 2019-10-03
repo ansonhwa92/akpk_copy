@@ -27,21 +27,21 @@ namespace FEP.Model.eLearning
 
         // -- START For use with completion Type
         public int? ContentQuestionId { get; set; }
+
         public virtual ContentQuestion ContentQuestion { get; set; }
         public int Timer { get; set; } //completiontype timer in sec
         // -- END For use with completion Type
 
         // -- START For use with single item in the page
         public VideoType? VideoType { get; set; }
+
         public string Url { get; set; }
 
         //  upload file
         public int? ContentFileId { get; set; }
+
         public virtual ContentFile ContentFile { get; set; }
 
-
-        //public int? FileDocumentId { get; set; }
-        //public virtual FileDocument FileDocument { get; set; }
         // -- END
 
         // for rich text
@@ -50,11 +50,7 @@ namespace FEP.Model.eLearning
         // for Iframe
         public ShowIFrameAs ShowIFrameAs { get; set; }
 
-        // for other images and files
-        public virtual ICollection<ContentFile> Images { get; set; }
-        public virtual ICollection<ContentFile> Files { get; set; }
     }
-
 
     public enum ShowIFrameAs
     {
@@ -123,7 +119,6 @@ namespace FEP.Model.eLearning
         Timer
     }
 
-
     public enum CreateContentFrom
     {
         CourseFrontPage,
@@ -137,6 +132,7 @@ namespace FEP.Model.eLearning
 
         [Display(Name = "Instructor", ResourceType = typeof(Language.eLearning.Enum))]
         UploadVideo,
+
         //Presentation
     }
 }

@@ -3,6 +3,7 @@ using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -153,7 +154,7 @@ namespace FEP.WebApi.Api.eLearning
                 {
                     CourseId = request.CourseId,
                     FileType = request.ContentFileType,
-                    ModuleContentId = request.ContentId,
+                    ContentId = request.ContentId,
 
                     CreatedBy = fileDocument.CreatedBy,
                     FileName = fileDocument.FileName,
@@ -163,14 +164,14 @@ namespace FEP.WebApi.Api.eLearning
 
                 db.ContentFiles.Add(contentFile);
 
-                try
-                {
-                    await db.SaveChangesAsync();
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e.Message + " " + e.InnerException);
-                }
+                await db.SaveChangesAsync();                
+
+                var content = await db.CourseContents.FirstOrDefaultAsync(x => x.Id == request.ContentId);
+
+                content.ContentFileId = contentFile.Id;
+
+                await db.SaveChangesAsync();
+
 
                 return Ok(contentFile.Id);
             }

@@ -15,27 +15,13 @@ namespace FEP.Model.eLearning
         /// Order of appearance in the content
         /// </summary>
         public int Order { get; set; }
-        public int? ModuleContentId { get; set; }
-        public virtual CourseContent ModuleContent { get; set; }
-
+        
         public FileType FileType { get; set; }
-
         public string FileName { get; set; }
-
         public int FileDocumentId { get; set; }
         public virtual FileDocument FileDocument { get; set; }
 
         public int CourseId { get; set; }
-
+        public int? ContentId { get; set; }
     }
-
-    //public enum CourseMaterialType
-    //{
-    //    Document,
-    //    Image,
-    //    Slide,
-    //    Video,
-    //    Audio,
-    //    Flash
-    //}
 }

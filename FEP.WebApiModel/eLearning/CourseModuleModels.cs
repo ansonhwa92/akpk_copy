@@ -36,7 +36,7 @@ namespace FEP.WebApiModel.eLearning
         public virtual ICollection<CourseContent> ModuleContents { get; set; }
 
         // for use with completion criteria
-        public List<CourseContent> Questions { get; set; }
+        //public List<CourseContent> Questions { get; set; }
 
     }   
 

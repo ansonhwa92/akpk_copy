@@ -252,7 +252,7 @@ namespace FEP.WebApi.Api.eEvent
 				EventCategoryName = i.EventCategory.CategoryName,
 				TargetedGroup = i.TargetedGroup,
 				ParticipantAllowed = i.ParticipantAllowed,
-				Remarks = i.Remarks                
+				Remarks = i.Remarks,
 				}).FirstOrDefault();
 
 			if (model == null)

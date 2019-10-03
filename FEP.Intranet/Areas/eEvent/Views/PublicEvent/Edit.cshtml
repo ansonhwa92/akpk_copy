@@ -13,7 +13,27 @@
 
             RefreshFile();
 
-        });
+		});
+
+		$("#StartDate").flatpickr({
+			dateFormat: "d/m/Y",
+			enableTime: false,
+			minDate: "today",
+			onValueUpdate: function (dObj, dStr, fp, dayElem) {
+				debugger;
+				$("#DateEnd").flatpickr({
+					dateFormat: "d/m/Y",
+					enableTime: false,
+					minDate: dStr,
+				});
+			}
+		});
+
+		$("#EndDate").flatpickr({
+			dateFormat: "d/m/Y",
+			enableTime: false,
+			minDate: "today",
+		});
 
     </script>
 

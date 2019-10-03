@@ -117,7 +117,12 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
                 ModelState.AddModelError("Attachments", "Please upload file");
             }
 
-            if (ModelState.IsValid)
+			if (model.StartDate > model.EndDate)
+			{
+				ModelState.AddModelError("DateEnd", "End Date must greater or equal than Start Date");
+			}
+
+			if (ModelState.IsValid)
 			{
 				var modelapi = new CreatePublicEventModel
 				{
@@ -219,6 +224,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
             {
                 ModelState.AddModelError("Attachments", "Please upload file");
             }
+
+			if (model.StartDate > model.EndDate)
+			{
+				ModelState.AddModelError("DateEnd", "End Date must greater or equal than Start Date");
+			}
 
 			if (ModelState.IsValid)
 			{

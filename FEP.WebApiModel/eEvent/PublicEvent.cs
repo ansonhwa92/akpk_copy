@@ -109,9 +109,11 @@ namespace FEP.WebApiModel.PublicEvent
 		[Display(Name = "PubEventSpeakerName", ResourceType = typeof(Language.Event))]
 		public string SpeakerName { get; set; }
 		public string origin { get; set; }
+		[Display(Name = "PubEventRefNo", ResourceType = typeof(Language.Event))]
 		public string RefNo { get; set; }
 
-        
+
+
 
 
 		public IEnumerable<SelectListItem> CategoryList { get; set; }
@@ -126,7 +128,7 @@ namespace FEP.WebApiModel.PublicEvent
 	public class DetailsPublicEventModel : PublicEventModel
 	{
 		public DetailsPublicEventModel() { }
-        
+
         public IEnumerable<Attachment> Attachments { get; set; }
     }
 

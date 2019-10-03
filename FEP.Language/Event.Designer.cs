@@ -322,7 +322,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ref No.
+        ///   Looks up a localized string similar to Reference No.
         /// </summary>
         public static string PubEventRefNo {
             get {

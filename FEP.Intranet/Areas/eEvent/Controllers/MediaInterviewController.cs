@@ -277,32 +277,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				db.Entry(media).Property(x => x.Display).IsModified = false;
 				db.Configuration.ValidateOnSaveEnabled = true;
 
-
-				//string path = "FileUploaded/";
-				//if (model.DocumentMedia != null)
-				//{
-				//	var getIdFile = db.MediaFile.Where(s => s.EventId == model.Id).FirstOrDefault();
-
-				//	if (getIdFile != null)
-				//	{
-				//		db.MediaFile.Remove(getIdFile);
-				//	}
-
-					//EventFile eventfile = new EventFile
-					//{
-					//	FileDescription = model.FileDescription,
-					//	FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.DocumentMedia.FileName,
-					//	FilePath = path,
-					//	UploadedDate = DateTime.Now,
-					//	Display = true,
-					//	CreatedBy = CurrentUser.UserId,
-					//	Category = FileCategory.NewFile,
-					//	EventId = model.Id,
-					//	Id = getIdFile.Id
-					//};
-
-					//db.EventFile.Add(eventfile);
-				};
 				db.SaveChanges();
 
 				//LogActivity();

@@ -294,4 +294,7 @@
   <data name="PubEventSpeakerName" xml:space="preserve">
     <value>Speakers</value>
   </data>
+  <data name="PubEventRefNo" xml:space="preserve">
+    <value>Ref No</value>
+  </data>
 </root>

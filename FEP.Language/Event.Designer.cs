@@ -322,6 +322,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ref No.
+        /// </summary>
+        public static string PubEventRefNo {
+            get {
+                return ResourceManager.GetString("PubEventRefNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remarks.
         /// </summary>
         public static string PubEventRemarks {

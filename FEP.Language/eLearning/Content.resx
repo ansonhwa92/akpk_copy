@@ -150,6 +150,9 @@
   <data name="SelectVideo" xml:space="preserve">
     <value>Select a video</value>
   </data>
+  <data name="ShowIFrameAs" xml:space="preserve">
+    <value>Show IFrame As</value>
+  </data>
   <data name="Test" xml:space="preserve">
     <value>Select a question</value>
   </data>

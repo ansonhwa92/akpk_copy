@@ -1,5 +1,6 @@
 ﻿
 @using FEP.Model.eLearning
+@*@model FEP.WebApiModel.eLearning.ContentCompletionModel*@
 @model FEP.WebApiModel.eLearning.CreateOrEditContentModel
 
 
@@ -12,9 +13,10 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     @Html.HiddenFor(m => m.CourseId)
-
     @Html.HiddenFor(m => m.Id)
-    @Html.HiddenFor(m => m.Order)
+    @Html.HiddenFor(m => m.Title)
+    @Html.HiddenFor(m => m.CourseModuleId)
+
 
     <div class="text-center float-right">
         @if (Model.CompletionType == ContentCompletionType.ClickButton)

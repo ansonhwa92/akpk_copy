@@ -160,6 +160,15 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show IFrame As.
+        /// </summary>
+        public static string ShowIFrameAs {
+            get {
+                return ResourceManager.GetString("ShowIFrameAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a question.
         /// </summary>
         public static string Test {

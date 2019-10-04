@@ -81,14 +81,14 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Description)
-                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" })
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Objectives)
-                            @Html.EditorFor(model => model.Objectives, new { htmlAttributes = new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                            @Html.TextAreaFor(model => model.Objectives, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" })
                         </div>
                     </div>
                 </div>

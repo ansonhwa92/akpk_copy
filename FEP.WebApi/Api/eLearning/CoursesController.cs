@@ -214,18 +214,18 @@ namespace FEP.WebApi.Api.eLearning
         [HttpPost]
         public async Task<IHttpActionResult> GetTrainerCourse([FromUri]int courseId, [FromBody] FilterUserModel request)
         {
-            var entity = await db.TrainerCourses.Where(x => x.CourseId == courseId).ToListAsync();
+            var users = await db.TrainerCourses.Where(x => x.CourseId == courseId).Include(x => x.Trainer.User).Select(x=>x.Trainer.User).ToListAsync();
 
-            if (entity == null)
+            if (users == null)
                 return NotFound();
 
-            List<User> users = new List<User>();
+            //List<User> users = new List<User>();
 
-            foreach(var item in entity)
-            {
-                var user = db.User.FirstOrDefault(x => x.Id == item.TrainerId);
-                users.Add(user);
-            }
+            //foreach(var item in entity)
+            //{
+            //    var user = db.User.FirstOrDefault(x => x.Id == item.TrainerId);
+            //    users.Add(user);
+            //}
 
             var totalCount = users.Count();
 
@@ -331,13 +331,15 @@ namespace FEP.WebApi.Api.eLearning
         [HttpPost]
         public IHttpActionResult GetAllTrainers(FilterIndividualModel request)
         {
+            var users = db.UserRole.Where(u => u.User.Display && u.Role.Name == RoleNames.eLearningTrainer).Select(x => x.User);
 
-            var query = db.User.Where(u => u.Display && u.UserType == UserType.Individual);
+            if (users == null)
+                return NotFound();
 
-            var totalCount = query.Count();
+            var totalCount = users.Count();
 
             //advance search
-            query = query.Where(s => (request.Name == null || s.Name.Contains(request.Name))
+            var query = users.Where(s => (request.Name == null || s.Name.Contains(request.Name))
                && (request.ICNo == null || s.ICNo.Contains(request.ICNo))
                && (request.Email == null || s.Email.Contains(request.Email))
                && (request.MobileNo == null || s.MobileNo.Contains(request.MobileNo))
@@ -449,12 +451,76 @@ namespace FEP.WebApi.Api.eLearning
 
         }
 
+        [Route("api/eLearning/Courses/AddUser")]
+        [HttpPost]
+        public IHttpActionResult AddUser(UpdateTrainerCourseModel model)
+        {
 
-        /// <summary>
-        /// For getting the front page of the course
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+            var course = db.Courses.Where(r => r.Id == model.CourseId).FirstOrDefault();
+
+            if (course.Trainers == null)
+            {
+                course.Trainers = new List<Trainer>();
+            }
+
+            foreach(var item in model.UserId)
+            {
+                var user = db.User.FirstOrDefault(x => x.Id == item);
+                var trainer = db.Trainers.FirstOrDefault(x => x.UserId == item);
+
+                if(trainer==null)
+                {
+                    db.TrainerCourses.Add(new TrainerCourse
+                    {
+                        Trainer = new Trainer { User = user },
+                        Course = course
+                    });
+                }
+                else
+                {
+                    db.TrainerCourses.Add(new TrainerCourse
+                    {
+                        Trainer = trainer,
+                        Course = course
+                    });
+                }
+            }
+            db.SaveChanges();
+
+            return Ok(true);
+
+        }
+
+        [Route("api/eLearning/Courses/DeleteUser")]
+        [HttpPost]
+        public IHttpActionResult DeleteUser(UpdateTrainerCourseModel model)
+        {
+            var course = db.Courses.Where(r => r.Id == model.CourseId).FirstOrDefault();
+
+            if (course.Trainers == null)
+            {
+                course.Trainers = new List<Trainer>();
+            }
+
+            foreach (var item in model.UserId)
+            {
+                var user = db.User.FirstOrDefault(x => x.Id == item);
+                var trainer = db.Trainers.FirstOrDefault(x => x.UserId == item);
+                var trainerCourse = db.TrainerCourses.FirstOrDefault(x => x.TrainerId == trainer.Id && x.CourseId == model.CourseId);
+
+                if (trainer != null)
+                {
+                    db.TrainerCourses.Remove(trainerCourse);
+                    db.SetDeleted(trainerCourse);
+                }
+            }
+
+            db.SaveChanges();
+
+            return Ok(true);
+
+        }
+
         [Route("api/eLearning/Courses/GetFrontCourse")]
         [HttpGet]
         public async Task<IHttpActionResult> GetFrontCourse(int? id)

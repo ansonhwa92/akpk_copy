@@ -40,6 +40,7 @@
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
 
+    @Html.HiddenFor(m => m.IsFree)
 
     <div class="row">
 
@@ -81,8 +82,6 @@
                             @Html.TextAreaFor(m => m.Description, new { @class = "summernote form-control" })
 
                             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-
-
                         </div>
                     </div>
 
@@ -108,14 +107,20 @@
                         @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label " })
                         <div class="row">
                             <div class="col-md-3">
-                                @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.Duration, new
+                           {
+                               htmlAttributes = new
+                               {
+                                   @class = "form-control",
+                                   @onkeypress = "return isNumberKey(event)",
+                                   @type = "text"
+                               }
+                           })
                                 @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
-
                             </div>
                             <div class="col-md-9">
                                 @Html.EnumDropDownListFor(model => model.DurationType, htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.DurationType, "", new { @class = "text-danger" })
-
                             </div>
                         </div>
                     </div>
@@ -129,12 +134,26 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.IsFree, htmlAttributes: new { @class = "control-label " })
-                        <div class="">
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.IsFree)
-                                Yes
-                                @Html.ValidationMessageFor(model => model.IsFree, "", new { @class = "text-danger" })
+                        <label>@Language.eLearning.Course.IsFree</label>
+                        <div class="col-sm-12">
+
+                            <!-- Default inline 1-->
+                            <div class="free-radio row pl-4 pb-2">
+                                <div class="col-sm-2">
+                                    <input type="radio" class="custom-control-input free  form-control " checked="checked" value="@Model.IsFree"
+                                           id="free" name="IsFree">
+                                    <label class="custom-control-label control-label" for="free">@Language.eLearning.Course.Free</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <!-- Default inline 2-->
+                            <div class="free-radio row pl-4 ">
+                                <div class="col-sm-2">
+                                    <input type="radio" class="custom-control-input paid form-control" value="@Model.IsFree"
+                                           id="paid" name="IsFree">
+                                    <label class="custom-control-label control-label" for="paid">@Language.eLearning.Course.Paid</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -142,7 +161,10 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label " })
                         <div class="">
-                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control",
+                           @onkeypress = "return isNumberKey(event)",
+                           @type = "text"
+                       } })
                             @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -154,22 +176,17 @@
                             @Html.ValidationMessageFor(model => model.ViewCategory, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
                 </div>
             </div>
-
 
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
 
                 <a class="btn btn-default" href="@Url.Action("Index", "Courses", new { area = "eLearning" })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
                 <button type="submit" class="btn btn-default pull-right" id="btnSave" name="Submittype" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save</button>
-
             </div>
-
         </div>
     </div>
 }
-
 
 <style>
     .form-container {
@@ -180,9 +197,9 @@
 @section ContentScript {
     @Scripts.Render("~/bundles/jqueryval")
 
-
     <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
     <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+    <script src="~/js/elearn.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -190,9 +207,56 @@
                 placeholder: 'Type your text here.',
                 tabsize: 2,
                 height: 150,
+                toolbar: [
 
-                //airMode : true,
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+
+                ],
+                codeviewFilter: false,
+                codeviewIframeFilter: true,
+
             });
+
+            var isFree = $('input[name=IsFree]');
+
+            $('#free').val($('#IsFree').val());
+
+            if ($('#free').val() == "True") {
+                $("#free").prop("checked", true);
+                $('#Price').prop("disabled", true);
+
+                ($('input[name=IsFree]').val(true));
+
+            } else {
+
+                $("#paid").prop("checked", true);
+                $('#Price').prop("disabled", false);
+
+                ($('input[name=IsFree]').val(false));
+            }
+        });
+
+        $('.free-radio input[type="radio"]').change(function () {
+
+            if ($(this).hasClass("free")) {
+                $("#free").prop("checked", true);
+                $('#Price').prop("disabled", true);
+
+                ($('input[name=IsFree]').val(true));
+
+            } else {
+
+                $("#paid").prop("checked", true);
+                $('#Price').prop("disabled", false);
+
+                ($('input[name=IsFree]').val(false));
+            }
         });
     </script>
+
 }

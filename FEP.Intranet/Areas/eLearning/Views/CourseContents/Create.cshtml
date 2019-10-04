@@ -45,65 +45,65 @@
     </div>
 }
 
-    <form action="/CourseContents/Create" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-        @*@using (Html.BeginForm("Create", "CourseContents", FormMethod.Post, new { enctype = "multipart/form-data" }))
+<form action="/CourseContents/Create" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+    @*@using (Html.BeginForm("Create", "CourseContents", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {*@
-        @Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
 
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        @Html.HiddenFor(m => m.CourseId)
-        @Html.HiddenFor(m => m.CourseModuleId)
-        @Html.HiddenFor(m => m.CreateContentFrom)
-        @Html.HiddenFor(m => m.ContentType)
-        @Html.HiddenFor(m => m.PageTitle)
-        @Html.HiddenFor(m => m.VideoType)
-        @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+    @Html.HiddenFor(m => m.CourseId)
+    @Html.HiddenFor(m => m.CourseModuleId)
+    @Html.HiddenFor(m => m.CreateContentFrom)
+    @Html.HiddenFor(m => m.ContentType)
+    @Html.HiddenFor(m => m.PageTitle)
+    @Html.HiddenFor(m => m.VideoType)
+    @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
 
-        <div class="row">
+    <div class="row">
 
-            <div class="col-xl-3 col-md-3 col-sm-4 my-2">
-                <div id="page-nav" class="sidebar-left page-nav">
-                    <div data-perfect-scrollbar class="ps">
-                        <div class="page-section">
-                            <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
-                            <ul class="nav page-nav__menu">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">@Model.ContentType</a>
-                                </li>
-                        </div>
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div id="page-nav" class="sidebar-left page-nav">
+                <div data-perfect-scrollbar class="ps">
+                    <div class="page-section">
+                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                        <ul class="nav page-nav__menu">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">@Model.ContentType</a>
+                            </li>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-                <!-- Start Form -->
-                <div class="border-form rounded-top">
-                    <div class="form-container">
-
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                        @Html.Partial($"_create{Model.ContentType.ToString()}", Model)
-
-
-                    </div>
-                </div>
-
-                <div class="border-left border-right border-bottom p-3 rounded-bottom">
-
-                    <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
-                       title="Back">@Language.General.ButtonBack</a>
-
-                    <button type="submit" class="btn btn-default pull-right" id="btnSave" value="Save">
-                        <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save
-                    </button>
                 </div>
             </div>
         </div>
-        @* } *@
-    </form>
 
-<style>    
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <div class="form-container">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.Partial($"_create{Model.ContentType.ToString()}", Model)
+
+
+                </div>
+            </div>
+
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+
+                <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+                   title="Back">@Language.General.ButtonBack</a>
+
+                <button type="submit" class="btn btn-default pull-right" id="btnSave" value="Save">
+                    <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save
+                </button>
+            </div>
+        </div>
+    </div>
+    @* } *@
+</form>
+
+<style>
     .questionWrapper,
     .timerWrapper {
         display: none;
@@ -118,6 +118,7 @@
 
     <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
     <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+    <script src="~/js/elearn.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -140,9 +141,6 @@
 
             // For video
             var contentType = $('#ContentType').val();
-
-            console.log($('input[name=VideoType]').val());
-
             if (contentType == 'Video') {
                 if ($('#VideoType').val() == "ExternalVideo") {
 
@@ -152,12 +150,12 @@
 
                 }
 
-                if ($('#VideoType').val() == "UploadVideo") {                
+                if ($('#VideoType').val() == "UploadVideo") {
 
                     $("#video2").prop("checked", true);
                     $('#FileName').prop("disabled", false);
                     $('#Url').prop("disabled", true);
-    
+
                 }
             }
         });
@@ -171,7 +169,7 @@
                 $('#FileName').prop("disabled", true);
                 setError("FileName", "");
 
-               ($('input[name=VideoType]').val('ExternalVideo'));
+                ($('input[name=VideoType]').val('ExternalVideo'));
 
             } else {
 
@@ -235,7 +233,7 @@
                         setError("Url", "");
                     }
                 }
-                                
+
                 if ($('#VideoType').val() == "UploadVideo") {
 
                     if ($.trim($('#FileName').val()) == "") {
@@ -247,45 +245,11 @@
                     }
 
                 }
-            } 
+            }
 
 
             return true;
-            
         }
-
-        function setError(name, message) {
-            const span = $(`span[data-valmsg-for="${name}"]`);
-            if (span && span.length > 0) {
-                $(span).html(message);
-                if (message) {
-                    $(`input[name="${name}"]`).addClass("input-validation-error");
-                    $(span).removeClass("field-validation-valid");
-                    $(span).addClass("field-validation-error");
-                } else {
-                    $(`input[name="${name}"]`).removeClass("input-validation-error");
-                    $(span).removeClass("field-validation-error");
-                    $(span).addClass("field-validation-valid");
-                }
-            }
-        }
-
-        //function removeError(name, message) {
-        //    const span = $(`span[data-valmsg-for="${name}"]`);
-        //    if (span && span.length > 0) {
-        //        $(span).html(message);
-        //        if (message) {
-        //            $(`input[name="${name}"]`).addClass("input-validation-error");
-        //            $(span).removeClass("field-validation-valid");
-        //            $(span).addClass("field-validation-error");
-        //        } else {
-        //            $(`input[name="${name}"]`).removeClass("input-validation-error");
-        //            $(span).removeClass("field-validation-error");
-        //            $(span).addClass("field-validation-valid");
-        //        }
-        //    }
-        //}
-
     </script>
 
 }

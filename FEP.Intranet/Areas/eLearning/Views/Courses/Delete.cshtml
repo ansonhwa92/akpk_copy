@@ -181,7 +181,7 @@
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.Id)
 
-                <a href='@Url.Action("List")' style="text-decoration: none;" class="btn btn-warning btn-flat">Cancel</a>
+                <a href='@Url.Action("Index", "Courses")' style="text-decoration: none;" class="btn btn-warning btn-flat">Cancel</a>
                 <button type="submit" class="btn btn-primary">Delete</button>
             }
         </div>

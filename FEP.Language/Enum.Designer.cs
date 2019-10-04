@@ -106,7 +106,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Company.
+        ///   Looks up a localized string similar to Agency.
         /// </summary>
         public static string UserTypeCompany {
             get {

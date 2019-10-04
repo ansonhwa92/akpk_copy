@@ -133,7 +133,7 @@
     <value>Reset Account Password</value>
   </data>
   <data name="UserTypeCompany" xml:space="preserve">
-    <value>Company</value>
+    <value>Agency</value>
   </data>
   <data name="UserTypeIndividual" xml:space="preserve">
     <value>Individual</value>

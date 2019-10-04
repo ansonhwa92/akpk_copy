@@ -247,7 +247,7 @@ namespace FEP.Model
         SystemAdmin = 0,
         [Display(Name = "UserTypeIndividual", ResourceType = typeof(Language.Enum))]
         Individual = 1,
-        [Display(Name = "UserTypeAgency", ResourceType = typeof(Language.Enum))]
+        [Display(Name = "UserTypeCompany", ResourceType = typeof(Language.Enum))]
         Company = 2,
         [Display(Name = "UserTypeStaff", ResourceType = typeof(Language.Enum))]
         Staff = 3

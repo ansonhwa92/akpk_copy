@@ -21,6 +21,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string GetCourse = "eLearning/Courses";
         public const string GetFrontContent = "eLearning/Courses/GetFrontContent";
         public const string GetFrontCourse = "eLearning/Courses/GetFrontCourse";
+        public const string GetTrainerCourse = "eLearning/Courses/GetTrainerCourse";
         public const string EditRulesCourse = "eLearning/Courses/EditRules";
         public const string Content = "eLearning/Courses/Content";
         public const string DeleteCourse = "eLearning/Courses/Delete";
@@ -145,6 +146,25 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public ActionResult Trainers(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var model = new TrainerCourseModel { CourseId = id.Value };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult _Add()
+        {
+            return View();
+        }
+
         /// <summary>
         /// For the front page of a course
         /// </summary>
@@ -164,7 +184,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 TempData["ErrorMessage"] = "No such course.";
 
-                return RedirectToAction("Index", "Courses");
+                return RedirectToAction("Content", "Courses", new { id = id });
+
             }
             
             model.Modules = model.Modules.OrderBy(x => x.Order).ToList();
@@ -306,6 +327,18 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return null;
         }
 
+        public async Task<TrainerCourseModel> TryGetTrainerCourse(int id)
+        {
+            var response = await WepApiMethod.SendApiAsync<TrainerCourseModel>(HttpVerbs.Get, CourseApiUrl.GetTrainerCourse + $"?id={id}");
+
+            if (response.isSuccess)
+            {
+                return response.Data;
+            }
+
+            return null;
+        }
+
         // GET: eLearning/Courses/Edit/5
         [HasAccess(UserAccess.CourseCreate)]
         public async Task<ActionResult> Edit(int? id)
@@ -332,7 +365,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             return View(model);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]

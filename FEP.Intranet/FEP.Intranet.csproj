@@ -787,7 +787,9 @@
     <Content Include="Areas\eLearning\Views\CourseContents\Old\ViewAudio.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Old\ViewTest.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Old\ViewAssignment.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\Trainers.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_defaultContent.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_Add.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

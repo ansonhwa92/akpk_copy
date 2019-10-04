@@ -168,6 +168,9 @@
   <data name="Instructor" xml:space="preserve">
     <value>Instructor</value>
   </data>
+  <data name="PopUp" xml:space="preserve">
+    <value>Pop up window</value>
+  </data>
   <data name="Presentation" xml:space="preserve">
     <value>Upload a presentation</value>
   </data>

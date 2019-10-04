@@ -214,6 +214,15 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pop up window.
+        /// </summary>
+        public static string PopUp {
+            get {
+                return ResourceManager.GetString("PopUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Upload a presentation.
         /// </summary>
         public static string Presentation {

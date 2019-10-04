@@ -5,8 +5,6 @@ using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -42,7 +40,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         {
             if (courseId == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["ErrorMessage"] = "Could not find a course to create the content to.";
+
+                return Redirect(Request.UrlReferrer.ToString());
             }
 
             CreateOrEditContentModel model = new CreateOrEditContentModel
@@ -66,8 +66,10 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         /// <summary>
         /// create a content. If the content have a file to upload, then we will make 2 calls to API.
-        /// 1. Call to create content. However, FileName is set to null first, otherwise json error
+        /// 1. Call to create content, to get the contentid for the file to be uploaded. However, FileName
+        ///     is set to null first, otherwise json error
         /// 2. Call to upload the file.
+        ///
         /// Can this be done in 1 call? of course can. I am just too lazy to do it.
         /// </summary>
         /// <param name="model"></param>
@@ -110,7 +112,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                     if (result.isSuccess)
                     {
-                        var data = result.Data; // JsonConvert.DeserializeObject<List<FileDocumentModel>>(result.Data);
+                        var data = result.Data;
 
                         var fileDocument = data[0];
 
@@ -150,13 +152,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Complete(CreateOrEditContentModel model)
+        public async Task<ActionResult> Complete(ContentCompletionModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = CurrentUser.Name;
 
-                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, ContentApiUrl.Complete, model);
+                var response = await WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Post, ContentApiUrl.Complete, model);
 
                 if (response.isSuccess)
                 {
@@ -164,17 +166,19 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                     await LogActivity(Modules.Learning, "User : " + user + " complete this content : " + model.Title);
 
+                    //int nextContent = int.Parse(response.Data.ToString());
                     var nextContent = response.Data;
 
-                    if (nextContent < 0) // go to index, no more content this module
-                        return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseId });
+                    //if (nextContent < 0) // go to index, no more content this module
+                    if (nextContent == null)
+                        return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
                     else
-                        return RedirectToAction("Content", "CourseContents", new { area = "eLearning", @id = nextContent });
+                        return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = nextContent.Id });
                 }
             }
-            TempData["ErrorMessage"] = "Cannot add content. Please ensure all required fields are filled in.";
+            TempData["ErrorMessage"] = "Cannot complete content...";
 
-            return View(model);
+            return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
         }
 
         private async Task GetAllQuestions(int id)
@@ -195,191 +199,104 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
         }
 
-        //public async Task<ActionResult> View(int? id)
+        public async Task<ActionResult> View(int id)
+        {
+            var content = await TryGetContent(id);
+
+            if (content != null)
+            {
+                switch (content.ContentType)
+                {
+                    case CourseContentType.Video:
+                        // If its youtube video ensure the word 'embed' is there, if not, put it in
+                        // eg. https://www.youtube.com/watch?v=WEDIj9JBTC8
+                        if (content.VideoType == VideoType.ExternalVideo)
+                        {
+                            content.Url = YouTubeUrlHelper.ConvertToEmbeddedUrl(content.Url);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                return View(content);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+        }
+
+        public async Task<CreateOrEditContentModel> TryGetContent(int id)
+        {
+            var response = await WepApiMethod.SendApiAsync<CreateOrEditContentModel>(HttpVerbs.Get, ContentApiUrl.GetContent + $"?id={id}");
+
+            if (response.isSuccess)
+            {
+                return response.Data;
+            }
+
+            return null;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        //public async Task<ActionResult> ViewVideo(int id)
         //{
-        //    if (id == null)
+        //    var content = await TryGetContent(id);
+
+        //    if (content != null)
+        //    {
+        //        // If its youtube video ensure the word 'embed' is there, if not, put it in
+        //        // ex https://www.youtube.com/watch?v=WEDIj9JBTC8
+        //        if (content.VideoType == VideoType.ExternalVideo)
+        //        {
+        //            content.Url = YouTubeUrlHelper.ConvertToEmbeddedUrl(content.Url);
+        //        }
+        //        else
+        //        {
+        //            var contentFile = await db.ContentFiles.FirstOrDefaultAsync(x => x.Id == content.ContentFileId);
+
+        //            if (contentFile == null)
+        //            {
+        //                TempData["ErrorMessage"] = "Could not find the content.";
+
+        //                return Redirect(Request.UrlReferrer.ToString());
+        //            }
+
+        //            var fileDocument = await db.FileDocument.FirstOrDefaultAsync(x => x.Id == contentFile.FileDocumentId);
+
+        //            if (fileDocument == null)
+        //            {
+        //                TempData["ErrorMessage"] = "Could not find the content.";
+
+        //                return Redirect(Request.UrlReferrer.ToString());
+        //            }
+
+        //            content.FileDocument = fileDocument;
+        //        }
+        //        return View(content);
+        //    }
+        //    else
         //    {
         //        TempData["ErrorMessage"] = "Could not find the content.";
 
         //        return Redirect(Request.UrlReferrer.ToString());
         //    }
-
-        //    var model = await TryGetContent(id.Value);
-
-        //    if (model == null)
-        //    {
-        //        TempData["ErrorMessage"] = "Could not find the content.";
-
-        //        return Redirect(Request.UrlReferrer.ToString());
-        //    }
-
-        //    return View(model);
         //}
-
-        public async Task<ActionResult> ViewVideo(int id)
-        {            
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                // If its youtube video ensure the word 'embed' is there, if not, put it in
-                // ex https://www.youtube.com/watch?v=WEDIj9JBTC8
-                if (content.VideoType == VideoType.ExternalVideo)
-                {
-                    content.Url = YouTubeUrlHelper.ConvertToEmbeddedUrl(content.Url);
-                }
-                else
-                {
-                    // TODO : get the uploaded file info
-                    // content.Fil
-
-                    var contentFile = await db.ContentFiles.FirstOrDefaultAsync(x => x.Id == content.ContentFileId);
-
-                    if (contentFile == null)
-                    {
-                        TempData["ErrorMessage"] = "Could not find the content.";
-
-                        return Redirect(Request.UrlReferrer.ToString());
-                    }
-
-                    var fileDocument = await db.FileDocument.FirstOrDefaultAsync(x => x.Id == contentFile.FileDocumentId);
-
-                    if (fileDocument == null)
-                    {
-                        TempData["ErrorMessage"] = "Could not find the content.";
-
-                        return Redirect(Request.UrlReferrer.ToString());
-                    }
-
-                    content.FileDocument = fileDocument;
-                }
-                return View(content);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Could not find the content.";
-
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-        }
-
-        public async Task<ActionResult> ViewRichText(int id)
-        {
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Could not find the content.";
-
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-        }
-
-        public async Task<ActionResult> ViewDocument(int id)
-        {
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Could not find the content.";
-
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-        }
-
-        public async Task<ActionResult> ViewIFrame(int id)
-        {
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Could not find the content.";
-
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-        }
-
-        public async Task<ActionResult> ViewAudio(int id)
-        {
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Could not find the content.";
-
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-        }
-
-        public async Task<ActionResult> ViewWebLink(int id)
-        {
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Could not find the content.";
-
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-        }
-
-        public async Task<ActionResult> ViewTest(int id)
-        {
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Could not find the content.";
-
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-        }
-
-        public async Task<ActionResult> ViewAssignment(int id)
-        {
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Could not find the content.";
-
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-        }
-
-        //[ChildActionOnly]
-        //public async Task<ActionResult> Video(int id)
+        // [ChildActionOnly]
+        //public ActionResult Video(int id)
         //{
         //    var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-        //    //var content = await TryGetContent(id);
+        //   //var content = await TryGetContent(id);
 
         //    if (content != null)
         //    {
@@ -403,7 +320,22 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         //    }
         //}
 
-        //[ChildActionOnly]
+        //public ActionResult DefaultContent(int id)
+        //{
+        //    var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
+
+        //    if (content != null)
+        //    {
+        //        return PartialView("_defaultContent", content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
+
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
+
         //public ActionResult RichText(int id)
         //{
         //    var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
@@ -437,7 +369,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         //    }
         //}
 
-        //[ChildActionOnly]
+        ////[ChildActionOnly]
         //public ActionResult IFrame(int id)
         //{
         //    var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
@@ -454,7 +386,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         //    }
         //}
 
-        //[ChildActionOnly]
+        ////[ChildActionOnly]
         //public ActionResult Audio(int id)
         //{
         //    var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
@@ -471,7 +403,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         //    }
         //}
 
-        //[ChildActionOnly]
+        ////[ChildActionOnly]
         //public ActionResult Weblink(int id)
         //{
         //    var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
@@ -488,25 +420,116 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         //    }
         //}
 
-        public async Task<CreateOrEditContentModel> TryGetContent(int id)
-        {
-            var response = await WepApiMethod.SendApiAsync<CreateOrEditContentModel>(HttpVerbs.Get, ContentApiUrl.GetContent + $"?id={id}");
+        //public async Task<ActionResult> ViewRichText(int id)
+        //{
+        //    var content = await TryGetContent(id);
 
-            if (response.isSuccess)
-            {
-                return response.Data;
-            }
+        //    if (content != null)
+        //    {
+        //        return View(content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
 
-            return null;
-        }
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //public async Task<ActionResult> ViewDocument(int id)
+        //{
+        //    var content = await TryGetContent(id);
+
+        //    if (content != null)
+        //    {
+        //        return View(content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
+
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
+
+        //public async Task<ActionResult> ViewIFrame(int id)
+        //{
+        //    var content = await TryGetContent(id);
+
+        //    if (content != null)
+        //    {
+        //        return View(content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
+
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
+
+        //public async Task<ActionResult> ViewAudio(int id)
+        //{
+        //    var content = await TryGetContent(id);
+
+        //    if (content != null)
+        //    {
+        //        return View(content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
+
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
+
+        //public async Task<ActionResult> ViewWebLink(int id)
+        //{
+        //    var content = await TryGetContent(id);
+
+        //    if (content != null)
+        //    {
+        //        return View(content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
+
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
+
+        //public async Task<ActionResult> ViewTest(int id)
+        //{
+        //    var content = await TryGetContent(id);
+
+        //    if (content != null)
+        //    {
+        //        return View(content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
+
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
+
+        //public async Task<ActionResult> ViewAssignment(int id)
+        //{
+        //    var content = await TryGetContent(id);
+
+        //    if (content != null)
+        //    {
+        //        return View(content);
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Could not find the content.";
+
+        //        return Redirect(Request.UrlReferrer.ToString());
+        //    }
+        //}
     }
 }

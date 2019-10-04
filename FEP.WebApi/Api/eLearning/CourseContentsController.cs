@@ -159,28 +159,23 @@ namespace FEP.WebApi.Api.eLearning
         /// Mark complete this content, should put the mark in progress
         /// </summary>
         /// <returns></returns>
-        [Route("api/eLearning/CourseContents/Commplete")]
+        [Route("api/eLearning/CourseContents/Complete")]
         [HttpPost]
         [ValidationActionFilter]
-        public async Task<IHttpActionResult> Complete([FromBody] CreateOrEditContentModel request)
+        public async Task<IHttpActionResult> Complete([FromBody] ContentCompletionModel request)
         {
             if (ModelState.IsValid)
             {
-                var entity = await db.CourseContents.FirstOrDefaultAsync(x => x.Id == request.Id);
+                var nextContent = await db.CourseContents.Where(x => x.Order > request.Order && 
+                                x.CourseModuleId == request.CourseModuleId)
+                                .OrderBy(x => x.Order).FirstOrDefaultAsync();
 
-                if (entity == null)
-                    return BadRequest();
-
-
-                var nextEntity = await db.CourseContents.FirstOrDefaultAsync(x => x.Id == request.Id && 
-                        x.Order == (entity.Order + 1));
-
-                if (nextEntity == null)
-                    return Ok("-1");
+                //if (nextContent == null)
+                    return Ok(nextContent);
 
                 //TODO: MARK THE USER PROGRESS. IF TRIAL, IGNORE
 
-                return Ok(nextEntity.Id);
+                //return Ok(nextContent.Id.ToString());
                
 
             }
@@ -194,12 +189,22 @@ namespace FEP.WebApi.Api.eLearning
         [HttpGet]
         public async Task<IHttpActionResult> Get(int? id)
         {
-            var entity = await db.CourseContents.FirstOrDefaultAsync(x => x.Id == id.Value);
+            var entity = await db.CourseContents
+                .Include(x => x.ContentFile.FileDocument)                
+                .FirstOrDefaultAsync(x => x.Id == id.Value);
 
             if (entity == null)
                 return NotFound();
 
             var model = _mapper.Map<CreateOrEditContentModel>(entity);
+
+            // for uploaded content
+            if (entity.ContentFile != null && 
+                entity.ContentFile.FileDocument != null)
+            {
+                model.FileDocument = entity.ContentFile.FileDocument;
+                model.FileDocumentId = entity.ContentFile.FileDocumentId;
+            }
 
             return Ok(model);
         }

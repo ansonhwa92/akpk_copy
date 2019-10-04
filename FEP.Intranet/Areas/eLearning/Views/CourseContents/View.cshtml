@@ -54,8 +54,9 @@
                     <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">@Model.ContentType</a>
+                            <a href="#" class="nav-link">@Model.Title</a>
                         </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -66,55 +67,62 @@
         <div class="border-form rounded-top">
             <div class="form-container">
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <h3>@Model.Title</h3>
+                </div>
+
+                @Html.Raw(Model.Description)
 
                 @{
                     switch (Model.ContentType)
                     {
                         case FEP.Model.eLearning.CourseContentType.Video:
 
-                            @Html.Action("Video", "CourseContents", new { id = @Model.Id })
+                            @*@Html.Action("Video", "CourseContents", new { id = @Model.Id })*@
+
+                            @Html.Partial("_video", Model)
 
                             break;
 
                         case FEP.Model.eLearning.CourseContentType.RichText:
 
-                            @Html.Action("RichText", "CourseContents", new { id = @Model.Id })
+                            @Html.Partial("_richText", Model)
 
                             break;
-                        case FEP.Model.eLearning.CourseContentType.IFrame:
 
-                            @Html.Action("IFrame", "CourseContents", new { id = @Model.Id })
-
-                            break;
                         case FEP.Model.eLearning.CourseContentType.Audio:
-
                             @Html.Action("Audio", "CourseContents", new { id = @Model.Id })
 
                             break;
                         case FEP.Model.eLearning.CourseContentType.Document:
 
-                            @Html.Action("Document", "CourseContents", new { id = @Model.Id })
+                            @Html.Partial("_document", Model)
 
                             break;
                         case FEP.Model.eLearning.CourseContentType.WebLink:
 
-                            @Html.Action("WebLink", "CourseContents", new { id = @Model.Id })
+                            @Html.Partial("_webLink", Model)
+
+                            break;
+
+                        case FEP.Model.eLearning.CourseContentType.IFrame:
+
+                            @Html.Partial("_iframe", Model)
 
                             break;
                         case FEP.Model.eLearning.CourseContentType.Test:
 
-                            @Html.Action("Test", "CourseContents", new { id = @Model.Id })
+                            @Html.Partial("_test", Model)
 
                             break;
                         case FEP.Model.eLearning.CourseContentType.Assignment:
 
-                            @Html.Action("Assignment", "CourseContents", new { id = @Model.Id })
+                            @Html.Partial("_assignment", Model)
 
                             break;
 
                         default:
-                            @Html.Action("RichText", "CourseContents", new { id = @Model.Id })
+                            @Html.Action("_DefaultContent", "CourseContents", new { id = @Model.Id })
 
                             break;
 
@@ -133,6 +141,10 @@
 </div>
 
 <style>
+
+    .form-container {
+        max-width: none !important;
+    }
 </style>
 
 @section ContentScript {

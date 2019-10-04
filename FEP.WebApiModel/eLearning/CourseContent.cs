@@ -60,5 +60,25 @@ namespace FEP.WebApiModel.eLearning
         public int Order { get; set; }
 
         public int? ContentFileId { get; set; }
+
+        public ShowIFrameAs ShowIFrameAs { get; set; }
+        
     }
+
+
+    public class ContentCompletionModel : BaseEntity
+    {
+        public string Title { get; set; }
+        public int ContentId { get; set; }
+        public int? CourseModuleId { get; set; }
+        public int? CourseId { get; set; }
+
+        public ContentCompletionType CompletionType { get; set; }
+
+        public int? Timer { get; set; }
+
+        public int? ContentQuestionId { get; set; }
+        public int Order { get; set; }
+
+  }
 }

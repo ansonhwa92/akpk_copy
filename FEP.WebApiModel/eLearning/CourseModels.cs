@@ -1,5 +1,6 @@
 ﻿using FEP.Helper;
 using FEP.Model.eLearning;
+using FEP.WebApiModel.Administration;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
@@ -60,6 +61,8 @@ namespace FEP.WebApiModel.eLearning
         [Required]
         [Display(Name = "Category", ResourceType = typeof(Language.eLearning.Course))]
         public int CategoryId { get; set; }
+
+        public RefCourseCategory Category { get; set; }
 
         [Display(Name = "Code", ResourceType = typeof(Language.eLearning.Course))]
         public string Code { get; set; }
@@ -134,10 +137,7 @@ namespace FEP.WebApiModel.eLearning
 
         public bool IsDeleted { get; set; }
 
-
     }
-
-
 
     public class CourseRuleModel : BaseModel
     {
@@ -174,6 +174,17 @@ namespace FEP.WebApiModel.eLearning
         [Display(Name = "LearningPath", ResourceType = typeof(Language.eLearning.Course))]
         public string LearningPath { get; set; }
 
+    }
 
+    public class TrainerCourseModel
+    {
+        public int CourseId { get; set; }
+        public Course Course { get; set; }
+
+        public int TrainerId { get; set; }
+        public Trainer Trainer { get; set; }
+
+        public ListUserModel Users { get; set; }
+        public List<TrainerCourse> TrainerCourses { get; set; }
     }
 }

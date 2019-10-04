@@ -173,7 +173,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     if (nextContent == null)
                         return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
                     else
-                        return RedirectToAction("Content", "CourseContents", new { area = "eLearning", @id = nextContent.Id });
+                        return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = nextContent.Id });
                 }
             }
             TempData["ErrorMessage"] = "Cannot complete content...";

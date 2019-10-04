@@ -112,12 +112,12 @@
                             break;
                         case FEP.Model.eLearning.CourseContentType.Test:
 
-                            @Html.Action("Test", "CourseContents", new { id = @Model.Id })
+                            @Html.Partial("_test", Model)
 
                             break;
                         case FEP.Model.eLearning.CourseContentType.Assignment:
 
-                            @Html.Action("Assignment", "CourseContents", new { id = @Model.Id })
+                            @Html.Partial("_assignment", Model)
 
                             break;
 

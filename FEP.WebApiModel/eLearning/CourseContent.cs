@@ -44,20 +44,21 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "CompleteAQuestion", ResourceType = typeof(Language.eLearning.Content))]
         public int? ContentQuestionId { get; set; }
-
+        
         public string Url { get; set; }
-
-
-        // To be used 
+     
         public HttpPostedFileBase FileName { get; set; }
         public int? FileDocumentId { get; set; }
         public FileDocument FileDocument { get; set; }
         public FileType FileType { get; set; }
+        public string FilePath { get; set; }
 
         public CreateContentFrom CreateContentFrom { get; set; }
 
         public VideoType VideoType { get; set; }
 
         public int Order { get; set; }
+
+        public int? ContentFileId { get; set; }
     }
 }

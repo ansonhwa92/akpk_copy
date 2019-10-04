@@ -45,8 +45,9 @@
     </div>
 }
 
-@using (Html.BeginForm("Create", "CourseContents", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
+<form action="/CourseContents/Create" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+    @*@using (Html.BeginForm("Create", "CourseContents", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {*@
     @Html.AntiForgeryToken()
 
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -56,6 +57,7 @@
     @Html.HiddenFor(m => m.CreateContentFrom)
     @Html.HiddenFor(m => m.ContentType)
     @Html.HiddenFor(m => m.PageTitle)
+    @Html.HiddenFor(m => m.VideoType)
     @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
 
     <div class="row">
@@ -81,24 +83,9 @@
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                    @{
-                        switch (Model.ContentType)
-                        {
-                            case FEP.Model.eLearning.CourseContentType.Video:
+                    @Html.Partial($"_create{Model.ContentType.ToString()}", Model)
 
-                                @Html.Partial("_createVideo", Model)
-                                break;
 
-                            case FEP.Model.eLearning.CourseContentType.RichText:
-
-                                @Html.Partial("_createRichText", Model)
-                                break;
-
-                            default:
-                                break;
-
-                        }
-                    }
                 </div>
             </div>
 
@@ -113,10 +100,10 @@
             </div>
         </div>
     </div>
-}
+    @* } *@
+</form>
 
 <style>
-    .upVideoWrapper,
     .questionWrapper,
     .timerWrapper {
         display: none;
@@ -131,6 +118,7 @@
 
     <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
     <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+    <script src="~/js/elearn.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -151,29 +139,45 @@
                 codeviewIframeFilter: true,
             });
 
-        });
-    </script>
+            // For video
+            var contentType = $('#ContentType').val();
+            if (contentType == 'Video') {
+                if ($('#VideoType').val() == "ExternalVideo") {
 
-    <script>
+                    $("#video1").prop("checked", true);
+                    $('#Url').prop("disabled", false);
+                    $('#FileName').prop("disabled", true);
+
+                }
+
+                if ($('#VideoType').val() == "UploadVideo") {
+
+                    $("#video2").prop("checked", true);
+                    $('#FileName').prop("disabled", false);
+                    $('#Url').prop("disabled", true);
+
+                }
+            }
+        });
+
 
         // hide/show text for video
         $('.video-radio input[type="radio"]').change(function () {
             if ($(this).hasClass("exVideo")) {
-                $(".exVideoWrapper").css({
-                    'display': 'block'
-                });
-                $(".upVideoWrapper").css({
-                    'display': 'none'
-                });
+
+                $('#Url').prop("disabled", false);
+                $('#FileName').prop("disabled", true);
+                setError("FileName", "");
+
+                ($('input[name=VideoType]').val('ExternalVideo'));
 
             } else {
 
-                $(".upVideoWrapper").css({
-                    'display': 'block'
-                });
-                $(".exVideoWrapper").css({
-                    'display': 'none'
-                });
+                $('#FileName').prop("disabled", false);
+                setError("Url", "");
+
+                $('#Url').prop("disabled", true);
+                ($('input[name=VideoType]').val('UploadVideo'));
             }
         });
 
@@ -211,6 +215,41 @@
             let fileName = $(this).val().split('\\').pop();
             $(this).next('.custom-file-label').addClass("selected").html(fileName);
         });
+
+
+        function validateForm() {
+
+            var contentType = $('#ContentType').val();
+            if (contentType == 'Video') {
+
+                console.log(contentType);
+                if ($('#VideoType').val() == "ExternalVideo") {
+                    if ($.trim($('#Url').val()) == "") {
+                        setError("Url", "Please enter the youtube URL.");
+
+                        return false;
+                    }
+                    else {
+                        setError("Url", "");
+                    }
+                }
+
+                if ($('#VideoType').val() == "UploadVideo") {
+
+                    if ($.trim($('#FileName').val()) == "") {
+                        setError("FileName", "Please browse for the file to upload.");
+
+                        return false;
+                    } else {
+                        setError("FileName", "");
+                    }
+
+                }
+            }
+
+
+            return true;
+        }
     </script>
 
 }

@@ -144,8 +144,11 @@
   <data name="DurationType" xml:space="preserve">
     <value>Duration Type</value>
   </data>
+  <data name="Free" xml:space="preserve">
+    <value>Free</value>
+  </data>
   <data name="IsFree" xml:space="preserve">
-    <value>Is this a free course?</value>
+    <value>Cost Type</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
@@ -159,11 +162,14 @@
   <data name="Objectives" xml:space="preserve">
     <value>Objectives</value>
   </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Paid</value>
+  </data>
   <data name="PercentageCompletion" xml:space="preserve">
     <value>Percentage </value>
   </data>
   <data name="Price" xml:space="preserve">
-    <value>Price</value>
+    <value>Price (RM)</value>
   </data>
   <data name="ScheduleType" xml:space="preserve">
     <value>Schedule Type</value>

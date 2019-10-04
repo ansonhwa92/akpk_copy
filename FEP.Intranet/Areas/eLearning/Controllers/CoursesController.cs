@@ -114,7 +114,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 if (response.isSuccess)
                 {
-                    TempData["SuccessMessage"] = "Course successfully created. Now you can add contents and rules.";
+                    TempData["SuccessMessage"] = "Course successfully created. Now you can add contents.";
 
                     await LogActivity(Modules.Learning, "Create Course : " + model.Title);
 
@@ -187,8 +187,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return RedirectToAction("Content", "Courses", new { id = id });
 
             }
-
-            //model.FrontPageContents = model.FrontPageContents.OrderBy(x => x.Order).ToList();
+            
             model.Modules = model.Modules.OrderBy(x => x.Order).ToList();
 
             return View(model);
@@ -341,17 +340,23 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
         // GET: eLearning/Courses/Edit/5
+        [HasAccess(UserAccess.CourseCreate)]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+                TempData["ErrorMessage"] = "Cannot find such course.";
 
-            Course course = db.Courses.Find(id);
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
+            }            
+
+            var course = await TryGetCourse(id.Value);
+
             if (course == null)
             {
-                return HttpNotFound();
+                TempData["ErrorMessage"] = "Cannot find such course.";
+
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
             }
 
             CreateOrEditCourseModel model = _mapper.Map<CreateOrEditCourseModel>(course);
@@ -367,7 +372,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eLearning/Courses/Edit", model);
+                var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Post, $"eLearning/Courses/Edit", model);
 
                 if (response.isSuccess)
                 {
@@ -375,25 +380,23 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                     if (Submittype == "Save")
                     {
-                        TempData["SuccessMessage"] = "Course titled " + response.Data + " updated successfully and saved as draft.";
+                        TempData["SuccessMessage"] = "Course titled " + response.Data + " updated successfully.";
 
-                        return RedirectToAction("Index", "Courses", new { area = "eLearning" });
+                        return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = model.Id });
                     }
                     else
-                    {
-                       
-                        return RedirectToAction("Review", "Courses", new { area = "eLearning", @id = model.Id });
+                    {                       
+                        return RedirectToAction("Index", "Courses", new { area = "eLearning" });
                     }
                 }
                 else
                 {
-                    TempData["SuccessMessage"] = "Failed to edit Course.";
+                    TempData["ErrorMessage"] = "Failed to edit course.";
 
-                    return RedirectToAction("Details", "Courses", new { area = "eLearning", @id = model.Id });
+                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = model.Id });
                 }
             }
-
-            //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
+            
             return View(model);
 
         }
@@ -403,22 +406,21 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["ErrorMessage"] = "Cannot find such course.";
+
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
             }
 
-            var course = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Get, $"eLearning/Courses?id={id}");
+            var response = await TryGetCourse(id.Value);
 
-            if (!course.isSuccess)
+            if (response == null)
             {
-                return HttpNotFound();
+                TempData["ErrorMessage"] = "Cannot find such course.";
+
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
             }
 
-            var vm = course.Data;
-
-            if (vm == null)
-            {
-                return HttpNotFound();
-            }
+            var vm = response;
 
             return View(vm);
         }
@@ -436,20 +438,18 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Delete, $"eLearning/Courses/Delete?id={id}");
 
             if (response.isSuccess)
-            {
-                
+            {                
                 await LogActivity(Modules.Learning, "Delete Course: " + response.Data);
 
                 TempData["SuccessMessage"] = "Course titled " + response.Data + " successfully deleted.";
-               
-                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
+                              
             }
             else
             {
-                TempData["SuccessMessage"] = "Failed to delete Course.";
-
-                return RedirectToAction("Details", "Courses", new { area = "eLearning", @id = id });
+                TempData["ErrorMessage"] = "Failed to delete Course.";                
             }
+
+            return RedirectToAction("Index", "Courses", new { area = "eLearning" });
         }
 
         protected override void Dispose(bool disposing)

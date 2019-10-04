@@ -204,6 +204,8 @@ namespace FEP.WebApi.Api.eLearning
                 return NotFound();
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
+            model.Description = HttpUtility.HtmlDecode(model.Description);
+            model.Objectives = HttpUtility.HtmlDecode(model.Objectives);
 
             return Ok(model);
         }
@@ -458,8 +460,7 @@ namespace FEP.WebApi.Api.eLearning
         public async Task<IHttpActionResult> GetFrontCourse(int? id)
         {
             var entity = await db.Courses
-                                .Include(x => x.CourseApprovalLog)
-                                //.Include(x => x.FrontPageContents)
+                                .Include(x => x.CourseApprovalLog)                                
                                 .Include(x => x.Modules)
                                 .FirstOrDefaultAsync(x => x.Id == id.Value);
 
@@ -468,7 +469,7 @@ namespace FEP.WebApi.Api.eLearning
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
             model.CourseApprovalLogs = entity.CourseApprovalLog;
-            //model.FrontPageContents = entity.FrontPageContents;
+            
             model.Modules = entity.Modules;
 
             return Ok(model);
@@ -484,12 +485,10 @@ namespace FEP.WebApi.Api.eLearning
             {
                 string ptitle = course.Title;
 
-                course.IsDeleted = false;
+                course.IsDeleted = true;
 
-                db.Courses.Attach(course);
-                db.Entry(course).Property(m => m.IsDeleted).IsModified = true;
+                db.SetModified(course);
 
-                db.Configuration.ValidateOnSaveEnabled = false;
                 db.SaveChanges();
 
                 return ptitle;
@@ -501,11 +500,11 @@ namespace FEP.WebApi.Api.eLearning
         [Route("api/eLearning/Courses/Edit")]
         [HttpPost]
         [ValidationActionFilter]
-        public string Edit([FromBody] CreateOrEditCourseModel model)
+        public async Task<IHttpActionResult> Edit([FromBody] CreateOrEditCourseModel model)
         {
             if (ModelState.IsValid)
             {
-                var entity = db.Courses.Where(x => x.Id == model.Id).FirstOrDefault();
+                var entity = await db.Courses.FirstOrDefaultAsync(x => x.Id == model.Id);
 
                 if (entity != null)
                 {
@@ -526,10 +525,10 @@ namespace FEP.WebApi.Api.eLearning
 
                     db.SaveChanges();
 
-                    return model.Title;
+                    return Ok(entity.Id);
                 }
             }
-            return "";            
+            return BadRequest(ModelState);            
         }
 
     /// <summary>

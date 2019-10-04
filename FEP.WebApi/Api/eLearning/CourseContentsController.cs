@@ -78,19 +78,13 @@ namespace FEP.WebApi.Api.eLearning
         {
             if (ModelState.IsValid)
             {
-
-
-
-
                 // check if the request come from front page, then create a new module then create the content.
                 // if it comes from the module, then create the content there
                 // differentiate by CreateContentFrom
                 var content = _mapper.Map<CourseContent>(request);
 
                 if (request.CreateContentFrom == CreateContentFrom.CourseFrontPage)
-                {
-                    
-
+                {                   
                     var course = await db.Courses
                         .Include(x => x.Modules)
                         .FirstOrDefaultAsync(x => x.Id.Equals(request.CourseId));
@@ -98,13 +92,18 @@ namespace FEP.WebApi.Api.eLearning
                     if (course == null)
                         return BadRequest();
 
+                    if(course.Modules == null)
+                    {
+                        course.Modules = new List<CourseModule>();
+                    }
+
                     var module = new CourseModule
                     {
                         CourseId = request.CourseId,
                         Objectives = "Objective",
                         Description = "Description",
                         Title = request.Title,
-                        Order = course.Modules != null ? (course.Modules.Max(x => x.Order) + 1) : 1
+                        Order = course.Modules.Count() > 0 ? (course.Modules.Max(x => x.Order) + 1) : 1
                     };
 
                     content.Order = 1;
@@ -116,7 +115,7 @@ namespace FEP.WebApi.Api.eLearning
 
                     await db.SaveChangesAsync();
 
-                    return Ok(course.Id);
+                    return Ok(content.Id);
                     
                 }
                 else
@@ -133,20 +132,9 @@ namespace FEP.WebApi.Api.eLearning
                         module.ModuleContents = new List<CourseContent>();
                     }
 
-                    content.Order = module.ModuleContents.Max(x => x.Order) + 1;                    
+                    content.Order = module.ModuleContents.Max(x => x.Order) + 1;   
+                    
                     module.ModuleContents.Add(content);
-
-
-                    //var contents = db.CourseContents.Where(x => x.CourseModuleId == request.CourseModuleId);
-
-                    //if (contents == null)
-                    //    return BadRequest();
-
-
-                    //content.Order = contents.Max(x => x.Order) + 1;
-
-                    //contents.
-
 
                     try
                     {
@@ -157,7 +145,7 @@ namespace FEP.WebApi.Api.eLearning
                         return BadRequest(e.Message);
                     }
 
-                    return Ok(module.Id);                    
+                    return Ok(content.Id);                    
                 }                
             }
             else

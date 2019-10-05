@@ -1,0 +1,194 @@
+﻿@model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section ContentScript{
+    <script type="text/javascript">
+    </script>
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href='@Url.Action("Index", "Courses", new { area = "eLearning"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Course</a></li>
+                                <li class="breadcrumb-item"><a href="#">Delete Course</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Delete Course</h1>
+                    @*<div class="header-text">List of created event</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+<h3>Are you sure you want to delete this?</h3>
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div class="sidebar-left">
+            <!-- Steps -->
+            <div class="sidebar-inner sticky">
+                <ul class="steps steps-vertical">
+
+
+                    <li class="step-item complete">
+                        <a href="" class="step-link">
+                            <span class="step-number">1</span>
+                            <span class="step-title">List Of Course</span>
+                        </a>
+                    </li>
+
+                    <li class="step-item active">
+                        <a href="" class="step-link">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Delete Course</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- End Steps -->
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <div class="border-form rounded-top">
+
+            <form>
+                <div class="form-container">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.CategoryId)
+                            @Html.EditorFor(model => model.Category.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Title)
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Code)
+                            @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Description)
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" })
+                            @*@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" } })*@
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Objectives)
+                            @Html.TextAreaFor(model => model.Objectives, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" })
+                            @*@Html.EditorFor(model => model.Objectives, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })*@
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Medium)
+                            @Html.EditorFor(model => model.Medium, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Duration)
+                            @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ScheduleType)
+                            @Html.EditorFor(model => model.ScheduleType, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.DurationType)
+                            @Html.EditorFor(model => model.DurationType, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Language)
+                            @Html.EditorFor(model => model.Language, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.Label("Is this a free course?", htmlAttributes: new { @class = "control-label " })
+                        <div class="">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.IsFree)
+                                Yes
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Price)
+                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Status)
+                            @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+
+<<<<<<< HEAD
+                <a href='@Url.Action("Index")' style="text-decoration: none;" class="btn btn-warning btn-flat">Cancel</a>
+=======
+                <a href='@Url.Action("Index", "Courses")' style="text-decoration: none;" class="btn btn-warning btn-flat">Cancel</a>
+>>>>>>> add4e4c1f4d9ccb7ecc0c291e81a2daaabd75bf2
+                <button type="submit" class="btn btn-primary">Delete</button>
+            }
+        </div>
+    </div>
+</div>

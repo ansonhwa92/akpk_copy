@@ -187,4 +187,10 @@ namespace FEP.WebApiModel.eLearning
         public ListUserModel Users { get; set; }
         public List<TrainerCourse> TrainerCourses { get; set; }
     }
+
+    public class UpdateTrainerCourseModel
+    {
+        public int CourseId { get; set; }
+        public List<int> UserId { get; set; }
+    }
 }

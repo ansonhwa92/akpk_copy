@@ -86,6 +86,10 @@
     <Compile Include="Migrations\201910020807540_InitialDB.Designer.cs">
       <DependentUpon>201910020807540_InitialDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910040339259_UpdateDB.cs" />
+    <Compile Include="Migrations\201910040339259_UpdateDB.Designer.cs">
+      <DependentUpon>201910040339259_UpdateDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
@@ -114,6 +118,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201910020807540_InitialDB.resx">
       <DependentUpon>201910020807540_InitialDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910040339259_UpdateDB.resx">
+      <DependentUpon>201910040339259_UpdateDB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

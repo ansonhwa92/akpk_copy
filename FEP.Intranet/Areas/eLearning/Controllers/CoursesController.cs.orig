@@ -2,7 +2,6 @@
 using FEP.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
-using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.eLearning;
 using Newtonsoft.Json;
 using System;
@@ -155,15 +154,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var entity =  db.Courses.FirstOrDefault(x => x.Id == id.Value);
-
-            var model = new TrainerCourseModel
-            {
-                CourseId = id.Value,
-                Course = entity
-            };
-
-            ViewBag.Trainer = RoleNames.eLearningTrainer;
+            var model = new TrainerCourseModel { CourseId = id.Value };
 
             return View(model);
         }
@@ -174,59 +165,11 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> AddUser(int CourseId, int[] Ids)
-        {
-            var model = new UpdateTrainerCourseModel
-            {
-                CourseId = CourseId,
-                UserId = Ids.ToList()
-            };
-
-            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eLearning/Courses/AddUser", model);
-
-            if (response.isSuccess)
-            {
-                TempData["SuccessMessage"] = "User successfully assigned to role trainer.";
-                await LogActivity(Modules.Learning, "Assign user to trainer", model);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Fail to assign role.";
-            }
-
-
-            return RedirectToAction("Trainers", "Courses", new { area = "eLearning", id = CourseId });
-
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> DeleteUser(int CourseId, int[] Ids)
-        {
-
-            var model = new UpdateTrainerCourseModel
-            {
-                CourseId = CourseId,
-                UserId = Ids.ToList()
-            };
-
-            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eLearning/Courses/DeleteUser", model);
-
-            if (response.isSuccess)
-            {
-                TempData["SuccessMessage"] = "User successfully remove from role.";
-                await LogActivity(Modules.Admin, "Remove User From Role", model);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Fail to remove user.";
-            }
-
-
-            return RedirectToAction("Trainers", "Courses", new { area = "eLearning", id = CourseId });
-
-        }
-
+        /// <summary>
+        /// For the front page of a course
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HasAccess(UserAccess.CourseCreate)]
         public async Task<ActionResult> Content(int? id)
         {
@@ -423,6 +366,10 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> add4e4c1f4d9ccb7ecc0c291e81a2daaabd75bf2
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(CreateOrEditCourseModel model, string Submittype)

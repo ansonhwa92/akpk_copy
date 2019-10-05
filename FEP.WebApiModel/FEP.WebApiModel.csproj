@@ -67,7 +67,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Administration\Department.cs" />
     <Compile Include="Administration\FileDocument.cs" />
     <Compile Include="Administration\Role.cs" />
     <Compile Include="Administration\Ministry.cs" />

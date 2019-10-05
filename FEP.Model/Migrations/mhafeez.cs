@@ -731,6 +731,7 @@ namespace FEP.Model.Migrations
 
                 var staff = new StaffProfile
                 {
+                    StaffId = "",
                     BranchId = null,
                     DepartmentId = null,
                     DesignationId = null

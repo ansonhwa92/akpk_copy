@@ -25,10 +25,10 @@ namespace FEP.Model.Migrations
 			}
 
 			//string Name, string Email, string ICNo, string MobileNo, UserType UserType
-			AddUserEvent(db, "Event Admin", "aimannoramri@gmail.com", null, null, UserType.Staff);
-			AddUserEvent(db, "Event Approver 1", "aiman@primuscore.com", null, null, UserType.Staff);
-			AddUserEvent(db, "Event Approver 2", "aiman@primuscore.com", null, null, UserType.Staff);
-			AddUserEvent(db, "Event Approver 3", "aiman@primuscore.com", null, null, UserType.Staff);
+			//AddUserEvent(db, "Event Admin", "aimannoramri@gmail.com", null, null, UserType.Staff);
+			//AddUserEvent(db, "Event Approver 1", "aiman@primuscore.com", null, null, UserType.Staff);
+			//AddUserEvent(db, "Event Approver 2", "aiman@primuscore.com", null, null, UserType.Staff);
+			//AddUserEvent(db, "Event Approver 3", "aiman@primuscore.com", null, null, UserType.Staff);
 
 		}
 

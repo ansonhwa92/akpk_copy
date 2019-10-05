@@ -153,10 +153,14 @@ namespace FEP.WebApi.Api.Administration
                 .Select(s => new DetailsStaffModel
                 {
                     Id = s.Id,
+                    StaffId = s.StaffProfile.StaffId,
                     Name = s.Name,
                     Email = s.Email,
-                    Branch = s.StaffProfile.Branch.Name,
-                    Department = s.StaffProfile.Department.Name,
+                    MobileNo = s.MobileNo,
+                    ICNo = s.ICNo,
+                    Branch = s.StaffProfile.BranchId != null ? new BranchModel { Id = s.StaffProfile.Branch.Id, Name = s.StaffProfile.Branch.Name } : null,
+                    Department = s.StaffProfile.DepartmentId != null ? new DepartmentModel { Id = s.StaffProfile.Department.Id, Name = s.StaffProfile.Department.Name } : null,
+                    Designation = s.StaffProfile.DesignationId != null ? new DesignationModel { Id = s.StaffProfile.Designation.Id, Name = s.StaffProfile.Designation.Name } : null,
                     Status = s.UserAccount.IsEnable
                 })
                 .FirstOrDefault();
@@ -165,6 +169,8 @@ namespace FEP.WebApi.Api.Administration
             {
                 return NotFound();
             }
+
+            user.Roles = db.UserRole.Where(u => u.UserId == id).Select(s => new RoleModel { Id = s.RoleId, Name = s.Role.Name, Description = s.Role.Description }).ToList();
 
             return Ok(user);
         }

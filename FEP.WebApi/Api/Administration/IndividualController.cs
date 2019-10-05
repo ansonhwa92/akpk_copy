@@ -180,7 +180,7 @@ namespace FEP.WebApi.Api.Administration
                 return NotFound();
             }
 
-            user.Roles = db.UserRole.Where(u => u.UserId == id).Select(s => new RoleModel { Id = s.Id, Name = s.Role.Name, Description = s.Role.Description }).ToList();
+            user.Roles = db.UserRole.Where(u => u.UserId == id).Select(s => new RoleModel { Id = s.RoleId, Name = s.Role.Name, Description = s.Role.Description }).ToList();
             
             return Ok(user);
         }

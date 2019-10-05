@@ -155,6 +155,7 @@ namespace FEP.Model
     {
         [Key, ForeignKey("User")]
         public int UserId { get; set; }
+        public string StaffId { get; set; }
         public int? DepartmentId { get; set; }
         public int? BranchId { get; set; }
         public int? DesignationId { get; set; }

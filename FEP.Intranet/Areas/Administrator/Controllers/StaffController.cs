@@ -19,7 +19,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             filter.Branchs = new SelectList(await GetBranches(), "Id", "Name", 0);
             filter.Departments = new SelectList(await GetDepartments(), "Id", "Name", 0);
-
+            
             return View(new ListStaffModel { Filter = filter });
         }
 
@@ -73,16 +73,16 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                LogActivity(Modules.Admin, "Activate Staff Account", new { id = id });
+                await LogActivity(Modules.Admin, "Activate Staff Account", new { id = id });
 
-                TempData["SuccessMessage"] = "User account successfully activate.";
+                TempData["SuccessMessage"] = Language.Staff.AlertActivateSuccess;
 
                 return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = "Fail to activate user account.";
+                TempData["ErrorMessage"] = Language.Staff.AlertActivateFail;
 
                 return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = id });
             }
@@ -120,19 +120,53 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                LogActivity(Modules.Admin, "Disable Staff Account", new { id = id });
+                await LogActivity(Modules.Admin, "Disable Staff Account", new { id = id });
 
-                TempData["SuccessMessage"] = "User account successfully disable.";
+                TempData["SuccessMessage"] = Language.Staff.AlertDeactivateSuccess;
 
                 return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = "Fail to disable user account.";
+                TempData["ErrorMessage"] = Language.Staff.AlertDeactivateFail;
 
                 return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = id });
             }
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _Add()
+        {
+            var filter = new FilterStaffModel();
+
+            filter.Branchs = new SelectList(await GetBranches(), "Id", "Name", 0);
+            filter.Departments = new SelectList(await GetDepartments(), "Id", "Name", 0);
+
+            return View(new ListStaffModel { Filter = filter });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _Details(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<DetailsIndividualModel>(HttpVerbs.Get, $"Administration/Individual?id={id}");
+
+            if (!response.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var model = response.Data;
+
+            //model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
 
         }
 
@@ -159,7 +193,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var departments = Enumerable.Empty<DepartmentModel>();
 
-            var response = await WepApiMethod.SendApiAsync<List<DepartmentModel>>(HttpVerbs.Get, $"Administration/Branch");
+            var response = await WepApiMethod.SendApiAsync<List<DepartmentModel>>(HttpVerbs.Get, $"Administration/Department");
 
             if (response.isSuccess)
             {

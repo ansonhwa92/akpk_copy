@@ -1,5 +1,6 @@
 ﻿using FEP.Model;
 using FEP.Model.eLearning;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Web.Mvc;
@@ -44,12 +45,14 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "CompleteAQuestion", ResourceType = typeof(Language.eLearning.Content))]
         public int? ContentQuestionId { get; set; }
+        public string Question { get; set; }
         
         public string Url { get; set; }
      
-        public HttpPostedFileBase FileName { get; set; }
+        public HttpPostedFileBase File { get; set; }
         public int? FileDocumentId { get; set; }
         public FileDocument FileDocument { get; set; }
+        public string UploadFileName { get; set; }
         public FileType FileType { get; set; }
         public string FilePath { get; set; }
 
@@ -80,5 +83,28 @@ namespace FEP.WebApiModel.eLearning
         public int? ContentQuestionId { get; set; }
         public int Order { get; set; }
 
-  }
+        public string Question { get; set; }
+        public ICollection<MultipleChoiceAnswer> MultipleChoiceAnswers { get; set; }
+
+        public int MultipleChoiceAnswerId { get; set; }
+
+        // For ordering and fill the gap answers
+        public ICollection<OrderAnswer> OrderAnswers { get; set; }
+
+        public string OrderAnswerString { get; set; }
+
+        // free text
+        public ICollection<FreeTextAnswer> FreeTextAnswers { get; set; }
+
+        public string FreeTextAnswer { get; set; }
+
+    }
+
+    public class DeleteContentModel
+    {
+        public string Title { get; set; }
+        public int? CourseModuleId { get; set; }
+        public int? CourseId { get; set; }
+
+    }
 }

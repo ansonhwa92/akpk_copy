@@ -18,14 +18,19 @@ namespace FEP.Model.eLearning
         [Required]
         public CourseContentType ContentType { get; set; }
 
+        public int Order { get; set; }
+
+        public int ContentCompletionTypeId { get; set; }
+        public virtual ContentCompletionType ContentCompletionType { get; set; }
+
+
+        // -- START For use with completion Type
+
         [Display(Name = "CompletionCriteria", ResourceType = typeof(Language.eLearning.Content))]
         public ContentCompletionType CompletionType { get; set; }
 
-        public int Order { get; set; }
-
         public QuestionType? QuestionType { get; set; }
 
-        // -- START For use with completion Type
         public int? ContentQuestionId { get; set; }
 
         public virtual ContentQuestion ContentQuestion { get; set; }
@@ -50,6 +55,22 @@ namespace FEP.Model.eLearning
         // for Iframe
         public ShowIFrameAs ShowIFrameAs { get; set; }
 
+    }
+
+    public class ContentCompletion : BaseEntity
+    {
+
+        [Display(Name = "CompletionCriteria", ResourceType = typeof(Language.eLearning.Content))]
+        public ContentCompletionType CompletionType { get; set; }
+
+        public QuestionType? QuestionType { get; set; }
+
+        // -- START For use with completion Type
+        public int? QuestionId { get; set; }
+
+        public virtual Question Question { get; set; }
+        public int Timer { get; set; } //completiontype timer in sec
+        // -- END For use with completion Type
     }
 
     public enum ShowIFrameAs

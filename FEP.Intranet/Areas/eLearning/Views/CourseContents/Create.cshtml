@@ -45,69 +45,84 @@
     </div>
 }
 
-<form action="/CourseContents/Create" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-    @*@using (Html.BeginForm("Create", "CourseContents", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    <form action="/CourseContents/Create" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+        @*@using (Html.BeginForm("Create", "CourseContents", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {*@
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    @Html.HiddenFor(m => m.CourseId)
-    @Html.HiddenFor(m => m.CourseModuleId)
-    @Html.HiddenFor(m => m.CreateContentFrom)
-    @Html.HiddenFor(m => m.ContentType)
-    @Html.HiddenFor(m => m.PageTitle)
-    @Html.HiddenFor(m => m.VideoType)
-    @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+        @Html.HiddenFor(m => m.CourseId)
+        @Html.HiddenFor(m => m.CourseModuleId)
+        @Html.HiddenFor(m => m.CreateContentFrom)
+        @Html.HiddenFor(m => m.ContentType)
+        @Html.HiddenFor(m => m.PageTitle)
+        @Html.HiddenFor(m => m.VideoType)
+        @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+        @Html.HiddenFor(m => m.CompletionType)
 
-    <div class="row">
+        <div class="row">
 
-        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
-            <div id="page-nav" class="sidebar-left page-nav">
-                <div data-perfect-scrollbar class="ps">
-                    <div class="page-section">
-                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
-                        <ul class="nav page-nav__menu">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">@Model.ContentType</a>
-                            </li>
+            <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+                <div id="page-nav" class="sidebar-left page-nav">
+                    <div data-perfect-scrollbar class="ps">
+                        <div class="page-section">
+                            <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                            <ul class="nav page-nav__menu">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">@Model.ContentType</a>
+                                </li>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-            <!-- Start Form -->
-            <div class="border-form rounded-top">
-                <div class="form-container">
+            <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+                <!-- Start Form -->
+                <div class="border-form rounded-top">
+                    <div class="form-container">
 
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                    @Html.Partial($"_create{Model.ContentType.ToString()}", Model)
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })
+                            <div class="">
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
+                            <div class="">
+                                @Html.TextAreaFor(model => model.Description, new { @class = "summernote form-control" })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        @Html.Partial($"_create{Model.ContentType.ToString()}", Model)
 
 
+                    </div>
+                </div>
+
+                <div class="border-left border-right border-bottom p-3 rounded-bottom">
+
+                    <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+                       title="Back">@Language.General.ButtonBack</a>
+
+                    <button type="submit" class="btn btn-default pull-right" id="btnSave" value="Save">
+                        <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save
+                    </button>
                 </div>
             </div>
-
-            <div class="border-left border-right border-bottom p-3 rounded-bottom">
-
-                <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
-                   title="Back">@Language.General.ButtonBack</a>
-
-                <button type="submit" class="btn btn-default pull-right" id="btnSave" value="Save">
-                    <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save
-                </button>
-            </div>
         </div>
-    </div>
-    @* } *@
-</form>
+        @* } *@
+    </form>
 
 <style>
-    .questionWrapper,
-    .timerWrapper {
-        display: none;
-    }
 
     .form-container {
         max-width: none !important;
@@ -138,6 +153,12 @@
                 codeviewFilter: false,
                 codeviewIframeFilter: true,
             });
+
+            $("#clickButton").prop("checked", true);
+            $('#Timer').prop("disabled", true);
+            $('#ContentQuestionId').prop("disabled", true);
+
+            $('input[name=CompletionType]').val("ClickButton");
 
             // For video
             var contentType = $('#ContentType').val();
@@ -182,33 +203,36 @@
         });
 
         $('.completion-radio input[type="radio"]').change(function () {
-            if ($(this).hasClass("clickButton")) {
-                $(".questionWrapper").css({
-                    'display': 'none'
-                });
-                $(".timerWrapper").css({
-                    'display': 'none'
-                });
+            var completionType = $(this).val();
+            console.log(completionType);
 
-            }
-            if ($(this).hasClass("timer")) {
-
-                $(".timerWrapper").css({
-                    'display': 'block'
-                });
-                $(".questionWrapper").css({
-                    'display': 'none'
-                });
-            }
             if ($(this).hasClass("answerQuestion")) {
+                $("#answerQuestion").prop("checked", true);
+                $('#Timer').prop("disabled", true);
+                $('#ContentQuestionId').prop("disabled", false);
 
-                $(".questionWrapper").css({
-                    'display': 'block'
-                });
-                $(".timerWrapper").css({
-                    'display': 'none'
-                });
+                $('input[name=CompletionType]').val("AnswerQuestion");
             }
+
+
+            if ($(this).hasClass("clickButton")) {
+                $("#clickButton").prop("checked", true);
+                $('#Timer').prop("disabled", true);
+                $('#ContentQuestionId').prop("disabled", true);
+
+                $('input[name=CompletionType]').val("ClickButton");
+            }
+
+
+            if ($(this).hasClass("timer1")) {
+                $("#timer1").prop("checked", true);
+                $('#Timer').prop("disabled", false);
+                $('#ContentQuestionId').prop("disabled", true);
+
+                $('input[name=CompletionType]').val("Timer");
+            }
+
+
         });
 
         $('.custom-file-input').on('change', function () {

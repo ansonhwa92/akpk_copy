@@ -1,149 +1,291 @@
-﻿@model FEP.Model.eLearning.CourseContent
+﻿@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Content";
     Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    var name = Model.PageTitle;
+
+    var desc = Model.ContentType.ToString();
+
 }
 
-<h2>Edit</h2>
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5">
 
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>CourseContent</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CourseModuleId, "CourseModuleId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CourseModuleId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CourseModuleId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CourseId, "CourseId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CourseId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CourseId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsViewable, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsViewable)
-                    @Html.ValidationMessageFor(model => model.IsViewable, "", new { @class = "text-danger" })
+                    <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-outline-primary text-white">
+                        <span class="align-middle">
+                            <i class="la la-long-arrow-left">&nbsp;</i>
+                        </span>
+                        Back
+                    </a>
                 </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ContentType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.ContentType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ContentType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CompletionType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.CompletionType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CompletionType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Order, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Order, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Order, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.QuestionType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.QuestionType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.QuestionType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Timer, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Timer, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Timer, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UpdatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UpdatedDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Courses</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId">Module</a></li>
+                                <li class="breadcrumb-item"><a href="#">Content</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@name : Edit @desc</h1>
+                    <div class="header-text">Edit @desc.</div>
+                </div>
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<form action="/CourseContents/Edit" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.CourseId)
+    @Html.HiddenFor(m => m.CourseModuleId)
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.ContentType)
+    @Html.HiddenFor(m => m.PageTitle)
+    @Html.HiddenFor(m => m.VideoType)
+    @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+    @Html.HiddenFor(m => m.CompletionType)
+
+    <div class="row">
+
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div id="page-nav" class="sidebar-left page-nav">
+                <div data-perfect-scrollbar class="ps">
+                    <div class="page-section">
+                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                        <ul class="nav page-nav__menu">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">@Model.ContentType</a>
+                            </li>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <div class="form-container">
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })
+                        <div class="">
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
+                        <div class="">
+                            @Html.TextAreaFor(model => model.Description, new { @class = "summernote form-control" })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <hr />
+
+                    @Html.Partial($"_edit{Model.ContentType.ToString()}", Model)
+
+                </div>
+            </div>
+
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+
+                <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+                   title="Back">@Language.General.ButtonBack</a>
+
+                <button type="submit" class="btn btn-default pull-right" id="btnSave" value="Save">
+                    <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save
+                </button>
+            </div>
+        </div>
+    </div>
+    @* } *@
+</form>
+
+<style>
+    /*.questionWrapper,
+    .timerWrapper {
+        display: none;
+    }*/
+
+    .form-container {
+        max-width: none !important;
+    }
+</style>
+
+@section ContentScript {
+
+    <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
+    <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+    <script src="~/js/elearn.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                placeholder: 'Type your text here.',
+                tabsize: 2,
+                height: 150,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+
+                ],
+                codeviewFilter: false,
+                codeviewIframeFilter: true,
+            });
+
+            var completionType = $('#CompletionType').val();
+
+            console.log('First time - ', completionType);
+
+
+            if (completionType == "AnswerQuestion") {
+                $("#answerQuestion").prop("checked", true);
+                $('#Timer').prop("disabled", true);
+                $('#ContentQuestionId').prop("disabled", false);
+            }
+
+            if (completionType == "ClickButton") {
+                $("#clickButton").prop("checked", true);
+                $('#Timer').prop("disabled", true);
+                $('#ContentQuestionId').prop("disabled", true);
+            }
+
+
+            if (completionType == "Timer") {
+                $("#timer1").prop("checked", true);
+                $('#Timer').prop("disabled", false);
+                $('#ContentQuestionId').prop("disabled", true);
+            }
+
+
+            var contentType = $('#ContentType').val();
+            if (contentType == 'Video') {
+                if ($('#VideoType').val() == "ExternalVideo") {
+
+                    $("#video1").prop("checked", true);
+                    $('#Url').prop("disabled", false);
+                    $('#FileName').prop("disabled", true);
+
+                }
+
+                if ($('#VideoType').val() == "UploadVideo") {
+
+                    $("#video2").prop("checked", true);
+                    $('#FileName').prop("disabled", false);
+                    $('#Url').prop("disabled", true);
+
+                }
+            }
+
+        });
+
+
+        // hide/show text for video
+        $('.video-radio input[type="radio"]').change(function () {
+            if ($(this).hasClass("exVideo")) {
+
+                $('#Url').prop("disabled", false);
+                $('#FileName').prop("disabled", true);
+                setError("FileName", "");
+
+                ($('input[name=VideoType]').val('ExternalVideo'));
+
+            } else {
+
+                $('#FileName').prop("disabled", false);
+                setError("Url", "");
+
+                $('#Url').prop("disabled", true);
+                ($('input[name=VideoType]').val('UploadVideo'));
+            }
+        });
+
+        $('.completion-radio input[type="radio"]').change(function () {
+
+            var completionType = $(this).val();
+            //console.log(completionType);
+
+            if (completionType == "AnswerQuestion") {
+                $("#answerQuestion").prop("checked", true);
+                $('#Timer').prop("disabled", true);
+                $('#ContentQuestionId').prop("disabled", false);                
+            }
+
+            if (completionType == "ClickButton") {
+                $("#clickButton").prop("checked", true);
+                $('#Timer').prop("disabled", true);
+                $('#ContentQuestionId').prop("disabled", true);
+            }
+
+            if (completionType == "Timer") {
+                $("#timer1").prop("checked", true);
+                $('#Timer').prop("disabled", false);
+                $('#ContentQuestionId').prop("disabled", true);
+            }
+
+            ($('input[name=CompletionType]').val(completionType));
+
+        });
+
+        $('.custom-file-input').on('change', function () {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+
+
+        function validateForm() {
+
+            var contentType = $('#ContentType').val();
+            if (contentType == 'Video') {
+
+                console.log(contentType);
+                if ($('#VideoType').val() == "ExternalVideo") {
+                    if ($.trim($('#Url').val()) == "") {
+                        setError("Url", "Please enter the youtube URL.");
+
+                        return false;
+                    }
+                    else {
+                        setError("Url", "");
+                    }
+                }
+
+                if ($('#VideoType').val() == "UploadVideo") {
+
+                    console.log('uploaded filenam : ', $('#UploadFileName').val(), " filename-", $('#FileName').val());
+
+                    if ($.trim($('#UploadFileName').val()) == "" && $.trim($('#FileName').val()) == "" ) {
+                        setError("FileName", "Please browse for the file to upload.");
+
+                        return false;
+                    } else {
+                        setError("FileName", "");
+                    }
+                }
+            }
+
+            return true;
+        }
+    </script>
+
 }

@@ -1,0 +1,70 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })
+    <div class="">
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly"  } })
+        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
+    <div class="">
+        @Html.TextAreaFor(model => model.Description, new { @class = "summernote form-control" })
+        @*@Html.Raw(HttpUtility.HtmlDecode(Model.Description))*@
+    </div>
+</div>
+
+@Html.Partial("_contentCompletionDetail", Model)
+<div>
+
+    <div class="form-group">
+        <label>@Language.eLearning.Enum.Video</label>
+        <div class="col-sm-12">
+
+            @if (Model.VideoType == VideoType.ExternalVideo)
+            {
+                <!-- Default inline 1-->
+                <div class="video-radio row pl-4 pb-2">
+
+                    <div class="pt-2">
+                        <input type="radio" class="custom-control-input exVideo" checked="checked" value=@VideoType.ExternalVideo
+                               id="video1"
+                               name="VideoType">
+                        <label class="custom-control-label" for="video1">@Language.eLearning.Enum.ExternalVideo</label>
+
+                    </div>
+                    <div class="form-group exVideoWrapper col-sm-8">
+                        @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control",
+                       @readonly = "readonly", @placeholder = "YouTube Url" } })
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="video-radio row pl-4 ">
+
+                    <div class="pt-2">
+                        <input type="radio" class="custom-control-input upVideo" value=@VideoType.UploadVideo
+                               id="video2"
+                               name="VideoType">
+                        <label class="custom-control-label" for="video2">@Language.eLearning.Enum.UploadVideo</label>
+
+                    </div>
+                    <div class="form-group upVideoWrapper col-sm-8">
+                        <div class="">
+                            <input name="FileName" id="FileName" class="form-control" readonly="readonly" value="@Model.FileDocument.FileName" />
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+
+
+        </div>
+
+</div>

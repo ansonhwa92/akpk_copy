@@ -133,7 +133,7 @@
     <value>With a question</value>
   </data>
   <data name="CompleteATimer" xml:space="preserve">
-    <value>After a period of time</value>
+    <value>After a period of time (in seconds)</value>
   </data>
   <data name="CompletionCriteria" xml:space="preserve">
     <value>How is this content completed?</value>

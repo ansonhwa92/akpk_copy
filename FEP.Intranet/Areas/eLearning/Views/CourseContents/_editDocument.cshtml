@@ -6,12 +6,13 @@
 
 <div>
     <div class="form-group">
-        <label>@Language.eLearning.Content.Test</label>
+        <label>@Language.eLearning.Content.Document</label>
         <div class="">
 
             @Html.EditorFor(model => model.Url, new { @class = "form-control" })
 
             @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
+
         </div>
     </div>
 </div>

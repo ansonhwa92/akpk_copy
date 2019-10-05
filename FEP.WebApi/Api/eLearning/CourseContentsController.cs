@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FEP.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
@@ -26,12 +25,10 @@ namespace FEP.WebApi.Api.eLearning
                 cfg.CreateMap<CreateOrEditContentModel, CourseContent>();
 
                 cfg.CreateMap<CourseContent, CreateOrEditContentModel>();
-
             });
 
             _mapper = config.CreateMapper();
         }
-
 
         protected override void Dispose(bool disposing)
         {
@@ -50,10 +47,8 @@ namespace FEP.WebApi.Api.eLearning
         [HttpPost]
         public IHttpActionResult Upload(FilterCourseModel request)
         {
-
             return Ok();
         }
-
 
         /// <summary>
         /// For use in index page, to list all the courses but with some fields only
@@ -63,7 +58,6 @@ namespace FEP.WebApi.Api.eLearning
         [HttpPost]
         public IHttpActionResult Post(FilterCourseModel request)
         {
-
             return Ok();
         }
 
@@ -84,7 +78,7 @@ namespace FEP.WebApi.Api.eLearning
                 var content = _mapper.Map<CourseContent>(request);
 
                 if (request.CreateContentFrom == CreateContentFrom.CourseFrontPage)
-                {                   
+                {
                     var course = await db.Courses
                         .Include(x => x.Modules)
                         .FirstOrDefaultAsync(x => x.Id.Equals(request.CourseId));
@@ -92,7 +86,7 @@ namespace FEP.WebApi.Api.eLearning
                     if (course == null)
                         return BadRequest();
 
-                    if(course.Modules == null)
+                    if (course.Modules == null)
                     {
                         course.Modules = new List<CourseModule>();
                     }
@@ -116,7 +110,6 @@ namespace FEP.WebApi.Api.eLearning
                     await db.SaveChangesAsync();
 
                     return Ok(content.Id);
-                    
                 }
                 else
                 {
@@ -127,26 +120,26 @@ namespace FEP.WebApi.Api.eLearning
                     if (module == null)
                         return BadRequest();
 
-                    if(module.ModuleContents == null)
+                    if (module.ModuleContents == null)
                     {
                         module.ModuleContents = new List<CourseContent>();
                     }
 
-                    content.Order = module.ModuleContents.Max(x => x.Order) + 1;   
-                    
+                    content.Order = module.ModuleContents.Max(x => x.Order) + 1;
+
                     module.ModuleContents.Add(content);
 
                     try
                     {
                         await db.SaveChangesAsync();
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         return BadRequest(e.Message);
                     }
 
-                    return Ok(content.Id);                    
-                }                
+                    return Ok(content.Id);
+                }
             }
             else
             {
@@ -154,7 +147,6 @@ namespace FEP.WebApi.Api.eLearning
             }
         }
 
-        
         /// <summary>
         /// Mark complete this content, should put the mark in progress
         /// </summary>
@@ -166,18 +158,16 @@ namespace FEP.WebApi.Api.eLearning
         {
             if (ModelState.IsValid)
             {
-                var nextContent = await db.CourseContents.Where(x => x.Order > request.Order && 
+                var nextContent = await db.CourseContents.Where(x => x.Order > request.Order &&
                                 x.CourseModuleId == request.CourseModuleId)
                                 .OrderBy(x => x.Order).FirstOrDefaultAsync();
 
                 //if (nextContent == null)
-                    return Ok(nextContent);
+                return Ok(nextContent);
 
                 //TODO: MARK THE USER PROGRESS. IF TRIAL, IGNORE
 
                 //return Ok(nextContent.Id.ToString());
-               
-
             }
             else
             {
@@ -185,12 +175,12 @@ namespace FEP.WebApi.Api.eLearning
             }
         }
 
-
         [HttpGet]
         public async Task<IHttpActionResult> Get(int? id)
         {
             var entity = await db.CourseContents
-                .Include(x => x.ContentFile.FileDocument)                
+                .Include(x => x.ContentFile.FileDocument)
+                .Include(x => x.ContentQuestion.Question)
                 .FirstOrDefaultAsync(x => x.Id == id.Value);
 
             if (entity == null)
@@ -199,16 +189,127 @@ namespace FEP.WebApi.Api.eLearning
             var model = _mapper.Map<CreateOrEditContentModel>(entity);
 
             // for uploaded content
-            if (entity.ContentFile != null && 
+            if (entity.ContentFile != null &&
                 entity.ContentFile.FileDocument != null)
             {
                 model.FileDocument = entity.ContentFile.FileDocument;
                 model.FileDocumentId = entity.ContentFile.FileDocumentId;
+                model.UploadFileName = entity.ContentFile.FileName;
+            }
+
+            if(entity.ContentQuestion != null && entity.ContentQuestion.Question != null)
+            {
+                model.ContentQuestionId = entity.ContentQuestion.Question.Id;
+                model.Question = entity.ContentQuestion.Question.Name;
             }
 
             return Ok(model);
         }
 
+        [Route("api/eLearning/CourseContents/Edit")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> Edit([FromBody] CreateOrEditContentModel request)
+        {
+            if (ModelState.IsValid)
+            {
+                var content = await db.CourseContents
+                    .Include(x => x.ContentFile.FileDocument)
+                    .FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
 
+                if (content == null)
+                    return BadRequest();
+
+                content.CompletionType = request.CompletionType;
+                content.ContentType = request.ContentType;
+                content.Description = request.Description;
+                content.ShowIFrameAs = request.ShowIFrameAs;
+                content.Text = request.Text;
+
+                content.Title = request.Title;
+                content.Url = request.Url;
+                content.VideoType = request.VideoType;
+
+                if (request.CompletionType == ContentCompletionType.Timer)
+                {
+                    content.Timer = request.Timer != null ? request.Timer.Value : 0;
+                    content.ContentQuestionId = null;
+                    content.ContentQuestion = null;
+                }
+                else if(request.CompletionType == ContentCompletionType.ClickButton)
+                {
+                    content.Timer = 0;
+                    content.ContentQuestionId = null;
+                    content.ContentQuestion = null;
+                }
+                else if(request.CompletionType == ContentCompletionType.AnswerQuestion)
+                {
+                    content.Timer = 0;
+
+                    content.ContentQuestionId = request.ContentQuestionId != null ? request.ContentQuestionId.Value : -1;
+                }
+
+                if(request.ContentType == CourseContentType.Video)
+                {
+                    if(request.VideoType == VideoType.ExternalVideo)
+                    {
+                        content.ContentFile = null;
+                        content.ContentFileId = null;
+                    }
+                    else if(request.VideoType == VideoType.UploadVideo)
+                    {
+                        content.Url = null;
+                    }
+
+                }
+
+
+                try
+                {
+                    await db.SaveChangesAsync();
+
+                    return Ok(true);
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+        }
+
+        [Route("api/eLearning/CourseContents/Delete")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var content = await db.CourseContents.FindAsync(id.Value);
+
+            if (content != null)
+            {
+                DeleteContentModel model = new DeleteContentModel
+                {
+                    Title = content.Title,
+                    CourseId = content.CourseId,
+                    CourseModuleId = content.CourseModuleId
+                };
+
+                db.SetDeleted(content);
+
+                await db.SaveChangesAsync();
+
+                return Ok(model);
+            }
+
+            return BadRequest(ModelState);
+        }
     }
 }

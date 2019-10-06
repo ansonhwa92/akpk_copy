@@ -25,7 +25,6 @@ namespace FEP.Model.Migrations
             SeedSampleCertificateAndTemplate(db);
 
             SeedAssignTrainerToGroup(db);
-
         }
 
         private static void SeedDefaultData(DbEntities db)
@@ -82,7 +81,6 @@ namespace FEP.Model.Migrations
 
             var user = db.User.FirstOrDefault(x => x.Id == userRole.UserId);
 
-
             db.TrainerCourses.Add(new TrainerCourse
             {
                 Trainer = new Trainer { User = user },
@@ -94,7 +92,7 @@ namespace FEP.Model.Migrations
 
         private static void SeedAssignTrainerToGroup(DbEntities db)
         {
-          //  Get the  course
+            //  Get the  course
         }
 
         private static void SeedRoles(DbEntities db)
@@ -134,7 +132,6 @@ namespace FEP.Model.Migrations
             AddUser(db, "elapprover2@fep.com", "elapprover2@fep.com", UserType.Individual, RoleNames.eLearningApprover2);
             AddUser(db, "elapprover3@fep.com", "elapprover3@fep.com", UserType.Individual, RoleNames.eLearningApprover3);
 
-
             for (int i = 1; i <= 20; i++)
             {
                 var trainer = $"eltrainer{i}@fep.com";
@@ -142,15 +139,12 @@ namespace FEP.Model.Migrations
                 AddUser(db, trainer, trainer, UserType.Individual, RoleNames.eLearningTrainer);
             }
 
-
             for (int i = 1; i <= 20; i++)
             {
                 var student = $"elstudent{i}@fep.com";
 
                 AddUser(db, student, student, UserType.Individual, RoleNames.eLearningLearner);
-
             }
-
         }
 
         private static void SeedSampleCategories(DbEntities db)
@@ -246,7 +240,7 @@ namespace FEP.Model.Migrations
                         "five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised " +
                         "in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop " +
                         "publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p></div>",
-                    CompletionType = ContentCompletionType.Timer,
+                    ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.Timer },
                     Description = "<p> This is Content 1 </p>",
                     Title = "Content 1",
                 };
@@ -258,7 +252,7 @@ namespace FEP.Model.Migrations
                     CourseId = course.Id,
                     ContentType = CourseContentType.Video,
                     Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8",
-                    CompletionType = ContentCompletionType.ClickButton,
+                    ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.ClickButton },
                     Description = "<p> Watch the video</p>",
                     Title = "Content 2",
                 };
@@ -270,7 +264,7 @@ namespace FEP.Model.Migrations
                     CourseId = course.Id,
                     ContentType = CourseContentType.IFrame,
                     Url = "https://www.sinarharian.com.my/",
-                    CompletionType = ContentCompletionType.ClickButton,
+                    ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.ClickButton },
                     Description = "<p> This is Content 3 </p>",
                     Title = "Module 3",
                 };
@@ -282,7 +276,7 @@ namespace FEP.Model.Migrations
                     CourseId = course.Id,
                     ContentType = CourseContentType.Document,
                     Url = "http://www.its.caltech.edu/~rosentha/courses/BEM103/Readings/JWCh01.pdf",
-                    CompletionType = ContentCompletionType.ClickButton,
+                    ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.ClickButton },
                     Description = "<p> Document </p>",
                     Title = "Read this document",
                 };
@@ -313,7 +307,7 @@ namespace FEP.Model.Migrations
                                 Order = 1,
                                 ContentType = CourseContentType.Video,
                                 Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8" ,
-                                CompletionType = ContentCompletionType.ClickButton,
+                                ContentCompletion = new ContentCompletion { CompletionType  = ContentCompletionType.ClickButton },
                                 Description = "<p> Watch the video</p>",
                                 Title = "Content 2",
                             }
@@ -332,7 +326,7 @@ namespace FEP.Model.Migrations
                                 Order = 1,
                                 ContentType = CourseContentType.Video,
                                 Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8" ,
-                                CompletionType = ContentCompletionType.ClickButton,
+                                ContentCompletion = new ContentCompletion { CompletionType  = ContentCompletionType.ClickButton },
                                 Description = "<p> Watch the video</p>",
                                 Title = "Content 2",
                             }
@@ -432,7 +426,7 @@ namespace FEP.Model.Migrations
                     ContentType = CourseContentType.Test,
                     CourseId = courseId,
                     Order = ++order,
-                    QuestionType = question.QuestionType,
+                    ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.AnswerQuestion, QuestionType = question.QuestionType, QuestionId = question.Id },
                     Title = "Question 1",
                     Description = "Question 1"
                 };
@@ -443,56 +437,19 @@ namespace FEP.Model.Migrations
 
                 db.SaveChanges();
 
-
-                var contentQuestion = new ContentQuestion
-                {
-                    Order = 1,
-                    ContentId = content.Id,
-                    CourseId = courseId,
-                    Question = question,
-                    QuestionId = question.Id,
-                };
-
-                db.ContentQuestions.Add(contentQuestion);
-                db.SaveChanges();
-
-                content.ContentQuestionId = contentQuestion.Id;
-
-                db.SetModified(content);
-
-                db.SaveChanges();
-
                 var content2 = new CourseContent
                 {
                     ContentType = CourseContentType.Test,
                     CourseId = courseId,
                     Order = ++order,
-                    QuestionType = question2.QuestionType,
+                    ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.AnswerQuestion, QuestionType = question2.QuestionType, QuestionId = question2.Id },
                     Title = "Question 2",
                     Description = "Question 2"
                 };
 
+                content2.ContentCompletion.QuestionId = question2.Id;
+
                 if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
-
-                module.ModuleContents.Add(content2);
-
-                db.SaveChanges();
-
-                var contentQuestion2 = new ContentQuestion
-                {
-                    Order = 2,
-                    ContentId = content2.Id,
-                    CourseId = courseId,
-                    Question = question2,
-                    QuestionId = question2.Id,
-                };
-
-                db.ContentQuestions.Add(contentQuestion2);
-                db.SaveChanges();
-
-                content2.ContentQuestionId = contentQuestion2.Id;
-
-                db.SetModified(content2);
 
                 db.SaveChanges();
             }

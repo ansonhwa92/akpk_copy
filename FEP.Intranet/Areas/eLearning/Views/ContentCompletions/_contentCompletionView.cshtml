@@ -1,11 +1,11 @@
 ﻿
 @using FEP.Model.eLearning
-@*@model FEP.WebApiModel.eLearning.ContentCompletionModel*@
-@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+@model FEP.WebApiModel.eLearning.ContentCompletionModel
+@*@model FEP.WebApiModel.eLearning.CreateOrEditContentModel*@
 
 
 
-<form id="formCompletion" action="/eLearning/CourseContents/Complete" method="post">
+<form id="formCompletion" action="/eLearning/ContentCompletions/" method="post">
 
 
     @Html.AntiForgeryToken()
@@ -16,7 +16,6 @@
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.Title)
     @Html.HiddenFor(m => m.CourseModuleId)
-    @Html.HiddenFor(m => m.Order)
 
 
     <div class="text-center float-right">
@@ -38,8 +37,10 @@
         else if (Model.CompletionType == ContentCompletionType.AnswerQuestion)
         {
             
-            @Html.EditorFor(m => m.ContentQuestionId)
+            <h5>Please answer the following question to continue</h5>
 
+            <label>@Model.CourseModuleId</label>
+            @Html.EditorFor(m=> m.FreeTextAnswer)
             
             <button type="submit" class="btn btn-default pull-right" id="btnAnswerComplete" value="Completed">
                 <i class="la la-check font-icon" style="font-size: 1.5rem;"></i>Completed. Continue..

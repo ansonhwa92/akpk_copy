@@ -680,7 +680,6 @@ namespace FEP.WebApi.Api.eLearning
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
             model.CourseApprovalLogs = entity.CourseApprovalLog;
-            //model.FrontPageContents = entity.FrontPageContents;
             model.Modules = entity.Modules;
 
             return Ok(model);

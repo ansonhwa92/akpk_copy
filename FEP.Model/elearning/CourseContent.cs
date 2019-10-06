@@ -20,21 +20,21 @@ namespace FEP.Model.eLearning
 
         public int Order { get; set; }
 
-        public int ContentCompletionTypeId { get; set; }
-        public virtual ContentCompletionType ContentCompletionType { get; set; }
+        public int ContentCompletionId { get; set; }
+        public virtual ContentCompletion ContentCompletion { get; set; }
 
 
         // -- START For use with completion Type
 
-        [Display(Name = "CompletionCriteria", ResourceType = typeof(Language.eLearning.Content))]
-        public ContentCompletionType CompletionType { get; set; }
+        //[Display(Name = "CompletionCriteria", ResourceType = typeof(Language.eLearning.Content))]
+        //public ContentCompletionType CompletionType { get; set; }
 
-        public QuestionType? QuestionType { get; set; }
+        //public QuestionType? QuestionType { get; set; }
 
-        public int? ContentQuestionId { get; set; }
+        //public int? ContentQuestionId { get; set; }
 
-        public virtual ContentQuestion ContentQuestion { get; set; }
-        public int Timer { get; set; } //completiontype timer in sec
+        //public virtual ContentQuestion ContentQuestion { get; set; }
+        //public int Timer { get; set; } //completiontype timer in sec
         // -- END For use with completion Type
 
         // -- START For use with single item in the page
@@ -54,6 +54,12 @@ namespace FEP.Model.eLearning
 
         // for Iframe
         public ShowIFrameAs ShowIFrameAs { get; set; }
+
+        public CourseContent()
+        {
+            ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.ClickButton };
+
+        }
 
     }
 

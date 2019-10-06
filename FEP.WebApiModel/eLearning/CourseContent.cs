@@ -37,15 +37,6 @@ namespace FEP.WebApiModel.eLearning
 
         public CourseContentType ContentType { get; set; }
 
-        [Display(Name = "CompletionCriteria", ResourceType = typeof(Language.eLearning.Content))]
-        public ContentCompletionType CompletionType { get; set; }
-
-        [Display(Name = "CompleteATimer", ResourceType = typeof(Language.eLearning.Content))]
-        public int? Timer { get; set; } //completiontype timer in sec
-
-        [Display(Name = "CompleteAQuestion", ResourceType = typeof(Language.eLearning.Content))]
-        public int? ContentQuestionId { get; set; }
-        public string Question { get; set; }
         
         public string Url { get; set; }
      
@@ -65,7 +56,18 @@ namespace FEP.WebApiModel.eLearning
         public int? ContentFileId { get; set; }
 
         public ShowIFrameAs ShowIFrameAs { get; set; }
+
         
+        [Display(Name = "CompletionCriteria", ResourceType = typeof(Language.eLearning.Content))]
+        public ContentCompletionType CompletionType { get; set; }
+
+        [Display(Name = "CompleteATimer", ResourceType = typeof(Language.eLearning.Content))]
+        public int? Timer { get; set; } //completiontype timer in sec
+
+        [Display(Name = "CompleteAQuestion", ResourceType = typeof(Language.eLearning.Content))]
+        public int? ContentQuestionId { get; set; }
+        public string Question { get; set; }
+
     }
 
 
@@ -77,25 +79,17 @@ namespace FEP.WebApiModel.eLearning
         public int? CourseId { get; set; }
 
         public ContentCompletionType CompletionType { get; set; }
-
         public int? Timer { get; set; }
 
-        public int? ContentQuestionId { get; set; }
-        public int Order { get; set; }
 
+        public int? QuestionId { get; set; }
         public string Question { get; set; }
-        public ICollection<MultipleChoiceAnswer> MultipleChoiceAnswers { get; set; }
-
-        public int MultipleChoiceAnswerId { get; set; }
-
+        public ICollection<MultipleChoiceAnswer> MultipleChoiceAnswers { get; set; }    
+        public int? MultipleChoiceAnswerId { get; set; }
         // For ordering and fill the gap answers
         public ICollection<OrderAnswer> OrderAnswers { get; set; }
-
         public string OrderAnswerString { get; set; }
-
-        // free text
         public ICollection<FreeTextAnswer> FreeTextAnswers { get; set; }
-
         public string FreeTextAnswer { get; set; }
 
     }

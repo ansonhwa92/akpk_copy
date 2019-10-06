@@ -164,6 +164,7 @@
     <Compile Include="Areas\eEvent\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\eEventAreaRegisteration.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseCategoryController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\ContentCompletionsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseContentsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseModulesController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CoursesController.cs" />
@@ -763,7 +764,7 @@
     <Content Include="Areas\eLearning\Views\CourseContents\_video.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\View.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_contentCompletion.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\_contentCompletionView.cshtml" />
+    <Content Include="Areas\eLearning\Views\ContentCompletions\_contentCompletionView.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_richText.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_iframe.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_audio.cshtml" />

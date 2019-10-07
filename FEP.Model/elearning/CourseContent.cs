@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FEP.Model.eLearning
@@ -23,22 +23,9 @@ namespace FEP.Model.eLearning
         public int ContentCompletionId { get; set; }
         public virtual ContentCompletion ContentCompletion { get; set; }
 
-
-        // -- START For use with completion Type
-
-        //[Display(Name = "CompletionCriteria", ResourceType = typeof(Language.eLearning.Content))]
-        //public ContentCompletionType CompletionType { get; set; }
-
-        //public QuestionType? QuestionType { get; set; }
-
-        //public int? ContentQuestionId { get; set; }
-
-        //public virtual ContentQuestion ContentQuestion { get; set; }
-        //public int Timer { get; set; } //completiontype timer in sec
-        // -- END For use with completion Type
-
         // -- START For use with single item in the page
         public VideoType? VideoType { get; set; }
+        public AudioType? AudioType { get; set; }
 
         public string Url { get; set; }
 
@@ -54,6 +41,7 @@ namespace FEP.Model.eLearning
 
         // for Iframe
         public ShowIFrameAs ShowIFrameAs { get; set; }
+
 
         public CourseContent()
         {
@@ -154,11 +142,22 @@ namespace FEP.Model.eLearning
 
     public enum VideoType
     {
-        [Display(Name = "Instructor", ResourceType = typeof(Language.eLearning.Enum))]
+        [Display(Name = "ExternalVideo", ResourceType = typeof(Language.eLearning.Enum))]
         ExternalVideo,
 
-        [Display(Name = "Instructor", ResourceType = typeof(Language.eLearning.Enum))]
+        [Display(Name = "UploadVideo", ResourceType = typeof(Language.eLearning.Enum))]
         UploadVideo,
+
+        //Presentation
+    }
+
+    public enum AudioType
+    {
+        [Display(Name = "SavedAudio", ResourceType = typeof(Language.eLearning.Enum))]
+        SavedAudio,
+
+        [Display(Name = "UploadAudio", ResourceType = typeof(Language.eLearning.Enum))]
+        UploadAudio,
 
         //Presentation
     }

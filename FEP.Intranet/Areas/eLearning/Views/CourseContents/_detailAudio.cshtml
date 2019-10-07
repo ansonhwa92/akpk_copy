@@ -1,0 +1,49 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+
+@Html.Partial("_contentCompletionDetail", Model)
+<div>
+
+    <div class="form-group">
+        <label>@Language.eLearning.Enum.Audio</label>
+        <div class="col-sm-12">
+
+            @if (Model.AudioType == AudioType.SavedAudio)
+            {
+                <!-- Default inline 1-->
+                <div class="audio-radio row pl-4 pb-2">
+
+                    <div class="pt-2">
+                        <input type="radio" class="custom-control-input savedAudio" checked="checked" value=@AudioType.SavedAudio
+                               id="audio1"
+                               name="AudioType">
+                        <label class="custom-control-label" for="audio1">@Language.eLearning.Enum.SavedAudio</label>
+                    </div>
+                    <div class="form-group exAudioWrapper col-sm-8">
+                        @Html.EditorFor(model => model.FileDocument.FileName, new { htmlAttributes = new { @class = "form-control",
+                       @readonly = "readonly" } })
+
+
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="audio-radio row pl-4 ">
+
+                    <div class="pt-2">
+                        <input type="radio" class="custom-control-input upAudio" value=@AudioType.UploadAudio
+                               id="audio2"
+                               name="AudioType">
+                        <label class="custom-control-label" for="audio2">@Language.eLearning.Enum.UploadAudio</label>
+                    </div>
+                    <div class="form-group upAudioWrapper col-sm-8">
+                        <div class="">
+                            <input name="FileName" id="FileName" class="form-control" readonly="readonly"
+                                   value="@Model.FileDocument.FileName" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>

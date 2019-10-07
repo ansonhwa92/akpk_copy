@@ -241,6 +241,15 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio from course files.
+        /// </summary>
+        public static string SavedAudio {
+            get {
+                return ResourceManager.GetString("SavedAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test/Quiz.
         /// </summary>
         public static string Test {
@@ -255,6 +264,15 @@ namespace Language.eLearning {
         public static string Timer {
             get {
                 return ResourceManager.GetString("Timer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload an audio file.
+        /// </summary>
+        public static string UploadAudio {
+            get {
+                return ResourceManager.GetString("UploadAudio", resourceCulture);
             }
         }
         

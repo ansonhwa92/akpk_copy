@@ -17,6 +17,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string Create = "eLearning/CourseContents/Create";
         public const string Edit = "eLearning/CourseContents/Edit";
         public const string Delete = "eLearning/CourseContents/Delete";
+
+        public const string GetAllAudio = "eLearning/CourseContents/GetAllAudio";
     }
 
     public class CourseContentsController : FEPController
@@ -62,6 +64,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             await GetAllQuestions(courseId.Value);
+            await GetAllAudio(courseId.Value);
 
             return View(model);
         }
@@ -104,7 +107,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 // Check if this creation include fileupload, which will require us to save the file
                 model.File = currentFileName;
                 if (((model.ContentType == CourseContentType.Video && model.VideoType == VideoType.UploadVideo) ||
-                    (model.ContentType == CourseContentType.Audio) ||
+                    (model.ContentType == CourseContentType.Audio & model.AudioType == AudioType.UploadAudio) ||
                     (model.ContentType == CourseContentType.Document)) &&
                     model.File != null)
                 {
@@ -120,8 +123,18 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                         fileDocument.FileType = model.ContentType.ToString();
                         fileDocument.CreatedBy = CurrentUser.UserId.Value;
-                        fileDocument.ContentFileType = model.FileType;
+                        
                         fileDocument.CourseId = model.CourseId;
+
+                        if (model.ContentType == CourseContentType.Audio)
+                            fileDocument.ContentFileType = FileType.Audio;
+
+                        if (model.ContentType == CourseContentType.Video)
+                            fileDocument.ContentFileType = FileType.Video;
+
+
+                        if (model.ContentType == CourseContentType.Document)
+                            fileDocument.ContentFileType = FileType.Document;
 
                         if (!string.IsNullOrEmpty(contentId))
                             fileDocument.ContentId = int.Parse(contentId);
@@ -167,6 +180,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             await GetAllQuestions(model.CourseId, model.ContentQuestionId != null ? model.ContentQuestionId.Value : -1);
 
+            await GetAllAudio(model.CourseId, model.ContentFileId != null ? model.ContentFileId.Value : -1);
+
             return View(model);
         }
 
@@ -193,7 +208,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     // Check if this creation include fileupload, which will require us to save the file
                     model.File = currentFileName;
                     if (((model.ContentType == CourseContentType.Video && model.VideoType == VideoType.UploadVideo) ||
-                        (model.ContentType == CourseContentType.Audio) ||
+                        (model.ContentType == CourseContentType.Audio && model.AudioType == AudioType.UploadAudio) ||
                         (model.ContentType == CourseContentType.Document)) &&
                         model.File != null)
                     {
@@ -211,6 +226,17 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                             fileDocument.ContentFileType = model.FileType;
                             fileDocument.CourseId = model.CourseId;
                             fileDocument.ContentId = model.Id;
+
+                            if (model.ContentType == CourseContentType.Audio)
+                                fileDocument.ContentFileType = FileType.Audio;
+
+                            if (model.ContentType == CourseContentType.Video)
+                                fileDocument.ContentFileType = FileType.Video;
+
+
+                            if (model.ContentType == CourseContentType.Document)
+                                fileDocument.ContentFileType = FileType.Document;
+
 
                             var resultUpload = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, FileApiUrl.UploadInfo, fileDocument);
 
@@ -301,6 +327,25 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 }, "Id", "Name");
 
                 TempData["Error"] = "Cannot find any questions to display.";
+            }
+        }
+
+        private async Task GetAllAudio(int courseId, int selectedId = -1)
+        {
+            // this should be queried from webapi
+            var response = await WepApiMethod.SendApiAsync<IEnumerable<AudioListModel>>(HttpVerbs.Get,
+                        ContentApiUrl.GetAllAudio + $"?courseId={courseId}");
+
+            if (response.isSuccess)
+                ViewBag.AudioList = new SelectList(response.Data, "Id", "Name", selectedId);
+            else
+            {
+                ViewBag.AudioList = new SelectList(new List<AudioListModel>
+                {
+                    new AudioListModel{ Id = 999, Name = "Error"}
+                }, "Id", "Name");
+
+                TempData["Error"] = "Cannot find any audio to display.";
             }
         }
 

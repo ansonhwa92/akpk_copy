@@ -802,6 +802,7 @@
     <Content Include="Areas\eLearning\Views\CourseContents\_editRichText.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_editTest.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_editVideo.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailAudio.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

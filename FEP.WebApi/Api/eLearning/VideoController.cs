@@ -22,8 +22,6 @@ namespace FEP.WebApi.Api.eLearning
         [Route("api/eLearning/Video")]
         public IHttpActionResult GetLiveVideo(string videoFileId, string fileName)
         {
-            //string filePath = Path.Combine(HttpContext.Current.Server.MapPath(videoFilePath), fileName);
-
             //actual path
             string filePath = Path.Combine(videoFilePath, fileName);
             return new VideoFileActionResult(filePath);
@@ -38,6 +36,9 @@ namespace FEP.WebApi.Api.eLearning
             string filePath = Path.Combine(HttpContext.Current.Server.MapPath(videoFilePath), request.FileName);
             return new VideoFileActionResult(filePath);
         }
+
+
+
     }
 
     public class VideoFileDownloadRequest

@@ -12,13 +12,13 @@ using System.Web.Http;
 namespace FEP.WebApi.Api.eLearning
 {
     [Route("api/eLearning/CourseContents")]
-    public class CourseContentsController : ApiController
+    public class CourseContentsApiController : ApiController
     {
         private readonly DbEntities db = new DbEntities();
 
         private readonly IMapper _mapper;
 
-        public CourseContentsController()
+        public CourseContentsApiController()
         {
             var config = new MapperConfiguration(cfg =>
             {
@@ -184,7 +184,6 @@ namespace FEP.WebApi.Api.eLearning
             }
         }
 
-
         [HttpGet]
         public async Task<IHttpActionResult> Get(int? id)
         {
@@ -247,6 +246,10 @@ namespace FEP.WebApi.Api.eLearning
                 content.Title = request.Title;
                 content.Url = request.Url;
                 content.VideoType = request.VideoType;
+                content.AudioType = request.AudioType;
+
+                if (request.ContentFileId != null)
+                    content.ContentFileId = request.ContentFileId;
 
                 content.ContentCompletion.CompletionType = request.CompletionType;
 
@@ -332,6 +335,32 @@ namespace FEP.WebApi.Api.eLearning
             }
 
             return BadRequest(ModelState);
+        }
+
+        [Route("api/eLearning/CourseContents/GetAllAudio")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetAllAudio(int? courseId)
+        {
+            if (courseId == null)
+                return BadRequest();
+
+            var entities = db.ContentFiles.Where(x => x.CourseId == courseId.Value && x.FileType == FileType.Audio)
+                    .Include(x => x.FileDocument)
+                    .Select(x => new AudioListModel
+                    {
+                        CourseId = x.CourseId,
+                        Id = x.Id,
+                        Name = x.FileDocument.FileName,
+                        FileNameOnStorage = x.FileDocument.FileNameOnStorage,
+                        FileDocumentId = x.FileDocument.Id,
+                        ContentId = x.ContentId.Value
+                    }
+                    );
+
+            if (entities == null)
+                return BadRequest();
+
+            return Ok(entities);
         }
     }
 }

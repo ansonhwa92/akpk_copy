@@ -46,8 +46,6 @@
 }
 
     <form action="/CourseContents/Create" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-        @*@using (Html.BeginForm("Create", "CourseContents", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {*@
         @Html.AntiForgeryToken()
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -160,22 +158,40 @@
 
             $('input[name=CompletionType]').val("ClickButton");
 
-            // For video
             var contentType = $('#ContentType').val();
+            console.log(contentType);
+
             if (contentType == 'Video') {
                 if ($('#VideoType').val() == "ExternalVideo") {
 
                     $("#video1").prop("checked", true);
                     $('#Url').prop("disabled", false);
-                    $('#FileName').prop("disabled", true);
+                    $('#File').prop("disabled", true);
 
                 }
 
                 if ($('#VideoType').val() == "UploadVideo") {
 
                     $("#video2").prop("checked", true);
-                    $('#FileName').prop("disabled", false);
+                    $('#File').prop("disabled", false);
                     $('#Url').prop("disabled", true);
+
+                }
+            }
+
+            console.log($('#AudioType').val());
+            if (contentType == 'Audio') {
+                if ($('#AudioType').val() == "SavedAudio") {
+                    $("#audio1").prop("checked", true);
+                    $('#File').prop("disabled", true);
+                    $("#ContentFileId").prop("disabled", false);
+                }
+
+                if ($('#AudioType').val() == "UploadAudio") {
+
+                    $("#audio2").prop("checked", true);
+                    $('#File').prop("disabled", false);
+                    $("#ContentFileId").prop("disabled", true);
 
                 }
             }
@@ -187,20 +203,39 @@
             if ($(this).hasClass("exVideo")) {
 
                 $('#Url').prop("disabled", false);
-                $('#FileName').prop("disabled", true);
-                setError("FileName", "");
+                $('#File').prop("disabled", true);
+                setError("File", "");
 
                 ($('input[name=VideoType]').val('ExternalVideo'));
 
             } else {
 
-                $('#FileName').prop("disabled", false);
+                $('#File').prop("disabled", false);
                 setError("Url", "");
 
                 $('#Url').prop("disabled", true);
                 ($('input[name=VideoType]').val('UploadVideo'));
             }
         });
+
+        $('.audio-radio input[type="radio"]').change(function () {
+            if ($(this).hasClass("savedAudio")) {
+                setError("File", "");
+                $('#File').prop("disabled", true);
+                $("#ContentFileId").prop("disabled", false);
+
+                ($('input[name=AudioType]').val('SavedAudio'));
+
+            } else {
+
+                $('#File').prop("disabled", false);
+                $("#ContentFileId").prop("disabled", true);
+                setError("ContentFileId", "");
+
+                ($('input[name=AudioType]').val('UploadAudio'));
+            }
+        });
+
 
         $('.completion-radio input[type="radio"]').change(function () {
             var completionType = $(this).val();
@@ -260,15 +295,43 @@
 
                 if ($('#VideoType').val() == "UploadVideo") {
 
-                    if ($.trim($('#FileName').val()) == "") {
-                        setError("FileName", "Please browse for the file to upload.");
+                    if ($.trim($('#File').val()) == "") {
+                        setError("File", "Please browse for the file to upload.");
 
                         return false;
                     } else {
-                        setError("FileName", "");
+                        setError("File", "");
                     }
 
                 }
+            }
+
+            if (contentType == 'Audio') {
+
+                if ($('#AudioType').val() == "UploadAudio") {
+
+                    console.log('uploaded filename : ', $('#UploadFileName').val(), " filename-", $('#File').val());
+
+                    if ($.trim($('#UploadFileName').val()) == "" && $.trim($('#File').val()) == "") {
+                        setError("File", "Please browse for the file to upload.");
+
+                        return false;
+                    } else {
+                        setError("File", "");
+                    }
+                }
+
+                if ($('#AudioType').val() == "SavedVideo") {
+                    if ($.trim($('#ContentFileId').val()) == "-1") {
+                        setError("ContentFileId", "Please select and audio");
+
+                        return false;
+                    }
+                    else {
+                        setError("ContentFileId", "");
+                    }
+                }
+
             }
 
 

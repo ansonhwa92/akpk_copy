@@ -177,11 +177,17 @@
   <data name="RichText" xml:space="preserve">
     <value>Rich Text</value>
   </data>
+  <data name="SavedAudio" xml:space="preserve">
+    <value>Audio from course files</value>
+  </data>
   <data name="Test" xml:space="preserve">
     <value>Test/Quiz</value>
   </data>
   <data name="Timer" xml:space="preserve">
     <value>After a period of time</value>
+  </data>
+  <data name="UploadAudio" xml:space="preserve">
+    <value>Upload an audio file</value>
   </data>
   <data name="UploadVideo" xml:space="preserve">
     <value>Upload a video</value>

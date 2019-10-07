@@ -32,7 +32,6 @@ namespace FEP.WebApi.Api.eLearning
                 cfg.CreateMap<CourseRuleModel, Course>();
 
                 cfg.CreateMap<TrainerCourseModel, TrainerCourse>();
-
             });
 
             _mapper = config.CreateMapper();
@@ -214,7 +213,7 @@ namespace FEP.WebApi.Api.eLearning
         [HttpPost]
         public async Task<IHttpActionResult> GetTrainerCourse([FromUri]int courseId, [FromBody] FilterUserModel request)
         {
-            var users = await db.TrainerCourses.Where(x => x.CourseId == courseId).Include(x => x.Trainer.User).Select(x=>x.Trainer.User).ToListAsync();
+            var users = await db.TrainerCourses.Where(x => x.CourseId == courseId).Include(x => x.Trainer.User).Select(x => x.Trainer.User).ToListAsync();
 
             if (users == null)
                 return NotFound();
@@ -235,7 +234,7 @@ namespace FEP.WebApi.Api.eLearning
                && (request.UserType == null || s.UserType == request.UserType)
                );
 
-            //quick search 
+            //quick search
             if (!string.IsNullOrEmpty(request.search.value))
             {
                 var value = request.search.value.Trim();
@@ -297,7 +296,6 @@ namespace FEP.WebApi.Api.eLearning
                         query = query.OrderByDescending(o => o.Name);
                         break;
                 }
-
             }
             else
             {
@@ -315,7 +313,6 @@ namespace FEP.WebApi.Api.eLearning
 
             data.ForEach(item => { item.UserTypeDesc = item.UserType.GetDisplayName(); });
 
-
             return Ok(new DataTableResponse
             {
                 draw = request.draw,
@@ -323,8 +320,6 @@ namespace FEP.WebApi.Api.eLearning
                 recordsFiltered = filteredCount,
                 data = data.ToArray()
             });
-
-
         }
 
         [Route("api/eLearning/Courses/GetAllTrainers")]
@@ -345,7 +340,7 @@ namespace FEP.WebApi.Api.eLearning
                && (request.MobileNo == null || s.MobileNo.Contains(request.MobileNo))
                );
 
-            //quick search 
+            //quick search
             if (!string.IsNullOrEmpty(request.search.value))
             {
                 var value = request.search.value.Trim();
@@ -423,7 +418,6 @@ namespace FEP.WebApi.Api.eLearning
                         query = query.OrderByDescending(o => o.Name);
                         break;
                 }
-
             }
             else
             {
@@ -448,14 +442,12 @@ namespace FEP.WebApi.Api.eLearning
                 recordsFiltered = filteredCount,
                 data = data.ToArray()
             });
-
         }
 
         [Route("api/eLearning/Courses/AddUser")]
         [HttpPost]
         public IHttpActionResult AddUser(UpdateTrainerCourseModel model)
         {
-
             var course = db.Courses.Where(r => r.Id == model.CourseId).FirstOrDefault();
 
             if (course.Trainers == null)
@@ -463,12 +455,12 @@ namespace FEP.WebApi.Api.eLearning
                 course.Trainers = new List<Trainer>();
             }
 
-            foreach(var item in model.UserId)
+            foreach (var item in model.UserId)
             {
                 var user = db.User.FirstOrDefault(x => x.Id == item);
                 var trainer = db.Trainers.FirstOrDefault(x => x.UserId == item);
 
-                if(trainer==null)
+                if (trainer == null)
                 {
                     db.TrainerCourses.Add(new TrainerCourse
                     {
@@ -488,7 +480,6 @@ namespace FEP.WebApi.Api.eLearning
             db.SaveChanges();
 
             return Ok(true);
-
         }
 
         [Route("api/eLearning/Courses/DeleteUser")]
@@ -518,7 +509,6 @@ namespace FEP.WebApi.Api.eLearning
             db.SaveChanges();
 
             return Ok(true);
-
         }
 
         [Route("api/eLearning/Courses/GetFrontCourse")]
@@ -526,7 +516,7 @@ namespace FEP.WebApi.Api.eLearning
         public async Task<IHttpActionResult> GetFrontCourse(int? id)
         {
             var entity = await db.Courses
-                                .Include(x => x.CourseApprovalLog)                                
+                                .Include(x => x.CourseApprovalLog)
                                 .Include(x => x.Modules)
                                 .FirstOrDefaultAsync(x => x.Id == id.Value);
 
@@ -535,13 +525,12 @@ namespace FEP.WebApi.Api.eLearning
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
             model.CourseApprovalLogs = entity.CourseApprovalLog;
-            
+
             model.Modules = entity.Modules;
 
             return Ok(model);
         }
 
-  
         [Route("api/eLearning/Courses/Delete")]
         public string Delete(int id)
         {
@@ -574,7 +563,6 @@ namespace FEP.WebApi.Api.eLearning
 
                 if (entity != null)
                 {
-
                     entity.CategoryId = model.CategoryId;
                     entity.Title = model.Title;
                     entity.Code = model.Code;
@@ -594,14 +582,14 @@ namespace FEP.WebApi.Api.eLearning
                     return Ok(entity.Id);
                 }
             }
-            return BadRequest(ModelState);            
+            return BadRequest(ModelState);
         }
 
-    /// <summary>
-    /// For use in index page, to list all the courses but with some fields only
-    /// </summary>
-    /// <returns></returns>
-    [Route("api/eLearning/Courses/EditRules")]
+        /// <summary>
+        /// For use in index page, to list all the courses but with some fields only
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/eLearning/Courses/EditRules")]
         [HttpPost]
         [ValidationActionFilter]
         public async Task<IHttpActionResult> EditRules([FromBody] CourseRuleModel request)
@@ -650,7 +638,7 @@ namespace FEP.WebApi.Api.eLearning
             }
 
             var entity = await db.Courses
-              .Include(x => x.CourseApprovalLog)             
+              .Include(x => x.CourseApprovalLog)
               .Include(x => x.Modules)
               .FirstOrDefaultAsync(x => x.Id == Id.Value);
 
@@ -658,7 +646,7 @@ namespace FEP.WebApi.Api.eLearning
             {
                 return NotFound();
             }
-            
+
             entity.Modules = entity.Modules.OrderBy(x => x.Order).ToList();
 
             var splitOrder = order.Split(',').ToArray();
@@ -684,5 +672,7 @@ namespace FEP.WebApi.Api.eLearning
 
             return Ok(model);
         }
+
+       
     }
 }

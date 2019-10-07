@@ -40,6 +40,8 @@ namespace FEP.Model
 		Approve_Public_Event_Published_Changed,
 		[Display(Name = "Approve Public Event Published Cancelled")]
 		Approve_Public_Event_Published_Cancelled,
+		[Display(Name = "Publish Public Event")]
+		Publish_Public_Event,
 
 		//Payment
 		[Display(Name = "Payment Pending GL")]

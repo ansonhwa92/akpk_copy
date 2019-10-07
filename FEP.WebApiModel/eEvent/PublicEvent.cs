@@ -111,6 +111,7 @@ namespace FEP.WebApiModel.PublicEvent
 		public string origin { get; set; }
 		[Display(Name = "PubEventRefNo", ResourceType = typeof(Language.Event))]
 		public string RefNo { get; set; }
+		public int? SLAReminderStatusId { get; set; }
 
 
 

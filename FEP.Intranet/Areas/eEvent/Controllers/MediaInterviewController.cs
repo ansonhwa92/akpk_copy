@@ -24,38 +24,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View();
 		}
 
-		//public ActionResult List(FilterMediaInterviewModel filter)
-		//{
-		//	var media = db.EventMediaInterviewRequest.Where(i => i.Display)
-		//		.Select(i => new DetailsMediaInterviewModel()
-		//		{
-		//			Id = i.Id,
-		//			MediaName = i.MediaName,
-		//			MediaType = i.MediaType,
-		//			ContactPerson = i.ContactPerson,
-		//			ContactNo = i.ContactNo,
-		//			AddressStreet1 = i.AddressStreet1,
-		//			AddressStreet2 = i.AddressStreet2,
-		//			AddressPoscode = i.AddressPoscode,
-		//			AddressCity = i.AddressCity,
-		//			State = i.State,
-		//			Email = i.Email,
-		//			DateStart = i.DateStart,
-		//			DateEnd = i.DateEnd,
-		//			Time = i.Time,
-		//			Language = i.Language,
-		//			Topic = i.Topic,
-		//			RepUserId = i.UserId,
-		//			RepUserName = i.User.Name,
-		//			RepDesignation = i.Designation,
-		//			MediaStatus = i.MediaStatus,
-		//		}).ToList();
-
-		//	ListMediaInterviewModel model = new ListMediaInterviewModel(media);
-
-		//	return View("List", model);
-		//}
-
 		public ActionResult List()
 		{
 			return View();
@@ -379,7 +347,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = getmedia.MediaName;
 				paramToSend.EventApproval = "Pending Verification";
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Submit_MediaInterview_ForVerification}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.MediaInterview_Verifier}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -457,7 +425,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = getmedia.MediaName;
 				paramToSend.EventApproval = "Verified";
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verified_MediaInterview_ForVerification}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.MediaInterview_Approver1}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -528,7 +496,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = getmedia.MediaName;
 				paramToSend.EventApproval = "Pending Approval";
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_MediaInterview_ByApprover1}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.MediaInterview_Approver2}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -594,7 +562,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = getmedia.MediaName;
 				paramToSend.EventApproval = "Pending Approval";
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_MediaInterview_ByApprover2}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.MediaInterview_Approver3}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -660,7 +628,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = getmedia.MediaName;
 				paramToSend.EventApproval = "Approved";
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_MediaInterview_ByApprover3}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.MediaInterview_Approver3}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -726,7 +694,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = getmedia.MediaName;
 				paramToSend.EventApproval = "Approved";
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Reject_MediaInterview_ForVerification}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.MediaInterview_Verifier}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder

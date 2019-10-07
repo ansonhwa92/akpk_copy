@@ -19,22 +19,12 @@
 								<li class="breadcrumb-item"><a href="#">Home</a></li>
 								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
 								<li class="breadcrumb-item"><a href="#">Manage Public Event</a></li>
-								@if (Model.origin == "toverify")
-								{
-									<li class="breadcrumb-item"><a href="#">Public Event Details</a></li>
-								}
+								<li class="breadcrumb-item"><a href="#">Public Event Details</a></li>
 								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
 							</ol>
 						</nav>
 					</div>
-					@if (Model.origin == "toverify")
-					{
-						<h1 class="page-title text-white">Public Event Request Ref No: @Model.RefNo</h1>
-					}
-					else
-					{
-						<h1 class="page-title text-white">Event Details</h1>
-					}
+					<h1 class="page-title text-white">Public Event Request Ref No: @Model.RefNo</h1>
 					@*<div class="header-text">List of created event</div>*@
 				</div>
 			</div>
@@ -87,13 +77,18 @@
 					}
 					else if (Model.EventStatus == FEP.Model.EventStatus.PendingforVerification)
 					{
+						<a href='@Url.Action("Verified", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-primary btn-block mb-2 ">Submit for Approval</a>
+					}
+					else if (Model.EventStatus == FEP.Model.EventStatus.Verified)
+					{
 						<a href='@Url.Action("FirstApproved", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-primary btn-block mb-2 ">Submit for Approval</a>
+						<br />
 						<a href='@Url.Action("RejectPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-warning btn-block mb-2">Require Amendment</a>
 					}
 					else if (Model.EventStatus == FEP.Model.EventStatus.VerifiedbyFirstApprover)
 					{
 						<a href='@Url.Action("SecondApproved", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-primary  btn-block mb-2">Submit for Approval</a>
-						<br/>
+						<br />
 						<a href='@Url.Action("RejectPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-warning  btn-block mb-2">Require Amendment</a>
 					}
 					else if (Model.EventStatus == FEP.Model.EventStatus.VerifiedbySecondApprover)
@@ -220,9 +215,9 @@
 			<div class="col-xs-12">
 				<a href='@Url.Action("List")' class="btn btn-default">Back</a>
 				@if (Model.EventStatus == FEP.Model.EventStatus.New || Model.EventStatus == FEP.Model.EventStatus.RejectNeedToEdit)
-					{
-						<a href='@Url.Action("Edit", new { id = Model.Id })' class="btn btn-primary">Edit</a>
-					}
+				{
+					<a href='@Url.Action("Edit", new { id = Model.Id })' class="btn btn-primary">Edit</a>
+				}
 
 			</div>
 		</div>

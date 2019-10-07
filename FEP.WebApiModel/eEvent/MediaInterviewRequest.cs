@@ -50,6 +50,8 @@ namespace FEP.WebApiModel
 		public string Location { get; set; }
 		public MediaLanguage? Language { get; set; }
 		public string Topic { get; set; }
+
+		[Display(Name = "Reference No")]
 		public string RefNo { get; set; }
 
 		public int? UserId { get; set; }

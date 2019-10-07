@@ -42,13 +42,13 @@ namespace FEP.Model
 		[Display(Name = "Draft")]
 		New, //If Saved Public Event
 
-		[Display(Name = "Pending Approval")]
+		[Display(Name = "Pending Verification")]
 		PendingforVerification, //If Admin Public Event Submit
 
-		[Display(Name = "Pending Approval")]
+		[Display(Name = "Pending Approval 2")]
 		VerifiedbyFirstApprover, //If Approver 1 Submit
 
-		[Display(Name = "Pending Approval")]
+		[Display(Name = "Pending Approval 3")]
 		VerifiedbySecondApprover, //If Approver 1 Submit
 
 		[Display(Name = "Approved")]
@@ -61,7 +61,10 @@ namespace FEP.Model
 		Cancelled, //If Admin Cancel Public Event 
 
 		[Display(Name = "Published")]
-		Published //If Admin Event who creates Public Event 
+		Published, //If Admin Event who creates Public Event 
+
+		[Display(Name = "Pending Approval 1")]
+		Verified
 	}
 
 	public enum Ticket

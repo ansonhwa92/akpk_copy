@@ -87,25 +87,31 @@
 						sortable: false,
 						render: function (data, type, row, meta) {
 						 if (row.EventStatus == 0) {
-                                return "<span class='color-blue font-weight-bold'>" + data + "</span>";
+                                return "<span class='color-blue font-weight-bold'> Draft </span>";
                             }
                             else if (row.EventStatus == 1) {
-                                return "<span class='color-primary font-weight-bold'>" + data + "</span>";
+                                return "<span class='color-primary font-weight-bold'> Pending Verification </span>";
                             }
                             else if (row.EventStatus == 2) {
-                                return "<span class='color-primary font-weight-bold'>" + data + "</span>";
+                                return "<span class='color-primary font-weight-bold'> Pending Approval 2 </span>";
                             }
                             else if (row.EventStatus == 3) {
-                                return "<span class='color-primary font-weight-bold'>" + data + "</span>";
+                                return "<span class='color-primary font-weight-bold'> Pending Approval 3 </span>";
                             }
                             else if (row.EventStatus == 4) {
-                                return "<span class='color-green font-weight-bold'>" + data + "</span>";
+                                return "<span class='color-green font-weight-bold'> Approved </span>";
                             }
                             else if (row.EventStatus == 5) {
-                                return "<span class='color-yellow font-weight-bold'>" + data + "</span>";
+                                return "<span class='color-yellow font-weight-bold'> Require Amendment </span>";
                             }
                             else if (row.EventStatus == 6) {
-                                return "<span class='color-red font-weight-bold'>" + data + "</span>";
+                                return "<span class='color-red font-weight-bold'> Rejected </span>";
+							}
+							else if (row.EventStatus == 7) {
+                                return "<span class='color-green font-weight-bold'> Published </span>";
+							}
+							else if (row.EventStatus == 8) {
+                                return "<span class='color-primary font-weight-bold'> Pending Approval 1</span>";
                             }
 						}
                     },
@@ -142,10 +148,10 @@
 								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toapprove3" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-eye text-muted"></i></i></a>'
 							}
 
-							@*if (row.EventStatus == 5) {
+							if (row.EventStatus == 5) {
 								//Approve By Approver3
 								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=fromamendment" data-toggle="tooltip" data-placement="top" title="Approve"><i class="la la-eye text-muted"></i></i></a>'
-							}*@
+							}
 
 							if (row.EventStatus == 4 || row.EventStatus == 6) {
 								//Approved

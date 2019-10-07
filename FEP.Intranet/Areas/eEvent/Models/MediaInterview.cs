@@ -49,14 +49,12 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Required(ErrorMessage = "Please Insert Start Date")]
 		[DataType(DataType.Date)]
-		[UIHint("Date")]
-		[Display(Name = "Event Date")]
+		[Display(Name = "Start Date")]
 		public DateTime? DateStart { get; set; }
 
 		[Required(ErrorMessage = "Please Insert End Date")]
 		[DataType(DataType.Date)]
-		[UIHint("Date")]
-		[Display(Name = "Event Date")]
+		[Display(Name = "End Date")]
 		public DateTime? DateEnd { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Time")]
@@ -68,6 +66,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Required(ErrorMessage = "Please Select Language")]
 		[Display(Name = "Language")]
 		public MediaLanguage? Language { get; set; }
+
 
 		[Required(ErrorMessage = "Please Insert Topic")]
 		[Display(Name = "Topic")]

@@ -465,7 +465,7 @@ namespace FEP.WebApi.Api.eEvent
 
 		//Submit Public Event for Verification
 		[Route("api/eEvent/PublicEvent/SubmitToVerify")] 
-		public string SubmitToVerify(int id)
+		public IHttpActionResult SubmitToVerify(int id)
 		{
 
 			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
@@ -478,15 +478,49 @@ namespace FEP.WebApi.Api.eEvent
 				db.Configuration.ValidateOnSaveEnabled = false;
 				db.SaveChanges();
 
-				//return model.Title;
-				return publicevent.RefNo;
+				PublicEventModel model = new PublicEventModel
+				{
+					Id = publicevent.Id,
+					EventStatus = publicevent.EventStatus,
+					RefNo = publicevent.RefNo,
+					EventTitle = publicevent.EventTitle,
+					EventStatusDesc = publicevent.EventStatus.GetDisplayName()
+				};
+				return Ok(model);
 			}
-			return "";
+			return Ok();
+		}
+
+		[Route("api/eEvent/PublicEvent/Verified")]
+		public IHttpActionResult Verified(int id)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.EventStatus = EventStatus.Verified;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				PublicEventModel model = new PublicEventModel
+				{
+					Id = publicevent.Id,
+					EventStatus = publicevent.EventStatus,
+					RefNo = publicevent.RefNo,
+					EventTitle = publicevent.EventTitle,
+					EventStatusDesc = publicevent.EventStatus.GetDisplayName()
+				};
+				return Ok(model);
+			}
+			return Ok();
 		}
 
 		//First Approved Public Event 
 		[Route("api/eEvent/PublicEvent/FirstApproved")]
-		public string FirstApproved(int id)
+		public IHttpActionResult FirstApproved(int id)
 		{
 
 			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
@@ -499,15 +533,21 @@ namespace FEP.WebApi.Api.eEvent
 				db.Configuration.ValidateOnSaveEnabled = false;
 				db.SaveChanges();
 
-				//return model.Title;
-				return publicevent.RefNo;
+				PublicEventModel model = new PublicEventModel
+				{
+					Id = publicevent.Id,
+					EventStatus = publicevent.EventStatus,
+					RefNo = publicevent.RefNo,
+					EventTitle = publicevent.EventTitle,
+				};
+				return Ok(model);
 			}
-			return "";
+			return Ok();
 		}
 
 		//Second Approved Public Event 
 		[Route("api/eEvent/PublicEvent/SecondApproved")]
-		public string SecondApproved(int id)
+		public IHttpActionResult SecondApproved(int id)
 		{
 
 			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
@@ -520,15 +560,21 @@ namespace FEP.WebApi.Api.eEvent
 				db.Configuration.ValidateOnSaveEnabled = false;
 				db.SaveChanges();
 
-				//return model.Title;
-				return publicevent.RefNo;
+				PublicEventModel model = new PublicEventModel
+				{
+					Id = publicevent.Id,
+					EventStatus = publicevent.EventStatus,
+					RefNo = publicevent.RefNo,
+					EventTitle = publicevent.EventTitle,
+				};
+				return Ok(model);
 			}
-			return "";
+			return Ok();
 		}
 
 		//Final Approved Public Event 
 		[Route("api/eEvent/PublicEvent/FinalApproved")]
-		public string FinalApproved(int id)
+		public IHttpActionResult FinalApproved(int id)
 		{
 
 			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
@@ -541,15 +587,21 @@ namespace FEP.WebApi.Api.eEvent
 				db.Configuration.ValidateOnSaveEnabled = false;
 				db.SaveChanges();
 
-				//return model.Title;
-				return publicevent.RefNo;
+				PublicEventModel model = new PublicEventModel
+				{
+					Id = publicevent.Id,
+					EventStatus = publicevent.EventStatus,
+					RefNo = publicevent.RefNo,
+					EventTitle = publicevent.EventTitle,
+				};
+				return Ok(model);
 			}
-			return "";
+			return Ok();
 		}
 
 		//Reject Approved Public Event 
 		[Route("api/eEvent/PublicEvent/RejectPublicEvent")]
-		public string RejectPublicEvent(int id)
+		public IHttpActionResult RejectPublicEvent(int id)
 		{
 
 			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
@@ -562,15 +614,21 @@ namespace FEP.WebApi.Api.eEvent
 				db.Configuration.ValidateOnSaveEnabled = false;
 				db.SaveChanges();
 
-				//return model.Title;
-				return publicevent.RefNo;
+				PublicEventModel model = new PublicEventModel
+				{
+					Id = publicevent.Id,
+					EventStatus = publicevent.EventStatus,
+					RefNo = publicevent.RefNo,
+					EventTitle = publicevent.EventTitle,
+				};
+				return Ok(model);
 			}
-			return "";
+			return Ok();
 		}
 
 		//Cancel Approved Public Event 
 		[Route("api/eEvent/PublicEvent/CancelPublicEvent")]
-		public string CancelPublicEvent(int id)
+		public IHttpActionResult CancelPublicEvent(int id)
 		{
 
 			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
@@ -583,15 +641,21 @@ namespace FEP.WebApi.Api.eEvent
 				db.Configuration.ValidateOnSaveEnabled = false;
 				db.SaveChanges();
 
-				//return model.Title;
-				return publicevent.RefNo;
+				PublicEventModel model = new PublicEventModel
+				{
+					Id = publicevent.Id,
+					EventStatus = publicevent.EventStatus,
+					RefNo = publicevent.RefNo,
+					EventTitle = publicevent.EventTitle,
+				};
+				return Ok(model);
 			}
-			return "";
+			return Ok();
 		}
 
 		//Published Public Event 
 		[Route("api/eEvent/PublicEvent/PublishedPublicEvent")]
-		public string PublishedPublicEvent(int id)
+		public IHttpActionResult PublishedPublicEvent(int id)
 		{
 
 			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
@@ -604,10 +668,47 @@ namespace FEP.WebApi.Api.eEvent
 				db.Configuration.ValidateOnSaveEnabled = false;
 				db.SaveChanges();
 
+				PublicEventModel model = new PublicEventModel
+				{
+					Id = publicevent.Id,
+					EventStatus = publicevent.EventStatus,
+					RefNo = publicevent.RefNo,
+					EventTitle = publicevent.EventTitle,
+				};
+				return Ok(model);
+			}
+			return Ok();
+		}
+
+
+		[Route("api/eEvent/PublicEvent/SaveSLAStatusId")]
+		public string SaveSLAStatusId(int id, int SaveThisID)
+		{
+
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
+
+			if (publicevent != null)
+			{
+				publicevent.SLAReminderStatusId = SaveThisID;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(m => m.SLAReminderStatusId).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
 				//return model.Title;
-				return publicevent.RefNo;
+				return "";
 			}
 			return "";
 		}
+
+
+		[Route("api/eEvent/PublicEvent/GetSLAId")]
+		public IHttpActionResult GetSLAId(int id)
+		{
+			var publicevent = db.PublicEvent.Where(p => p.Id == id).Select(i => i.SLAReminderStatusId).FirstOrDefault();
+
+			return Ok(publicevent);
+		}
+
 	}
 }

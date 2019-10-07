@@ -39,32 +39,12 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 		}
 
-		//public ActionResult List(FilterPublicEventModel filter)
-		//{
-		//	var e = db.PublicEvent.Where(i => i.Display && (filter.EventTitle == filter.EventTitle))
-		//		.Select(i => new DetailsPublicEventModel()
-		//		{
-		//			Id = i.Id,
-		//			EventTitle = i.EventTitle,
-		//			EventObjective = i.EventObjective,
-		//			EventCategoryId = i.EventCategoryId,
-		//			EventCategoryName = i.EventCategory.CategoryName,
-		//			StartDate = i.StartDate,
-		//			EndDate = i.EndDate,
-		//			Venue = i.Venue,
-		//			Fee = i.Fee,
-		//			EventStatus = i.EventStatus
-		//		}).ToList();
-		//	ListPublicEventModel model = new ListPublicEventModel(e);
-		//	return View(model);
-		//}
-
 		public ActionResult List()
 		{
 			return View();
 		}
 
-		// GET: PublicEvent/Details/5
+		// GET: PublicEvent/Details/Id
 		[HttpGet]
 		public async Task<ActionResult> Details(int? id, string origin)
 		{
@@ -82,11 +62,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			var model = response.Data;
 
-            model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
-            model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
-            model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
+			model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
+			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
+			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
 
-            return View(model);
+			return View(model);
 		}
 
 
@@ -112,10 +92,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Create(FEP.Intranet.Areas.eEvent.Models.CreatePublicEventModel model)
 		{
-            if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
-            {
-                ModelState.AddModelError("Attachments", "Please upload file");
-            }
+			if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
+			{
+				ModelState.AddModelError("Attachments", "Please upload file");
+			}
 
 			if (model.StartDate > model.EndDate)
 			{
@@ -137,26 +117,26 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					EventStatus = model.EventStatus,
 					EventCategoryId = model.EventCategoryId,
 					SpeakerId = model.SpeakerId,
-                    ExternalExhibitorId = model.ExternalExhibitorId,
+					ExternalExhibitorId = model.ExternalExhibitorId,
 					Remarks = model.Remarks,
 				};
 
-                //attachment
-                if (model.AttachmentFiles.Count() > 0)
-                {
-                    var responseFile = await WepApiMethod.SendApiAsync<List<FileDocument>>($"File?userId={CurrentUser.UserId}", model.AttachmentFiles.ToList());
+				//attachment
+				if (model.AttachmentFiles.Count() > 0)
+				{
+					var responseFile = await WepApiMethod.SendApiAsync<List<FileDocument>>($"File?userId={CurrentUser.UserId}", model.AttachmentFiles.ToList());
 
-                    if (responseFile.isSuccess)
-                    {
-                        modelapi.FilesId = responseFile.Data.Select(f => f.Id).ToList();
-                    }
-                }
+					if (responseFile.isSuccess)
+					{
+						modelapi.FilesId = responseFile.Data.Select(f => f.Id).ToList();
+					}
+				}
 
-                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eEvent/PublicEvent", modelapi);
+				var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eEvent/PublicEvent", modelapi);
 
 				if (response.isSuccess)
 				{
-                    await LogActivity(Modules.Event, "Create Public Event", model);
+					await LogActivity(Modules.Event, "Create Public Event", model);
 
 					TempData["SuccessMessage"] = "Public Event successfully created";
 
@@ -164,11 +144,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				}
 			}
 
-            model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
-            model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
-            model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
+			model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
+			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
+			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
 
-            return View(model);
+			return View(model);
 		}
 
 
@@ -202,8 +182,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				Remarks = response.Data.Remarks,
 				origin = origin,
 				RefNo = response.Data.RefNo,
-				SpeakerId = response.Data.SpeakerId,				
-				ExternalExhibitorId = response.Data.ExternalExhibitorId,				
+				SpeakerId = response.Data.SpeakerId,
+				ExternalExhibitorId = response.Data.ExternalExhibitorId,
 				Attachments = response.Data.Attachments
 			};
 
@@ -220,10 +200,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		public async Task<ActionResult> Edit(FEP.Intranet.Areas.eEvent.Models.EditPublicEventModel model)
 		{
 
-            if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
-            {
-                ModelState.AddModelError("Attachments", "Please upload file");
-            }
+			if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
+			{
+				ModelState.AddModelError("Attachments", "Please upload file");
+			}
 
 			if (model.StartDate > model.EndDate)
 			{
@@ -232,44 +212,44 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			if (ModelState.IsValid)
 			{
-                var modelapi = new EditPublicEventModel
-                {
-                    Id = model.Id,
-                    EventTitle = model.EventTitle,
-                    EventObjective = model.EventObjective,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate,
-                    Venue = model.Venue,
-                    Fee = model.Fee,
-                    ParticipantAllowed = model.ParticipantAllowed,
-                    TargetedGroup = model.TargetedGroup,
-                    EventStatus = model.EventStatus,
-                    EventCategoryId = model.EventCategoryId,
-                    SpeakerId = model.SpeakerId,
-                    ExternalExhibitorId = model.ExternalExhibitorId,                    
-                    Remarks = model.Remarks,
-                    Attachments = model.Attachments,
-                };
+				var modelapi = new EditPublicEventModel
+				{
+					Id = model.Id,
+					EventTitle = model.EventTitle,
+					EventObjective = model.EventObjective,
+					StartDate = model.StartDate,
+					EndDate = model.EndDate,
+					Venue = model.Venue,
+					Fee = model.Fee,
+					ParticipantAllowed = model.ParticipantAllowed,
+					TargetedGroup = model.TargetedGroup,
+					EventStatus = model.EventStatus,
+					EventCategoryId = model.EventCategoryId,
+					SpeakerId = model.SpeakerId,
+					ExternalExhibitorId = model.ExternalExhibitorId,
+					Remarks = model.Remarks,
+					Attachments = model.Attachments,
+				};
 
-                //attachment
-                if (model.AttachmentFiles.Count() > 0)
-                {
-                    var responseFile = await WepApiMethod.SendApiAsync<List<FileDocument>>($"File?userId={CurrentUser.UserId}", model.AttachmentFiles.ToList());
+				//attachment
+				if (model.AttachmentFiles.Count() > 0)
+				{
+					var responseFile = await WepApiMethod.SendApiAsync<List<FileDocument>>($"File?userId={CurrentUser.UserId}", model.AttachmentFiles.ToList());
 
-                    if (responseFile.isSuccess)
-                    {
-                        modelapi.FilesId = responseFile.Data.Select(f => f.Id).ToList();
-                    }
+					if (responseFile.isSuccess)
+					{
+						modelapi.FilesId = responseFile.Data.Select(f => f.Id).ToList();
+					}
 
-                }
+				}
 
-                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/PublicEvent?id={model.Id}", modelapi);
+				var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/PublicEvent?id={model.Id}", modelapi);
 
 				if (response.isSuccess)
 				{
 
 					await LogActivity(Modules.Event, "Edit Public Event", model);
-					TempData["SuccessMessage"] = "Event Speaker successfully updated";
+					TempData["SuccessMessage"] = "Public Event successfully updated";
 
 					return RedirectToAction("List");
 				}
@@ -315,9 +295,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				Remarks = response.Data.Remarks,
 				origin = response.Data.origin,
 				RefNo = response.Data.RefNo,
-                Attachments = response.Data.Attachments,
-                SpeakerId = response.Data.SpeakerId,
-                ExternalExhibitorId = response.Data.ExternalExhibitorId				
+				Attachments = response.Data.Attachments,
+				SpeakerId = response.Data.SpeakerId,
+				ExternalExhibitorId = response.Data.ExternalExhibitorId
 			};
 
 			if (model == null)
@@ -348,22 +328,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return RedirectToAction("List", "EventSpeaker", new { area = "eEvent" });
 		}
 
-		//// POST: PublicEvent/Delete/5
-		//[HttpPost, ActionName("Delete")]
-		//[ValidateAntiForgeryToken]
-		//public ActionResult DeleteConfirmed(DeletePublicEventModel model)
-		//{
-		//	PublicEvent eEvent = new PublicEvent() { Id = model.Id };
-		//	eEvent.Display = false;
-		//	db.PublicEvent.Attach(eEvent);
-		//	db.Entry(eEvent).Property(m => m.Display).IsModified = true;
-		//	db.Configuration.ValidateOnSaveEnabled = false;
-		//	db.SaveChanges();
-		//	TempData["SuccessMessage"] = "Public Event successfully deleted.";
-		//	return RedirectToAction("List");
-		//}
-
-
 		// Submit Public Event for Verification
 		public async Task<ActionResult> SubmitToVerify(int? id)
 		{
@@ -371,40 +335,37 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SubmitToVerify?id={id}");
+			var response = await WepApiMethod.SendApiAsync<PublicEventModel>(HttpVerbs.Post, $"eEvent/PublicEvent/SubmitToVerify?id={id}");
 			if (response.isSuccess)
 			{
-				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
-				await LogActivity(Modules.Event, "Submit Public Event Ref No: " + response.Data + " for verification.");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully submitted for verification.";
-
 				ParameterListToSend paramToSend = new ParameterListToSend();
-				paramToSend.EventCode = response.Data;
-				paramToSend.EventName = getevent.EventTitle;
-				paramToSend.EventApproval = "Pending Approval";
+				paramToSend.EventCode = response.Data.RefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				CreateAutoReminder reminder = new CreateAutoReminder
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Submit_PublicEvent_ForVerification}");
+				if (receiveresponse.isSuccess)
 				{
-					NotificationType = NotificationType.Verify_Public_Event_Creation,
-					NotificationCategory = NotificationCategory.Event,
-					ParameterListToSend = paramToSend,
-					StartNotificationDate = DateTime.Now,
-					ReceiverId = new List<int> { 2, 3, 4, 5 },
-				};
 
-				var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-				int saveThisID = response2.Data.SLAReminderStatusId;
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Verify_Public_Event_Creation,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
 
-				//save saveThisID dalam table public event
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
 
-				if (getevent != null)
-				{
-					getevent.SLAReminderStatusId = saveThisID;
-					db.PublicEvent.Attach(getevent);
-					db.Entry(getevent).Property(m => m.SLAReminderStatusId).IsModified = true;
-					db.Configuration.ValidateOnSaveEnabled = false;
-					db.SaveChanges();
+					//save saveThisID dalam table public event
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+					await LogActivity(Modules.Event, "Submit Public Event Ref No: " + response.Data.RefNo + " for verification.");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully submitted for verification.";
 				}
 
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
@@ -412,7 +373,64 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			else
 
 			{
-				TempData["ErrorMessage"] = "Failed to submit Public Event.";
+				TempData["ErrorMessage"] = "Fail to submit Public Event for verification.";
+				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+		public async Task<ActionResult> Verified(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<PublicEventModel>(HttpVerbs.Post, $"eEvent/PublicEvent/Verified?id={id}");
+			if (response.isSuccess)
+			{
+				//--------------------------------------------------Stop Previous Email---------------------------------------------//
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eEvent/PublicEvent/GetSLAId?id={id}");
+				if (responseGetSLAId.isSuccess)
+				{
+					int SLAReminderStatusId = responseGetSLAId.Data;
+					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+					List<BulkNotificationModel> myNotification = responseSLA.Data;
+				}
+
+				//--------------------------------------------------Send Email---------------------------------------------//
+				ParameterListToSend paramToSend = new ParameterListToSend();
+				paramToSend.EventCode = response.Data.RefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
+				paramToSend.EventLocation = response.Data.Venue;
+
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verified_PublicEvent_ForVerification}");
+				if (receiveresponse.isSuccess)
+				{
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Approve_Public_Event_Creation1,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
+
+					//save saveThisID dalam table public event
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is verified.");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
+				}
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Fail to approve Public Event.";
 				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
 			}
 		}
@@ -424,57 +442,53 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/FirstApproved?id={id}");
+			var response = await WepApiMethod.SendApiAsync<PublicEventModel>(HttpVerbs.Post, $"eEvent/PublicEvent/FirstApproved?id={id}");
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
 				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
 
 				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
-				var response3 = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+				var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
 					(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
 
-				List<BulkNotificationModel> myNotification = response3.Data;
+				List<BulkNotificationModel> myNotification = responseSLA.Data;
 				//myNotification[0].NotificationId;
 
 				//--------------------------------------------------Send Email---------------------------------------------//
-
-				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
 				ParameterListToSend paramToSend = new ParameterListToSend();
-				paramToSend.EventCode = response.Data;
-				paramToSend.EventName = getevent.EventTitle;
-				paramToSend.EventApproval = "Pending Approval";
+				paramToSend.EventCode = response.Data.RefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				CreateAutoReminder reminder = new CreateAutoReminder
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_PublicEvent_ByApprover1}");
+				if (receiveresponse.isSuccess)
 				{
-					NotificationType = NotificationType.Approve_Public_Event_Creation1,
-					NotificationCategory = NotificationCategory.Event,
-					ParameterListToSend = paramToSend,
-					StartNotificationDate = DateTime.Now,
-					ReceiverId = new List<int> { 2, 3, 4, 5 }
-				};
-				var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-				int saveThisID = response2.Data.SLAReminderStatusId;
 
-				//save saveThisID dalam table public event
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Approve_Public_Event_Creation1,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
 
-				if (getevent != null)
-				{
-					getevent.SLAReminderStatusId = saveThisID;
-					db.PublicEvent.Attach(getevent);
-					db.Entry(getevent).Property(m => m.SLAReminderStatusId).IsModified = true;
-					db.Configuration.ValidateOnSaveEnabled = false;
-					db.SaveChanges();
+					//save saveThisID dalam table public event
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved on first level.");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
 				}
-
-				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved on first level.");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
 			}
 			else
 			{
-				TempData["ErrorMessage"] = "Failed to approve Public Event.";
+				TempData["ErrorMessage"] = "Fail to approve Public Event.";
 				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
 			}
 		}
@@ -486,52 +500,50 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SecondApproved?id={id}");
+			var response = await WepApiMethod.SendApiAsync<PublicEventModel>(HttpVerbs.Post, $"eEvent/PublicEvent/SecondApproved?id={id}");
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
 				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
 
 				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
-				var response3 = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+				var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
 					(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
 
-				List<BulkNotificationModel> myNotification = response3.Data;
+				List<BulkNotificationModel> myNotification = responseSLA.Data;
 				//myNotification[0].NotificationId;
 
 				//--------------------------------------------------Send Email---------------------------------------------//
 
-				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
 				ParameterListToSend paramToSend = new ParameterListToSend();
-				paramToSend.EventCode = response.Data;
-				paramToSend.EventName = getevent.EventTitle;
-				paramToSend.EventApproval = "Pending Approval";
+				paramToSend.EventCode = response.Data.RefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				CreateAutoReminder reminder = new CreateAutoReminder
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_PublicEvent_ByApprover3}");
+				if (receiveresponse.isSuccess)
 				{
-					NotificationType = NotificationType.Approve_Public_Event_Creation2,
-					NotificationCategory = NotificationCategory.Event,
-					ParameterListToSend = paramToSend,
-					StartNotificationDate = DateTime.Now,
-					ReceiverId = new List<int> { 2, 3, 4, 5 }
-				};
-				var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-				int saveThisID = response2.Data.SLAReminderStatusId;
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Approve_Public_Event_Creation2,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
 
-				//save saveThisID dalam table public event
+					//save saveThisID dalam table public event
 
-				if (getevent != null)
-				{
-					getevent.SLAReminderStatusId = saveThisID;
-					db.PublicEvent.Attach(getevent);
-					db.Entry(getevent).Property(m => m.SLAReminderStatusId).IsModified = true;
-					db.Configuration.ValidateOnSaveEnabled = false;
-					db.SaveChanges();
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved on first level.");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
 				}
 
-				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved on first level.");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
 			}
 			else
@@ -548,52 +560,50 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/FinalApproved?id={id}");
+			var response = await WepApiMethod.SendApiAsync<PublicEventModel>(HttpVerbs.Post, $"eEvent/PublicEvent/FinalApproved?id={id}");
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
 				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
 
 				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
-				var response3 = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+				var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
 					(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
 
-				List<BulkNotificationModel> myNotification = response3.Data;
+				List<BulkNotificationModel> myNotification = responseSLA.Data;
 				//myNotification[0].NotificationId;
 
 				//--------------------------------------------------Send Email---------------------------------------------//
 
-				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
 				ParameterListToSend paramToSend = new ParameterListToSend();
-				paramToSend.EventCode = response.Data;
-				paramToSend.EventName = getevent.EventTitle;
-				paramToSend.EventApproval = "Approved";
+				paramToSend.EventCode = response.Data.RefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				CreateAutoReminder reminder = new CreateAutoReminder
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_PublicEvent_ByApprover3}");
+				if (receiveresponse.isSuccess)
 				{
-					NotificationType = NotificationType.Approve_Public_Event_Creation3,
-					NotificationCategory = NotificationCategory.Event,
-					ParameterListToSend = paramToSend,
-					StartNotificationDate = DateTime.Now,
-					ReceiverId = new List<int> { 2, 3, 4, 5 }
-				};
-				var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-				int saveThisID = response2.Data.SLAReminderStatusId;
 
-				//save saveThisID dalam table public event
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Approve_Public_Event_Creation3,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data,
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
 
-				if (getevent != null)
-				{
-					getevent.SLAReminderStatusId = saveThisID;
-					db.PublicEvent.Attach(getevent);
-					db.Entry(getevent).Property(m => m.SLAReminderStatusId).IsModified = true;
-					db.Configuration.ValidateOnSaveEnabled = false;
-					db.SaveChanges();
+					//save saveThisID dalam table public event
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved.";
 				}
 
-				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved.";
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
 			}
 			else
@@ -610,53 +620,51 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/RejectPublicEvent?id={id}");
+			var response = await WepApiMethod.SendApiAsync<PublicEventModel>(HttpVerbs.Post, $"eEvent/PublicEvent/RejectPublicEvent?id={id}");
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
 				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
 
 				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
-				var response3 = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+				var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
 					(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
 
-				List<BulkNotificationModel> myNotification = response3.Data;
+				List<BulkNotificationModel> myNotification = responseSLA.Data;
 				//myNotification[0].NotificationId;
 
 				//--------------------------------------------------Send Email---------------------------------------------//
 
-				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
 				ParameterListToSend paramToSend = new ParameterListToSend();
-				paramToSend.EventCode = response.Data;
-				paramToSend.EventName = getevent.EventTitle;
-				paramToSend.EventApproval = "Require Amendment";
+				paramToSend.EventCode = response.Data.RefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				CreateAutoReminder reminder = new CreateAutoReminder
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_PublicEvent_ByApprover1}");
+				if (receiveresponse.isSuccess)
 				{
-					NotificationType = NotificationType.Approve_Public_Event_Published_Changed,
-					NotificationCategory = NotificationCategory.Event,
-					ParameterListToSend = paramToSend,
-					StartNotificationDate = DateTime.Now,
-					ReceiverId = new List<int> { 2, 3, 4, 5 }
-				};
-				var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-				int saveThisID = response2.Data.SLAReminderStatusId;
 
-				//save saveThisID dalam table public event
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Approve_Public_Event_Published_Changed,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data,
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
 
-				if (getevent != null)
-				{
-					getevent.SLAReminderStatusId = saveThisID;
-					db.PublicEvent.Attach(getevent);
-					db.Entry(getevent).Property(m => m.SLAReminderStatusId).IsModified = true;
-					db.Configuration.ValidateOnSaveEnabled = false;
-					db.SaveChanges();
+					//save saveThisID dalam table public event
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is rejected and require amendment.");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully rejected and require amendment.";
 				}
 
-
-				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is rejected and require amendment.");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully rejected and require amendment.";
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
 			}
 			else
@@ -673,53 +681,50 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/CancelPublicEvent?id={id}");
+			var response = await WepApiMethod.SendApiAsync<PublicEventModel>(HttpVerbs.Post, $"eEvent/PublicEvent/CancelPublicEvent?id={id}");
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
 				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
 
 				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
-				var response3 = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+				var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
 					(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
 
-				List<BulkNotificationModel> myNotification = response3.Data;
+				List<BulkNotificationModel> myNotification = responseSLA.Data;
 				//myNotification[0].NotificationId;
 
 				//--------------------------------------------------Send Email---------------------------------------------//
 
-				var getevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
 				ParameterListToSend paramToSend = new ParameterListToSend();
-				paramToSend.EventCode = response.Data;
-				paramToSend.EventName = getevent.EventTitle;
-				paramToSend.EventApproval = "Cancelled";
+				paramToSend.EventCode = response.Data.RefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				CreateAutoReminder reminder = new CreateAutoReminder
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_PublicEvent_ByApprover1}");
+				if (receiveresponse.isSuccess)
 				{
-					NotificationType = NotificationType.Approve_Public_Event_Published_Cancelled,
-					NotificationCategory = NotificationCategory.Event,
-					ParameterListToSend = paramToSend,
-					StartNotificationDate = DateTime.Now,
-					ReceiverId = new List<int> { 2, 3, 4, 5 }
-				};
-				var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-				int saveThisID = response2.Data.SLAReminderStatusId;
 
-				//save saveThisID dalam table public event
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Approve_Public_Event_Published_Cancelled,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data,
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
 
-				if (getevent != null)
-				{
-					getevent.SLAReminderStatusId = saveThisID;
-					db.PublicEvent.Attach(getevent);
-					db.Entry(getevent).Property(m => m.SLAReminderStatusId).IsModified = true;
-					db.Configuration.ValidateOnSaveEnabled = false;
-					db.SaveChanges();
+					//save saveThisID dalam table public event
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is cancelled.");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully cancelled.";
 				}
-
-
-				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is cancelled.");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully cancelled.";
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
 			}
 			else
@@ -736,7 +741,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/PublishedPublicEvent?id={id}");
+			var response = await WepApiMethod.SendApiAsync<PublicEventModel>(HttpVerbs.Post, $"eEvent/PublicEvent/PublishedPublicEvent?id={id}");
 			if (response.isSuccess)
 			{
 				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is Published.");

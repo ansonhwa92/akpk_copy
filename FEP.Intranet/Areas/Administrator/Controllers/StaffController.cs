@@ -155,7 +155,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            var response = await WepApiMethod.SendApiAsync<DetailsIndividualModel>(HttpVerbs.Get, $"Administration/Individual?id={id}");
+            var response = await WepApiMethod.SendApiAsync<DetailsStaffModel>(HttpVerbs.Get, $"Administration/Staff?id={id}");
 
             if (!response.isSuccess)
             {

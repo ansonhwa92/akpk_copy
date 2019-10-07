@@ -72,6 +72,10 @@ namespace FEP.Model
         UserFullName = 2,
         [Display(Name = "User's Role")]
         UserRole = 3,
+        [Display(Name = "Link")]
+        Link = 4,
+        [Display(Name = "Login Detail")]
+        LoginDetail = 5,
 
         //21-40 for Verify/Approval Public Event
         [Display(Name = "Event Name")]

@@ -42,16 +42,15 @@ namespace FEP.WebApiModel.Administration
 
         public int Id { get; set; }
 
-        [Display(Name = "Company Name")]
+        [Display(Name = "FieldCompanyType", ResourceType = typeof(Language.Company))]
+        public CompanyType Type { get; set; }
+
+        public string TypeDesc { get; set; }
+
+        [Display(Name = "FieldCompanyName", ResourceType = typeof(Language.Company))]
         public string CompanyName { get; set; }
-
-        [Display(Name = "Company Registration No")]
-        public string CompanyRegNo { get; set; }
-
-        [Display(Name = "Sector")]
-        public string Sector { get; set; }
-
-        [Display(Name = "Email")]
+        
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Company))]
         public string Email { get; set; }
 
         [Display(Name = "Status")]

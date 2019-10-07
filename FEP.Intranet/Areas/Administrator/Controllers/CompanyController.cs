@@ -3,6 +3,7 @@ using FEP.Model;
 using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.Auth;
 using FEP.WebApiModel.Notification;
+using FEP.WebApiModel.SLAReminder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -121,17 +122,33 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (ModelState.IsValid)
             {
-                var response = await WepApiMethod.SendApiAsync<CreateUserResponse>(HttpVerbs.Post, $"Administration/Company", model);
+                var response = await WepApiMethod.SendApiAsync<dynamic>(HttpVerbs.Post, $"Administration/Company", model);
 
                 if (response.isSuccess)
                 {
 
-                    StringBuilder body = new StringBuilder();
-                    body.Append("Dear " + model.Name + ",");
-                    body.Append("<br />");
-                    body.Append("You can sign to FEP Portal <a href = '" + BaseURL + Url.Action("Login", "Auth", new { area = "" }) + "' > here </a>. Sign in Id: " + model.Email + "\n" + "Password: " + response.Data.Password);
+                    //StringBuilder body = new StringBuilder();
+                    //body.Append("Dear " + model.Name + ",");
+                    //body.Append("<br />");
+                    //body.Append("You can sign to FEP Portal <a href = '" + BaseURL + Url.Action("Login", "Auth", new { area = "" }) + "' > here </a>. Sign in Id: " + model.Email + "\n" + "Password: " + response.Data.Password);
 
-                    await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), new EmailAddress { DisplayName = model.Name, Address = model.Email });
+                    //await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), new EmailAddress { DisplayName = model.Name, Address = model.Email });
+
+                    ParameterListToSend notificationParameter = new ParameterListToSend();
+                    notificationParameter.UserFullName = model.Name;
+                    notificationParameter.Link = $"<a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data.UID }) + "' > here </a>";
+                    notificationParameter.LoginDetail = $"Email: { model.Email }\nPassword: { response.Data.Password }";
+
+                    CreateAutoReminder notification = new CreateAutoReminder
+                    {
+                        NotificationType = NotificationType.ActivateAccount,
+                        NotificationCategory = NotificationCategory.Event,
+                        ParameterListToSend = notificationParameter,
+                        StartNotificationDate = DateTime.Now,
+                        ReceiverId = new List<int> { (int)response.Data.UserId }
+                    };
+
+                    var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
 
                     await LogActivity(Modules.Admin, "Create Agency User", model);
 
@@ -430,17 +447,30 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 return HttpNotFound();
             }
 
-            var response = await WepApiMethod.SendApiAsync<ResetPasswordResponseModel>(HttpVerbs.Post, $"Auth/ResetPassword", new { Email = Email });
+            var response = await WepApiMethod.SendApiAsync<dynamic>(HttpVerbs.Post, $"Auth/ResetPassword", new { Email = Email });
 
             if (response.isSuccess)
             {
-                               
-                StringBuilder body = new StringBuilder();
-                body.Append("Dear " + response.Data.Name + ",");
-                body.Append("<br />");
-                body.Append("You can reset your password <a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data }) + "' > here </a>");
-                               
-                await EmailMethod.SendEmail("FE Portal Password Reset By Admin", body.ToString(), new EmailAddress { DisplayName = response.Data.Name, Address = Email });
+
+                //StringBuilder body = new StringBuilder();
+                //body.Append("Dear " + response.Data.Name + ",");
+                //body.Append("<br />");
+                //body.Append("You can reset your password <a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data }) + "' > here </a>");
+
+                //await EmailMethod.SendEmail("FE Portal Password Reset By Admin", body.ToString(), new EmailAddress { DisplayName = response.Data.Name, Address = Email });
+
+                ParameterListToSend notificationParameter = new ParameterListToSend();
+                notificationParameter.UserFullName = response.Data.Name;
+                notificationParameter.Link = $"<a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data.UID }) + "' > here </a>";
+
+                CreateAutoReminder notification = new CreateAutoReminder
+                {
+                    NotificationType = NotificationType.ResetPassword,
+                    NotificationCategory = NotificationCategory.Event,
+                    ParameterListToSend = notificationParameter,
+                    StartNotificationDate = DateTime.Now,
+                    ReceiverId = new List<int> { (int)response.Data.UserId }
+                };
 
                 await LogActivity(Modules.Admin, "Reset Agency User Account Password", new { id = id });
 

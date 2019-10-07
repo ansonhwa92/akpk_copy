@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using FEP.WebApiModel.Auth;
 using FEP.WebApiModel.Administration;
 using FEP.Model;
+using FEP.WebApiModel.SLAReminder;
 
 namespace FEP.Intranet.Controllers
 {
@@ -22,13 +23,27 @@ namespace FEP.Intranet.Controllers
     [LogError(Modules.Admin)]
     public class AuthController : FEPController
     {
-
+        [NonAction]
         [AllowAnonymous]
         public async Task<ActionResult> Test()
         {
-            var response = await WepApiMethod.SendApiAsync<FileDocument>(HttpVerbs.Get, $"File?id={1}");
+            ParameterListToSend paramToSend = new ParameterListToSend();
+            paramToSend.EventCode = "";
+            paramToSend.EventName = "";
+            paramToSend.EventApproval = "Pending Approval";
 
-            return Content(response.ToString());
+            CreateAutoReminder reminder = new CreateAutoReminder
+            {
+                NotificationType = NotificationType.Verify_Public_Event_Creation,
+                NotificationCategory = NotificationCategory.Event,
+                ParameterListToSend = paramToSend,
+                StartNotificationDate = DateTime.Now,
+                ReceiverId = new List<int> { 1 },
+            };
+
+            var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+
+            return Content(response2.ToString());
         }
 
         [AllowAnonymous]
@@ -84,9 +99,7 @@ namespace FEP.Intranet.Controllers
             if (stateResponse.isSuccess)
             {
                 var states = stateResponse.Data;
-
                 model.States = new SelectList(states.OrderBy(o => o.Name), "Id", "Name", 0);
-
             }
 
             return model;
@@ -199,32 +212,28 @@ namespace FEP.Intranet.Controllers
             if (ModelState.IsValid)
             {
 
-                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Auth/RegisterIndividual", model);
+                var response = await WepApiMethod.SendApiAsync<dynamic>(HttpVerbs.Post, $"Auth/RegisterIndividual", model);
 
                 if (response.isSuccess)
                 {
+                    
+                    ParameterListToSend notificationParameter = new ParameterListToSend();
+                    notificationParameter.UserFullName = model.Name;
+                    notificationParameter.Link = $"<a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data.UID }) + "' > here </a>";
+                    notificationParameter.LoginDetail = $"Email: { model.Email }\nPassword: { model.Password }";
 
-                    EmailAddress receiver = new EmailAddress()
+                    CreateAutoReminder notification = new CreateAutoReminder
                     {
-                        DisplayName = model.Name,
-                        Address = model.Email
+                        NotificationType = NotificationType.ActivateAccount,
+                        NotificationCategory = NotificationCategory.Event,
+                        ParameterListToSend = notificationParameter,
+                        StartNotificationDate = DateTime.Now,
+                        ReceiverId = new List<int> { (int) response.Data.UserId }
                     };
 
-                    StringBuilder body = new StringBuilder();
-
-                    body.Append("Dear " + model.Name + ",");
-                    body.Append("<br />");
-                    body.Append("You can activate your account <a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data }) + "' > here </a>");
-                    body.Append("<br />");
-                    body.Append("Your login details:");
-                    body.Append("<br />");
-                    body.Append("Login Id: " + model.Email);
-                    body.Append("<br />");
-                    body.Append("Password: " + model.Password);
-
-                    await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), receiver);
-
-                    TempData["SuccessMessage"] = "Your account successfully created. Please check your registered email for sign in details.";
+                    var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
+                    
+                    TempData["SuccessMessage"] = "Your account successfully created. Please check your registered email for account activation and login details.";
 
                     return RedirectToAction("Login", "Auth", new { area = "" });
 
@@ -301,30 +310,26 @@ namespace FEP.Intranet.Controllers
 
             if (ModelState.IsValid)
             {
-                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Auth/RegisterAgency", model);
+                var response = await WepApiMethod.SendApiAsync<dynamic>(HttpVerbs.Post, $"Auth/RegisterAgency", model);
 
                 if (response.isSuccess)
                 {
 
-                    EmailAddress receiver = new EmailAddress()
+                    ParameterListToSend notificationParameter = new ParameterListToSend();
+                    notificationParameter.UserFullName = model.Name;
+                    notificationParameter.Link = $"<a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data.UID }) + "' > here </a>";
+                    notificationParameter.LoginDetail = $"Email: { model.Email }\nPassword: { model.Password }";
+
+                    CreateAutoReminder notification = new CreateAutoReminder
                     {
-                        DisplayName = model.Name,
-                        Address = model.Email
+                        NotificationType = NotificationType.ActivateAccount,
+                        NotificationCategory = NotificationCategory.Event,
+                        ParameterListToSend = notificationParameter,
+                        StartNotificationDate = DateTime.Now,
+                        ReceiverId = new List<int> { (int)response.Data.UserId }
                     };
 
-                    StringBuilder body = new StringBuilder();
-
-                    body.Append("Dear " + model.Name + ",");
-                    body.Append("<br />");
-                    body.Append("You can activate your account <a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data }) + "' > here </a>");
-                    body.Append("<br />");
-                    body.Append("Your login details:");
-                    body.Append("<br />");
-                    body.Append("Login Id: " + model.Email);
-                    body.Append("<br />");
-                    body.Append("Password: " + model.Password);
-                 
-                    await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), receiver);
+                    var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
 
                     TempData["SuccessMessage"] = "Your account successfully created. Please check your registered email for sign in details.";
 
@@ -496,18 +501,33 @@ namespace FEP.Intranet.Controllers
             if (ModelState.IsValid)
             {
 
-                var response = await WepApiMethod.SendApiAsync<ResetPasswordResponseModel>(HttpVerbs.Post, $"Auth/ResetPassword", model);
+                var response = await WepApiMethod.SendApiAsync<dynamic>(HttpVerbs.Post, $"Auth/ResetPassword", model);
 
                 if (response.Data != null)
                 {
-                    var uid = response.Data.UID;
+                    //var uid = response.Data.UID;
 
-                    StringBuilder body = new StringBuilder();
-                    body.Append("Dear " + response.Data.Name + ",");
-                    body.Append("<br />");
-                    body.Append("You can reset your password <a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data }) + "' > here </a>");
+                    //StringBuilder body = new StringBuilder();
+                    //body.Append("Dear " + response.Data.Name + ",");
+                    //body.Append("<br />");
+                    //body.Append("You can reset your password <a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data }) + "' > here </a>");
 
-                    await EmailMethod.SendEmail("FE Portal Account Password Reset", body.ToString(), new EmailAddress { DisplayName = response.Data.Name, Address = model.Email });
+                    //await EmailMethod.SendEmail("FE Portal Account Password Reset", body.ToString(), new EmailAddress { DisplayName = response.Data.Name, Address = model.Email });
+
+                    ParameterListToSend notificationParameter = new ParameterListToSend();
+                    notificationParameter.UserFullName = response.Data.Name;
+                    notificationParameter.Link = $"<a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data.UID }) + "' > here </a>";
+                    
+                    CreateAutoReminder notification = new CreateAutoReminder
+                    {
+                        NotificationType = NotificationType.ResetPassword,
+                        NotificationCategory = NotificationCategory.Event,
+                        ParameterListToSend = notificationParameter,
+                        StartNotificationDate = DateTime.Now,
+                        ReceiverId = new List<int> { (int)response.Data.UserId }
+                    };
+
+                    var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
                 }
 
                 TempData["Message"] = "Instruction to reset password was successfully sent to your email [" + model.Email + "]. Please check your email.";

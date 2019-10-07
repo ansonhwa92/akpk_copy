@@ -121,7 +121,7 @@ namespace FEP.WebApi.Api.Administration
                                 
                 db.User.Add(user);
 
-                ActivateAccount activateaccount = new ActivateAccount
+                ActivateAccount activateAccount = new ActivateAccount
                 {
                     UID = Authentication.RandomString(50, true),//random alphanumeric
                     UserId = user.Id,
@@ -129,11 +129,11 @@ namespace FEP.WebApi.Api.Administration
                     IsActivate = false
                 };
 
-                db.ActivateAccount.Add(activateaccount);
+                db.ActivateAccount.Add(activateAccount);
 
                 db.SaveChanges();
 
-                return Ok(activateaccount.UID);
+                return Ok(new { UserId = user.Id, UID = activateAccount.UID });
             }
 
             return BadRequest(ModelState);
@@ -231,7 +231,7 @@ namespace FEP.WebApi.Api.Administration
 
                 db.SaveChanges();
 
-                return Ok(activateaccount.UID);
+                return Ok(activateaccount);
             }
 
             return BadRequest(ModelState);
@@ -280,7 +280,7 @@ namespace FEP.WebApi.Api.Administration
         public IHttpActionResult ResetPassword([FromBody] ResetPasswordModel model)
         {
             //check email if exist.                
-            var user = db.User.Where(u => u.Email == model.Email).FirstOrDefault();
+            var user = db.User.Where(u => u.Email == model.Email && u.Display).FirstOrDefault();
 
             if (user != null)
             {
@@ -298,7 +298,7 @@ namespace FEP.WebApi.Api.Administration
                 db.PasswordReset.Add(pwdreset);
                 db.SaveChanges();
 
-                return Ok(new ResetPasswordResponseModel { Name = user.Name, UID = pwdreset.UID });
+                return Ok(new { UserId = user.Id, Name = user.Name, UID = pwdreset.UID });
             }
 
             return NotFound();

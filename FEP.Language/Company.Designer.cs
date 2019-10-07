@@ -331,7 +331,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Representative Name.
         /// </summary>
         public static string FieldName {
             get {

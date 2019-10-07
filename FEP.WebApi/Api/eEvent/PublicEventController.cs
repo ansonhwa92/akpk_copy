@@ -179,8 +179,7 @@ namespace FEP.WebApi.Api.eEvent
 			{
 				query = query.OrderByDescending(o => o.EventTitle);
 			}
-						
-
+			
 			var data = query.Skip(request.start).Take(request.length)
 				.Select(s => new PublicEventModel
 				{

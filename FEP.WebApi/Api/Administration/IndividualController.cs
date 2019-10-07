@@ -217,7 +217,7 @@ namespace FEP.WebApi.Api.Administration
                 var account = new UserAccount
                 {
                     LoginId = model.Email,
-                    IsEnable = true,
+                    IsEnable = false,
                     HashPassword = Authentication.HashPassword,
                     Salt = Authentication.Salt,
                     LoginAttempt = 0
@@ -275,7 +275,7 @@ namespace FEP.WebApi.Api.Administration
 
                 db.SaveChanges();
 
-                return Ok(new CreateUserResponse { Password = password, UID = activateaccount.UID });
+                return Ok(new { UserId = user.Id, Password = password, UID = activateaccount.UID });
             }
 
             return BadRequest(ModelState);

@@ -46,6 +46,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Staff.Designer.cs">
+      <DependentUpon>Staff.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Individual.Designer.cs">
       <DependentUpon>Individual.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -156,6 +161,10 @@
     <EmbeddedResource Include="Company.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Company.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Staff.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Staff.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Individual.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

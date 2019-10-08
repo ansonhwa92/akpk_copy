@@ -185,6 +185,7 @@ namespace FEP.WebApiModel.Administration
         [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Individual))]
         public string PostCodeNonMalaysian { get; set; }
 
+        [RegularExpression("[a-zA-Z]+")]
         [Required(ErrorMessageResourceName = "ValidRequiredCity", ErrorMessageResourceType = typeof(Language.Individual))]
         [Display(Name = "FieldCity", ResourceType = typeof(Language.Individual))]
         public string City { get; set; }

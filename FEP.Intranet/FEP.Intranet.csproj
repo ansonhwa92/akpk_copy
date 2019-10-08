@@ -21,12 +21,9 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44360</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>
-    </IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -741,6 +738,8 @@
     <Content Include="Areas\RnP\Views\Home\PublicSurvey.cshtml" />
     <Content Include="Areas\RnP\Views\Home\ThankYou.cshtml" />
     <Content Include="Areas\Commerce\Views\web.config" />
+    <Content Include="Areas\Administrator\Views\Staff\_Add.cshtml" />
+    <Content Include="Areas\Administrator\Views\Staff\_Details.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1234,6 +1233,9 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Home\MyProfileAdmin.cshtml" />
+    <Content Include="Views\Home\EditProfileAdmin.cshtml" />
+    <Content Include="Views\Home\MyProfileStaff.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

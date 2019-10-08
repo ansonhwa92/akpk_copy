@@ -168,6 +168,10 @@ namespace FEP.WebApiModel.SLAReminder
         public string FriendlySiteName { get; set; }
         public string UserFullName { get; set; }
         public string UserRole { get; set; }
+        public string Link { get; set; }
+        public string LoginDetail { get; set; }
+        public string ErrorDetail { get; set; }
+
 
         //21-40 for Verify/Approval Public Event
         public string EventName { get; set; }

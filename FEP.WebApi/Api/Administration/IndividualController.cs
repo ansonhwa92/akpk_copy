@@ -180,7 +180,7 @@ namespace FEP.WebApi.Api.Administration
                 return NotFound();
             }
 
-            user.Roles = db.UserRole.Where(u => u.UserId == id).Select(s => new RoleModel { Id = s.Id, Name = s.Role.Name, Description = s.Role.Description }).ToList();
+            user.Roles = db.UserRole.Where(u => u.UserId == id).Select(s => new RoleModel { Id = s.RoleId, Name = s.Role.Name, Description = s.Role.Description }).ToList();
             
             return Ok(user);
         }
@@ -217,7 +217,7 @@ namespace FEP.WebApi.Api.Administration
                 var account = new UserAccount
                 {
                     LoginId = model.Email,
-                    IsEnable = true,
+                    IsEnable = false,
                     HashPassword = Authentication.HashPassword,
                     Salt = Authentication.Salt,
                     LoginAttempt = 0
@@ -275,7 +275,7 @@ namespace FEP.WebApi.Api.Administration
 
                 db.SaveChanges();
 
-                return Ok(new CreateUserResponse { Password = password, UID = activateaccount.UID });
+                return Ok(new { UserId = user.Id, Password = password, UID = activateaccount.UID });
             }
 
             return BadRequest(ModelState);
@@ -284,7 +284,7 @@ namespace FEP.WebApi.Api.Administration
 
         public IHttpActionResult Put(int id, [FromBody] EditIndividualModel model)
         {
-            var user = db.User.Where(u => u.Id == id).FirstOrDefault();
+            var user = db.User.Where(u => u.Id == id && u.Display).FirstOrDefault();
             var individual = db.IndividualProfile.Where(i => i.UserId == id).FirstOrDefault();
             var useraccount = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
 

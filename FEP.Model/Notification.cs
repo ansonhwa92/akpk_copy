@@ -16,6 +16,8 @@ namespace FEP.Model
 		[Display(Name = "Reset Password")]
 		ResetPassword,
 
+        [Display(Name = "System Error")]
+        SystemError,
 		//---------------------------------------------------
 		//tajul tambah for SLA
 

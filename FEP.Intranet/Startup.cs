@@ -22,7 +22,7 @@ namespace FEP.Intranet
             new CookieAuthenticationOptions
             {
                 AuthenticationType = "FEPCookie",
-                LoginPath = new PathString("/Home"),
+                LoginPath = new PathString("/Auth/Login"),
                 ExpireTimeSpan = TimeSpan.FromMinutes(expired != 0 ? expired : 15),//default 15 if not set
                 SlidingExpiration = true,
                 Provider = new CookieAuthenticationProvider

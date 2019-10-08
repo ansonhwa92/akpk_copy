@@ -77,15 +77,15 @@ namespace FEP.WebApi.Api.Administration
 
                         break;
 
-                    case "CompanyRegNo":
+                    case "TypeDesc":
 
                         if (sortAscending)
                         {
-                            query = query.OrderBy(o => o.CompanyRegNo);
+                            query = query.OrderBy(o => o.Type);
                         }
                         else
                         {
-                            query = query.OrderByDescending(o => o.CompanyRegNo);
+                            query = query.OrderByDescending(o => o.Type);
                         }
 
                         break;
@@ -133,10 +133,11 @@ namespace FEP.WebApi.Api.Administration
                     Id = s.UserId,
                     CompanyName = s.CompanyName,
                     Email = s.User.Email,
-                    CompanyRegNo = s.CompanyRegNo,
-                    Sector = s.Sector.Name,
+                    Type = s.Type,
                     Status = s.User.UserAccount != null ? s.User.UserAccount.IsEnable : false
                 }).ToList();
+
+            data.ForEach(s => s.TypeDesc = s.Type.GetDisplayName());
 
             return Ok(new DataTableResponse
             {
@@ -297,7 +298,7 @@ namespace FEP.WebApi.Api.Administration
 
                 db.SaveChanges();
 
-                return Ok<CreateUserResponse>(new CreateUserResponse { Password = password, UID = activateaccount.UID });
+                return Ok(new { UserId = user.Id, Password = password, UID = activateaccount.UID });
 
             }
 

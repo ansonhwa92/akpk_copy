@@ -31,12 +31,12 @@ namespace FEP.WebApi.Api.Administration
         {
             var users = db.User.Where(u => u.Display).Select(s => new UserModel
             {
-                Id = s.Id,                
+                Id = s.Id,
                 Name = s.Name,
                 Email = s.Email,
-                UserType = s.UserType,   
+                UserType = s.UserType,
             }).ToList();
-                        
+
             return Ok(users);
         }
 
@@ -49,6 +49,8 @@ namespace FEP.WebApi.Api.Administration
                 LoginId = s.UserAccount.LoginId,
                 Name = s.Name,
                 Email = s.Email,
+                ICNo = s.ICNo,
+                MobileNo = s.MobileNo,
                 UserType = s.UserType,
                 IsEnable = s.UserAccount.IsEnable,
                 ValidFrom = s.UserAccount.ValidFrom,
@@ -74,7 +76,43 @@ namespace FEP.WebApi.Api.Administration
         }
 
 
-        
+        [HttpPut]
+        public IHttpActionResult Put(int id, [FromBody] EditUserModel model)
+        {
+            var user = db.User.Where(u => u.Id == id && u.Display).FirstOrDefault();
+            var useraccount = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
+
+            if (user == null || useraccount == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                user.Name = model.Name;                
+                user.Email = model.Email;
+                user.MobileNo = model.MobileNo;
+
+                useraccount.LoginId = model.Email;
+
+                db.User.Attach(user);
+                db.Entry(user).Property(x => x.Name).IsModified = true;
+                db.Entry(user).Property(x => x.ICNo).IsModified = true;
+                db.Entry(user).Property(x => x.Email).IsModified = true;
+                db.Entry(user).Property(x => x.MobileNo).IsModified = true;
+
+                db.UserAccount.Attach(useraccount);
+                db.Entry(useraccount).Property(x => x.LoginId).IsModified = true;
+
+                db.Configuration.ValidateOnSaveEnabled = true;
+                db.SaveChanges();
+
+                return Ok(true);
+            }
+
+            return BadRequest(ModelState);
+        }
+
 
         [Route("api/Administration/User/IsEmailExist")]
         [HttpGet]
@@ -91,7 +129,7 @@ namespace FEP.WebApi.Api.Administration
                 if (db.User.Any(u => u.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
                     return Ok(true);
             }
-            
+
             return NotFound();
         }
 

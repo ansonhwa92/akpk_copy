@@ -22,16 +22,16 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string EventObjective { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Start Date")]
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
-		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
+		//[DataType(DataType.Date)]
+		//[UIHint("Date")]
+		//[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "Start Date")]
 		public DateTime? StartDate { get; set; }
 
 		[Required(ErrorMessage = "Please Insert End Date")]
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
-		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
+		//[DataType(DataType.Date)]
+		//[UIHint("Date")]
+		//[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "End Date")]
 		public DateTime? EndDate { get; set; }
 

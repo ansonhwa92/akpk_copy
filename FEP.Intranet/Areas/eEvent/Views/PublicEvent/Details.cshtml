@@ -99,6 +99,10 @@
 					{
 						<a href='@Url.Action("SubmitToVerify", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-primary  btn-block mb-2">Submit for Verification</a>
 					}
+					else if (Model.EventStatus == FEP.Model.EventStatus.Approved)
+					{
+						<a href='@Url.Action("PublishedPublicEvent", "PublicEvent", new { id = Model.Id })' class="btn btn-success btn-block mb-2">Publish</a>
+					}
 				}
 			</div>
 

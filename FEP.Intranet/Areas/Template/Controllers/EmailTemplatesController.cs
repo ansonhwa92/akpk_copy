@@ -157,7 +157,7 @@ namespace FEP.Intranet.Areas.Template.Controllers
 
                 CreateAutoReminder reminder = new CreateAutoReminder
                 {
-                    NotificationType = NotificationType.Verify_Public_Event_Creation,
+                    NotificationType = NotificationType.Submit_Public_Event_For_Verification,
                     NotificationCategory = NotificationCategory.Event,
                     ParameterListToSend = paramToSend,
                     StartNotificationDate = DateTime.Now,

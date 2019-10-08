@@ -343,13 +343,12 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Submit_PublicEvent_ForVerification}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Submit_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
-
 					CreateAutoReminder reminder = new CreateAutoReminder
 					{
-						NotificationType = NotificationType.Verify_Public_Event_Creation,
+						NotificationType = NotificationType.Submit_Public_Event_For_Verification,
 						NotificationCategory = NotificationCategory.Event,
 						ParameterListToSend = paramToSend,
 						StartNotificationDate = DateTime.Now,
@@ -388,7 +387,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eEvent/PublicEvent/GetSLAId?id={id}");
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/PublicEvent/GetSLAId?id={id}");
 				if (responseGetSLAId.isSuccess)
 				{
 					int SLAReminderStatusId = responseGetSLAId.Data;
@@ -404,12 +403,12 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 				paramToSend.EventLocation = response.Data.Venue;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verified_PublicEvent_ForVerification}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Verify_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
 					{
-						NotificationType = NotificationType.Approve_Public_Event_Creation1,
+						NotificationType = NotificationType.Verify_Public_Event_After_Submit_For_Verification,
 						NotificationCategory = NotificationCategory.Event,
 						ParameterListToSend = paramToSend,
 						StartNotificationDate = DateTime.Now,
@@ -420,11 +419,12 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 					//save saveThisID dalam table public event
 					response.Data.SLAReminderStatusId = saveThisID;
+
 					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
 					if (response3.isSuccess) { }
 
 					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is verified.");
-					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully verified and submitted for approval.";
 				}
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
 			}
@@ -461,13 +461,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_PublicEvent_ByApprover1}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Approver1_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 
 					CreateAutoReminder reminder = new CreateAutoReminder
 					{
-						NotificationType = NotificationType.Approve_Public_Event_Creation1,
+						NotificationType = NotificationType.Approve_Public_Event_ByApprover_1,
 						NotificationCategory = NotificationCategory.Event,
 						ParameterListToSend = paramToSend,
 						StartNotificationDate = DateTime.Now,
@@ -481,8 +481,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
 					if (response3.isSuccess) { }
 
-					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved on first level.");
-					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is approved on first level.");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
 				}
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
 			}
@@ -520,12 +520,12 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_PublicEvent_ByApprover3}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Approver2_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
 					{
-						NotificationType = NotificationType.Approve_Public_Event_Creation2,
+						NotificationType = NotificationType.Approve_Public_Event_ByApprover_2,
 						NotificationCategory = NotificationCategory.Event,
 						ParameterListToSend = paramToSend,
 						StartNotificationDate = DateTime.Now,
@@ -540,8 +540,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
 					if (response3.isSuccess) { }
 
-					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved on first level.");
-					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved and submitted to next approval.";
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is approved on first level.");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
 				}
 
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
@@ -580,13 +580,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_PublicEvent_ByApprover3}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Approver3_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 
 					CreateAutoReminder reminder = new CreateAutoReminder
 					{
-						NotificationType = NotificationType.Approve_Public_Event_Creation3,
+						NotificationType = NotificationType.Approve_Public_Event_ByApprover_3,
 						NotificationCategory = NotificationCategory.Event,
 						ParameterListToSend = paramToSend,
 						StartNotificationDate = DateTime.Now,
@@ -600,8 +600,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
 					if (response3.isSuccess) { }
 
-					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is approved");
-					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully approved.";
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is approved");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully approved.";
 				}
 
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
@@ -640,13 +640,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_PublicEvent_ByApprover1}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Reject_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 
 					CreateAutoReminder reminder = new CreateAutoReminder
 					{
-						NotificationType = NotificationType.Approve_Public_Event_Published_Changed,
+						NotificationType = NotificationType.Reject_Public_Event,
 						NotificationCategory = NotificationCategory.Event,
 						ParameterListToSend = paramToSend,
 						StartNotificationDate = DateTime.Now,
@@ -661,8 +661,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					if (response3.isSuccess) { }
 
 
-					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is rejected and require amendment.");
-					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully rejected and require amendment.";
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is rejected and require amendment.");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully rejected and require amendment.";
 				}
 
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
@@ -701,13 +701,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approved_PublicEvent_ByApprover1}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Cancel_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 
 					CreateAutoReminder reminder = new CreateAutoReminder
 					{
-						NotificationType = NotificationType.Approve_Public_Event_Published_Cancelled,
+						NotificationType = NotificationType.Cancel_Public_Event,
 						NotificationCategory = NotificationCategory.Event,
 						ParameterListToSend = paramToSend,
 						StartNotificationDate = DateTime.Now,
@@ -722,8 +722,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					if (response3.isSuccess) { }
 
 
-					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is cancelled.");
-					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully cancelled.";
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is cancelled.");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully cancelled.";
 				}
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
 			}
@@ -741,16 +741,44 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
+			
 			var response = await WepApiMethod.SendApiAsync<PublicEventModel>(HttpVerbs.Post, $"eEvent/PublicEvent/PublishedPublicEvent?id={id}");
 			if (response.isSuccess)
 			{
-				await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data + " is Published.");
-				TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data + ", successfully Published.";
+				
+				ParameterListToSend paramToSend = new ParameterListToSend();
+				paramToSend.EventCode = response.Data.RefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
+
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Published_PublicEvent}");
+				if (receiveresponse.isSuccess)
+				{
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Publish_Public_Event,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data,
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
+
+					//save saveThisID dalam table public event
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is Published.");
+					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully Published.";
+				}
 				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
 			}
 			else
 			{
-				TempData["ErrorMessage"] = "Failed to publish Public Event.";
+				TempData["ErrorMessage"] = "Failed to cancel Public Event.";
 				return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", @id = id });
 			}
 		}

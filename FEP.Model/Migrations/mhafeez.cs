@@ -359,12 +359,8 @@ namespace FEP.Model.Migrations
 			AddStaff(db, "IZZAT FIRDAUS BIN AHMAD", "900118105371", "", "0193713077");
 			AddStaff(db, "SITI NOR ZALIKA BINTI JAWAHIR", "881103015874", "", "0128839341");
 			AddStaff(db, "NIRMALL A/L GUNASEKARAN", "930922105695", "", "0173221973");
-			AddStaff(db, "Admin Event", "012345678912", "aiman@primuscore.com", "0123456789");
-			AddStaff(db, "Admin R&P", "012345678913", "firus@primuscore.com", "0123456789");
-			AddStaff(db, "Verifier", "012345678914", "syauqi@primuscore.com", "0123456789");
-			AddStaff(db, "Approver 1", "012345678915", "masdina@primuscore.com", "0123456789");
-			AddStaff(db, "Approver 2", "012345678916", "radzi@primuscore.com", "0123456789");
-			AddStaff(db, "Approver 3", "012345678917", "azliazam@primuscore.com", "0123456789");
+
+			
 
 
 			if (!db.State.Any())

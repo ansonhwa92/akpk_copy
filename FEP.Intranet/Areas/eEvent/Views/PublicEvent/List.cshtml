@@ -130,7 +130,7 @@
 							action += '<a href="@Url.Action("Delete", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
 
 							//Verify By Admin Event
-							action +='<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toverify" data-toggle="tooltip" data-placement="top" title="Submit"><i class="la la-edit text-muted"></i></i></a>'
+							@*action +='<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toverify" data-toggle="tooltip" data-placement="top" title="Submit"><i class="la la-edit text-muted"></i></i></a>'*@
 							}
 
 							if (row.EventStatus == 1) {
@@ -165,7 +165,12 @@
 
 							if (row.EventStatus == 5) {
 								//require amendment
-						    action +='<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '?origin=amendment" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+								action +='<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '?origin=amendment" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+							}
+
+							if (row.EventStatus == 8) {
+								//Verified
+                                action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=published" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
 							}
 
 							action +='</div>';

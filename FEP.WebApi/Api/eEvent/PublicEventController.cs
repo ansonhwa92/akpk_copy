@@ -253,6 +253,8 @@ namespace FEP.WebApi.Api.eEvent
 				TargetedGroup = i.TargetedGroup,
 				ParticipantAllowed = i.ParticipantAllowed,
 				Remarks = i.Remarks,
+				RefNo = i.RefNo,
+				
 				}).FirstOrDefault();
 
 			if (model == null)
@@ -262,7 +264,6 @@ namespace FEP.WebApi.Api.eEvent
 
 			model.SpeakerId = db.AssignedSpeaker.Where(u => u.PublicEventId == id).Select(s => s.EventSpeakerId).ToArray();
 			model.ExternalExhibitorId = db.AssignedExternalExhibitor.Where(u => u.PublicEventId == id).Select(s => s.ExternalExhibitorId).ToArray();
-
             model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.PublicEvent && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
 			return Ok(model);

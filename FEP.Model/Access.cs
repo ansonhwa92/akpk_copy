@@ -55,75 +55,52 @@ namespace FEP.Model
 		[Display(Name = "Internal Event Menu")]
 		EventIntenalEventMenu = 1002,
 		[Display(Name = "Event Administrator")]
-		EventAdministrator = 1002,
+		EventAdministrator = 1003,
 
 		//----------------------Media Interview Button--------------------//
-		[Display(Name = "Media Interview - Submit Media Interview For Verification")]
-		Submit_MediaInterview_ForVerification = 1011,
+		[Display(Name = "Media Interview - Recipient Email After Submit Media Interview")]
+		Recipient_Submit_MediaInterview = 1011,
 
-		[Display(Name = "Media Interview - Reject Media Interview")]
-		Reject_MediaInterview_ForVerification = 1012,
+		[Display(Name = "Media Interview - Recipient Email After Verify Media Interview")]
+		Recipient_Verify_MediaInterview = 1012,
 
-		[Display(Name = "Media Interview - Verified Media Interview")]
-		Verified_MediaInterview_ForVerification = 1013,
+		[Display(Name = "Media Interview - Recipient Email After Approval 1")] 
+		Recipient_Approver1_MediaInterview = 1013,
 
-		[Display(Name = "Media Interview - Approve Media Interview Approver 1")]
-		Approved_MediaInterview_ByApprover1 = 1014,
+		[Display(Name = "Media Interview - Recipient Email After Approval 2")]
+		Recipient_Approver2_MediaInterview = 1014,
 
-		[Display(Name = "Media Interview - Approve Media Interview Approver 2")]
-		Approved_MediaInterview_ByApprover2 = 1015,
+		[Display(Name = "Media Interview - Recipient Email After Approval 3")]
+		Recipient_Approver3_MediaInterview = 1015,
 
-		[Display(Name = "Media Interview - Approve Media Interview Approver 3")]
-		Approved_MediaInterview_ByApprover3 = 1016,
+		[Display(Name = "Media Interview - Recipient Email After Reject")]
+		Recipient_Reject_MediaInterview = 1016,
 
-		[Display(Name = "Media Interview - Update Representative Available")]
-		Submit_MediaInterview_RepAvailable = 1017,
-
-		[Display(Name = "Media Interview - Update Representative Not Available")]
-		Submit_MediaInterview_RepNotAvailable = 1018,
-
-		[Display(Name = "Media Interview - Verifier")]
-		MediaInterview_Verifier = 1019,
-
-		[Display(Name = "Media Interview - Approver 1")]
-		MediaInterview_Approver1 = 1020,
-
-		[Display(Name = "Media Interview - Approver 1")]
-		MediaInterview_Approver2 = 1021,
-
-		[Display(Name = "Media Interview - Approver 1")]
-		MediaInterview_Approver3 = 1022,
 		//-----------------------------------------------------------//
 
-		[Display(Name = "Public Event - Submit Public Event for verification")]
-		Submit_PublicEvent_ForVerification = 1023,
+		[Display(Name = "Public Event - Recipient Email After Submit Public Event")]
+		Recipient_Submit_PublicEvent = 1029,
 
-		[Display(Name = "Public Event - Verify Public Event")]
-		Verified_PublicEvent_ForVerification = 1024,
+		[Display(Name = "Public Event - Recipient Email After Verify Public Event")]
+		Recipient_Verify_PublicEvent = 1030,
 
-		[Display(Name = "Public Event - Reject Public Event")]
-		Reject_PublicEvent_ForVerification = 1025,
+		[Display(Name = "Public Event - Recipient Email After Approval 1")]
+		Recipient_Approver1_PublicEvent = 1031,
 
-		[Display(Name = "Public Event - Approve Public Event by Approver 1")]
-		Approved_PublicEvent_ByApprover1 = 1026,
+		[Display(Name = "Public Event - Recipient Email After Approval 2")]
+		Recipient_Approver2_PublicEvent = 1032,
 
-		[Display(Name = "Public Event - Approve Public Event by Approver 2")]
-		Approved_PublicEvent_ByApprover2 = 1027,
+		[Display(Name = "Public Event - Recipient Email After Approval 3")]
+		Recipient_Approver3_PublicEvent = 1033,
 
-		[Display(Name = "Public Event - Approve Public Event by Approver 3")]
-		Approved_PublicEvent_ByApprover3 = 1028,
+		[Display(Name = "Public Event - Recipient Email After Published")]
+		Recipient_Published_PublicEvent = 1034,
 
-		[Display(Name = "Public Event - Verifier")]
-		PublicEvent_Verifier = 1029,
+		[Display(Name = "Public Event - Recipient Email After Reject")]
+		Recipient_Reject_PublicEvent = 1035,
 
-		[Display(Name = "Public Event - Approver 1")]
-		PublicEvent_Approver1 = 1030,
-
-		[Display(Name = "Public Event - Approver 2")]
-		PublicEvent_Approver2 = 1031,
-
-		[Display(Name = "Public Event - Approver 3")]
-		PublicEVent_Approver3 = 1032,
+		[Display(Name = "Public Event - Recipient Email After Cancel")]
+		Recipient_Cancel_PublicEvent = 1036,
 
 
 		//research 2001 - 3000

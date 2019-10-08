@@ -64,9 +64,9 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201910070636439_x.cs" />
-    <Compile Include="Migrations\201910070636439_x.designer.cs">
-      <DependentUpon>201910070636439_x.cs</DependentUpon>
+    <Compile Include="Migrations\201910080404292_x.cs" />
+    <Compile Include="Migrations\201910080404292_x.designer.cs">
+      <DependentUpon>201910080404292_x.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -93,8 +93,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910070636439_x.resx">
-      <DependentUpon>201910070636439_x.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910080404292_x.resx">
+      <DependentUpon>201910080404292_x.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

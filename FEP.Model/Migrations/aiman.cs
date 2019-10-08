@@ -35,7 +35,7 @@ namespace FEP.Model.Migrations
 
 		public static void AddAdministrator(DbEntities db, string Name, string ICNo, string Email, string MobileNo)
 		{
-			var user = db.User.Local.Where(r => r.ICNo == Email).FirstOrDefault() ?? db.User.Where(r => r.ICNo == Email).FirstOrDefault();
+			var user = db.User.Local.Where(r => r.Email == Email).FirstOrDefault() ?? db.User.Where(r => r.Email == Email).FirstOrDefault();
 
 			if (user == null)
 			{

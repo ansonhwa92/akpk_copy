@@ -116,7 +116,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                     ParameterListToSend notificationParameter = new ParameterListToSend();
                     notificationParameter.UserFullName = model.Name;
-                    notificationParameter.Link = $"<a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data.UID }) + "' > here </a>";
+                    notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
                     notificationParameter.LoginDetail = $"Email: { model.Email }\nPassword: { response.Data.Password }";
 
                     CreateAutoReminder notification = new CreateAutoReminder

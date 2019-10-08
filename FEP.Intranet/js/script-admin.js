@@ -319,6 +319,26 @@
 
                 });
 
+            },
+
+            //clear the input text
+            inputClear: function() {
+                $(".clearable").each(function() {
+
+                    var $inp = $(this).find("input:text"),
+                        $cle = $(this).find(".clearable__clear");
+
+                    $inp.on("input", function() {
+                        $cle.toggle(!!this.value);
+                    });
+
+                    $cle.on("touchstart click", function(e) {
+                        e.preventDefault();
+                        $inp.val("").trigger("input");
+                    });
+
+                });
+
             }
 
 
@@ -331,7 +351,7 @@
         akpk.backtotop();
         akpk.toggleMainMenu();
         akpk.selectOption();
-        //akpk.dateSelect();
+        akpk.dateSelect();
         akpk.addButton();
         akpk.addEe();
         akpk.addSpeaker();
@@ -347,6 +367,7 @@
         akpk.speakersSlide();
         akpk.anchorAnimation();
         akpk.noanchor();
+        akpk.inputClear();
 
     });
 

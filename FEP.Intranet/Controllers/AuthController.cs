@@ -27,23 +27,23 @@ namespace FEP.Intranet.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Test()
         {
-            ParameterListToSend paramToSend = new ParameterListToSend();
-            paramToSend.EventCode = "";
-            paramToSend.EventName = "";
-            paramToSend.EventApproval = "Pending Approval";
+            //ParameterListToSend paramToSend = new ParameterListToSend();
+            //paramToSend.EventCode = "";
+            //paramToSend.EventName = "";
+            //paramToSend.EventApproval = "Pending Approval";
 
-            CreateAutoReminder reminder = new CreateAutoReminder
-            {
-                NotificationType = NotificationType.Verify_Public_Event_Creation,
-                NotificationCategory = NotificationCategory.Event,
-                ParameterListToSend = paramToSend,
-                StartNotificationDate = DateTime.Now,
-                ReceiverId = new List<int> { 1 },
-            };
+            //CreateAutoReminder reminder = new CreateAutoReminder
+            //{
+            //    NotificationType = NotificationType.Verify_Public_Event_Creation,
+            //    NotificationCategory = NotificationCategory.Event,
+            //    ParameterListToSend = paramToSend,
+            //    StartNotificationDate = DateTime.Now,
+            //    ReceiverId = new List<int> { 1 },
+            //};
 
-            var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+            //var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
 
-            return Content(response2.ToString());
+            return Content("");
         }
 
         [AllowAnonymous]
@@ -230,7 +230,7 @@ namespace FEP.Intranet.Controllers
                     
                     ParameterListToSend notificationParameter = new ParameterListToSend();
                     notificationParameter.UserFullName = model.Name;
-                    notificationParameter.Link = $"<a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data.UID }) + "' > here </a>";
+                    notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
                     notificationParameter.LoginDetail = $"Email: { model.Email }\nPassword: { model.Password }";
 
                     CreateAutoReminder notification = new CreateAutoReminder
@@ -328,7 +328,7 @@ namespace FEP.Intranet.Controllers
 
                     ParameterListToSend notificationParameter = new ParameterListToSend();
                     notificationParameter.UserFullName = model.Name;
-                    notificationParameter.Link = $"<a href = '" + BaseURL + Url.Action("ActivateAccount", "Auth", new { id = response.Data.UID }) + "' > here </a>";
+                    notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
                     notificationParameter.LoginDetail = $"Email: { model.Email }\nPassword: { model.Password }";
 
                     CreateAutoReminder notification = new CreateAutoReminder
@@ -527,7 +527,7 @@ namespace FEP.Intranet.Controllers
 
                     ParameterListToSend notificationParameter = new ParameterListToSend();
                     notificationParameter.UserFullName = response.Data.Name;
-                    notificationParameter.Link = $"<a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data.UID }) + "' > here </a>";
+                    notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
                     
                     CreateAutoReminder notification = new CreateAutoReminder
                     {

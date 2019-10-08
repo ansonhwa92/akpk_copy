@@ -168,11 +168,13 @@
     <Compile Include="Areas\eLearning\Controllers\CourseContentsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseModulesController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CoursesController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\FileUploadController.cs" />
     <Compile Include="Areas\eLearning\Controllers\FileController.cs" />
     <Compile Include="Areas\eLearning\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventSpeakerController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventExternalExhibitorController.cs" />
     <Compile Include="Areas\eEvent\Models\EventSpeaker.cs" />
+    <Compile Include="Areas\eLearning\Controllers\CertificatesController.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
     <Compile Include="Areas\eLearning\Helper\YouTubeUrlHelper.cs" />
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />
@@ -802,6 +804,8 @@
     <Content Include="Areas\eLearning\Views\CourseContents\_editRichText.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_editTest.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_editVideo.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Index.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Create_Background.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

@@ -2,7 +2,9 @@
 @if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate))
 {
     <a class="dropdown-item" href="@Url.Action("Index", "Courses", new { area = "eLearning" })"><i class="la la-search color-secondary font-icon"></i>Manage Courses</a>
-<a class="dropdown-item" href="@Url.Action("List", "CourseCategory", new { area = "eLearning" })"><i class="la la-suitcase color-secondary font-icon"></i>List Course Category</a>
+    <a class="dropdown-item" href="@Url.Action("List", "CourseCategory", new { area = "eLearning" })"><i class="la la-suitcase color-secondary font-icon"></i>Manage Course Category</a>
+    <a class="dropdown-item" href="@Url.Action("Index", "Certificates", new { area = "eLearning" })"><i class="la la-suitcase color-secondary font-icon"></i>Manage Certificate Template</a>
+
 }
 
 

@@ -221,14 +221,5 @@ namespace Language.eLearning {
                 return ResourceManager.GetString("UseYouTube", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Link Url.
-        /// </summary>
-        public static string WebLink {
-            get {
-                return ResourceManager.GetString("WebLink", resourceCulture);
-            }
-        }
     }
 }

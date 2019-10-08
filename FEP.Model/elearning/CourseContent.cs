@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FEP.Model.eLearning
 {
@@ -12,21 +13,20 @@ namespace FEP.Model.eLearning
 
         public int CourseModuleId { get; set; }
 
-        [Required]
         public int CourseId { get; set; }
+
+        // Content order in module
+        public int Order { get; set; }
 
         [Required]
         public CourseContentType ContentType { get; set; }
 
-        public int Order { get; set; }
-
-        public int ContentCompletionId { get; set; }
-        public virtual ContentCompletion ContentCompletion { get; set; }
-
-        // -- START For use with single item in the page
+        // For if contenttype = video
         public VideoType? VideoType { get; set; }
+        // For if contenttype = audio
         public AudioType? AudioType { get; set; }
 
+        // For if contenttype = video/youtube url, iframe
         public string Url { get; set; }
 
         //  upload file
@@ -34,37 +34,25 @@ namespace FEP.Model.eLearning
 
         public virtual ContentFile ContentFile { get; set; }
 
-        // -- END
-
         // for rich text
         public string Text { get; set; }
 
         // for Iframe
         public ShowIFrameAs ShowIFrameAs { get; set; }
 
-
-        public CourseContent()
-        {
-            ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.ClickButton };
-
-        }
-
-    }
-
-    public class ContentCompletion : BaseEntity
-    {
+        // START content completion criteria
 
         [Display(Name = "CompletionCriteria", ResourceType = typeof(Language.eLearning.Content))]
-        public ContentCompletionType CompletionType { get; set; }
+        public ContentCompletionType CompletionType { get; set; } = ContentCompletionType.ClickButton;
 
         public QuestionType? QuestionType { get; set; }
 
-        // -- START For use with completion Type
         public int? QuestionId { get; set; }
 
         public virtual Question Question { get; set; }
         public int Timer { get; set; } //completiontype timer in sec
-        // -- END For use with completion Type
+
+        // END Content completion
     }
 
     public enum ShowIFrameAs
@@ -98,9 +86,6 @@ namespace FEP.Model.eLearning
         // Section,
         [Display(Name = "RichText", ResourceType = typeof(Language.eLearning.Enum))]
         RichText,
-
-        [Display(Name = "WebLink", ResourceType = typeof(Language.eLearning.Enum))]
-        WebLink,
 
         [Display(Name = "Document", ResourceType = typeof(Language.eLearning.Enum))]
         Document,

@@ -61,7 +61,7 @@ namespace FEP.WebApi.Api.eLearning
         public async Task<ContentCompletionModel> Get(int contentId)
         {
 
-            var entity = await db.ContentCompletions
+            var entity = await db.CourseContents
                             .Include(x => x.Question.FreeTextAnswers)
                             .Include(x => x.Question.MultipleChoiceAnswers)
                             .FirstOrDefaultAsync(x => x.Id == contentId);

@@ -73,42 +73,26 @@ namespace FEP.WebApi.Api.eLearning
             if (ModelState.IsValid)
             {
                 var content = _mapper.Map<CourseContent>(request);
-                content.ContentCompletion.CompletionType = request.CompletionType;
+                content.CompletionType = request.CompletionType;
 
                 if (request.CompletionType == ContentCompletionType.Timer)
                 {
-                    if (content.ContentCompletion == null)
-                    {
-                        content.ContentCompletion = new ContentCompletion();
-                    }
+                    content.Timer = request.Timer != null ? request.Timer.Value : 0;
 
-                    content.ContentCompletion.CompletionType = ContentCompletionType.Timer;
-                    content.ContentCompletion.Timer = request.Timer != null ? request.Timer.Value : 0;
-
-                    content.ContentCompletion.CompletionType = ContentCompletionType.Timer;
-                    content.ContentCompletion.QuestionId = null;
-                    content.ContentCompletion.Question = null;
+                    content.CompletionType = ContentCompletionType.Timer;
+                    content.QuestionId = null;
+                    content.Question = null;
                 }
                 else if (request.CompletionType == ContentCompletionType.ClickButton)
                 {
-                    if (content.ContentCompletion == null)
-                    {
-                        content.ContentCompletion = new ContentCompletion();
-                    }
-                    content.ContentCompletion.CompletionType = ContentCompletionType.ClickButton;
-                    content.ContentCompletion.QuestionId = null;
-                    content.ContentCompletion.Question = null;
-                    content.ContentCompletion.Timer = 0;
+                    content.QuestionId = null;
+                    content.Question = null;
+                    content.Timer = 0;
                 }
                 else if (request.CompletionType == ContentCompletionType.AnswerQuestion)
                 {
-                    if (content.ContentCompletion == null)
-                    {
-                        content.ContentCompletion = new ContentCompletion();
-                    }
-                    content.ContentCompletion.CompletionType = ContentCompletionType.AnswerQuestion;
-                    content.ContentCompletion.Timer = 0;
-                    content.ContentCompletion.QuestionId = request.ContentQuestionId != null ? request.ContentQuestionId.Value : request.ContentQuestionId;
+                    content.Timer = 0;
+                    content.QuestionId = request.ContentQuestionId != null ? request.ContentQuestionId.Value : request.ContentQuestionId;
                 }
 
                 // check if the request come from front page, then create a new module then create the content.
@@ -189,7 +173,7 @@ namespace FEP.WebApi.Api.eLearning
         {
             var entity = await db.CourseContents
                 .Include(x => x.ContentFile.FileDocument)
-                .Include(x => x.ContentCompletion.Question)
+                .Include(x => x.Question)
                 .FirstOrDefaultAsync(x => x.Id == id.Value);
 
             if (entity == null)
@@ -206,17 +190,14 @@ namespace FEP.WebApi.Api.eLearning
                 model.UploadFileName = entity.ContentFile.FileName;
             }
 
-            if (entity.ContentCompletion != null)
+            if (entity.CompletionType == ContentCompletionType.AnswerQuestion &&
+                entity.Question != null)
             {
-                if (entity.ContentCompletion.CompletionType == ContentCompletionType.AnswerQuestion &&
-                    entity.ContentCompletion.Question != null)
-                {
-                    model.ContentQuestionId = entity.ContentCompletion.Question.Id;
-                    model.Question = entity.ContentCompletion.Question.Name;
-                }
-                if (entity.ContentCompletion.CompletionType == ContentCompletionType.Timer)
-                    model.Timer = entity.ContentCompletion.Timer;
+                model.ContentQuestionId = entity.Question.Id;
+                model.Question = entity.Question.Name;
             }
+            if (entity.CompletionType == ContentCompletionType.Timer)
+                model.Timer = entity.Timer;
 
             return Ok(model);
         }
@@ -230,13 +211,12 @@ namespace FEP.WebApi.Api.eLearning
             {
                 var content = await db.CourseContents
                     .Include(x => x.ContentFile.FileDocument)
-                    .Include(x => x.ContentCompletion)
                     .FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
 
                 if (content == null)
                     return BadRequest();
 
-                content.ContentCompletion.CompletionType = request.CompletionType;
+                content.CompletionType = request.CompletionType;
 
                 content.ContentType = request.ContentType;
                 content.Description = request.Description;
@@ -251,42 +231,26 @@ namespace FEP.WebApi.Api.eLearning
                 if (request.ContentFileId != null)
                     content.ContentFileId = request.ContentFileId;
 
-                content.ContentCompletion.CompletionType = request.CompletionType;
+                content.CompletionType = request.CompletionType;
 
                 if (request.CompletionType == ContentCompletionType.Timer)
                 {
-                    if (content.ContentCompletion == null)
-                    {
-                        content.ContentCompletion = new ContentCompletion();
-                    }
+                    content.Timer = request.Timer != null ? request.Timer.Value : 0;
 
-                    content.ContentCompletion.CompletionType = ContentCompletionType.Timer;
-                    content.ContentCompletion.Timer = request.Timer != null ? request.Timer.Value : 0;
-
-                    content.ContentCompletion.CompletionType = ContentCompletionType.Timer;
-                    content.ContentCompletion.QuestionId = null;
-                    content.ContentCompletion.Question = null;
+                    content.CompletionType = ContentCompletionType.Timer;
+                    content.QuestionId = null;
+                    content.Question = null;
                 }
                 else if (request.CompletionType == ContentCompletionType.ClickButton)
                 {
-                    if (content.ContentCompletion == null)
-                    {
-                        content.ContentCompletion = new ContentCompletion();
-                    }
-                    content.ContentCompletion.CompletionType = ContentCompletionType.ClickButton;
-                    content.ContentCompletion.QuestionId = null;
-                    content.ContentCompletion.Question = null;
-                    content.ContentCompletion.Timer = 0;
+                    content.QuestionId = null;
+                    content.Question = null;
+                    content.Timer = 0;
                 }
                 else if (request.CompletionType == ContentCompletionType.AnswerQuestion)
                 {
-                    if (content.ContentCompletion == null)
-                    {
-                        content.ContentCompletion = new ContentCompletion();
-                    }
-                    content.ContentCompletion.CompletionType = ContentCompletionType.AnswerQuestion;
-                    content.ContentCompletion.Timer = 0;
-                    content.ContentCompletion.QuestionId = request.ContentQuestionId != null ? request.ContentQuestionId.Value : request.ContentQuestionId;
+                    content.Timer = 0;
+                    content.QuestionId = request.ContentQuestionId != null ? request.ContentQuestionId.Value : request.ContentQuestionId;
                 }
 
                 try

@@ -241,7 +241,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 TempData["ErrorMessage"] = "No such course.";
 
-                return RedirectToAction("Content", "Courses", new { id = id });
+                return RedirectToAction("Index", "Courses");
 
             }
             

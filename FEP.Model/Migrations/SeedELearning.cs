@@ -240,7 +240,7 @@ namespace FEP.Model.Migrations
                         "five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised " +
                         "in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop " +
                         "publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p></div>",
-                    ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.Timer },
+                    CompletionType = ContentCompletionType.Timer,
                     Description = "<p> This is Content 1 </p>",
                     Title = "Content 1",
                 };
@@ -252,7 +252,7 @@ namespace FEP.Model.Migrations
                     CourseId = course.Id,
                     ContentType = CourseContentType.Video,
                     Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8",
-                    ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.ClickButton },
+                    CompletionType = ContentCompletionType.ClickButton,
                     Description = "<p> Watch the video</p>",
                     Title = "Content 2",
                 };
@@ -264,7 +264,7 @@ namespace FEP.Model.Migrations
                     CourseId = course.Id,
                     ContentType = CourseContentType.IFrame,
                     Url = "https://www.sinarharian.com.my/",
-                    ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.ClickButton },
+                    CompletionType = ContentCompletionType.ClickButton,
                     Description = "<p> This is Content 3 </p>",
                     Title = "Module 3",
                 };
@@ -276,7 +276,7 @@ namespace FEP.Model.Migrations
                     CourseId = course.Id,
                     ContentType = CourseContentType.Document,
                     Url = "http://www.its.caltech.edu/~rosentha/courses/BEM103/Readings/JWCh01.pdf",
-                    ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.ClickButton },
+                    CompletionType = ContentCompletionType.ClickButton,
                     Description = "<p> Document </p>",
                     Title = "Read this document",
                 };
@@ -289,7 +289,7 @@ namespace FEP.Model.Migrations
                     {
                         Order = 1,
                         CourseId = course.Id,
-                        Description = "<p> Description Module</p>",
+                        Description = "<p> Description Module 1</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
                         Title = "Module 1",
                         ModuleContents = moduleContents,
@@ -298,16 +298,17 @@ namespace FEP.Model.Migrations
                     {
                         Order = 2,
                         CourseId = course.Id,
-                        Description = "<p> Description Module</p>",
+                        Description = "<p> Description Module 2</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
                         Title = "Module 2",
                         ModuleContents = new List<CourseContent> {
                             new CourseContent
                             {
                                 Order = 1,
+                                CourseId = course.Id,
                                 ContentType = CourseContentType.Video,
                                 Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8" ,
-                                ContentCompletion = new ContentCompletion { CompletionType  = ContentCompletionType.ClickButton },
+                                 CompletionType  = ContentCompletionType.ClickButton,
                                 Description = "<p> Watch the video</p>",
                                 Title = "Content 2",
                             }
@@ -317,16 +318,17 @@ namespace FEP.Model.Migrations
                     {
                         Order = 3,
                         CourseId = course.Id,
-                        Description = "<p> Description Module</p>",
+                        Description = "<p> Description Module 3</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
                         Title = "Module 3",
                         ModuleContents = new List<CourseContent> {
                             new CourseContent
                             {
                                 Order = 1,
+                                CourseId = course.Id,
                                 ContentType = CourseContentType.Video,
                                 Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8" ,
-                                ContentCompletion = new ContentCompletion { CompletionType  = ContentCompletionType.ClickButton },
+                                 CompletionType  = ContentCompletionType.ClickButton,
                                 Description = "<p> Watch the video</p>",
                                 Title = "Content 2",
                             }
@@ -336,10 +338,25 @@ namespace FEP.Model.Migrations
                     {
                         Order = 4,
                         CourseId = course.Id,
-                        Description = "<p> Description Module</p>",
+                        Description = "<p> Description Module 4</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
-                        Title = "Module 1",
-                        ModuleContents = moduleContents.ToList().Select(x => new CourseContent()).ToList(),
+                        Title = "Module 4",
+                        ModuleContents = moduleContents.ToList().Select(x => new CourseContent {
+                            Order = x.Order,
+                            Text = x.Text,
+                            Description = x.Description,
+                            Timer  = x.Timer,
+                            Title = x.Title,
+                            CourseId = x.CourseId,
+                            VideoType = x.VideoType,
+                            AudioType = x.AudioType,
+                            CompletionType = x.CompletionType,
+                            Url = x.Url,
+                            ShowIFrameAs  = x.ShowIFrameAs,
+                            Question = x.Question,
+                            QuestionType = x.QuestionType,
+                            ContentType = x.ContentType
+                        }).ToList(),
                     },
                 };
 
@@ -426,7 +443,9 @@ namespace FEP.Model.Migrations
                     ContentType = CourseContentType.Test,
                     CourseId = courseId,
                     Order = ++order,
-                    ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.AnswerQuestion, QuestionType = question.QuestionType, QuestionId = question.Id },
+                    CompletionType = ContentCompletionType.AnswerQuestion,
+                    QuestionType = question.QuestionType,
+                    QuestionId = question.Id,
                     Title = "Question 1",
                     Description = "Question 1"
                 };
@@ -442,12 +461,14 @@ namespace FEP.Model.Migrations
                     ContentType = CourseContentType.Test,
                     CourseId = courseId,
                     Order = ++order,
-                    ContentCompletion = new ContentCompletion { CompletionType = ContentCompletionType.AnswerQuestion, QuestionType = question2.QuestionType, QuestionId = question2.Id },
+                    CompletionType = ContentCompletionType.AnswerQuestion,
+                    QuestionType = question2.QuestionType,
+                    QuestionId = question2.Id,
                     Title = "Question 2",
                     Description = "Question 2"
                 };
 
-                content2.ContentCompletion.QuestionId = question2.Id;
+                content2.QuestionId = question2.Id;
 
                 if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
 

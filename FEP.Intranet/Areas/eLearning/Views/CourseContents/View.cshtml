@@ -99,11 +99,6 @@
                             @Html.Partial("_document", Model)
 
                             break;
-                        case FEP.Model.eLearning.CourseContentType.WebLink:
-
-                            @Html.Partial("_webLink", Model)
-
-                            break;
 
                         case FEP.Model.eLearning.CourseContentType.IFrame:
 
@@ -128,6 +123,8 @@
 
                     }
                 }
+                <hr />
+
                 @Html.Action("Get", "ContentCompletions", new { @contentId = Model.Id })
             </div>
         </div>

@@ -148,10 +148,16 @@
                     ['color', ['color']],
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['height', ['height']],
+                    ['insert', ['link', 'picture']],
 
                 ],
                 codeviewFilter: false,
                 codeviewIframeFilter: true,
+                callbacks: {
+                    onFocus: function () {
+                        currentElement = "body";
+                    }
+                }
             });
 
             var completionType = $('#CompletionType').val();

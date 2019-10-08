@@ -771,11 +771,9 @@
     <Content Include="Areas\eLearning\Views\CourseContents\_iframe.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_audio.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_document.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\_weblink.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_createRichText.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_createIFrame.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_createDocument.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\_createWebLink.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_createAudio.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_createTest.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_createAssignment.cshtml" />
@@ -796,7 +794,6 @@
     <Content Include="Areas\eLearning\Views\CourseContents\_test.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_detailVideo.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_contentCompletionDetail.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\_editWebLink.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_editAssignment.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_editAudio.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_editDocument.cshtml" />
@@ -806,6 +803,7 @@
     <Content Include="Areas\eLearning\Views\CourseContents\_editVideo.cshtml" />
     <Content Include="Areas\eLearning\Views\Certificates\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\Certificates\Create_Background.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailRichText.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

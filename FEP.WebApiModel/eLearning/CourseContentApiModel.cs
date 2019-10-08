@@ -50,6 +50,7 @@ namespace FEP.WebApiModel.eLearning
         public CreateContentFrom CreateContentFrom { get; set; }
 
         public VideoType VideoType { get; set; }
+        public AudioType AudioType { get; set; }
 
         public int Order { get; set; }
 
@@ -100,5 +101,15 @@ namespace FEP.WebApiModel.eLearning
         public int? CourseModuleId { get; set; }
         public int? CourseId { get; set; }
 
+    }
+
+    public class AudioListModel
+    {
+        public int Id { get; set; }
+        public int FileDocumentId { get; set; }
+        public int ContentId { get; set; }
+        public string Name { get; set; }
+        public int CourseId { get; set; }
+        public string FileNameOnStorage { get; set; }
     }
 }

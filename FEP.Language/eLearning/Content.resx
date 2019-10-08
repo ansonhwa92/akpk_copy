@@ -123,9 +123,6 @@
   <data name="AudioUpload" xml:space="preserve">
     <value>Upload the audio file</value>
   </data>
-  <data name="AudioUrl" xml:space="preserve">
-    <value>Url</value>
-  </data>
   <data name="CompleteACheckbox" xml:space="preserve">
     <value>With a checkbox</value>
   </data>
@@ -147,6 +144,12 @@
   <data name="RichText" xml:space="preserve">
     <value>Text</value>
   </data>
+  <data name="SelectAudio" xml:space="preserve">
+    <value>Select an audio</value>
+  </data>
+  <data name="SelectAudioList" xml:space="preserve">
+    <value>Select Audio from your course files</value>
+  </data>
   <data name="SelectVideo" xml:space="preserve">
     <value>Select a video</value>
   </data>
@@ -167,8 +170,5 @@
   </data>
   <data name="UseYouTube" xml:space="preserve">
     <value>Use YouTube</value>
-  </data>
-  <data name="WebLink" xml:space="preserve">
-    <value>Link Url</value>
   </data>
 </root>

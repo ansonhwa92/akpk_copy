@@ -91,17 +91,12 @@
                             break;
 
                         case FEP.Model.eLearning.CourseContentType.Audio:
-                            @Html.Action("Audio", "CourseContents", new { id = @Model.Id })
+                            @Html.Partial("_audio", Model)
 
                             break;
                         case FEP.Model.eLearning.CourseContentType.Document:
 
                             @Html.Partial("_document", Model)
-
-                            break;
-                        case FEP.Model.eLearning.CourseContentType.WebLink:
-
-                            @Html.Partial("_webLink", Model)
 
                             break;
 
@@ -128,6 +123,8 @@
 
                     }
                 }
+                <hr />
+
                 @Html.Action("Get", "ContentCompletions", new { @contentId = Model.Id })
             </div>
         </div>

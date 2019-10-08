@@ -71,8 +71,6 @@ namespace FEP.Model.eLearning
   
 
 
-        //----- END APPROVAlS
-
         // ----- Default Course Item
         /// <summary>
         /// Certificate for this course. 

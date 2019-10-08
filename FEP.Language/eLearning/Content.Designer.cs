@@ -79,15 +79,6 @@ namespace Language.eLearning {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Url.
-        /// </summary>
-        public static string AudioUrl {
-            get {
-                return ResourceManager.GetString("AudioUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to With a checkbox.
         /// </summary>
         public static string CompleteACheckbox {
@@ -151,6 +142,24 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select an audio.
+        /// </summary>
+        public static string SelectAudio {
+            get {
+                return ResourceManager.GetString("SelectAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Audio from your course files.
+        /// </summary>
+        public static string SelectAudioList {
+            get {
+                return ResourceManager.GetString("SelectAudioList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a video.
         /// </summary>
         public static string SelectVideo {
@@ -210,15 +219,6 @@ namespace Language.eLearning {
         public static string UseYouTube {
             get {
                 return ResourceManager.GetString("UseYouTube", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Link Url.
-        /// </summary>
-        public static string WebLink {
-            get {
-                return ResourceManager.GetString("WebLink", resourceCulture);
             }
         }
     }

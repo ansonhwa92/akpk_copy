@@ -141,7 +141,7 @@ namespace FEP.WebApi.Api.eLearning
                     FilePath = request.FilePath,
                     FileSize = request.FileSize,
                     FileTag = request.FileTag,
-                    FileType = request.FileType,
+                    FileType = request.FileType,    
                     User = request.User
                 };
 

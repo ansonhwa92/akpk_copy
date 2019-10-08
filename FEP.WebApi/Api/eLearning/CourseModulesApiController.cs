@@ -12,13 +12,13 @@ using System.Web.Http;
 namespace FEP.WebApi.Api.eLearning
 {
     [Route("api/eLearning/CourseModules")]
-    public class CourseModulesController : ApiController
+    public class CourseModulesApiController : ApiController
     {
         private readonly DbEntities db = new DbEntities();
 
         private readonly IMapper _mapper;
 
-        public CourseModulesController()
+        public CourseModulesApiController()
         {
             var config = new MapperConfiguration(cfg =>
             {

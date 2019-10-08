@@ -81,7 +81,7 @@
     <Compile Include="eLearning\FileUploadModels.cs" />
     <Compile Include="eLearning\FileDocumentModels.cs" />
     <Compile Include="eLearning\QuestionModels.cs" />
-    <Compile Include="eLearning\CourseContent.cs" />
+    <Compile Include="eLearning\CourseContentApiModel.cs" />
     <Compile Include="eLearning\CourseModels.cs" />
     <Compile Include="eLearning\CourseCategory.cs" />
     <Compile Include="eLearning\CourseModuleModels.cs" />

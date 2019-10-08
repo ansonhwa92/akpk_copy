@@ -56,14 +56,7 @@
                             Document
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("Create", "CourseContents",
-                                new { area = "eLearning", courseId = Model.Id, courseTitle = Model.Title,
-                                    courseContentType = (int) CourseContentType.WebLink,
-                                    createContentFrom = (int) CreateContentFrom.CourseFrontPage})" class="nav-link">
-                            Web link
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a href="@Url.Action("Create", "CourseContents",
                                 new { area = "eLearning", courseId = Model.Id, courseTitle = Model.Title,
@@ -86,6 +79,14 @@
                                     courseContentType = (int) CourseContentType.Test,
                                     createContentFrom = (int) CreateContentFrom.CourseFrontPage})" class="nav-link">
                             Test
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.Assignment,
+                                    createContentFrom = (int) CreateContentFrom.CourseFrontPage})" class="nav-link">
+                            Web link
                         </a>
                     </li>
                 </ul>

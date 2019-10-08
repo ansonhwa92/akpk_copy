@@ -148,7 +148,6 @@ namespace FEP.Model
 
         public DbSet<ContentFile> ContentFiles { get; set; }
 
-        public DbSet<ContentCompletion> ContentCompletions { get; set; }
         public DbSet<CourseApprovalLog> CourseApprovals { get; set; }
 
         public DbSet<CourseCertificate> CourseCertificates { get; set; }

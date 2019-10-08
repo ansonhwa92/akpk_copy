@@ -24,6 +24,7 @@ namespace FEP.Model.Migrations
 					);
 			}
 
+			AddAdministrator(db, "Admin FEP", "012345678913", "fep.akpk@gmail.com", "0123456789");
 			AddAdministrator(db, "Verifier R&P", "012345678913", "verifierrnp@yahoo.com", "0123456789");
 			AddAdministrator(db, "Verifier Event", "012345678914", "verifierevent@yahoo.com", "0123456789");
 			AddAdministrator(db, "Approver 1", "012345678915", "approverfirst@yahoo.com", "0123456789");

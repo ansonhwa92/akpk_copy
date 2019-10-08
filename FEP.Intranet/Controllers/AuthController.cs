@@ -47,9 +47,9 @@ namespace FEP.Intranet.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
-            return View();
+            return View(new LogInModel { ReturnUrl = returnUrl });
         }
 
         // firus
@@ -58,6 +58,17 @@ namespace FEP.Intranet.Controllers
         {
             ViewBag.returnurl = returnurl;
             return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult RedirectToLogin()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(@"<script type='text/javascript'>");
+            sb.AppendFormat("window.location = '" + Url.Action("Login", "Auth", new { }) + "';");
+            sb.Append("</script>");
+
+            return Content(sb.ToString());
         }
 
         [AllowAnonymous]

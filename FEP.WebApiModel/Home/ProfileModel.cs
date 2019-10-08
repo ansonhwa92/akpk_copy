@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FEP.Model;
+using FEP.WebApiModel.Administration;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,141 +10,297 @@ using System.Web.Mvc;
 
 namespace FEP.WebApiModel.Home
 {
+    public class AdminProfileModel
+    {
+        [Display(Name = "FieldName", ResourceType = typeof(Language.User))]
+        public string Name { get; set; }
+        
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.User))]
+        public string MobileNo { get; set; }
+
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.User))]
+        public string Email { get; set; }
+    }
+
+    public class EditAdminProfileModel
+    {
+        [Display(Name = "FieldName", ResourceType = typeof(Language.User))]
+        public string Name { get; set; }
+              
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.User))]
+        public string MobileNo { get; set; }
+
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.User))]
+        public string Email { get; set; }
+    }
+
     public class CompanyProfileModel
     {
-                
-        [Display(Name = "FieldCompanyName", ResourceType = typeof(Language.Auth))]
+
+        [Display(Name = "FieldCompanyName", ResourceType = typeof(Language.Company))]
         public string CompanyName { get; set; }
-        
-        [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Auth))]
-        public int? SectorId { get; set; }
 
-        [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Auth))]
-        public string Sector { get; set; }
+        [Display(Name = "FieldAgencyName", ResourceType = typeof(Language.Company))]
+        public string AgencyName { get; set; }
 
-        [Display(Name = "FieldCompanyRegNo", ResourceType = typeof(Language.Auth))]
+        public CompanyType Type { get; set; }
+
+        [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Company))]
+        public SectorModel Sector { get; set; }
+
+        [Display(Name = "FieldMinistryId", ResourceType = typeof(Language.Company))]
+        public MinistryModel Ministry { get; set; }
+
+        [Display(Name = "FieldCompanyRegNo", ResourceType = typeof(Language.Company))]
         public string CompanyRegNo { get; set; }
-        
-        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Auth))]
+
+        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Company))]
         public string Address1 { get; set; }
         public string Address2 { get; set; }
-                
-        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Auth))]
-        public string PostCode { get; set; }
-                
-        [Display(Name = "FieldCity", ResourceType = typeof(Language.Auth))]
+
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Company))]
+        public string PostCodeMalaysian { get; set; }
+
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Company))]
+        public string PostCodeNonMalaysian { get; set; }
+
+        [Display(Name = "FieldCity", ResourceType = typeof(Language.Company))]
         public string City { get; set; }
-                
-        //[Display(Name = "FieldStateId", ResourceType = typeof(Language.Auth))]
-        //public int StateId { get; set; }
 
-        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Auth))]
-        public string State { get; set; }
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Individual))]
+        public StateModel State { get; set; }
 
-        [Display(Name = "FieldCompanyPhoneNo", ResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Individual))]
+        public CountryModel Country { get; set; }
+
+        public int MalaysiaCountryId { get; set; }
+
+        [Display(Name = "FieldCompanyPhoneNo", ResourceType = typeof(Language.Company))]
         public string CompanyPhoneNo { get; set; }
-                
-        [Display(Name = "Representative Name")]
+
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Company))]
         public string Name { get; set; }
-                
-        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Auth))]
+
+        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Company))]
         public string ICNo { get; set; }
-                
-        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Auth))]
+
+        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Company))]
+        public string PassportNo { get; set; }
+
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Company))]
         public string MobileNo { get; set; }
-        
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Auth))]        
+
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Company))]
         public string Email { get; set; }
     }
 
     public class IndividualProfileModel
     {
 
-        [Display(Name = "FieldName", ResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Individual))]
         public string Name { get; set; }
 
-        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Auth))]
+        public bool IsMalaysian { get; set; }
+
+        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Individual))]
         public string ICNo { get; set; }
+
+        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Individual))]
+        public string PassportNo { get; set; }
 
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Auth))]
         public string MobileNo { get; set; }
 
         [Display(Name = "FieldEmail", ResourceType = typeof(Language.Auth))]
         public string Email { get; set; }
+
+        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Individual))]
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Individual))]
+        public string PostCodeMalaysian { get; set; }
+
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Individual))]
+        public string PostCodeNonMalaysian { get; set; }
+
+        [Display(Name = "FieldCity", ResourceType = typeof(Language.Individual))]
+        public string City { get; set; }
+
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Individual))]
+        public StateModel State { get; set; }
+
+        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Individual))]
+        public CountryModel Country { get; set; }
+
+        public int MalaysiaCountryId { get; set; }
+
+        [Display(Name = "FieldCitizenship", ResourceType = typeof(Language.Individual))]
+        public CountryModel Citizenship { get; set; }
+
     }
 
     public class EditIndividualProfileModel
     {
-        [Required]
-        [Display(Name = "FieldName", ResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Individual))]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Auth))]
+        public bool IsMalaysian { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredICNo", ErrorMessageResourceType = typeof(Language.Individual))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericICNo", ErrorMessageResourceType = typeof(Language.Individual))]
+        [StringLength(12, MinimumLength = 12, ErrorMessageResourceName = "ValidLengthICNo", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Individual))]
         public string ICNo { get; set; }
 
-        [Required]
-        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredPassportNo", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Individual))]
+        public string PassportNo { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredMobileNo", ErrorMessageResourceType = typeof(Language.Individual))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericMobileNo", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Individual))]
         public string MobileNo { get; set; }
 
-        [Required]
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredEmail", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Individual))]
+        [EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Individual))]
         public string Email { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredAddress", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Individual))]
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Individual))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericPostCode", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Individual))]
+        public string PostCodeMalaysian { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Individual))]
+        public string PostCodeNonMalaysian { get; set; }
+
+        [RegularExpression("[a-zA-Z]+")]
+        [Required(ErrorMessageResourceName = "ValidRequiredCity", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldCity", ResourceType = typeof(Language.Individual))]
+        public string City { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Individual))]
+        public string State { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Individual))]
+        public int? StateId { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredCountryId", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Individual))]
+        public int CountryId { get; set; }
+
+        public int MalaysiaCountryId { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredCitizenshipId", ErrorMessageResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldCitizenship", ResourceType = typeof(Language.Individual))]
+        public int? CitizenshipId { get; set; }
+        
+        public IEnumerable<SelectListItem> Citizenships { get; set; }
+        public IEnumerable<SelectListItem> States { get; set; }
+        public IEnumerable<SelectListItem> Countries { get; set; }
+
     }
 
     public class EditCompanyProfileModel
     {
-        [Required]
-        [Display(Name = "FieldCompanyName", ResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredCompanyName", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldCompanyName", ResourceType = typeof(Language.Company))]
         public string CompanyName { get; set; }
 
-        [Required]
-        [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredAgencyName", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldAgencyName", ResourceType = typeof(Language.Company))]
+        public string AgencyName { get; set; }
+
+        public CompanyType Type { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredSectorId", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Company))]
         public int? SectorId { get; set; }
 
-        [Required]
-        [Display(Name = "FieldCompanyRegNo", ResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredMinistryId", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldMinistryId", ResourceType = typeof(Language.Company))]
+        public int? MinistryId { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredCompanyRegNo", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldCompanyRegNo", ResourceType = typeof(Language.Company))]
         public string CompanyRegNo { get; set; }
 
-        [Required]
-        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredAddress", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Company))]
         public string Address1 { get; set; }
         public string Address2 { get; set; }
 
-        [Required]
-        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Auth))]
-        public string PostCode { get; set; }
+        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Company))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericPostCode", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Company))]
+        public string PostCodeMalaysian { get; set; }
 
-        [Required]
-        [Display(Name = "FieldCity", ResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Company))]
+        public string PostCodeNonMalaysian { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredCity", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldCity", ResourceType = typeof(Language.Company))]
         public string City { get; set; }
 
-        [Required]
-        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Company))]
         public string State { get; set; }
-                
-        [Required]
-        [Display(Name = "FieldCompanyPhoneNo", ResourceType = typeof(Language.Auth))]
+
+        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Company))]
+        public int? StateId { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredCountryId", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Company))]
+        public int CountryId { get; set; }
+
+        public int MalaysiaCountryId { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredCompanyPhoneNo", ErrorMessageResourceType = typeof(Language.Company))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericCompanyPhoneNo", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldCompanyPhoneNo", ResourceType = typeof(Language.Company))]
         public string CompanyPhoneNo { get; set; }
 
-        [Required]
-        [Display(Name = "Representative Name")]
+        [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Company))]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredICNo", ErrorMessageResourceType = typeof(Language.Company))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericICNo", ErrorMessageResourceType = typeof(Language.Company))]
+        [StringLength(12, MinimumLength = 12, ErrorMessageResourceName = "ValidLengthICNo", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Company))]
         public string ICNo { get; set; }
 
-        [Required]
-        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredPassportNo", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Company))]
+        public string PassportNo { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredMobileNo", ErrorMessageResourceType = typeof(Language.Company))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericMobileNo", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Company))]
         public string MobileNo { get; set; }
 
-        [Required]
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredEmail", ErrorMessageResourceType = typeof(Language.Company))]
+        [EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Company))]
         public string Email { get; set; }
 
-        //public IEnumerable<System.Web.Mvc.SelectListItem> States { get; set; }
-        public IEnumerable<System.Web.Mvc.SelectListItem> Sectors { get; set; }
+        public IEnumerable<SelectListItem> Ministries { get; set; }
+        public IEnumerable<SelectListItem> States { get; set; }
+        public IEnumerable<SelectListItem> Sectors { get; set; }
+        public IEnumerable<SelectListItem> Countries { get; set; }
+       
     }
 
     public class ChangePasswordModel

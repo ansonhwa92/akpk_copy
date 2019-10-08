@@ -284,7 +284,7 @@ namespace FEP.WebApi.Api.Administration
 
         public IHttpActionResult Put(int id, [FromBody] EditIndividualModel model)
         {
-            var user = db.User.Where(u => u.Id == id).FirstOrDefault();
+            var user = db.User.Where(u => u.Id == id && u.Display).FirstOrDefault();
             var individual = db.IndividualProfile.Where(i => i.UserId == id).FirstOrDefault();
             var useraccount = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
 

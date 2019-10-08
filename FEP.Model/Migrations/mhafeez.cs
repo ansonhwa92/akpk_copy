@@ -91,7 +91,9 @@ namespace FEP.Model.Migrations
                     new User
                     {
                         Name = "System Admin",
-                        Email = "admin@fep.com",                       
+                        Email = "admin@fep.com",       
+                        ICNo = "999999999999",
+                        MobileNo = "88888888888",
                         UserType = UserType.SystemAdmin,                        
                         CreatedDate = DateTime.Now,
                         Display = true,

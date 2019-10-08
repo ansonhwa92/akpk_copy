@@ -99,9 +99,10 @@ namespace FEP.Model.Migrations
                 new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_3, ETCode = "ET231RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
                 new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_Final, ETCode = "ET232RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
-                new SLAReminder { SLAEventType = SLAEventType.System, NotificationType = NotificationType.ActivateAccount, ETCode = "ET001SY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.System, NotificationType = NotificationType.ResetPassword, ETCode = "ET002SY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days }
-
+                //system
+                new SLAReminder { SLAEventType = SLAEventType.ActivateAccount, NotificationType = NotificationType.ActivateAccount, ETCode = "ET001SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.ResetPassword, NotificationType = NotificationType.ResetPassword, ETCode = "ET002SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.SystemError, NotificationType = NotificationType.SystemError, ETCode = "ET003SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days }
                 );
             //}
         }
@@ -118,30 +119,62 @@ namespace FEP.Model.Migrations
 
                 if (pType >= 1 && pType <= 20)
                 {
-                    EventType = SLAEventType.System;
+                    
+                    if (paramType == TemplateParameterType.UserFullName)
+                    {
+                        db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+                        new ParameterGroup { SLAEventType = SLAEventType.System, TemplateParameterType = paramType });
+
+                        db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+                        new ParameterGroup { SLAEventType = SLAEventType.ActivateAccount, TemplateParameterType = paramType });
+
+                        db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+                        new ParameterGroup { SLAEventType = SLAEventType.ResetPassword, TemplateParameterType = paramType });
+                    }
+
+                    if (paramType == TemplateParameterType.Link)
+                    {
+                        db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+                        new ParameterGroup { SLAEventType = SLAEventType.System, TemplateParameterType = paramType });
+
+                        db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+                        new ParameterGroup { SLAEventType = SLAEventType.ActivateAccount, TemplateParameterType = paramType });
+
+                        db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+                        new ParameterGroup { SLAEventType = SLAEventType.ResetPassword, TemplateParameterType = paramType });
+                    }
+
+                    if (paramType == TemplateParameterType.LoginDetail)
+                    {                       
+                        db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+                        new ParameterGroup { SLAEventType = SLAEventType.ActivateAccount, TemplateParameterType = paramType });
+                    }
+
+                    if (paramType == TemplateParameterType.ErrorDetail)
+                    {
+                        db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+                        new ParameterGroup { SLAEventType = SLAEventType.SystemError, TemplateParameterType = paramType });
+                    }
+
+
                 }
-                if (pType >= 21 && pType <= 40) //Verify & Approval
+                else if (pType >= 21 && pType <= 40) //Verify & Approval
                 {
                     db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
                     new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicEvent, TemplateParameterType = paramType });
 
                     db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
                     new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicEvent, TemplateParameterType = paramType });
-
-                    continue;
-
                 }
-                if (pType >= 41 && pType <= 60)
+                else if (pType >= 41 && pType <= 60)
                 {
                     EventType = SLAEventType.Payment;
-                }
-                else
-                {
-                    EventType = SLAEventType.System;
-                }
 
-                db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
                     new ParameterGroup { SLAEventType = EventType, TemplateParameterType = paramType });
+                }
+               
+                
             }
             //}
 

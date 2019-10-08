@@ -28,7 +28,7 @@ namespace FEP.WebApi.Api.Administration
         public IHttpActionResult Get(string LoginId, string Password)
         {
 
-            var user = db.UserAccount.Where(u => u.LoginId == LoginId).FirstOrDefault();
+            var user = db.UserAccount.Where(u => u.LoginId == LoginId && u.IsEnable).FirstOrDefault();
 
             if (user != null)
             {
@@ -219,7 +219,7 @@ namespace FEP.WebApi.Api.Administration
 
                 db.User.Add(user);
 
-                ActivateAccount activateaccount = new ActivateAccount
+                ActivateAccount activateAccount = new ActivateAccount
                 {
                     UID = Authentication.RandomString(50, true),//random alphanumeric
                     UserId = user.Id,
@@ -227,11 +227,11 @@ namespace FEP.WebApi.Api.Administration
                     IsActivate = false
                 };
 
-                db.ActivateAccount.Add(activateaccount);
+                db.ActivateAccount.Add(activateAccount);
 
                 db.SaveChanges();
 
-                return Ok(activateaccount);
+                return Ok(new { UserId = user.Id, UID = activateAccount.UID });
             }
 
             return BadRequest(ModelState);

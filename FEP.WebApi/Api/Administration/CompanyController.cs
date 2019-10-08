@@ -298,7 +298,7 @@ namespace FEP.WebApi.Api.Administration
 
                 db.SaveChanges();
 
-                return Ok<CreateUserResponse>(new CreateUserResponse { Password = password, UID = activateaccount.UID });
+                return Ok(new { UserId = user.Id, Password = password, UID = activateaccount.UID });
 
             }
 

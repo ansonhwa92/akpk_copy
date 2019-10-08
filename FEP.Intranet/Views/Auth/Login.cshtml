@@ -21,6 +21,7 @@
                 @using (Html.BeginForm("Login", "Auth", new { area = "" }, FormMethod.Post, new { id = "form" }))
                 {
                     @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.ReturnUrl)
 
                     <div class="form-group">
                         @Html.FEPLabelFor(m => m.LoginId, htmlAttributes: new { @class = "form-label" })

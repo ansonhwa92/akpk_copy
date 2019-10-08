@@ -1,16 +1,12 @@
 ﻿using FEP.Helper;
-using FEP.Intranet.Models;
 using FEP.Model;
 using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.Home;
 using FEP.WebApiModel.Setting;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace FEP.Intranet.Controllers
@@ -41,30 +37,53 @@ namespace FEP.Intranet.Controllers
         {
             var userid = CurrentUser.UserId;
 
-            if (CurrentUser.UserType == UserType.Individual || CurrentUser.UserType == UserType.SystemAdmin)
+            if (CurrentUser.UserType == UserType.SystemAdmin)
+            {
+                var response = await WepApiMethod.SendApiAsync<UserModel>(HttpVerbs.Get, $"Administration/User?id={userid}");
+
+                if (response.isSuccess)
+                {
+                    var profile = response.Data;
+
+                    return View("MyProfileAdmin", profile);
+                }
+
+            }
+            else if (CurrentUser.UserType == UserType.Individual)
             {
 
-                var response = await WepApiMethod.SendApiAsync<IndividualProfileModel>(HttpVerbs.Get, $"Home/Profile/GetIndividualProfile?id={userid}");
+                var response = await WepApiMethod.SendApiAsync<IndividualProfileModel>(HttpVerbs.Get, $"Administration/Individual?id={userid}");
 
-                var profile = response.Data;
+                if (response.isSuccess)
+                {
+                    var profile = response.Data;
 
-                return View("MyProfileIndividual", profile);
+                    return View("MyProfileIndividual", profile);
+                }
 
             }
             else if (CurrentUser.UserType == UserType.Company)
             {
+                var response = await WepApiMethod.SendApiAsync<CompanyProfileModel>(HttpVerbs.Get, $"Administration/Company?id={userid}");
 
-                var response = await WepApiMethod.SendApiAsync<CompanyProfileModel>(HttpVerbs.Get, $"Home/Profile/GetCompanyProfile?id={userid}");
+                if (response.isSuccess)
+                {
+                    var profile = response.Data;
 
-                var profile = response.Data;
-
-                return View("MyProfileCompany", profile);
+                    return View("MyProfileCompany", profile);
+                }
 
             }
             else if (CurrentUser.UserType == UserType.Staff)
             {
+                var response = await WepApiMethod.SendApiAsync<DetailsStaffModel>(HttpVerbs.Get, $"Administration/Staff?id={userid}");
 
-                return View("MyProfileStaff");
+                if (response.isSuccess)
+                {
+                    var profile = response.Data;
+
+                    return View("MyProfileStaff", profile);
+                }
             }
 
             return new HttpStatusCodeResult(404);
@@ -75,87 +94,184 @@ namespace FEP.Intranet.Controllers
         {
             var userid = CurrentUser.UserId;
 
-            if (CurrentUser.UserType == UserType.Individual || CurrentUser.UserType == UserType.SystemAdmin)
+            if (CurrentUser.UserType == UserType.SystemAdmin)
             {
-                var response = await WepApiMethod.SendApiAsync<IndividualProfileModel>(HttpVerbs.Get, $"Home/Profile/GetIndividualProfile?id={userid}");
+                var response = await WepApiMethod.SendApiAsync<UserModel>(HttpVerbs.Get, $"Administration/User?id={userid}");
 
                 if (response.Data == null)
                 {
                     return new HttpStatusCodeResult(404);
                 }
 
-                var profile = new EditIndividualProfileModel
+                var model = new EditAdminProfileModel
                 {
                     Name = response.Data.Name,
                     Email = response.Data.Email,
-                    ICNo = response.Data.ICNo,
                     MobileNo = response.Data.MobileNo
                 };
 
-                return View("EditProfileIndividual", profile);
+                return View("EditProfileAdmin", model);
+
+            }
+            else if (CurrentUser.UserType == UserType.Individual)
+            {
+                var response = await WepApiMethod.SendApiAsync<DetailsIndividualModel>(HttpVerbs.Get, $"Administration/Individual?id={userid}");
+
+                if (response.Data == null)
+                {
+                    return new HttpStatusCodeResult(404);
+                }
+
+                var model = new EditIndividualProfileModel
+                {
+                    IsMalaysian = response.Data.IsMalaysian,
+                    CitizenshipId = response.Data.Citizenship != null ? response.Data.Citizenship.Id : (int?)null,
+                    Name = response.Data.Name,
+                    ICNo = response.Data.ICNo,
+                    PassportNo = response.Data.PassportNo,
+                    Email = response.Data.Email,
+                    MobileNo = response.Data.MobileNo,
+                    Address1 = response.Data.Address1,
+                    Address2 = response.Data.Address2,
+                    PostCodeMalaysian = response.Data.PostCodeMalaysian,
+                    PostCodeNonMalaysian = response.Data.PostCodeNonMalaysian,
+                    City = response.Data.City,
+                    StateId = response.Data.State.Id,
+                    State = response.Data.State.Name,
+                    CountryId = response.Data.Country.Id                 
+                };
+
+                var countries = await GetCountries();
+
+                model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+
+                model.States = new SelectList(await GetStates(), "Id", "Name", 0);
+                model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
+                model.Citizenships = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
+
+                return View("EditProfileIndividual", model);
             }
             else if (CurrentUser.UserType == UserType.Company)
             {
 
-                var response = await WepApiMethod.SendApiAsync<CompanyProfileModel>(HttpVerbs.Get, $"Home/Profile/GetCompanyProfile?id={userid}");
+                var response = await WepApiMethod.SendApiAsync<DetailsCompanyModel>(HttpVerbs.Get, $"Administration/Company?id={userid}");
 
                 if (response.Data == null)
                 {
                     return new HttpStatusCodeResult(404);
                 }
 
-                var profile = new EditCompanyProfileModel
-                {
+                var model = new EditCompanyProfileModel
+                {                   
+                    Type = response.Data.Type,
                     CompanyName = response.Data.CompanyName,
+                    AgencyName = response.Data.AgencyName,
+                    MinistryId = response.Data.Ministry != null ? response.Data.Ministry.Id : (int?)null,
+                    SectorId = response.Data.Sector != null ? response.Data.Sector.Id : (int?)null,
                     CompanyRegNo = response.Data.CompanyRegNo,
-                    SectorId = response.Data.SectorId,
                     Address1 = response.Data.Address1,
                     Address2 = response.Data.Address2,
-                    City = response.Data.City,                    
-                    PostCode = response.Data.PostCode,
-                    State = response.Data.State,
+                    PostCodeMalaysian = response.Data.PostCodeMalaysian,
+                    PostCodeNonMalaysian = response.Data.PostCodeNonMalaysian,
+                    City = response.Data.City,
+                    StateId = response.Data.State.Id,
+                    State = response.Data.State.Name,
+                    CountryId = response.Data.Country.Id,
                     CompanyPhoneNo = response.Data.CompanyPhoneNo,
-
                     Name = response.Data.Name,
-                    Email = response.Data.Email,
                     ICNo = response.Data.ICNo,
+                    PassportNo = response.Data.PassportNo,
+                    Email = response.Data.Email,
                     MobileNo = response.Data.MobileNo
                 };
 
-                profile.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+                var countries = await GetCountries();
 
-                //profile.States = new SelectList(await GetStates(), "Id", "Name", 0);
-                
-                return View("EditProfileCompany", profile);
+                model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+
+                model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+                model.States = new SelectList(await GetStates(), "Id", "Name", 0);
+                model.Ministries = new SelectList(await GetMinistry(), "Id", "Name", 0);
+                model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
+               
+
+                return View("EditProfileCompany", model);
             }
-            
+
             return RedirectToAction("MyProfile", "Home", new { area = "" });
-             
+
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditProfile(int? id)
         {
 
-            if (CurrentUser.UserType == UserType.Individual || CurrentUser.UserType == UserType.SystemAdmin)
+            if (CurrentUser.UserType == UserType.SystemAdmin)
             {
-                var model = new EditIndividualProfileModel();
+                var model = new EditUserModel();
 
                 if (TryUpdateModel(model))
                 {
-                    var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Home/Profile/EditIndividualProfile?id={CurrentUser.UserId}", model);
+                    var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Administration/User?id={CurrentUser.UserId}", model);
 
                     if (response.Data)
                     {
-                        LogActivity(Modules.Admin, "Update Profile", model);
+                        await LogActivity(Modules.Admin, "Update Profile", model);
 
                         TempData["SuccessMessage"] = "Profile successfully updated.";
 
                         return RedirectToAction("MyProfile", "Home", new { area = "" });
                     }
                 }
+
+            }
+            else if (CurrentUser.UserType == UserType.Individual)
+            {
+                var model = new EditIndividualProfileModel();
+                                
+                TryUpdateModel(model);
+
+                if (model.IsMalaysian)
+                {
+                    ModelState.Remove("PassportNo");
+                    ModelState.Remove("CitizenshipId");
+                    ModelState.Remove("PostCodeNonMalaysian");
+                    ModelState.Remove("State");
+                    ModelState.Remove("CountryId");
+
+                    model.CountryId = model.MalaysiaCountryId;
+                }
+                else
+                {
+                    ModelState.Remove("ICNo");
+                    ModelState.Remove("PostCodeMalaysian");
+                    ModelState.Remove("StateId");
+                    model.StateId = null;
+                }
+                
+                if (ModelState.IsValid)
+                {                    
+                    var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Home/Profile/EditIndividualProfile?id={CurrentUser.UserId}", model);
+
+                    if (response.Data)
+                    {
+                        await LogActivity(Modules.Admin, "Update Profile", model);
+
+                        TempData["SuccessMessage"] = "Profile successfully updated.";
+
+                        return RedirectToAction("MyProfile", "Home", new { area = "" });
+                    }
+                }
+                
+                var countries = await GetCountries();
+
+                model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+
+                model.States = new SelectList(await GetStates(), "Id", "Name", 0);
+                model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
+                model.Citizenships = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
 
                 return View("EditProfileIndividual", model);
 
@@ -165,14 +281,50 @@ namespace FEP.Intranet.Controllers
 
                 var model = new EditCompanyProfileModel();
 
-                if (TryUpdateModel(model))
+                TryUpdateModel(model);
+
+                if (model.Type == CompanyType.Government)
+                {
+                    ModelState.Remove("PassportNo");
+                    ModelState.Remove("PostCodeNonMalaysian");
+                    ModelState.Remove("State");
+                    ModelState.Remove("CountryId");
+                    ModelState.Remove("CompanyName");
+                    ModelState.Remove("CompanyRegNo");
+                    ModelState.Remove("SectorId");
+
+                    model.CountryId = model.MalaysiaCountryId;
+                }
+                else if (model.Type == CompanyType.MalaysianCompany)
+                {
+                    ModelState.Remove("PassportNo");
+                    ModelState.Remove("PostCodeNonMalaysian");
+                    ModelState.Remove("State");
+                    ModelState.Remove("CountryId");
+                    ModelState.Remove("AgencyName");
+                    ModelState.Remove("MinistryId");
+
+                    model.CountryId = model.MalaysiaCountryId;
+                }
+                else
+                {
+                    ModelState.Remove("ICNo");
+                    ModelState.Remove("PostCodeMalaysian");
+                    ModelState.Remove("StateId");
+                    ModelState.Remove("AgencyName");
+                    ModelState.Remove("MinistryId");
+                    ModelState.Remove("CompanyRegNo");
+                }
+
+
+                if (ModelState.IsValid)
                 {
 
                     var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Home/Profile/EditCompanyProfile?id={CurrentUser.UserId}", model);
 
                     if (response.Data)
                     {
-                        LogActivity(Modules.Admin, "Update Profile", model);
+                        await LogActivity(Modules.Admin, "Update Profile", model);
 
                         TempData["SuccessMessage"] = "Profile successfully updated.";
 
@@ -194,7 +346,7 @@ namespace FEP.Intranet.Controllers
         [HttpGet]
         public ActionResult ChangePassword()
         {
-            
+
             return View();
 
         }
@@ -211,13 +363,13 @@ namespace FEP.Intranet.Controllers
 
                 if (response.Data)
                 {
-                    LogActivity(Modules.Admin, "Change Password");
+                    await LogActivity(Modules.Admin, "Change Password");
 
                     TempData["SuccessMessage"] = "Password successfully updated.";
 
                     return RedirectToAction("MyProfile", "Home", new { area = "" });
                 }
-                
+
             }
 
             TempData["SuccessMessage"] = "Fail to change password.";
@@ -248,7 +400,7 @@ namespace FEP.Intranet.Controllers
 
             var response = await WepApiMethod.SendApiAsync<AccountSettingModel>(HttpVerbs.Get, $"Setting/AccountSetting");
 
-            
+
             if (response.isSuccess)
             {
 
@@ -296,6 +448,54 @@ namespace FEP.Intranet.Controllers
             }
 
             return sectors;
+
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<StateModel>> GetStates()
+        {
+            var states = Enumerable.Empty<StateModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<StateModel>>(HttpVerbs.Get, $"Administration/State");
+
+            if (response.isSuccess)
+            {
+                states = response.Data.OrderBy(o => o.Name);
+            }
+
+            return states;
+
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<CountryModel>> GetCountries()
+        {
+            var countries = Enumerable.Empty<CountryModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<CountryModel>>(HttpVerbs.Get, $"Administration/Country");
+
+            if (response.isSuccess)
+            {
+                countries = response.Data.OrderBy(o => o.Name);
+            }
+
+            return countries;
+
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<MinistryModel>> GetMinistry()
+        {
+            var ministries = Enumerable.Empty<MinistryModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<MinistryModel>>(HttpVerbs.Get, $"Administration/Ministry");
+
+            if (response.isSuccess)
+            {
+                ministries = response.Data.OrderBy(o => o.Name);
+            }
+
+            return ministries;
 
         }
 

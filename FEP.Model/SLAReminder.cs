@@ -79,6 +79,15 @@ namespace FEP.Model
     {
         [Display(Name = "System")]
         System,
+
+        [Display(Name = "System Error")]
+        SystemError,
+        [Display(Name = "Account Activation")]
+        ActivateAccount,
+        [Display(Name = "Reset Password")]
+        ResetPassword,
+
+
         [Display(Name = "Verify Public Event")]
         VerifyPublicEvent,
         [Display(Name = "Approve Public Event")]

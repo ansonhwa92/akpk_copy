@@ -76,6 +76,8 @@ namespace FEP.Model
         Link = 4,
         [Display(Name = "Login Detail")]
         LoginDetail = 5,
+        [Display(Name = "Error Details")]
+        ErrorDetail = 6,
 
         //21-40 for Verify/Approval Public Event
         [Display(Name = "Event Name")]

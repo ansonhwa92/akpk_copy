@@ -22,7 +22,7 @@ namespace FEP.Model.Migrations
 
             SeedAssignTrainerToCourse(db);
 
-            SeedSampleCertificateAndTemplate(db);
+            //SeedSampleCertificateAndTemplate(db);
 
             SeedAssignTrainerToGroup(db);
         }

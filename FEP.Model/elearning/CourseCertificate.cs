@@ -13,7 +13,8 @@ namespace FEP.Model.eLearning
     {        
         public string Description { get; set; }
         public string BackgroundImageFilename { get; set; }
-
+        public int FileUploadId { get; set; }
+        public virtual FileUpload FileUpload { get; set; }
     }
 
     public class CourseCertificateTemplate : BaseEntity

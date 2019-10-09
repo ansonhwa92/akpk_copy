@@ -139,6 +139,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         }
 
+        public ActionResult GetImg(string fileName)
+        {
+            var path = Path.Combine(storageDir, fileName);
+
+            var bytes = System.IO.File.ReadAllBytes(path);
+
+            return File(bytes, "image/png");
+        }
+
         private static string GetWebApiUrl()
         {
             return WebConfigurationManager.AppSettings["WebApiURL"] != null ? WebConfigurationManager.AppSettings["WebApiURL"].ToString() : "";

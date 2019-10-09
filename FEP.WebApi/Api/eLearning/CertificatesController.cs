@@ -28,6 +28,7 @@ namespace FEP.WebApi.Api.eLearning
             {
                 Id = s.Id,
                 Description = s.Description,
+                FileUpload = s.FileUpload
             }).ToList();
                 
             return Ok(cert);
@@ -39,7 +40,8 @@ namespace FEP.WebApi.Api.eLearning
             var cert = db.CourseCertificates.Where(u => u.Id == id).Select(s => new CertificatesModel
             {
                 Id = s.Id,
-                Description = s.Description
+                Description = s.Description,
+                FileUpload = s.FileUpload
             }).FirstOrDefault();
 
             if (cert != null)
@@ -96,27 +98,23 @@ namespace FEP.WebApi.Api.eLearning
         }
 
 
-        public IHttpActionResult Delete(int id)
+        [Route("api/eLearning/Certificates/Delete")]
+        public string Delete(int id)
         {
-            var category = db.EventCategory.Where(u => u.Id == id).FirstOrDefault();
+            var cert = db.CourseCertificates.Where(p => p.Id == id).FirstOrDefault();
 
-            if (category != null)
+            if (cert != null)
             {
-                category.Display = false;
+                string ptitle = cert.Description;
 
-                db.EventCategory.Attach(category);
-                db.Entry(category).Property(m => m.Display).IsModified = true;
-                db.Configuration.ValidateOnSaveEnabled = false;
+                db.CourseCertificates.Remove(cert);
 
                 db.SaveChanges();
 
-                return Ok(true);
-            }
-            else
-            {
-                return NotFound();
+                return ptitle;
             }
 
+            return "";
         }
 
         [Route("api/eEvent/EventCategory/IsNameExist")]

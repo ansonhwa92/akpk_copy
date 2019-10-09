@@ -2,6 +2,8 @@
 using FEP.Model;
 using FEP.WebApiModel.eLearning;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -82,6 +84,57 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             TempData["ErrorMessage"] = "Cannot add content.";
 
             return View(model);
+        }
+
+        public async Task<ActionResult> Edit_Background(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var response = await WepApiMethod.SendApiAsync<CertificatesModel>(HttpVerbs.Get, $"eLearning/Certificate?id={id}");
+
+            if (!response.isSuccess)
+                return HttpNotFound();
+
+            var vm = response.Data;
+
+            if (vm == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(vm);
+        }
+
+        [HttpPost, ActionName("Delete_Background")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete_Background(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var module = db.CourseCertificates.Where(p => p.Id == id).FirstOrDefault();
+
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Delete, $"eLearning/Certificates/Delete?id={id}");
+
+            if (response.isSuccess)
+            {
+                await LogActivity(Modules.Learning, "Delete Background: " + response.Data);
+
+                TempData["SuccessMessage"] = "Background Name " + response.Data + " successfully deleted.";
+
+                return RedirectToAction("Index", "Certificates", new { area = "eLearning" });
+            }
+            else
+            {
+                TempData["SuccessMessage"] = "Failed to delete certificate background.";
+
+                return RedirectToAction("Edit_Background", "Certificates", new { area = "eLearning", @id = id });
+            }
         }
 
     }

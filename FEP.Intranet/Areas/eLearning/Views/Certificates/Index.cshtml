@@ -77,12 +77,14 @@
                                             <div class="row">
                                                 @foreach (var item in Model)
                                                 {
+                                                    var imgUrl = "@(BaseURL)/eLearning/FileUpload/GetImg/?fil0eName=" + @item.FileUpload.FileNameOnStorage;
                                                     <div class="col-lg-4">
                                                         <div class="box-contain">
                                                             <div class="card text-center">
-                                                                <span>@Html.DisplayFor(m => item.Description)</span>
+                                                                @*<span>@Html.DisplayFor(m => item.Description)</span>*@
+                                                                <span> <img src="@Url.Action("GetImg", "FileUpload", new { area = "eLearning", fileName = item.FileUpload.FileNameOnStorage})"  height="100" width="150" id="FileUploadId" /></span>
                                                                 <div>
-                                                                    <a href='@Url.Action("Create", "PublicEvent", new { area = "eEvent", ctgryId = item.Id})'></a>
+                                                                    <a href='@Url.Action("Edit_Background", "Certificates", new { area = "eLearning", id = item.Id})'></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -96,8 +98,7 @@
                             <!-- End Form -->
                             <!-- Action Button -->
                             <div class="border-top p-3 rounded-bottom">
-                                <a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("List", "PublicEvent", new { area = "eEvent"})'>Back</a>
-                                @*<a class="btn btn-secondary" href="2.invitation-details.html">Next</a>*@
+                                <a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("Index", "Certificates", new { area = "eLearning"})'>Back</a>
                             </div>
                             <!-- End Action Button -->
                         </div>

@@ -804,6 +804,7 @@
     <Content Include="Areas\eLearning\Views\Certificates\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\Certificates\Create_Background.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_detailRichText.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Edit_Background.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

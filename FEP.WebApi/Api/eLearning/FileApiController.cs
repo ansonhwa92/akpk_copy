@@ -180,6 +180,27 @@ namespace FEP.WebApi.Api.eLearning
                 return BadRequest(ModelState);
             }
         }
+
+
+        [Route("api/eLearning/File/GetFileNameOnStorage")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetFileNameOnStorage(int contentId)
+        {
+
+            var content = await db.ContentFiles
+                            .Include(x => x.FileDocument)
+                            .FirstOrDefaultAsync(x => x.Id == contentId);
+
+
+            if (content == null || content.FileDocument == null)
+                return BadRequest();
+
+            if (String.IsNullOrEmpty(content.FileDocument.FileNameOnStorage))
+                return BadRequest();
+
+            return Ok(content.FileDocument.FileNameOnStorage);
+
+        }
     }
 
     public class ValidateMimeMultipartContentFilter : ActionFilterAttribute

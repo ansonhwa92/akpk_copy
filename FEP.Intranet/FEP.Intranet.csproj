@@ -59,6 +59,9 @@
     <Reference Include="FEP.Helper">
       <HintPath>..\..\FEP.Helper\FEP.Helper\bin\Debug\FEP.Helper.dll</HintPath>
     </Reference>
+    <Reference Include="Mammoth, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mammoth.1.4.0.0\lib\net45\Mammoth.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -174,7 +177,9 @@
     <Compile Include="Areas\eEvent\Controllers\EventExternalExhibitorController.cs" />
     <Compile Include="Areas\eEvent\Models\EventSpeaker.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
+    <Compile Include="Areas\eLearning\Helper\AllowCrossSiteJsonAttribute.cs" />
     <Compile Include="Areas\eLearning\Helper\YouTubeUrlHelper.cs" />
+    <Compile Include="Areas\eLearning\Helper\SlideshareHelper.cs" />
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />
     <Compile Include="Areas\Logs\Controllers\UserLogController.cs" />
     <Compile Include="Areas\Logs\LogsAreaRegistration.cs" />
@@ -217,6 +222,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="css\base.css" />
     <Content Include="css\custom-admin.css" />
+    <Content Include="css\elearn.css" />
     <Content Include="css\fonts\social-share-kit.svg" />
     <Content Include="css\jssocials.css" />
     <Content Include="css\login.css" />
@@ -484,6 +490,7 @@
     <Content Include="img\stats\icon-stats-enrolled.svg" />
     <Content Include="img\stats\icon-stats-event.svg" />
     <Content Include="img\stats\icon-stats-rnp.svg" />
+    <Content Include="js\elearn-course.js" />
     <Content Include="js\elearn.js" />
     <Content Include="js\index.js" />
     <Content Include="js\jquery.countTo.js" />
@@ -802,6 +809,7 @@
     <Content Include="Areas\eLearning\Views\CourseContents\_detailAudio.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_detailIFrame.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_detailRichText.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailDocument.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

@@ -150,6 +150,12 @@
   <data name="SelectAudioList" xml:space="preserve">
     <value>Select Audio from your course files</value>
   </data>
+  <data name="SelectDocument" xml:space="preserve">
+    <value>Select a document</value>
+  </data>
+  <data name="SelectDocumentList" xml:space="preserve">
+    <value>Select a document from your course files</value>
+  </data>
   <data name="SelectVideo" xml:space="preserve">
     <value>Select a video</value>
   </data>

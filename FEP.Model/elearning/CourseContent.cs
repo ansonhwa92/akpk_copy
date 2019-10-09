@@ -26,6 +26,8 @@ namespace FEP.Model.eLearning
         // For if contenttype = audio
         public AudioType? AudioType { get; set; }
 
+        public DocumentType? DocumentType { get; set; }
+
         // For if contenttype = video/youtube url, iframe
         public string Url { get; set; }
 
@@ -143,7 +145,17 @@ namespace FEP.Model.eLearning
 
         [Display(Name = "UploadAudio", ResourceType = typeof(Language.eLearning.Enum))]
         UploadAudio,
+    }
 
-        //Presentation
+    public enum DocumentType
+    {
+        [Display(Name = "SavedDocument", ResourceType = typeof(Language.eLearning.Enum))]
+        SavedDocument,
+
+        [Display(Name = "UploadDocument", ResourceType = typeof(Language.eLearning.Enum))]
+        UploadDocument,
+
+        [Display(Name = "UseSlideshare", ResourceType = typeof(Language.eLearning.Enum))]
+        UseSlideshare,
     }
 }

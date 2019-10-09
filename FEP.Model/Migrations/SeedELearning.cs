@@ -266,7 +266,7 @@ namespace FEP.Model.Migrations
                     Url = "https://www.sinarharian.com.my/",
                     CompletionType = ContentCompletionType.ClickButton,
                     Description = "<p> This is Content 3 </p>",
-                    Title = "Module 3",
+                    Title = "Content 3",
                 };
                 moduleContents.Add(iframe);
 

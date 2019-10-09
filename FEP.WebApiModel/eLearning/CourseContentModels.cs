@@ -37,7 +37,7 @@ namespace FEP.WebApiModel.eLearning
 
         public CourseContentType ContentType { get; set; }
 
-        
+        [AllowHtml]
         public string Url { get; set; }
      
         public HttpPostedFileBase File { get; set; }
@@ -51,6 +51,8 @@ namespace FEP.WebApiModel.eLearning
 
         public VideoType VideoType { get; set; }
         public AudioType AudioType { get; set; }
+        public DocumentType DocumentType { get; set; }
+
 
         public int Order { get; set; }
 
@@ -111,5 +113,9 @@ namespace FEP.WebApiModel.eLearning
         public string Name { get; set; }
         public int CourseId { get; set; }
         public string FileNameOnStorage { get; set; }
+    }
+
+    public class DocumentListModel : AudioListModel
+    {        
     }
 }

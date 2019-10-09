@@ -95,7 +95,7 @@
 
                         <input name="order" id="order" hidden />
                         <!----START MODULES -->
-                        <div id="draggable-element">
+                        <div id="draggable-module">
                             @{
 
                                 var modules = Model.Modules.OrderBy(x => x.Order).ToList();
@@ -114,7 +114,6 @@
                                            data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o"></i></a>
 
                                         <div class="row float-right">
-
                                             <i class="fa fa-bars handle color-darkblue" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Reorder"></i>
                                         </div>
 
@@ -125,7 +124,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    //i++;
                                 }
                             }
                         </div>
@@ -205,7 +203,7 @@
             // set to null initially, so it wont get read the next reload, but read from db
             localStorage.setItem("modules", null);
 
-            $('#draggable-element').sortable(options);
+            $('#draggable-module').sortable(options);
 
             //  console.log('local -', localStorage.getItem("modules"));
 

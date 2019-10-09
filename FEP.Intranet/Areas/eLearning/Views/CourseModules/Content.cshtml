@@ -103,7 +103,7 @@
 
                         <input name="order" id="order" hidden />
                         <!----START CONTENT -->
-                        <div id="draggable-element">
+                        <div id="draggable-content">
                             @{
 
                                 var contents = Model.ModuleContents
@@ -234,7 +234,7 @@
             var options = {
                 group: 'contents',
                 animation: 100,
-                handle: '.handle',
+             //   handle: '.handle',
                 sort: true,
                 store: {
 
@@ -258,9 +258,9 @@
             // set to null initially, so it wont get read the next reload, but read from db
             localStorage.setItem("contents", null);
 
-            $('#draggable-element').sortable(options);
+            $('#draggable-content').sortable(options);
 
-            //  console.log('local -', localStorage.getItem("modules"));
+              console.log('local -', localStorage.getItem("modules"));
 
         });
     </script>

@@ -1,6 +1,9 @@
 ﻿using FEP.Intranet.Helper;
+using FEP.Model;
+using Mammoth;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -15,6 +18,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string UploadInfo = "eLearning/File/UploadInfo";
 
         public const string Upload = "eLearning/File";
+
+        public const string GetFileNameOnStorage = "elearning/File/GetFileNameOnStorage";
     }
 
     public class FileController : Controller
@@ -83,6 +88,58 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             return File(fileFullPath, MimeMapping.GetMimeMapping(fileNameFromDb), fileNameFromDb);
         }
+
+        public ActionResult GetImg(string fileName)
+        {
+            var path = Path.Combine(storageDir, fileName);
+
+            var bytes = System.IO.File.ReadAllBytes(path);
+
+            return File(bytes, "image/png");
+        }
+
+        public string DocToHTML(string fileType, string courseId, string fileName)
+        {
+            var fileFullPath = Path.Combine(storageDir, fileName);
+
+            try
+            {
+                var converter = new DocumentConverter();
+                var result = converter.ConvertToHtml(fileFullPath);
+                var html = result.Value; // The generated HTML
+                var warnings = result.Warnings;
+                
+                if(String.IsNullOrEmpty(html))
+                    return "Error reading the document.";
+
+                return html;
+            }
+            catch(Exception e)
+            {
+                return "Error reading the document.";
+            }
+        }
+
+
+        // For ajax call getting the document based on contentid
+        public async Task<string> GetDoc(string contentId)
+        {
+            // this should be queried from webapi
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Get,
+                        FileApiUrl.GetFileNameOnStorage + $"?contentId={contentId}");
+
+            if (response.isSuccess)
+            {
+                return DocToHTML("", "", response.Data.ToString());
+
+            }
+            else
+            {
+                return "Error reading the document.";
+
+            }
+        }
+
 
         // FOR API CALL
         public async Task<WebApiResponse<T>> UploadToApi<T>(HttpPostedFileBase file)

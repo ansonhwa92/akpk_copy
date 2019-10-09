@@ -180,6 +180,9 @@
   <data name="SavedAudio" xml:space="preserve">
     <value>Audio from course files</value>
   </data>
+  <data name="SavedDocument" xml:space="preserve">
+    <value>Use a document from your files</value>
+  </data>
   <data name="Test" xml:space="preserve">
     <value>Test/Quiz</value>
   </data>
@@ -189,8 +192,14 @@
   <data name="UploadAudio" xml:space="preserve">
     <value>Upload an audio file</value>
   </data>
+  <data name="UploadDocument" xml:space="preserve">
+    <value>Upload a document</value>
+  </data>
   <data name="UploadVideo" xml:space="preserve">
     <value>Upload a video</value>
+  </data>
+  <data name="UseSlideshare" xml:space="preserve">
+    <value>Use Slideshare</value>
   </data>
   <data name="Video" xml:space="preserve">
     <value>Video</value>

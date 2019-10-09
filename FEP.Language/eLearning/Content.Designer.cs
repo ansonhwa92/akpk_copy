@@ -160,6 +160,24 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select a document.
+        /// </summary>
+        public static string SelectDocument {
+            get {
+                return ResourceManager.GetString("SelectDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a document from your course files.
+        /// </summary>
+        public static string SelectDocumentList {
+            get {
+                return ResourceManager.GetString("SelectDocumentList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a video.
         /// </summary>
         public static string SelectVideo {

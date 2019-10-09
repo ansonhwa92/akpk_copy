@@ -19,6 +19,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string Delete = "eLearning/CourseContents/Delete";
 
         public const string GetAllAudio = "eLearning/CourseContents/GetAllAudio";
+        public const string GetAllDocument = "eLearning/CourseContents/GetAllDocument";
     }
 
     public class CourseContentsController : FEPController
@@ -64,7 +65,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             await GetAllQuestions(courseId.Value);
-            await GetAllAudio(courseId.Value);
+
+            if (courseContentType == CourseContentType.Audio)
+                await GetAllAudio(courseId.Value);
+
+            if (courseContentType == CourseContentType.Document)
+                await GetAllDocument(courseId.Value);
 
             return View(model);
         }
@@ -93,6 +99,20 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 model.File = null;
 
+                // check slideshare url and change to embed code
+                if (model.ContentType == CourseContentType.Document)
+                {
+                    await GetAllDocument(model.CourseId, model.ContentFileId != null ? model.ContentFileId.Value : -1);
+
+                    if (model.DocumentType == DocumentType.UseSlideshare)
+                    {
+                        if (!model.Url.Contains("embed_code"))
+                        {
+                            model.Url = await SlideshareHelper.GetEmbedCode(model.Url);
+                        }
+                    }
+                }
+
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, ContentApiUrl.Create, model);
 
                 if (response.isSuccess)
@@ -107,8 +127,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 // Check if this creation include fileupload, which will require us to save the file
                 model.File = currentFileName;
                 if (((model.ContentType == CourseContentType.Video && model.VideoType == VideoType.UploadVideo) ||
-                    (model.ContentType == CourseContentType.Audio & model.AudioType == AudioType.UploadAudio) ||
-                    (model.ContentType == CourseContentType.Document)) &&
+                    (model.ContentType == CourseContentType.Audio && model.AudioType == AudioType.UploadAudio) ||
+                    (model.ContentType == CourseContentType.Document && model.DocumentType == DocumentType.UploadDocument)) &&
                     model.File != null)
                 {
                     // upload the file
@@ -123,7 +143,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                         fileDocument.FileType = model.ContentType.ToString();
                         fileDocument.CreatedBy = CurrentUser.UserId.Value;
-                        
+
                         fileDocument.CourseId = model.CourseId;
 
                         if (model.ContentType == CourseContentType.Audio)
@@ -131,7 +151,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                         if (model.ContentType == CourseContentType.Video)
                             fileDocument.ContentFileType = FileType.Video;
-
 
                         if (model.ContentType == CourseContentType.Document)
                             fileDocument.ContentFileType = FileType.Document;
@@ -180,7 +199,21 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             await GetAllQuestions(model.CourseId, model.ContentQuestionId != null ? model.ContentQuestionId.Value : -1);
 
-            await GetAllAudio(model.CourseId, model.ContentFileId != null ? model.ContentFileId.Value : -1);
+            if (model.ContentType == CourseContentType.Audio)
+                await GetAllAudio(model.CourseId, model.ContentFileId != null ? model.ContentFileId.Value : -1);
+
+            if (model.ContentType == CourseContentType.Document)
+            {
+                await GetAllDocument(model.CourseId, model.ContentFileId != null ? model.ContentFileId.Value : -1);
+
+                if (model.DocumentType == DocumentType.UseSlideshare)
+                {
+                    if (!model.Url.Contains("embed_code"))
+                    {
+                        model.Url = await SlideshareHelper.GetEmbedCode(model.Url);
+                    }
+                }
+            }
 
             return View(model);
         }
@@ -197,6 +230,20 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 model.File = null;
                 var modelFileDocument = model.FileDocument;
 
+                // check slideshare url and change to embed code
+                if (model.ContentType == CourseContentType.Document)
+                {
+                    await GetAllDocument(model.CourseId, model.ContentFileId != null ? model.ContentFileId.Value : -1);
+
+                    if (model.DocumentType == DocumentType.UseSlideshare)
+                    {
+                        if (!model.Url.Contains("embed_code"))
+                        {
+                            model.Url = await SlideshareHelper.GetEmbedCode(model.Url);
+                        }
+                    }
+                }
+
                 var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, ContentApiUrl.Edit, model);
 
                 if (response.isSuccess)
@@ -209,7 +256,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     model.File = currentFileName;
                     if (((model.ContentType == CourseContentType.Video && model.VideoType == VideoType.UploadVideo) ||
                         (model.ContentType == CourseContentType.Audio && model.AudioType == AudioType.UploadAudio) ||
-                        (model.ContentType == CourseContentType.Document)) &&
+                        (model.ContentType == CourseContentType.Document && model.DocumentType == DocumentType.UploadDocument)) &&
                         model.File != null)
                     {
                         // upload the file
@@ -233,10 +280,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                             if (model.ContentType == CourseContentType.Video)
                                 fileDocument.ContentFileType = FileType.Video;
 
-
                             if (model.ContentType == CourseContentType.Document)
                                 fileDocument.ContentFileType = FileType.Document;
-
 
                             var resultUpload = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, FileApiUrl.UploadInfo, fileDocument);
 
@@ -349,9 +394,27 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
         }
 
+        private async Task GetAllDocument(int courseId, int selectedId = -1)
+        {
+            // this should be queried from webapi
+            var response = await WepApiMethod.SendApiAsync<IEnumerable<DocumentListModel>>(HttpVerbs.Get,
+                        ContentApiUrl.GetAllDocument + $"?courseId={courseId}");
+
+            if (response.isSuccess)
+                ViewBag.DocumentList = new SelectList(response.Data, "Id", "Name", selectedId);
+            else
+            {
+                ViewBag.DocumentList = new SelectList(new List<DocumentListModel>
+                {
+                    new DocumentListModel{ Id = 999, Name = "Error"}
+                }, "Id", "Name");
+
+                TempData["Error"] = "Cannot find any audio to display.";
+            }
+        }
+
         public async Task<ActionResult> View(int id)
         {
-
             var content = await TryGetContent(id);
 
             if (content != null)
@@ -391,6 +454,19 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return null;
+        }
+
+
+        public async Task<string> GetSlideshare(string newUrl)
+        {
+            if (!newUrl.Contains("embed_code"))
+            {
+                var result =  await SlideshareHelper.GetEmbedCode(newUrl);
+
+                return result;
+            }
+
+            return newUrl;
         }
 
         protected override void Dispose(bool disposing)

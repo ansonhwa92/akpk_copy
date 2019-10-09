@@ -4,15 +4,90 @@
 @Html.Partial("_contentCompletion", Model)
 <hr />
 
-<div>
-    <div class="form-group">
-        <label>@Language.eLearning.Content.Document</label>
-        <div class="">
+@Html.HiddenFor(m => m.DocumentType)
+@Html.HiddenFor(m => m.UploadFileName)
 
-            @Html.EditorFor(model => model.Url, new { @class = "form-control" })
+<div class="form-group">
+    <label>@Language.eLearning.Content.SelectDocument</label>
+    <div class="col-sm-12">
+        <!-- Default inline 1-->
+        <div class="document-radio row pl-4">
 
-            @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
+            <div class="col-sm-4 pt-2">
+                <input type="radio" class="custom-control-input savedDocument" checked="checked" value=@DocumentType.SavedDocument
+                       id="document1"
+                       name="DocumentType">
+                <label class="custom-control-label" for="document1">@Language.eLearning.Enum.SavedDocument</label>
+            </div>
+            <div class="form-group col-sm-8">
+                @Html.DropDownListFor(model => model.ContentFileId, ViewBag.DocumentList as SelectList,
+                    Language.eLearning.Content.SelectDocumentList, htmlAttributes: new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.ContentFileId, "", new { @class = "text-danger" })
+            </div>
+            
+        </div>
+
+        <!-- Default inline 2-->
+        <div class="document-radio row pl-4 ">
+            <div class="col-sm-4 pt-2">
+                <input type="radio" class="custom-control-input uploadDocument" value=@DocumentType.UploadDocument
+                       id="document2"
+                       name="DocumentType">
+                <label class="custom-control-label" for="document2">@Language.eLearning.Enum.UploadDocument</label>
+            </div>
+            <div class="form-group upDocumentWrapper col-sm-8">
+                <div class="custom-file">
+                    <input name="File" id="File" type="file" class="custom-file-input">
+                    <label for="File" class="custom-file-label text-truncate">
+                        @{
+                            if (String.IsNullOrEmpty(Model.UploadFileName))
+                            {
+                                <text>Choose File..</text>
+                            }
+                            else
+                            {
+                                <text>@Model.UploadFileName</text>
+                            }
+                        }
+                    </label>
+                </div>
+
+                @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="document-radio row pl-4">
+
+            <div class="col-sm-4 pt-2">
+                <input type="radio" class="custom-control-input useSlideshare" value=@DocumentType.UseSlideshare
+                       id="document3"
+                       name="DocumentType">
+                <label class="custom-control-label" for="document3">@Language.eLearning.Enum.UseSlideshare</label>
+            </div>
+            <div class="form-group useSlideshareWrapper col-sm-8">
+                @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control", @placeholder = "Slideshare Url" } })
+                @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="otherDoc">
+            <label>@Language.eLearning.Content.RichText</label>
+            <div class="">
+
+                @Html.TextAreaFor(model => model.Text, new { @class = "summernote form-control" })
+
+                @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="slideshare" id="slideShareDoc">
+            <label>Slideshare</label>
+            @*@Html.Raw(@Model.Url)*@
+            <div class="">
+                <iframe id="myslide" src="@Model.Url" frameborder="0" scrolling="no" width="100%" height="500"
+                        style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen></iframe>
+            </div>
 
         </div>
-    </div>
 </div>

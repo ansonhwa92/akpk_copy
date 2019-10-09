@@ -250,6 +250,15 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use a document from your files.
+        /// </summary>
+        public static string SavedDocument {
+            get {
+                return ResourceManager.GetString("SavedDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test/Quiz.
         /// </summary>
         public static string Test {
@@ -277,11 +286,29 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Upload a document.
+        /// </summary>
+        public static string UploadDocument {
+            get {
+                return ResourceManager.GetString("UploadDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Upload a video.
         /// </summary>
         public static string UploadVideo {
             get {
                 return ResourceManager.GetString("UploadVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Slideshare.
+        /// </summary>
+        public static string UseSlideshare {
+            get {
+                return ResourceManager.GetString("UseSlideshare", resourceCulture);
             }
         }
         

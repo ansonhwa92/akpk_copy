@@ -227,6 +227,7 @@ namespace FEP.WebApi.Api.eLearning
                 content.Url = request.Url;
                 content.VideoType = request.VideoType;
                 content.AudioType = request.AudioType;
+                content.DocumentType = request.DocumentType;
 
                 if (request.ContentFileId != null)
                     content.ContentFileId = request.ContentFileId;
@@ -311,6 +312,33 @@ namespace FEP.WebApi.Api.eLearning
             var entities = db.ContentFiles.Where(x => x.CourseId == courseId.Value && x.FileType == FileType.Audio)
                     .Include(x => x.FileDocument)
                     .Select(x => new AudioListModel
+                    {
+                        CourseId = x.CourseId,
+                        Id = x.Id,
+                        Name = x.FileDocument.FileName,
+                        FileNameOnStorage = x.FileDocument.FileNameOnStorage,
+                        FileDocumentId = x.FileDocument.Id,
+                        ContentId = x.ContentId.Value
+                    }
+                    );
+
+            if (entities == null)
+                return BadRequest();
+
+            return Ok(entities);
+        }
+
+
+        [Route("api/eLearning/CourseContents/GetAllDocument")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetAllDocument(int? courseId)
+        {
+            if (courseId == null)
+                return BadRequest();
+
+            var entities = db.ContentFiles.Where(x => x.CourseId == courseId.Value && x.FileType == FileType.Document)
+                    .Include(x => x.FileDocument)
+                    .Select(x => new DocumentListModel
                     {
                         CourseId = x.CourseId,
                         Id = x.Id,

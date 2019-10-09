@@ -1,16 +1,13 @@
 ﻿
 // for summernote image upload
-function uploadFile(url, file, editor, welEditable) {
-
+//function uploadFile(url, file, editor, welEditable) {
+function uploadFile(url, file, callback) {
 
     var data = new FormData();
     data.append("file", file);
 
-    //var url = "/api/eLearning/File";
-
+    //url = url + "/UploadFile";
     console.log("try upload file - ", data, " url -", url);
-
-    url = "/eLearning/File/UploadFile";
 
     $.ajax({
         url: url,
@@ -28,10 +25,8 @@ function uploadFile(url, file, editor, welEditable) {
         },
         success: function (result) {
 
-            //result = result + "'";
-            //editor.insertImage(welEditable, url);
-                result = result.replace(/\\/g, '');
-        //    result2 = result2.replace(/\"/g, '\'');
+            //console.log("success upload file - ", result);
+            result = result.replace(/\\/g, '');
 
             var message = "";
 
@@ -41,19 +36,43 @@ function uploadFile(url, file, editor, welEditable) {
                 message = JSON.parse(result);
             }
 
-            console.log('result - ', result, ' result2 - ', message);
+            //console.log('result - ', result, ' result2 - ', message);
+            console.log('message - ', message, ' = ', message.FileNameOnStorage);
 
-            //var doc = JSON.parse(message);
+            callback(message);
 
-            console.log('doc - ', message, ' = ', message.FileNameOnStorage);
+           // return message;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('error - ' + textStatus + " " + errorThrown);
+        }
+    });
+}
 
-            var remoteUrl = url + "/" + message.FileNameOnStorage;
+// for document
+function convertDocument(url, fileName, fileType, courseId, callback) {
 
-            var image = $('<img>').attr('src', remoteUrl);
-            //console.log("success upload file - ", result, " - ", remoteUrl);
+    url = "/eLearning/File/DocToHTML";
 
+    console.log(fileType, courseId, fileName);
 
-            $('#summernote').summernote('insertImage', image[0]);
+    $.ajax({
+        url: url,
+        data: {
+            fileType: fileType,
+            courseId: courseId,
+            fileName: fileName
+        },
+
+        type: 'POST',
+        xhr: function () {
+            var myXhr = $.ajaxSettings.xhr();
+            if (myXhr.upload) myXhr.upload.addEventListener('progress', progressHandlingFunction, false);
+            return myXhr;
+        },
+        success: function (result) {
+            callback(result);
+
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log('error - ' + textStatus + " " + errorThrown);
@@ -62,8 +81,59 @@ function uploadFile(url, file, editor, welEditable) {
 }
 
 
-// update progress bar
+// for document type - select from existing doc in courses
+function getDoc(contentId, callback) {
 
+    url = "/eLearning/File/GetDoc";
+
+    //console.log(fileType, courseId, fileName);
+
+    $.ajax({
+        url: url,
+        data: {
+            contentId: contentId,
+        },
+        type: 'GET',
+        xhr: function () {
+            var myXhr = $.ajaxSettings.xhr();
+            if (myXhr.upload) myXhr.upload.addEventListener('progress', progressHandlingFunction, false);
+            return myXhr;
+        },
+        success: function (result) {
+            callback(result);
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('error - ' + textStatus + " " + errorThrown);
+        }
+    });
+}
+
+// for document type - select from existing doc in courses
+function getSlideshare(newUrl, callback) {
+
+    url = "/eLearning/CourseContents/GetSlideshare";
+
+
+    $.ajax({
+        url: url,
+        data: {
+            newUrl: newUrl,
+        },
+        type: 'GET',
+        contentType: "text/plain",
+        success: function (result) {
+
+            callback(result);
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('error - ' + textStatus + " " + errorThrown);
+        }
+    });
+}
+
+// update progress bar
 function progressHandlingFunction(e) {
     if (e.lengthComputable) {
         $('progress').attr({ value: e.loaded, max: e.total });
@@ -80,10 +150,6 @@ function isNumberKey(evt) {
         return false;
     return true;
 }
-
-
-
-
 
 function truncate(elemClass, elemIdAfter, reqLen) {
 

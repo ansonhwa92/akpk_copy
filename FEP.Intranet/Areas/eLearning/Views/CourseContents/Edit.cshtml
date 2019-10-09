@@ -7,9 +7,12 @@
     var name = Model.PageTitle;
 
     var desc = Model.ContentType.ToString();
-
 }
 
+<div class="loading">
+    <div class="loader"></div>
+
+</div>
 @section Nav{
     <div class="title_header">
         <div class="title-header-container">
@@ -130,17 +133,32 @@
 </style>
 
 @section ContentScript {
+    @Scripts.Render("~/bundles/jqueryval")
 
+    <link href="~/css/elearn.css" rel="stylesheet" />
     <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
     <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
     <script src="~/js/elearn.js"></script>
+    <script src="~/js/elearn-course.js"></script>
 
     <script>
+        var uploadImgUrl = '@(BaseURL)/eLearning/File/UploadFile';
+        var getImgUrl = '@(BaseURL)/eLearning/File/GetImg/?fileName=';
+
+            //var uploadDocUrl = '@(WebApiURL)/eLearning/File/';
+        var uploadDocUrl = '@(BaseURL)/eLearning/File/UploadFile';
+        var convertFileUrl = '@(BaseURL)eLearning/File/DocToHTML';
+
+
         $(document).ready(function () {
-            $('.summernote').summernote({
-                placeholder: 'Type your text here.',
+
+
+            $('.loading').hide();
+
+            $('#Description').summernote({
+                placeholder: 'Type your description of the content here.',
                 tabsize: 2,
-                height: 150,
+                height: 200,
                 toolbar: [
                     ['style', ['bold', 'italic', 'underline', 'clear']],
                     ['font', ['strikethrough', 'superscript', 'subscript']],
@@ -149,21 +167,57 @@
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['height', ['height']],
                     ['insert', ['link', 'picture']],
-
                 ],
                 codeviewFilter: false,
                 codeviewIframeFilter: true,
                 callbacks: {
                     onFocus: function () {
                         currentElement = "body";
+                    },
+                    onImageUpload: function (files, editor, $editable) {
+                        uploadFile(uploadImgUrl, files[0], function (message) {
+
+                            var remoteUrl = getImgUrl +  message.FileNameOnStorage;
+
+                            $('#Description').summernote('insertImage', remoteUrl, message.FileName);
+
+                        });
+                    }
+                }
+            });
+
+              $('#Text').summernote({
+                placeholder: 'Type your text here.',
+                tabsize: 2,
+                height: 500,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['link', 'picture']],
+                ],
+                codeviewFilter: false,
+                codeviewIframeFilter: true,
+                callbacks: {
+                    onFocus: function () {
+                        currentElement = "body";
+                    },
+                    onImageUpload: function (files, editor, $editable) {
+                        uploadFile(uploadImgUrl, files[0], function (message) {
+
+                            var remoteUrl = getImgUrl +  message.FileNameOnStorage;
+
+                            $('#Text').summernote('insertImage', remoteUrl, message.FileName);
+
+                        });
                     }
                 }
             });
 
             var completionType = $('#CompletionType').val();
-
-            console.log('First time - ', completionType);
-
 
             if (completionType == "AnswerQuestion") {
                 $("#answerQuestion").prop("checked", true);
@@ -183,7 +237,6 @@
                 $('#Timer').prop("disabled", false);
                 $('#ContentQuestionId').prop("disabled", true);
             }
-
 
             var contentType = $('#ContentType').val();
             if (contentType == 'Video') {
@@ -221,143 +274,44 @@
                 }
             }
 
-        });
 
+            console.log($('#DocumentType').val());
+            if (contentType == 'Document') {
+                if ($('#DocumentType').val() == "SavedDocument") {
+                    $("#document1").prop("checked", true);
+                    $('#File').prop("disabled", true);
+                    $("#ContentFileId").prop("disabled", false);
+                    $('#Url').prop("disabled", true);
 
-        // hide/show text for video
-        $('.video-radio input[type="radio"]').change(function () {
-            if ($(this).hasClass("exVideo")) {
-
-                $('#Url').prop("disabled", false);
-                $('#File').prop("disabled", true);
-                setError("File", "");
-
-                ($('input[name=VideoType]').val('ExternalVideo'));
-
-            } else {
-
-                $('#File').prop("disabled", false);
-                setError("Url", "");
-
-                $('#Url').prop("disabled", true);
-                ($('input[name=VideoType]').val('UploadVideo'));
-            }
-        });
-
-        $('.audio-radio input[type="radio"]').change(function () {
-            if ($(this).hasClass("savedAudio")) {
-                setError("File", "");
-                $('#File').prop("disabled", true);
-                $("#ContentFileId").prop("disabled", false);
-
-                ($('input[name=AudioType]').val('SavedAudio'));
-
-            } else {
-                $('#File').prop("disabled", false);
-                $("#ContentFileId").prop("disabled", true);
-                setError("ContentFileId", "");
-
-                ($('input[name=AudioType]').val('UploadAudio'));
-            }
-        });
-
-
-        $('.completion-radio input[type="radio"]').change(function () {
-
-            var completionType = $(this).val();
-            //console.log(completionType);
-
-            if (completionType == "AnswerQuestion") {
-                $("#answerQuestion").prop("checked", true);
-                $('#Timer').prop("disabled", true);
-                $('#ContentQuestionId').prop("disabled", false);                
-            }
-
-            if (completionType == "ClickButton") {
-                $("#clickButton").prop("checked", true);
-                $('#Timer').prop("disabled", true);
-                $('#ContentQuestionId').prop("disabled", true);
-            }
-
-            if (completionType == "Timer") {
-                $("#timer1").prop("checked", true);
-                $('#Timer').prop("disabled", false);
-                $('#ContentQuestionId').prop("disabled", true);
-            }
-
-            ($('input[name=CompletionType]').val(completionType));
-
-        });
-
-        $('.custom-file-input').on('change', function () {
-            let fileName = $(this).val().split('\\').pop();
-            $(this).next('.custom-file-label').addClass("selected").html(fileName);
-        });
-
-
-        function validateForm() {
-
-            var contentType = $('#ContentType').val();
-            if (contentType == 'Video') {
-
-                console.log(contentType);
-                if ($('#VideoType').val() == "ExternalVideo") {
-                    if ($.trim($('#Url').val()) == "") {
-                        setError("Url", "Please enter the youtube URL.");
-
-                        return false;
-                    }
-                    else {
-                        setError("Url", "");
-                    }
+                    document.getElementById("otherDoc").style.display = "block";
+                    document.getElementById("slideShareDoc").style.display = "none";
                 }
 
+                if ($('#DocumentType').val() == "UploadDocument") {
 
-                if ($('#VideoType').val() == "UploadVideo") {
+                    $("#document2").prop("checked", true);
+                    $('#File').prop("disabled", false);
+                    $("#ContentFileId").prop("disabled", true);
+                    $('#Url').prop("disabled", true);
 
-                    console.log('uploaded filenam : ', $('#UploadFileName').val(), " filename-", $('#File').val());
+                    document.getElementById("otherDoc").style.display = "block";
+                    document.getElementById("slideShareDoc").style.display = "none";
 
-                    if ($.trim($('#UploadFileName').val()) == "" && $.trim($('#File').val()) == "" ) {
-                        setError("File", "Please browse for the file to upload.");
+                }
+                if ($('#DocumentType').val() == "UseSlideshare") {
 
-                        return false;
-                    } else {
-                        setError("File", "");
-                    }
+                    $("#document3").prop("checked", true);
+                    $('#File').prop("disabled", true);
+                    $("#ContentFileId").prop("disabled", true);
+                    $('#Url').prop("disabled", false);
+
+                    document.getElementById("otherDoc").style.display = "none";
+                    document.getElementById("slideShareDoc").style.display = "block";
+
                 }
             }
 
-
-            if (contentType == 'Audio') {
-
-                if ($('#AudioType').val() == "UploadAudio") {
-
-                    console.log('uploaded filename : ', $('#UploadFileName').val(), " filename-", $('#File').val());
-
-                    if ($.trim($('#UploadFileName').val()) == "" && $.trim($('#File').val()) == "") {
-                        setError("File", "Please browse for the file to upload.");
-
-                        return false;
-                    } else {
-                        setError("File", "");
-                    }
-                }
-
-                if ($('#AudioType').val() == "SavedVideo") {
-                    if ($.trim($('#ContentFileId').val()) == "-1") {
-                        setError("ContentFileId", "Please select and audio");
-
-                        return false;
-                    }
-                    else {
-                        setError("ContentFileId", "");
-                    }
-                }
-
-            }
-
-            return true;
-        }
+        });
     </script>
 
 }

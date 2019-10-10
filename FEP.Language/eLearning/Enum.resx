@@ -162,14 +162,23 @@
   <data name="ExternalVideo" xml:space="preserve">
     <value>You Tube Video</value>
   </data>
+  <data name="Flash" xml:space="preserve">
+    <value>Flash</value>
+  </data>
   <data name="IFrame" xml:space="preserve">
     <value>IFrame</value>
   </data>
   <data name="Instructor" xml:space="preserve">
     <value>Instructor</value>
   </data>
+  <data name="Pdf" xml:space="preserve">
+    <value>Pdf</value>
+  </data>
   <data name="PopUp" xml:space="preserve">
     <value>Pop up window</value>
+  </data>
+  <data name="Powepoint" xml:space="preserve">
+    <value>Presentation</value>
   </data>
   <data name="Presentation" xml:space="preserve">
     <value>Upload a presentation</value>

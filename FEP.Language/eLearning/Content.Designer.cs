@@ -178,6 +178,15 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select a flash file.
+        /// </summary>
+        public static string SelectFlash {
+            get {
+                return ResourceManager.GetString("SelectFlash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a video.
         /// </summary>
         public static string SelectVideo {

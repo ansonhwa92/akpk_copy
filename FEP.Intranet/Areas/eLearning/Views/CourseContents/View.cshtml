@@ -104,6 +104,13 @@
                             @Html.Partial("_iframe", Model)
 
                             break;
+
+                        case FEP.Model.eLearning.CourseContentType.Flash:
+
+                            @Html.Partial("_flash", Model)
+
+                            break;
+
                         case FEP.Model.eLearning.CourseContentType.Test:
 
                             @Html.Partial("_test", Model)

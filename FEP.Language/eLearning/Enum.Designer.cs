@@ -196,6 +196,15 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flash.
+        /// </summary>
+        public static string Flash {
+            get {
+                return ResourceManager.GetString("Flash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IFrame.
         /// </summary>
         public static string IFrame {
@@ -214,11 +223,29 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pdf.
+        /// </summary>
+        public static string Pdf {
+            get {
+                return ResourceManager.GetString("Pdf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pop up window.
         /// </summary>
         public static string PopUp {
             get {
                 return ResourceManager.GetString("PopUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Presentation.
+        /// </summary>
+        public static string Powepoint {
+            get {
+                return ResourceManager.GetString("Powepoint", resourceCulture);
             }
         }
         

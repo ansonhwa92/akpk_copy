@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 
+
 namespace FEP.Intranet.Areas.eLearning.Controllers
 {
     public static class FileApiUrl
@@ -20,6 +21,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string Upload = "eLearning/File";
 
         public const string GetFileNameOnStorage = "elearning/File/GetFileNameOnStorage";
+        
     }
 
     public class FileController : Controller

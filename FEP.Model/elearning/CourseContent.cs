@@ -109,7 +109,18 @@ namespace FEP.Model.eLearning
         Assignment,
 
         [Display(Name = "Instructor", ResourceType = typeof(Language.eLearning.Enum))]
-        Instructor
+        Instructor,
+
+        [Display(Name = "Flash", ResourceType = typeof(Language.eLearning.Enum))]
+        Flash,
+
+        [Display(Name = "Pdf", ResourceType = typeof(Language.eLearning.Enum))]
+        Pdf,
+
+
+        //https://github.com/aspose-slides/Aspose.Slides-for-.NET
+        [Display(Name = "Powerpoint", ResourceType = typeof(Language.eLearning.Enum))]
+        Powerpoint
     }
 
     public enum ContentCompletionType

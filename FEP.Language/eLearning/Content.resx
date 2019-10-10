@@ -156,6 +156,9 @@
   <data name="SelectDocumentList" xml:space="preserve">
     <value>Select a document from your course files</value>
   </data>
+  <data name="SelectFlash" xml:space="preserve">
+    <value>Select a flash file</value>
+  </data>
   <data name="SelectVideo" xml:space="preserve">
     <value>Select a video</value>
   </data>

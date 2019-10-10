@@ -128,7 +128,10 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 model.File = currentFileName;
                 if (((model.ContentType == CourseContentType.Video && model.VideoType == VideoType.UploadVideo) ||
                     (model.ContentType == CourseContentType.Audio && model.AudioType == AudioType.UploadAudio) ||
-                    (model.ContentType == CourseContentType.Document && model.DocumentType == DocumentType.UploadDocument)) &&
+                    (model.ContentType == CourseContentType.Document && model.DocumentType == DocumentType.UploadDocument) ||
+                    (model.ContentType == CourseContentType.Flash) ||
+                    (model.ContentType == CourseContentType.Pdf) ||
+                    (model.ContentType == CourseContentType.Powerpoint)) &&
                     model.File != null)
                 {
                     // upload the file
@@ -183,6 +186,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             return View(model);
         }
+
 
         [HasAccess(UserAccess.CourseEdit)]
         // GET: eLearning/CourseContents/Create
@@ -256,7 +260,10 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     model.File = currentFileName;
                     if (((model.ContentType == CourseContentType.Video && model.VideoType == VideoType.UploadVideo) ||
                         (model.ContentType == CourseContentType.Audio && model.AudioType == AudioType.UploadAudio) ||
-                        (model.ContentType == CourseContentType.Document && model.DocumentType == DocumentType.UploadDocument)) &&
+                        (model.ContentType == CourseContentType.Document && model.DocumentType == DocumentType.UploadDocument) ||
+                        (model.ContentType == CourseContentType.Flash) ||
+                        (model.ContentType == CourseContentType.Pdf) ||
+                        (model.ContentType == CourseContentType.Powerpoint)) &&
                         model.File != null)
                     {
                         // upload the file

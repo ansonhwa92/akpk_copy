@@ -1,12 +1,7 @@
-﻿
-@using FEP.Model.eLearning
+﻿@using FEP.Model.eLearning
 @model FEP.WebApiModel.eLearning.ContentCompletionModel
-@*@model FEP.WebApiModel.eLearning.CreateOrEditContentModel*@
-
-
 
 <form id="formCompletion" action="/eLearning/ContentCompletions/" method="post">
-
 
     @Html.AntiForgeryToken()
 
@@ -16,9 +11,9 @@
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.Title)
     @Html.HiddenFor(m => m.CourseModuleId)
+    @Html.HiddenFor(m => m.CompletionType)
 
-
-    <div class="text-center float-right">
+    <div class="text-center">
         @if (Model.CompletionType == ContentCompletionType.ClickButton)
         {
             <button type="submit" class="btn btn-default pull-right" id="btnComplete" value="Completed">
@@ -28,24 +23,73 @@
 
         else if (Model.CompletionType == ContentCompletionType.Timer)
         {
-            @Html.EditorFor(m => m.Timer)
 
+            @Html.HiddenFor(m => m.Timer)
+
+            <div class="btn btn-default pull-left disabled" id="countdown"></div>
             <button type="submit" class="btn btn-default pull-right" id="btnTimerComplete" value="Completed">
                 <i class="la la-check font-icon" style="font-size: 1.5rem;"></i>Completed. Continue..
             </button>
         }
         else if (Model.CompletionType == ContentCompletionType.AnswerQuestion)
         {
-            
+
             <h5>Please answer the following question to continue</h5>
 
             <label>@Model.CourseModuleId</label>
-            @Html.EditorFor(m=> m.FreeTextAnswer)
-            
+            @Html.EditorFor(m => m.FreeTextAnswer)
+
             <button type="submit" class="btn btn-default pull-right" id="btnAnswerComplete" value="Completed">
                 <i class="la la-check font-icon" style="font-size: 1.5rem;"></i>Completed. Continue..
             </button>
         }
-
     </div>
 </form>
+
+<script>
+
+    var completionType = document.getElementById("CompletionType");
+
+    console.log("CT ", completionType);
+
+    if (completionType.value == "Timer") {
+
+        var btnTimerComplete = document.getElementById("btnTimerComplete");
+        btnTimerComplete.disabled = true;
+
+        var timer = document.getElementById('Timer');
+
+        //console.log("T ", timer.value);
+
+        var currentDateTime = new Date();
+        var countDownDate = new Date(currentDateTime.getTime() + timer.value * 1000);
+
+        // Update the count down every 1 second
+        var x = setInterval(function () {
+
+            // Get today's date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result in the element with id="countdown"
+            document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+                + minutes + "m " + seconds + "s ";
+
+            // If the count down is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "FINISHED";
+                btnTimerComplete.disabled = false;
+
+            }
+        }, 1000);
+    }
+</script>

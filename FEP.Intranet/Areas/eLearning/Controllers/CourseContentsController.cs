@@ -88,7 +88,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         // POST: eLearning/CourseModules/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CreateOrEditContentModel model)
+        public async Task<ActionResult> Create(CreateOrEditContentModel model, string SubmitType="Save")
         {
             if (ModelState.IsValid)
             {
@@ -174,8 +174,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     }
                 }
 
-                if (model.CreateContentFrom == CreateContentFrom.CourseFrontPage)
-                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = model.CourseId });
+                if (SubmitType.Equals("SaveAndView"))
+                    return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = contentId });
                 else
                     return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
             }
@@ -186,7 +186,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             return View(model);
         }
-
 
         [HasAccess(UserAccess.CourseEdit)]
         // GET: eLearning/CourseContents/Create
@@ -224,7 +223,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(CreateOrEditContentModel model)
+        public async Task<ActionResult> Edit(CreateOrEditContentModel model, string SubmitType="Save")
         {
             if (ModelState.IsValid)
             {
@@ -302,8 +301,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                             }
                         }
                     }
-                    return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
-                }
+
+                    if (SubmitType.Equals("SaveAndView"))
+                        return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = model.Id });
+                    else
+                        return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
+               }
             }
 
             TempData["ErrorMessage"] = "Cannot edit content.";
@@ -463,12 +466,11 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return null;
         }
 
-
         public async Task<string> GetSlideshare(string newUrl)
         {
             if (!newUrl.Contains("embed_code"))
             {
-                var result =  await SlideshareHelper.GetEmbedCode(newUrl);
+                var result = await SlideshareHelper.GetEmbedCode(newUrl);
 
                 return result;
             }

@@ -167,7 +167,7 @@ namespace FEP.Model
         public DbSet<TrainerGroup> TrainerGroups { get; set; }
         public DbSet<CourseProgress> CourseProgress { get; set; }
         public DbSet<FileUpload> FileUploads { get; set; }
-
+        public DbSet<CourselearningPath> CourseLearningPaths { get; set; }
 
         // Quiz, questions
         public DbSet<Question> Questions { get; set; }
@@ -185,6 +185,11 @@ namespace FEP.Model
 
         // Elearning Lookup
         public DbSet<RefCourseCategory> RefCourseCategories { get; set; }
+        public DbSet<RefCourseCompletionRule> RefCourseCompletionRules { get; set; }
+        public DbSet<RefCourseScoreCalculationRule> RefCourseScoreCalculationRules { get; set; }
+        public DbSet<RefCourseTraversalRule> RefCourseTraversalRules { get; set; }
+
+
 
         public DbSet<NotificationTemplate> NotificationTemplates { get; set; }
         public DbSet<TemplateParameters> TemplateParameters { get; set; }

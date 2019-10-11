@@ -25,10 +25,107 @@ namespace FEP.Model.Migrations
             //SeedSampleCertificateAndTemplate(db);
 
             SeedAssignTrainerToGroup(db);
+
+
+            SeedAdditionalCourses(db);
+            SeedRules(db);
         }
 
         private static void SeedDefaultData(DbEntities db)
         {
+        }
+
+        private static void SeedAdditionalCourses(DbEntities db)
+        {
+
+            int i = 2;
+            while(i < 5)
+            {
+                // Add a course
+                Course course = new Course
+                {
+                    Id = i,
+                    CategoryId = 1,
+                    Code = "COURSE" + i.ToString(),
+                    DefaultAllowablePercentageBeforeWithdraw = 25.0m,
+                    Description = "Sample Content : Code " + "COURSE" + i.ToString(),
+                    Duration = 5,
+                    DurationType = DurationType.Hour,
+                    IsFree = i % 2 == 1 ? true : false,
+                    Language = CourseLanguage.Malay,
+                    Medium = CourseMedium.Online,
+                    Objectives = "<strong>Objective</strong>",
+                    ScheduleType = CourseScheduleType.NoTimeLimit,
+                    Title = "Sample Content : Code " + "COURSE" + i.ToString(),
+                    Status = CourseStatus.Draft,
+                };
+
+                db.Courses.Add(course);
+
+                db.SaveChanges();
+
+                CourseContent richText = new CourseContent
+                {
+                    Order = 1,
+                    CourseId = course.Id,
+                    ContentType = CourseContentType.RichText,
+                    Text = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
+                    CompletionType = ContentCompletionType.Timer,
+                    Timer = 60, // in seconds
+                    Description = "<p> This is Content 1 for COURSE" + i.ToString() + "</p>",
+                    Title = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
+                };
+
+                course.Modules = new List<CourseModule>
+                {
+                    new CourseModule { Title = "Sample Module : Code " + "COURSE" + i.ToString(),
+                        CourseId =course.Id, Order=1, Description="Description",
+                        ModuleContents = new List<CourseContent>
+                        {
+                            new CourseContent
+                            {
+                                Order = 1,
+                                CourseId = course.Id,
+                                ContentType = CourseContentType.RichText,
+                                Text = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
+                                CompletionType = ContentCompletionType.Timer,
+                                Timer = 60, // in seconds
+                                Description = "<p> This is Content 1 for COURSE" + i.ToString() + "</p>",
+                                Title = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
+                            }
+                        }
+                    }
+                };
+
+                
+                db.SaveChanges();
+                
+                i++;
+            }
+        }
+
+        private static void SeedRules(DbEntities db)
+        {
+            db.RefCourseCompletionRules.AddOrUpdate(x => x.Name,
+                new RefCourseCompletionRule { Name = "All units must be completed", IsDisplayed = true }
+                );
+
+            db.RefCourseScoreCalculationRules.AddOrUpdate(x => x.Name,
+                new RefCourseScoreCalculationRule { Name = "Tests", IsDisplayed = true }
+                );
+
+            db.RefCourseTraversalRules.AddOrUpdate(x => x.Name,
+                new RefCourseTraversalRule { Name = "Units are seen and completed sequentially", IsDisplayed = true }
+                );
+
+
+            db.CourseLearningPaths.AddOrUpdate(x => x.CourseId,
+                new CourselearningPath { CourseId = 1, RequiredCourseId = 2 },
+                new CourselearningPath { CourseId = 1, RequiredCourseId = 3 },
+                new CourselearningPath { CourseId = 1, RequiredCourseId = 4 }
+                );
+
+            db.SaveChanges();
         }
 
         private static void SeedSampleCertificateAndTemplate(DbEntities db)
@@ -199,6 +296,7 @@ namespace FEP.Model.Migrations
                 // Add a course
                 Course course = new Course
                 {
+                    Id = 1,
                     CategoryId = 1,
                     Code = "GEN01",
                     DefaultAllowablePercentageBeforeWithdraw = 25.0m,
@@ -333,7 +431,7 @@ namespace FEP.Model.Migrations
                                 Description = "<p> Watch the video</p>",
                                 Title = "Content 2",
                             }
-                        } ,
+                        },
                     },
                     new CourseModule
                     {
@@ -454,6 +552,7 @@ namespace FEP.Model.Migrations
                 if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
 
                 module.ModuleContents.Add(content);
+                module.UpdateTotals();
 
                 db.SaveChanges();
 
@@ -472,6 +571,9 @@ namespace FEP.Model.Migrations
                 content2.QuestionId = question2.Id;
 
                 if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
+
+                module.ModuleContents.Add(content2);
+                module.UpdateTotals();
 
                 db.SaveChanges();
             }

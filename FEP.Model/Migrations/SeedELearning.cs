@@ -120,9 +120,9 @@ namespace FEP.Model.Migrations
 
 
             db.CourseLearningPaths.AddOrUpdate(x => x.CourseId,
-                new CourselearningPath { CourseId = 1, RequiredCourseId = 2 },
-                new CourselearningPath { CourseId = 1, RequiredCourseId = 3 },
-                new CourselearningPath { CourseId = 1, RequiredCourseId = 4 }
+                new CourseLearningPath { CourseId = 1, RequiredCourseId = 2 },
+                new CourseLearningPath { CourseId = 1, RequiredCourseId = 3 },
+                new CourseLearningPath { CourseId = 1, RequiredCourseId = 4 }
                 );
 
             db.SaveChanges();

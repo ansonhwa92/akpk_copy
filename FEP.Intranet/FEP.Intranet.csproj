@@ -809,6 +809,10 @@
     <Content Include="Areas\eLearning\Views\CourseContents\_flash.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_detailFlash.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_editFlash.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\_Background.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\_Template.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Edit_Template.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Create_Template.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

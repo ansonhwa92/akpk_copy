@@ -1,0 +1,41 @@
+﻿@model CertificatesModel
+
+
+<div class="tab-pane active" id="background">
+    <div class="form-container form-container-w100">
+        <div class="d-flex pb-4 align-items-center">
+            <div>
+                <h4 class="color-darkblue mb-0">Background List</h4>
+                <h6 class="font-weight-normal">Select to manage</h6>
+            </div>
+            <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+            <div><a href="@Url.Action("Create_Background", "Certificates", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Add Background</a></div>
+        </div>
+        <div>
+            <div class="mxw-660">
+                <div class="row">
+                    @{
+                        foreach (var item in Model.Background)
+                        {
+                            var imgUrl = "@(BaseURL)/eLearning/FileUpload/GetImg/?fil0eName=" + @item.FileUpload.FileNameOnStorage;
+                            <div class="col-lg-4">
+                                <div class="box-contain">
+                                    <div class="card text-center">
+                                        <span> <img src="@Url.Action("GetImg", "FileUpload", new { area = "eLearning", fileName = item.FileUpload.FileNameOnStorage })" height="100" width="150" id="FileUploadId" /></span>
+                                        <div>
+                                            <a href='@Url.Action("Edit_Background", "Certificates", new { area = "eLearning", id = item.Id })'></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="border-top p-3 rounded-bottom">
+        <a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("Index", "Certificates", new { area = "eLearning"})'>Back</a>
+    </div>
+</div>
+

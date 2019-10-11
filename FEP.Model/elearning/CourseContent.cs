@@ -117,7 +117,6 @@ namespace FEP.Model.eLearning
         [Display(Name = "Pdf", ResourceType = typeof(Language.eLearning.Enum))]
         Pdf,
 
-
         //https://github.com/aspose-slides/Aspose.Slides-for-.NET
         [Display(Name = "Powerpoint", ResourceType = typeof(Language.eLearning.Enum))]
         Powerpoint

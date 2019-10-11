@@ -1,0 +1,16 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+
+@Html.Partial("_contentCompletionDetail", Model)
+
+
+<div class="form-group">
+    <div>
+        <object width="100%" height="500">
+            <embed src="~/eLearning/File/GetImg?fileName=@Model.FileDocument.FileNameOnStorage"
+                   type="application/pdf" width="100%" height="500">
+            </embed>
+        </object>
+    </div>
+</div>
+

@@ -73,7 +73,10 @@
 
                 @Html.Raw(Model.Description)
 
-                @{
+                @Html.Partial($"_view{Model.ContentType.ToString()}", Model)
+
+
+                @*@{
                     switch (Model.ContentType)
                     {
                         case FEP.Model.eLearning.CourseContentType.Video:
@@ -128,7 +131,7 @@
                             break;
 
                     }
-                }
+                }*@
                 <hr />
 
                 @Html.Action("Get", "ContentCompletions", new { @contentId = Model.Id })

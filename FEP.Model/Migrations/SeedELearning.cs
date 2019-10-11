@@ -241,6 +241,7 @@ namespace FEP.Model.Migrations
                         "in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop " +
                         "publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p></div>",
                     CompletionType = ContentCompletionType.Timer,
+                    Timer = 120, // in seconds
                     Description = "<p> This is Content 1 </p>",
                     Title = "Content 1",
                 };

@@ -100,6 +100,25 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return File(bytes, "image/png");
         }
 
+        public ActionResult GetPdf(string fileName)
+        {
+            var path = Path.Combine(storageDir, fileName);
+
+            var bytes = System.IO.File.ReadAllBytes(path);
+
+            return File(bytes, "application/pdf");
+        }
+
+
+        public ActionResult GetPpt(string fileName)
+        {
+            var path = Path.Combine(storageDir, fileName);
+
+            var bytes = System.IO.File.ReadAllBytes(path);
+
+            return File(bytes, "application/pptx");
+        }
+
         public string DocToHTML(string fileType, string courseId, string fileName)
         {
             var fileFullPath = Path.Combine(storageDir, fileName);

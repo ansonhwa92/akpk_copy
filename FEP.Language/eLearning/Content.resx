@@ -159,6 +159,9 @@
   <data name="SelectFlash" xml:space="preserve">
     <value>Select a flash file</value>
   </data>
+  <data name="SelectPdf" xml:space="preserve">
+    <value>Select a pdf file</value>
+  </data>
   <data name="SelectVideo" xml:space="preserve">
     <value>Select a video</value>
   </data>

@@ -73,6 +73,14 @@
                     <li class="nav-item">
                         <a href="@Url.Action("Create", "CourseContents",
                                 new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.Pdf,
+                                    createContentFrom = (int) CreateContentFrom.Module})" class="nav-link">
+                            Pdf
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
                                     courseContentType = (int) CourseContentType.Test,
                                     createContentFrom = (int) CreateContentFrom.Module})" class="nav-link">
                             Test

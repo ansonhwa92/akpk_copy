@@ -1,18 +1,14 @@
-﻿@model List<CertificatesModel>
+﻿@model CertificatesModel
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-
 @section Nav {
-
     <div class="title_header">
         <div class="title-header-container">
             <div class="container">
-                <!-- if have button -->
-                @*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
@@ -24,89 +20,47 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Certificate Background</h1>
+                    <h1 class="page-title text-white">Certificate Background & Template</h1>
                     <div class="header-text">List of certificate background & template</div>
                 </div>
             </div>
         </div>
     </div>
-
 }
 
-
-<div class="content-container">
-    <div class="container">
         <div class="row">
-            <!-- Start content leftbar -->
             <div class="col-xl-3 col-md-3 col-sm-4 my-2">
                 <div id="page-nav" class="sidebar-left page-nav">
                     <div data-perfect-scrollbar>
-                        <div class="sidebar-inner">
-                            <ul class="steps steps-vertical nav">
-                                <li class="step-item active">
-                                    <a href="#step1" class="step-link" data-toggle="tab">
-                                        <span class="step-number">1</span>
-                                        <span class="step-title">Manage Certificate Background</span>
-                                    </a>
+                        <div class="page-section">
+                            <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Certificate</h6>                            
+                            <ul class="nav page-nav__menu">
+                                <li class="nav-item">
+                                    <a href="#background" data-toggle="tab" class="active nav-link">Background</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#template" data-toggle="tab" class="nav-link">Template</a>
                                 </li>
                             </ul>
-                            <!-- End Steps -->
                         </div>
                     </div>
                 </div>
             </div>
+
             <!-- End content leftbar -->
             <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
                 <!-- Start Tab Content -->
-                <div class="border-form rounded-top">
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="step1">
-                            <form>
-                                <div class="form-container form-container-w100">
-                                    <div class="d-flex pb-4 align-items-center">
-                                        <div>
-                                            <h4 class="color-darkblue mb-0">Certificate Background List</h4>
-                                            <h6 class="font-weight-normal">Select to manage</h6>
-                                        </div>
-                                        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-                                        <div><a href="@Url.Action("Create_Background", "Certificates", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Add Background</a></div>
+                <div class="border-form rounded">
+                    <form>
+                        <div class="form-container form-container-w100 tab-content">
+                            @Html.Partial("_Background")
 
-                                    </div>
-                                    <div>
-                                        <div class="mxw-660">
-                                            <div class="row">
-                                                @foreach (var item in Model)
-                                                {
-                                                    var imgUrl = "@(BaseURL)/eLearning/FileUpload/GetImg/?fil0eName=" + @item.FileUpload.FileNameOnStorage;
-                                                    <div class="col-lg-4">
-                                                        <div class="box-contain">
-                                                            <div class="card text-center">
-                                                                @*<span>@Html.DisplayFor(m => item.Description)</span>*@
-                                                                <span> <img src="@Url.Action("GetImg", "FileUpload", new { area = "eLearning", fileName = item.FileUpload.FileNameOnStorage})"  height="100" width="150" id="FileUploadId" /></span>
-                                                                <div>
-                                                                    <a href='@Url.Action("Edit_Background", "Certificates", new { area = "eLearning", id = item.Id})'></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            <!-- End Form -->
-                            <!-- Action Button -->
-                            <div class="border-top p-3 rounded-bottom">
-                                <a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("Index", "Certificates", new { area = "eLearning"})'>Back</a>
+                            @Html.Partial("_Template")
                             </div>
-                            <!-- End Action Button -->
-                        </div>
+                    </form>
                     </div>
+
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Wrapper -->
-</div>
+
 

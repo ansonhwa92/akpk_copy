@@ -4,6 +4,7 @@ using FEP.WebApiModel.eLearning;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace FEP.WebApi.Api.eLearning
@@ -22,39 +23,69 @@ namespace FEP.WebApi.Api.eLearning
 			base.Dispose(disposing);
 		}
 
-        public IHttpActionResult Get()
+        [HttpGet]
+        public async Task<IHttpActionResult> Get()
         {
-            var cert = db.CourseCertificates.Select(s => new CertificatesModel
+            var bg = await db.CourseCertificates.ToListAsync();
+            var temp = await db.CourseCertificateTemplates.ToListAsync();
+
+            CertificatesModel model = new CertificatesModel
             {
-                Id = s.Id,
-                Description = s.Description,
-                FileUpload = s.FileUpload
-            }).ToList();
+                Background = bg.ToList(),
+                Template = temp.ToList()
+            };
                 
-            return Ok(cert);
+            return Ok(model);
         }
 
 
+        //GET BACKGROUND
+        [Route("api/eLearning/Certificate/GetBackground")]
         public IHttpActionResult Get(int id)
         {
-            var cert = db.CourseCertificates.Where(u => u.Id == id).Select(s => new CertificatesModel
-            {
-                Id = s.Id,
-                Description = s.Description,
-                FileUpload = s.FileUpload
-            }).FirstOrDefault();
+            var bg = db.CourseCertificates.Where(u => u.Id == id).FirstOrDefault();
 
-            if (cert != null)
+            CreateBackgroundModel model = new CreateBackgroundModel
             {
-                return Ok(cert);
+                Id = bg.Id,
+                Description = bg.Description,
+                FileUpload = bg.FileUpload,
+                TypePageOrientation = bg.TypePageOrientation
+            };
+
+            if (model != null)
+            {
+                return Ok(model);
+            }
+
+            return NotFound();
+        }
+
+        //GET BACKGROUND
+        [Route("api/eLearning/Certificate/GetTemplate")]
+        public IHttpActionResult GetTemplate(int id)
+        {
+            var temp = db.CourseCertificateTemplates.Where(u => u.Id == id).FirstOrDefault();
+
+            CreateTemplateModel model = new CreateTemplateModel
+            {
+                Id = temp.Id,
+                Description = temp.Description,
+                Template = temp.Template,
+                TypePageOrientation = temp.TypePageOrientation
+            };
+
+            if (model != null)
+            {
+                return Ok(model);
             }
 
             return NotFound();
         }
 
         [Route("api/eLearning/Certificate/Create_Background")]
-        [HttpPost]
-        [ValidationActionFilter]
+        //[HttpPost]
+        //[ValidationActionFilter]
         public IHttpActionResult Post([FromBody]CreateBackgroundModel model)
         {
 
@@ -62,7 +93,9 @@ namespace FEP.WebApi.Api.eLearning
             {
                 Description = model.Description,
                 BackgroundImageFilename =  model.FileName,
-                FileUploadId = model.FileUploadId.Value
+                FileUploadId = model.FileUploadId.Value,
+                TypePageOrientation = model.TypePageOrientation
+
             };
 
             db.CourseCertificates.Add(cert);
@@ -72,31 +105,72 @@ namespace FEP.WebApi.Api.eLearning
 
         }
 
-
+        [Route("api/eLearning/Certificate/Create_Template")]
+        [HttpPost]
         [ValidationActionFilter]
-        public IHttpActionResult Put(int id, [FromBody]CertificatesModel model)
+        public IHttpActionResult Create_Template([FromBody]CreateTemplateModel model)
         {
 
-            var cert = db.CourseCertificates.Where(s => s.Id == id).FirstOrDefault();
-
-            if (cert != null)
+            var temp = new CourseCertificateTemplate
             {
-                cert.Description = model.Description;
+                Description = model.Description,
+                Template = model.Template,
+                TypePageOrientation = model.TypePageOrientation
+            };
 
-                db.Entry(cert).State = EntityState.Modified;
-                //db.Entry(cert).Property(x => x.Display).IsModified = false;
+            db.CourseCertificateTemplates.Add(temp);
+            db.SaveChanges();
 
-                db.SaveChanges();
-
-                return Ok(true);
-            }
-            else
-            {
-                return NotFound();
-            }
+            return Ok(temp.Id);
 
         }
 
+        [Route("api/eLearning/Certificates/Update_Background")]
+        //[HttpPost]
+        //[ValidationActionFilter]
+        public string Update_Background([FromBody]CreateBackgroundModel model)
+        {
+            if (model.Id != 0)
+            {
+                var cert = db.CourseCertificates.Where(x => x.Id == model.Id).FirstOrDefault();
+
+                if (cert != null)
+                {
+                    cert.Description = model.Description;
+                    cert.TypePageOrientation = model.TypePageOrientation;
+
+                    db.Entry(cert).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return model.Description;
+                }
+            }
+            return "";
+        }
+
+        [Route("api/eLearning/Certificates/Update_Template")]
+        //[HttpPost]
+        //[ValidationActionFilter]
+        public string Update_Template([FromBody]CreateTemplateModel model)
+        {
+            if (model.Id != 0)
+            {
+                var temp = db.CourseCertificateTemplates.Where(x => x.Id == model.Id).FirstOrDefault();
+
+                if (temp != null)
+                {
+                    temp.Description = model.Description;
+                    temp.Template = model.Template;
+                    temp.TypePageOrientation = model.TypePageOrientation;
+
+                    db.Entry(temp).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return model.Description;
+                }
+            }
+            return "";
+        }
 
         [Route("api/eLearning/Certificates/Delete")]
         public string Delete(int id)
@@ -117,22 +191,23 @@ namespace FEP.WebApi.Api.eLearning
             return "";
         }
 
-        [Route("api/eEvent/EventCategory/IsNameExist")]
-        [HttpGet]
-        public IHttpActionResult IsNameExist(int? id, string name)
+        [Route("api/eLearning/Certificates/Delete_Template")]
+        public string Delete_Template(int id)
         {
-            if (id == null)
+            var temp = db.CourseCertificateTemplates.Where(p => p.Id == id).FirstOrDefault();
+
+            if (temp != null)
             {
-                if (db.EventCategory.Any(u => u.CategoryName.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Display))
-                    return Ok(true);
-            }
-            else
-            {
-                if (db.EventCategory.Any(u => u.CategoryName.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
-                    return Ok(true);
+                string ptitle = temp.Description;
+
+                db.CourseCertificateTemplates.Remove(temp);
+
+                db.SaveChanges();
+
+                return ptitle;
             }
 
-            return NotFound();
+            return "";
         }
     }
 }

@@ -15,18 +15,25 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
 		public async Task<ActionResult> Index()
 		{
-            var response = await WepApiMethod.SendApiAsync<List<CertificatesModel>>(HttpVerbs.Get, $"eLearning/Certificate");
+            var response = await WepApiMethod.SendApiAsync<CertificatesModel>(HttpVerbs.Get, $"eLearning/Certificate");
 
             if (response.isSuccess)
                 return View(response.Data);
 
-            return View(new List<CertificatesModel>());
+            return View(new CertificatesModel());
         }
 
-        // GET: eLearning/CourseContents/Create
+        // CREATE CERTIFICATE BACKGROUND
         public ActionResult Create_Background()
         {
             CreateBackgroundModel model = new CreateBackgroundModel();
+            return View(model);
+        }
+
+        // CREATE CERTIFICATE TEMPLATE
+        public ActionResult Create_Template()
+        {
+            CreateTemplateModel model = new CreateTemplateModel();
             return View(model);
         }
 
@@ -81,7 +88,34 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     return RedirectToAction("Index", "Certificates", new { area = "eLearning" });
             }
 
-            TempData["ErrorMessage"] = "Cannot add content.";
+            TempData["ErrorMessage"] = "Cannot add background.";
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create_Template(CreateTemplateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eLearning/Certificate/Create_Template", model);
+
+                if (response.isSuccess)
+                {
+                    TempData["SuccessMessage"] = "Template successfully added.";
+
+                    await LogActivity(Modules.Learning, "Create certificate template : " + model.Description);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Fail add new template";
+                }
+                    
+                return RedirectToAction("Index", "Certificates", new { area = "eLearning" });
+            }
+
+            TempData["ErrorMessage"] = "Cannot add template.";
 
             return View(model);
         }
@@ -93,7 +127,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var response = await WepApiMethod.SendApiAsync<CertificatesModel>(HttpVerbs.Get, $"eLearning/Certificate?id={id}");
+            var response = await WepApiMethod.SendApiAsync<CreateBackgroundModel>(HttpVerbs.Get, $"eLearning/Certificate/GetBackground?id={id}");
 
             if (!response.isSuccess)
                 return HttpNotFound();
@@ -108,8 +142,82 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(vm);
         }
 
-        [HttpPost, ActionName("Delete_Background")]
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> Update_Background(CreateBackgroundModel model)
+        {
+            if (model.Description != null)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eLearning/Certificates/Update_Background", model);
+
+                if (response.isSuccess)
+                {
+                    await LogActivity(Modules.Learning, "Delete Background: " + response.Data);
+
+                    TempData["SuccessMessage"] = "Background Name " + response.Data + " successfully updated.";
+
+                    return RedirectToAction("Index", "Certificates", new { area = "eLearning" });
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Failed to delete certificate background.";
+
+                    return RedirectToAction("Edit_Background", "Certificates", new { area = "eLearning", @id = model.Id });
+                }
+            }
+            return View(model);
+        }
+
+        public async Task<ActionResult> Edit_Template(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var response = await WepApiMethod.SendApiAsync<CreateTemplateModel>(HttpVerbs.Get, $"eLearning/Certificate/GetTemplate?id={id}");
+
+            if (!response.isSuccess)
+                return HttpNotFound();
+
+            var vm = response.Data;
+
+            if (vm == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(vm);
+        }
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Update_Template(CreateTemplateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eLearning/Certificates/Update_Template", model);
+
+                if (response.isSuccess)
+                {
+                    await LogActivity(Modules.Learning, "Delete Template: " + response.Data);
+
+                    TempData["SuccessMessage"] = "Template Name " + response.Data + " successfully updated.";
+
+                    return RedirectToAction("Index", "Certificates", new { area = "eLearning" });
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Failed to delete certificate background.";
+
+                    return RedirectToAction("Edit_Template", "Certificates", new { area = "eLearning", @id = model.Id });
+                }
+            }
+            return View(model);
+        }
+
+        //[HttpPost, ActionName("Delete_Background")]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete_Background(int? id)
         {
             if (id == null)
@@ -137,5 +245,34 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
         }
 
+
+        //[HttpPost, ActionName("Delete_Template")]
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete_Template(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var module = db.CourseCertificateTemplates.Where(p => p.Id == id).FirstOrDefault();
+
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Delete, $"eLearning/Certificates/Delete_Template?id={id}");
+
+            if (response.isSuccess)
+            {
+                await LogActivity(Modules.Learning, "Delete Template: " + response.Data);
+
+                TempData["SuccessMessage"] = "Template Name " + response.Data + " successfully deleted.";
+
+                return RedirectToAction("Index", "Certificates", new { area = "eLearning" });
+            }
+            else
+            {
+                TempData["SuccessMessage"] = "Failed to delete certificate template.";
+
+                return RedirectToAction("Edit_Template", "Certificates", new { area = "eLearning", @id = id });
+            }
+        }
     }
 }

@@ -15,12 +15,20 @@ namespace FEP.Model.eLearning
         public string BackgroundImageFilename { get; set; }
         public int FileUploadId { get; set; }
         public virtual FileUpload FileUpload { get; set; }
+        public TypePageOrientation TypePageOrientation { get; set; }
     }
 
     public class CourseCertificateTemplate : BaseEntity
     {
         public string Description { get; set; }
         public string Template { get; set; }
-        
+        public TypePageOrientation TypePageOrientation { get; set; }
+
+    }
+
+    public enum TypePageOrientation
+    {
+        Portrait,
+        Landscape
     }
 }

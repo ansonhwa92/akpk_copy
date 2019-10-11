@@ -23,44 +23,47 @@ namespace FEP.Model.eLearning
 
     }
 
-    public class RefCourseTraversalRule : LookupEntity
-    {
-        [Required]
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Whether this item should be shown at selections
-        /// </summary>
-        public bool IsDisplayed { get; set; }
-
-    }
-
-    public class RefCourseCompletionRule : LookupEntity
-    {
-        [Required]
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Whether this item should be shown at selections
-        /// </summary>
-        public bool IsDisplayed { get; set; }
-
-    }
-    public class RefCourseScoreCalculationRule : LookupEntity
-    {
-        [Required]
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Whether this item should be shown at selections
-        /// </summary>
-        public bool IsDisplayed { get; set; }
-
-    }
 }
+
+
+
+//public class RefCourseTraversalRule : LookupEntity
+//{
+//    [Required]
+//    public string Name { get; set; }
+
+//    public string Description { get; set; }
+
+//    /// <summary>
+//    /// Whether this item should be shown at selections
+//    /// </summary>
+//    public bool IsDisplayed { get; set; }
+
+//}
+
+//public class RefCourseCompletionRule : LookupEntity
+//{
+//    [Required]
+//    public string Name { get; set; }
+
+//    public string Description { get; set; }
+
+//    /// <summary>
+//    /// Whether this item should be shown at selections
+//    /// </summary>
+//    public bool IsDisplayed { get; set; }
+
+//}
+//public class RefCourseScoreCalculationRule : LookupEntity
+//{
+//    [Required]
+//    public string Name { get; set; }
+
+//    public string Description { get; set; }
+
+//    /// <summary>
+//    /// Whether this item should be shown at selections
+//    /// </summary>
+//    public bool IsDisplayed { get; set; }
+
+//}

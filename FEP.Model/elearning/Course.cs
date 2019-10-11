@@ -113,9 +113,7 @@ namespace FEP.Model.eLearning
         /// </summary>
         public string TestsPassed { get; set; }
 
-
         // ----- END COURSE COMPLETION CRITERIA
-
 
         public string LearningPath { get; set; }
 

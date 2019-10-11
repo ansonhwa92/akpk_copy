@@ -70,7 +70,6 @@
     <Compile Include="elearning\Group.cs" />
     <Compile Include="elearning\GroupMember.cs" />
     <Compile Include="elearning\Discussion.cs" />
-    <Compile Include="elearning\CourseLearningPath.cs" />
     <Compile Include="elearning\Lookups.cs" />
     <Compile Include="elearning\ContentFile.cs" />
     <Compile Include="elearning\CourseContent.cs" />
@@ -84,13 +83,9 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201910100326169_Initial.cs" />
-    <Compile Include="Migrations\201910100326169_Initial.Designer.cs">
-      <DependentUpon>201910100326169_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910100722440_AddTypePageOrientation.cs" />
-    <Compile Include="Migrations\201910100722440_AddTypePageOrientation.Designer.cs">
-      <DependentUpon>201910100722440_AddTypePageOrientation.cs</DependentUpon>
+    <Compile Include="Migrations\201910110948379_initialdb.cs" />
+    <Compile Include="Migrations\201910110948379_initialdb.Designer.cs">
+      <DependentUpon>201910110948379_initialdb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -118,11 +113,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910100326169_Initial.resx">
-      <DependentUpon>201910100326169_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910100722440_AddTypePageOrientation.resx">
-      <DependentUpon>201910100722440_AddTypePageOrientation.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910110948379_initialdb.resx">
+      <DependentUpon>201910110948379_initialdb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -25,8 +25,7 @@ namespace FEP.Model.Migrations
             //SeedSampleCertificateAndTemplate(db);
 
             SeedAssignTrainerToGroup(db);
-
-
+            
             SeedAdditionalCourses(db);
             SeedRules(db);
         }
@@ -39,7 +38,7 @@ namespace FEP.Model.Migrations
         {
 
             int i = 2;
-            while(i < 5)
+            while(i <= 5)
             {
                 // Add a course
                 Course course = new Course
@@ -96,7 +95,6 @@ namespace FEP.Model.Migrations
                         }
                     }
                 };
-
                 
                 db.SaveChanges();
                 
@@ -106,24 +104,12 @@ namespace FEP.Model.Migrations
 
         private static void SeedRules(DbEntities db)
         {
-            db.RefCourseCompletionRules.AddOrUpdate(x => x.Name,
-                new RefCourseCompletionRule { Name = "All units must be completed", IsDisplayed = true }
-                );
+            var course = db.Courses.FirstOrDefault(x => x.Id == 1);
 
-            db.RefCourseScoreCalculationRules.AddOrUpdate(x => x.Name,
-                new RefCourseScoreCalculationRule { Name = "Tests", IsDisplayed = true }
-                );
-
-            db.RefCourseTraversalRules.AddOrUpdate(x => x.Name,
-                new RefCourseTraversalRule { Name = "Units are seen and completed sequentially", IsDisplayed = true }
-                );
-
-
-            db.CourseLearningPaths.AddOrUpdate(x => x.CourseId,
-                new CourseLearningPath { CourseId = 1, RequiredCourseId = 2 },
-                new CourseLearningPath { CourseId = 1, RequiredCourseId = 3 },
-                new CourseLearningPath { CourseId = 1, RequiredCourseId = 4 }
-                );
+            course.TraversalRule = TraversalRule.Sequential;
+            course.CompletionCriteriaType = CompletionCriteriaType.ActivityCompletion;
+            course.ScoreCalculation = ScoreCalculation.Average;
+            course.LearningPath = "{2,3,4}"; // course 2,3,4
 
             db.SaveChanges();
         }

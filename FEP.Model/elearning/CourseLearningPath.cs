@@ -9,7 +9,7 @@ using Language;
 
 namespace FEP.Model.eLearning
 {
-    public class CourselearningPath : BaseEntity
+    public class CourseLearningPath : BaseEntity
     {
         public int CourseId { get; set; }
         public int RequiredCourseId { get; set; }

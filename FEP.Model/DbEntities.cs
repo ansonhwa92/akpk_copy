@@ -167,7 +167,7 @@ namespace FEP.Model
         public DbSet<TrainerGroup> TrainerGroups { get; set; }
         public DbSet<CourseProgress> CourseProgress { get; set; }
         public DbSet<FileUpload> FileUploads { get; set; }
-        public DbSet<CourselearningPath> CourseLearningPaths { get; set; }
+        public DbSet<CourseLearningPath> CourseLearningPaths { get; set; }
 
         // Quiz, questions
         public DbSet<Question> Questions { get; set; }

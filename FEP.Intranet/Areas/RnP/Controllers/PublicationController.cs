@@ -907,7 +907,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 CreatorId = pubapproval.Pub.CreatorId,
                 RefNo = pubapproval.Pub.RefNo,
                 Status = pubapproval.Pub.Status,
-                DmsPath = pubapproval.Pub.DmsPath
+                DmsPath = pubapproval.Pub.DmsPath,
+                CreatorName = pubapproval.Pub.CreatorName
             };
 
             var papproval = new ReturnUpdatePublicationApprovalModel

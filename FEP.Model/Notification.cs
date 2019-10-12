@@ -115,6 +115,12 @@ namespace FEP.Model
         [Display(Name = "Approve Survey Creation Final")]
         Approve_Survey_Creation_Final,
 
+        //Survey Response
+        [Display(Name = "Submit Survey Distribution")]
+        Submit_Survey_Distribution,
+        [Display(Name = "Submit Survey Response")]
+        Submit_Survey_Response,
+
         //Publication
         [Display(Name = "Submit Publication Creation")]
         Submit_Publication_Creation,

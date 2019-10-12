@@ -96,4 +96,14 @@ namespace FEP.WebApiModel.RnP
         public int Quantity { get; set; }
     }
 
+    // class for returning complete cart
+    public class PurchaseOrderFullModel
+    {
+        public PurchaseOrderModel Cart { get; set; }
+        public List<PurchaseOrderItemModel> Items { get; set; }
+        public List<PurchaseOrderItemModel> Publications { get; set; }
+        public List<PurchaseOrderItemModel> Events { get; set; }
+        public List<PurchaseOrderItemModel> Courses { get; set; }
+    }
+
 }

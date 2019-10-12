@@ -43,16 +43,27 @@
                             <div class="box-contain">
                                 @if (Model.Digitalcopy)
                                 {
-                                    <div class="card text-center" id="card_digital" data-selected="no" data-active="yes">
-                                        <div class="mb-4"><img src="~/img/publications/icon-digital.svg" alt="image"></div>
-                                        <div class="color-secondary font-weight-bolder mb-1">Digital</div>
-                                        <h3 class="color-darkblue mb-5">RM @Model.DPrice.ToString("0.00")</h3>
-                                        <!--<div class="badge text-muted"><s>RM11.99</s><span> 10% off</span></div>-->
-                                    </div>
+                                    if (!Model.FreeDCopy)
+                                    {
+                                        <div class="card text-center" id="card_digital" data-selected="false" data-active="yes">
+                                            <div class="mb-4"><img src="~/img/publications/icon-digital.svg" alt="image"></div>
+                                            <div class="color-secondary font-weight-bolder mb-1">Digital</div>
+                                            <h3 class="color-darkblue mb-5">RM @Model.DPrice.ToString("0.00")</h3>
+                                            <!--<div class="badge text-muted"><s>RM11.99</s><span> 10% off</span></div>-->
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="card text-center" id="card_digital" data-selected="false" data-active="no">
+                                            <div class="mb-4"><img src="~/img/publications/icon-digital.svg" alt="image"></div>
+                                            <div class="color-secondary font-weight-bolder mb-1">Digital</div>
+                                            <h3 class="color-darkblue mb-5">Free!</h3>
+                                        </div>
+                                    }
                                 }
                                 else
                                 {
-                                    <div class="card text-center" id="card_digital" data-selected="no" data-active="no">
+                                    <div class="card text-center" id="card_digital" data-selected="false" data-active="no">
                                         <div class="mb-4"><img src="~/img/publications/icon-digital.svg" alt="image"></div>
                                         <div class="color-secondary font-weight-bolder mb-1">Digital</div>
                                         <h3 class="color-red mb-5">Not Available</h3>
@@ -64,18 +75,18 @@
                             <div class="box-contain">
                                 @if (Model.Hardcopy)
                                 {
-                                    <div class="card text-center" id="card_hardcopy" data-selected="no" data-active="yes">
+                                    <div class="card text-center" id="card_hardcopy" data-selected="false" data-active="yes">
                                         <div class="mb-4"><img src="~/img/publications/icon-hard-cover.svg" alt="image"></div>
-                                        <div class="color-secondary font-weight-bolder mb-1">Hard Cover</div>
+                                        <div class="color-secondary font-weight-bolder mb-1">Hard Copy</div>
                                         <h3 class="color-darkblue mb-5">RM @Model.HPrice.ToString("0.00")</h3>
                                         <div class="touchspin-wrapper position-bottom"><input id="touch-spin-2" data-toggle="touch-spin" data-min="0" data-max="10" data-step="1" type="text" value="0" class="form-control" /></div>
                                     </div>
                                 }
                                 else
                                 {
-                                    <div class="card text-center" id="card_hardcopy" data-selected="no" data-active="no">
+                                    <div class="card text-center" id="card_hardcopy" data-selected="false" data-active="no">
                                         <div class="mb-4"><img src="~/img/publications/icon-hard-cover.svg" alt="image"></div>
-                                        <div class="color-secondary font-weight-bolder mb-1">Hard Cover</div>
+                                        <div class="color-secondary font-weight-bolder mb-1">Hard Copy</div>
                                         <h3 class="color-red mb-5">Not Available</h3>
                                     </div>
                                 }
@@ -85,16 +96,16 @@
                             <div class="box-contain">
                                 @if (Model.HDcopy)
                                 {
-                                    <div class="card text-center" id="card_both" data-selected="no" data-active="yes">
+                                    <div class="card text-center" id="card_both" data-selected="false" data-active="yes">
                                         <div class="mb-4"><img src="~/img/publications/icon-1-plus-1-promo.svg" alt="image"></div>
                                         <div class="color-secondary font-weight-bolder mb-1">Promotion</div>
                                         <h3 class="color-darkblue mb-5">RM @Model.HDPrice.ToString("0.00")</h3>
-                                        <div class="xs-small position-bottom">Get 1 digital and 1 hard cover for a special price. </div>
+                                        <div class="xs-small position-bottom">Get 1 digital and 1 hard copy for a special price. </div>
                                     </div>
                                 }
                                 else
                                 {
-                                    <div class="card text-center" id="card_both" data-selected="no" data-active="no">
+                                    <div class="card text-center" id="card_both" data-selected="false" data-active="no">
                                         <div class="mb-4"><img src="~/img/publications/icon-1-plus-1-promo.svg" alt="image"></div>
                                         <div class="color-secondary font-weight-bolder mb-1">Promotion</div>
                                         <h3 class="color-red mb-5">Not Available</h3>
@@ -143,7 +154,18 @@
                             <li><i class="la la-calendar font-icon color-secondary" style="font-size: 19px;"></i>@Model.Year</li>
                             <li><i class="la la-language font-icon color-secondary" style="font-size: 17px;"></i>@Model.Language</li>
                             <li><i class="la la-barcode font-icon color-secondary" style="font-size: 17px;"></i>@Model.ISBN</li>
-                            <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Digital/Hardcover</li>
+                            @if ((Model.HDcopy) || ((Model.Digitalcopy) && (Model.Hardcopy)))
+                            {
+                                <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Digital/Hard copy</li>
+                            }
+                            else if (Model.Hardcopy)
+                            {
+                                <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Hard copy</li>
+                            }
+                            else if (Model.Digitalcopy)
+                            {
+                                <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Digital</li>
+                            }
                         </ul>
                     </div>
                     <!-- Share with friends -->
@@ -170,10 +192,10 @@
                     $(this).toggleClass('active');
                     if ($(this).hasClass('active')) {
                         $(this).css('background-color', 'lightblue');
-                        $(this).data('selected', 'yes');
+                        $(this).data('selected', 'true');
                     } else {
                         $(this).css('background-color', 'white');
-                        $(this).data('selected', 'no');
+                        $(this).data('selected', 'false');
                     }
                 }
             });
@@ -186,14 +208,17 @@
                 var sd = $("#card_digital").data('selected');
                 var sh = $("#card_hardcopy").data('selected');
                 var sb = $("#card_both").data('selected');
-                if ((sd == "no") && (sh == "no") && (sb == "no")) {
+                // Jeez... can't compare true/false as string for some reason, coz sd/sh/sb all becomes boolean
+                if ((sd == false) && (sh == false) && (sb == false)) {
                     alert("Please select at least one (1) format!");
                     return false;
                 }
                 $("#dbuy").val(sd);
                 $("#hbuy").val(sh);
                 $("#pbuy").val(sb);
-                if (sh == "yes") {
+                //alert(sh);
+                // Unbelievable!! Here sh becomes string again, wth???
+                if (sh == "true") {
                     var bil = $("#touch-spin-2").val();
                     if ($.isNumeric(bil)) {
                         if (Math.floor(bil) == bil) {

@@ -115,6 +115,7 @@ namespace FEP.Model
         public DbSet<PublicationDelivery> PublicationDelivery { get; set; }
         public DbSet<PublicationPurchaseItem> PublicationPurchaseItem { get; set; }
         public DbSet<PublicationRefund> PublicationRefund { get; set; }
+        public DbSet<PromotionCode> PromotionCode { get; set; }
 
         //research
         public DbSet<Survey> Survey { get; set; }

@@ -1322,6 +1322,7 @@ namespace FEP.WebApi.Api.RnP
             {
                 var pitem = new PublicationPurchaseItem
                 {
+                    PurchaseOrderId = model.PurchaseOrderId,
                     UserId = model.UserId,
                     PublicationID = model.PublicationID,
                     Format = model.Format,

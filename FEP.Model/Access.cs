@@ -55,7 +55,7 @@ namespace FEP.Model
 		[Display(Name = "Internal Event Menu")]
 		EventIntenalEventMenu = 1002,
 		[Display(Name = "Event Administrator")]
-		EventAdministrator = 1002,
+		EventAdministrator = 1003,
 
 		//----------------------Media Interview Button--------------------//
 		[Display(Name = "Media Interview - Submit Media Interview For Verification")]

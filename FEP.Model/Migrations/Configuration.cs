@@ -1,4 +1,4 @@
-namespace FEP.Model.Migrations
+﻿namespace FEP.Model.Migrations
 {
     using System;
     using System.Data.Entity;

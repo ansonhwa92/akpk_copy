@@ -190,6 +190,19 @@ namespace FEP.Model
         public virtual Publication Publication { get; set; }
     }
 
+    [Table("PromotionCode")]
+    public class PromotionCode
+    {
+        [Key]
+        public int ID { get; set; }
+        public string Code { get; set; }
+        public int MoneyValue { get; set; }
+        public int PercentageValue { get; set; }
+        public DateTime ExpiryDate { get; set; }
+        public bool Used { get; set; }
+        // future: applicable to which module, max per receipt, etc.
+    }
+
     public enum PublicationCategories
     {
         [Display(Name = "PubCategoryArticles", ResourceType = typeof(Language.RnPEnum))]

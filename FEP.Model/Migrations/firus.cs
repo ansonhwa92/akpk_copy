@@ -22,151 +22,188 @@ namespace FEP.Model.Migrations
 				db.PublicationCategory.Add(new PublicationCategory { Name = "Research Papers" });
 			}
 
-			//rnp verifier
-			//var user1 = db.User.Local.Where(r => r.Name.Contains("R&P Verifier")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Verifier")).FirstOrDefault();
+            /*
+            // rnp admin
 
-			//if (user1 == null)
-			//{
+            var user0 = db.User.Local.Where(r => r.Name.Contains("R&P Admin")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Admin")).FirstOrDefault();
 
-			//        //var role1 = db.Role.Local.Where(r => r.Name.Contains("Verifier R&P")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("Verifier R&P")).FirstOrDefault();
+            if (user0 == null)
+            {
 
-			//        //List<UserRole> userroles = new List<UserRole>();
+                db.User.Add(
+                    new User
+                    {
+                        Name = "R&P Admin",
+                        Email = "adminrnp@yahoo.com",
+                        UserType = UserType.Staff,
+                        CreatedDate = DateTime.Now,
+                        Display = true,
+                        UserAccount = new UserAccount
+                        {
+                            LoginId = "adminrnp@yahoo.com",
+                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==",
+                            Salt = "/ZCqmg==",
+                            IsEnable = true,
+                            LoginAttempt = 0,
+                            LastPasswordChange = DateTime.Now,
+                            LastLogin = DateTime.Now,
+                            //UserRoles = userroles
+                        },
+                    }
+                );
 
-			//        //userroles.Add(new UserRole { Role = role1 });
+            }
+            */
 
-			//        db.User.Add(
-			//            new User
-			//            {
-			//                Name = "R&P Verifier",
-			//                Email = "rnpverifier@fep.com",
-			//                UserType = UserType.Staff,
-			//                CreatedDate = DateTime.Now,
-			//                Display = true,
-			//                UserAccount = new UserAccount
-			//                {
-			//                    LoginId = "rnpverifier@fep.com",
-			//                    HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==", //default abc123
-			//                    Salt = "/ZCqmg==",
-			//                    IsEnable = true,
-			//                    LoginAttempt = 0,
-			//                    LastPasswordChange = DateTime.Now,
-			//                    LastLogin = DateTime.Now,
-			//                    //UserRoles = userroles
-			//                },
-			//            }
-			//        );
+            /*
+            // rnp verifier
 
-			//    }
+            var user1 = db.User.Local.Where(r => r.Name.Contains("R&P Verifier")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Verifier")).FirstOrDefault();
 
-			//    //rnp approver 1
-			//    var user2 = db.User.Local.Where(r => r.Name.Contains("R&P Approver 1")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Approver 1")).FirstOrDefault();
+            if (user1 == null)
+            {
 
-			//    if (user2 == null)
-			//    {
+                db.User.Add(
+                    new User
+                    {
+                        Name = "R&P Verifier",
+                        Email = "verifierrnp@yahoo.com",
+                        UserType = UserType.Staff,
+                        CreatedDate = DateTime.Now,
+                        Display = true,
+                        UserAccount = new UserAccount
+                        {
+                            LoginId = "verifierrnp@yahoo.com",
+                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==",
+                            Salt = "/ZCqmg==",
+                            IsEnable = true,
+                            LoginAttempt = 0,
+                            LastPasswordChange = DateTime.Now,
+                            LastLogin = DateTime.Now,
+                            //UserRoles = userroles
+                            },
+                    }
+                );
 
-			//        //var role2 = db.Role.Local.Where(r => r.Name.Contains("Approver R&P 1")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("Approver R&P 1")).FirstOrDefault();
+            }
+            */
 
-			//        //List<UserRole> userroles = new List<UserRole>();
+            /*
+            //rnp approver 1
 
-			//        //userroles.Add(new UserRole { Role = role2 });
+            var user2 = db.User.Local.Where(r => r.Name.Contains("R&P Approver 1")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Approver 1")).FirstOrDefault();
 
-			//        db.User.Add(
-			//            new User
-			//            {
-			//                Name = "R&P Approver 1",
-			//                Email = "rnpapprover1@fep.com",
-			//                UserType = UserType.Staff,
-			//                CreatedDate = DateTime.Now,
-			//                Display = true,
-			//                UserAccount = new UserAccount
-			//                {
-			//                    LoginId = "rnpapprover1@fep.com",
-			//                    HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==", //default abc123
-			//                    Salt = "/ZCqmg==",
-			//                    IsEnable = true,
-			//                    LoginAttempt = 0,
-			//                    LastPasswordChange = DateTime.Now,
-			//                    LastLogin = DateTime.Now,
-			//                    //UserRoles = userroles
-			//                },
-			//            }
-			//        );
+            if (user2 == null)
+            {
 
-			//    }
+                db.User.Add(
+                    new User
+                    {
+                        Name = "R&P Approver 1",
+                        Email = "ApproverRNP1@fep.com",
+                        UserType = UserType.Staff,
+                        CreatedDate = DateTime.Now,
+                        Display = true,
+                        UserAccount = new UserAccount
+                        {
+                            LoginId = "ApproverRNP1@fep.com",
+                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==",
+                            Salt = "/ZCqmg==",
+                            IsEnable = true,
+                            LoginAttempt = 0,
+                            LastPasswordChange = DateTime.Now,
+                            LastLogin = DateTime.Now,
+                            //UserRoles = userroles
+                            },
+                    }
+                );
 
-			//    //rnp approver 2
-			//    var user3 = db.User.Local.Where(r => r.Name.Contains("R&P Approver 2")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Approver 2")).FirstOrDefault();
+            }
 
-			//    if (user3 == null)
-			//    {
+            //rnp approver 2
 
-			//        //var role3 = db.Role.Local.Where(r => r.Name.Contains("Approver R&P 2")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("Approver R&P 2")).FirstOrDefault();
+            var user3 = db.User.Local.Where(r => r.Name.Contains("R&P Approver 2")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Approver 2")).FirstOrDefault();
 
-			//        //List<UserRole> userroles = new List<UserRole>();
+            if (user3 == null)
+            {
 
-			//        //userroles.Add(new UserRole { Role = role3 });
+                db.User.Add(
+                    new User
+                    {
+                        Name = "R&P Approver 2",
+                        Email = "ApproverRNP2@fep.com",
+                        UserType = UserType.Staff,
+                        CreatedDate = DateTime.Now,
+                        Display = true,
+                        UserAccount = new UserAccount
+                        {
+                            LoginId = "ApproverRNP2@fep.com",
+                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==",
+                            Salt = "/ZCqmg==",
+                            IsEnable = true,
+                            LoginAttempt = 0,
+                            LastPasswordChange = DateTime.Now,
+                            LastLogin = DateTime.Now,
+                            //UserRoles = userroles
+                            },
+                    }
+                );
 
-			//        db.User.Add(
-			//            new User
-			//            {
-			//                Name = "R&P Approver 2",
-			//                Email = "rnpapprover2@fep.com",
-			//                UserType = UserType.Staff,
-			//                CreatedDate = DateTime.Now,
-			//                Display = true,
-			//                UserAccount = new UserAccount
-			//                {
-			//                    LoginId = "rnpapprover2@fep.com",
-			//                    HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==", //default abc123
-			//                    Salt = "/ZCqmg==",
-			//                    IsEnable = true,
-			//                    LoginAttempt = 0,
-			//                    LastPasswordChange = DateTime.Now,
-			//                    LastLogin = DateTime.Now,
-			//                    //UserRoles = userroles
-			//                },
-			//            }
-			//        );
+            }
 
-			//    }
+            //rnp approver 3
 
-			//    //rnp approver 3
-			//    var user4 = db.User.Local.Where(r => r.Name.Contains("R&P Approver 3")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Approver 3")).FirstOrDefault();
+            var user4 = db.User.Local.Where(r => r.Name.Contains("R&P Approver 3")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Approver 3")).FirstOrDefault();
 
-			//    if (user4 == null)
-			//    {
+            if (user4 == null)
+            {
 
-			//        //var role4 = db.Role.Local.Where(r => r.Name.Contains("Approver R&P 3")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("Approver R&P 3")).FirstOrDefault();
+                db.User.Add(
+                    new User
+                    {
+                        Name = "R&P Approver 3",
+                        Email = "ApproverRNP3@fep.com",
+                        UserType = UserType.Staff,
+                        CreatedDate = DateTime.Now,
+                        Display = true,
+                        UserAccount = new UserAccount
+                        {
+                            LoginId = "ApproverRNP3@fep.com",
+                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==",
+                            Salt = "/ZCqmg==",
+                            IsEnable = true,
+                            LoginAttempt = 0,
+                            LastPasswordChange = DateTime.Now,
+                            LastLogin = DateTime.Now,
+                            //UserRoles = userroles
+                            },
+                    }
+                );
 
-			//        //List<UserRole> userroles = new List<UserRole>();
+            }
+            */
 
-			//        //userroles.Add(new UserRole { Role = role4 });
+            //promotion codes
+            if (!db.PromotionCode.Any())
+            {
+                db.PromotionCode.Add(new PromotionCode {
+                    Code = "MFM1234",
+                    MoneyValue = 10,
+                    PercentageValue = 0,
+                    ExpiryDate = DateTime.Parse("31-12-2019 23:59:59"),
+                    Used = false
+                });
+                db.PromotionCode.Add(new PromotionCode
+                {
+                    Code = "MFM5678",
+                    MoneyValue = 20,
+                    PercentageValue = 0,
+                    ExpiryDate = DateTime.Parse("30-09-2019 23:59:59"),
+                    Used = false
+                });
+            }
 
-			//        db.User.Add(
-			//            new User
-			//            {
-			//                Name = "R&P Approver 3",
-			//                Email = "rnpapprover3@fep.com",
-			//                UserType = UserType.Staff,
-			//                CreatedDate = DateTime.Now,
-			//                Display = true,
-			//                UserAccount = new UserAccount
-			//                {
-			//                    LoginId = "rnpapprover3@fep.com",
-			//                    HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==", //default abc123
-			//                    Salt = "/ZCqmg==",
-			//                    IsEnable = true,
-			//                    LoginAttempt = 0,
-			//                    LastPasswordChange = DateTime.Now,
-			//                    LastLogin = DateTime.Now,
-			//                    //UserRoles = userroles
-			//                },
-			//            }
-			//        );
+        }
 
-			//    }
-
-		}
-
-	}
+    }
 }

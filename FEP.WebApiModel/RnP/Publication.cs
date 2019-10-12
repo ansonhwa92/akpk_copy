@@ -633,7 +633,96 @@ namespace FEP.WebApiModel.RnP
         public string PhoneNumber { get; set; }
     }
 
-    // class for updating delivery information + adding item to order
+    // class for purchase publication page - contains delivery address and a single publication
+    // in up to 3 formats
+    public class PurchasePublicationModel
+    {
+        public int PublicationID { get; set; }
+
+        public bool FormatDigital { get; set; }
+
+        public bool FormatHardcopy { get; set; }
+
+        public bool FormatPromotion { get; set; }
+
+        public int HardcopyQuantity { get; set; }
+
+        public int DeliveryID { get; set; }
+
+        public int UserId { get; set; }
+
+        [Display(Name = "First Name")]
+        [Required]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        [Required]
+        public string LastName { get; set; }
+
+        [Display(Name = "Street Address 1")]
+        [Required]
+        public string Address1 { get; set; }
+
+        [Display(Name = "Street Address 2")]
+        public string Address2 { get; set; }
+
+        [Display(Name = "Postcode")]
+        [Required]
+        public string Postcode { get; set; }
+
+        [Display(Name = "City")]
+        [Required]
+        public string City { get; set; }
+
+        [Display(Name = "State")]
+        [Required]
+        public DeliveryStates State { get; set; }
+
+        [Display(Name = "Contact No.")]
+        [Required]
+        public string PhoneNumber { get; set; }
+    }
+
+    // class for updating delivery address only
+    public class EditDeliveryAddressModel
+    {
+        public int DeliveryID { get; set; }
+
+        public int UserId { get; set; }
+
+        [Display(Name = "First Name")]
+        [Required]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        [Required]
+        public string LastName { get; set; }
+
+        [Display(Name = "Street Address 1")]
+        [Required]
+        public string Address1 { get; set; }
+
+        [Display(Name = "Street Address 2")]
+        public string Address2 { get; set; }
+
+        [Display(Name = "Postcode")]
+        [Required]
+        public string Postcode { get; set; }
+
+        [Display(Name = "City")]
+        [Required]
+        public string City { get; set; }
+
+        [Display(Name = "State")]
+        [Required]
+        public DeliveryStates State { get; set; }
+
+        [Display(Name = "Contact No.")]
+        [Required]
+        public string PhoneNumber { get; set; }
+    }
+
+    // class for updating delivery information + adding item to order - NOT USED?
     public class UpdatePublicationDeliveryModel
     {
         public List<PublicationPurchaseItemModel> Items { get; set; }
@@ -665,6 +754,30 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "Quantity")]
         [Required]
         public int Quantity { get; set; }
+    }
+
+    // class for returning/updating promotion code
+    public class PromotionCodeModel
+    {
+        public int ID { get; set; }
+
+        [Display(Name = "Code")]
+        [Required]
+        public string Code { get; set; }
+
+        [Display(Name = "Monetary Value (RM)")]
+        [Required]
+        public int MoneyValue { get; set; }
+
+        [Display(Name = "Percentage Value")]
+        [Required]
+        public int PercentageValue { get; set; }
+
+        [Display(Name = "Expiry Date")]
+        [Required]
+        public DateTime ExpiryDate { get; set; }
+
+        public bool Used { get; set; }
     }
 
 }

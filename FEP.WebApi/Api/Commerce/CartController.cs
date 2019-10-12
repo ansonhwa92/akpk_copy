@@ -210,6 +210,7 @@ namespace FEP.WebApi.Api.Commerce
         // Remove order item from cart
         // POST: api/Commerce/Cart/RemoveItem
         [Route("api/Commerce/Cart/RemoveItem")]
+        [HttpGet]
         public bool RemoveItem(int itemid)
         {
             var item = db.PurchaseOrderItem.Where(pi => pi.Id == itemid).FirstOrDefault();
@@ -218,9 +219,103 @@ namespace FEP.WebApi.Api.Commerce
             {
                 db.PurchaseOrderItem.Remove(item);
                 db.SaveChanges();
+                return true;
             }
 
-            return true;
+            return false;
+        }
+
+        // Retrieve full cart info
+        // GET: api/Commerce/Cart/Retrieve/1
+        [HttpGet]
+        [Route("api/Commerce/Cart/Retrieve")]
+        public PurchaseOrderFullModel Retrieve(int userid)
+        {
+            var cart = db.PurchaseOrder.Where(po => po.UserId == userid && po.Status == CheckoutStatus.Shopping).Select(s => new PurchaseOrderModel
+            {
+                Id = s.Id,
+                UserId = s.UserId,
+                PaymentMode = s.PaymentMode,
+                ProformaInvoiceNo = s.ProformaInvoiceNo,
+                DiscountCode = s.DiscountCode,
+                TotalPrice = s.TotalPrice,
+                CreatedDate = s.CreatedDate,
+                Status = s.Status
+            }).FirstOrDefault();
+
+            var items = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id).Select(s => new PurchaseOrderItemModel
+            {
+                Id = s.Id,
+                PurchaseOrderId = s.PurchaseOrderId,
+                ItemId = s.ItemId,
+                Description = s.Description,
+                PurchaseType = s.PurchaseType,
+                Price = s.Price,
+                Quantity = s.Quantity
+            }).ToList();
+
+            var publications = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id && i.PurchaseType == PurchaseType.Publication).Select(s => new PurchaseOrderItemModel
+            {
+                Id = s.Id,
+                PurchaseOrderId = s.PurchaseOrderId,
+                ItemId = s.ItemId,
+                Description = s.Description,
+                PurchaseType = s.PurchaseType,
+                Price = s.Price,
+                Quantity = s.Quantity
+            }).ToList();
+
+            var events = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id && i.PurchaseType == PurchaseType.Event).Select(s => new PurchaseOrderItemModel
+            {
+                Id = s.Id,
+                PurchaseOrderId = s.PurchaseOrderId,
+                ItemId = s.ItemId,
+                Description = s.Description,
+                PurchaseType = s.PurchaseType,
+                Price = s.Price,
+                Quantity = s.Quantity
+            }).ToList();
+
+            var courses = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id && i.PurchaseType == PurchaseType.Course).Select(s => new PurchaseOrderItemModel
+            {
+                Id = s.Id,
+                PurchaseOrderId = s.PurchaseOrderId,
+                ItemId = s.ItemId,
+                Description = s.Description,
+                PurchaseType = s.PurchaseType,
+                Price = s.Price,
+                Quantity = s.Quantity
+            }).ToList();
+
+            var mycart = new PurchaseOrderFullModel
+            {
+                Cart = cart,
+                Items = items,
+                Publications = publications,
+                Events = events,
+                Courses = courses
+            };
+
+            return mycart;
+        }
+
+        // Retrieve discount code value
+        // GET: api/Commerce/Cart/GetPromotion/xxx
+        [HttpGet]
+        [Route("api/Commerce/Cart/GetPromotion")]
+        public PromotionCodeModel GetPromotion(string code)
+        {
+            var promo = db.PromotionCode.Where(p => p.Code == code).Select(s => new PromotionCodeModel
+            {
+                ID = s.ID,
+                Code = s.Code,
+                MoneyValue = s.MoneyValue,
+                PercentageValue = s.PercentageValue,
+                ExpiryDate = s.ExpiryDate,
+                Used = s.Used
+            }).FirstOrDefault();
+
+            return promo;
         }
     }
 }

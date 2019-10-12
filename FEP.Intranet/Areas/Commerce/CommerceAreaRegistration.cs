@@ -18,7 +18,7 @@ namespace FEP.Intranet.Areas.Commerce
                 "Commerce_default",
                 "Commerce/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional },
-                new[] { "FEP.Intranet.Areas.RnP.Controllers" }
+                new[] { "FEP.Intranet.Areas.Commerce.Controllers" }
             );
         }
     }

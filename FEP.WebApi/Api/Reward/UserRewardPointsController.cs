@@ -25,12 +25,40 @@ namespace FEP.WebApi.Api.Reward
             base.Dispose(disposing);
         }
 
+        public string GetDisplayName(Enum val)
+        {
+            return ((DisplayAttribute)val.GetType()
+                .GetMember(Enum.GetName(typeof(RewardType), val).ToString())
+                                .First()
+                                .GetCustomAttributes(typeof(DisplayAttribute), false)[0]).Name;
+        }
+
+        [Route("api/Reward/UserRewardPoints/GetUserTotalPoints")]
+        [HttpGet]
+        public IHttpActionResult GetUserTotalPoints(int id)
+        {
+            var points = db.UserRewardPoints.Where(u => u.UserId == id && u.Display).ToList();
+            int totalPoints = points.Sum(p => p.PointsReceived);
+            return Ok(totalPoints);
+        }
+
+
         [Route("api/Reward/UserRewardPoints/GetUserRewardPointsList")]
         [HttpPost]
         // GET: api/UserRewardPoints
-        public IHttpActionResult Post(FilterUserRewardPointsModel request)
+        public IHttpActionResult Post(int id,FilterUserRewardPointsModel request)
         {
-            var query = db.UserRewardPoints.Where(r => r.Display);
+            //get user
+            IQueryable<UserRewardPoints> query;
+            var user = db.User.Find(id);
+            if (user == null) {
+                query = db.UserRewardPoints.Where(r => r.Display);
+            }
+            else
+            {
+                query = db.UserRewardPoints.Where(r => r.Display && r.UserId == id);
+            }
+            
             var totalCount = query.Count();
 
             //advance search
@@ -47,13 +75,14 @@ namespace FEP.WebApi.Api.Reward
                 var value = request.search.value.Trim();
                 query = query.Where(a =>
                 a.Activity.Name.Contains(value) ||
-                a.RewardType.GetType()
+                /*a.RewardType.GetType()
                             .GetMember(a.RewardType.ToString())
                             .First()
-                            .GetCustomAttribute<DisplayAttribute>().GetName().Contains(value) ||
+                            .GetCustomAttribute<DisplayAttribute>().GetName().Contains(value) ||*/
                 a.User.Name.Contains(value) ||
                 a.PointsReceived.ToString().Contains(value)
                 );
+                
             }
 
             var filteredCount = query.Count();
@@ -89,6 +118,12 @@ namespace FEP.WebApi.Api.Reward
                         else
                             query = query.OrderByDescending(o => o.DateReceived);
                         break;
+                    case "UserName":
+                        if (sortAscending)
+                            query = query.OrderBy(o => o.User.Name);
+                        else
+                            query = query.OrderByDescending(o => o.User.Name);
+                        break;
                 }
             }
             else
@@ -104,11 +139,17 @@ namespace FEP.WebApi.Api.Reward
                     ActivityName = (s.ActivityId.HasValue) ? s.Activity.Name : null,
                     PointsReceived = s.PointsReceived,
                     UserId = s.UserId,
+                    UserName = s.User.Name,
                     RewardType = s.RewardType,
                     RewardedBy = s.RewardedBy.Value,
                     RewardedByName = (s.RewardedBy.HasValue) ? s.RewardSender.Name : null,
                     DateReceived = s.DateReceived
                 }).ToList();
+
+            foreach(var item in model)
+            {
+                item.RewardTypeName = GetDisplayName(item.RewardType);
+            }
 
             return Ok(new DataTableResponse
             {
@@ -127,17 +168,21 @@ namespace FEP.WebApi.Api.Reward
                 .Select(s => new DetailUserRewardPointsModel
                 {
                     Id = s.Id,
-                    ActivityId = s.ActivityId.Value,
+                    ActivityId = s.ActivityId ?? null,
                     ActivityName = (s.ActivityId.HasValue)?s.Activity.Name:null,
                     PointsReceived = s.PointsReceived,
                     UserId = s.UserId,
+                    UserName = s.User.Name,
                     RewardType = s.RewardType,
                     RewardedBy = s.RewardedBy.Value,
+                    AwardReason = s.AwardReason,
                     RewardedByName = (s.RewardedBy.HasValue)?s.RewardSender.Name:null,
                     DateReceived = s.DateReceived
                 }).FirstOrDefault();
 
             if(model == null) { return NotFound(); }
+
+            model.RewardTypeName = GetDisplayName(model.RewardType);
 
             return Ok(model);
         }
@@ -153,10 +198,32 @@ namespace FEP.WebApi.Api.Reward
                 ActivityId = model.ActivityId.Value,
                 PointsReceived = model.PointsReceived,
                 UserId = model.UserId,
-                RewardType = model.RewardType,
-                RewardedBy = model.RewardedBy.Value,
-                DateReceived = model.DateReceived
+                RewardType = RewardType.ActivityReward,
+                DateReceived = DateTime.Now, //model.DateReceived,
+                Display = true
             };
+            db.UserRewardPoints.Add(userRewardPoints);
+            db.SaveChanges();
+            return Ok(userRewardPoints);
+        }
+
+        [Route("api/Reward/UserRewardPoints/AwardPoints")]
+        [HttpPost]
+        public IHttpActionResult AwardPoints(CreateUserRewardPointsModel model)
+        {
+            if (!ModelState.IsValid) { return BadRequest(); }
+
+            var userRewardPoints = new UserRewardPoints
+            {
+                PointsReceived = model.PointsReceived,
+                UserId = model.UserId,
+                AwardReason = model.AwardReason,
+                RewardType = RewardType.AdminReward,
+                RewardedBy = model.RewardedBy,
+                DateReceived = DateTime.Now, //model.DateReceived,
+                Display = true
+            };
+            
             db.UserRewardPoints.Add(userRewardPoints);
             db.SaveChanges();
             return Ok(userRewardPoints);

@@ -1,11 +1,13 @@
 ﻿using FEP.Helper;
 using FEP.Model;
+using FEP.WebApiModel.Administration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace FEP.WebApiModel.Reward
 {
@@ -24,18 +26,25 @@ namespace FEP.WebApiModel.Reward
 
         [Display(Name = "Reward Type")]
         public RewardType RewardType { get; set; }
+        [Display(Name = "Reward Type")]
+        public string RewardTypeName { get; set; }
+        [Display(Name = "Award Reason")]
+        public string AwardReason { get; set; }
         [Display(Name = "Rewarded By")]
         public int? RewardedBy { get; set; }
         [Display(Name = "Rewarded By")]
         public string RewardedByName { get; set; }
 
         [Display(Name = "Date Received")]
+        [UIHint("Date")]
+        [DisplayFormat(DataFormatString = "{0:dd-mm-yyyy hh:mm tt}")]
         public DateTime DateReceived { get; set; }
 
     }
     public class CreateUserRewardPointsModel : UserRewardPointsModel
     {
         public CreateUserRewardPointsModel() { }
+        public List<SelectListItem> userList { get; set; }
     }
     public class DetailUserRewardPointsModel : UserRewardPointsModel
     {
@@ -62,6 +71,8 @@ namespace FEP.WebApiModel.Reward
         {
             this.UserRewardPointsList = ListUserRewardPoints;
         }
+
+        public IEnumerable<SelectListItem> RewardTypeList { get; set; }
     }
     public class FilterUserRewardPointsModel : DataTableModel
     {
@@ -73,7 +84,10 @@ namespace FEP.WebApiModel.Reward
         public string UserName { get; set; }
         [Display(Name = "Reward Type")]
         public RewardType? RewardType { get; set; }
-
+        [Display(Name = "Rewarded By")]
+        public string RewardedBy { get; set; }
+        [Display(Name = "Date Received")]
+        public DateTime? DateReceived { get; set; }
 
     }
 

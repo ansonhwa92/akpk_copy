@@ -1,10 +1,12 @@
-﻿using FEP.Model;
+﻿using FEP.Helper;
+using FEP.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace FEP.WebApiModel.Reward
 {
@@ -19,20 +21,11 @@ namespace FEP.WebApiModel.Reward
         [Display(Name = "Description")]
         public string RewardDescription { get; set; }
 
-        //-----------------------------------------------------
-        //  Rewarded By Admin
-        //-----------------------------------------------------
-        [Display(Name = "Reward Type")]
-        public RewardType RewardType { get; set; }
-        [Display(Name = "Rewarded By")]
-        public int? RewardedBy { get; set; }
-        [Display(Name = "Rewarded By")]
-        public string RewardedByName { get; set; }
-        //-----------------------------------------------------
         [Display(Name = "RedeemDate")]
         public DateTime RedeemDate { get; set; }
         [Display(Name = "Reward Status")]
         public RewardStatus RewardStatus { get; set; }
+        public string RewardStatusName { get; set; }
     }
     public class CreateUserRewardRedemptionModel : UserRewardRedemptionModel
     {
@@ -63,25 +56,21 @@ namespace FEP.WebApiModel.Reward
         {
             this.UserRewardRedemptionList = ListUserRewardRedemption;
         }
+
+        public IEnumerable<SelectListItem> RewardStatusList { get; set; }
     }
-    public class FilterUserRewardRedemptionModel
+    public class FilterUserRewardRedemptionModel : DataTableModel
     {
         [Display(Name = "User")]
         public string UserName { get; set; }
         [Display(Name = "Description")]
         public string RewardDescription { get; set; }
 
-        //-----------------------------------------------------
-        //  Rewarded By Admin
-        //-----------------------------------------------------
-        [Display(Name = "Reward Type")]
-        public RewardType RewardType { get; set; }
-        [Display(Name = "Rewarded By")]
-        public string RewardedByName { get; set; }
-        //-----------------------------------------------------
         [Display(Name = "RedeemDate")]
-        public DateTime RedeemDate { get; set; }
+        [UIHint("Date")]
+        public DateTime? RedeemDate { get; set; }
         [Display(Name = "Reward Status")]
-        public RewardStatus RewardStatus { get; set; }
+        public RewardStatus? RewardStatus { get; set; }
+        public string RewardStatusName { get; set; }
     }
 }

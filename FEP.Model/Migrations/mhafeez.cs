@@ -123,7 +123,7 @@ namespace FEP.Model.Migrations
                     {
                         Name = "Tajul Admin",
                         Email = "tajulzaid@gmail.com",
-                        UserType = UserType.SystemAdmin,
+                        UserType = UserType.Individual,
                         CreatedDate = DateTime.Now,
                         Display = true,
                         UserAccount = new UserAccount

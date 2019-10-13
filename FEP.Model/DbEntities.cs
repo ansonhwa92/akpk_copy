@@ -160,5 +160,6 @@ namespace FEP.Model
         public DbSet<RewardActivityPoint> RewardActivityPoint { get; set; }
         public DbSet<RewardRedemption> RewardRedemption { get; set; }
         public DbSet<UserRewardPoints> UserRewardPoints { get; set; }
+        public DbSet<UserRewardRedemption> UserRewardRedemption { get; set; }
     }
 }

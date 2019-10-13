@@ -56,6 +56,7 @@ namespace FEP.Model
         //  Rewarded can be from completed activity or awarded by admin
         //-----------------------------------------------------
         public RewardType RewardType { get; set; }
+        public string AwardReason { get; set; }
         public int? RewardedBy { get; set; }
         [ForeignKey("RewardedBy")]
         public virtual User RewardSender { get; set; }

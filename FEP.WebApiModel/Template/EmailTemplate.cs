@@ -142,7 +142,7 @@ namespace FEP.WebApiModel.Template
 
         [Display(Name = "Web Message")]
         public string WebMessage { get; set; }
-        [Display(Name = "Send Web Message")]
+        [Display(Name = "Send Web Notification")]
         public bool enableWebMessage { get; set; }
 
     }

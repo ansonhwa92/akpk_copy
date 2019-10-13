@@ -155,6 +155,7 @@
     <Compile Include="Api\Reward\RewardActivityPointController.cs" />
     <Compile Include="Api\Reward\RewardRedemptionController.cs" />
     <Compile Include="Api\Reward\UserRewardPointsController.cs" />
+    <Compile Include="Api\Reward\UserRewardRedemptionsController.cs" />
     <Compile Include="Api\RnP\PublicationController.cs" />
     <Compile Include="Api\RnP\SurveyController.cs" />
     <Compile Include="Api\Notification\EmailController.cs" />

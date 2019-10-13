@@ -9,11 +9,6 @@
 
     var name = Model.Title;
 
-    if (name.Length > 25)
-    {
-        name = String.Concat(name.Take(25)) + "...";
-    }
-
 }
 
 @section Nav{
@@ -33,8 +28,8 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Manage Course : @name</h1>
-                    <div class="header-text">Manage a course by editing and adding contents.</div>
+                    <h1 class="page-title text-white">Course : @name</h1>
+                    <div class="header-text">Course details.</div>
                 </div>
             </div>
         </div>
@@ -48,11 +43,10 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     @Html.HiddenFor(m => m.Id)
-    @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
 
     <div class="row">
 
-        @Html.Partial("_contentSidebar")
+        @*@Html.Partial("_contentSidebar")*@
 
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
             <!-- Start Form -->
@@ -60,7 +54,11 @@
                 <div class="form-container tab-content">
                     <div class="tab-pane active" id="course-details">
                         <div class="mb-4 mt-2 mr-auto">
-                            <h5 class="font-weight-bold float-right">Status : @Model.Status</h5>
+                            @if (Model.Status != CourseStatus.Published)
+                            {
+                                <h5 class="font-weight-bold float-right">Status : @Model.Status</h5>
+                            }
+
                             <span class="text-muted-light x-small font-italic">Course Name</span>
                             <h2 class="color-darkblue mb-0">
                                 @name
@@ -72,7 +70,6 @@
                             <div class="descbox">
                                 @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
                             </div>
-                            <p id="afterDesc"></p>
                         </div>
 
                         <br />
@@ -81,14 +78,13 @@
                             <div class="objbox">
                                 @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
                             </div>
-                            <p id="afterObj"></p>
                         </div>
                         <br />
                         <div>
                             <div class="row">
 
-                                <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
-                                <a class="btn btn-secondary m-2" href="@Url.Action("View", "Courses", new { area = "eLearning", id = @Model.Id })">View as learner</a>
+                                <a class="btn btn-secondary m-2" href="#">Enroll</a>
+                                <a class="btn btn-secondary m-2" href="#">Start the course</a>
                             </div>
                         </div>
                         <hr />
@@ -108,15 +104,6 @@
 
                                         <a href="@Url.Action("Content", "CourseModules", new { area = "eLearning", id = module.Id })"
                                            data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>
-                                        <a href="@Url.Action("Edit", "CourseModules", new { area = "eLearning", id = module.Id })"
-                                           data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit"></i></a>
-                                        <a href="@Url.Action("Delete", "CourseModules", new { area = "eLearning", id = module.Id})"
-                                           data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o"></i></a>
-
-                                        <div class="row float-right">
-                                            <i class="fa fa-bars handle color-darkblue" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Reorder"></i>
-                                        </div>
-
                                         <div>
                                             <h2>@module.Title</h2>
                                             <div>
@@ -134,48 +121,11 @@
                         </div>
                         <!----END MODULES -->
                     </div>
-
-                    <!-- Popups -->
-                    <!-- popups end -->
                 </div>
-
-                <!--  Start Action Log -->
-                @Html.Partial("_actionLog", Model)
-                <!--  End Action Log -->
-            </div>
-
-            <div class="border-left border-right border-bottom p-3 rounded-bottom">
-
-                <a class="btn btn-default" href="@Url.Action("Index", "Courses", new { area = "eLearning" })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
-                <button type="submit" class="btn btn-default pull-right" id="btnSave" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save</button>
             </div>
         </div>
     </div>
 </form>
-
-@*<div class="modal fade" id="modalGotoTrial" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-    @using (Html.BeginForm("StartTrial", "Courses", FormMethod.Post, new { name = "formTrial", id = "formTrial" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.Id)
-
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <div class="m-4 text-center">
-                    <h4 class="color-darkblue mb-0" id="title_withdrawal">Put course for Trial?</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="m-4 text-center">
-                        <button class="btn btn-default font-weight-normal mr-2" type="submit" aria-label="Ok" id="btnYes">Yes</button>
-                        <button class="btn btn-secondary" type="button" data-toggle="modal" data-dismiss="modal" aria-label="Close" id="btnNo">No</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</div>*@
 
 <style>
     .module-box {
@@ -191,51 +141,21 @@
         cursor: move;
         cursor: -webkit-grabbing;
     }
+
+    .form-container {
+        max-width: 100% !important
+    }
+
+
 </style>
 
 @section ContentScript {
     <script src="~/Scripts/jquery.truncate.js"></script>
-    <!-- Sortable.js -->
-    <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
-    <script src="~/Scripts/Sortable/jquery-sortable.js"></script>
+
     <script src="~/js/elearn.js"></script>
     <script>
 
         $(document).ready(function () {
-            truncate('descbox', 'afterDesc', 200);
-            truncate('objbox', 'afterObj', 200);
-
-            var options = {
-                group: 'modules',
-                animation: 100,
-                handle: '.handle',
-                sort: true,
-                store: {
-
-                    get: function (sortable) {
-                        var order = localStorage.getItem(sortable.options.group.name);
-                        return order ? order.split('|') : [];
-                    },
-
-                    set: function (sortable) {
-
-                        var order = sortable.toArray();
-                        localStorage.setItem(sortable.options.group.name, order.join('|'));
-
-                        console.log('order - ', order);
-
-                        $('#order').val(order);
-                    }
-                }
-            };
-
-            // set to null initially, so it wont get read the next reload, but read from db
-            localStorage.setItem("modules", null);
-
-            $('#draggable-module').sortable(options);
-
-            //  console.log('local -', localStorage.getItem("modules"));
-
         });
     </script>
 }

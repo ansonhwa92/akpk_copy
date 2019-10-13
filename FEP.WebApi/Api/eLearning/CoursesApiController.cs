@@ -673,6 +673,114 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(model);
         }
 
+        [Route("api/eLearning/Courses/StartTrial")]
+        public async Task<IHttpActionResult> StartTrial(int id)
+        {
+            var entity = await db.Courses.FindAsync(id);
+
+            if (entity == null)
+                return BadRequest();
+
+            if (entity.Status == CourseStatus.Trial)
+            {
+                return BadRequest("The course is already in trial mode.");
+            }
+
+            try
+            {
+                if (entity.Status == CourseStatus.Draft)
+                {
+                    entity.Status = CourseStatus.Trial;
+                    db.SetModified(entity);
+
+
+                    var newEvent = new CourseEvent
+                    {
+                        CourseId = entity.Id,
+                        Status = CourseStatus.Trial,
+                        Start = DateTime.Now,
+                        EnrollmentCode = entity.Code + " TRIAL" + DateTime.Now.Ticks.ToString(),
+                        ViewCategory = ViewCategory.Private,
+                    };
+
+                    db.CourseEvents.Add(newEvent);
+
+
+                    await db.SaveChangesAsync();
+
+                    ChangeCourseStatusModel data = new ChangeCourseStatusModel
+                    {
+                        CourseId = entity.Id,
+                        CourseName = entity.Title,
+                        CourseEventId = newEvent.Id,
+                        Message = "New course event created"
+                    };
+
+                    return Ok(data);
+                }
+                else
+                {
+                    return BadRequest("Cannot go to Trial if status is not in Draft");
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message + " " + e.InnerException.Message);
+            }
+        }
+
+        [Route("api/eLearning/Courses/StopTrial")]
+        public async Task<IHttpActionResult> StopTrial(int id)
+        {
+            var entity = await db.Courses.FindAsync(id);
+
+            if (entity == null)
+                return BadRequest();
+
+            if (entity.Status != CourseStatus.Trial)
+                return BadRequest("Cannot stop. Course is not in Trial mode.");
+
+            entity.Status = CourseStatus.Draft;
+
+            // insert into course event
+            var courseEvent = await  db.CourseEvents.Where(x => x.CourseId == entity.Id &&
+                x.Status == CourseStatus.Trial).OrderByDescending(x => x.CreatedDate).FirstOrDefaultAsync();
+
+            if (courseEvent != null)
+            {
+                courseEvent.End = DateTime.Now;
+                courseEvent.TrialRemark = "Trial ended";
+
+                db.SetModified(entity);
+                db.SetModified(courseEvent);
+
+                await db.SaveChangesAsync();
+
+                ChangeCourseStatusModel data = new ChangeCourseStatusModel
+                {
+                    CourseId = entity.Id,
+                    CourseName = entity.Title,
+                    Message = "Trial stop for course " + entity.Title,
+                };
+
+                return Ok(data);
+            }
+            else
+            {
+                return BadRequest("No event to stop.");
+            }
+        }
+
+        [Route("api/eLearning/Courses/Assign")]
+        public async Task<IHttpActionResult> AssignLearners(int id)
+        {
+            var entity = await db.Courses.FindAsync(id);
+
+            if (entity == null)
+                return BadRequest();
+
        
+            return Ok();
+        }
     }
 }

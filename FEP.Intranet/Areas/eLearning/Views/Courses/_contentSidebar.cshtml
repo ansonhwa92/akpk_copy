@@ -110,7 +110,38 @@
         </div>
 
         <div>
-            @{ if (Model.Status == CourseStatus.Submitted)
+            @{
+                if (Model.Status == CourseStatus.Draft)
+                {
+                    if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+                    {
+                        <p>
+                            <a href="@Url.Action("StartTrial", "Courses", new { area = "eLearning", id = @Model.Id })" class="btn btn-primary">
+                                Go to Trial Mode
+                            </a>
+                        </p>
+
+                    }
+                }
+                if (Model.Status == CourseStatus.Trial)
+                {
+                    if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+                    {
+                        <p>
+                            <a href="@Url.Action("StopTrial", "Courses", new { area = "eLearning", id = @Model.Id })" class="btn btn-danger">
+                                Stop Trial
+                            </a>
+                        </p>
+                        <p>
+                            <a href="@Url.Action("AssignLearner", "Courses", new { area = "eLearning", id = @Model.Id })" class="btn btn-primary">
+                               Assign Learners For Trial
+                            </a>
+                        </p>
+
+                    }
+                }
+
+                if (Model.Status == CourseStatus.Submitted)
                 {
                     if (CurrentUser.HasAccess(UserAccess.CourseVerify))
                     {

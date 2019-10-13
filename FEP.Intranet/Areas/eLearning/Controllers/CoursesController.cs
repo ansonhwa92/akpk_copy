@@ -27,6 +27,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string Content = "eLearning/Courses/Content";
         public const string DeleteCourse = "eLearning/Courses/Delete";
 
+        public const string StartTrial = "eLearning/Courses/StartTrial";
+        public const string StopTrial = "eLearning/Courses/StopTrial";
+
     }
 
     public class CoursesController : FEPController
@@ -155,7 +158,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var entity =  db.Courses.FirstOrDefault(x => x.Id == id.Value);
+            var entity = db.Courses.FirstOrDefault(x => x.Id == id.Value);
 
             var model = new TrainerCourseModel
             {
@@ -244,7 +247,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return RedirectToAction("Index", "Courses");
 
             }
-            
+
             model.Modules = model.Modules.OrderBy(x => x.Order).ToList();
 
             return View(model);
@@ -288,10 +291,34 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 return RedirectToAction("Index", "Courses");
             }
-            
+
             vm.Modules = vm.Modules.OrderBy(x => x.Order).ToList();
 
             return View(vm);
+        }
+
+
+
+        public async Task<ActionResult> View(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var model = await TryGetFrontCourse(id.Value);
+
+            if (model == null)
+            {
+                TempData["ErrorMessage"] = "No such course.";
+
+                return RedirectToAction("Index", "Courses");
+
+            }
+
+            model.Modules = model.Modules.OrderBy(x => x.Order).ToList();
+
+            return View(model);
         }
 
         [HasAccess(UserAccess.CourseCreate)]
@@ -405,7 +432,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 TempData["ErrorMessage"] = "Cannot find such course.";
 
                 return RedirectToAction("Index", "Courses", new { area = "eLearning" });
-            }            
+            }
 
             var course = await TryGetCourse(id.Value);
 
@@ -442,7 +469,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = model.Id });
                     }
                     else
-                    {                       
+                    {
                         return RedirectToAction("Index", "Courses", new { area = "eLearning" });
                     }
                 }
@@ -453,7 +480,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = model.Id });
                 }
             }
-            
+
             return View(model);
 
         }
@@ -495,18 +522,71 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Delete, $"eLearning/Courses/Delete?id={id}");
 
             if (response.isSuccess)
-            {                
+            {
                 await LogActivity(Modules.Learning, "Delete Course: " + response.Data);
 
                 TempData["SuccessMessage"] = "Course titled " + response.Data + " successfully deleted.";
-                              
+
             }
             else
             {
-                TempData["ErrorMessage"] = "Failed to delete Course.";                
+                TempData["ErrorMessage"] = "Failed to delete Course.";
             }
 
             return RedirectToAction("Index", "Courses", new { area = "eLearning" });
+        }
+
+        [HasAccess(UserAccess.CourseCreate)]
+        public async Task<ActionResult> StartTrial(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<ChangeCourseStatusModel>(HttpVerbs.Post, CourseApiUrl.StartTrial + $"?id={id}");
+
+            if (response.isSuccess)
+            {
+                await LogActivity(Modules.Learning, "Course Start Trial: " + response.Data.CourseName);
+
+                TempData["SuccessMessage"] = "Course " + response.Data.CourseName + " now in Trial Mode. Please assign learners for the trial.";
+
+            }
+            else
+            {
+                await LogActivity(Modules.Learning, "Fail : Course Start Trial: " + response.Data);
+                TempData["ErrorMessage"] = "Failed to Start Trial for this Course.";
+            }
+
+            return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
+        }
+
+
+        [HasAccess(UserAccess.CourseCreate)]
+        public async Task<ActionResult> StopTrial(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<ChangeCourseStatusModel>(HttpVerbs.Post, CourseApiUrl.StopTrial + $"?id={id}");
+
+            if (response.isSuccess)
+            {
+                await LogActivity(Modules.Learning, "Course Stop Trial: " + response.Data.CourseName);
+
+                TempData["SuccessMessage"] = "Course " + response.Data.CourseName + " has stopped Trial.";
+
+            }
+            else
+            {
+                await LogActivity(Modules.Learning, "Fail : Course Stop Trial: " + response.Data.CourseName);
+                TempData["ErrorMessage"] = "Failed to Stop Trial for this Course.";
+            }
+
+            return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
         }
 
         protected override void Dispose(bool disposing)

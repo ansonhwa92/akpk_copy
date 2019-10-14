@@ -26,10 +26,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string EditRulesCourse = "eLearning/Courses/EditRules";
         public const string Content = "eLearning/Courses/Content";
         public const string DeleteCourse = "eLearning/Courses/Delete";
-
-        public const string StartTrial = "eLearning/Courses/StartTrial";
-        public const string StopTrial = "eLearning/Courses/StopTrial";
-
     }
 
     public class CoursesController : FEPController
@@ -253,6 +249,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
+
+        // post the new order
         [HttpPost]
         public async Task<ActionResult> Content(int? Id, int CreatedBy, string order)
         {
@@ -536,66 +534,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return RedirectToAction("Index", "Courses", new { area = "eLearning" });
         }
 
-        [HasAccess(UserAccess.CourseCreate)]
-        public async Task<ActionResult> StartTrial(int? id)
-        {
-            if (id == null)
-            {
-                return HttpNotFound();
-            }
 
-            var response = await WepApiMethod.SendApiAsync<ChangeCourseStatusModel>(HttpVerbs.Post, CourseApiUrl.StartTrial + $"?id={id}");
-
-            if (response.isSuccess)
-            {
-                await LogActivity(Modules.Learning, "Course Start Trial: " + response.Data.CourseName);
-
-                TempData["SuccessMessage"] = "Course " + response.Data.CourseName + " now in Trial Mode. Please assign learners for the trial.";
-
-            }
-            else
-            {
-                await LogActivity(Modules.Learning, "Fail : Course Start Trial: " + response.Data);
-                TempData["ErrorMessage"] = "Failed to Start Trial for this Course.";
-            }
-
-            return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
-        }
-
-
-        [HasAccess(UserAccess.CourseCreate)]
-        public async Task<ActionResult> StopTrial(int? id)
-        {
-            if (id == null)
-            {
-                return HttpNotFound();
-            }
-
-            var response = await WepApiMethod.SendApiAsync<ChangeCourseStatusModel>(HttpVerbs.Post, CourseApiUrl.StopTrial + $"?id={id}");
-
-            if (response.isSuccess)
-            {
-                await LogActivity(Modules.Learning, "Course Stop Trial: " + response.Data.CourseName);
-
-                TempData["SuccessMessage"] = "Course " + response.Data.CourseName + " has stopped Trial.";
-
-            }
-            else
-            {
-                await LogActivity(Modules.Learning, "Fail : Course Stop Trial: " + response.Data.CourseName);
-                TempData["ErrorMessage"] = "Failed to Stop Trial for this Course.";
-            }
-
-            return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

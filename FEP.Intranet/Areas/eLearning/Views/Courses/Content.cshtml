@@ -49,6 +49,7 @@
 
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+    @Html.HiddenFor(m => m.CourseEventId)
 
     <div class="row">
 

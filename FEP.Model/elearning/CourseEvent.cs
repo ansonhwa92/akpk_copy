@@ -19,6 +19,7 @@ namespace FEP.Model.eLearning
         /// <summary>
         /// Specific code for enrollment, defined during creation of group of Learners
         /// </summary>
+        [Required]
         [Index(IsUnique = true)] 
         [MaxLength(50)]
         public string EnrollmentCode { get; set; }
@@ -28,7 +29,7 @@ namespace FEP.Model.eLearning
         public virtual Course Course { get; set; }
 
         // The coursestatus at the point of this event, can be either Approved or Draft, changed afterward
-        public CourseStatus Status { get; set; }
+        public CourseEventStatus Status { get; set; }
 
         // Date the course is available, mandatoryif published to a group
         public DateTime? Start { get; set; }
@@ -65,5 +66,17 @@ namespace FEP.Model.eLearning
     {
         Private,
         Public
+    }
+
+
+    public enum CourseEventStatus
+    {
+        Trial,
+        TrialEnded,
+        AvailableToPublic,
+        AvailableToGroup,
+        NotAvailableToGroup,
+        
+        Cancelled        
     }
 }

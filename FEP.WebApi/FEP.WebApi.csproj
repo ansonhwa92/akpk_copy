@@ -163,6 +163,7 @@
     <Compile Include="Api\eLearning\ContentCompletionApiController.cs" />
     <Compile Include="Api\eLearning\CourseContentsApiController.cs" />
     <Compile Include="Api\eLearning\CourseModulesApiController.cs" />
+    <Compile Include="Api\eLearning\CourseEventsApiController.cs" />
     <Compile Include="Api\eLearning\CoursesApiController.cs" />
     <Compile Include="Api\eLearning\CourseCategoryController.cs" />
     <Compile Include="Api\eLearning\CertificatesController.cs" />

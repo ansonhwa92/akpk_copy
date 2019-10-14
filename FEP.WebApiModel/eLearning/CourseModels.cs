@@ -137,6 +137,8 @@ namespace FEP.WebApiModel.eLearning
 
         public bool IsDeleted { get; set; }
 
+        public int CourseEventId { get; set; }
+
     }
 
     public class CourseRuleModel : BaseModel

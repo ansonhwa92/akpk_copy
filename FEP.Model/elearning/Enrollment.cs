@@ -18,6 +18,7 @@ namespace FEP.Model.eLearning
 
         [Index]
         public int LearnerId { get; set; }
+        public virtual Learner Learner { get; set; }
 
         public int? GroupId { get; set; }
         public virtual Group Group { get; set; }
@@ -41,6 +42,7 @@ namespace FEP.Model.eLearning
         /// </summary>
         public virtual ICollection<CourseProgress> CourseProgress { get; set; }
 
+        public virtual ICollection<EnrollmentHistory> EnrollmentHistories { get; set; }
 
         public void GetProgress()
         {
@@ -51,6 +53,14 @@ namespace FEP.Model.eLearning
         }
     }
 
+    public class EnrollmentHistory : BaseEntity
+    {
+        public int EnrolmmentId { get; set; }
+        public int LearnerId { get; set; }
+        public EnrollmentStatus Status { get; set; }
+        public string Remark { get; set; }
+    }
+
     public enum EnrollmentStatus
     {
         [Display(Name = "Not Enrolled")]
@@ -59,8 +69,11 @@ namespace FEP.Model.eLearning
         [Display(Name = "Invited but not enrolled")]
         Invited,
 
+        [Display(Name = "Enrolled")]
         Enrolled,
-        Withdraw,
+
+        [Display(Name = "Withdrawn")]
+        Withdrawn,
 
         [Display(Name = "Invitation cancelled after invited and enrolled")]
         Cancelled,

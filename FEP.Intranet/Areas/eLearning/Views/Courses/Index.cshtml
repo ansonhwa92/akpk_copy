@@ -159,20 +159,23 @@
                         data: 'Status',
                         sortable: true,
                         render: function (data, type, row, meta) {
-                            if (row.Status == 0) {
-                                return "<span class='color-grey font-weight-bold'>Draft</span>";
-                            }
-                            else if (row.Status == 1) {
-                                return "<span class='color-yellow font-weight-bold'>Pending Verification</span>";
-                            }
-                            else if (row.Status == 2) {
-                                return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
-                            }
-                            else if (row.Status == 3) {
-                                return "<span class='color-yellow font-weight-bold'>Pending Approval</span>";
-                            }
-                            else if (row.Status == 4) {
-                                return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
+
+                            switch (row.Status) {
+                                case @Json.Encode(CourseStatus.Trial) :
+                                    return "<span class='color-grey font-weight-bold'>Trial</span>";
+
+                                case @Json.Encode(CourseStatus.Draft) :
+                                    return "<span class='color-grey font-weight-bold'>Draft</span>";
+
+                                case @Json.Encode(CourseStatus.Submitted) :
+                                    return "<span class='color-grey font-weight-bold'>Pending Verification</span>";
+
+                                case @Json.Encode(CourseStatus.FirstApproval) :
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval</span>";
+
+                                default:
+                                    return "<span class='color-red font-weight-bold'>" + row.Status + "</span>";
+
                             }
                         }
                     },

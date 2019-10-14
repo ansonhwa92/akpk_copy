@@ -40,7 +40,21 @@
 
     <div class="row">
 
-        @Html.Partial("_contentSidebar")
+
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div id="page-nav" class="sidebar-left page-nav">
+                <div data-perfect-scrollbar class="ps">
+                    <div class="page-section">
+                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                        <ul class="nav page-nav__menu">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Create Course</a>
+                            </li>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
             <!-- Start Form -->
@@ -91,13 +105,13 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    @*<div class="form-group">
                         @Html.LabelFor(model => model.Medium, htmlAttributes: new { @class = "control-label " })
                         <div class="">
                             @Html.EnumDropDownListFor(model => model.Medium, htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Medium, "", new { @class = "text-danger" })
                         </div>
-                    </div>
+                    </div>*@
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label " })
@@ -155,12 +169,12 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label " }) 
+                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label " })
                         <div class="">
                             @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control",
                            @onkeypress = "return isNumberKey(event)",
                            @type = "text"
-                       } }) 
+                       } })
                             @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -184,73 +198,73 @@
             </div>
         </div>
     </div>
-}
+            }
 
-    <style>
-        .form-container {
-            max-width: none !important;
-        }
-    </style>
+            <style>
+                .form-container {
+                    max-width: none !important;
+                }
+            </style>
 
-    @section ContentScript {
-        @Scripts.Render("~/bundles/jqueryval")
+            @section ContentScript {
+                @Scripts.Render("~/bundles/jqueryval")
 
-        <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
-        <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
-        <script src="~/js/elearn.js"></script>
+                <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
+                <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+                <script src="~/js/elearn.js"></script>
 
-        <script>
-            $(document).ready(function () {
-                $('.summernote').summernote({
-                    placeholder: 'Type your text here.',
-                    tabsize: 2,
-                    height: 150,
-                    toolbar: [
+                <script>
+                    $(document).ready(function () {
+                        $('.summernote').summernote({
+                            placeholder: 'Type your text here.',
+                            tabsize: 2,
+                            height: 150,
+                            toolbar: [
 
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['font', ['strikethrough', 'superscript', 'subscript']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['height', ['height']],
+                                ['style', ['bold', 'italic', 'underline', 'clear']],
+                                ['font', ['strikethrough', 'superscript', 'subscript']],
+                                ['fontsize', ['fontsize']],
+                                ['color', ['color']],
+                                ['para', ['ul', 'ol', 'paragraph']],
+                                ['height', ['height']],
 
-                    ],
-                    codeviewFilter: false,
-                    codeviewIframeFilter: true,
+                            ],
+                            codeviewFilter: false,
+                            codeviewIframeFilter: true,
 
-                });
+                        });
 
 
-                if ($('#free').val() == true) {
-                    $("#free").prop("checked", true);
-                    $('#Price').prop("disabled", true);
+                        if ($('#free').val() == true) {
+                            $("#free").prop("checked", true);
+                            $('#Price').prop("disabled", true);
 
-                    ($('input[name=IsFree]').val(true));
-                 
-                } else {
+                            ($('input[name=IsFree]').val(true));
 
-                    $("#paid").prop("checked", true);
-                    $('#Price').prop("disabled", false);
+                        } else {
 
-                    ($('input[name=IsFree]').val(false));
-                }                
-            });
+                            $("#paid").prop("checked", true);
+                            $('#Price').prop("disabled", false);
 
-            $('.free-radio input[type="radio"]').change(function () {
-              
-                if ($(this).hasClass("free")) {
-                    $("#free").prop("checked", true);
-                    $('#Price').prop("disabled", true);
+                            ($('input[name=IsFree]').val(false));
+                        }
+                    });
 
-                    ($('input[name=IsFree]').val(true));
+                    $('.free-radio input[type="radio"]').change(function () {
 
-                } else {
+                        if ($(this).hasClass("free")) {
+                            $("#free").prop("checked", true);
+                            $('#Price').prop("disabled", true);
 
-                    $("#paid").prop("checked", true);
-                    $('#Price').prop("disabled", false);
+                            ($('input[name=IsFree]').val(true));
 
-                    ($('input[name=IsFree]').val(false));
-                }                
-            });
-        </script>
-    }
+                        } else {
+
+                            $("#paid").prop("checked", true);
+                            $('#Price').prop("disabled", false);
+
+                            ($('input[name=IsFree]').val(false));
+                        }
+                    });
+                </script>
+            }

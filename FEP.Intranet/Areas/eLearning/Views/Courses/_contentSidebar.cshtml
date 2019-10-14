@@ -102,7 +102,7 @@
                     if (CurrentUser.HasAccess(UserAccess.CourseCreate))
                     {
                         <p>
-                            <a href="@Url.Action("StartTrial", "CourseEvents", new { area = "eLearning", id = @Model.Id })" class="btn btn-primary">
+                            <a href="@Url.Action("StartTrial", "CourseEvents", new { area = "eLearning", id = @Model.Id })" class="btn btn-secondary btn-block mb-2" >
                                 Start Trial
                             </a>
                         </p>
@@ -114,12 +114,12 @@
                     if (CurrentUser.HasAccess(UserAccess.CourseCreate))
                     {
                         <p>
-                            <a href="@Url.Action("StopTrial", "CourseEvents", new { area = "eLearning", id = @Model.Id })" class="btn btn-danger">
+                            <a href="@Url.Action("StopTrial", "CourseEvents", new { area = "eLearning", id = @Model.Id })" class="btn btn-secondary btn-block mb-2">
                                 Stop Trial
                             </a>
                         </p>
                         <p>
-                            <a href="@Url.Action("Learners", "CourseEvents", new { area = "eLearning", id = @Model.Id, @courseStatus = CourseStatus.Trial })" class="btn btn-primary">
+                            <a href="@Url.Action("Learners", "CourseEvents", new { area = "eLearning", id = @Model.Id, @courseStatus = CourseStatus.Trial })" class="btn btn-primary btn-block mb-2">
                                Assign Learners For Trial
                             </a>
                         </p>

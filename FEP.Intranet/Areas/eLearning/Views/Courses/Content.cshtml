@@ -21,7 +21,9 @@
         <div class="title-header-container">
             <div class="container">
                 <!-- if have button -->
-                <div class="header-col-right float-right mt-5"><a href="~/eLearning/Courses" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-right float-right mt-5"><a href="~/eLearning/Courses" class="btn btn-outline-primary text-white"><span class="align-middle">
+                    <i class="la la-long-arrow-left">&nbsp;</i></span> Back</a>
+                </div>
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
@@ -61,7 +63,7 @@
                 <div class="form-container tab-content">
                     <div class="tab-pane active" id="course-details">
                         <div class="mb-4 mt-2 mr-auto">
-                            <h5 class="font-weight-bold float-right">Status : @Model.Status</h5>
+                            <div class="card text-white bg-dark p-2 float-right border-dark">@Model.Status</div>
                             <span class="text-muted-light x-small font-italic">Course Name</span>
                             <h2 class="color-darkblue mb-0">
                                 @name
@@ -107,25 +109,32 @@
 
                                     <div class="module-box" data-id="@module.Order">
 
-                                        <a href="@Url.Action("Content", "CourseModules", new { area = "eLearning", id = module.Id })"
-                                           data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>
-                                        <a href="@Url.Action("Edit", "CourseModules", new { area = "eLearning", id = module.Id })"
-                                           data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit"></i></a>
-                                        <a href="@Url.Action("Delete", "CourseModules", new { area = "eLearning", id = module.Id})"
-                                           data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o"></i></a>
-
-                                        <div class="row float-right">
-                                            <i class="fa fa-bars handle color-darkblue" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Reorder"></i>
-                                        </div>
 
                                         <div>
-                                            <h2>@module.Title</h2>
+                                            <div class="row">
+                                                <div class="col-sm-9">
+                                                    <h3>@module.Title</h3>
+                                                </div>
+                                                <div class="col-sm-3 pull-right pt-1">
+                                                    <a href="@Url.Action("Content", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                                       data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>
+                                                    <a href="@Url.Action("Edit", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                                       data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit "></i></a>
+                                                    <a href="@Url.Action("Delete", "CourseModules", new { area = "eLearning", id = module.Id})"
+                                                       data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o "></i></a>
+
+                                                    <div class="float-right">
+                                                        <i class="fa fa-bars handle color-darkblue" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Reorder"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div>
                                                 @Html.Raw(@module.Description)
 
-                                                <div class="row">
-                                                    <div class="pr-3"><i class="la la-youtube la-2x"></i><span class="pb-1">@module.TotalVideo</span></div>
-                                                    <div class="pr-3"><i class="la la-file-audio-o la-2x"></i><span class="pb-1">@module.TotalAudio</span></div>
+                                                <div class="row pl-2">
+                                                    <div class="pr-3"><i class="la la-files-o la-2x"  data-toggle="tooltip"  title="Total Content" ></i><span class="pb-1">@module.ModuleContents.Count()</span></div>
+                                                    <div class="pr-3"><i class="la la-youtube la-2x"  data-toggle="tooltip"  title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo</span></div>
+                                                    <div class="pr-3"><i class="la la-file-audio-o la-2x"  data-toggle="tooltip"  title="Total Audio"></i><span class="pb-1">@module.TotalAudio</span></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,29 +163,6 @@
     </div>
 </form>
 
-@*<div class="modal fade" id="modalGotoTrial" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-    @using (Html.BeginForm("StartTrial", "Courses", FormMethod.Post, new { name = "formTrial", id = "formTrial" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.Id)
-
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <div class="m-4 text-center">
-                    <h4 class="color-darkblue mb-0" id="title_withdrawal">Put course for Trial?</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="m-4 text-center">
-                        <button class="btn btn-default font-weight-normal mr-2" type="submit" aria-label="Ok" id="btnYes">Yes</button>
-                        <button class="btn btn-secondary" type="button" data-toggle="modal" data-dismiss="modal" aria-label="Close" id="btnNo">No</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</div>*@
 
 <style>
     .module-box {

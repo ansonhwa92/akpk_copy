@@ -9,11 +9,21 @@
 
         $(document).ready(function () {
 
-            $('.onChangeSubmit').change(
+            var prev_val;
+            $('.onChangeSubmit').focus(function() {
+                    prev_val = $(this).val();
+                }).change(
                 function () {
-                    $('.formSLA').attr('id', 'formSLA'+$(this).attr('id'));
+                    if(confirm("Are you sure you want to change this?")){
+                        $('.formSLA').attr('id', 'formSLA'+$(this).attr('id'));
+                        $('.formSLA').trigger('submit');
+                    }
+                    else {
+                        $(this).val(prev_val);
+                        return false;
+                    }
+
                     
-                    $('.formSLA').trigger('submit');
                 });
 
             @if(ViewBag.pin != 0)
@@ -43,8 +53,8 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Admin Settings</h1>
-                    <div class="header-text">Manage who can access the admin console to help manage your organization's account.</div>
+                    <h1 class="page-title text-white">SLA Reminder Settings</h1>
+                    @*<div class="header-text">List of registered user as individual</div>*@
                 </div>
             </div>
         </div>
@@ -58,25 +68,10 @@
         <div id="page-nav" class="sidebar-left page-nav">
             <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> Admin Settings</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> SLA Reminder</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="#setting1" data-toggle="tab" class="nav-link">Setting 1</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#adminroles" data-toggle="tab" class="nav-link">Administrator Roles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#emailtemplate" data-toggle="tab" class="nav-link">Email Template</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#sla-reminder" data-toggle="tab" class="nav-link active">SLA Reminder</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#setting4" data-toggle="tab" class="nav-link">Setting 4</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#setting5" data-toggle="tab" class="nav-link">Setting 5</a>
+                            <a href="#" data-toggle="tab" class="nav-link active">List</a>
                         </li>
                     </ul>
                 </div>
@@ -104,6 +99,7 @@
                             <table class="table tableStyle1">
                                 <thead>
                                     <tr>
+                                        <th>@Html.DisplayNameFor(model => model.filter.SLAEventType)</th>
                                         <th>@Html.DisplayNameFor(model => model.filter.NotificationType)</th>
                                         @*<th>@Html.DisplayNameFor(model => model.filter.ETCode)</th>*@
                                         <th>@Html.DisplayNameFor(model => model.filter.SLAResolutionTime)</th>
@@ -119,7 +115,7 @@
                                         }
 
                                         @Html.HiddenFor(m => item.Id, new  { @form = "formSLA" + item.Id  })
-
+                                        <td><b>@Html.DisplayFor(m => item.SLAEventTypeName)</b></td>
                                         <td>
                                             @Html.DisplayFor(m => item.StagesName)
                                             @if (ViewBag.pin == item.Id)

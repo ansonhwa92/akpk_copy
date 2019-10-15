@@ -169,7 +169,7 @@ namespace FEP.Intranet.Areas.Reward.Controllers
                 return RedirectToAction("Details", "RewardActivityPoints", new { area = "Reward", @id = model.Id });
             }
         }
-
+        /*
         // GET: Reward/RewardActivityPoints/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
@@ -211,5 +211,6 @@ namespace FEP.Intranet.Areas.Reward.Controllers
                 return RedirectToAction("List");
             }
         }
+        */
     }
 }

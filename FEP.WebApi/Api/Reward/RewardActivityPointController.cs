@@ -60,8 +60,9 @@ namespace FEP.WebApi.Api.Reward
             }
             var filteredCount = query.Count();
 
+            query = query.OrderBy(o => o.Id);
             //order
-            if(request.order != null)
+            if (request.order != null)
             {
                 string sortBy = request.columns[request.order[0].column].data;
                 bool sortAscending = request.order[0].dir.ToLower() == "asc";

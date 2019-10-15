@@ -95,7 +95,9 @@ namespace FEP.Model
 
     public enum RewardStatus
     {
+        [Display(Name = "Open")]
         Open,
+        [Display(Name = "Closed")]
         Closed
     }
 
@@ -105,5 +107,19 @@ namespace FEP.Model
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+    }
+
+    public enum ActivityListDummy
+    {
+        Activity1,
+        Activity2,
+        Activity3,
+        Activity4,
+        Activity5,
+        Activity6,
+        Activity7,
+        Activity8,
+        Activity9,
+        Activity10
     }
 }

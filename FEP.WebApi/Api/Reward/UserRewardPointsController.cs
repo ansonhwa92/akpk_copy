@@ -33,14 +33,41 @@ namespace FEP.WebApi.Api.Reward
                                 .GetCustomAttributes(typeof(DisplayAttribute), false)[0]).Name;
         }
 
-        [Route("api/Reward/UserRewardPoints/GetUserTotalPoints")]
+        [Route("api/Reward/UserRewardPoints/GetUserPointsCollection")]
         [HttpGet]
-        public IHttpActionResult GetUserTotalPoints(int id)
+        public IHttpActionResult GetUserPointsCollection(int id)
         {
             var points = db.UserRewardPoints.Where(u => u.UserId == id && u.Display).ToList();
             int totalPoints = points.Sum(p => p.PointsReceived);
+
             return Ok(totalPoints);
         }
+        [Route("api/Reward/UserRewardPoints/GetUserPointsUsed")]
+        [HttpGet]
+        public IHttpActionResult GetUserPointsUsed(int id)
+        {
+            var redeemed = db.UserRewardRedemption.Where(r => r.UserId == id).ToList();
+            int usedPoints = redeemed.Sum(u => u.RewardRedemption.PointsToRedeem);
+
+            return Ok(usedPoints);
+        }
+
+        [Route("api/Reward/UserRewardPoints/GetUserPointsLeft")]
+        [HttpGet]
+        public IHttpActionResult GetUserPointsLeft(int id)
+        {
+            var points = db.UserRewardPoints.Where(u => u.UserId == id && u.Display).ToList();
+            int totalPoints = points.Sum(p => p.PointsReceived);
+
+            var redeemed = db.UserRewardRedemption.Where(r => r.UserId == id).ToList();
+            int usedPoints = redeemed.Sum(u => u.RewardRedemption.PointsToRedeem);
+
+            int pointsLeft = totalPoints - usedPoints;
+
+            return Ok(pointsLeft);
+        }
+
+
 
 
         [Route("api/Reward/UserRewardPoints/GetUserRewardPointsList")]

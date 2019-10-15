@@ -13,11 +13,7 @@
                 ajax: {
                     "type": "POST",
                     @{
-                        var sendId = -99;
-                        if(CurrentUser.UserType != UserType.SystemAdmin)
-                        {
-                            sendId = CurrentUser.UserId.Value;
-                        }
+                        var sendId = CurrentUser.UserId.Value;
                     }
                     "url": '@(WebApiURL)Reward/UserRewardRedemptions/GetUserRewardRedemptionList?id=@sendId',
                     "data": function (filter) {
@@ -38,7 +34,18 @@
 
                     { sortable: true, data: 'UserName' },
                     { sortable: true, data: 'RewardDescription' },
-                    { sortable: true, data: 'RewardStatusName' },
+                    {
+                        sortable: true, data: 'RewardStatusName',
+                        render: function (data, type, row, meta) {
+                            if (data == "Open") {
+                                return '<span class="badge badge-success">'+data+'</span>'
+                            }
+                            if (data == "Closed") {
+                                return '<span class="badge badge-warning">'+data+'</span>'
+                            }
+                        }
+                    },
+                    { sortable: true, data: 'PointsUsed' },
                     {
                         sortable: true, data: 'RedeemDate',
                         render: function (data, type, row, meta) {
@@ -54,17 +61,17 @@
 
                         }
                     },
-                    {
+                    @*{
                         sortable: false,
                         render: function (data, type, row, meta) {
                             var action = "";
                             action = '<div class="icon-action">'
-                                    +   '<a href="@Url.Action("Details", "UserRewardPoints", new { area = "Reward" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+                                    +   '<a href="@Url.Action("Details", "RewardRedemptions", new { area = "Reward" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
                                     + '</div>';
 
                             return action;
                         }
-                    }
+                    }*@
                 ],
                 paging: true,
                 lengthChange: true,
@@ -143,28 +150,10 @@
         <div id="page-nav" class="sidebar-left page-nav">
             <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> Admin Settings</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> User Reward Redemptions</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="#adminroles" data-toggle="tab" class="nav-link">Administrator Roles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#emailtemplate" data-toggle="tab" class="nav-link">Email Template</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#sla-reminder" data-toggle="tab" class="nav-link">SLA Reminder</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#setting4" data-toggle="tab" class="nav-link">Activity Points</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#setting5" data-toggle="tab" class="nav-link">Reward Redemption</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#setting5" data-toggle="tab" class="nav-link active">User Reward Points</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#setting5" data-toggle="tab" class="nav-link active">User Reward Redemptions</a>
+                            <a href="#" data-toggle="tab" class="nav-link active">List</a>
                         </li>
                     </ul>
                 </div>
@@ -176,20 +165,9 @@
         <!-- Start Form -->
         <div class="border-form rounded">
             <div class="form-container form-container-w100">
-                <div class="mb-4 mt-2">
-                    <h4 class="color-darkblue mr-auto mb-0">User Reward Points</h4>
-                    @if (CurrentUser.UserType != UserType.SystemAdmin)
-                    {
-                        <h5 class="font-weight-normal">My Collected Points : <b>@ViewBag.TotalPoints</b></h5>
-                    }
-                </div>
-                <div class="d-flex align-items-center">
-                    @if (CurrentUser.UserType == UserType.SystemAdmin)
-                    {
-                        <div>
-                            <a href="@Url.Action("AwardUser", "UserRewardPoints", new { area = "Reward" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Award a User</a>
-                        </div>
-                    }
+                <div class="d-flex align-items-center mb-4 mt-2">
+                    <h4 class="color-darkblue mr-auto mb-0">My Redeemed Reward</h4>
+
                 </div>
                 <div class="d-flex align-items-center">
                     <div class="filter dropdown">
@@ -260,8 +238,9 @@
                                 <th>@Html.DisplayNameFor(model => model.filter.UserName)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.RewardDescription)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.RewardStatusName)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.PointsUsed)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.RedeemDate)</th>
-                                <th></th>
+                                
                             </tr>
                         </thead>
                     </table>

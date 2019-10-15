@@ -32,24 +32,22 @@
 
 <div class="row">
 
+    <!-- Start content leftbar -->
     <div class="col-xl-3 col-md-3 col-sm-4 my-2">
         <div id="page-nav" class="sidebar-left page-nav">
-            <div data-perfect-scrollbar class="ps">
+            <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Notification Template</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> User Reward Points</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="@Url.Action("List", "UserRewardPoints", new { area = "Reward"})" class="nav-link">User Reward Points List</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="active nav-link">Award a User</a>
+                            <a href="#" data-toggle="tab" class="nav-link active">Award a User</a>
                         </li>
                     </ul>
                 </div>
-
             </div>
         </div>
     </div>
+    <!-- End content leftbar -->
 
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
         @using (Html.BeginForm())
@@ -96,7 +94,7 @@
 
                 </div>
                 <div class="p-3 rounded-bottom">
-                    <a class="btn btn-default font-weight-normal mr-2" href="href='@Url.Action("List")'">Cancel</a>
+                    <a class="btn btn-default font-weight-normal mr-2" href="@Url.Action("List")">Cancel</a>
                     <button type="submit" class="btn btn-secondary mr-2">Save</button>
                 </div>
 

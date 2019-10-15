@@ -31,22 +31,22 @@
 }
 
 <div class="row">
+    <!-- Start content leftbar -->
     <div class="col-xl-3 col-md-3 col-sm-4 my-2">
         <div id="page-nav" class="sidebar-left page-nav">
-            <div data-perfect-scrollbar class="ps">
+            <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Reward Redemption Settings</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> Reward Redemption</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="@Url.Action("Create", "RewardActivityPoints", new { area = "Reward"})" class="active nav-link">Create Activity Points</a>
+                            <a href="#" data-toggle="tab" class="nav-link active">Create</a>
                         </li>
-
                     </ul>
                 </div>
-
             </div>
         </div>
     </div>
+    <!-- End content leftbar -->
 
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
         @using (Html.BeginForm())
@@ -55,7 +55,7 @@
             <div class="border-form rounded">
                 <div class="form-container form-container-w100">
                     <div class="mb-4 mt-2">
-                        <h4 class="color-darkblue mb-0">Create : New Reward Redemption Settings</h4>
+                        <h4 class="color-darkblue mb-0">Create : New Reward Redemption</h4>
                     </div>
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -95,7 +95,7 @@
                         </div>
                     </div>
 
-                    
+
 
                     @Html.HiddenFor(model => model.CreatedBy)
 

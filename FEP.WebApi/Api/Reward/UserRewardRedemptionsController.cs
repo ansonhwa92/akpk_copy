@@ -108,6 +108,7 @@ namespace FEP.WebApi.Api.Reward
                     UserName = s.User.Name,
                     RewardRedemptionId = s.RewardRedemptionId,
                     RewardDescription = s.RewardRedemption.Description,
+                    PointsUsed = s.RewardRedemption.PointsToRedeem,
                     RedeemDate = s.RedeemDate,
                     RewardStatus = s.RewardStatus
                 }).ToList();
@@ -159,7 +160,21 @@ namespace FEP.WebApi.Api.Reward
         // POST: api/UserRewardRedemptions
         public IHttpActionResult Post(CreateUserRewardRedemptionModel model)
         {
-            if (!ModelState.IsValid) { return BadRequest(); }
+            if (!ModelState.IsValid) { return BadRequest("data not valid"); }
+
+            var reward = db.RewardRedemption.Find(model.RewardRedemptionId);
+            if(reward == null) { return BadRequest("Reward not available"); }
+
+            var points = db.UserRewardPoints.Where(u => u.UserId == model.UserId && u.Display).ToList();
+            int totalPoints = points.Sum(p => p.PointsReceived);
+
+            var redeemed = db.UserRewardRedemption.Where(r => r.UserId == model.UserId).ToList();
+            int usedPoints = redeemed.Sum(u => u.RewardRedemption.PointsToRedeem);
+
+            int pointsLeft = totalPoints - usedPoints;
+
+            //check if pointsLeft enough to redeem this reward
+            if(pointsLeft < reward.PointsToRedeem) { return BadRequest("Insuficient Points"); }
 
             var obj = new UserRewardRedemption
             {
@@ -172,6 +187,8 @@ namespace FEP.WebApi.Api.Reward
             db.SaveChanges();
             return Ok(obj);
         }
+        
+
 
         [Route("api/Reward/UserRewardRedemptions/UsedReward")]
         [HttpPut]

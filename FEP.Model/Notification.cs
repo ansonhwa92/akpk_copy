@@ -28,12 +28,8 @@ namespace FEP.Model
         Verify_Public_Event_Published_Cancelled,
 
         //Approve Public Event
-        [Display(Name = "Approve Public Event Creation 1")]
-        Approve_Public_Event_Creation1,
-		[Display(Name = "Approve Public Event Creation 2")]
-		Approve_Public_Event_Creation2,
-		[Display(Name = "Approve Public Event Creation 3")]
-		Approve_Public_Event_Creation3,
+        [Display(Name = "Approve Public Event Creation")]
+        Approve_Public_Event_Creation,
 		[Display(Name = "Approve Public Event Published Changed")]
         Approve_Public_Event_Published_Changed,
         [Display(Name = "Approve Public Event Published Cancelled")]

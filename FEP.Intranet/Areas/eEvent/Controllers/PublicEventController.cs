@@ -581,7 +581,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 				CreateAutoReminder reminder = new CreateAutoReminder
 				{
-					NotificationType = NotificationType.Approve_Public_Event_Creation1,
+					NotificationType = NotificationType.Approve_Public_Event_Creation,
 					NotificationCategory = NotificationCategory.Event,
 					ParameterListToSend = paramToSend,
 					StartNotificationDate = DateTime.Now,
@@ -643,7 +643,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 				CreateAutoReminder reminder = new CreateAutoReminder
 				{
-					NotificationType = NotificationType.Approve_Public_Event_Creation2,
+					NotificationType = NotificationType.Approve_Public_Event_Creation,
 					NotificationCategory = NotificationCategory.Event,
 					ParameterListToSend = paramToSend,
 					StartNotificationDate = DateTime.Now,
@@ -705,7 +705,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 				CreateAutoReminder reminder = new CreateAutoReminder
 				{
-					NotificationType = NotificationType.Approve_Public_Event_Creation3,
+					NotificationType = NotificationType.Approve_Public_Event_Creation,
 					NotificationCategory = NotificationCategory.Event,
 					ParameterListToSend = paramToSend,
 					StartNotificationDate = DateTime.Now,

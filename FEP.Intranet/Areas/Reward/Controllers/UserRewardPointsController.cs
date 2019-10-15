@@ -26,12 +26,38 @@ namespace FEP.Intranet.Areas.Reward.Controllers
             {
                 //get user's total points
                 var response = await WepApiMethod.SendApiAsync<int>
-                    (HttpVerbs.Get, $"Reward/UserRewardPoints/GetUserTotalPoints?id={CurrentUser.UserId}");
+                    (HttpVerbs.Get, $"Reward/UserRewardPoints/GetUserPointsCollection?id={CurrentUser.UserId}");
                 if (response.isSuccess)
                 {
                     ViewBag.TotalPoints = response.Data;
                 }
+
+                var response2 = await WepApiMethod.SendApiAsync<int>
+                    (HttpVerbs.Get, $"Reward/UserRewardPoints/GetUserPointsUsed?id={CurrentUser.UserId}");
+                if (response2.isSuccess)
+                {
+                    ViewBag.PointsUsed = response2.Data;
+                }
             }
+
+            ListUserRewardPointsModel model = new ListUserRewardPointsModel() { };
+            model.RewardTypeList = (Enum.GetValues(typeof(RewardType)).Cast<int>()
+                .Select(e => new SelectListItem()
+                {
+                    Text = ((DisplayAttribute)
+                    typeof(RewardType)
+                    .GetMember(Enum.GetName(typeof(RewardType), e).ToString())
+                    .First()
+                    .GetCustomAttributes(typeof(DisplayAttribute), false)[0]).Name,
+                    //Enum.GetName(typeof(NotificationType), e),
+                    Value = e.ToString()
+                })).ToList();
+
+            return View(model);
+        }
+        public ActionResult ListAll()
+        {
+            if(CurrentUser.UserType != UserType.SystemAdmin) { return HttpNotFound(); }
 
             ListUserRewardPointsModel model = new ListUserRewardPointsModel() { };
             model.RewardTypeList = (Enum.GetValues(typeof(RewardType)).Cast<int>()

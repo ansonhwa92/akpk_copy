@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace FEP.Intranet.Areas.Reward.Controllers
 {
@@ -21,6 +22,26 @@ namespace FEP.Intranet.Areas.Reward.Controllers
 
         public ActionResult List()
         {
+            ListUserRewardRedemptionModel model = new ListUserRewardRedemptionModel() { };
+            model.RewardStatusList = (Enum.GetValues(typeof(RewardStatus)).Cast<int>()
+                .Select(e => new SelectListItem()
+                {
+                    Text = ((DisplayAttribute)
+                    typeof(RewardStatus)
+                    .GetMember(Enum.GetName(typeof(RewardStatus), e).ToString())
+                    .First()
+                    .GetCustomAttributes(typeof(DisplayAttribute), false)[0]).Name,
+                    //Enum.GetName(typeof(NotificationType), e),
+                    Value = e.ToString()
+                })).ToList();
+
+            return View(model);
+        }
+
+        public ActionResult ListAll()
+        {
+            if (CurrentUser.UserType != UserType.SystemAdmin) { return HttpNotFound(); }
+
             ListUserRewardRedemptionModel model = new ListUserRewardRedemptionModel() { };
             model.RewardStatusList = (Enum.GetValues(typeof(RewardStatus)).Cast<int>()
                 .Select(e => new SelectListItem()
@@ -63,9 +84,28 @@ namespace FEP.Intranet.Areas.Reward.Controllers
             return View(model);
         }
 
+        public async Task<ActionResult> Redeem(int? id)
+        {
+            if (id == null) { return HttpNotFound(); }
+            var response = await WepApiMethod.SendApiAsync<DetailRewardRedemptionModel>
+                (HttpVerbs.Get, $"Reward/RewardRedemption?id={id}");
+
+            if (!response.isSuccess) { return HttpNotFound(); }
+
+            CreateUserRewardRedemptionModel model = new CreateUserRewardRedemptionModel
+            {
+                UserId = CurrentUser.UserId.Value,
+                RewardRedemptionId = id.Value,
+                RedeemDate = DateTime.Now,
+                RewardStatus = RewardStatus.Open
+            };
+
+            return await Create(model);
+        }
+
         // POST: Reward/UserRewardRedemptions/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateUserRewardRedemptionModel model)
         {
             if (ModelState.IsValid)
@@ -85,7 +125,8 @@ namespace FEP.Intranet.Areas.Reward.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Failed to Redeem Reward";
+                    ErrorClass errorObj = new JavaScriptSerializer().Deserialize<ErrorClass>(response.ErrorMessage);
+                    TempData["ErrorMessage"] = "Failed to Redeem Reward : " + errorObj.Message;
                     return RedirectToAction("List");
                 }
             }
@@ -94,6 +135,11 @@ namespace FEP.Intranet.Areas.Reward.Controllers
                 TempData["ErrorMessage"] = "Failed to Redeem Reward";
                 return RedirectToAction("List");
             }
+        }
+
+        public class ErrorClass
+        {
+            public string Message { get; set; }
         }
 
         public async Task<ActionResult> UpdateUsedReward(int? id)

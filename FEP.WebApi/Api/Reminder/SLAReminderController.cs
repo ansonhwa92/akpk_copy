@@ -43,6 +43,13 @@ namespace FEP.WebApi.Api.Reminder
                                 .First()
                                 .GetCustomAttributes(typeof(DisplayAttribute), false)[0]).Name;
         }
+        public string GetDisplayNameEventType(Enum val)
+        {
+            return ((DisplayAttribute)val.GetType()
+                .GetMember(Enum.GetName(typeof(SLAEventType), val).ToString())
+                                .First()
+                                .GetCustomAttributes(typeof(DisplayAttribute), false)[0]).Name;
+        }
         // GET: api/SLAReminder
         [HttpGet]
         public IHttpActionResult Get()
@@ -62,6 +69,7 @@ namespace FEP.WebApi.Api.Reminder
             foreach(var item in model)
             {
                 item.StagesName = GetDisplayName(item.NotificationType);
+                item.SLAEventTypeName = GetDisplayNameEventType(item.SLAEventType);
             }
 
             return Ok(model);

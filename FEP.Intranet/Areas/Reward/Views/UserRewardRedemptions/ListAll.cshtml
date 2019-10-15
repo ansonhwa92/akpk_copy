@@ -1,4 +1,4 @@
-﻿@model FEP.WebApiModel.Reward.ListRewardRedemptionModel
+﻿@model FEP.WebApiModel.Reward.ListUserRewardRedemptionModel
 @{
     ViewBag.Title = "List";
     Layout = "~/Views/Shared/_Layout1.cshtml";
@@ -12,14 +12,20 @@
                 processing: true,
                 ajax: {
                     "type": "POST",
-                    "url": '@(WebApiURL)Reward/RewardRedemption/GetRewardRedemptionList',
+                    @{
+                        var sendId = -99;
+                        if(CurrentUser.UserType != UserType.SystemAdmin)
+                        {
+                            sendId = CurrentUser.UserId.Value;
+                        }
+                    }
+                    "url": '@(WebApiURL)Reward/UserRewardRedemptions/GetUserRewardRedemptionList?id=@sendId',
                     "data": function (filter) {
                         //alert(filter[0]);
-                        filter.RewardCode = $('#filter_RewardCode').val();
-                        filter.Description = $('#filter_Description').val();
-                        filter.PointsToRedeem = $('#filter_PointsToRedeem').val();
-                        filter.ValidDuration = $('#filter_ValidDuration').val();
-                        /*filter.CreatedByName = $('#filter_CreatedByName').val();*/
+                        filter.UserName = $('#filter_UserName').val();
+                        filter.RewardDescription = $('#filter_RewardDescription').val();
+                        filter.RedeemDate = $('#filter_RedeemDate').val();
+                        filter.RewardStatus = $('#filter_RewardStatus').val();
                     }
                 },
                 columns: [
@@ -29,16 +35,42 @@
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
                     },
-                    { sortable: true, data: 'RewardCode' },
-                    { sortable: true, data: 'Description' },
-                    { sortable: true, data: 'PointsToRedeem' },
-                    { sortable: true, data: 'ValidDuration' },
+
+                    { sortable: true, data: 'UserName' },
+                    { sortable: true, data: 'RewardDescription' },
+                    {
+                        sortable: true, data: 'RewardStatusName',
+                        render: function (data, type, row, meta) {
+                            if (data == "Open") {
+                                return '<span class="badge badge-success">'+data+'</span>'
+                            }
+                            if (data == "Closed") {
+                                return '<span class="badge badge-warning">'+data+'</span>'
+                            }
+                        }
+                    },
+                    { sortable: true, data: 'PointsUsed' },
+                    {
+                        sortable: true, data: 'RedeemDate',
+                        render: function (data, type, row, meta) {
+
+							  var x = moment(data);
+
+							  if (x.isValid()) {
+								  return x.format("DD/MM/YYYY HH:mm");
+							  }
+							  else {
+								  return '';
+							  }
+
+                        }
+                    },
                     {
                         sortable: false,
                         render: function (data, type, row, meta) {
                             var action = "";
                             action = '<div class="icon-action">'
-                                    +   '<a href="@Url.Action("Details", "RewardRedemptions", new { area = "Reward" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+                                    +   '<a href="@Url.Action("Details", "UserRewardPoints", new { area = "Reward" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
                                     + '</div>';
 
                             return action;
@@ -56,7 +88,7 @@
                 language: {
                     processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
                     emptyTable: "No Record Found",
-                    info: "Showing _START_ - _END_ of _TOTAL_ Reward Redemptions"
+                    info: "Showing _START_ - _END_ of _TOTAL_ User Reward Redemptions"
                 },
                 dom: 'rtip'
             });
@@ -82,7 +114,7 @@
                     start = info.start + 1;
                 }
 
-                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' Reward Redemptions ');
+                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' User Reward Redemptions ');
                 $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
             }).draw();
         });
@@ -106,7 +138,7 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Reward Redemption Management</h1>
+                    <h1 class="page-title text-white">User Reward Redemptions</h1>
                     @*<div class="header-text">List of registered user as individual</div>*@
                 </div>
             </div>
@@ -122,10 +154,28 @@
         <div id="page-nav" class="sidebar-left page-nav">
             <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> Reward Redemption</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> Admin Settings</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="#" data-toggle="tab" class="nav-link active">List</a>
+                            <a href="#adminroles" data-toggle="tab" class="nav-link">Administrator Roles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#emailtemplate" data-toggle="tab" class="nav-link">Email Template</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#sla-reminder" data-toggle="tab" class="nav-link">SLA Reminder</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#setting4" data-toggle="tab" class="nav-link">Activity Points</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#setting5" data-toggle="tab" class="nav-link">Reward Redemption</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#setting5" data-toggle="tab" class="nav-link active">User Reward Points</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#setting5" data-toggle="tab" class="nav-link active">User Reward Redemptions</a>
                         </li>
                     </ul>
                 </div>
@@ -138,10 +188,8 @@
         <div class="border-form rounded">
             <div class="form-container form-container-w100">
                 <div class="d-flex align-items-center mb-4 mt-2">
-                    <h4 class="color-darkblue mr-auto mb-0">Reward Redemption List</h4>
-                    <div>
-                        <a href="@Url.Action("Create", "RewardRedemptions", new { area = "Reward" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a>
-                    </div>
+                    <h4 class="color-darkblue mr-auto mb-0">My Redeemed Reward</h4>
+
                 </div>
                 <div class="d-flex align-items-center">
                     <div class="filter dropdown">
@@ -149,36 +197,30 @@
                         <div class="dropdown-menu">
                             <div class="filter-head">Filters</div>
                             <div class="filter-body">
-                                <div>@Html.DisplayNameFor(m => m.filter.RewardCode)</div>
+                                <div>@Html.DisplayNameFor(m => m.filter.UserName)</div>
                                 <div class="sorting-wrap">
                                     <div class="sorting-dropdown">
-                                        @Html.EditorFor(m => m.filter.RewardCode, new { htmlAttributes = new { @class = "form-control small" } })
+                                        @Html.EditorFor(m => m.filter.UserName, new { htmlAttributes = new { @class = "form-control small" } })
                                     </div>
                                 </div>
-                                <div>@Html.DisplayNameFor(m => m.filter.Description)</div>
+                                <div>@Html.DisplayNameFor(m => m.filter.RewardDescription)</div>
                                 <div class="sorting-wrap">
                                     <div class="sorting-dropdown">
-                                        @Html.EditorFor(m => m.filter.Description, new { htmlAttributes = new { @class = "form-control small" } })
+                                        @Html.EditorFor(m => m.filter.RewardDescription, new { htmlAttributes = new { @class = "form-control small" } })
                                     </div>
                                 </div>
-                                <div>@Html.DisplayNameFor(m => m.filter.PointsToRedeem)</div>
+                                <div>@Html.DisplayNameFor(m => m.filter.RedeemDate)</div>
                                 <div class="sorting-wrap">
                                     <div class="sorting-dropdown">
-                                        @Html.EditorFor(m => m.filter.PointsToRedeem, new { htmlAttributes = new { @class = "form-control small" } })
+                                        @Html.EditorFor(m => m.filter.RedeemDate, new { htmlAttributes = new { @class = "form-control small" } })
                                     </div>
                                 </div>
-                                <div>@Html.DisplayNameFor(m => m.filter.ValidDuration)</div>
+                                <div>@Html.DisplayNameFor(m => m.filter.RewardStatus)</div>
                                 <div class="sorting-wrap">
                                     <div class="sorting-dropdown">
-                                        @Html.EditorFor(m => m.filter.ValidDuration, new { htmlAttributes = new { @class = "form-control small" } })
+                                        @Html.DropDownListFor(model => model.filter.RewardStatus, Model.RewardStatusList, "-Select Reward Type-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
                                     </div>
                                 </div>
-                                @*<div>@Html.DisplayNameFor(m => m.filter.CreatedByName)</div>
-                                <div class="sorting-wrap">
-                                    <div class="sorting-dropdown">
-                                        @Html.EditorFor(m => m.filter.CreatedByName, new { htmlAttributes = new { @class = "form-control small" } })
-                                    </div>
-                                </div>*@
                                 <div>
                                     <button id="btnSearch" class="mt-2 btn btn-secondary btn-block">Search</button>
                                 </div>
@@ -215,12 +257,11 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>@Html.DisplayNameFor(model => model.filter.RewardCode)</th>
-                                <th>@Html.DisplayNameFor(model => model.filter.Description)</th>
-                                <th>@Html.DisplayNameFor(model => model.filter.PointsToRedeem)</th>
-                                <th>@Html.DisplayNameFor(model => model.filter.ValidDuration)</th>
-                                @*<th>@Html.DisplayNameFor(model => model.filter.CreatedByName)</th>
-                                <th>@Html.DisplayNameFor(model => model.filter.CreatedDate)</th>*@
+                                <th>@Html.DisplayNameFor(model => model.filter.UserName)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.RewardDescription)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.RewardStatusName)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.PointsUsed)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.RedeemDate)</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -230,4 +271,7 @@
             </div>
         </div>
     </div>
+
 </div>
+
+

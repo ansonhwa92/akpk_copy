@@ -298,13 +298,25 @@
 									</div>
 								</li>
                                 <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Rewards</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="@Url.Action("List", "UserRewardPoints", new { area = "Reward" })">My Points</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "UserRewardRedemptions", new { area = "Reward" })">My Rewards</a>
+                                        <a class="dropdown-item" href="@Url.Action("ListToRedeem", "RewardRedemptions", new { area = "Reward" })">Claim Reward</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">System Settings</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="@Url.Action("List", "RewardActivityPoints", new { area = "Reward" })"><i class="la la-comment color-secondary font-icon"></i>Activity Points Management</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "RewardRedemptions", new { area = "Reward" })"><i class="la la-comment color-secondary font-icon"></i>Reward Redemption Management</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "UserRewardPoints", new { area = "Reward" })"><i class="la la-comment color-secondary font-icon"></i>User Reward Points</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "EmailTemplates", new { area = "Template" })"><i class="la la-comment color-secondary font-icon"></i>Template Management</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "SLAReminders", new { area = "SLAReminder" })"><i class="la la-comment color-secondary font-icon"></i>SLA Reminder Settings</a>
+                                        @if (CurrentUser.UserType == UserType.SystemAdmin)
+                                        {
+                                            <a class="dropdown-item" href="@Url.Action("List", "RewardActivityPoints", new { area = "Reward" })"><i class="la la-comment color-secondary font-icon"></i>Activity Points Management</a>
+                                            <a class="dropdown-item" href="@Url.Action("List", "RewardRedemptions", new { area = "Reward" })"><i class="la la-comment color-secondary font-icon"></i>Reward Redemption Management</a>
+                                            <a class="dropdown-item" href="@Url.Action("ListAll", "UserRewardPoints", new { area = "Reward" })"><i class="la la-comment color-secondary font-icon"></i>User Reward Points</a>
+                                            <a class="dropdown-item" href="@Url.Action("ListAll", "UserRewardRedemptions", new { area = "Reward" })"><i class="la la-comment color-secondary font-icon"></i>User Reward Redemptions</a>
+                                            <a class="dropdown-item" href="@Url.Action("List", "EmailTemplates", new { area = "Template" })"><i class="la la-comment color-secondary font-icon"></i>Notification Template</a>
+                                            <a class="dropdown-item" href="@Url.Action("List", "SLAReminders", new { area = "SLAReminder" })"><i class="la la-comment color-secondary font-icon"></i>SLA Reminder Settings</a>
+                                        }
 
                                         <a class="dropdown-item" href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a>
                                         <a class="dropdown-item" href="@Url.Action("Index", "Account", new { area = "Setting" })">Account Setting</a>

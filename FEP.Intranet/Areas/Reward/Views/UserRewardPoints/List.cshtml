@@ -14,11 +14,7 @@
                 ajax: {
                     "type": "POST",
                     @{
-                        var sendId = -99;
-                        if(CurrentUser.UserType != UserType.SystemAdmin)
-                        {
-                            sendId = CurrentUser.UserId.Value;
-                        }
+                        var sendId = CurrentUser.UserId.Value;
                     }
                     "url": '@(WebApiURL)Reward/UserRewardPoints/GetUserRewardPointsList?id=@sendId',
                     "data": function (filter) {
@@ -39,7 +35,17 @@
                     
                     { sortable: true, data: 'UserName' },
                     { sortable: true, data: 'PointsReceived' },
-                    { sortable: true, data: 'RewardTypeName' },
+                    {
+                        sortable: true, data: 'RewardTypeName',
+                        render: function (data, type, row, meta) {
+                            if (data == "Admin Reward") {
+                                return '<span class="badge badge-primary">'+data+'</span>';
+                            }
+                            if (data == "Activity") {
+                                return '<span class="badge badge-secondary">'+data+'</span>';
+                            }
+                        }
+                    },
                     { sortable: true, data: 'ActivityName' },
                     { sortable: true, data: 'RewardedByName' },
                     {
@@ -145,25 +151,10 @@
         <div id="page-nav" class="sidebar-left page-nav">
             <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> Admin Settings</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> User Reward Points</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="#adminroles" data-toggle="tab" class="nav-link">Administrator Roles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#emailtemplate" data-toggle="tab" class="nav-link">Email Template</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#sla-reminder" data-toggle="tab" class="nav-link">SLA Reminder</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#setting4" data-toggle="tab" class="nav-link">Activity Points</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#setting5" data-toggle="tab" class="nav-link">Reward Redemption</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#setting5" data-toggle="tab" class="nav-link active">User Reward Points</a>
+                            <a href="#" data-toggle="tab" class="nav-link active">List</a>
                         </li>
                     </ul>
                 </div>
@@ -176,20 +167,24 @@
         <!-- Start Form -->
         <div class="border-form rounded">
             <div class="form-container form-container-w100">
-                <div class="mb-4 mt-2">
-                    <h4 class="color-darkblue mr-auto mb-0">User Reward Points</h4>
-                    @if (CurrentUser.UserType != UserType.SystemAdmin)
-                    {
-                        <h5 class="font-weight-normal">My Collected Points : <b>@ViewBag.TotalPoints</b></h5>
-                    }
+                <div class="d-flex  align-items-center mb-1 mt-2">
+                    <h4 class="color-darkblue mr-auto mb-0">User Reward Points List</h4>
+
+
                 </div>
+                <h6 class="font-weight-normal mb-0">My Collected Points : <b>@ViewBag.TotalPoints</b></h6>
+                <h6 class="font-weight-normal mb-0">
+                    Points Used :
+                    <b>
+                        <a href="@Url.Action("List", "UserRewardRedemptions", new { area = "Reward" })">
+                            @ViewBag.PointsUsed
+                        </a>
+                    </b>
+                </h6>
+
+
                 <div class="d-flex align-items-center">
-                    @if (CurrentUser.UserType == UserType.SystemAdmin)
-                    {
-                        <div>
-                            <a href="@Url.Action("AwardUser", "UserRewardPoints", new { area = "Reward" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Award a User</a>
-                        </div>
-                    }
+
                 </div>
                 <div class="d-flex align-items-center">
                     <div class="filter dropdown">

@@ -22,10 +22,36 @@ namespace FEP.Intranet.Areas.Reward.Controllers
             return View(new ListRewardRedemptionModel { });
         }
 
+        public async Task<ActionResult> ListToRedeem()
+        {
+            if (CurrentUser.UserType != UserType.SystemAdmin)
+            {
+                //get user's total points
+                var response = await WepApiMethod.SendApiAsync<int>
+                    (HttpVerbs.Get, $"Reward/UserRewardPoints/GetUserPointsLeft?id={CurrentUser.UserId}");
+                if (response.isSuccess)
+                {
+                    ViewBag.TotalPoints = response.Data;
+                }
+            }
+            return View(new ListRewardRedemptionModel { });
+        }
+
         // GET: Reward/RewardRedemptions/Details/5
         public async Task<ActionResult> Details(int? id)
         {
             if(id == null) { return HttpNotFound(); }
+            var response = await WepApiMethod.SendApiAsync<DetailRewardRedemptionModel>
+                (HttpVerbs.Get, $"Reward/RewardRedemption?id={id}");
+
+            if (!response.isSuccess) { return HttpNotFound(); }
+
+            return View(response.Data);
+        }
+
+        public async Task<ActionResult> DetailsToRedeem(int? id)
+        {
+            if (id == null) { return HttpNotFound(); }
             var response = await WepApiMethod.SendApiAsync<DetailRewardRedemptionModel>
                 (HttpVerbs.Get, $"Reward/RewardRedemption?id={id}");
 

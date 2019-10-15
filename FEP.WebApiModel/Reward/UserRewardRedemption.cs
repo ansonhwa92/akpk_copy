@@ -20,6 +20,8 @@ namespace FEP.WebApiModel.Reward
         public int RewardRedemptionId { get; set; }
         [Display(Name = "Description")]
         public string RewardDescription { get; set; }
+        [Display(Name = "Points Used")]
+        public int? PointsUsed { get; set; }
 
         [Display(Name = "RedeemDate")]
         public DateTime RedeemDate { get; set; }
@@ -66,11 +68,15 @@ namespace FEP.WebApiModel.Reward
         [Display(Name = "Description")]
         public string RewardDescription { get; set; }
 
-        [Display(Name = "RedeemDate")]
+        [Display(Name = "Redeem Date")]
         [UIHint("Date")]
         public DateTime? RedeemDate { get; set; }
         [Display(Name = "Reward Status")]
         public RewardStatus? RewardStatus { get; set; }
+
+        [Display(Name = "Reward Status")]
         public string RewardStatusName { get; set; }
+        [Display(Name = "Points Used")]
+        public int? PointsUsed { get; set; }
     }
 }

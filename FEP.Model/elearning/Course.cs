@@ -124,6 +124,9 @@ namespace FEP.Model.eLearning
 
         public bool IsDeleted { get; set; }
 
+        //Course Image
+        public string IntroImageFileName { get; set; }
+
 
     }
 

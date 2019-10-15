@@ -34,6 +34,7 @@ namespace FEP.Model.eLearning
 
         public int TotalAssignment { get; set; }
 
+        public string IntroImageFileName { get; set; }
 
         public void UpdateTotals()
         {

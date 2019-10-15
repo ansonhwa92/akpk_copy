@@ -1,8 +1,10 @@
 ﻿using FEP.Helper;
+using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.Administration;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FEP.WebApiModel.eLearning
@@ -138,6 +140,10 @@ namespace FEP.WebApiModel.eLearning
         public bool IsDeleted { get; set; }
 
         public int CourseEventId { get; set; }
+
+
+        public HttpPostedFileBase File { get; set; }
+        public string IntroImageFileName { get; set; }
 
     }
 

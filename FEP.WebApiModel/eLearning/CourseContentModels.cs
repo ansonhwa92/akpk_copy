@@ -71,6 +71,8 @@ namespace FEP.WebApiModel.eLearning
         public int? ContentQuestionId { get; set; }
         public string Question { get; set; }
 
+        public string IntroImageFileName { get; set; }
+
     }
 
 

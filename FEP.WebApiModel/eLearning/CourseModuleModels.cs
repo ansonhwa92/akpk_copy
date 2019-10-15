@@ -35,25 +35,8 @@ namespace FEP.WebApiModel.eLearning
 
         public virtual ICollection<CourseContent> ModuleContents { get; set; }
 
-        // for use with completion criteria
-        //public List<CourseContent> Questions { get; set; }
+
+        public string IntroImageFileName { get; set; }
 
     }   
-
-
-    //public class ContentCompletionModel : BaseModel
-    //{
-
-    //    [Display(Name = "CompletionCriteria", ResourceType = typeof(Language.eLearning.Content))]
-    //    public ContentCompletionType CompletionType { get; set; }
-
-    //    [Display(Name = "CompleteATimer", ResourceType = typeof(Language.eLearning.Course))]
-    //    public int? Timer { get; set; } //completiontype timer in sec
-
-    //    [Display(Name = "CompleteAQuestion", ResourceType = typeof(Language.eLearning.Course))]
-    //    public int? QuestionId { get; set; }
-
-
-
-    //}
 }

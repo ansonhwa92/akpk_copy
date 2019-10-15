@@ -68,6 +68,17 @@
                     <div class="tab-pane active" id="course-details">
                         <div class="mb-4 mt-2 mr-auto">
                             <div class="card text-white bg-dark p-2 float-right border-dark">@Model.Status</div>
+                            <div class="row">
+                                <input type="file" name="File" id="File" class="file" hidden />
+
+                                <div id="imgDiv" onclick="$('#File').click()">
+
+                                    <div class="boxed">
+                                        <img class="introImage" src="@Url.Action("GetImg", "File", new { area = "eLearning", fileName = @Model.IntroImageFileName})"
+                                             height="200" width="500" alt="" />
+                                    </div>
+                                </div>
+                            </div>
                             <span class="text-muted-light x-small font-italic">Course Name</span>
                             <h2 class="color-darkblue mb-0">
                                 @name
@@ -211,7 +222,7 @@
                         var order = sortable.toArray();
                         localStorage.setItem(sortable.options.group.name, order.join('|'));
 
-                        console.log('order - ', order);
+                        //console.log('order - ', order);
 
                         $('#order').val(order);
 
@@ -221,7 +232,7 @@
                         var createdBy = $('#CreatedBy').val();
                         var data = { Id: courseId, CreatedBy: createdBy, Order: order };
 
-                        console.log(data);
+                        //console.log(data);
 
                         $.ajax({
                             url: url,
@@ -243,13 +254,49 @@
 
             $('#draggable-module').sortable(options);
 
-            console.log('local -', localStorage.getItem("modules"));
-
         });
 
         function openModule(moduleId) {
             var url = '@Url.Action("Content", "CourseModules", new { area = "eLearning" })?id=' + moduleId;
             window.location = url;
         }
+
+        $('.file').on('change', function () {
+            let fileName = $(this).val().split('\\').pop();
+
+            var file = document.getElementsByName('File')[0].files[0];
+
+            var uploadImgUrl = '@(BaseURL)/eLearning/File/UploadFile';
+
+            uploadFile(uploadImgUrl, file, function (value) {
+
+                //console.log('value - ', value);
+                          
+                $('#IntroImageFileName').val(value.FileNameOnStorage);
+
+                var url = "@WebApiURL" + "eLearning/Courses/UpdateIntroImg";
+
+                console.log('url = ', url);
+
+                $.ajax({
+                    url: url,
+                    data: { Id: @Model.Id, FileName: value.FileNameOnStorage },
+                    type: 'post',
+                    success: function (result) {
+                        console.log('result - ', result);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('error - ' + textStatus + " " + errorThrown);
+                    }
+
+                });
+
+
+                var newImgUrl = '@(BaseURL)/eLearning/File/GetImg?fileName=' + value.FileNameOnStorage;
+
+                $(".introImage").attr('src', newImgUrl);
+
+            });
+        });
     </script>
 }

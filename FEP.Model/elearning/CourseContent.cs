@@ -55,6 +55,7 @@ namespace FEP.Model.eLearning
         public int Timer { get; set; } //completiontype timer in sec
 
         // END Content completion
+        public string IntroImageFileName { get; set; }
     }
 
     public enum ShowIFrameAs

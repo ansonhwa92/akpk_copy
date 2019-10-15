@@ -58,6 +58,10 @@
                             {
                                 <div class="card text-white bg-dark p-2 float-right border-dark">@Model.Status</div>
                             }
+                            <div class="boxed">
+                                <img class="introImage" src="@Url.Action("GetImg", "File", new { area = "eLearning", fileName = @Model.IntroImageFileName})"
+                                     height="200" width="500" alt="" />
+                            </div>
 
                             <span class="text-muted-light x-small font-italic">Course Name</span>
                             <h2 class="color-darkblue mb-0">
@@ -109,18 +113,17 @@
                                                    data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>
                                             </div>
                                         </div>
+                                        <div>
                                             <div>
-                                                <div>
-                                                    @Html.Raw(@module.Description)
+                                                @Html.Raw(@module.Description)
 
-                                                    <div class="row pl-2">
-                                                        <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count()</span></div>
-                                                        <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo</span></div>
-                                                        <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio</span></div>
-                                                    </div>
+                                                <div class="row pl-2">
+                                                    <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count()</span></div>
+                                                    <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo</span></div>
+                                                    <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio</span></div>
                                                 </div>
                                             </div>
-
+                                        </div>
                                     </div>
                                 }
                             }
@@ -151,8 +154,6 @@
     .form-container {
         max-width: 100% !important
     }
-
-
 </style>
 
 @section ContentScript {

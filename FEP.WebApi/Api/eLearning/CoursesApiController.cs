@@ -452,7 +452,7 @@ namespace FEP.WebApi.Api.eLearning
         }
 
 
-     
+
         [Route("api/eLearning/Courses/AddUser")]
         [HttpPost]
         public IHttpActionResult AddUser(UpdateTrainerCourseModel model)
@@ -541,7 +541,7 @@ namespace FEP.WebApi.Api.eLearning
 
             var courseEvent = new CourseEvent();
 
-            if(entity.Status == CourseStatus.Trial)
+            if (entity.Status == CourseStatus.Trial)
             {
                 courseEvent = entity.CourseEvents.Where(x => x.Status == CourseEventStatus.Trial).FirstOrDefault();
                 model.CourseEventId = courseEvent.Id;
@@ -670,7 +670,7 @@ namespace FEP.WebApi.Api.eLearning
 
             entity.Modules = entity.Modules.OrderBy(x => x.Order).ToList();
 
-            for(int i = 0; i < orderModel.Order.Count(); i++)
+            for (int i = 0; i < orderModel.Order.Count(); i++)
             {
                 var module = entity.Modules.FirstOrDefault(x => x.Id.ToString() == orderModel.Order[i]);
 
@@ -704,11 +704,32 @@ namespace FEP.WebApi.Api.eLearning
 
                 return Ok(entity.Id);
             }
-            
+
             return BadRequest(ModelState);
+        }
+
+        [Route("api/eLearning/Courses/UpdateIntroImg")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> UpdateIntroImg(ImageModel model)
+        {
+            var entity = await db.Courses.FirstOrDefaultAsync(x => x.Id.ToString() == model.Id);
+
+            if (entity == null)
+                return BadRequest();
+
+            entity.IntroImageFileName = model.FileName;
+            db.SetModified(entity);
+
+            await db.SaveChangesAsync();
+
+            return Ok();
         }
     }
 
-
-
+    public class ImageModel
+    {
+        public string Id { get; set; }
+        public string FileName { get; set; }
+    }
 }

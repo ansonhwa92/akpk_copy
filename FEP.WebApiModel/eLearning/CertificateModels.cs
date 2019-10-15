@@ -49,12 +49,21 @@ namespace FEP.WebApiModel.eLearning
         public string Description { get; set; }
 
         [Required]
-        [AllowHtml]
-        public string Template { get; set; }
-
-        [Required]
         [Display(Name = "Page Orientation")]
         public TypePageOrientation TypePageOrientation { get; set; }
 
+        [Required]
+        [AllowHtml]
+        public string Template { get; set; }
+
+        public CreateTemplateModel()
+        {
+            this.Template = "";
+        }
+
+        public CreateTemplateModel(string template)
+        {
+            this.Template = template;
+        }
     }
 }

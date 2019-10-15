@@ -21,6 +21,8 @@
                     $(".companyname").addClass("d-none");
                     $(".agencyname").removeClass("d-none");
 
+                    getCountryCode(@Model.MalaysiaCountryId);
+
                 }
                 else if (this.value == '1') {
                     $(".malaysian").removeClass("d-none");
@@ -30,6 +32,8 @@
                     $(".companyregno").removeClass("d-none");
                     $(".agencyname").addClass("d-none");
                     $(".companyname").removeClass("d-none");
+
+                    getCountryCode(@Model.MalaysiaCountryId);
                 }
                 else {
                     $(".non-malaysian").removeClass("d-none");
@@ -39,11 +43,33 @@
                     $(".companyregno").addClass("d-none");
                     $(".agencyname").addClass("d-none");
                     $(".companyname").removeClass("d-none");
+
+                    $("select#CountryId").trigger("change");
                 }
             });
 
+            $('select#CountryId').change(function () {
+                getCountryCode(this.value);
+            });
 
         });
+
+        function getCountryCode(countryId) {
+
+            $.ajax({
+                type: "GET",
+                url: "@(WebApiURL)Administration/Country?id="+countryId,
+                contentType: "text/plain",
+                dataType: "json",
+                success: function (result) {
+                    $('span.countrycode').html(result.CountryCode);
+                },
+                error: function (response) {
+
+                }
+            });
+
+        }
 
     </script>
 
@@ -215,7 +241,12 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.CompanyPhoneNo)
-                            @Html.EditorFor(m => m.CompanyPhoneNo, new { htmlAttributes = new { @class = "form-control" } })
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text countrycode">@Html.Raw(Model.CountryCode)</span>
+                                </div>
+                                @Html.EditorFor(m => m.CompanyPhoneNo, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Auth.PlaceholderCompanyPhoneNo } })
+                            </div>
                             @Html.ValidationMessageFor(m => m.CompanyPhoneNo)
                         </div>
                     </div>
@@ -232,7 +263,7 @@
                             @Html.FEPLabelFor(m => m.ICNo, htmlAttributes: new { @class = "form-label" })
                             @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Company.PlaceholderICNo } })
                             @Html.ValidationMessageFor(m => m.ICNo)
-                        </div>                        
+                        </div>
                         <div class="form-group col-lg-12 non-malaysian @if (Model.Type != CompanyType.NonMalaysianCompany) { <text>d-none</text> }">
                             @Html.FEPLabelFor(m => m.PassportNo, htmlAttributes: new { @class = "form-label" })
                             @Html.EditorFor(m => m.PassportNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Company.PlaceholderPassportNo } })
@@ -249,7 +280,12 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.MobileNo)
-                            @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderMobileNo } })
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text countrycode">@Html.Raw(Model.CountryCode)</span>
+                                </div>
+                                @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderMobileNo } })
+                            </div>
                             @Html.ValidationMessageFor(m => m.MobileNo)
                         </div>
                     </div>

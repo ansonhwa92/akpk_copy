@@ -430,8 +430,7 @@ namespace FEP.Intranet.Controllers
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
-
-
+            
         }
 
         [NonAction]

@@ -67,11 +67,17 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -322,6 +328,10 @@
     <ProjectReference Include="..\FEP.Intranet\FEP.Intranet.csproj">
       <Project>{4079286E-AE06-46A4-AD44-02DBB01D8666}</Project>
       <Name>FEP.Intranet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEP.Language\FEP.Language.csproj">
+      <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
+      <Name>FEP.Language</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEP.Model\FEP.Model.csproj">
       <Project>{2a1a9157-1c94-4b4a-96a4-52648bd8076a}</Project>

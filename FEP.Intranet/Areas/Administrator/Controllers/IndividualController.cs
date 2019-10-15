@@ -53,6 +53,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             var countries = await GetCountries();
 
             model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+            model.CountryCode = countries.Where(c => c.Name == "Malaysia").Select(s => s.CountryCode).FirstOrDefault();
 
             model.States = new SelectList(await GetStates(), "Id", "Name", 0);
             model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
@@ -148,7 +149,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             var countries = await GetCountries();
 
             model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
-
+            model.CountryCode = countries.Where(c => c.Name == "Malaysia").Select(s => s.CountryCode).FirstOrDefault();
             model.States = new SelectList(await GetStates(), "Id", "Name", 0);
             model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
             model.Citizenships = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
@@ -183,6 +184,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 PassportNo = response.Data.PassportNo,
                 Email = response.Data.Email,
                 MobileNo = response.Data.MobileNo,
+                CountryCode = response.Data.CountryCode,
                 Address1 = response.Data.Address1,
                 Address2 = response.Data.Address2,
                 PostCodeMalaysian = response.Data.PostCodeMalaysian,

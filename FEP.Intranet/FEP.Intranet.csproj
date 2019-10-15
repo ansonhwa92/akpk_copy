@@ -190,6 +190,7 @@
     <Compile Include="Areas\eEvent\Controllers\PublicEventController.cs" />
     <Compile Include="Areas\eEvent\Models\PublicEvent.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1236,6 +1237,7 @@
     <Content Include="Views\Home\MyProfileAdmin.cshtml" />
     <Content Include="Views\Home\EditProfileAdmin.cshtml" />
     <Content Include="Views\Home\MyProfileStaff.cshtml" />
+    <Content Include="Views\Notification\_NotificationDropdown.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

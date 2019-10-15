@@ -61,6 +61,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your account successfully activate. Please check your registered email for login details..
+        /// </summary>
+        public static string AlertActivateSuccess {
+            get {
+                return ResourceManager.GetString("AlertActivateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sign in fail. Please use your login id and correct password..
         /// </summary>
         public static string AlertLoginFail {
@@ -75,6 +84,15 @@ namespace Language {
         public static string AlertLoginInactive {
             get {
                 return ResourceManager.GetString("AlertLoginInactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your account successfully created. Please check your registered email for sign in details..
+        /// </summary>
+        public static string AlertRegisterSuccess {
+            get {
+                return ResourceManager.GetString("AlertRegisterSuccess", resourceCulture);
             }
         }
         
@@ -484,7 +502,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to eg. 031234567.
+        ///   Looks up a localized string similar to eg. 31234567.
         /// </summary>
         public static string PlaceholderCompanyPhoneNo {
             get {
@@ -538,7 +556,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to eg. 0171234567.
+        ///   Looks up a localized string similar to eg. 171234567.
         /// </summary>
         public static string PlaceholderMobileNo {
             get {

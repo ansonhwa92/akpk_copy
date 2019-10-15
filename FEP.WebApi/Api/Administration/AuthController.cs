@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using FEP.Helper;
 using FEP.WebApiModel.Auth;
+using System.Text.RegularExpressions;
 
 namespace FEP.WebApi.Api.Administration
 {
@@ -59,8 +60,44 @@ namespace FEP.WebApi.Api.Administration
             return NotFound();
         }
 
+        [Route("api/Auth/ValidatePassword")]
+        [HttpGet]
+        public IHttpActionResult ValidatePassword([FromUri] string password)
+        {
+            var hasNumber = new Regex(@"[0-9]+");
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasMiniMaxChars = new Regex(@".{8,15}");
+            var hasLowerChar = new Regex(@"[a-z]+");
+            var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
+
+            var config = db.AccountSetting.First();
+
+            if (config.IsContainLowerCase && !hasLowerChar.IsMatch(password))
+            {
+                return BadRequest(Language.AccountSetting.ValidContainLowerCase);
+            }
+            else if (config.IsContainUpperCase && !hasUpperChar.IsMatch(password))
+            {
+                return BadRequest(Language.AccountSetting.ValidContainUpperCase);
+            }
+            else if (config.IsContainNumeric && !hasNumber.IsMatch(password))
+            {
+                return BadRequest(Language.AccountSetting.ValidContainNumeric);
+            }
+            else if (config.IsContainSymbol && !hasSymbols.IsMatch(password))
+            {
+                return BadRequest(Language.AccountSetting.ValidContainSymbol);
+            }
+            else if (config.IsLengthLimit && !hasMiniMaxChars.IsMatch(password))
+            {
+                return BadRequest(Language.AccountSetting.ValidLengthLimit);
+            }
+
+            return Ok(true);
+        }
+
         [Route("api/Auth/RegisterIndividual")]
-        [HttpPost]        
+        [HttpPost]
         public IHttpActionResult RegisterIndividual([FromBody] RegisterIndividualModel model)
         {
 
@@ -69,7 +106,7 @@ namespace FEP.WebApi.Api.Administration
                 ModelState.Remove("model.PassportNo");
                 ModelState.Remove("model.CitizenshipId");
                 ModelState.Remove("model.PostCodeNonMalaysian");
-                ModelState.Remove("model.State");                              
+                ModelState.Remove("model.State");
             }
             else
             {
@@ -80,7 +117,14 @@ namespace FEP.WebApi.Api.Administration
 
             if (ModelState.IsValid)
             {
-                
+
+                var countryCode = db.Country.Where(c => c.Id == model.CountryId && c.Display).FirstOrDefault();
+
+                if (countryCode == null)
+                {
+                    return InternalServerError();
+                }
+
                 Authentication.GeneratePassword(model.Password);
 
                 var account = new UserAccount
@@ -102,7 +146,7 @@ namespace FEP.WebApi.Api.Administration
                     City = model.City,
                     StateName = model.State,
                     StateId = model.StateId,
-                    CountryId = model.CountryId                    
+                    CountryId = model.CountryId
                 };
 
                 var user = new User
@@ -112,13 +156,14 @@ namespace FEP.WebApi.Api.Administration
                     Email = model.Email,
                     ICNo = model.ICNo,
                     MobileNo = model.MobileNo,
+                    CountryCode = countryCode.CountryCode1,
                     Display = true,
                     CreatedBy = null,
                     CreatedDate = DateTime.Now,
                     UserAccount = account,
                     IndividualProfile = individual
                 };
-                                
+
                 db.User.Add(user);
 
                 ActivateAccount activateAccount = new ActivateAccount
@@ -152,7 +197,7 @@ namespace FEP.WebApi.Api.Administration
                 ModelState.Remove("model.CountryId");
                 ModelState.Remove("model.CompanyName");
                 ModelState.Remove("model.CompanyRegNo");
-                ModelState.Remove("model.SectorId");               
+                ModelState.Remove("model.SectorId");
             }
             else if (model.Type == CompanyType.MalaysianCompany)
             {
@@ -161,7 +206,7 @@ namespace FEP.WebApi.Api.Administration
                 ModelState.Remove("model.State");
                 ModelState.Remove("model.CountryId");
                 ModelState.Remove("model.AgencyName");
-                ModelState.Remove("model.MinistryId");                
+                ModelState.Remove("model.MinistryId");
             }
             else
             {
@@ -175,6 +220,14 @@ namespace FEP.WebApi.Api.Administration
 
             if (ModelState.IsValid)
             {
+
+                var countryCode = db.Country.Where(c => c.Id == model.CountryId && c.Display).FirstOrDefault();
+
+                if (countryCode == null)
+                {
+                    return InternalServerError();
+                }
+
                 Authentication.GeneratePassword(model.Password);
 
                 var account = new UserAccount
@@ -200,7 +253,8 @@ namespace FEP.WebApi.Api.Administration
                     StateId = model.StateId,
                     StateName = model.State,
                     CountryId = model.CountryId,
-                    CompanyPhoneNo = model.CompanyPhoneNo
+                    CompanyPhoneNo = model.CompanyPhoneNo,
+                    CountryCode = countryCode.CountryCode1
                 };
 
                 var user = new User
@@ -210,6 +264,7 @@ namespace FEP.WebApi.Api.Administration
                     Email = model.Email,
                     ICNo = model.Type == CompanyType.NonMalaysianCompany ? model.PassportNo : model.ICNo,
                     MobileNo = model.MobileNo,
+                    CountryCode = countryCode.CountryCode1,
                     Display = true,
                     CreatedBy = null,
                     CreatedDate = DateTime.Now,
@@ -348,7 +403,7 @@ namespace FEP.WebApi.Api.Administration
                     db.Entry(user).Property(e => e.HashPassword).IsModified = true;
                     db.Entry(user).Property(e => e.Salt).IsModified = true;
 
-                                       
+
                     //update password reset
                     pwdreset.IsReset = true;
                     pwdreset.ResetDate = DateTime.Now;

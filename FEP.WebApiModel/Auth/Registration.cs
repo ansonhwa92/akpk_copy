@@ -27,6 +27,8 @@ namespace FEP.WebApiModel.Auth
         [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Auth))]
         public string PassportNo { get; set; }
 
+        public string CountryCode { get; set; }
+
         [Required(ErrorMessageResourceName = "ValidRequiredMobileNo", ErrorMessageResourceType = typeof(Language.Auth))]
         [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericMobileNo", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Auth))]        
@@ -71,7 +73,7 @@ namespace FEP.WebApiModel.Auth
 
         [Required(ErrorMessageResourceName = "ValidRequiredPassword", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldPassword", ResourceType = typeof(Language.Auth))]
-        [DataType(DataType.Password)]
+        [DataType(DataType.Password)]        
         public string Password { get; set; }
 
         [Compare("Password", ErrorMessageResourceName = "ValidCompareRetypePassword", ErrorMessageResourceType = typeof(Language.Auth))]
@@ -152,6 +154,8 @@ namespace FEP.WebApiModel.Auth
 
         public int MalaysiaCountryId { get; set; }
 
+        public string CompanyCountryCode { get; set; }
+
         [Required(ErrorMessageResourceName = "ValidRequiredCompanyPhoneNo", ErrorMessageResourceType = typeof(Language.Auth))]
         [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericCompanyPhoneNo", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldCompanyPhoneNo", ResourceType = typeof(Language.Auth))]
@@ -171,6 +175,8 @@ namespace FEP.WebApiModel.Auth
         [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Auth))]
         public string PassportNo { get; set; }
 
+        public string CountryCode { get; set; }
+
         [Required(ErrorMessageResourceName = "ValidRequiredMobileNo", ErrorMessageResourceType = typeof(Language.Auth))]
         [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericMobileNo", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Auth))]
@@ -183,7 +189,7 @@ namespace FEP.WebApiModel.Auth
 
         [Required(ErrorMessageResourceName = "ValidRequiredPassword", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldPassword", ResourceType = typeof(Language.Auth))]
-        [DataType(DataType.Password)]
+        [DataType(DataType.Password)]        
         public string Password { get; set; }
 
         [Compare("Password")]

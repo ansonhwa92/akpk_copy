@@ -1,0 +1,68 @@
+﻿@model List<NotificationModel>
+
+<button class="nav-link btn-flush dropdown-toggle" type="button" data-toggle="dropdown" data-dropdown-disable-document-scroll data-caret="false">
+    <span class="icon-top"><i class="la la-bell-o"></i></span>
+    <span class="badge badge-notifications point"> </span>
+</button>
+<div class="dropdown-menu dropdown-menu-right">
+    <div data-perfect-scrollbar class="position-relative">
+
+        <div class="dropdown-header"><strong>System notifications</strong></div>
+        <div class="list-group list-group-flush mb-0">
+            <a class="list-group-item list-group-item-action">
+                <span class="d-flex align-items-center">
+                    <small class="text-muted">Empty</small>
+                </span>
+            </a>
+            @*<a href="fixed-student-messages.html" class="list-group-item list-group-item-action border-left-3 border-left-danger">
+                    <span class="d-flex align-items-center mb-1">
+                        <small class="text-muted">3 minutes ago</small>
+                    </span>
+                    <span class="d-flex">
+                        <span class="avatar avatar-xs mr-2">
+                            <span class="avatar-title rounded-circle bg-light">
+                                <i class="material-icons font-size-16pt text-danger">account_circle</i>
+                            </span>
+                        </span>
+                        <span class="flex d-flex flex-column">
+                            <span class="text-black-70">Your profile information has not been synced correctly.</span>
+                        </span>
+                    </span>
+                </a>
+                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action">
+                    <span class="d-flex align-items-center mb-1">
+                        <small class="text-muted">5 hours ago</small>
+                    </span>
+                    <span class="d-flex">
+                        <span class="avatar avatar-xs mr-2">
+                            <span class="avatar-title rounded-circle bg-light">
+                                <i class="material-icons font-size-16pt text-success">group_add</i>
+                            </span>
+                        </span>
+                        <span class="flex d-flex flex-column">
+                            <strong>Adrian. D</strong>
+                            <span class="text-black-70">Wants to join your private group.</span>
+                        </span>
+                    </span>
+                </a>
+                <a href="fixed-student-messages.html" class="list-group-item list-group-item-action">
+                    <span class="d-flex align-items-center mb-1">
+                        <small class="text-muted">1 day ago</small>
+                    </span>
+                    <span class="d-flex">
+                        <span class="avatar avatar-xs mr-2">
+                            <span class="avatar-title rounded-circle bg-light">
+                                <i class="material-icons font-size-16pt text-warning">storage</i>
+                            </span>
+                        </span>
+                        <span class="flex d-flex flex-column">
+                            <span class="text-black-70">Your deploy was successful.</span>
+                        </span>
+                    </span>
+                </a>*@
+            @*<a href="fixed-student-messages.html" class="list-group-item list-group-item-action">
+                    <span style="padding-top:8px" class="nav-link btn btn-block" onclick="clearNotification()">Mark Read All</span>
+                </a>*@
+        </div>
+    </div>
+</div>

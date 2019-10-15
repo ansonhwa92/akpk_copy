@@ -14,6 +14,9 @@ namespace FEP.WebApiModel.eLearning
     //BACKGROUND & TEMPLATE
     public class CertificatesModel
     {
+        public int courseId { get; set; }
+        public int selectedBackground { get; set; }
+        public int selectedTemplate { get; set; }
         public ICollection<CourseCertificateTemplate> Template { get; set; }
         public ICollection<CourseCertificate> Background { get; set; }
     }

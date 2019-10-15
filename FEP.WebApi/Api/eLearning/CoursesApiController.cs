@@ -673,6 +673,26 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(model);
         }
 
-       
+
+        [Route("api/eLearning/Courses/SaveCertificate")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> SaveCertificate([FromBody] CertificatesModel model)
+        {
+            var entity = await db.Courses.FirstOrDefaultAsync(x => x.Id == model.courseId);
+
+            if (entity != null)
+            {
+                entity.CourseCertificateId = model.selectedBackground;
+                entity.CourseCertificateTemplateId = model.selectedTemplate;
+                db.Entry(entity).State = EntityState.Modified;
+
+                db.SaveChanges();
+
+                return Ok(entity.Id);
+            }
+            
+            return BadRequest(ModelState);
+        }
     }
 }

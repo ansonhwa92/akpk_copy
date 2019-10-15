@@ -47,6 +47,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -55,6 +58,9 @@
     </Reference>
     <Reference Include="FEP.Helper">
       <HintPath>..\..\FEP.Helper\FEP.Helper\bin\Debug\FEP.Helper.dll</HintPath>
+    </Reference>
+    <Reference Include="Mammoth, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mammoth.1.4.0.0\lib\net45\Mammoth.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -161,13 +167,21 @@
     <Compile Include="Areas\eEvent\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\eEventAreaRegisteration.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseCategoryController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\ContentCompletionsController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\CourseContentsController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\CourseModulesController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CoursesController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\FileUploadController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\FileController.cs" />
     <Compile Include="Areas\eLearning\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventSpeakerController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventExternalExhibitorController.cs" />
     <Compile Include="Areas\eEvent\Models\EventSpeaker.cs" />
+    <Compile Include="Areas\eLearning\Controllers\CertificatesController.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
-    <Compile Include="Areas\eLearning\Services\IeLearningDbAccess.cs" />
+    <Compile Include="Areas\eLearning\Helper\AllowCrossSiteJsonAttribute.cs" />
+    <Compile Include="Areas\eLearning\Helper\YouTubeUrlHelper.cs" />
+    <Compile Include="Areas\eLearning\Helper\SlideshareHelper.cs" />
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />
     <Compile Include="Areas\Logs\Controllers\UserLogController.cs" />
     <Compile Include="Areas\Logs\LogsAreaRegistration.cs" />
@@ -193,6 +207,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\AppSettings.cs" />
     <Compile Include="Method.cs" />
     <Compile Include="Models\Auth.cs" />
     <Compile Include="Models\Home.cs" />
@@ -200,6 +215,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\eLearning\Views\CourseContents\_createVideo.cshtml" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -208,6 +224,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="css\base.css" />
     <Content Include="css\custom-admin.css" />
+    <Content Include="css\elearn.css" />
     <Content Include="css\fonts\social-share-kit.svg" />
     <Content Include="css\jssocials.css" />
     <Content Include="css\login.css" />
@@ -475,6 +492,8 @@
     <Content Include="img\stats\icon-stats-enrolled.svg" />
     <Content Include="img\stats\icon-stats-event.svg" />
     <Content Include="img\stats\icon-stats-rnp.svg" />
+    <Content Include="js\elearn-course.js" />
+    <Content Include="js\elearn.js" />
     <Content Include="js\index.js" />
     <Content Include="js\jquery.countTo.js" />
     <Content Include="js\jquery.simpleLoadMore.js" />
@@ -715,7 +734,6 @@
     <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\Create.cshtml" />
     <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\Edit.cshtml" />
     <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\Delete.cshtml" />
-<<<<<<< Updated upstream
     <Content Include="Areas\eEvent\Views\PublicEvent\Event_Setting.cshtml" />
     <Content Include="Areas\SLAReminder\Views\SLAReminders\List.cshtml" />
     <Content Include="Areas\SLAReminder\Views\web.config" />
@@ -725,17 +743,83 @@
     <Content Include="Areas\Template\Views\EmailTemplates\Edit.cshtml" />
     <Content Include="Areas\Template\Views\EmailTemplates\List.cshtml" />
     <Content Include="Areas\Template\Views\web.config" />
-=======
->>>>>>> Stashed changes
     <Content Include="Areas\eLearning\Views\_ViewStart.cshtml" />
     <Content Include="Areas\eLearning\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\eLearning\Views\Home\_Menu.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Create.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Delete.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\Details.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Edit.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Index.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\Manage.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\Details.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\Content.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\EditRules.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseCategory\Index.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_contentSidebar.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseModules\Create.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseModules\Delete.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseModules\Details.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseModules\Edit.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseModules\Index.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseModules\Content.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\Create.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\Delete.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\Edit.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\Index.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseModules\_contentSidebar.cshtml" />
+    <Content Include="libman.json" />
+    <Content Include="Areas\eLearning\Views\Courses\_actionLog.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_amendmentHistory.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewVideo.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\View.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_contentCompletion.cshtml" />
+    <Content Include="Areas\eLearning\Views\ContentCompletions\_contentCompletionView.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewRichText.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewIframe.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewAudio.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewDocument.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createRichText.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createIFrame.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createDocument.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createAudio.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createTest.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createAssignment.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\Trainers.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_defaultContent.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_Add.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewAssignment.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewTest.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailVideo.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_contentCompletionDetail.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editAssignment.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editAudio.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editDocument.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editIFrame.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editRichText.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editTest.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editVideo.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Index.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Create_Background.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailRichText.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailDocument.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Edit_Background.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailAudio.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailIFrame.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createFlash.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewFlash.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailFlash.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editFlash.cshtml" />
+<<<<<<< HEAD
+    <Content Include="Areas\eLearning\Views\Certificates\_Background.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\_Template.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Edit_Template.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Create_Template.cshtml" />
+=======
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewPdf.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createPdf.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailPdf.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editPdf.cshtml" />
+>>>>>>> 6f50b7a6bcf2568baa8dc3236f31d57cfd544aef
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -771,6 +855,7 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.truncate.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -788,6 +873,7 @@
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\popper.min.js.map" />
     <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\Sortable\jquery-sortable.js" />
     <Content Include="Scripts\summernote\lang\summernote-ar-AR.js" />
     <Content Include="Scripts\summernote\lang\summernote-bg-BG.js" />
     <Content Include="Scripts\summernote\lang\summernote-ca-ES.js" />
@@ -1231,7 +1317,6 @@
     <Folder Include="Areas\Administrator\Models\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
-    <Folder Include="Areas\eLearning\Models\" />
     <Folder Include="Areas\Logs\Models\" />
     <Folder Include="Areas\Logs\Views\Shared\" />
     <Folder Include="Areas\Setting\Models\" />

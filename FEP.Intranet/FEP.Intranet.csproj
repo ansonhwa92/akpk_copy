@@ -815,6 +815,7 @@
     <Content Include="Areas\eLearning\Views\Certificates\Edit_Template.cshtml" />
     <Content Include="Areas\eLearning\Views\Certificates\Create_Template.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\View.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\AssignCertificate.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseEvents\_addLearner.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseEvents\Learners.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />

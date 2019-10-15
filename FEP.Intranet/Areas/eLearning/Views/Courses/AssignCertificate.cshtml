@@ -1,0 +1,159 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CertificatesModel
+
+@{
+    ViewBag.Title = "Certificate";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Learning Management</a></li>
+                                <li class="breadcrumb-item"><a href="#">Certificate Background</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Certificate Background</h1>
+                    <div class="header-text">List of certificate background</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@using (Html.BeginForm("SaveCertificate", "Courses", FormMethod.Post, new { enctype = "multipart/form-data", id = "target" }))
+    {
+
+@Html.HiddenFor(model => model.courseId);
+@Html.HiddenFor(model => model.selectedBackground);
+@Html.HiddenFor(model => model.selectedTemplate);
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div class="sidebar-left">
+            <!-- Steps -->
+            <div class="sidebar-inner sticky">
+                <ul class="steps steps-vertical">
+                    <li class="step-item complete">
+                        <a href="" class="step-link">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Select Background</span>
+                        </a>
+                    </li>
+                    <li class="step-item complete">
+                        <a href="" class="step-link">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Select Template</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- End Steps -->
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Background -->
+        <div class="border-form rounded-top">
+            <form>
+                <div class="form-container form-container-w100 tab-content">
+                    <div class="mt-2 mb-4 pb-1">
+                        <h4 class="color-darkblue mb-0">Select Background</h4>
+                    </div>
+                    <div id="selectBackground">
+                        <div class="row">
+                            @{
+                                foreach (var item in Model.Background)
+                                {
+                                    var imgUrl = "@(BaseURL)/eLearning/FileUpload/GetImg/?fil0eName=" + @item.FileUpload.FileNameOnStorage;
+                                    <div class="col-lg-4">
+                                        <div class="box-contain" onclick="assignBackground(@item.Id)">
+                                            <div class="card text-center">
+                                                <span> <img src="@Url.Action("GetImg", "FileUpload", new { area = "eLearning", fileName = item.FileUpload.FileNameOnStorage })" height="100" width="150" id="FileUploadId" /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-container form-container-w100 tab-content">
+                    <div class="mt-2 mb-4 pb-1">
+                        <h4 class="color-darkblue mb-0">Select Template</h4>
+                    </div>
+                    <div id="selectTemplate">
+                        <div class="row">
+                            @foreach (var item in Model.Template)
+                            {
+                                <div class="col-lg-4">
+                                    <div class="box-contain" onclick="assignTemplate(@item.Id)">
+                                        <div class="card text-center">
+                                            @Html.DisplayFor(model => item.Description) -
+                                            @Html.DisplayFor(model => item.TypePageOrientation)
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- End Form -->
+        </div>
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+            <a href='@Url.Action("Index")' class="btn btn-warning btn-flat">Cancel</a>
+            <button class="btn btn-secondary" type="submit">Save</button>
+            @*<input class="btn btn-secondary" type="submit" value="Save" id="btnsave" />*@
+        </div>
+    </div>
+</div>
+}
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(function () {
+            var akpk = {
+                selectBackground: function () {
+                    var bg = $("#selectBackground .card");
+                    bg.click(function () {
+                        $("#selectBackground .box-contain .card").removeClass('active');
+                        $(this).addClass('active');
+                    });
+                },
+                selectTemplate: function () {
+                    var temp = $("#selectTemplate .card");
+                    temp.click(function () {
+                        $("#selectTemplate .box-contain .card").removeClass('active');
+                        $(this).addClass('active');
+                    });
+                }
+            }
+            akpk.selectBackground();
+            akpk.selectTemplate();
+        });
+
+        function assignBackground(id) {
+            $('#selectedBackground').val(id);
+            console.log("selectBackground =", $('#selectedBackground').val());
+        }
+
+        function assignTemplate(id) {
+            $('#selectedTemplate').val(id);
+            console.log("selectedTemplate =", $('#selectedTemplate').val());
+        }
+    </script>
+}

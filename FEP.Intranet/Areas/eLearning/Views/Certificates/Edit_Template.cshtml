@@ -52,6 +52,45 @@
                     </ul>
                     <!-- End Steps -->
                 </div>
+                <div class="sidebar-inner sticky">
+                    @*<span class="title">Tags</span>*@
+                    <div class="card-body">
+                        <table class="table" id="tagTable">
+                            <tbody>
+                                <tr class="table-row clickable-row">
+                                    <td>{{organization}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{first_name}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{last_name}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{email}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{course}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{issue_date}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{latest_issue_date}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{expiration_date}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{instructor_name}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{unique_identifier}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
@@ -85,7 +124,7 @@
                         <div class="row">
                             <div class="form-group col-lg-12">
                                 @Html.FEPLabelFor(model => model.Template)
-                                @Html.TextAreaFor(m => m.Template, new { @class = "summernote form-control" })
+                                @Html.TextAreaFor(m => m.Template, new { @class = "summernote form-control", @id = "summernote", @name = "editordata" })
                                 @Html.ValidationMessageFor(model => model.Template, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -104,6 +143,21 @@
 }
 
 <style>
+    .table-row {
+        cursor: pointer;
+        font-size: 0.7em;
+        padding: 0 !important;
+    }
+
+    .table .td {
+        padding: 0.3em !important;
+    }
+
+    tbody {
+        display: block;
+        max-height: 450px;
+        overflow-y: auto;
+    }
     .form-container {
         max-width: none !important;
     }
@@ -117,26 +171,51 @@
 
     <script>
         $(document).ready(function () {
+            var initMarkup = $('#Template').val();
+            console.log(initMarkup);
+
             $('.summernote').summernote({
                 placeholder: 'Type your text here.',
                 tabsize: 2,
-                height: 150,
+                height: 300,
                 toolbar: [
-                    //[groupName, [list of button]],
                     ['style', ['bold', 'italic', 'underline', 'clear']],
                     ['font', ['strikethrough', 'superscript', 'subscript']],
                     ['fontsize', ['fontsize']],
                     ['color', ['color']],
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['height', ['height']],
-                    ['view', ['fullscreen', 'codeview', 'help']],
-
+                    ['table', ['table']],
+                    ['insert', ['link', 'hr']],
+                    ['misc', ['fullscreen', 'undo', 'redo', 'codeview']]
                 ],
                 codeviewFilter: false,
                 codeviewIframeFilter: true,
-                //airMode : true,
             });
 
+            $('#summernote').summernote('code', initMarkup);
+
+            $(".table-row").click(function (e) {
+
+                e.preventDefault();
+
+                var newText = $.trim($(this).text());
+                $('#summernote').summernote('editor.saveRange');
+
+                // Editor loses selected range (e.g after blur)
+                $('#summernote').summernote('editor.restoreRange');
+                $('#summernote').summernote('editor.focus');
+                $('#summernote').summernote('editor.insertText', newText);
+            });
         });
+
+        function GetContent() {
+
+            var content = $('#summernote').summernote('code');
+
+            $('#Template').val(content);
+
+            return true;
+        }
     </script>
 }

@@ -534,6 +534,37 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return RedirectToAction("Index", "Courses", new { area = "eLearning" });
         }
 
+        public async Task<ActionResult> AssignCertificate(int id)
+        {
+            var response = await WepApiMethod.SendApiAsync<CertificatesModel>(HttpVerbs.Get, $"eLearning/Certificate");
+
+            if (response.isSuccess)
+            {
+                response.Data.courseId = id;
+                return View(response.Data);
+            }
+
+            return View(new CertificatesModel());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SaveCertificate(CertificatesModel model)
+        {
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eLearning/Courses/SaveCertificate", model);
+
+            if (response.isSuccess)
+            {
+                TempData["SuccessMessage"] = "Certificate successfully assigned.";
+                await LogActivity(Modules.Learning, "Assign certificate to course", model);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Fail to assign certificate.";
+            }
+
+
+            return RedirectToAction("Content", "Courses", new { area = "eLearning", id = model.courseId });
+        }
 
     }
 }

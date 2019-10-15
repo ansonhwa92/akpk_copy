@@ -14,6 +14,9 @@ namespace FEP.WebApiModel.eLearning
     //BACKGROUND & TEMPLATE
     public class CertificatesModel
     {
+        public int courseId { get; set; }
+        public int selectedBackground { get; set; }
+        public int selectedTemplate { get; set; }
         public ICollection<CourseCertificateTemplate> Template { get; set; }
         public ICollection<CourseCertificate> Background { get; set; }
     }
@@ -46,12 +49,21 @@ namespace FEP.WebApiModel.eLearning
         public string Description { get; set; }
 
         [Required]
-        [AllowHtml]
-        public string Template { get; set; }
-
-        [Required]
         [Display(Name = "Page Orientation")]
         public TypePageOrientation TypePageOrientation { get; set; }
 
+        [Required]
+        [AllowHtml]
+        public string Template { get; set; }
+
+        public CreateTemplateModel()
+        {
+            this.Template = "";
+        }
+
+        public CreateTemplateModel(string template)
+        {
+            this.Template = template;
+        }
     }
 }

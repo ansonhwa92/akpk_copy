@@ -113,9 +113,7 @@ namespace FEP.Model.eLearning
         /// </summary>
         public string TestsPassed { get; set; }
 
-
         // ----- END COURSE COMPLETION CRITERIA
-
 
         public string LearningPath { get; set; }
 
@@ -143,10 +141,16 @@ namespace FEP.Model.eLearning
         Verified,
         VerifierRejected,  // Should go back to draft
         FirstApproval,
-        ApproverRejected, // Should go back to draft
+        FirstApprovalApproved,
+        FirstApproverRejected, // Should go back to draft        
         SecondApproval,
+        SecondApprovalApproved,
+        SecondApproverRejected,
         ThirdApproval,
-        
+        ThirdApprovalApproved,
+        ThidApproverRejected,
+
+
         Approved, // Ready to publish
         Published, // Fit for consumption
         Hidden, //The course is hidden froom search and view, however the point given is still valid

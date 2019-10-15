@@ -47,24 +47,41 @@
 
 <div class="row">
 
-    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
-        <div id="page-nav" class="sidebar-left page-nav">
-            <div data-perfect-scrollbar class="ps">
-                <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
-                    <ul class="nav page-nav__menu">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">@Model.Title</a>
-                        </li>
-                    </ul>
+    @*<div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div id="page-nav" class="sidebar-left page-nav">
+                <div data-perfect-scrollbar class="ps">
+                    <div class="page-section">
+                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                        <ul class="nav page-nav__menu">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">@Model.Title</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </div>*@
 
-    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+    <div class="col-xl-12 col-md-12 col-sm-12 mt-2 pb-5">
+
+
+
         <!-- Start Form -->
         <div class="border-form rounded-top">
+
+            @if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit))
+            {
+                <div class="col-sm-12 ">
+                    <div class="row float-right">
+
+                        <a href="@Url.Action($"Edit", "CourseContents", new { area = "eLearning", id = Model.Id })"
+                           data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit"></i></a>
+                        <a href="@Url.Action($"Delete", "CourseContents", new { area = "eLearning", id = Model.Id })"
+                           data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o"></i></a>
+                    </div>
+                </div>
+            }
+
             <div class="form-container">
 
                 <div class="form-group">
@@ -75,63 +92,6 @@
 
                 @Html.Partial($"_view{Model.ContentType.ToString()}", Model)
 
-
-                @*@{
-                    switch (Model.ContentType)
-                    {
-                        case FEP.Model.eLearning.CourseContentType.Video:
-
-
-                            @Html.Partial("_video", Model)
-
-                            break;
-
-                        case FEP.Model.eLearning.CourseContentType.RichText:
-
-                            @Html.Partial("_richText", Model)
-
-                            break;
-
-                        case FEP.Model.eLearning.CourseContentType.Audio:
-                            @Html.Partial("_audio", Model)
-
-                            break;
-                        case FEP.Model.eLearning.CourseContentType.Document:
-
-                            @Html.Partial("_document", Model)
-
-                            break;
-
-                        case FEP.Model.eLearning.CourseContentType.IFrame:
-
-                            @Html.Partial("_iframe", Model)
-
-                            break;
-
-                        case FEP.Model.eLearning.CourseContentType.Flash:
-
-                            @Html.Partial("_flash", Model)
-
-                            break;
-
-                        case FEP.Model.eLearning.CourseContentType.Test:
-
-                            @Html.Partial("_test", Model)
-
-                            break;
-                        case FEP.Model.eLearning.CourseContentType.Assignment:
-
-                            @Html.Partial("_assignment", Model)
-
-                            break;
-
-                        default:
-                            @Html.Action("_DefaultContent", "CourseContents", new { id = @Model.Id })
-
-                            break;
-
-                    }
-                }*@
                 <hr />
 
                 @Html.Action("Get", "ContentCompletions", new { @contentId = Model.Id })
@@ -154,7 +114,5 @@
 </style>
 
 @section ContentScript {
-
-  
 
 }

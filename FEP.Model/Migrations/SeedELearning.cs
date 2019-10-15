@@ -9,6 +9,8 @@ namespace FEP.Model.Migrations
 {
     public static class SeedElearning
     {
+        public const int courseTrialId = 99;
+
         public static void Seed(DbEntities db)
         {
             SeedRoles(db);
@@ -18,17 +20,182 @@ namespace FEP.Model.Migrations
 
             SeedSampleData(db);
 
-            SeedSampleQuestions(db);
+            //   SeedSampleQuestions(db);
 
             SeedAssignTrainerToCourse(db);
 
             //SeedSampleCertificateAndTemplate(db);
 
             SeedAssignTrainerToGroup(db);
+
+            SeedAdditionalCourses(db);
+            SeedRules(db);
+
         }
 
         private static void SeedDefaultData(DbEntities db)
         {
+        }
+
+
+
+        private static Course AddCourse(DbEntities db, string title, int courseId, CourseStatus courseStatus = CourseStatus.Draft)
+        {
+            int i = courseId;
+
+            Course course = new Course
+            {
+                Id = courseId,
+                CategoryId = 1,
+                Code = "CODE : " + title,
+                DefaultAllowablePercentageBeforeWithdraw = 25.0m,
+                Description = "COURSE " + title,
+                Duration = 5,
+                DurationType = DurationType.Hour,
+                IsFree = i % 2 == 1 ? true : false,
+                Language = CourseLanguage.Malay,
+                Medium = CourseMedium.Online,
+                Objectives = "<strong>Objective</strong>",
+                ScheduleType = CourseScheduleType.NoTimeLimit,
+                Title = title,
+                Status = courseStatus,
+            };
+
+            db.Courses.Add(course);
+
+            db.SaveChanges();
+
+            course.Modules = new List<CourseModule>
+                {
+                    new CourseModule { Title = "Sample Module : " + title,
+                        CourseId =course.Id, Order=1, Description="Description",
+                        ModuleContents = new List<CourseContent>
+                        {
+                            new CourseContent
+                            {
+                                Order = 1,
+                                CourseId = course.Id,
+                                ContentType = CourseContentType.RichText,
+                                Text = "<h2>Sample Content for COURSE " + title + "</h2>",
+                                CompletionType = ContentCompletionType.Timer,
+                                Timer = 60, // in seconds
+                                Description = "<p> This is Content 1 for COURSE " +title + "</p>",
+                                Title = "<h2>Sample Content for COURSE " +title + "</h2>",
+                            }
+                        }
+                    }
+                };
+
+            course.CourseApprovalLog = new List<CourseApprovalLog>
+                {
+                    new CourseApprovalLog
+                    {
+                        CreatedByName = "system",
+                        ActionDate = DateTime.Now,
+                        Remark = "Course " + course.Title + " created.",
+                    },
+                };
+
+            db.Entry(course).State = EntityState.Modified;
+
+            db.SaveChanges();
+
+            return course;
+        }
+
+        private static void SeedAdditionalCourses(DbEntities db)
+        {
+            var courseExist = db.Courses.Find(2);
+
+            if (courseExist != null) return;
+
+            int i = 2;
+            while (i <= 5)
+            {
+                // Add a course
+                Course course = new Course
+                {
+                    Id = i,
+                    CategoryId = 1,
+                    Code = "COURSE " + i.ToString(),
+                    DefaultAllowablePercentageBeforeWithdraw = 25.0m,
+                    Description = "Sample Content : Code " + "COURSE " + i.ToString(),
+                    Duration = 5,
+                    DurationType = DurationType.Hour,
+                    IsFree = i % 2 == 1 ? true : false,
+                    Language = CourseLanguage.Malay,
+                    Medium = CourseMedium.Online,
+                    Objectives = "<strong>Objective</strong>",
+                    ScheduleType = CourseScheduleType.NoTimeLimit,
+                    Title = "Sample Content : Code " + "COURSE" + i.ToString(),
+                    Status = CourseStatus.Draft,
+                };
+
+                db.Courses.Add(course);
+
+                db.SaveChanges();
+
+                CourseContent richText = new CourseContent
+                {
+                    Order = 1,
+                    CourseId = course.Id,
+                    ContentType = CourseContentType.RichText,
+                    Text = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
+                    CompletionType = ContentCompletionType.Timer,
+                    Timer = 60, // in seconds
+                    Description = "<p> This is Content 1 for COURSE" + i.ToString() + "</p>",
+                    Title = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
+                };
+
+                course.Modules = new List<CourseModule>
+                {
+                    new CourseModule { Title = "Sample Module : Code " + "COURSE" + i.ToString(),
+                        CourseId =course.Id, Order=1, Description="Description",
+                        ModuleContents = new List<CourseContent>
+                        {
+                            new CourseContent
+                            {
+                                Order = 1,
+                                CourseId = course.Id,
+                                ContentType = CourseContentType.RichText,
+                                Text = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
+                                CompletionType = ContentCompletionType.Timer,
+                                Timer = 60, // in seconds
+                                Description = "<p> This is Content 1 for COURSE" + i.ToString() + "</p>",
+                                Title = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
+                            }
+                        }
+                    }
+                };
+
+                course.CourseApprovalLog = new List<CourseApprovalLog>
+                {
+                    new CourseApprovalLog
+                    {
+                        CreatedByName = "system",
+                        ActionDate = DateTime.Now,
+                        Remark = "Course " + course.Title + " created.",
+                    },
+                };
+
+                db.Entry(course).State = EntityState.Modified;
+                db.SaveChanges();
+
+
+                i++;
+            }
+        }
+
+        private static void SeedRules(DbEntities db)
+        {
+            var course = db.Courses.FirstOrDefault(x => x.Id == 1);
+
+            course.TraversalRule = TraversalRule.Sequential;
+            course.CompletionCriteriaType = CompletionCriteriaType.ActivityCompletion;
+            course.ScoreCalculation = ScoreCalculation.Average;
+            course.LearningPath = "{2,3,4}"; // course 2,3,4
+
+            db.SaveChanges();
         }
 
         private static void SeedSampleCertificateAndTemplate(DbEntities db)
@@ -62,6 +229,41 @@ namespace FEP.Model.Migrations
 
                 db.SaveChanges();
             }
+        }
+
+        private static void AssignLearnersToCourseEvent(DbEntities db, int courseId)
+        {
+            //if (System.Diagnostics.Debugger.IsAttached == false)
+            //    System.Diagnostics.Debugger.Launch();
+
+            // Get the  course
+            var courseEvent = db.CourseEvents.Where(x => x.CourseId == courseId)
+                    .OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+
+            if (courseEvent == null) return;
+
+            var enrollment = db.Enrollments.Where(x => x.CourseEventId == courseEvent.Id);
+
+            if (enrollment != null)
+                return;
+
+            var userRoles = db.UserRole.Where(x => x.Role.Name == RoleNames.eLearningLearner);
+
+            foreach(var user in userRoles)
+            {
+                db.Enrollments.Add(new Enrollment
+                {
+                    CourseEventId = courseEvent.Id,
+                    CourseId = courseId,
+                    EnrolledDate = DateTime.Now,
+                    LearnerId = user.Id,
+                    Status = EnrollmentStatus.Enrolled,
+
+                });
+
+            }
+
+            db.SaveChanges();
         }
 
         private static void SeedAssignTrainerToCourse(DbEntities db)
@@ -199,6 +401,7 @@ namespace FEP.Model.Migrations
                 // Add a course
                 Course course = new Course
                 {
+                    Id = 1,
                     CategoryId = 1,
                     Code = "GEN01",
                     DefaultAllowablePercentageBeforeWithdraw = 25.0m,
@@ -333,7 +536,7 @@ namespace FEP.Model.Migrations
                                 Description = "<p> Watch the video</p>",
                                 Title = "Content 2",
                             }
-                        } ,
+                        },
                     },
                     new CourseModule
                     {
@@ -454,6 +657,7 @@ namespace FEP.Model.Migrations
                 if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
 
                 module.ModuleContents.Add(content);
+                module.UpdateTotals();
 
                 db.SaveChanges();
 
@@ -472,6 +676,9 @@ namespace FEP.Model.Migrations
                 content2.QuestionId = question2.Id;
 
                 if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
+
+                module.ModuleContents.Add(content2);
+                module.UpdateTotals();
 
                 db.SaveChanges();
             }

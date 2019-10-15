@@ -26,7 +26,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string EditRulesCourse = "eLearning/Courses/EditRules";
         public const string Content = "eLearning/Courses/Content";
         public const string DeleteCourse = "eLearning/Courses/Delete";
-
     }
 
     public class CoursesController : FEPController
@@ -155,7 +154,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var entity =  db.Courses.FirstOrDefault(x => x.Id == id.Value);
+            var entity = db.Courses.FirstOrDefault(x => x.Id == id.Value);
 
             var model = new TrainerCourseModel
             {
@@ -244,12 +243,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return RedirectToAction("Index", "Courses");
 
             }
-            
+
             model.Modules = model.Modules.OrderBy(x => x.Order).ToList();
 
             return View(model);
         }
 
+
+        // post the new order
         [HttpPost]
         public async Task<ActionResult> Content(int? Id, int CreatedBy, string order)
         {
@@ -288,10 +289,34 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 return RedirectToAction("Index", "Courses");
             }
-            
+
             vm.Modules = vm.Modules.OrderBy(x => x.Order).ToList();
 
             return View(vm);
+        }
+
+
+
+        public async Task<ActionResult> View(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var model = await TryGetFrontCourse(id.Value);
+
+            if (model == null)
+            {
+                TempData["ErrorMessage"] = "No such course.";
+
+                return RedirectToAction("Index", "Courses");
+
+            }
+
+            model.Modules = model.Modules.OrderBy(x => x.Order).ToList();
+
+            return View(model);
         }
 
         [HasAccess(UserAccess.CourseCreate)]
@@ -405,7 +430,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 TempData["ErrorMessage"] = "Cannot find such course.";
 
                 return RedirectToAction("Index", "Courses", new { area = "eLearning" });
-            }            
+            }
 
             var course = await TryGetCourse(id.Value);
 
@@ -442,7 +467,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = model.Id });
                     }
                     else
-                    {                       
+                    {
                         return RedirectToAction("Index", "Courses", new { area = "eLearning" });
                     }
                 }
@@ -453,7 +478,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = model.Id });
                 }
             }
-            
+
             return View(model);
 
         }
@@ -495,15 +520,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Delete, $"eLearning/Courses/Delete?id={id}");
 
             if (response.isSuccess)
-            {                
+            {
                 await LogActivity(Modules.Learning, "Delete Course: " + response.Data);
 
                 TempData["SuccessMessage"] = "Course titled " + response.Data + " successfully deleted.";
-                              
+
             }
             else
             {
-                TempData["ErrorMessage"] = "Failed to delete Course.";                
+                TempData["ErrorMessage"] = "Failed to delete Course.";
             }
 
             return RedirectToAction("Index", "Courses", new { area = "eLearning" });
@@ -541,13 +566,5 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return RedirectToAction("Content", "Courses", new { area = "eLearning", id = model.courseId });
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

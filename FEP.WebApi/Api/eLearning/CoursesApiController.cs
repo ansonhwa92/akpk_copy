@@ -59,8 +59,15 @@ namespace FEP.WebApi.Api.eLearning
         [HttpPost]
         public IHttpActionResult Post(FilterCourseModel request)
         {
-            var query = db.Courses.Where(x => (String.IsNullOrEmpty(request.Title) || x.Title.Contains(request.Title)) &&
-                                    (String.IsNullOrEmpty(request.Code) || x.Title.Contains(request.Code)) && x.IsDeleted != true);
+            //var query = db.Courses.Where(x => (String.IsNullOrEmpty(request.Title) || x.Title.Contains(request.Title)) &&
+            //                        (String.IsNullOrEmpty(request.Code) || x.Title.Contains(request.Code)) && x.IsDeleted != true);
+            var query = db.Courses.Where(x => x.IsDeleted == false);
+
+            if (!String.IsNullOrEmpty(request.Title))
+                query = query.Where(x => x.Title.ToLower().Contains(request.Title.ToLower()));
+
+            if (!String.IsNullOrEmpty(request.Code))
+                query = query.Where(x => x.Code.ToLower().Contains(request.Code.ToLower()));
 
             var totalCount = query.Count();
 
@@ -444,6 +451,8 @@ namespace FEP.WebApi.Api.eLearning
             });
         }
 
+
+     
         [Route("api/eLearning/Courses/AddUser")]
         [HttpPost]
         public IHttpActionResult AddUser(UpdateTrainerCourseModel model)
@@ -511,6 +520,7 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(true);
         }
 
+
         [Route("api/eLearning/Courses/GetFrontCourse")]
         [HttpGet]
         public async Task<IHttpActionResult> GetFrontCourse(int? id)
@@ -518,6 +528,7 @@ namespace FEP.WebApi.Api.eLearning
             var entity = await db.Courses
                                 .Include(x => x.CourseApprovalLog)
                                 .Include(x => x.Modules)
+                                .Include(x => x.CourseEvents)
                                 .FirstOrDefaultAsync(x => x.Id == id.Value);
 
             if (entity == null)
@@ -527,6 +538,14 @@ namespace FEP.WebApi.Api.eLearning
             model.CourseApprovalLogs = entity.CourseApprovalLog;
 
             model.Modules = entity.Modules;
+
+            var courseEvent = new CourseEvent();
+
+            if(entity.Status == CourseStatus.Trial)
+            {
+                courseEvent = entity.CourseEvents.Where(x => x.Status == CourseEventStatus.Trial).FirstOrDefault();
+                model.CourseEventId = courseEvent.Id;
+            }
 
             return Ok(model);
         }
@@ -672,7 +691,6 @@ namespace FEP.WebApi.Api.eLearning
 
             return Ok(model);
         }
-
 
         [Route("api/eLearning/Courses/SaveCertificate")]
         [HttpPost]

@@ -19,15 +19,17 @@ namespace FEP.Model.eLearning
         /// <summary>
         /// Specific code for enrollment, defined during creation of group of Learners
         /// </summary>
+        [Required]
         [Index(IsUnique = true)] 
         [MaxLength(50)]
         public string EnrollmentCode { get; set; }
+
         [Index]
         public int CourseId { get; set; }
         public virtual Course Course { get; set; }
 
         // The coursestatus at the point of this event, can be either Approved or Draft, changed afterward
-        public CourseStatus Status { get; set; }
+        public CourseEventStatus Status { get; set; }
 
         // Date the course is available, mandatoryif published to a group
         public DateTime? Start { get; set; }
@@ -44,30 +46,18 @@ namespace FEP.Model.eLearning
 
         // Required if published for trial
         public string TrialRemark { get; set; }
+
         // ----- Start value from Course
         // TODO : May need to have conditional validation at ModelView
         //https://stackoverflow.com/questions/2417113/asp-net-mvc-conditional-validation 
         public decimal AllowablePercentageBeforeWithdraw { get; set; } = 0.0m;
-        //public int? CertificateId { get; set; }
-        //public virtual CourseCertificate Certificate { get; set; }        
-        //public virtual ICollection<Trainer> Trainers { get; set; }
-        // ----- End value from Course
+
 
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (!this.Course.IsFree && AllowablePercentageBeforeWithdraw <= 0.0m)
+            if (!this.Course.IsFree && AllowablePercentageBeforeWithdraw < 0.0m)
                 yield return new ValidationResult("Allowable Percentage Before Withdraw value must be set.");
-
-            if(this.Status != CourseStatus.Draft || this.Status != CourseStatus.Approved)
-                yield return new ValidationResult("Course is must be approved or in draft mode before it can be published for trial or for public/private group.");
-
-            if(this.ViewCategory == ViewCategory.Private && (Start == null || End == null) )
-                yield return new ValidationResult("Please enter Start and End date for  this course.");
-
-
-            if (this.Status != CourseStatus.Draft && String.IsNullOrEmpty(this.TrialRemark))
-                yield return new ValidationResult("Please enter the description for this trial.");
 
         }
     }
@@ -76,5 +66,17 @@ namespace FEP.Model.eLearning
     {
         Private,
         Public
+    }
+
+
+    public enum CourseEventStatus
+    {
+        Trial,
+        TrialEnded,
+        AvailableToPublic,
+        AvailableToGroup,
+        NotAvailableToGroup,
+        
+        Cancelled        
     }
 }

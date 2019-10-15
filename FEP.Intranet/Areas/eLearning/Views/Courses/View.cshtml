@@ -1,0 +1,161 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Manage Course";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    var name = Model.Title;
+
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/eLearning/Courses" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="#">Courses</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Course : @name</h1>
+                    <div class="header-text">Course details.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<form id="form" method="post">
+
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="row">
+
+        @*@Html.Partial("_contentSidebar")*@
+
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <div class="form-container tab-content">
+                    <div class="tab-pane active" id="course-details">
+                        <div class="mb-4 mt-2 mr-auto">
+                            @if (Model.Status != CourseStatus.Published)
+                            {
+                                <h5 class="font-weight-bold float-right">Status : @Model.Status</h5>
+                            }
+
+                            <span class="text-muted-light x-small font-italic">Course Name</span>
+                            <h2 class="color-darkblue mb-0">
+                                @name
+                            </h2>
+                        </div>
+                        <span class="text-muted-light x-small font-italic">Course Description</span>
+                        <br />
+                        <div>
+                            <div class="descbox">
+                                @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
+                            </div>
+                        </div>
+
+                        <br />
+                        <span class="text-muted-light x-small font-italic">Course Objectives</span>
+                        <div>
+                            <div class="objbox">
+                                @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
+                            </div>
+                        </div>
+                        <br />
+                        <div>
+                            <div class="row">
+
+                                <a class="btn btn-secondary m-2" href="#">Enroll</a>
+                                <a class="btn btn-secondary m-2" href="#">Start the course</a>
+                            </div>
+                        </div>
+                        <hr />
+
+                        <input name="order" id="order" hidden />
+                        <!----START MODULES -->
+                        <div id="draggable-module">
+                            @{
+
+                                var modules = Model.Modules.OrderBy(x => x.Order).ToList();
+
+                                for (int i = 0; i < modules.Count(); i++)
+                                {
+                                    var module = modules[i];
+
+                                    <div class="module-box" data-id="@module.Order">
+
+                                        <a href="@Url.Action("Content", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                           data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>
+                                        <div>
+                                            <h2>@module.Title</h2>
+                                            <div>
+                                                @Html.Raw(@module.Description)
+
+                                                <div class="row">
+                                                    <div class="pr-3"><i class="la la-youtube la-2x"></i><span class="pb-1">@module.TotalVideo</span></div>
+                                                    <div class="pr-3"><i class="la la-file-audio-o la-2x"></i><span class="pb-1">@module.TotalAudio</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <!----END MODULES -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<style>
+    .module-box {
+        border-radius: 3px;
+        border-width: thin;
+        padding: 15px;
+        border-style: solid;
+        border-color: #f7efef;
+        margin: 5px;
+    }
+
+    .handle {
+        cursor: move;
+        cursor: -webkit-grabbing;
+    }
+
+    .form-container {
+        max-width: 100% !important
+    }
+
+
+</style>
+
+@section ContentScript {
+    <script src="~/Scripts/jquery.truncate.js"></script>
+
+    <script src="~/js/elearn.js"></script>
+    <script>
+
+        $(document).ready(function () {
+        });
+    </script>
+}

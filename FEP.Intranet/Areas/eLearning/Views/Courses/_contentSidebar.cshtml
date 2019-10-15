@@ -92,28 +92,45 @@
                             Pdf
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("Create", "CourseContents",
-                                new { area = "eLearning", courseId = Model.Id, courseTitle = Model.Title,
-                                    courseContentType = (int) CourseContentType.Test,
-                                    createContentFrom = (int) CreateContentFrom.CourseFrontPage})" class="nav-link">
-                            Test
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("Create", "CourseContents",
-                                new { area = "eLearning", courseId = Model.Id, courseTitle = Model.Title,
-                                    courseContentType = (int) CourseContentType.Assignment,
-                                    createContentFrom = (int) CreateContentFrom.CourseFrontPage})" class="nav-link">
-                            Web link
-                        </a>
-                    </li>
+
+
                 </ul>
             </div>
         </div>
 
         <div>
-            @{ if (Model.Status == CourseStatus.Submitted)
+            @{
+                if (Model.Status == CourseStatus.Draft)
+                {
+                    if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+                    {
+                        <p>
+                            <a href="@Url.Action("StartTrial", "CourseEvents", new { area = "eLearning", id = @Model.Id })" class="btn btn-secondary btn-block mb-2" >
+                                Start Trial
+                            </a>
+                        </p>
+
+                    }
+                }
+                if (Model.Status == CourseStatus.Trial)
+                {
+                    if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+                    {
+                        <p>
+                            <a href="@Url.Action("StopTrial", "CourseEvents", new { area = "eLearning", id = @Model.Id })" class="btn btn-secondary btn-block mb-2">
+                                Stop Trial
+                            </a>
+                        </p>
+                        <p>
+                            <a href="@Url.Action("Learners", "CourseEvents", new { area = "eLearning", id = @Model.Id, @courseStatus = CourseStatus.Trial })" class="btn btn-primary btn-block mb-2">
+                               Assign Learners For Trial
+                            </a>
+                        </p>
+
+                    }
+                }
+
+                if (Model.Status == CourseStatus.Submitted)
                 {
                     if (CurrentUser.HasAccess(UserAccess.CourseVerify))
                     {

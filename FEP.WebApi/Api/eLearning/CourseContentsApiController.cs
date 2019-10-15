@@ -125,8 +125,10 @@ namespace FEP.WebApi.Api.eLearning
 
                     module.ModuleContents = new List<CourseContent>();
                     module.ModuleContents.Add(content);
+                    module.UpdateTotals();
 
                     course.Modules.Add(module);
+
 
                     await db.SaveChangesAsync();
 
@@ -295,6 +297,15 @@ namespace FEP.WebApi.Api.eLearning
                 db.SetDeleted(content);
 
                 await db.SaveChangesAsync();
+
+                var module = await db.CourseModules.FindAsync(content.CourseModuleId);
+
+                if (module != null)
+                {
+                    module.UpdateTotals();
+                    await db.SaveChangesAsync();
+
+                }
 
                 return Ok(model);
             }

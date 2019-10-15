@@ -16,7 +16,7 @@
         <div class="title-header-container">
             <div class="container">
                 <!-- if have button -->
-                <div class="header-col-right float-right mt-5"><a href='@Url.Action("Index", "Courses", new { area = "eLearning"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-right float-right mt-5"><a href='@Url.Action("Index", "Courses", new { area = "eLearning" })' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
@@ -30,7 +30,6 @@
                         </nav>
                     </div>
                     <h1 class="page-title text-white">Delete Course</h1>
-                    @*<div class="header-text">List of created event</div>*@
                 </div>
             </div>
         </div>
@@ -96,44 +95,29 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Description)
-                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" })
-                            @*@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" } })*@
+                            @Html.Raw(Model.Description)
+                            @*@Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" })*@
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Objectives)
-                            @Html.TextAreaFor(model => model.Objectives, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" })
+                            @Html.Raw(Model.Objectives)
+                            @*@Html.TextAreaFor(model => model.Objectives, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" })*@
                             @*@Html.EditorFor(model => model.Objectives, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })*@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Medium)
-                            @Html.EditorFor(model => model.Medium, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Duration)
-                            @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.ScheduleType)
-                            @Html.EditorFor(model => model.ScheduleType, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.DurationType)
-                            @Html.EditorFor(model => model.DurationType, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label " })
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly", @type="text"} })
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.DurationType, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+                            </div>
                         </div>
                     </div>
 
@@ -146,12 +130,33 @@
 
 
                     <div class="form-group">
-                        @Html.Label("Is this a free course?", htmlAttributes: new { @class = "control-label " })
-                        <div class="">
-                            <div class="checkbox">
-                                @Html.EditorFor(model => model.IsFree)
-                                Yes
-                            </div>
+                        <label>@Language.eLearning.Course.IsFree</label>
+                        <div class="col-sm-12">
+
+                            @{ if (Model.IsFree)
+                                {
+
+                                    <div class="free-radio row pl-4 pb-2">
+                                        <div class="col-sm-2">
+                                            <input type="radio" class="custom-control-input free  form-control" checked="checked"
+                                                   id="free" name="IsFree">
+                                            <label class="custom-control-label control-label" for="free">@Language.eLearning.Course.Free</label>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="free-radio row pl-4 ">
+                                        <div class="col-sm-2">
+                                            <input type="radio" class="custom-control-input paid form-control" checked="checked"
+                                                   id="paid" name="IsFree">
+                                            <label class="custom-control-label control-label" for="paid">@Language.eLearning.Course.Paid</label>
+                                        </div>
+                                    </div>
+                                }
+
+                            }
+
                         </div>
                     </div>
 
@@ -182,9 +187,17 @@
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.Id)
 
-                <a href='@Url.Action("Index")' style="text-decoration: none;" class="btn btn-warning btn-flat">Cancel</a>
-                <button type="submit" class="btn btn-primary">Delete</button>
+                <a href='@Url.Action("Index")' style="text-decoration: none;" class="btn btn-secondary btn-flat">Cancel</a>
+                <button type="submit" class="btn btn-primary float-right">Delete</button>
             }
         </div>
     </div>
 </div>
+
+
+
+<style>
+    .form-container {
+        max-width: none !important;
+    }
+</style>

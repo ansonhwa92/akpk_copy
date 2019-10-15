@@ -80,6 +80,8 @@
         </div>
 
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+
+
             <!-- Start Form -->
             <div class="border-form rounded-top">
                 <div class="form-container">
@@ -93,7 +95,6 @@
                             @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
@@ -114,7 +115,11 @@
                 <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
                    title="Back">@Language.General.ButtonBack</a>
 
-                <button type="submit" class="btn btn-default pull-right" id="btnSave" value="Save">
+                <button type="submit" class="btn btn-default pull-right  ml-2" id="btnSaveAndView" name="SubmitType" value="SaveAndView">
+                    <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save And View
+                </button>
+
+                <button type="submit" class="btn btn-default pull-right" id="btnSave" name="SubmitType" value="Save">
                     <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save
                 </button>
             </div>
@@ -145,7 +150,6 @@
             //var uploadDocUrl = '@(WebApiURL)/eLearning/File/';
         var uploadDocUrl = '@(BaseURL)/eLearning/File/UploadFile';
         var convertFileUrl = '@(BaseURL)eLearning/File/DocToHTML';
-
 
         $(document).ready(function () {
 
@@ -292,7 +296,6 @@
             }
 
         });
-
     </script>
 
 }

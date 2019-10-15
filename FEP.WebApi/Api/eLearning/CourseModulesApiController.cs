@@ -2,6 +2,7 @@
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -158,19 +159,23 @@ namespace FEP.WebApi.Api.eLearning
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("api/eLearning/CourseModules/Content")]
+        [Route("api/eLearning/CourseModules/OrderContent")]
         [HttpPost]
         [ValidationActionFilter]
-        public async Task<IHttpActionResult> Content(int? Id, int CreatedBy, string order)
+        public async Task<IHttpActionResult> OrderContent(OrderModel orderModel)
         {
-            if (Id == null)
+            string Id = orderModel.Id;
+
+
+            if (String.IsNullOrEmpty(Id))
             {
                 return BadRequest();
             }
 
+
             var entity = await db.CourseModules
               .Include(x => x.ModuleContents)
-              .FirstOrDefaultAsync(x => x.Id == Id.Value);
+              .FirstOrDefaultAsync(x => x.Id.ToString() == Id);
 
             if (entity == null)
             {
@@ -179,27 +184,22 @@ namespace FEP.WebApi.Api.eLearning
 
             entity.ModuleContents = entity.ModuleContents.OrderBy(x => x.Order).ToList();
 
-            var splitOrder = order.Split(',').ToArray();
-
-            if (entity.ModuleContents.Count() == splitOrder.Count())
+            for (int i = 0; i < orderModel.Order.Count(); i++)
             {
-                int i = 0;
-                foreach (var module in entity.ModuleContents)
-                {
-                    module.Order = int.Parse(splitOrder[i]);
+                var content = entity.ModuleContents.FirstOrDefault(x => x.Id.ToString() == orderModel.Order[i]);
 
-                    i++;
+                if (content != null)
+                {
+                    content.Order = i;
                 }
             }
+
 
             db.SetModified(entity);
 
             await db.SaveChangesAsync();
 
-            var model = _mapper.Map<CreateOrEditModuleModel>(entity);                
-            model.ModuleContents = entity.ModuleContents;
-
-            return Ok(model);
+            return Ok();
         }
     }
 }

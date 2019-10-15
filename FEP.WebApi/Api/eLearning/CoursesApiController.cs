@@ -646,12 +646,14 @@ namespace FEP.WebApi.Api.eLearning
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("api/eLearning/Courses/Content")]
+        [Route("api/eLearning/Courses/OrderContent")]
         [HttpPost]
-        [ValidationActionFilter]
-        public async Task<IHttpActionResult> Content(int? Id, int CreatedBy, string order)
+        public async Task<IHttpActionResult> OrderContent([FromBody] OrderModel orderModel)
         {
-            if (Id == null)
+            string Id = orderModel.Id;
+
+
+            if (String.IsNullOrEmpty(Id))
             {
                 return BadRequest();
             }
@@ -659,7 +661,7 @@ namespace FEP.WebApi.Api.eLearning
             var entity = await db.Courses
               .Include(x => x.CourseApprovalLog)
               .Include(x => x.Modules)
-              .FirstOrDefaultAsync(x => x.Id == Id.Value);
+              .FirstOrDefaultAsync(x => x.Id.ToString() == Id);
 
             if (entity == null)
             {
@@ -668,16 +670,13 @@ namespace FEP.WebApi.Api.eLearning
 
             entity.Modules = entity.Modules.OrderBy(x => x.Order).ToList();
 
-            var splitOrder = order.Split(',').ToArray();
-
-            if (entity.Modules.Count() == splitOrder.Count())
+            for(int i = 0; i < orderModel.Order.Count(); i++)
             {
-                int i = 0;
-                foreach (var module in entity.Modules)
-                {
-                    module.Order = int.Parse(splitOrder[i]);
+                var module = entity.Modules.FirstOrDefault(x => x.Id.ToString() == orderModel.Order[i]);
 
-                    i++;
+                if (module != null)
+                {
+                    module.Order = i;
                 }
             }
 
@@ -685,11 +684,10 @@ namespace FEP.WebApi.Api.eLearning
 
             await db.SaveChangesAsync();
 
-            var model = _mapper.Map<CreateOrEditCourseModel>(entity);
-            model.CourseApprovalLogs = entity.CourseApprovalLog;
-            model.Modules = entity.Modules;
-
-            return Ok(model);
+            return Ok();
         }
     }
+
+
+
 }

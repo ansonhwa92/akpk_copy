@@ -56,7 +56,7 @@
                         <div class="mb-4 mt-2 mr-auto">
                             @if (Model.Status != CourseStatus.Published)
                             {
-                                <h5 class="font-weight-bold float-right">Status : @Model.Status</h5>
+                                <div class="card text-white bg-dark p-2 float-right border-dark">@Model.Status</div>
                             }
 
                             <span class="text-muted-light x-small font-italic">Course Name</span>
@@ -100,21 +100,27 @@
                                 {
                                     var module = modules[i];
 
-                                    <div class="module-box" data-id="@module.Order">
+                                    <div class="module-box" data-id="@module.Order" onclick="openModule(@module.Id)">
+                                        <div class="row">
+                                            <div class="col-sm-9">
+                                                <h3>@module.Title</h3>
 
-                                        <a href="@Url.Action("Content", "CourseModules", new { area = "eLearning", id = module.Id })"
-                                           data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>
-                                        <div>
-                                            <h2>@module.Title</h2>
-                                            <div>
-                                                @Html.Raw(@module.Description)
-
-                                                <div class="row">
-                                                    <div class="pr-3"><i class="la la-youtube la-2x"></i><span class="pb-1">@module.TotalVideo</span></div>
-                                                    <div class="pr-3"><i class="la la-file-audio-o la-2x"></i><span class="pb-1">@module.TotalAudio</span></div>
-                                                </div>
+                                                <a href="@Url.Action("Content", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                                   data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>
                                             </div>
                                         </div>
+                                            <div>
+                                                <div>
+                                                    @Html.Raw(@module.Description)
+
+                                                    <div class="row pl-2">
+                                                        <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count()</span></div>
+                                                        <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo</span></div>
+                                                        <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                     </div>
                                 }
                             }
@@ -157,5 +163,10 @@
 
         $(document).ready(function () {
         });
+
+        function openModule(moduleId) {
+            var url = '@Url.Action("Content", "CourseModules", new { area = "eLearning" })?id=' + moduleId;
+            window.location = url;
+        }
     </script>
 }

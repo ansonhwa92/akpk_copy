@@ -17,7 +17,7 @@ namespace FEP.Model.eLearning
         public string Description { get; set; }
 
         // order number of this module
-        public int Order { get; set; }
+        public int Order { get; set; } = 0;
 
         public string Objectives { get; set; }
         

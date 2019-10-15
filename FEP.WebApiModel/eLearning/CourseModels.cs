@@ -204,4 +204,12 @@ namespace FEP.WebApiModel.eLearning
         public string Message { get; set; }
 
     }
+
+
+    public class OrderModel
+    {
+        public string Id { get; set; }
+        public string CreatedBy { get; set; }
+        public List<string> Order { get; set; }
+    }
 }

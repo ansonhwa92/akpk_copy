@@ -186,7 +186,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (response.isSuccess)
             {
-                TempData["SuccessMessage"] = "User successfully assigned to role trainer.";
+                TempData["SuccessMessage"] = "User successfully assigned to role trainer/instructor.";
                 await LogActivity(Modules.Learning, "Assign user to trainer", model);
             }
             else
@@ -250,50 +250,50 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
 
-        // post the new order
-        [HttpPost]
-        public async Task<ActionResult> Content(int? Id, int CreatedBy, string order)
-        {
-            if (Id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+        //// post the new order
+        //[HttpPost]
+        //public async Task<ActionResult> Content(int? Id, int CreatedBy, string order)
+        //{
+        //    if (Id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
 
-            if (String.IsNullOrEmpty(order))
-            {
-                RedirectToAction("Content", new { id = Id.Value });
-            }
+        //    if (String.IsNullOrEmpty(order))
+        //    {
+        //        RedirectToAction("Content", new { id = Id.Value });
+        //    }
 
-            var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Post,
-                CourseApiUrl.Content + $"?Id={Id}&CreatedBy={CreatedBy}&order={order}");
+        //    var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Post,
+        //        CourseApiUrl.Content + $"?Id={Id}&CreatedBy={CreatedBy}&order={order}");
 
-            if (response.isSuccess)
-            {
-                TempData["SuccessMessage"] = "Changes saved";
+        //    if (response.isSuccess)
+        //    {
+        //        TempData["SuccessMessage"] = "Changes saved";
 
-                var model = response.Data;
+        //        var model = response.Data;
 
-                await LogActivity(Modules.Learning, "Update Course Content : " + model.Title);
+        //        await LogActivity(Modules.Learning, "Update Course Content : " + model.Title);
 
-                return View(model);
-            }
+        //        return View(model);
+        //    }
 
-            TempData["ErrorMessage"] = "Error in saving order..";
+        //    TempData["ErrorMessage"] = "Error in saving order..";
 
-            // get Model
-            var vm = await TryGetFrontCourse(Id.Value);
+        //    // get Model
+        //    var vm = await TryGetFrontCourse(Id.Value);
 
-            if (vm == null)
-            {
-                TempData["ErrorMessage"] = "No such course.";
+        //    if (vm == null)
+        //    {
+        //        TempData["ErrorMessage"] = "No such course.";
 
-                return RedirectToAction("Index", "Courses");
-            }
+        //        return RedirectToAction("Index", "Courses");
+        //    }
 
-            vm.Modules = vm.Modules.OrderBy(x => x.Order).ToList();
+        //    vm.Modules = vm.Modules.OrderBy(x => x.Order).ToList();
 
-            return View(vm);
-        }
+        //    return View(vm);
+        //}
 
 
 

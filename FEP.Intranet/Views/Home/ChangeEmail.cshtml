@@ -1,7 +1,7 @@
-﻿@model ChangePasswordModel
+﻿@model ChangeEmailModel
 
 @{
-    ViewBag.Title = "Change Password";
+    ViewBag.Title = "Change Email";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
@@ -22,7 +22,7 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Change Password</h1>
+                    <h1 class="page-title text-white">Change Email Address</h1>
                     <div class="header-text"></div>
                 </div>
             </div>
@@ -45,10 +45,10 @@
                             <a href="@Url.Action("EditProfile", "Home", new { area = "" })" class="nav-link">Update Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a href="@Url.Action("ChangeEmail", "Home", new { area = "" })" class="nav-link">Change Email</a>
+                            <a href="@Url.Action("ChangeEmail", "Home", new { area = "" })" class="active nav-link">Change Email</a>
                         </li>
                         <li class="nav-item">
-                            <a href="@Url.Action("ChangePassword", "Home", new { area = "" })" class="active nav-link">Change Password</a>
+                            <a href="@Url.Action("ChangePassword", "Home", new { area = "" })" class="nav-link">Change Password</a>
                         </li>
                     </ul>
                 </div>
@@ -57,7 +57,7 @@
     </div>
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 
-        @using (Html.BeginForm("ChangePassword", "Home", FormMethod.Post))
+        @using (Html.BeginForm("ChangeEmail", "Home", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
 
@@ -66,23 +66,16 @@
                 <div class="form-container">
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.CurrentPassword)
-                            @Html.EditorFor(m => m.CurrentPassword, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(m => m.CurrentPassword)
+                            @Html.FEPLabelFor(m => m.CurrentEmail)
+                            @Html.EditorFor(m => m.CurrentEmail, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(m => m.CurrentEmail)
                         </div>
-                    </div>
+                    </div>   
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.Password)
-                            @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(m => m.Password)
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.ConfirmPassword)
-                            @Html.EditorFor(m => m.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                            @Html.FEPLabelFor(m => m.Email)
+                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(m => m.Email)
                         </div>
                     </div>
                 </div>

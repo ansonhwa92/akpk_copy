@@ -12,197 +12,200 @@ namespace FEP.WebApiModel.Home
 {
     public class AdminProfileModel
     {
-        [Display(Name = "FieldName", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Profile))]
         public string Name { get; set; }
         
-        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Profile))]
         public string MobileNo { get; set; }
 
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Profile))]
         public string Email { get; set; }
     }
 
     public class EditAdminProfileModel
     {
-        [Display(Name = "FieldName", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Profile))]
         public string Name { get; set; }
               
-        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Profile))]
         public string MobileNo { get; set; }
 
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Profile))]
         public string Email { get; set; }
     }
 
     public class CompanyProfileModel
     {
 
-        [Display(Name = "FieldCompanyName", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldCompanyName", ResourceType = typeof(Language.Profile))]
         public string CompanyName { get; set; }
 
-        [Display(Name = "FieldAgencyName", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldAgencyName", ResourceType = typeof(Language.Profile))]
         public string AgencyName { get; set; }
 
         public CompanyType Type { get; set; }
 
-        [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Profile))]
         public SectorModel Sector { get; set; }
 
-        [Display(Name = "FieldMinistryId", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldMinistryId", ResourceType = typeof(Language.Profile))]
         public MinistryModel Ministry { get; set; }
 
-        [Display(Name = "FieldCompanyRegNo", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldCompanyRegNo", ResourceType = typeof(Language.Profile))]
         public string CompanyRegNo { get; set; }
 
-        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Profile))]
         public string Address1 { get; set; }
         public string Address2 { get; set; }
 
-        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Profile))]
         public string PostCodeMalaysian { get; set; }
 
-        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Profile))]
         public string PostCodeNonMalaysian { get; set; }
 
-        [Display(Name = "FieldCity", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldCity", ResourceType = typeof(Language.Profile))]
         public string City { get; set; }
 
-        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Profile))]
         public StateModel State { get; set; }
 
-        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Profile))]
         public CountryModel Country { get; set; }
 
         public int MalaysiaCountryId { get; set; }
 
-        [Display(Name = "FieldCompanyPhoneNo", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldCompanyPhoneNo", ResourceType = typeof(Language.Profile))]
         public string CompanyPhoneNo { get; set; }
 
-        [Display(Name = "FieldName", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Profile))]
         public string Name { get; set; }
 
-        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Profile))]
         public string ICNo { get; set; }
 
-        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Profile))]
         public string PassportNo { get; set; }
 
-        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Profile))]
         public string MobileNo { get; set; }
+        public string CountryCode { get; set; }
 
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Company))]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Profile))]
         public string Email { get; set; }
     }
 
     public class IndividualProfileModel
     {
 
-        [Display(Name = "FieldName", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Profile))]
         public string Name { get; set; }
 
         public bool IsMalaysian { get; set; }
 
-        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Profile))]
         public string ICNo { get; set; }
 
-        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Profile))]
         public string PassportNo { get; set; }
 
-        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Profile))]
         public string MobileNo { get; set; }
 
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Auth))]
+        public string CountryCode { get; set; }
+
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Profile))]
         public string Email { get; set; }
 
-        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Profile))]
         public string Address1 { get; set; }
         public string Address2 { get; set; }
 
-        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Profile))]
         public string PostCodeMalaysian { get; set; }
 
-        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Profile))]
         public string PostCodeNonMalaysian { get; set; }
 
-        [Display(Name = "FieldCity", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldCity", ResourceType = typeof(Language.Profile))]
         public string City { get; set; }
 
-        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Profile))]
         public StateModel State { get; set; }
 
-        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Profile))]
         public CountryModel Country { get; set; }
 
         public int MalaysiaCountryId { get; set; }
 
-        [Display(Name = "FieldCitizenship", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldCitizenship", ResourceType = typeof(Language.Profile))]
         public CountryModel Citizenship { get; set; }
 
     }
 
     public class EditIndividualProfileModel
     {
-        [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldName", ResourceType = typeof(Language.Individual))]
+        [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Profile))]
         public string Name { get; set; }
-
         public bool IsMalaysian { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredICNo", ErrorMessageResourceType = typeof(Language.Individual))]
-        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericICNo", ErrorMessageResourceType = typeof(Language.Individual))]
-        [StringLength(12, MinimumLength = 12, ErrorMessageResourceName = "ValidLengthICNo", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Individual))]
+        [Required(ErrorMessageResourceName = "ValidRequiredICNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericICNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [StringLength(12, MinimumLength = 12, ErrorMessageResourceName = "ValidLengthICNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Profile))]
         public string ICNo { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredPassportNo", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Individual))]
+        [Required(ErrorMessageResourceName = "ValidRequiredPassportNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Profile))]
         public string PassportNo { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredMobileNo", ErrorMessageResourceType = typeof(Language.Individual))]
-        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericMobileNo", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Individual))]
+        [Required(ErrorMessageResourceName = "ValidRequiredMobileNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericMobileNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Profile))]
         public string MobileNo { get; set; }
+        public string CountryCode { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredEmail", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Individual))]
-        [EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Individual))]
-        public string Email { get; set; }
+        //[Required(ErrorMessageResourceName = "ValidRequiredEmail", ErrorMessageResourceType = typeof(Language.Individual))]
+        //[Display(Name = "FieldEmail", ResourceType = typeof(Language.Individual))]
+        //[EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Individual))]
+        //public string Email { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredAddress", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Individual))]
+        [Required(ErrorMessageResourceName = "ValidRequiredAddress", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Profile))]
         public string Address1 { get; set; }
         public string Address2 { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Individual))]
-        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericPostCode", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Individual))]
+        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Profile))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericPostCode", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Profile))]
         public string PostCodeMalaysian { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Individual))]
+        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Profile))]
         public string PostCodeNonMalaysian { get; set; }
 
         [RegularExpression("[a-zA-Z]+")]
-        [Required(ErrorMessageResourceName = "ValidRequiredCity", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldCity", ResourceType = typeof(Language.Individual))]
+        [Required(ErrorMessageResourceName = "ValidRequiredCity", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldCity", ResourceType = typeof(Language.Profile))]
         public string City { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Individual))]
+        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Profile))]
         public string State { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Individual))]
+        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Profile))]
         public int? StateId { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredCountryId", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Individual))]
+        [Required(ErrorMessageResourceName = "ValidRequiredCountryId", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Profile))]
         public int CountryId { get; set; }
 
         public int MalaysiaCountryId { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredCitizenshipId", ErrorMessageResourceType = typeof(Language.Individual))]
-        [Display(Name = "FieldCitizenship", ResourceType = typeof(Language.Individual))]
+        [Required(ErrorMessageResourceName = "ValidRequiredCitizenshipId", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldCitizenship", ResourceType = typeof(Language.Profile))]
         public int? CitizenshipId { get; set; }
         
         public IEnumerable<SelectListItem> Citizenships { get; set; }
@@ -213,88 +216,89 @@ namespace FEP.WebApiModel.Home
 
     public class EditCompanyProfileModel
     {
-        [Required(ErrorMessageResourceName = "ValidRequiredCompanyName", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldCompanyName", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredCompanyName", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldCompanyName", ResourceType = typeof(Language.Profile))]
         public string CompanyName { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredAgencyName", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldAgencyName", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredAgencyName", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldAgencyName", ResourceType = typeof(Language.Profile))]
         public string AgencyName { get; set; }
 
         public CompanyType Type { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredSectorId", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredSectorId", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldSectorId", ResourceType = typeof(Language.Profile))]
         public int? SectorId { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredMinistryId", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldMinistryId", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredMinistryId", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldMinistryId", ResourceType = typeof(Language.Profile))]
         public int? MinistryId { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredCompanyRegNo", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldCompanyRegNo", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredCompanyRegNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldCompanyRegNo", ResourceType = typeof(Language.Profile))]
         public string CompanyRegNo { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredAddress", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredAddress", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Profile))]
         public string Address1 { get; set; }
         public string Address2 { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Company))]
-        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericPostCode", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Profile))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericPostCode", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Profile))]
         public string PostCodeMalaysian { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredPostCode", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Profile))]
         public string PostCodeNonMalaysian { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredCity", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldCity", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredCity", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldCity", ResourceType = typeof(Language.Profile))]
         public string City { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Profile))]
         public string State { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredStateId", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Profile))]
         public int? StateId { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredCountryId", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredCountryId", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Profile))]
         public int CountryId { get; set; }
 
         public int MalaysiaCountryId { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredCompanyPhoneNo", ErrorMessageResourceType = typeof(Language.Company))]
-        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericCompanyPhoneNo", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldCompanyPhoneNo", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredCompanyPhoneNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericCompanyPhoneNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldCompanyPhoneNo", ResourceType = typeof(Language.Profile))]
         public string CompanyPhoneNo { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldName", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Profile))]
         public string Name { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredICNo", ErrorMessageResourceType = typeof(Language.Company))]
-        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericICNo", ErrorMessageResourceType = typeof(Language.Company))]
-        [StringLength(12, MinimumLength = 12, ErrorMessageResourceName = "ValidLengthICNo", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredICNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericICNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [StringLength(12, MinimumLength = 12, ErrorMessageResourceName = "ValidLengthICNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Profile))]
         public string ICNo { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredPassportNo", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredPassportNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Profile))]
         public string PassportNo { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredMobileNo", ErrorMessageResourceType = typeof(Language.Company))]
-        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericMobileNo", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Company))]
+        [Required(ErrorMessageResourceName = "ValidRequiredMobileNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericMobileNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Profile))]
         public string MobileNo { get; set; }
+        public string CountryCode { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredEmail", ErrorMessageResourceType = typeof(Language.Company))]
-        [EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Company))]
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Company))]
-        public string Email { get; set; }
+        //[Required(ErrorMessageResourceName = "ValidRequiredEmail", ErrorMessageResourceType = typeof(Language.Company))]
+        //[EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Company))]
+        //[Display(Name = "FieldEmail", ResourceType = typeof(Language.Company))]
+        //public string Email { get; set; }
 
         public IEnumerable<SelectListItem> Ministries { get; set; }
         public IEnumerable<SelectListItem> States { get; set; }
@@ -306,23 +310,38 @@ namespace FEP.WebApiModel.Home
     public class ChangePasswordModel
     {
 
-        [Required]
-        [Display(Name = "Current Password")]
+        [Required(ErrorMessageResourceName = "ValidRequiredCurrentPassword", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldCurrentPassword", ResourceType = typeof(Language.Profile))]
         [DataType(DataType.Password)]
-        [Remote("CheckCurrentPassword", "Home", ErrorMessage = "Password entered not matched with current password.")]
+        [Remote("CheckCurrentPassword", "Home", ErrorMessageResourceName = "ValidCheckCurrentPassword", ErrorMessageResourceType = typeof(Language.Profile))]
         public string CurrentPassword { get; set; }
 
-        [Required]
-        [Display(Name = "New Password")]
-        [DataType(DataType.Password)]
-        [Remote("ValidatePassword", "Home")]
+        [Required(ErrorMessageResourceName = "ValidRequiredNewPassword", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldNewPassword", ResourceType = typeof(Language.Profile))]
+        [DataType(DataType.Password)]        
         public string Password { get; set; }
 
-        [Required]
-        [Display(Name = "Confirm Password")]
-        [System.ComponentModel.DataAnnotations.Compare("Password")]
+        [Required(ErrorMessageResourceName = "ValidRequiredRetypePassword", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldRetypePassword", ResourceType = typeof(Language.Profile))]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessageResourceName = "ValidCompareRetypePassword", ErrorMessageResourceType = typeof(Language.Profile))]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+
+    }
+
+    public class ChangeEmailModel
+    {
+
+        [Required(ErrorMessageResourceName = "ValidRequiredCurrentEmail", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldCurrentEmail", ResourceType = typeof(Language.Profile))]
+        [EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Remote("CheckCurrentEmail", "Home", ErrorMessageResourceName = "ValidCheckCurrentEmail", ErrorMessageResourceType = typeof(Language.Profile))]
+        public string CurrentEmail { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredNewEmail", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldNewEmail", ResourceType = typeof(Language.Profile))]
+        [EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Profile))]
+        public string Email { get; set; }
 
     }
 

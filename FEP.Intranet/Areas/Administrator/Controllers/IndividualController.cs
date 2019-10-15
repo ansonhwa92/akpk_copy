@@ -107,14 +107,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 if (response.isSuccess)
                 {
-
-                    //StringBuilder body = new StringBuilder();
-                    //body.Append("Dear " + model.Name + ",");
-                    //body.Append("<br />");
-                    //body.Append("You can sign to FEP Portal <a href = '" + BaseURL + Url.Action("Login", "Auth", new { area = "" }) + "' > here </a>. Sign in Id: " + model.Email + "\n" + "Password: " + response.Data.Password);
-
-                    //await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), new EmailAddress { DisplayName = model.Name, Address = model.Email });
-
+                
                     ParameterListToSend notificationParameter = new ParameterListToSend();
                     notificationParameter.UserFullName = model.Name;
                     notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
@@ -416,13 +409,6 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-
-                //StringBuilder body = new StringBuilder();
-                //body.Append("Dear " + response.Data.Name + ",");
-                //body.Append("<br />");
-                //body.Append("You can reset your password <a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data }) + "' > here </a>");
-
-                //await EmailMethod.SendEmail("FE Portal Password Reset by Admin", body.ToString(), new EmailAddress { DisplayName = response.Data.Name, Address = Email });
 
                 ParameterListToSend notificationParameter = new ParameterListToSend();
                 notificationParameter.UserFullName = response.Data.Name;

@@ -3,6 +3,9 @@ using FEP.Model;
 using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.Home;
 using FEP.WebApiModel.Setting;
+using FEP.WebApiModel.SLAReminder;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -128,9 +131,9 @@ namespace FEP.Intranet.Controllers
                     CitizenshipId = response.Data.Citizenship != null ? response.Data.Citizenship.Id : (int?)null,
                     Name = response.Data.Name,
                     ICNo = response.Data.ICNo,
-                    PassportNo = response.Data.PassportNo,
-                    Email = response.Data.Email,
+                    PassportNo = response.Data.PassportNo,                    
                     MobileNo = response.Data.MobileNo,
+                    CountryCode = response.Data.CountryCode,
                     Address1 = response.Data.Address1,
                     Address2 = response.Data.Address2,
                     PostCodeMalaysian = response.Data.PostCodeMalaysian,
@@ -180,9 +183,9 @@ namespace FEP.Intranet.Controllers
                     CompanyPhoneNo = response.Data.CompanyPhoneNo,
                     Name = response.Data.Name,
                     ICNo = response.Data.ICNo,
-                    PassportNo = response.Data.PassportNo,
-                    Email = response.Data.Email,
-                    MobileNo = response.Data.MobileNo
+                    PassportNo = response.Data.PassportNo,                    
+                    MobileNo = response.Data.MobileNo,
+                    CountryCode = response.Data.CountryCode,
                 };
 
                 var countries = await GetCountries();
@@ -220,7 +223,7 @@ namespace FEP.Intranet.Controllers
                     {
                         await LogActivity(Modules.Admin, "Update Profile", model);
 
-                        TempData["SuccessMessage"] = "Profile successfully updated.";
+                        TempData["SuccessMessage"] = Language.Profile.AlertSuccessUpdateProfile;
 
                         return RedirectToAction("MyProfile", "Home", new { area = "" });
                     }
@@ -259,7 +262,7 @@ namespace FEP.Intranet.Controllers
                     {
                         await LogActivity(Modules.Admin, "Update Profile", model);
 
-                        TempData["SuccessMessage"] = "Profile successfully updated.";
+                        TempData["SuccessMessage"] = Language.Profile.AlertSuccessUpdateProfile;
 
                         return RedirectToAction("MyProfile", "Home", new { area = "" });
                     }
@@ -326,7 +329,7 @@ namespace FEP.Intranet.Controllers
                     {
                         await LogActivity(Modules.Admin, "Update Profile", model);
 
-                        TempData["SuccessMessage"] = "Profile successfully updated.";
+                        TempData["SuccessMessage"] = Language.Profile.AlertSuccessUpdateProfile;
 
                         return RedirectToAction("MyProfile", "Home", new { area = "" });
                     }
@@ -356,6 +359,16 @@ namespace FEP.Intranet.Controllers
         public async Task<ActionResult> ChangePassword(ChangePasswordModel model)
         {
 
+            var passwordResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Auth/ValidatePassword?password={model.Password}");
+
+            if (!passwordResponse.isSuccess)
+            {
+                var error = JsonConvert.DeserializeObject<Dictionary<string, string>>(passwordResponse.ErrorMessage);
+
+                if (error.ContainsKey("Message"))
+                    ModelState.AddModelError("Password", error["Message"]);
+            }
+
             if (ModelState.IsValid)
             {
 
@@ -365,18 +378,80 @@ namespace FEP.Intranet.Controllers
                 {
                     await LogActivity(Modules.Admin, "Change Password");
 
-                    TempData["SuccessMessage"] = "Password successfully updated.";
+                    TempData["SuccessMessage"] = Language.Profile.AlertSuccessChangePassword;
 
                     return RedirectToAction("MyProfile", "Home", new { area = "" });
                 }
 
             }
 
-            TempData["SuccessMessage"] = "Fail to change password.";
+            TempData["ErrorMessage"] = Language.Profile.AlertFailChangePassword;
 
             return View();
 
         }
+
+        [HttpGet]
+        public ActionResult ChangeEmail()
+        {
+
+            TempData["Message"] = "You have to activate new email account if changed";
+
+            return View();
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeEmail(ChangeEmailModel model)
+        {
+
+            var emailResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsEmailExist?id={CurrentUser.UserId}&email={model.Email}");
+
+            if (emailResponse.Data)
+            {
+                ModelState.AddModelError("Email", Language.Profile.ValidIsExistEmail);
+            }
+
+            if (ModelState.IsValid)
+            {
+
+                var response = await WepApiMethod.SendApiAsync<dynamic>(HttpVerbs.Put, $"Home/Profile/ChangeEmail?id={CurrentUser.UserId}", model);
+
+                if (response.isSuccess)
+                {
+
+                    ParameterListToSend notificationParameter = new ParameterListToSend();
+                    notificationParameter.UserFullName = CurrentUser.Name;
+                    notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
+                    notificationParameter.LoginDetail = $"Email: { model.Email }";
+
+                    CreateAutoReminder notification = new CreateAutoReminder
+                    {
+                        NotificationType = NotificationType.ActivateAccount,
+                        NotificationCategory = NotificationCategory.Event,
+                        ParameterListToSend = notificationParameter,
+                        StartNotificationDate = DateTime.Now,
+                        ReceiverId = new List<int> { (int)CurrentUser.UserId }
+                    };
+
+                    var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
+
+                    await LogActivity(Modules.Admin, "Change Email");
+
+                    TempData["SuccessMessage"] = Language.Profile.AlertSuccessChangeEmail;
+
+                    return RedirectToAction("MyProfile", "Home", new { area = "" });
+                }
+
+            }
+
+            TempData["ErrorMessage"] = Language.Profile.AlertFailChangeEmail;
+
+            return View();
+
+        }
+
 
         public async Task<JsonResult> CheckCurrentPassword(string CurrentPassword)
         {
@@ -390,48 +465,18 @@ namespace FEP.Intranet.Controllers
             return Json(false, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<JsonResult> ValidatePassword(string Password)
+        public async Task<JsonResult> CheckCurrentEmail(string CurrentEmail)
         {
-            var hasNumber = new Regex(@"[0-9]+");
-            var hasUpperChar = new Regex(@"[A-Z]+");
-            var hasMiniMaxChars = new Regex(@".{8,15}");
-            var hasLowerChar = new Regex(@"[a-z]+");
-            var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Auth/AuthenticateEmail?id={CurrentUser.UserId}&Email={CurrentEmail}");
 
-            var response = await WepApiMethod.SendApiAsync<AccountSettingModel>(HttpVerbs.Get, $"Setting/AccountSetting");
-
-
-            if (response.isSuccess)
+            if (response.Data)
             {
-
-                var config = response.Data;
-
-                if (config.IsContainLowerCase && !hasLowerChar.IsMatch(Password))
-                {
-                    return Json(Language.AccountSetting.ValidContainLowerCase, JsonRequestBehavior.AllowGet);
-                }
-                else if (config.IsContainUpperCase && !hasUpperChar.IsMatch(Password))
-                {
-                    return Json(Language.AccountSetting.ValidContainUpperCase, JsonRequestBehavior.AllowGet);
-                }
-                else if (config.IsContainNumeric && !hasNumber.IsMatch(Password))
-                {
-                    return Json(Language.AccountSetting.ValidContainNumeric, JsonRequestBehavior.AllowGet);
-                }
-                else if (config.IsContainSymbol && !hasSymbols.IsMatch(Password))
-                {
-                    return Json(Language.AccountSetting.ValidContainSymbol, JsonRequestBehavior.AllowGet);
-                }
-                else if (config.IsLengthLimit && !hasMiniMaxChars.IsMatch(Password))
-                {
-                    return Json(Language.AccountSetting.ValidLengthLimit, JsonRequestBehavior.AllowGet);
-                }
-
+                return Json(true, JsonRequestBehavior.AllowGet);
             }
 
-            return Json(true, JsonRequestBehavior.AllowGet);
-            
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
+
 
         [NonAction]
         private async Task<IEnumerable<SectorModel>> GetSectors()

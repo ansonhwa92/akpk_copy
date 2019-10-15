@@ -60,6 +60,24 @@ namespace FEP.WebApi.Api.Administration
             return NotFound();
         }
 
+        [Route("api/Auth/AuthenticateEmail")]
+        [HttpGet]
+        [ValidationActionFilter]
+        public IHttpActionResult AuthenticateEmail(int id, string Email)
+        {
+            var user = db.User.Where(u => u.Id == id).FirstOrDefault();
+
+            if (user != null)
+            {
+                if (Email == user.Email)
+                {
+                    return Ok(true);
+                }
+            }
+
+            return NotFound();
+        }
+
         [Route("api/Auth/ValidatePassword")]
         [HttpGet]
         public IHttpActionResult ValidatePassword([FromUri] string password)

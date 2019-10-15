@@ -41,6 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Profile.Designer.cs">
+      <DependentUpon>Profile.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Company.Designer.cs">
       <DependentUpon>Company.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -154,6 +159,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Profile.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Profile.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="eEvent_MessageAlert.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>eEvent_MessageAlert.Designer.cs</LastGenOutput>

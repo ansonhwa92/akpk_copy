@@ -1238,6 +1238,7 @@
     <Content Include="Views\Home\EditProfileAdmin.cshtml" />
     <Content Include="Views\Home\MyProfileStaff.cshtml" />
     <Content Include="Views\Notification\_NotificationDropdown.cshtml" />
+    <Content Include="Views\Home\ChangeEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

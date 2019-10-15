@@ -181,6 +181,8 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "SurveyStatus", ResourceType = typeof(Language.RnPForm))]
         public SurveyStatus Status { get; set; }
+
+        public SurveyApprovalLevels? ApprovalLevel { get; set; }
     }
 
     // class for setting and returning filters for the datatable list of surveys
@@ -376,6 +378,24 @@ namespace FEP.WebApiModel.RnP
         public string CancelRemark { get; set; }
     }
 
+    // class for updating of survey start/end date information by client app
+    // used to edit survey information with new start/end dates
+    public class UpdateSurveyExtensionModel
+    {
+        [Required]
+        public int ID { get; set; }
+
+        [Display(Name = "SurveyStartDate", ResourceType = typeof(Language.RnPForm))]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
+        public DateTime NewStartDate { get; set; }
+
+        [Display(Name = "SurveyEndDate", ResourceType = typeof(Language.RnPForm))]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
+        public DateTime NewEndDate { get; set; }
+    }
+
     // class for returning survey information for submission as well as cancellation form to client app
     // used to create form for viewing survey (admin only)
     public class UpdateSurveyViewModel
@@ -384,6 +404,7 @@ namespace FEP.WebApiModel.RnP
         public UpdateSurveyContentsModel Contents { get; set; }
         public ReturnSurveyAutofieldsModel Auto { get; set; }
         public UpdateSurveyCancellationModel Cancellation { get; set; }
+        public UpdateSurveyExtensionModel Extension { get; set; }
     }
 
     /*

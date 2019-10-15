@@ -88,6 +88,60 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delivered.
+        /// </summary>
+        public static string DeliveryStatusDelivered {
+            get {
+                return ResourceManager.GetString("DeliveryStatusDelivered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string DeliveryStatusNone {
+            get {
+                return ResourceManager.GetString("DeliveryStatusNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preparing.
+        /// </summary>
+        public static string DeliveryStatusPreparing {
+            get {
+                return ResourceManager.GetString("DeliveryStatusPreparing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipped.
+        /// </summary>
+        public static string DeliveryStatusShipped {
+            get {
+                return ResourceManager.GetString("DeliveryStatusShipped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Description.
+        /// </summary>
+        public static string FilterDescription {
+            get {
+                return ResourceManager.GetString("FilterDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Receipt No..
+        /// </summary>
+        public static string FilterReceiptNo {
+            get {
+                return ResourceManager.GetString("FilterReceiptNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offline Payment.
         /// </summary>
         public static string PaymentModeOffline {
@@ -129,6 +183,33 @@ namespace Language {
         public static string PurchaseTypePublication {
             get {
                 return ResourceManager.GetString("PurchaseTypePublication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complete.
+        /// </summary>
+        public static string RefundStatusComplete {
+            get {
+                return ResourceManager.GetString("RefundStatusComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incomplete.
+        /// </summary>
+        public static string RefundStatusIncomplete {
+            get {
+                return ResourceManager.GetString("RefundStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requested.
+        /// </summary>
+        public static string RefundStatusRequested {
+            get {
+                return ResourceManager.GetString("RefundStatusRequested", resourceCulture);
             }
         }
     }

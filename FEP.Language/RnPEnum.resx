@@ -234,12 +234,6 @@
   <data name="PubPaymentModeOnline" xml:space="preserve">
     <value>Online Payment</value>
   </data>
-  <data name="PubRefundStatusComplete" xml:space="preserve">
-    <value>Complete</value>
-  </data>
-  <data name="PubRefundStatusIncomplete" xml:space="preserve">
-    <value>Incomplete</value>
-  </data>
   <data name="PubStatusNew" xml:space="preserve">
     <value>Draft</value>
   </data>

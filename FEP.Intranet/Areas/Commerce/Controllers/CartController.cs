@@ -273,5 +273,23 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
 
             return View(mycart);
         }
+
+        // Refunds
+
+        // GET: Commerce/Cart/PurchaseHistory
+        public async Task<ActionResult> PurchaseHistory()
+        {
+            var resBank = await WepApiMethod.SendApiAsync<List<BankInformationModel>>(HttpVerbs.Get, $"Commerce/Cart/GetBanks");
+
+            if (!resBank.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Banks = resBank.Data;
+
+            return View();
+        }
+
     }
 }

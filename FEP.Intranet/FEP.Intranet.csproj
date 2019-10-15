@@ -745,6 +745,7 @@
     <Content Include="Areas\Commerce\Views\Cart\Review.cshtml" />
     <Content Include="Areas\Commerce\Views\Cart\EditDelivery.cshtml" />
     <Content Include="Areas\Commerce\Views\Cart\PaymentMethod.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\PurchaseHistory.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

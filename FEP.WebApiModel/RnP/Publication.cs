@@ -192,6 +192,10 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "PubCategoryNameList", ResourceType = typeof(Language.RnPForm))]
         public string Category { get; set; }
+
+        public PublicationApprovalLevels? ApprovalLevel { get; set; }
+
+        public PublicationApprovalLevels? WithdrawalLevel { get; set; }
     }
 
     // class for setting and returning filters for the datatable list of publications

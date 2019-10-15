@@ -183,6 +183,27 @@ namespace FEP.Model.Migrations
             }
             */
 
+            //banks
+            if (!db.BankInformation.Any())
+            {
+                db.BankInformation.Add(new BankInformation { ShortName = "Maybank" });
+                db.BankInformation.Add(new BankInformation { ShortName = "CIMB Bank" });
+                db.BankInformation.Add(new BankInformation { ShortName = "Public Bank" });
+                db.BankInformation.Add(new BankInformation { ShortName = "RHB Bank" });
+                db.BankInformation.Add(new BankInformation { ShortName = "Hong Leong Bank" });
+                db.BankInformation.Add(new BankInformation { ShortName = "Ambank" });
+                db.BankInformation.Add(new BankInformation { ShortName = "Affin Bank" });
+                db.BankInformation.Add(new BankInformation { ShortName = "Alliance Bank" });
+                db.BankInformation.Add(new BankInformation { ShortName = "Bank Islam" });
+                db.BankInformation.Add(new BankInformation { ShortName = "Bank Muamalat" });
+                db.BankInformation.Add(new BankInformation { ShortName = "Bank Rakyat" });
+                db.BankInformation.Add(new BankInformation { ShortName = "BSN" });
+                db.BankInformation.Add(new BankInformation { ShortName = "HSBC Bank" });
+                db.BankInformation.Add(new BankInformation { ShortName = "Standard Chartered" });
+                db.BankInformation.Add(new BankInformation { ShortName = "UOB Bank" });
+                db.BankInformation.Add(new BankInformation { ShortName = "Maybank2E" });
+            }
+
             //promotion codes
             if (!db.PromotionCode.Any())
             {

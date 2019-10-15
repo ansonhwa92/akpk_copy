@@ -181,7 +181,9 @@ namespace FEP.WebApi.Api.RnP
                     Title = s.Title,
                     ISBN = s.ISBN,
                     Status = s.Status,
-                    Category = s.Category.Name
+                    Category = s.Category.Name,
+                    ApprovalLevel = db.PublicationApproval.Where(pa => pa.PublicationID == s.ID && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level,
+                    WithdrawalLevel = db.PublicationWithdrawal.Where(pw => pw.PublicationID == s.ID && pw.Status == PublicationApprovalStatus.None).OrderByDescending(pw => pw.ApprovalDate).FirstOrDefault().Level
                 }).ToList();
 
             return Ok(new DataTableResponse

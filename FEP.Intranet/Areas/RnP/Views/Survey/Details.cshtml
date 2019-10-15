@@ -68,6 +68,15 @@
                         {
                             <p><button class="btn btn-outline-danger btn-block" id="btnCancel">Cancel Survey</button></p>
                         }
+                        else if ((Model.Auto.Status == SurveyStatus.Published) && (CurrentUser.HasAccess(UserAccess.RnPSurveyPublish)))
+                        {
+                            <p><button class="btn btn-secondary btn-block" id="btnExtend" data-surveyid="@Model.Survey.ID">Extend Survey Date</button></p>
+                            <p><button class="btn btn-default btn-block" id="btnUnpublish" data-surveyid="@Model.Survey.ID">Unpublish from FEP</button></p>
+                        }
+                        else if ((Model.Auto.Status == SurveyStatus.Unpublished) && (CurrentUser.HasAccess(UserAccess.RnPSurveyPublish)))
+                        {
+                            <p><button class="btn btn-secondary btn-block" id="btnPublish" data-surveyid="@Model.Survey.ID">Re-publish on FEP</button></p>
+                        }
                         <p><a class="btn btn-default btn-block" id="btnTest" href="@Url.Action("Test", "Survey", new { area = "RnP", @id = Model.Survey.ID })" target="_blank">Test Survey</a></p>
                     }
                 </div>
@@ -297,6 +306,84 @@
                         </div>
                     }
                 </div>
+                <!-- extend -->
+                <div class="modal fade" id="modalExtend" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formextend", id = "formextend" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="m-4 text-center">
+                                    <h4 class="color-darkblue mb-0">Extend Survey Request</h4>
+                                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" class="form-control" name="ID" id="ExtendID" value="@Model.Survey.ID" />
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Extension.NewStartDate, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                                        <div class="dateSelect">
+                                            <input type="text" id="date_start" class="form-control" placeholder="Date Start" data-input="flatpickr">
+                                            <a class="input-button calendar" title="toggle" data-toggle>
+                                                <i class="la la-calendar"></i>
+                                            </a>
+                                            <a class="input-button clear" title="clear" data-clear>
+                                                <i class="la la-times"></i>
+                                            </a>
+                                        </div>
+                                        @Html.HiddenFor(model => model.Extension.NewStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                                        <input type="hidden" id="NewStartDate" name="NewStartDate" value="" />
+                                        <span class="text-danger field-validation-error" id="span_startdateerror" style="display:none;">Invalid Start Date</span>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Extension.NewEndDate, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                                        <div class="dateSelect">
+                                            <input type="text" id="date_end" class="form-control" placeholder="Date End" data-input="flatpickr">
+                                            <a class="input-button calendar" title="toggle" data-toggle>
+                                                <i class="la la-calendar"></i>
+                                            </a>
+                                            <a class="input-button clear" title="clear" data-clear>
+                                                <i class="la la-times"></i>
+                                            </a>
+                                        </div>
+                                        @Html.HiddenFor(model => model.Extension.NewEndDate, new { htmlAttributes = new { @class = "form-control" } })
+                                        <input type="hidden" id="NewEndDate" name="NewEndDate" value="" />
+                                        <span class="text-danger field-validation-error" id="span_enddateerror" style="display:none;">Invalid End Date</span>
+                                    </div>
+                                </div>
+                                <div class="divider-border"></div>
+                                <div class="m-4 text-center">
+                                    <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                    <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#extendsent" id="btnExtendConfirm">Extend Survey</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!-- unpublish -->
+                <div class="modal fade" id="modalUnpublish" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img src="~/img/icon-confirmation.svg" alt="image">
+                                <h4 class="color-darkblue mt-4" >Are you sure to Unpublish the Survey?</h4>
+                                <p class="small">Once unpublished, Survey can be re-published at any time if necessary.</p>
+                            </div>
+                            <div class="divider-border"></div>
+                            <div class="m-4 text-center">
+                                <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#unpublishsent" id="btnUnpublishConfirm">Unpublish Survey</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- ajax result - success -->
                 <div class="modal fade" id="modalOperationSuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-sm" role="document">
@@ -407,14 +494,47 @@
 
             // format date picker
 
-            $("#StartDate").flatpickr({
+            $("#Survey_StartDate").flatpickr({
                 dateFormat: "d/m/Y",
                 maxDate: "31/12/2200",
             });
 
-            $("#EndDate").flatpickr({
+            $("#Survey_EndDate").flatpickr({
                 dateFormat: "d/m/Y",
                 maxDate: "31/12/2200",
+            });
+
+            var tstart = $('#Extension_NewStartDate').val();
+            var tend = $('#Extension_NewEndDate').val();
+            tstart = tstart.substr(0, 10);
+            tend = tend.substr(0, 10);
+            $('#Extension_NewStartDate').val(tstart);
+            $('#Extension_NewEndDate').val(tend);
+            $('#NewStartDate').val(tstart);
+            $('#NewEndDate').val(tend);
+            var mystart = $('#Extension_NewStartDate').val();
+            var myend = $('#Extension_NewEndDate').val();
+
+            $("#date_start").flatpickr({
+                dateFormat: "d/m/Y",
+                defaultDate: mystart,
+                minDate: "today",
+                maxDate: "31/01/2200",
+                onChange: function (selectedDates, dateStr, instance) {
+                    $("#Extension_NewStartDate").val(dateStr);
+                    $("#NewStartDate").val(dateStr);
+                },
+            });
+
+            $("#date_end").flatpickr({
+                dateFormat: "d/m/Y",
+                defaultDate: myend,
+                minDate: "today",
+                maxDate: "31/01/2200",
+                onChange: function (selectedDates, dateStr, instance) {
+                    $("#Extension_NewEndDate").val(dateStr);
+                    $("#NewEndDate").val(dateStr);
+                },
             });
 
             // populate target groups
@@ -502,6 +622,79 @@
                 var url = '@Url.Action("PublishByID", "Survey", new { area = "RnP" })?id=' + pid;
                 //alert(url);
                 window.location = url;
+            });
+
+            // extend - requires input, shows success notification, and redirects to details view (refreshes)
+
+            $('#btnExtend').click(function (event) {
+                $('#modalExtend').modal();
+            });
+
+            function ValidExtension() {
+                return true;
+            }
+
+            $('#btnExtendConfirm').click(function (event) {
+                if (!ValidExtension()) {
+                    return false;
+                }
+                var form = $('#formextend');
+                //alert(form.serialize());
+                //return false;
+                var myurl = '@Url.Action("Extend", "Survey", new { area = "RnP" })';
+                $.ajax({
+                    url: myurl,
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        if (data == "error") {
+                            $("#resultFailTitle").text('Failed to Extend Survey');
+                            $("#resultFailText").text('Operation to extend Survey unsuccessful! Please try again later.');
+                            $("#modalOperationFail").modal();
+                        }
+                        else {
+                            $("#resultSuccessTitle").text('Survey Extension Successful');
+                            $("#resultSuccessText").text('Survey extended successfully. Survey can now be accessed between the new Start Date and End Date.');
+                            $("#btnCloseOperationSuccess").data('operation', "extend");
+                            $("#modalOperationSuccess").modal();
+                        }
+                    }
+                });
+            });
+
+            // unpublish - requires input, shows success notification, and redirects to details view (refreshes)
+
+            $('#btnUnpublish').click(function (event) {
+                $('#modalUnpublish').modal();
+            });
+
+            function ValidUnpublication() {
+                return true;
+            }
+
+            $('#btnUnpublishConfirm').click(function (event) {
+                if (!ValidUnpublication()) {
+                    return false;
+                }
+                var pid = $("#btnUnpublish").data('surveyid');
+                var myurl = '@Url.Action("Unpublish", "Survey", new { area = "RnP" })?id=' + pid;
+                $.ajax({
+                    url: myurl,
+                    type: "POST",
+                    success: function (data) {
+                        if (data == "error") {
+                            $("#resultFailTitle").text('Failed to Unpublish Survey');
+                            $("#resultFailText").text('Operation to unpublish Survey unsuccessful! Please try again later.');
+                            $("#modalOperationFail").modal();
+                        }
+                        else {
+                            $("#resultSuccessTitle").text('Unpublishing of Survey Successful');
+                            $("#resultSuccessText").text('Survey unpublished successfully. Survey can no longer be accessed by respondents.');
+                            $("#btnCloseOperationSuccess").data('operation', "unpublish");
+                            $("#modalOperationSuccess").modal();
+                        }
+                    }
+                });
             });
 
             // cancel - requires input, shows success notification, and redirects to details view (refreshes)

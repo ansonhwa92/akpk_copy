@@ -42,6 +42,14 @@ namespace FEP.WebApiModel.RnP
         public string ProformaInvoiceNo { get; set; }
     }
 
+    // class for updating purchase order (cart) receipt info
+    public class EditPurchaseOrderReceiptNoModel
+    {
+        public int Id { get; set; }
+
+        public string ReceiptNo { get; set; }
+    }
+
     // class for updating purchase order (cart) status
     public class EditPurchaseOrderStatusModel
     {
@@ -62,6 +70,9 @@ namespace FEP.WebApiModel.RnP
         // updated by finance?
         public string ProformaInvoiceNo { get; set; }
 
+        // updated by finance?
+        public string ReceiptNo { get; set; }
+
         public PaymentModes PaymentMode { get; set; }
 
         public DateTime CreatedDate { get; set; }
@@ -69,6 +80,8 @@ namespace FEP.WebApiModel.RnP
         public float TotalPrice { get; set; }
 
         public CheckoutStatus Status { get; set; }
+
+        public DeliveryStatus DeliveryStatus { get; set; }
     }
 
     // class for returning/updating publication purchase item
@@ -104,6 +117,110 @@ namespace FEP.WebApiModel.RnP
         public List<PurchaseOrderItemModel> Publications { get; set; }
         public List<PurchaseOrderItemModel> Events { get; set; }
         public List<PurchaseOrderItemModel> Courses { get; set; }
+    }
+
+    // class for returning purchase history information
+    public class PurchaseHistoryModel
+    {
+        public int PurchaseOrderId { get; set; }
+
+        public int OrderItemId { get; set; }
+
+        public int UserId { get; set; }
+
+        public string ReceiptNo { get; set; }
+
+        public PurchaseType PurchaseType { get; set; }
+
+        public string Description { get; set; }
+
+        public int Quantity { get; set; }
+
+        public float Amount { get; set; }
+
+        public DateTime? PaymentDate { get; set; }
+
+        public CheckoutStatus Status { get; set; }
+
+        public DeliveryStatus DeliveryStatus { get; set; }
+
+        public RefundStatus? RefundStatus { get; set; }
+    }
+
+    // class for setting and returning filters for the datatable list of purchase history
+    public class FilterPurchaseHistoryModel : DataTableModel
+    {
+        [Display(Name = "FilterDescription", ResourceType = typeof(Language.Cart))]
+        public string Description { get; set; }
+
+        [Display(Name = "FilterReceiptNo", ResourceType = typeof(Language.Cart))]
+        public string ReceiptNo { get; set; }
+    }
+
+    // class for returning purchase history information and creating refund request
+    public class CreateRefundModel
+    {
+        public int ItemId { get; set; }
+
+        public int UserId { get; set; }
+
+        [Display(Name = "Full Name")]
+        [Required]
+        public string FullName { get; set; }
+
+        [Display(Name = "Bank Name")]
+        [Required]
+        public int BankID { get; set; }
+
+        [Display(Name = "Bank Account No.")]
+        [Required]
+        public string BankAccountNo { get; set; }
+
+        public string ReferenceNo { get; set; }
+    }
+
+    // class for updating refund request
+    public class EditRefundModel
+    {
+        public int ID { get; set; }
+
+        public int ItemId { get; set; }
+
+        public int UserId { get; set; }
+
+        [Display(Name = "Full Name")]
+        [Required]
+        public string FullName { get; set; }
+
+        [Display(Name = "Bank Name")]
+        [Required]
+        public int BankID { get; set; }
+
+        [Display(Name = "Bank Account No.")]
+        [Required]
+        public string BankAccountNo { get; set; }
+
+        public string ReferenceNo { get; set; }
+    }
+
+    // class for returning purchase history information and creating refund request
+    public class ListPurchaseHistoryModel
+    {
+        public FilterPurchaseHistoryModel Filters { get; set; }
+
+        public PurchaseHistoryModel Items { get; set; }
+
+        public CreateRefundModel Refund { get; set; }
+    }
+
+    // return banks
+    public class BankInformationModel
+    {
+        public int ID { get; set; }
+
+        public string ShortName { get; set; }
+
+        public string FullName { get; set; }
     }
 
 }

@@ -126,6 +126,24 @@
   <data name="CheckoutStatusShopping" xml:space="preserve">
     <value>Shopping</value>
   </data>
+  <data name="DeliveryStatusDelivered" xml:space="preserve">
+    <value>Delivered</value>
+  </data>
+  <data name="DeliveryStatusNone" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="DeliveryStatusPreparing" xml:space="preserve">
+    <value>Preparing</value>
+  </data>
+  <data name="DeliveryStatusShipped" xml:space="preserve">
+    <value>Shipped</value>
+  </data>
+  <data name="FilterDescription" xml:space="preserve">
+    <value>Item Description</value>
+  </data>
+  <data name="FilterReceiptNo" xml:space="preserve">
+    <value>Receipt No.</value>
+  </data>
   <data name="PaymentModeOffline" xml:space="preserve">
     <value>Offline Payment</value>
   </data>
@@ -140,5 +158,14 @@
   </data>
   <data name="PurchaseTypePublication" xml:space="preserve">
     <value>Publication</value>
+  </data>
+  <data name="RefundStatusComplete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="RefundStatusIncomplete" xml:space="preserve">
+    <value>Incomplete</value>
+  </data>
+  <data name="RefundStatusRequested" xml:space="preserve">
+    <value>Requested</value>
   </data>
 </root>

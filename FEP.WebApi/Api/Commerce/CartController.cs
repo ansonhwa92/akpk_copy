@@ -49,10 +49,12 @@ namespace FEP.WebApi.Api.Commerce
                         UserId = model.UserId,
                         DiscountCode = "",
                         ProformaInvoiceNo = "",
+                        ReceiptNo = "",
                         PaymentMode = PaymentModes.Online,
                         CreatedDate = DateTime.Now,
                         TotalPrice = 0,
-                        Status = CheckoutStatus.Shopping
+                        Status = CheckoutStatus.Shopping,
+                        DeliveryStatus = DeliveryStatus.None
                     };
 
                     db.PurchaseOrder.Add(newcart);
@@ -129,6 +131,30 @@ namespace FEP.WebApi.Api.Commerce
                 if (cart != null)
                 {
                     cart.ProformaInvoiceNo = model.ProformaInvoiceNo;
+                    db.Entry(cart).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // Update receipt no
+        // POST: api/Commerce/Cart/UpdateReceiptNo
+        [Route("api/Commerce/Cart/UpdateReceiptNo")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool UpdateReceiptNo([FromBody] EditPurchaseOrderReceiptNoModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var cart = db.PurchaseOrder.Where(p => p.Id == model.Id).FirstOrDefault();
+
+                if (cart != null)
+                {
+                    cart.ReceiptNo = model.ReceiptNo;
                     db.Entry(cart).State = EntityState.Modified;
                     db.SaveChanges();
 
@@ -237,10 +263,12 @@ namespace FEP.WebApi.Api.Commerce
                 UserId = s.UserId,
                 PaymentMode = s.PaymentMode,
                 ProformaInvoiceNo = s.ProformaInvoiceNo,
+                ReceiptNo = s.ReceiptNo,
                 DiscountCode = s.DiscountCode,
                 TotalPrice = s.TotalPrice,
                 CreatedDate = s.CreatedDate,
-                Status = s.Status
+                Status = s.Status,
+                DeliveryStatus = s.DeliveryStatus
             }).FirstOrDefault();
 
             var items = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id).Select(s => new PurchaseOrderItemModel
@@ -317,5 +345,162 @@ namespace FEP.WebApi.Api.Commerce
 
             return promo;
         }
+
+        // Refunds
+
+        // Retrieve bank info
+        // GET: api/Commerce/Cart/GetBanks
+        [HttpGet]
+        [Route("api/Commerce/Cart/GetBanks")]
+        public List<BankInformationModel> GetBanks()
+        {
+            var banks = db.BankInformation.OrderBy(b => b.ShortName).Select(s => new BankInformationModel
+            {
+                ID = s.ID,
+                ShortName = s.ShortName,
+                FullName = s.FullName
+            }).ToList();
+
+            return banks;
+        }
+
+        // DataTable function for listing and filtering purchase history
+        // POST: api/Commerce/Cart/PurchaseHistory (DataTable)
+        [Route("api/Commerce/Cart/PurchaseHistory")]
+        [HttpPost]
+        public IHttpActionResult PurchaseHistory(FilterPurchaseHistoryModel request)
+        {
+
+            var query = db.PurchaseOrderItem.Join(db.PurchaseOrder, pi => pi.PurchaseOrderId, po => po.Id, (pi, po) => new { pi.PurchaseOrderId, pi.Id, po.UserId, po.ReceiptNo, pi.PurchaseType, pi.Description, pi.Quantity, pi.Price, po.Status, po.DeliveryStatus, po.PaymentDate }).Where(ph => ph.Status == CheckoutStatus.Paid);
+
+            var totalCount = query.Count();
+
+            //advance search
+            query = query.Where(p => (request.Description == null || p.Description.Contains(request.Description))
+               && (request.ReceiptNo == null || p.ReceiptNo.Contains(request.ReceiptNo))
+               );
+
+            //quick search 
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+                query = query.Where(p => p.Description.Contains(value)
+                || p.ReceiptNo.Contains(value)
+                );
+            }
+
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "ReceiptNo":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.ReceiptNo);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.ReceiptNo);
+                        }
+
+                        break;
+
+                    case "Description":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Description);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Description);
+                        }
+
+                        break;
+
+                    case "PaymentDate":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.PaymentDate);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.PaymentDate);
+                        }
+
+                        break;
+
+                    case "Status":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Status);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Status);
+                        }
+
+                        break;
+
+                    case "DeliveryStatus":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.DeliveryStatus);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.DeliveryStatus);
+                        }
+
+                        break;
+
+                    default:
+                        query = query.OrderBy(o => o.PaymentDate).OrderBy(o => o.Description);
+                        break;
+                }
+
+            }
+            else
+            {
+                query = query.OrderBy(o => o.PaymentDate).OrderBy(o => o.Description);
+            }
+
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(s => new PurchaseHistoryModel
+                {
+                    PurchaseOrderId = s.PurchaseOrderId,
+                    OrderItemId = s.Id,
+                    UserId = s.UserId,
+                    ReceiptNo = s.ReceiptNo,
+                    PurchaseType = s.PurchaseType,
+                    Description = s.Description,
+                    Quantity = s.Quantity,
+                    Amount = s.Price * s.Quantity,
+                    PaymentDate = s.PaymentDate,
+                    Status = s.Status,
+                    DeliveryStatus = s.DeliveryStatus,
+                    RefundStatus = db.Refund.Where(rf => rf.ItemId == s.Id && rf.UserId == s.UserId).FirstOrDefault().Status
+                }).ToList();
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+
+        }
+
     }
 }

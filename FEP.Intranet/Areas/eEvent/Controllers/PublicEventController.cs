@@ -124,11 +124,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				//attachment
 				if (model.AttachmentFiles.Count() > 0)
 				{
-					var responseFile = await WepApiMethod.SendApiAsync<List<FileDocument>>($"File?userId={CurrentUser.UserId}", model.AttachmentFiles.ToList());
+					var files = await FileMethod.UploadFile(model.AttachmentFiles.ToList(), CurrentUser.UserId);
 
-					if (responseFile.isSuccess)
+					if (files != null)
 					{
-						modelapi.FilesId = responseFile.Data.Select(f => f.Id).ToList();
+						modelapi.FilesId = files.Select(f => f.Id).ToList();
 					}
 				}
 
@@ -234,14 +234,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				//attachment
 				if (model.AttachmentFiles.Count() > 0)
 				{
-					var responseFile = await WepApiMethod.SendApiAsync<List<FileDocument>>($"File?userId={CurrentUser.UserId}", model.AttachmentFiles.ToList());
+                    var files = await FileMethod.UploadFile(model.AttachmentFiles.ToList(), CurrentUser.UserId);
 
-					if (responseFile.isSuccess)
-					{
-						modelapi.FilesId = responseFile.Data.Select(f => f.Id).ToList();
-					}
+                    if (files != null)
+                    {
+                        modelapi.FilesId = files.Select(f => f.Id).ToList();
+                    }
 
-				}
+                }
 
 				var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/PublicEvent?id={model.Id}", modelapi);
 

@@ -51,6 +51,7 @@ namespace FEP.WebApi.Api.Administration
                 Email = s.Email,
                 ICNo = s.ICNo,
                 MobileNo = s.MobileNo,
+                CountryCode = s.CountryCode,
                 UserType = s.UserType,
                 IsEnable = s.UserAccount.IsEnable,
                 ValidFrom = s.UserAccount.ValidFrom,
@@ -80,29 +81,20 @@ namespace FEP.WebApi.Api.Administration
         public IHttpActionResult Put(int id, [FromBody] EditUserModel model)
         {
             var user = db.User.Where(u => u.Id == id && u.Display).FirstOrDefault();
-            var useraccount = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
-
-            if (user == null || useraccount == null)
+            
+            if (user == null)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                user.Name = model.Name;                
-                user.Email = model.Email;
+                user.Name = model.Name; 
                 user.MobileNo = model.MobileNo;
 
-                useraccount.LoginId = model.Email;
-
                 db.User.Attach(user);
-                db.Entry(user).Property(x => x.Name).IsModified = true;
-                db.Entry(user).Property(x => x.ICNo).IsModified = true;
-                db.Entry(user).Property(x => x.Email).IsModified = true;
+                db.Entry(user).Property(x => x.Name).IsModified = true;     
                 db.Entry(user).Property(x => x.MobileNo).IsModified = true;
-
-                db.UserAccount.Attach(useraccount);
-                db.Entry(useraccount).Property(x => x.LoginId).IsModified = true;
 
                 db.Configuration.ValidateOnSaveEnabled = true;
                 db.SaveChanges();

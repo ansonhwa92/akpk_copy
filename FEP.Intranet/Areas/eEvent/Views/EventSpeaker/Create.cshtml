@@ -1,210 +1,210 @@
 ﻿@model FEP.Intranet.Areas.eEvent.Models.CreateEventSpeakerModel
 
 @{
-	ViewBag.Title = "Event Speaker";
-	Layout = "~/Views/Shared/_Layout1.cshtml";
+    ViewBag.Title = "Event Speaker";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
 @section Nav {
 
-	<div class="title_header">
-		<div class="title-header-container">
-			<div class="container">
-				<!-- if have button -->
-				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "EventSpeaker", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
-				<div class="header-col-left">
-					<div id="breadcrumb">
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
-								<li class="breadcrumb-item"><a href="#">Manage Event Speaker</a></li>
-								<li class="breadcrumb-item"><a href="#">Event Speaker List</a></li>
-								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
-							</ol>
-						</nav>
-					</div>
-					<h1 class="page-title text-white">Create Event Speaker</h1>
-					@*<div class="header-text">List of created event</div>*@
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "EventSpeaker", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Event Management</a></li>
+                                <li class="breadcrumb-item"><a href="#">Manage Event Speaker</a></li>
+                                <li class="breadcrumb-item"><a href="#">Event Speaker List</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Create Event Speaker</h1>
+                    @*<div class="header-text">List of created event</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
 
 }
 
 @using (Html.BeginForm("Create", "EventSpeaker", FormMethod.Post, new { enctype = "multipart/form-data", id = "target" }))
 {
-	@Html.AntiForgeryToken()
-	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-	<div class="row">
-		<div class="col-xl-3 col-md-3 col-sm-4 my-2">
-			<div class="sidebar-left">
-				<!-- Steps -->
-				<div class="sidebar-inner sticky">
-					<ul class="steps steps-vertical">
-						<li class="step-item complete">
-							<a href="" class="step-link">
-								<span class="step-number">1</span>
-								<span class="step-title">Event Speaker List</span>
-							</a>
-						</li>
-						<li class="step-item active">
-							<a href="" class="step-link">
-								<span class="step-number">2</span>
-								<span class="step-title">Fill Up Event Speaker Details</span>
-							</a>
-						</li>
-						<!-- rejected -->
-						<!-- <li class="step-item rejected">
-							<a href="" class="step-link">
-								<span class="step-number">2</span>
-								<span class="step-title">Fill Up Event Details</span>
-							</a>
-						</li> -->
-						@*<li class="step-item disabled">
-								<a href="" class="step-link">
-									<span class="step-number">3</span>
-									<span class="step-title">Event Verification Approval</span>
-								</a>
-							</li>*@
-					</ul>
-					<!-- End Steps -->
-				</div>
-			</div>
-		</div>
-		<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-			<!-- Start Form -->
-			<div class="border-form rounded-top">
-				<form>
-					<div class="form-container">
-						<div class="mt-2 mb-4 pb-1">
-							<h4 class="color-darkblue mb-0">Event Speaker Details</h4>
-							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
-						</div>
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.SpeakerType)
-								@Html.EnumDropDownListFor(model => model.SpeakerType, "-Select Speaker Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
-								@Html.ValidationMessageFor(model => model.SpeakerType, "", new { @class = "text-danger" })
-							</div>
-						</div>
+    <div class="row">
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div class="sidebar-left">
+                <!-- Steps -->
+                <div class="sidebar-inner sticky">
+                    <ul class="steps steps-vertical">
+                        <li class="step-item complete">
+                            <a href="" class="step-link">
+                                <span class="step-number">1</span>
+                                <span class="step-title">Event Speaker List</span>
+                            </a>
+                        </li>
+                        <li class="step-item active">
+                            <a href="" class="step-link">
+                                <span class="step-number">2</span>
+                                <span class="step-title">Fill Up Event Speaker Details</span>
+                            </a>
+                        </li>
+                        <!-- rejected -->
+                        <!-- <li class="step-item rejected">
+                            <a href="" class="step-link">
+                                <span class="step-number">2</span>
+                                <span class="step-title">Fill Up Event Details</span>
+                            </a>
+                        </li> -->
+                        @*<li class="step-item disabled">
+                                <a href="" class="step-link">
+                                    <span class="step-number">3</span>
+                                    <span class="step-title">Event Verification Approval</span>
+                                </a>
+                            </li>*@
+                    </ul>
+                    <!-- End Steps -->
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <form>
+                    <div class="form-container">
+                        <div class="mt-2 mb-4 pb-1">
+                            <h4 class="color-darkblue mb-0">Event Speaker Details</h4>
+                            <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.SpeakerType)
+                                @Html.EnumDropDownListFor(model => model.SpeakerType, "-Select Speaker Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.SpeakerType, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.UserId)
-								@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
-								@Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.UserId)
+                                @Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+                                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.Email)
-								@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address" } })
-								@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.Email)
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-6">
-								@Html.FEPLabelFor(model => model.DateAssigned, htmlAttributes: new { @class = "control-label col-lg-12" })
-								@Html.EditorFor(model => model.DateAssigned, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Assigned" } })
-								@Html.ValidationMessageFor(model => model.DateAssigned, "", new { @class = "text-danger" })
-							</div>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                @Html.FEPLabelFor(model => model.DateAssigned, htmlAttributes: new { @class = "control-label col-lg-12" })
+                                @Html.EditorFor(model => model.DateAssigned, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Assigned" } })
+                                @Html.ValidationMessageFor(model => model.DateAssigned, "", new { @class = "text-danger" })
+                            </div>
 
-							<div class="form-group col-lg-6">
-								@Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-lg-12" })
-								@Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date of Birth" } })
-								@Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                            <div class="form-group col-lg-6">
+                                @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-lg-12" })
+                                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date of Birth" } })
+                                @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.AddressStreet1)
-								@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 1" } })
-								@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
-							</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.AddressStreet1)
+                                @Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 1" } })
+                                @Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
+                            </div>
 
-							<div class="form-group col-lg-12">
-								@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 2" } })
-								@Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                            <div class="form-group col-lg-12">
+                                @Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 2" } })
+                                @Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-6">
-								@Html.LabelFor(model => model.AddressPoscode)
-								@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode" } })
-								@Html.ValidationMessageFor(model => model.AddressPoscode, "", new { @class = "text-danger" })
-							</div>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                @Html.LabelFor(model => model.AddressPoscode)
+                                @Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode" } })
+                                @Html.ValidationMessageFor(model => model.AddressPoscode, "", new { @class = "text-danger" })
+                            </div>
 
-							<div class="form-group col-lg-6">
-								@Html.LabelFor(model => model.AddressCity)
-								@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
-								@Html.ValidationMessageFor(model => model.AddressCity, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                            <div class="form-group col-lg-6">
+                                @Html.LabelFor(model => model.AddressCity)
+                                @Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
+                                @Html.ValidationMessageFor(model => model.AddressCity, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.State)
-								@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
-								@Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.State)
+                                @Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.MaritialStatus)
-								@Html.EnumDropDownListFor(model => model.MaritialStatus, "-Select Maritial Status-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
-								@Html.ValidationMessageFor(model => model.MaritialStatus, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.MaritialStatus)
+                                @Html.EnumDropDownListFor(model => model.MaritialStatus, "-Select Maritial Status-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.MaritialStatus, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						@*<div class="row">
-			<div class="form-group col-lg-12">
-				@Html.FEPLabelFor(model => model.SpeakerPicture)
-				@Html.TextBoxFor(model => model.SpeakerPicture, "", new { type = "file", @class = "form-control" })
-				@Html.ValidationMessageFor(model => model.SpeakerPicture, "", new { @class = "text-danger" })
-			</div>
-		</div>
+                        @*<div class="row">
+                                <div class="form-group col-lg-12">
+                                    @Html.FEPLabelFor(model => model.SpeakerPicture)
+                                    @Html.TextBoxFor(model => model.SpeakerPicture, "", new { type = "file", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.SpeakerPicture, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
 
-		<div class="row">
-			<div class="form-group col-lg-12">
-				@Html.FEPLabelFor(model => model.SpeakerAttachment)
-				@Html.TextBoxFor(model => model.SpeakerAttachment, "", new { type = "file", @class = "form-control" })
-				@Html.ValidationMessageFor(model => model.SpeakerAttachment, "", new { @class = "text-danger" })
-			</div>
-		</div>*@
+                            <div class="row">
+                                <div class="form-group col-lg-12">
+                                    @Html.FEPLabelFor(model => model.SpeakerAttachment)
+                                    @Html.TextBoxFor(model => model.SpeakerAttachment, "", new { type = "file", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.SpeakerAttachment, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Experience)
-								@Html.TextAreaFor(model => model.Experience, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive" })
-								@Html.ValidationMessageFor(model => model.Experience, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Experience)
+                                @Html.TextAreaFor(model => model.Experience, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive" })
+                                @Html.ValidationMessageFor(model => model.Experience, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.Remark)
-								@Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
-								@Html.ValidationMessageFor(model => model.Remark, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Remark)
+                                @Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
+                                @Html.ValidationMessageFor(model => model.Remark, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-					</div>
-				</form>
-				<!-- End Form -->
-			</div>
-			<div class="border-left border-right border-bottom p-3 rounded-bottom">
-				<a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
-				<button class="btn btn-secondary" type="submit">Save</button>
-			</div>
-		</div>
-	</div>
+                    </div>
+                </form>
+                <!-- End Form -->
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
+                <button class="btn btn-secondary" type="submit">Save</button>
+            </div>
+        </div>
+    </div>
 }

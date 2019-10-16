@@ -57,8 +57,7 @@ namespace FEP.Model.Migrations
             {
                 roleaccess.Add(new RoleAccess { UserAccess = useraccess });
             }
-
-
+            
             //role n roleaccess default for system admin
             var roleallaccess = db.Role.Local.Where(r => r.Name.Contains("All Access")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("All Access")).FirstOrDefault();
 
@@ -94,6 +93,7 @@ namespace FEP.Model.Migrations
                         Email = "admin@fep.com",
                         ICNo = "999999999999",
                         MobileNo = "88888888888",
+                        CountryCode = "60",
                         UserType = UserType.SystemAdmin,
                         CreatedDate = DateTime.Now,
                         Display = true,
@@ -738,7 +738,7 @@ namespace FEP.Model.Migrations
             }
         }
 
-        public static void AddRole(DbEntities db, string RoleName, string Description)
+        public static void AddRole(DbEntities db, string RoleName, string Description, List<RoleAccess> roleaccess = null)
         {
 
             var role = db.Role.Local.Where(r => r.Name.Contains(RoleName)).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains(RoleName)).FirstOrDefault();
@@ -751,7 +751,8 @@ namespace FEP.Model.Migrations
                         Name = RoleName,
                         Description = Description,
                         Display = true,
-                        CreatedDate = DateTime.Now
+                        CreatedDate = DateTime.Now,
+                        RoleAccess = roleaccess
                     });
             }
 

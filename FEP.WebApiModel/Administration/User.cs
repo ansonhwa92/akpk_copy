@@ -43,6 +43,7 @@ namespace FEP.WebApiModel.Administration
 
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.User))]
         public string MobileNo { get; set; }
+        public string CountryCode { get; set; }
 
         [Display(Name = "FieldUserType", ResourceType = typeof(Language.User))]
         public UserType UserType { get; set; }
@@ -63,7 +64,8 @@ namespace FEP.WebApiModel.Administration
 
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.User))]
         public string MobileNo { get; set; }
-        
+        public string CountryCode { get; set; }
+
     }
 
     public class DetailsUserModel
@@ -74,6 +76,7 @@ namespace FEP.WebApiModel.Administration
         public string Name { get; set; }
         public string Email { get; set; }
         public string MobileNo { get; set; }
+        public string CountryCode { get; set; }
         public UserType UserType { get; set; }        
         public bool Display { get; set; }
         public int? CreatedBy { get; set; }

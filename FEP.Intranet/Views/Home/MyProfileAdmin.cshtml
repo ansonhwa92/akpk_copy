@@ -1,4 +1,4 @@
-﻿@model UserModel
+﻿@model AdminProfileModel
 
 @{
     ViewBag.Title = "My Profile";
@@ -77,7 +77,12 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.MobileNo)
-                            @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="countrycode">@Html.Raw(Model.CountryCode)</span>
+                                </div>
+                                @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
                         </div>
                     </div>
                 </div>

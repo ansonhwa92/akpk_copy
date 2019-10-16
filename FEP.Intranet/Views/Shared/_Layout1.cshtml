@@ -97,7 +97,6 @@
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <div data-perfect-scrollbar class="position-relative">
-
                                             <div class="dropdown-header"><strong>System notifications</strong></div>
                                             <div class="list-group list-group-flush mb-0">
                                                 <a class="list-group-item list-group-item-action">
@@ -341,8 +340,47 @@
             //Removes validation summary
             $('.validation-summary-errors').addClass('validation-summary-valid');
             $('.validation-summary-errors').removeClass('validation-summary-errors');
-
         }
+
+        function clearNotification() {
+
+            $.ajax({
+				type: "get",
+				url: "@Url.Action("ClearNotification", "Notification", new { area = "" })",
+				contentType: "application/json",
+				data: [],
+				dataType: "html",
+				success: function (data) {
+					$('#notification_dropdown').html(data);
+				},
+				error: function (xhr, httpStatusMessage, customErrorMessage) {
+
+				}
+			});            
+        }
+
+        loadNotify = function () {
+			$.ajax({
+				type: "get",
+				url: "@Url.Action("RefreshNotification", "Notification", new { area = "" })",
+				contentType: "application/json",
+				data: [],
+				dataType: "html",
+				success: function (data) {
+                    $('#notification_dropdown').html(data);
+                    //$('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+				},
+				error: function (xhr, httpStatusMessage, customErrorMessage) {
+
+				}
+			});
+		};
+
+		loadNotify();
+		
+		setInterval(function () {
+			loadNotify();
+		}, 10000);
 
         $(".dateSelect").flatpickr({
             // mode: "range",

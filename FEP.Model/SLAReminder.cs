@@ -48,9 +48,14 @@ namespace FEP.Model
 
     public enum NotificationCategory
     {
+        [Display(Name = "Event")]
         Event = 1,
+        [Display(Name = "Learning")]
         Learning = 2,
-        ResearchAndPublication = 3
+        [Display(Name = "Research And Publication")]
+        ResearchAndPublication = 3,
+        [Display(Name = "System")]
+        System = 4
     }
     public enum NotificationMedium
     {

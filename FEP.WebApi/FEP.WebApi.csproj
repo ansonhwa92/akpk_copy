@@ -145,7 +145,7 @@
     <Compile Include="Api\Administration\CompanyController.cs" />
     <Compile Include="Api\Administration\CountryController.cs" />
     <Compile Include="Api\Administration\DepartmentController.cs" />
-    <Compile Include="Api\Administration\FileDocumentController.cs" />
+    <Compile Include="Api\System\FileDocumentController.cs" />
     <Compile Include="Api\Administration\IndividualController.cs" />
     <Compile Include="Api\Administration\MinistryController.cs" />
     <Compile Include="Api\Administration\RoleController.cs" />
@@ -166,8 +166,7 @@
     <Compile Include="Api\Logs\UserLogController.cs" />
     <Compile Include="Api\RnP\PublicationController.cs" />
     <Compile Include="Api\RnP\SurveyController.cs" />
-    <Compile Include="Api\Notification\EmailController.cs" />
-    <Compile Include="Api\Notification\NotificationController.cs" />
+    <Compile Include="Api\System\NotificationController.cs" />
     <Compile Include="Api\Setting\AccountSettingController.cs" />
     <Compile Include="Api\Reminder\SLAReminderController.cs" />
     <Compile Include="Api\Template\EmailTemplateController.cs" />
@@ -309,6 +308,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Api\Notification\" />
     <Folder Include="App_Data\Temp_Upload\" />
     <Folder Include="bin\" />
     <Folder Include="Views\Auth\" />

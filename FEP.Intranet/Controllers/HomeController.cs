@@ -42,7 +42,7 @@ namespace FEP.Intranet.Controllers
 
             if (CurrentUser.UserType == UserType.SystemAdmin)
             {
-                var response = await WepApiMethod.SendApiAsync<UserModel>(HttpVerbs.Get, $"Administration/User?id={userid}");
+                var response = await WepApiMethod.SendApiAsync<AdminProfileModel>(HttpVerbs.Get, $"Administration/User?id={userid}");
 
                 if (response.isSuccess)
                 {
@@ -110,7 +110,8 @@ namespace FEP.Intranet.Controllers
                 {
                     Name = response.Data.Name,
                     Email = response.Data.Email,
-                    MobileNo = response.Data.MobileNo
+                    MobileNo = response.Data.MobileNo,
+                    CountryCode = response.Data.CountryCode
                 };
 
                 return View("EditProfileAdmin", model);

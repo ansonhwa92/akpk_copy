@@ -27,6 +27,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string EditRulesCourse = "eLearning/Courses/EditRules";
         public const string Content = "eLearning/Courses/Content";
         public const string DeleteCourse = "eLearning/Courses/Delete";
+        public const string Start = "eLearning/Courses/Start";
+
     }
 
     public class CoursesController : FEPController
@@ -557,6 +559,27 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
 
             return RedirectToAction("Content", "Courses", new { area = "eLearning", id = model.courseId });
+        }
+
+        // Start the course
+        public async Task<ActionResult> Start(int id)
+        {
+
+            //var module = await db.CourseModules.Where(x => x.CourseId == id).OrderBy(x => x.Order).FirstOrDefaultAsync();
+
+            var response = await WepApiMethod.SendApiAsync<CourseContent>(HttpVerbs.Get, CourseApiUrl.Start + $"?id={id}");
+
+            if (response.isSuccess)
+            {
+                return RedirectToAction("View", "CourseModules", new { area = "eLearning", @id = response.Data.Id });
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Could not start the course.";
+
+                return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
+            }
+
         }
 
     }

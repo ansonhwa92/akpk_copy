@@ -19,6 +19,7 @@
         <div class="">
 
             @Html.EnumDropDownListFor(model => model.ShowIFrameAs, htmlAttributes: new { @class = "form-control" })
+            <h6 class="font-weight-normal">(*Some website may not allow embedded IFrame. If nothing appeared when you view the embedded content, please select the Popup option.)</h6>
             @Html.ValidationMessageFor(model => model.ShowIFrameAs, "", new { @class = "text-danger" })
         </div>
     </div>

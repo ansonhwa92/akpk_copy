@@ -28,7 +28,7 @@ namespace FEP.Model.Migrations
 
             SeedAssignTrainerToGroup(db);
 
-            SeedAdditionalCourses(db);
+           // SeedAdditionalCourses(db);
             SeedRules(db);
 
         }
@@ -78,7 +78,7 @@ namespace FEP.Model.Migrations
                                 ContentType = CourseContentType.RichText,
                                 Text = "<h2>Sample Content for COURSE " + title + "</h2>",
                                 CompletionType = ContentCompletionType.Timer,
-                                Timer = 60, // in seconds
+                                Timer = 30, // in seconds
                                 Description = "<p> This is Content 1 for COURSE " +title + "</p>",
                                 Title = "<h2>Sample Content for COURSE " +title + "</h2>",
                             }
@@ -136,13 +136,13 @@ namespace FEP.Model.Migrations
                 db.SaveChanges();
 
                 CourseContent richText = new CourseContent
-                {
+                { 
                     Order = 1,
                     CourseId = course.Id,
                     ContentType = CourseContentType.RichText,
                     Text = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
                     CompletionType = ContentCompletionType.Timer,
-                    Timer = 60, // in seconds
+                    Timer = 30, // in seconds
                     Description = "<p> This is Content 1 for COURSE" + i.ToString() + "</p>",
                     Title = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
                 };
@@ -579,6 +579,17 @@ namespace FEP.Model.Migrations
 
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
+
+                foreach(var module in course.Modules)
+                {
+                    module.UpdateTotals();
+
+                    db.SetModified(module);
+
+                    db.SaveChanges();
+                }
+
+
             }
         }
 
@@ -678,8 +689,13 @@ namespace FEP.Model.Migrations
 
                 if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
 
-                module.ModuleContents.Add(content2);
+                module.ModuleContents.Add(content2);                
+
+                db.SaveChanges();
+
                 module.UpdateTotals();
+
+                db.SetModified(module);
 
                 db.SaveChanges();
             }

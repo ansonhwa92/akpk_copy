@@ -44,7 +44,6 @@ namespace FEP.WebApi.Api.eLearning
                                 x.CourseModuleId == currentContent.CourseModuleId)
                                 .OrderBy(x => x.Order).FirstOrDefaultAsync();
 
-
                 return Ok(nextContent);
 
                 //TODO: MARK THE USER PROGRESS. IF TRIAL, IGNORE

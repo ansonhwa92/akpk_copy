@@ -36,43 +36,41 @@
     </div>
 }
 
-    <form id="form" method="post">
+<form id="form" method="post">
 
-        @Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
 
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        @Html.HiddenFor(m => m.Id)
-        @Html.HiddenFor(m => m.IntroImageFileName)
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.IntroImageFileName)
 
+    <div class="row">
 
-        <div class="row">
+        @*@Html.Partial("_contentSidebar")*@
 
-            @*@Html.Partial("_contentSidebar")*@
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <div class="form-container tab-content">
 
-            <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-                <!-- Start Form -->
-                <div class="border-form rounded-top">
-                    <div class="form-container tab-content">
-
-                        <div class="row">
-                            <div class="col-sm-9">
-                                <span class="title">
-                                    @name
-                                </span>
-                            </div>
-                            <div class="col-sm-3">
-                                @if (Model.Status != CourseStatus.Published)
-                                {
-                                    <div class="card text-white bg-dark p-2 float-right border-dark">@Model.Status</div>
-                                }
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <span class="title">
+                                @name
+                            </span>
                         </div>
+                        <div class="col-sm-3">
+                            @if (Model.Status != CourseStatus.Published)
+                            {
+                                <div class="card text-white bg-dark p-2 float-right border-dark">@Model.Status</div>
+                            }
+                        </div>
+                    </div>
 
-                        <div class="tab-pane active" id="course-details">
-                            <div class="mb-4 mt-2 mr-auto">
-
-                                <div class="boxed">
+                    <div class="tab-pane active" id="course-details">
+                        <div class="mb-4 mt-2 mr-auto">
+                            <div class="boxed">
                                     <img class="introImage" src=""
                                          height="300" width="100%" alt="" />
                                 </div>
@@ -80,86 +78,93 @@
 
                             </div>
 
-                            <div class="subtitle">
-                                ABOUT
+                        <div class="subtitle">
+                            ABOUT
+                        </div>
+
+                        <div>
+                            <div class="descbox">
+                                @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
                             </div>
+                        </div>
 
-                            <div>
-                                <div class="descbox">
-                                    @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
-                                </div>
+                        <div class="subtitle">
+                            What you will learn
+                        </div>
+
+                        <div>
+                            <div class="objbox">
+                                @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
                             </div>
+                        </div>
 
-                            <div class="subtitle">
-                                What you will learn
-                            </div>
+                        <div>
+                            <div class="row">
 
-                            <div>
-                                <div class="objbox">
-                                    @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="row">
-
+                                @if (Model.Status == CourseStatus.Published)
+                                {
                                     <a class="btn btn-secondary m-2" href="#">Enroll</a>
-                                    <a class="btn btn-secondary m-2" href="#">Start the course</a>
-                                </div>
-                            </div>
-                            <hr />
+                                }
 
-                            <div class="subtitle">
-                                MODULES
-                            </div>
-
-                            <!----START MODULES -->
-                            <div id="draggable-module">
-                                @{
-
-                                    var modules = Model.Modules.OrderBy(x => x.Order).ToList();
-
-                                    for (int i = 0; i < modules.Count(); i++)
-                                    {
-                                        var module = modules[i];
-
-                                <div class="module-box" data-id="@module.Order" onclick="openModule(@module.Id)">
-                                    <div class="row  mb-2">
-                                        <div class="col-sm-2">
-                                            <span class="moduleTitle">MODULE @i</span>
-                                        </div>
-
-                                        <div class="col-sm-10">
-                                            <span class="moduleTitle">@module.Title</span>
-
-                                            @*<a href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = module.Id })"
-                data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>*@
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <div>
-                                            @Html.Raw(@module.Description)
-
-                                            <div class="row pl-2">
-                                                <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
-                                                <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
-                                                <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="divider"></div>
-                                </div>
-                                    }
+                                @if (Model.Status == CourseStatus.Trial || Model.Status == CourseStatus.Published)
+                                {
+                                    <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">Start the course</a>
                                 }
                             </div>
-                            <!----END MODULES -->
                         </div>
+                        <hr />
+
+                        <div class="subtitle">
+                            MODULES
+                        </div>
+
+                        <!----START MODULES -->
+                        <div id="draggable-module">
+                            @{
+
+                                var modules = Model.Modules.OrderBy(x => x.Order).ToList();
+
+                                for (int i = 0; i < modules.Count(); i++)
+                                {
+                                    var module = modules[i];
+
+                                    <div class="module-box" data-id="@module.Order" onclick="openModule(@module.Id)">
+                                        <div class="row  mb-2">
+                                            <div class="col-sm-2">
+                                                <span class="moduleTitle">MODULE @i</span>
+                                            </div>
+
+                                            <div class="col-sm-10">
+                                                <span class="moduleTitle">@module.Title</span>
+
+                                                @*<a href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                                    data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>*@
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div>
+                                                @Html.Raw(@module.Description)
+
+                                                <div class="row pl-2">
+                                                    <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
+                                                    <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
+                                                    <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="divider"></div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <!----END MODULES -->
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+</form>
 
 <style>
     .form-container {
@@ -169,9 +174,7 @@
 
 @section ContentScript {
 
-
     <link href="~/css/elearn.css" rel="stylesheet" />
-
 
     <script src="~/Scripts/jquery.truncate.js"></script>
 
@@ -181,21 +184,14 @@
         $(document).ready(function () {
             var imgFileName = $('#IntroImageFileName').val();
 
-            console.log(imgFileName);
 
             if ($.trim(imgFileName) == "") {
 
                 var defaultImgUrl = '@(BaseURL)/Content/logo-akpk.svg';
-
-                console.log("null - ", defaultImgUrl);
-
                 $(".introImage").attr('src', defaultImgUrl);
             }
             else {
                 var defaultImgUrl = '@(BaseURL)/File/GetImg?fileName=' + imgFileName;
-
-                console.log("NOT null - ", defaultImgUrl);
-
                 $(".introImage").attr('src', defaultImgUrl);
             }
 

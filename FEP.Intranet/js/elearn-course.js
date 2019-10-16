@@ -123,7 +123,9 @@ $('.custom-file-input').on('change', function () {
         var file = document.getElementsByName('File')[0].files[0];
 
         //console.log('File - ', file);
-        $('.loading').show();
+        //$('.loading').show();
+        $("#Text").summernote('code', "Loading..");
+
         uploadFile(uploadDocUrl, file, function (value) {
             convertDocument(convertFileUrl, value.FileNameOnStorage, 1, 1, function (value) {
 

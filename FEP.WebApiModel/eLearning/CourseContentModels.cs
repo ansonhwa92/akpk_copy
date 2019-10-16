@@ -53,7 +53,6 @@ namespace FEP.WebApiModel.eLearning
         public AudioType AudioType { get; set; }
         public DocumentType DocumentType { get; set; }
 
-
         public int Order { get; set; }
 
         public int? ContentFileId { get; set; }
@@ -70,8 +69,11 @@ namespace FEP.WebApiModel.eLearning
         [Display(Name = "CompleteAQuestion", ResourceType = typeof(Language.eLearning.Content))]
         public int? ContentQuestionId { get; set; }
         public string Question { get; set; }
-
         public string IntroImageFileName { get; set; }
+
+        public string ModuleName { get; set; }
+
+        public CourseStatus Status { get; set; }
 
     }
 
@@ -96,6 +98,7 @@ namespace FEP.WebApiModel.eLearning
         public string OrderAnswerString { get; set; }
         public ICollection<FreeTextAnswer> FreeTextAnswers { get; set; }
         public string FreeTextAnswer { get; set; }
+
 
     }
 

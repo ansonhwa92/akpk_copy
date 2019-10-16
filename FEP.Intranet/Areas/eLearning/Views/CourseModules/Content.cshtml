@@ -60,8 +60,11 @@
     @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
 
     <div class="row">
-
-        @Html.Partial("_contentSidebar")
+        
+        @if (Model.Status == CourseStatus.Draft)
+        {
+            @Html.Partial("_contentSidebar")
+        }
 
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
             <!-- Start Form -->

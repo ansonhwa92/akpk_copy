@@ -60,7 +60,7 @@
 
     <div class="row">
 
-        @Html.Partial("_contentSidebar")
+            @Html.Partial("_contentSidebar")
 
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 
@@ -84,7 +84,7 @@
 
                     <div class="tab-pane active" id="course-details">
                         <div class="mb-4 mt-2 mr-auto">
-                            <input type="file" name="File" id="File" class="file" hidden />
+                            <input type="file" name="File" id="File" class="file" accept="image/*" hidden />
 
                             <div id="imgDiv" onclick="$('#File').click()">
 
@@ -264,23 +264,16 @@
 
             $('#draggable-module').sortable(options);
 
-          var imgFileName = $('#IntroImageFileName').val();
+             var imgFileName = $('#IntroImageFileName').val();
 
-            console.log(imgFileName);
 
             if ($.trim(imgFileName) == "") {
 
                 var defaultImgUrl = '@(BaseURL)/Content/logo-akpk.svg';
-
-                console.log("null - ", defaultImgUrl);
-
                 $(".introImage").attr('src', defaultImgUrl);
             }
             else {
                 var defaultImgUrl = '@(BaseURL)/File/GetImg?fileName=' + imgFileName;
-
-                console.log("NOT null - ", defaultImgUrl);
-
                 $(".introImage").attr('src', defaultImgUrl);
             }
 

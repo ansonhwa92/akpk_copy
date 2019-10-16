@@ -196,7 +196,7 @@
     <value>Test/Quiz</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>After a period of time</value>
+    <value>After a period of time (in seconds)</value>
   </data>
   <data name="UploadAudio" xml:space="preserve">
     <value>Upload an audio file</value>

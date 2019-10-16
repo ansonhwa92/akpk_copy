@@ -125,10 +125,14 @@ namespace FEP.WebApi.Api.eLearning
 
                     module.ModuleContents = new List<CourseContent>();
                     module.ModuleContents.Add(content);
-                    module.UpdateTotals();
 
                     course.Modules.Add(module);
 
+                    await db.SaveChangesAsync();
+
+                    module.UpdateTotals();
+
+                    db.SetModified(module);
 
                     await db.SaveChangesAsync();
 
@@ -181,7 +185,21 @@ namespace FEP.WebApi.Api.eLearning
             if (entity == null)
                 return NotFound();
 
+            var module = await db.CourseModules.FirstOrDefaultAsync(x => x.Id == entity.CourseId);
+
+            if (module == null)
+                return NotFound();
+
+            var course = await db.Courses.FindAsync(module.CourseId);
+
+            if (course == null)
+                return NotFound();
+
+
             var model = _mapper.Map<CreateOrEditContentModel>(entity);
+
+            model.ModuleName = module.Title;
+            model.Status = course.Status;
 
             // for uploaded content
             if (entity.ContentFile != null &&

@@ -295,7 +295,7 @@ namespace Language.eLearning {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to After a period of time.
+        ///   Looks up a localized string similar to After a period of time (in seconds).
         /// </summary>
         public static string Timer {
             get {

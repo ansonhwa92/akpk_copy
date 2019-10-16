@@ -38,5 +38,21 @@ namespace FEP.WebApiModel.eLearning
 
         public string IntroImageFileName { get; set; }
 
+        public CourseStatus Status { get; set; }
+
     }   
+
+    public class ViewModuleModel : BaseModel
+    {
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public string Objectives { get; set; }
+
+        public int CourseId { get; set; }
+
+        public string CourseTitle { get; set; }
+        public string IntroImageFileName { get; set; }
+    }
 }

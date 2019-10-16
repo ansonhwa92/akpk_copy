@@ -43,4 +43,12 @@
             </div>
         }
     </div>
+    <audio controls>
+
+        <source src="@(WebApiURL)eLearning/Video?videoFileId=@Model.FileDocumentId&fileName=@Model.FileDocument.FileNameOnStorage"
+                type="audio/mp3">
+        <source src="@(WebApiURL)eLearning/Video?videoFileId=@Model.FileDocumentId&fileName=@Model.FileDocument.FileNameOnStorage"
+                type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 </div>

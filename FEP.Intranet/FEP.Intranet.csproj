@@ -819,6 +819,10 @@
     <Content Include="Areas\eLearning\Views\CourseEvents\Learners.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\View.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\Delete.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createPdf.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailPdf.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editPdf.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewPdf.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

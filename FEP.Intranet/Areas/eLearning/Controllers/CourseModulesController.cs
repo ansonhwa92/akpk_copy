@@ -4,6 +4,7 @@ using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string Create = "eLearning/CourseModules/Create";
         public const string GetModule = "eLearning/CourseModules";
         public const string Content = "eLearning/CourseModules/Content";
+        public const string Start = "eLearning/CourseModules/Start";
     }
 
     [Authorize]
@@ -306,6 +308,31 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return null;
+        }
+
+        // Start the module
+        public async Task<ActionResult> Start(int id)
+        {
+
+            //var content = await db.CourseContents.Where(x => x.CourseModuleId == id).OrderBy(x => x.Order).FirstOrDefaultAsync();
+
+            //if (content == null)
+            //    return HttpNotFound();
+
+            var response = await WepApiMethod.SendApiAsync<CourseContent>(HttpVerbs.Get, ModuleApiUrl.Start + $"?id={id}");
+
+            if (response.isSuccess)
+            {
+                return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = response.Data.Id });
+            }
+
+            else
+            {
+                TempData["ErrorMessage"] = "Could not find the next content";
+
+                return RedirectToAction("View", "CourseModules", new { area = "eLearning", @id = id });
+            }
+
         }
     }
 }

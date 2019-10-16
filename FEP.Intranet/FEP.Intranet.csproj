@@ -1243,6 +1243,7 @@
     <Content Include="Views\Notification\List.cshtml" />
     <Content Include="Views\Notification\Details.cshtml" />
     <Content Include="Views\Notification\Delete.cshtml" />
+    <Content Include="Views\Auth\StaffLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

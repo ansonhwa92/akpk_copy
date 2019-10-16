@@ -24,6 +24,23 @@ namespace FEP.Intranet.Models
 
     }
 
+    public class StaffLogInModel
+    {
+        [Required(ErrorMessageResourceName = "ValidRequiredLoginId", ErrorMessageResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldUserName", ResourceType = typeof(Language.Auth))]
+        public string LoginId { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredPassword", ErrorMessageResourceType = typeof(Language.Auth))]
+        [Display(Name = "FieldPassword", ResourceType = typeof(Language.Auth))]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        public string Status { get; set; }
+
+        public string ReturnUrl { get; set; }
+
+    }
+
 
     public class CurrentUserModel
     {

@@ -54,6 +54,12 @@ namespace FEP.Intranet.Controllers
             return View(new LogInModel { ReturnUrl = returnUrl });
         }
 
+        [AllowAnonymous]
+        public ActionResult StaffLogin(string returnUrl)
+        {
+            return View(new StaffLogInModel { ReturnUrl = returnUrl });
+        }
+
         // firus
         [AllowAnonymous]
         public ActionResult LoginAndReturn(string returnurl)
@@ -127,7 +133,7 @@ namespace FEP.Intranet.Controllers
             model.Type = CompanyType.Government;
 
             model = await InitRegisterCompany(model);
-            
+
             return View(model);
         }
 
@@ -149,7 +155,7 @@ namespace FEP.Intranet.Controllers
             var countryResponse = await WepApiMethod.SendApiAsync<List<CountryModel>>(HttpVerbs.Get, $"Administration/Country");
 
             if (countryResponse.isSuccess)
-            {                
+            {
                 model.Countries = new SelectList(countryResponse.Data.Where(c => c.Name != "Malaysia").OrderBy(o => o.Name), "Id", "Name", 0);
                 model.MalaysiaCountryId = countryResponse.Data.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
                 model.CountryCode = countryResponse.Data.Where(c => c.Name == "Malaysia").Select(s => s.CountryCode).FirstOrDefault();
@@ -230,7 +236,7 @@ namespace FEP.Intranet.Controllers
             {
                 var error = JsonConvert.DeserializeObject<Dictionary<string, string>>(passwordResponse.ErrorMessage);
 
-                if(error.ContainsKey("Message"))
+                if (error.ContainsKey("Message"))
                     ModelState.AddModelError("Password", error["Message"]);
             }
 
@@ -241,7 +247,7 @@ namespace FEP.Intranet.Controllers
 
                 if (response.isSuccess)
                 {
-                    
+
                     ParameterListToSend notificationParameter = new ParameterListToSend();
                     notificationParameter.UserFullName = model.Name;
                     notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
@@ -253,11 +259,11 @@ namespace FEP.Intranet.Controllers
                         NotificationCategory = NotificationCategory.Event,
                         ParameterListToSend = notificationParameter,
                         StartNotificationDate = DateTime.Now,
-                        ReceiverId = new List<int> { (int) response.Data.UserId }
+                        ReceiverId = new List<int> { (int)response.Data.UserId }
                     };
 
                     var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
-                    
+
                     TempData["SuccessMessage"] = Language.Auth.AlertRegisterSuccess;
 
                     return RedirectToAction("Login", "Auth", new { area = "" });
@@ -272,13 +278,13 @@ namespace FEP.Intranet.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]        
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RegisterAgency(RegisterAgencyModel model)
         {
             if (model.Type == CompanyType.Government)
             {
-                ModelState.Remove("PassportNo");               
+                ModelState.Remove("PassportNo");
                 ModelState.Remove("PostCodeNonMalaysian");
                 ModelState.Remove("State");
                 ModelState.Remove("CountryId");
@@ -328,7 +334,7 @@ namespace FEP.Intranet.Controllers
             if (icnoResponse.Data)
             {
                 if (model.Type == CompanyType.NonMalaysianCompany)
-                    ModelState.AddModelError("PassportNo", Language.Auth.ValidIsExistPassportNo);                
+                    ModelState.AddModelError("PassportNo", Language.Auth.ValidIsExistPassportNo);
                 else
                     ModelState.AddModelError("ICNo", Language.Auth.ValidIsExistICNo);
             }
@@ -377,6 +383,58 @@ namespace FEP.Intranet.Controllers
             model = await InitRegisterCompany(model);
 
             return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> StaffLogIn(StaffLogInModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await ADMethod.Login(model.LoginId, model.Password))
+                {
+
+                    var resUser = await WepApiMethod.SendApiAsync<DetailsUserModel>(HttpVerbs.Get, $"Administration/User?loginId={model.LoginId}");
+
+                    if (resUser.isSuccess)
+                    {
+                        var user = resUser.Data;
+
+                        if (user != null)
+                        {
+                            SignInUser(
+                                new CurrentUserModel
+                                {
+                                    userid = user.Id,
+                                    usertype = user.UserType.ToString(),
+                                    loginid = user.LoginId,
+                                    name = user.Name,
+                                    email = user.Email,
+                                    isenable = user.IsEnable,
+                                    validfrom = user.ValidFrom,
+                                    validto = user.ValidTo,
+                                    access = user.UserAccesses.Select(s => ((int)s).ToString()).ToList()
+                                }
+                            );
+
+                        }
+
+                        await LogActivity(Modules.Admin, "User Sign In", new { UserId = user.Id, Name = user.Name }, user.Id);
+
+                        return Redirect(GetRedirectUrl(model.ReturnUrl));
+
+                    }
+
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = Language.Auth.AlertLoginFail;
+                }
+            }
+
+            return View(model);
+
         }
 
         [HttpPost]
@@ -552,7 +610,7 @@ namespace FEP.Intranet.Controllers
                     ParameterListToSend notificationParameter = new ParameterListToSend();
                     notificationParameter.UserFullName = response.Data.Name;
                     notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
-                    
+
                     CreateAutoReminder notification = new CreateAutoReminder
                     {
                         NotificationType = NotificationType.ResetPassword,

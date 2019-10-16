@@ -241,16 +241,15 @@ namespace FEP.Intranet
                     
                     client.BaseAddress = new Uri(url);
                     client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     var payload = JsonConvert.SerializeObject(new { ipUsername = userName, ipPassword = password });
 
                     HttpResponseMessage response = null;
-
-
+                    
                     var content = new StringContent(payload, Encoding.UTF8, "application/json");
 
-                    response = await client.PostAsync(requestURI, content);
+                    response = await client.PostAsync(requestURI + $"?ipUserName={userName}&ipPassword={password}", content);
 
 
                     if (response.IsSuccessStatusCode)

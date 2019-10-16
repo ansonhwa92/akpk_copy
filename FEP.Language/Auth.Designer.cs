@@ -448,6 +448,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string FieldUserName {
+            get {
+                return ResourceManager.GetString("FieldUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Street address line 1.
         /// </summary>
         public static string PlaceholderAddress1 {

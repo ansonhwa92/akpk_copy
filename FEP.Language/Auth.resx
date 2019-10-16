@@ -246,6 +246,9 @@
   <data name="FieldStateId" xml:space="preserve">
     <value>State</value>
   </data>
+  <data name="FieldUserName" xml:space="preserve">
+    <value>Username</value>
+  </data>
   <data name="PlaceholderAddress1" xml:space="preserve">
     <value>Street address line 1</value>
   </data>

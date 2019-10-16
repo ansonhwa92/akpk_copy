@@ -184,20 +184,14 @@
         $(document).ready(function () {
             var imgFileName = $('#IntroImageFileName').val();
 
-            console.log(imgFileName);
 
             if ($.trim(imgFileName) == "") {
 
                 var defaultImgUrl = '@(BaseURL)/Content/logo-akpk.svg';
-
-                console.log("null - ", defaultImgUrl);
-
                 $(".introImage").attr('src', defaultImgUrl);
             }
             else {
                 var defaultImgUrl = '@(BaseURL)/File/GetImg?fileName=' + imgFileName;
-
-                console.log("NOT null - ", defaultImgUrl);
                 $(".introImage").attr('src', defaultImgUrl);
             }
 

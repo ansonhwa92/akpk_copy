@@ -95,6 +95,8 @@
             @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.eLearning.CourseCategory.PlaceholderName } })
             @Html.ValidationMessageFor(m => m.Name)
         </div>
+    </div>
+    <div class="row divTd">
         @*<div class="col px-0">
                 @Html.EditorFor(m => m.Message, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.CourseDiscussion.PlaceholderName } })
                 @Html.ValidationMessageFor(m => m.Message)
@@ -103,6 +105,7 @@
                 @Html.EditorFor(m => m.Topic, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.CourseDiscussion.PlaceholderName } })
                 @Html.ValidationMessageFor(m => m.Topic)
             </div>*@
+        <div class="col-1 text-center"></div>
         <div class="col px-0">
             @Html.DropDownListFor(m => m.DiscussionVisibility, Model.DiscussionVisibilities, Language.eLearning.CourseCategory.PlaceholderName, htmlAttributes: new { @class = "custom-select" })
             @Html.ValidationMessageFor(m => m.DiscussionVisibility)
@@ -111,16 +114,12 @@
             @Html.DropDownListFor(m => m.GroupId, Model.Groups, Language.eLearning.CourseCategory.PlaceholderName, htmlAttributes: new { @class = "custom-select" })
             @Html.ValidationMessageFor(m => m.GroupId)
         </div>
-
-
-
-        <div class="col-3 pl-0 text-right">
-            <div class="icon-action">
-                <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">@Language.General.ButtonAdd</button>
-                <button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">@Language.General.ButtonCancel</button>
-            </div>
-        </div>
     </div>
+    <div class="row divTd">
+
+
+    </div>
+
     <div class="row divTd">
         <div class="col-1 text-center"></div>
         <div class="col px-0">
@@ -137,6 +136,15 @@
 
 
 
+    </div>
+
+    <div class="row divTd">
+        <div class="col-3 pl-0 text-right">
+            <div class="icon-action">
+                <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">@Language.General.ButtonAdd</button>
+                <button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">@Language.General.ButtonCancel</button>
+            </div>
+        </div>
     </div>
 }
 @*<form id="fileupload" action="@Url.Action("UploadFiles")" method="POST" enctype="multipart/form-data">

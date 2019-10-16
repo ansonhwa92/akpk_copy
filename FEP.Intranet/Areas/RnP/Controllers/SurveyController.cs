@@ -574,6 +574,95 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
         }
 
+        // Process extend form
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [HasAccess(UserAccess.RnPSurveyPublish)]
+        public async Task<string> Extend(UpdateSurveyExtensionModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/Extend", model);
+
+                if (response.isSuccess)
+                {
+                    string[] resparray = response.Data.Split('|');
+                    string title = resparray[0];
+                    string type = resparray[1];
+                    string refno = resparray[2];
+
+                    // log trail/system success notification/dashboard notification/email/sms upon submission
+                    // log trail/system success/dashboard notification upon saving as draft
+
+                    await LogActivity(Modules.RnP, "Extend Survey: " + title, model);
+
+                    TempData["SuccessMessage"] = "Survey titled " + title + " successfully extended.";
+
+                    //await SendNotification(model.ID, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Cancellation, title, type, refno, "Survey Cancelled", SurveyApprovalStatus.None, false);
+
+                    // dashboard
+
+                    //return RedirectToAction("Index", "Survey", new { area = "RnP" });
+                    return "success";
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Failed to extend Survey.";
+
+                    //return RedirectToAction("Details", "Survey", new { area = "RnP", @id = model.ID });
+                    return "error";
+                }
+            }
+
+            //return View(model);
+            return "error";
+        }
+
+        // Process UNpublishing from details page
+        // GET: RnP/Survey/Unpublish/5
+        [HttpPost]
+        [HasAccess(UserAccess.RnPSurveyPublish)]
+        public async Task<string> Unpublish(int? id)
+        {
+            if (id == null)
+            {
+                //return HttpNotFound();
+                return "error";
+            }
+
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/Unpublish?id={id}");
+
+            if (response.isSuccess)
+            {
+                string[] resparray = response.Data.Split('|');
+                string title = resparray[0];
+                string type = resparray[1];
+                string refno = resparray[2];
+
+                // log trail/system success notification/dashboard notification/email/sms upon submission
+                // log trail/system success/dashboard notification upon saving as draft
+
+                await LogActivity(Modules.RnP, "Unpublish Survey: " + title);
+
+                TempData["SuccessMessage"] = "Survey titled " + title + " unpublished successfully.";
+
+                //await SendNotification(id.Value, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Publication, title, type, refno, "Survey Published", SurveyApprovalStatus.None, false);
+
+                // dashboard
+
+                //return RedirectToAction("Index", "Survey", new { area = "RnP" });
+                return "success";
+            }
+            else
+            {
+                TempData["SuccessMessage"] = "Failed to unpublish Survey.";
+
+                //return RedirectToAction("Details", "Survey", new { area = "RnP", @id = id });
+                return "error";
+            }
+
+        }
+
         // Show view form
         // From here user can do one of the following:
         // 1. Admin can edit the survey if it's not submitted yet (redirection button)
@@ -671,12 +760,20 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 CancelRemark = survey.CancelRemark
             };
 
+            var vmextension = new UpdateSurveyExtensionModel
+            {
+                ID = survey.ID,
+                NewStartDate = survey.StartDate,
+                NewEndDate = survey.EndDate,
+            };
+
             var vmview = new UpdateSurveyViewModel
             {
                 Survey = vmsurvey,
                 Contents = vmcontents,
                 Auto = vmautofields,
-                Cancellation = vmcancellation
+                Cancellation = vmcancellation,
+                Extension = vmextension
             };
 
             var resHis = await WepApiMethod.SendApiAsync<IEnumerable<SurveyApprovalHistoryModel>>(HttpVerbs.Get, $"RnP/Survey/GetHistory?id={id}");

@@ -172,6 +172,7 @@ namespace FEP.Model
         //public virtual Publication Publication { get; set; }
     }
 
+    /*
     [Table("PublicationRefund")]
     public class PublicationRefund
     {
@@ -180,6 +181,7 @@ namespace FEP.Model
         public int PublicationID { get; set; }
         public int UserId { get; set; }
         public string FullName { get; set; }
+        public int BankID { get; set; }
         public string BankAccountNo { get; set; }
         public string ReferenceNo { get; set; }
         public PublicationRefundStatus Status { get; set; }
@@ -188,7 +190,11 @@ namespace FEP.Model
 
         [ForeignKey("PublicationID")]
         public virtual Publication Publication { get; set; }
+
+        [ForeignKey("BankID")]
+        public virtual BankInformation Bank { get; set; }
     }
+    */
 
     public enum PublicationCategories
     {
@@ -300,14 +306,6 @@ namespace FEP.Model
         Hardcopy,
         [Display(Name = "PubFormatBoth", ResourceType = typeof(Language.RnPEnum))]
         Promotion
-    }
-
-    public enum PublicationRefundStatus
-    {
-        [Display(Name = "PubRefundStatusIncomplete", ResourceType = typeof(Language.RnPEnum))]
-        Incomplete,
-        [Display(Name = "PubRefundStatusComplete", ResourceType = typeof(Language.RnPEnum))]
-        Complete
     }
 
     public enum DeliveryStates

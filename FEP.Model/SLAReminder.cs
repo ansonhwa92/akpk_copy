@@ -126,6 +126,11 @@ namespace FEP.Model
         [Display(Name = "Approve Courses")]
         ApproveCourses,
 
+        // payment
+        // guarantee letter - not verified (reg user), not yet uploaded (admin), upload/reupload (admin)
+        // payment - order confirmation (reg user), 
+        // refund (publication) - submit refund request (admin/finance), completed (admin), not completed (admin/finance)
+
         // survey
         [Display(Name = "Submit Survey")]
         SubmitSurvey,
@@ -138,6 +143,11 @@ namespace FEP.Model
         VerifySurvey,
         [Display(Name = "Approve Survey")]
         ApproveSurvey,
+
+        [Display(Name = "Distribute Survey")]           // to respondent
+        DistributeSurvey,
+        [Display(Name = "Submit Survey Response")]      // to admin and respondent
+        AnswerSurvey,
 
         // publication
         [Display(Name = "Submit Publication")]

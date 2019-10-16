@@ -167,7 +167,8 @@ namespace FEP.WebApi.Api.RnP
                     InviteCount = s.InviteCount,
                     SubmitCount = s.SubmitCount,
                     Progress = "",
-                    Status = s.Status
+                    Status = s.Status,
+                    ApprovalLevel = db.SurveyApproval.Where(sa => sa.SurveyID == s.ID && sa.Status == SurveyApprovalStatus.None).OrderByDescending(sa => sa.ApprovalDate).FirstOrDefault().Level
                 }).ToList();
                 //Duration = s.StartDate.ToString("dd/MM/yyyy") + " - " + s.EndDate.ToString("dd/MM/yyyy"),
                 //Progress = s.InviteCount.ToString() + " / " + s.SubmitCount.ToString(),
@@ -819,6 +820,71 @@ namespace FEP.WebApi.Api.RnP
             if (survey != null)
             {
                 survey.Status = SurveyStatus.Published;
+
+                db.Entry(survey).State = EntityState.Modified;
+
+                db.SaveChanges();
+
+                //return publication.Title;
+                if (survey.Type == SurveyType.Public)
+                {
+                    return survey.Title + "|" + "Public Mass" + "|" + survey.RefNo;
+                }
+                else
+                {
+                    return survey.Title + "|" + "Targeted Groups" + "|" + survey.RefNo;
+                }
+            }
+            return "";
+        }
+
+        // Function to extend a survey start and/or end date
+        // POST: api/RnP/Survey/Extend
+        [Route("api/RnP/Survey/Extend")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public string Extend([FromBody] UpdateSurveyExtensionModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var survey = db.Survey.Where(p => p.ID == model.ID).FirstOrDefault();
+
+                if (survey != null)
+                {
+                    survey.StartDate = model.NewStartDate;
+                    survey.EndDate = model.NewEndDate;
+
+                    db.Entry(survey).State = EntityState.Modified;
+
+                    db.SaveChanges();
+
+                    //return survey.Title;
+                    if (survey.Type == SurveyType.Public)
+                    {
+                        return survey.Title + "|" + "Public Mass" + "|" + survey.RefNo;
+                    }
+                    else
+                    {
+                        return survey.Title + "|" + "Targeted Groups" + "|" + survey.RefNo;
+                    }
+                }
+            }
+            return "";
+        }
+
+        // Function to UNpublish a survey from details page.
+        // POST: api/RnP/Survey/Unpublish
+        [Route("api/RnP/Survey/Unpublish")]
+        [HttpPost]
+        public string Unpublish(int id)
+        {
+
+            var survey = db.Survey.Where(p => p.ID == id).FirstOrDefault();
+
+            if (survey != null)
+            {
+                survey.Status = SurveyStatus.Unpublished;
 
                 db.Entry(survey).State = EntityState.Modified;
 

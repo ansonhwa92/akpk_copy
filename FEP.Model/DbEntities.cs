@@ -68,10 +68,11 @@ namespace FEP.Model
         //web api
         public DbSet<Client> Client { get; set; }
 
-        //payment
-        public DbSet<PurchaseOrder> PurchaseOrder { get; set; }
-
-        public DbSet<PurchaseOrderItem> PurchaseOrderItem { get; set; }
+		//payment
+		public DbSet<PurchaseOrder> PurchaseOrder { get; set; }
+		public DbSet<PurchaseOrderItem> PurchaseOrderItem { get; set; }
+        public DbSet<BankInformation> BankInformation { get; set; }
+        public DbSet<Refund> Refund { get; set; }
 
         //logs
         public DbSet<UserLog> UserLog { get; set; }
@@ -115,7 +116,7 @@ namespace FEP.Model
         public DbSet<PublicationReview> PublicationReview { get; set; }
         public DbSet<PublicationDelivery> PublicationDelivery { get; set; }
         public DbSet<PublicationPurchaseItem> PublicationPurchaseItem { get; set; }
-        public DbSet<PublicationRefund> PublicationRefund { get; set; }
+        public DbSet<PromotionCode> PromotionCode { get; set; }
 
         //research
         public DbSet<Survey> Survey { get; set; }

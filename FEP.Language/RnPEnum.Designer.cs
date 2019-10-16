@@ -232,24 +232,6 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Complete.
-        /// </summary>
-        public static string PubRefundStatusComplete {
-            get {
-                return ResourceManager.GetString("PubRefundStatusComplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Incomplete.
-        /// </summary>
-        public static string PubRefundStatusIncomplete {
-            get {
-                return ResourceManager.GetString("PubRefundStatusIncomplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Approved.
         /// </summary>
         public static string PubStatusApproved {

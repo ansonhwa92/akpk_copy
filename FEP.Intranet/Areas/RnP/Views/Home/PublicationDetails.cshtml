@@ -292,7 +292,18 @@
                             <li><i class="la la-calendar font-icon color-secondary" style="font-size: 19px;"></i>@Model.Year</li>
                             <li><i class="la la-language font-icon color-secondary" style="font-size: 17px;"></i>@Model.Language</li>
                             <li><i class="la la-barcode font-icon color-secondary" style="font-size: 17px;"></i>@Model.ISBN</li>
-                            <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Digital/Hardcover</li>
+                            @if ((Model.HDcopy) || ((Model.Digitalcopy) && (Model.Hardcopy)))
+                            {
+                                <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Digital/Hard copy</li>
+                            }
+                            else if (Model.Hardcopy)
+                            {
+                                <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Hard copy</li>
+                            }
+                            else if (Model.Digitalcopy)
+                            {
+                                <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Digital</li>
+                            }
                         </ul>
                     </div>
                     <!-- Buy Courses -->

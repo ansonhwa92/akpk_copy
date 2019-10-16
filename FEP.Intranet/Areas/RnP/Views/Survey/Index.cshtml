@@ -203,7 +203,18 @@
                                 return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
                             }
                             else if (row.Status == 3) {
-                                return "<span class='color-yellow font-weight-bold'>Pending Approval</span>";
+                                if (row.ApprovalLevel == 1) {
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 1</span>";
+                                }
+                                else if (row.ApprovalLevel == 2) {
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 2</span>";
+                                }
+                                else if (row.ApprovalLevel == 3) {
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 3</span>";
+                                }
+                                else {
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval</span>";
+                                }
                             }
                             else if (row.Status == 4) {
                                 return "<span class='color-red font-weight-bold'>Pending Amendment</span>";

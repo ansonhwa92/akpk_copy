@@ -10,8 +10,7 @@
                 <li><a href="@Url.Action("Index", "Home", new { area = "RnP" })" class="nav-item">Research & Publications</a></li>
                 <li><a href="@Url.Action("Index", "Home", new { area = "eLearning" })" class="nav-item">e-Learning</a></li>
                 <li><a href="#" class="nav-item">Online Booking System</a></li>
-                <li><a href="@Url.Action("Index", "Publication", new { area = "RnP" })" class="nav-item">Publication</a></li>
-                <li><a href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })" class="nav-item">Public Event</a></li>
+                <li><a href="@Url.Action("Items", "Cart", new { area = "Commerce" })" class="nav-item">Cart</a></li>
             </ul>
             <div class="other-menu-wrap">
                 <div class="wrapper-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -30,8 +29,9 @@
                 </div>
             </div>
             <div class="login-wrap">
-                <a href="@Url.Action("LogOut", "Auth", new { area = "" })" class="btn btn-primary text-white">Sign out</a>   
+                <a href="@Url.Action("LogOut", "Auth", new { area = "" })" class="btn btn-primary text-white">Sign out</a>
                 <a href="@Url.Action("Profile", "Home", new { area = "" })" class="btn btn-primary text-white">Profile</a>
+                <a href="@Url.Action("PurchaseHistory", "Cart", new { area = "Commerce" })" class="btn btn-primary text-white">Purchase History</a>
             </div>
         </nav>
         <!-- #nav-menu-container -->

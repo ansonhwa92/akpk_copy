@@ -146,21 +146,27 @@ namespace FEP.Model
 		[Display(Name = "Approve Survey Creation Final")]
 		Approve_Survey_Creation_Final,
 
-		//Publication
-		[Display(Name = "Submit Publication Creation")]
-		Submit_Publication_Creation,
-		[Display(Name = "Submit Publication Cancellation")]
-		Submit_Publication_Cancellation,
-		[Display(Name = "Submit Publication Publication")]
-		Submit_Publication_Publication,
-		[Display(Name = "Submit Publication Modification")]
-		Submit_Publication_Modification,
-		[Display(Name = "Submit Publication Withdrawal")]
-		Submit_Publication_Withdrawal,
-		[Display(Name = "Submit Publication Modification Cancellation")]
-		Submit_Publication_Modification_Cancellation,
-		[Display(Name = "Submit Publication Withdrawal Cancellation")]
-		Submit_Publication_Withdrawal_Cancellation,
+        //Survey Response
+        [Display(Name = "Submit Survey Distribution")]
+        Submit_Survey_Distribution,
+        [Display(Name = "Submit Survey Response")]
+        Submit_Survey_Response,
+
+        //Publication
+        [Display(Name = "Submit Publication Creation")]
+        Submit_Publication_Creation,
+        [Display(Name = "Submit Publication Cancellation")]
+        Submit_Publication_Cancellation,
+        [Display(Name = "Submit Publication Publication")]
+        Submit_Publication_Publication,
+        [Display(Name = "Submit Publication Modification")]
+        Submit_Publication_Modification,
+        [Display(Name = "Submit Publication Withdrawal")]
+        Submit_Publication_Withdrawal,
+        [Display(Name = "Submit Publication Modification Cancellation")]
+        Submit_Publication_Modification_Cancellation,
+        [Display(Name = "Submit Publication Withdrawal Cancellation")]
+        Submit_Publication_Withdrawal_Cancellation,
 
 		//VerifyPublication
 		[Display(Name = "Verify Publication Creation")]

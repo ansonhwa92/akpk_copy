@@ -907,7 +907,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 CreatorId = pubapproval.Pub.CreatorId,
                 RefNo = pubapproval.Pub.RefNo,
                 Status = pubapproval.Pub.Status,
-                DmsPath = pubapproval.Pub.DmsPath
+                DmsPath = pubapproval.Pub.DmsPath,
+                CreatorName = pubapproval.Pub.CreatorName
             };
 
             var papproval = new ReturnUpdatePublicationApprovalModel
@@ -1362,6 +1363,52 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             return View(publication);
+        }
+
+        // Refunds
+
+        // GET: RnP/Publication/RefundRequest
+        [HttpGet]
+        public async Task<ActionResult> RefundRequest()
+        {
+            var resBank = await WepApiMethod.SendApiAsync<List<BankInformationModel>>(HttpVerbs.Get, $"Commerce/Cart/GetBanks");
+
+            if (!resBank.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Banks = resBank.Data;
+
+            return View();
+        }
+
+        // Update refund status to approved, then refresh list
+        // POST: RnP/Publication/ApproveRefund
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> ApproveRefund(UpdateRefundStatusModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Commerce/Cart/ApproveRefund", model);
+
+                if (!response.isSuccess)
+                {
+                    return "error";
+                }
+
+                if (response.Data == true)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+
+            return "error";
         }
 
         // Private functions

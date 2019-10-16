@@ -882,6 +882,12 @@
     <Content Include="Areas\eEvent\Views\EventAgenda\_AttachmentDetails.cshtml" />
     <Content Include="Areas\eEvent\Views\EventSpeaker\_Attachment.cshtml" />
     <Content Include="Areas\eEvent\Views\EventSpeaker\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\Items.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\Review.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\EditDelivery.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\PaymentMethod.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\PurchaseHistory.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\RefundRequest.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1387,7 +1393,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administrator\Models\" />
     <Folder Include="Areas\Commerce\Models\" />
-    <Folder Include="Areas\Commerce\Views\Cart\" />
     <Folder Include="Areas\Commerce\Views\Shared\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />

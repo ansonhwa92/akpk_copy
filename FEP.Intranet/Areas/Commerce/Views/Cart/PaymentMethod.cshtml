@@ -1,0 +1,440 @@
+﻿@model FEP.WebApiModel.RnP.PurchaseOrderFullModel
+
+@{
+    ViewBag.Title = "Select Payment Method";
+    Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
+}
+
+@section Nav{
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+            </ol>
+        </nav>
+    </div>
+    <h1 class="page-title text-white">Shopping Cart</h1>
+    <div class="header-text">&nbsp;</div>
+}
+
+@{
+    int icount = 0;
+    float psubtotal = 0;
+    float esubtotal = 0;
+    float csubtotal = 0;
+    float isubtotal = 0;
+    float pshippingfee = 0;
+    float itax = 0;
+    float itotal = 0;
+    float pamt = 0;
+    float eamt = 0;
+    float camt = 0;
+}
+@foreach (FEP.WebApiModel.RnP.PurchaseOrderItemModel item in Model.Publications)
+{
+    icount++;
+    pamt = item.Price * float.Parse(item.Quantity.ToString());
+    psubtotal = psubtotal + pamt;
+    isubtotal = isubtotal + pamt;
+    pshippingfee = 18;
+}
+@foreach (FEP.WebApiModel.RnP.PurchaseOrderItemModel item in Model.Events)
+{
+    icount++;
+    eamt = item.Price * float.Parse(item.Quantity.ToString());
+    esubtotal = esubtotal + eamt;
+    isubtotal = isubtotal + eamt;
+}
+@foreach (FEP.WebApiModel.RnP.PurchaseOrderItemModel item in Model.Courses)
+{
+    icount++;
+    camt = item.Price * float.Parse(item.Quantity.ToString());
+    csubtotal = csubtotal + camt;
+    isubtotal = isubtotal + camt;
+}
+@{
+    itax = (isubtotal / 100) * 0;
+    itotal = isubtotal + pshippingfee + itax;
+    itotal = itotal - ViewBag.Discount;
+}
+
+<div class="content-container">
+    <div class="container">
+        <div class="row">
+            <!-- column content left -->
+            <div class="col-lg-9">
+                <div class="col-content">
+                    <h4 class="color-darkblue">Select Payment Method</h4>
+                    <!-- Start Tabbing Payment Method -->
+                    <div class="custom-tab mb-4">
+                        <ul class="nav nav-line">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#onlinebanking" data-toggle="tab">Online Banking</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#ccordebit" data-toggle="tab">Credit Card /Debit</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#paypal" data-toggle="tab">Paypal</a>
+                            </li>
+                            @if (CurrentUser.UserType == UserType.Company)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#offlinepayment" data-toggle="tab">Offline Payment</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="tab-content small">
+                        <!-- Online Banking -->
+                        <div class="tab-pane active" id="onlinebanking">
+                            <p class="small mb-4">You will be re-directed to the bank website for payment.</p>
+                            <div class="row">
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="https://www.maybank2u.com.my" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-m2u.png"></div>
+                                            <h6 class="color-darkblue mb-0">Maybank</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-cimb.png"></div>
+                                            <h6 class="color-darkblue mb-0">CIMB Bank</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-public-bank.png"></div>
+                                            <h6 class="color-darkblue mb-0">Public Bank</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-rhb.png"></div>
+                                            <h6 class="color-darkblue mb-0">RHB Bank</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-hong-leong.png"></div>
+                                            <h6 class="color-darkblue mb-0">Hong Leong</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-ambank.png"></div>
+                                            <h6 class="color-darkblue mb-0">Ambank</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-affin.png"></div>
+                                            <h6 class="color-darkblue mb-0">Affin Bank</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-alliance.png"></div>
+                                            <h6 class="color-darkblue mb-0">Alliance Bank</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-bank-islam.png"></div>
+                                            <h6 class="color-darkblue mb-0">Bank Islam</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-muamalat.png"></div>
+                                            <h6 class="color-darkblue mb-0">Bank Muamalat</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-rakyat.png"></div>
+                                            <h6 class="color-darkblue mb-0">Bank Rakyat</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-bsn.png"></div>
+                                            <h6 class="color-darkblue mb-0">BSN</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-hsbc.png"></div>
+                                            <h6 class="color-darkblue mb-0">HSBC Bank</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-standard-chartered.png"></div>
+                                            <h6 class="color-darkblue mb-0">Standard Chartered</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-uob.png"></div>
+                                            <h6 class="color-darkblue mb-0">UOB Bank</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4">
+                                    <div class="box-contain">
+                                        <a href="#" target="_blank"></a>
+                                        <div class="card py-4 px-2 text-center">
+                                            <div class="mb-3"><img src="~/dist/assets/images/banking/logo-m2u.png"></div>
+                                            <h6 class="color-darkblue mb-0">Maybank2E</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  Action Button -->
+                            <div class="border-top py-3 mt-5">
+                                <a class="btn btn-default font-weight-normal mr-2" href="#">Back</a>
+                                <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#">Pay Now</a>
+                            </div>
+                        </div>
+                        <!-- Card Credit -->
+                        <div class="tab-pane" id="ccordebit">
+                            <div class="form-container p-0">
+                                <div class="row">
+                                    <div class="col-lg-12 form-group">
+                                        <label>Debit / Credit Card Number</label>
+                                        <input type="text" name="" class="form-control" placeholder="Card Number">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-7 form-group">
+                                        <label>Month</label>
+                                        <select class="select2" name="month" style="width: 100%;" data-placeholder="Month">
+                                            <option></option>
+                                            <option value="value1">January</option>
+                                            <option value="value2">February</option>
+                                            <option value="value3">March</option>
+                                            <option value="value4">April</option>
+                                            <option value="value5">May</option>
+                                            <option value="value6">June</option>
+                                            <option value="value7">July</option>
+                                            <option value="value8">August</option>
+                                            <option value="value9">September</option>
+                                            <option value="value10">October</option>
+                                            <option value="value11">November</option>
+                                            <option value="value12">December</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-5 form-group">
+                                        <label>Year</label>
+                                        <select class="select2" name="year" style="width: 100%;" data-placeholder="Year">
+                                            <option></option>
+                                            <option value="value1">2019</option>
+                                            <option value="value2">2020</option>
+                                            <option value="value3">2021</option>
+                                            <option value="value4">2022</option>
+                                            <option value="value5">2023</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5 form-group">
+                                        <label>Security Code (CVV)</label>
+                                        <input type="text" name="" class="form-control" placeholder="CVV">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="custom-control custom-checkbox">
+                                        <div class="form-group col-lg-12">
+                                            <input type="checkbox" class="custom-control-input" id="savethiscard">
+                                            <label class="custom-control-label" for="savethiscard">Save this card for easier reloads in future.</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  Action Button -->
+                            <div class="border-top py-3 mt-5">
+                                <a class="btn btn-default font-weight-normal mr-2" href="#">Back</a>
+                                <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#">Pay Now</a>
+                            </div>
+                        </div>
+                        <!-- Paypal -->
+                        <div class="tab-pane" id="paypal">
+                            <p class="small mb-4">You will be re-directed to the bank website for payment.</p>
+                            <div><a href="#"><img src="~/dist/assets/images/banking/logo-paypal.png"></a></div>
+                            <!--  Action Button -->
+                            <div class="border-top py-3 mt-5">
+                                <a class="btn btn-default font-weight-normal mr-2" href="#">Back</a>
+                                <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#">Pay Now</a>
+                            </div>
+                        </div>
+                        <!-- Offline Payment -->
+                        <div class="tab-pane" id="offlinepayment">
+                            <p class="small mb-4">Use Internet Banking or ATM to transfer the payment amount to either one of the following AKPK's accounts:</p>
+                            <div class="bg-main p-3 mb-2">
+                                <div class="media align-items-top">
+                                    <div class="media-left"><img src="~/dist/assets/images/banking/logo-maybank-offline.png"></div>
+                                    <div class="media-body">
+                                        <h6 class="color-darkblue mb-2">Maybank</h6>
+                                        <div> <span class="color-grey2">Beneficiary Name:</span> <span>Agensi Kaunseling & Pengurusan Kredit</span></div>
+                                        <div> <span class="color-grey2">Beneficiary Account No:</span> <span>514416516012</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-main p-3 mb-2">
+                                <div class="media align-items-top">
+                                    <div class="media-left"><img src="~/dist/assets/images/banking/logo-cimb-offline.png"></div>
+                                    <div class="media-body">
+                                        <h6 class="color-darkblue mb-2">CIMB</h6>
+                                        <div> <span class="color-grey2">Beneficiary Name:</span> <span>Agensi Kaunseling & Pengurusan Kredit</span></div>
+                                        <div> <span class="color-grey2">Beneficiary Account No:</span> <span>8004506014</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="small py-4">Please upload picture of Internet Banking confirmation page / ATM receipt by <span class="font-weight-bolder">Friday, 20/09/2019</span></p>
+                            <div class="row">
+                                <div class="form-group col-lg-8">
+                                    <label>Upload Receipt</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="file" id="inputfile">
+                                        <label class="custom-file-label" for="customFile">No file choosen</label>
+                                    </div>
+                                    <div id="fileList"></div>
+                                </div>
+                            </div>
+                            <!--  Action Button -->
+                            <div class="border-top py-3 mt-5">
+                                <a class="btn btn-default font-weight-normal mr-2" href="#">Back</a>
+                                <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#">Submit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end column content left -->
+            <!-- column content right -->
+            <div class="col-lg-3">
+                <div class="right-sidebar mt-md-0 mt-5">
+                    <div class="lead color-darkblue mb-3 font-weight-bolder">Order Summary</div>
+                    <!--  Shipping Address -->
+                    <div class="card">
+                        <div class="p-3">
+                            <div class="d-flex align-items-center mb-3">
+                                <h6 class="color-darkblue mb-0 mr-auto">Shipping Address</h6>
+                            </div>
+                            <div class="d-flex mb-2 xs-small">
+                                <span><i class="la la-map-marker color-secondary font-icon" style="font-size: 19px;"></i></span>
+                                <span>
+                                    <span class="font-weight-bolder">@ViewBag.FirstName @ViewBag.LastName</span><br />
+                                    @ViewBag.Address1,<br />
+                                    @ViewBag.Address2, <br />
+                                    @ViewBag.Postcode @ViewBag.City, @ViewBag.State
+                                </span>
+                            </div>
+                            <div class="mb-2 d-flex xs-small"><i class="la la-phone font-icon color-secondary" style="font-size: 19px;"></i>@ViewBag.PhoneNumber</div>
+                        </div>
+                    </div>
+                    <!--  End Shipping Address -->
+                    <div class="card">
+                        <div class="p-3">
+                            <div class="media xs-small mb-2">
+                                <div class="media-body color-grey2">
+                                    Subtotal (@icount.ToString() items)
+                                </div>
+                                <div class="media-right font-weight-bolder">RM @isubtotal.ToString("0.00")</div>
+                            </div>
+                            <div class="media xs-small mb-2">
+                                <div class="media-body color-grey2">
+                                    Shipping Fee <i class="la la-question-circle color-red" style="font-size: 17px;"></i>
+                                </div>
+                                <div class="media-right font-weight-bolder">RM @pshippingfee.ToString("0.00")</div>
+                            </div>
+                            <div class="media xs-small mb-2">
+                                <div class="media-body color-grey2">Tax 0%</div>
+                                <div class="media-right font-weight-bolder">RM @itax.ToString("0.00")</div>
+                            </div>
+                            <div class="media xs-small">
+                                <div class="media-body color-grey2">-Discount (<span style="text-transform: uppercase; font-weight: bold;">@Model.Cart.DiscountCode)</span></div>
+                                @if (ViewBag.PromoExpired)
+                                {
+                                    <div class="media-right font-weight-bolder color-red">Code Expired</div>
+                                }
+                                else
+                                {
+                                    <div class="media-right font-weight-bolder color-green">RM @ViewBag.Discount.ToString("0.00")</div>
+                                }
+                            </div>
+                        </div>
+                        <!-- Total -->
+                        <div class="border-top">
+                            <div class="media small p-3">
+                                <div class="media-body font-weight-bolder">Order Total</div>
+                                <div class="media-right font-weight-bolder color-red">RM @itotal.ToString("0.00")</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Button -->
+                    <div><a href="@Url.Action("TestPay", "Cart", new { area = "Commerce", id = Model.Cart.Id })" class="btn btn-secondary btn-block">Pay (Refund Test)</a></div>
+                </div>
+            </div>
+            <!-- end column content right -->
+        </div>
+    </div>
+    <!-- Wrapper -->
+</div>
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //$('#btnProceedCheckout').click(function () {
+            //    alert("Checking Out!");
+            //});
+        });
+    </script>
+}

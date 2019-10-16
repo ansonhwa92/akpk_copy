@@ -1,0 +1,113 @@
+﻿@model FEP.WebApiModel.RnP.PublicationDeliveryModel
+
+@{
+    ViewBag.Title = "Edit Delivery Address";
+    Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
+}
+
+@section Nav{
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+            </ol>
+        </nav>
+    </div>
+    <h1 class="page-title text-white">Edit Delivery Address</h1>
+    <div class="header-text">&nbsp;</div>
+}
+
+<div class="content-container">
+    <div class="container">
+        <div class="row">
+            <!-- column content left -->
+            <div class="col-lg-9">
+                <div class="col-content">
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "myform", id = "myform" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <h4 class="color-darkblue">Shipping Address <span class="text-danger">*</span></h4>
+                        <div class="form-container p-0">
+                            <div class="row">
+                                <div class="col-lg-6 form-group">
+                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @placeholder = "First Name" } })
+                                    @*Html.ValidationMessageFor(model => model.Delivery.FirstName, "", new { @class = "text-danger" })*@
+                                </div>
+                                <div class="col-lg-6 form-group">
+                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Last Name" } })
+                                    @*Html.ValidationMessageFor(model => model.Delivery.LastName, "", new { @class = "text-danger" })*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 form-group">
+                                    @Html.EditorFor(model => model.Address1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
+                                    @*Html.ValidationMessageFor(model => model.Delivery.Address1, "", new { @class = "text-danger" })*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 form-group">
+                                    @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 2" } })
+                                    @*Html.ValidationMessageFor(model => model.Delivery.Address2, "", new { @class = "text-danger" })*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 form-group">
+                                    @Html.EditorFor(model => model.Postcode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Postcode" } })
+                                    @*Html.ValidationMessageFor(model => model.Delivery.Postcode, "", new { @class = "text-danger" })*@
+                                </div>
+                                <div class="col-lg-6 form-group">
+                                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
+                                    @*Html.ValidationMessageFor(model => model.Delivery.City, "", new { @class = "text-danger" })*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 form-group">
+                                    @Html.EnumDropDownListFor(model => model.State, "Select State", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-lg-12">
+                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone Number" } })
+                                    @*Html.ValidationMessageFor(model => model.Delivery.PhoneNumber, "", new { @class = "text-danger" })*@
+                                </div>
+                            </div>
+                            @*<div class="row">
+                                    <div class="custom-control custom-checkbox">
+                                        <div class="form-group col-lg-12">
+                                            <input type="checkbox" class="custom-control-input" id="savethisinformation">
+                                            <label class="custom-control-label" for="savethisinformation">Save this information for next time</label>
+                                        </div>
+                                    </div>
+                                </div>*@
+                        </div>
+                        <!-- Action Button -->
+                        <div class="border-top py-3 mt-5">
+                            @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+                            <a class="btn btn-default font-weight-normal mr-2" href="@Url.Action("Review", "Cart", new { area = "Commerce" })">Back</a>
+                            <button type="submit" class="btn btn-secondary" id="btnUpdateAddress">Save Address</button>
+                        </div>
+                    }
+                </div>
+            </div>
+            <!-- end column content left -->
+        </div>
+    </div>
+    <!-- Wrapper -->
+</div>
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //$('#btnBackToBrowse').click(function (event) {
+            //    var url = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })';
+            //    window.location = url;
+            //});
+        });
+    </script>
+}
+

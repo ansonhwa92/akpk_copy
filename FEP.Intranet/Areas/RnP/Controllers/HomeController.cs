@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Threading.Tasks;
-//using FEP.Model;
+using FEP.Model;
 using FEP.WebApiModel.RnP;
 
 
@@ -141,7 +141,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             ViewBag.PubYear = publication.Year;
             ViewBag.PubLanguage = publication.Language;
             ViewBag.PubISBN = publication.ISBN ;
-            //ViewBag.PubFormats = publication.Hardcopy;
+            ViewBag.PubHardcopy = publication.Hardcopy;
+            ViewBag.PubDigitalcopy = publication.Digitalcopy;
+            ViewBag.PubHDcopy = publication.HDcopy;
 
             ViewBag.PubDPrice = publication.DPrice;
             ViewBag.PubHPrice = publication.HPrice;
@@ -152,57 +154,27 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             ViewBag.HBil = hbil;
             ViewBag.PBuy = pbuy;
 
-            var pitems = new List<PublicationPurchaseItemModel> { };
+            //var pitems = new List<PublicationPurchaseItemModel> { };
 
-            if (dbuy == "yes")
+            if (dbuy == "true")
             {
                 ViewBag.DAmt = publication.DPrice;
-                var item1 = new PublicationPurchaseItemModel
-                {
-                    UserId = CurrentUser.UserId.Value,
-                    PurchaseOrderId = 0,
-                    PublicationID = publication.ID,
-                    Format = Model.PublicationFormats.Digital,
-                    Price = publication.DPrice,
-                    Quantity = 1
-                };
-                pitems.Add(item1);
             }
             else
             {
                 ViewBag.DAmt = 0;
             }
-            if (hbuy == "yes")
+            if (hbuy == "true")
             {
                 ViewBag.HAmt = (publication.HPrice * int.Parse(hbil));
-                var item2 = new PublicationPurchaseItemModel
-                {
-                    UserId = CurrentUser.UserId.Value,
-                    PurchaseOrderId = 0,
-                    PublicationID = publication.ID,
-                    Format = Model.PublicationFormats.Hardcopy,
-                    Price = publication.HPrice,
-                    Quantity = int.Parse(hbil)
-                };
-                pitems.Add(item2);
             }
             else
             {
                 ViewBag.HAmt = 0;
             }
-            if (pbuy == "yes")
+            if (pbuy == "true")
             {
                 ViewBag.PAmt = publication.HDPrice;
-                var item3 = new PublicationPurchaseItemModel
-                {
-                    UserId = CurrentUser.UserId.Value,
-                    PurchaseOrderId = 0,
-                    PublicationID = publication.ID,
-                    Format = Model.PublicationFormats.Promotion,
-                    Price = publication.HDPrice,
-                    Quantity = 1
-                };
-                pitems.Add(item3);
             }
             else
             {
@@ -225,13 +197,186 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 return HttpNotFound();
             }
 
+            var purchase = new PurchasePublicationModel
+            {
+                PublicationID = publication.ID,
+                FormatDigital = bool.Parse(dbuy),
+                FormatHardcopy = bool.Parse(hbuy),
+                FormatPromotion = bool.Parse(pbuy),
+                HardcopyQuantity = int.Parse(hbil),
+                DeliveryID = pdelivery.ID,
+                UserId = CurrentUser.UserId.Value,
+                FirstName = pdelivery.FirstName,
+                LastName = pdelivery.LastName,
+                Address1 = pdelivery.Address1,
+                Address2 = pdelivery.Address2,
+                Postcode = pdelivery.Postcode,
+                City = pdelivery.City,
+                State = pdelivery.State,
+                PhoneNumber = pdelivery.PhoneNumber
+            };
+
+            /*
             var purchase = new UpdatePublicationDeliveryModel
             {
                 Items = pitems,
                 Delivery = pdelivery
             };
+            */
 
             return View(purchase);
+        }
+
+        // Process publication purchasing (add to cart too)
+        // POST: RnP/Home/AddToCart
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> AddToCart(PurchasePublicationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // get publication info (use fresh price)
+                var resPub = await WepApiMethod.SendApiAsync<ReturnPublicationModel>(HttpVerbs.Get, $"RnP/Publication?id={model.PublicationID}");
+
+                if (!resPub.isSuccess)
+                {
+                    return "notfound";
+                }
+
+                var publication = resPub.Data;
+
+                if (publication == null)
+                {
+                    return "notfound";
+                }
+
+                // create cart
+                var order = new PurchaseOrderModel
+                {
+                    UserId = CurrentUser.UserId.Value,
+                    DiscountCode = "",
+                    ProformaInvoiceNo = "",
+                    PaymentMode = PaymentModes.Online,
+                    CreatedDate = DateTime.Now,
+                    TotalPrice = 0,
+                    Status = CheckoutStatus.Shopping
+                };
+
+                var response_cart = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"Commerce/Cart/Create", order);
+
+                if (!response_cart.isSuccess)
+                {
+                    return "notfound";
+                }
+
+                var cartid = response_cart.Data;
+
+                var addsuccess = true;
+
+                // add items to cart
+                if (model.FormatDigital)
+                {
+                    var ditem1 = new PublicationPurchaseItemModel
+                    {
+                        PurchaseOrderId = cartid,
+                        PublicationID = publication.ID,
+                        UserId = CurrentUser.UserId.Value,
+                        Format = PublicationFormats.Digital,
+                        Price = publication.DPrice,
+                        Quantity = 1
+                    };
+                    var response_digital = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"RnP/Publication/AddOrderItem", ditem1);
+
+                    var citem1 = new PurchaseOrderItemModel
+                    {
+                        PurchaseOrderId = cartid,
+                        ItemId = publication.ID,
+                        Description = publication.Title + " (Digital)",
+                        PurchaseType = PurchaseType.Publication,
+                        Price = publication.DPrice,
+                        Quantity = 1
+                    };
+                    var cart_digital = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Commerce/Cart/AddItem", citem1);
+                }
+
+                if (model.FormatHardcopy)
+                {
+                    var ditem2 = new PublicationPurchaseItemModel
+                    {
+                        PurchaseOrderId = cartid,
+                        PublicationID = publication.ID,
+                        UserId = CurrentUser.UserId.Value,
+                        Format = PublicationFormats.Hardcopy,
+                        Price = publication.HPrice,
+                        Quantity = model.HardcopyQuantity
+                    };
+                    var response_hardcopy = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"RnP/Publication/AddOrderItem", ditem2);
+
+                    var citem2 = new PurchaseOrderItemModel
+                    {
+                        PurchaseOrderId = cartid,
+                        ItemId = publication.ID,
+                        Description = publication.Title + " (Hard copy)",
+                        PurchaseType = PurchaseType.Publication,
+                        Price = publication.HPrice,
+                        Quantity = model.HardcopyQuantity
+                    };
+                    var cart_hardcopy = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Commerce/Cart/AddItem", citem2);
+                }
+
+                if (model.FormatPromotion)
+                {
+                    var ditem3 = new PublicationPurchaseItemModel
+                    {
+                        PurchaseOrderId = cartid,
+                        PublicationID = publication.ID,
+                        UserId = CurrentUser.UserId.Value,
+                        Format = PublicationFormats.Promotion,
+                        Price = publication.HDPrice,
+                        Quantity = 1
+                    };
+                    var response_promotion = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"RnP/Publication/AddOrderItem", ditem3);
+
+                    var citem3 = new PurchaseOrderItemModel
+                    {
+                        PurchaseOrderId = cartid,
+                        ItemId = publication.ID,
+                        Description = publication.Title + " (Promotion 1+1)",
+                        PurchaseType = PurchaseType.Publication,
+                        Price = publication.HDPrice,
+                        Quantity = 1
+                    };
+                    var cart_promotion = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Commerce/Cart/AddItem", citem3);
+                }
+
+                // delivery address
+                var deliverymodel = new PublicationDeliveryModel
+                {
+                    UserId = CurrentUser.UserId.Value,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Address1 = model.Address1,
+                    Address2 = model.Address2,
+                    Postcode = model.Postcode,
+                    City = model.City,
+                    State = model.State,
+                    PhoneNumber = model.PhoneNumber
+                };
+
+                var response_delivery = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"RnP/Publication/UpdateDeliveryInfo", deliverymodel);
+
+                if (addsuccess)
+                {
+                    await LogActivity(Model.Modules.RnP, "Purchase Publication", publication);
+
+                    return "success";
+                }
+                else
+                {
+                    return "failure";
+                }
+            }
+            return "invalid";
         }
 
         // Browse surveys
@@ -371,7 +516,6 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SubmitSurvey(UpdateSurveyResponseModel model)
         {
-
             if (ModelState.IsValid)
             {
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/SubmitAnswers", model);

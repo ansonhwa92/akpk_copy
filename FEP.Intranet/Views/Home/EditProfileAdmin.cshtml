@@ -7,25 +7,7 @@
 
 @section ContentScript{
 
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-
-            $('input[type=radio][name=IsMalaysian]').change(function () {
-                if (this.value == 'true') {
-                    $(".malaysian").removeClass("d-none");
-                    $(".non-malaysian").addClass("d-none");
-                }
-                else if (this.value == 'false') {
-                    $(".non-malaysian").removeClass("d-none");
-                    $(".malaysian").addClass("d-none");
-                }
-            });
-
-
-        });
-
-    </script>
+    
 
 }
 
@@ -70,6 +52,9 @@
                             <a href="@Url.Action("EditProfile", "Home", new { area = "" })" class="active nav-link">Update Profile</a>
                         </li>
                         <li class="nav-item">
+                            <a href="@Url.Action("ChangeEmail", "Home", new { area = "" })" class="nav-link">Change Email</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="@Url.Action("ChangePassword", "Home", new { area = "" })" class="nav-link">Change Password</a>
                         </li>
                     </ul>
@@ -90,21 +75,19 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.Name, htmlAttributes: new { @class = "form-label" })
-                            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.User.PlaceholderName } })
+                            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Profile.PlaceholderName } })
                             @Html.ValidationMessageFor(m => m.Name)
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.Email, htmlAttributes: new { @class = "form-label" })
-                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.User.PlaceholderEmail } })
-                            @Html.ValidationMessageFor(m => m.Email)
-                        </div>
-                    </div>
+                    </div>                   
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.MobileNo, htmlAttributes: new { @class = "form-label" })
-                            @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.User.PlaceholderMobileNo } })
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="countrycode">@Html.Raw(Model.CountryCode)</span>
+                                </div>
+                                @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Profile.PlaceholderMobileNo } })
+                            </div>
                             @Html.ValidationMessageFor(m => m.MobileNo)
                         </div>
                     </div>

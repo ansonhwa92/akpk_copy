@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace FEP.WebApi.Api.Administration
 {
@@ -32,19 +33,21 @@ namespace FEP.WebApi.Api.Administration
             var states = db.Country.Where(u => u.Display).Select(s => new CountryModel
             {
                 Id = s.Id,
-                Name = s.Name
+                Name = s.Name,
+                CountryCode = s.CountryCode1
             }).ToList();
 
             return Ok(states);
         }
 
-
+        
         public IHttpActionResult Get(int id)
         {
             var country = db.Country.Where(u => u.Display && u.Id == id).Select(s => new CountryModel
             {
                 Id = s.Id,
-                Name = s.Name
+                Name = s.Name,
+                CountryCode = s.CountryCode1
             }).FirstOrDefault();
 
             if (country != null)
@@ -62,6 +65,7 @@ namespace FEP.WebApi.Api.Administration
             var country = new Country
             {
                 Name = model.Name,
+                CountryCode1 = model.CountryCode,
                 Display = true
             };
 
@@ -82,7 +86,7 @@ namespace FEP.WebApi.Api.Administration
             if (country != null)
             {
                 country.Name = model.Name;
-
+                country.CountryCode1 = model.CountryCode;
                 db.Entry(country).State = EntityState.Modified;
                 db.Entry(country).Property(x => x.Display).IsModified = false;
 

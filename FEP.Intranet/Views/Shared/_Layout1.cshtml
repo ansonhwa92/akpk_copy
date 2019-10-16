@@ -37,14 +37,14 @@
 
 <body class="fixed-layout">
 
-	@*<div class="preloader">
-			<div class="sk-double-bounce">
-				<div class="sk-child sk-double-bounce1"></div>
-				<div class="sk-child sk-double-bounce2"></div>
-			</div>
-		</div>*@
+    @*<div class="preloader">
+            <div class="sk-double-bounce">
+                <div class="sk-child sk-double-bounce1"></div>
+                <div class="sk-child sk-double-bounce2"></div>
+            </div>
+        </div>*@
 
-	@RenderSection("Preloader", false)
+    @RenderSection("Preloader", false)
 
 	<!-- Header Layout -->
 	<div class="bg-gradient">
@@ -263,20 +263,20 @@
                                         <a class="dropdown-item" href="@Url.Action("List", "Staff", new { area = "Administrator" })">Manage Staff</a>
                                         <a class="dropdown-item" href="@Url.Action("List", "Role", new { area = "Administrator" })">Manage Role</a>
                                     </div>
-								</li>
-								<li class="nav-item dropdown">
-									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Event Management</a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })"><i class="la la-calendar color-secondary font-icon"></i>Create Event</a>
-										<a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Public Event</a>
-										<a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Media Interview</a>
-										<a class="dropdown-item" href="@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Exhibition/Roadshow Request</a>
-										<a class="dropdown-item" href="@Url.Action("Event_Setting", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Event Setting</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Event Management</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })"><i class="la la-calendar color-secondary font-icon"></i>Create Event</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Public Event</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Media Interview</a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Exhibition/Roadshow Request</a>
+                                        <a class="dropdown-item" href="@Url.Action("Event_Setting", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Event Setting</a>
 
-									</div>
-								</li>
-								<li class="nav-item dropdown">
-									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">R&P Management</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">R&P Management</a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="~/RnP/Publication"><i class="la la-book color-secondary font-icon"></i>Manage Publication</a>
                                         <a class="dropdown-item" href="~/RnP/Survey"><i class="la la-search color-secondary font-icon"></i>Manage Survey</a>
@@ -327,95 +327,95 @@
                                         <a class="dropdown-item" href="@Url.Action("List", "UserLog", new { area = "Logs" })">User Log</a>
                                         <a class="dropdown-item" href="@Url.Action("List", "ErrorLog", new { area = "Logs" })">Error Log</a>
                                     </div>
-								</li>
+                                </li>
 
-							</ul>
-						</div>
-						<button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">
-							<span class="material-icons">menu</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Header Layout Content -->
-		<!-- // END Header Layout Content -->
-		@RenderSection("Nav", false)
-		<!-- // END Header -->
-	</div>
-	<!-- Start Content -->
-	<div class="content-container">
-		<div class="container">
+                            </ul>
+                        </div>
+                        <button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">
+                            <span class="material-icons">menu</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Header Layout Content -->
+        <!-- // END Header Layout Content -->
+        @RenderSection("Nav", false)
+        <!-- // END Header -->
+    </div>
+    <!-- Start Content -->
+    <div class="content-container">
+        <div class="container">
 
-			<div id="alert-message">
+            <div id="alert-message">
 
-				@if (TempData["Message"] != null)
-				{
-					<div class="alert alert-primary alert-dismissible ">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						<p><i class="icon fa fa-info-circle"></i>@TempData["Message"]</p>
-					</div>
-				}
+                @if (TempData["Message"] != null)
+                {
+                    <div class="alert alert-primary alert-dismissible ">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <p><i class="icon fa fa-info-circle"></i>@TempData["Message"]</p>
+                    </div>
+                }
 
-				@if (TempData["SuccessMessage"] != null)
-				{
-					<div class="alert alert-success alert-dismissible ">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						<p><i class="icon fa fa-check"></i>@TempData["SuccessMessage"]</p>
-					</div>
-				}
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible ">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <p><i class="icon fa fa-check"></i>@TempData["SuccessMessage"]</p>
+                    </div>
+                }
 
-				@if (TempData["ErrorMessage"] != null)
-				{
-					<div class="alert alert-danger alert-dismissible ">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						<p><i class="icon fa fa-warning"></i>@TempData["ErrorMessage"]</p>
-					</div>
-				}
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible ">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <p><i class="icon fa fa-warning"></i>@TempData["ErrorMessage"]</p>
+                    </div>
+                }
 
-			</div>
+            </div>
 
-			@RenderBody()
+            @RenderBody()
 
-		</div>
-		<!-- Wrapper -->
-	</div>
-	<!-- // END Header Layout -->
-	@*<script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
+        </div>
+        <!-- Wrapper -->
+    </div>
+    <!-- // END Header Layout -->
+    @*<script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
 
-		<script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
-		<script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
 
-		<script src="@BaseURL/dist/assets/vendor/perfect-scrollbar.min.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/perfect-scrollbar.min.js"></script>
 
-		<script src="@BaseURL/dist/assets/vendor/dom-factory.js"></script>
-		<script src="@BaseURL/dist/assets/vendor/material-design-kit.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/dom-factory.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/material-design-kit.js"></script>
 
-		<script src="@BaseURL/dist/assets/js/app.js"></script>
+        <script src="@BaseURL/dist/assets/js/app.js"></script>
 
-		<script src="@BaseURL/dist/assets/js/hljs.js"></script>
-		<script src="@BaseURL/js/select2.min.js"></script>
+        <script src="@BaseURL/dist/assets/js/hljs.js"></script>
+        <script src="@BaseURL/js/select2.min.js"></script>
 
-		<script src="@BaseURL/dist/assets/js/toggle-check-all.js"></script>
-		<script src="@BaseURL/dist/assets/js/check-selected-row.js"></script>
+        <script src="@BaseURL/dist/assets/js/toggle-check-all.js"></script>
+        <script src="@BaseURL/dist/assets/js/check-selected-row.js"></script>
 
-		<script src="@BaseURL/dist/assets/vendor/flatpickr/flatpickr.min.js"></script>
-		<script src="@BaseURL/dist/assets/js/flatpickr.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/flatpickr/flatpickr.min.js"></script>
+        <script src="@BaseURL/dist/assets/js/flatpickr.js"></script>
 
 
-		<script src="@BaseURL/dist/assets/js/settings.js"></script>
-		<script src="@BaseURL/js/script-admin.js"></script>*@
+        <script src="@BaseURL/dist/assets/js/settings.js"></script>
+        <script src="@BaseURL/js/script-admin.js"></script>*@
 
-	@Scripts.Render("~/layout1/script")
+    @Scripts.Render("~/layout1/script")
 
-	@RenderSection("ContentScript", false)
+    @RenderSection("ContentScript", false)
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
         $.validator.methods.date = function (value, element) {
             debugger
-                var y = moment(value, 'DD/MM/YYYY', true);
-                return this.optional(element) || moment(value, 'DD/MM/YYYY', true).isValid() || moment(value, 'HH:mm', true).isValid();
+            var y = moment(value, 'DD/MM/YYYY', true);
+            return this.optional(element) || moment(value, 'DD/MM/YYYY', true).isValid() || moment(value, 'HH:mm', true).isValid();
         };
 
         function resetValidations() {
@@ -426,11 +426,50 @@
             $('.field-validation-error').html('');
             $('.field-validation-error').addClass('field-validation-valid');
             $('.field-validation-error').removeClass('field-validation-error');
-            //Removes validation summary 
+            //Removes validation summary
             $('.validation-summary-errors').addClass('validation-summary-valid');
             $('.validation-summary-errors').removeClass('validation-summary-errors');
-
         }
+
+        function clearNotification() {
+
+            $.ajax({
+				type: "get",
+				url: "@Url.Action("ClearNotification", "Notification", new { area = "" })",
+				contentType: "application/json",
+				data: [],
+				dataType: "html",
+				success: function (data) {
+					$('#notification_dropdown').html(data);
+				},
+				error: function (xhr, httpStatusMessage, customErrorMessage) {
+
+				}
+			});            
+        }
+
+        loadNotify = function () {
+			$.ajax({
+				type: "get",
+				url: "@Url.Action("RefreshNotification", "Notification", new { area = "" })",
+				contentType: "application/json",
+				data: [],
+				dataType: "html",
+				success: function (data) {
+                    $('#notification_dropdown').html(data);
+                    //$('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+				},
+				error: function (xhr, httpStatusMessage, customErrorMessage) {
+
+				}
+			});
+		};
+
+		loadNotify();
+		
+		setInterval(function () {
+			loadNotify();
+		}, 10000);
 
         $(".dateSelect").flatpickr({
             // mode: "range",
@@ -444,7 +483,7 @@
             dateFormat: "H:i"
         });
 
-	</script>
+    </script>
 
 </body>
 

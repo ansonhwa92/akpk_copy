@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlertActivateSuccess" xml:space="preserve">
+    <value>Your account successfully activate. Please check your registered email for login details.</value>
+  </data>
   <data name="AlertLoginFail" xml:space="preserve">
     <value>Sign in fail. Please use your login id and correct password.</value>
   </data>
   <data name="AlertLoginInactive" xml:space="preserve">
     <value>Your account is inactive. Please contact system admin.</value>
+  </data>
+  <data name="AlertRegisterSuccess" xml:space="preserve">
+    <value>Your account successfully created. Please check your registered email for sign in details.</value>
   </data>
   <data name="AlertResetPasswordFail" xml:space="preserve">
     <value>Click 'Forgot Password' to reset password.</value>
@@ -240,6 +246,9 @@
   <data name="FieldStateId" xml:space="preserve">
     <value>State</value>
   </data>
+  <data name="FieldUserName" xml:space="preserve">
+    <value>Username</value>
+  </data>
   <data name="PlaceholderAddress1" xml:space="preserve">
     <value>Street address line 1</value>
   </data>
@@ -259,7 +268,7 @@
     <value>Company Name</value>
   </data>
   <data name="PlaceholderCompanyPhoneNo" xml:space="preserve">
-    <value>eg. 031234567</value>
+    <value>eg. 31234567</value>
   </data>
   <data name="PlaceholderCompRegNo" xml:space="preserve">
     <value>e.g 104258-x</value>
@@ -277,7 +286,7 @@
     <value>Select Ministry</value>
   </data>
   <data name="PlaceholderMobileNo" xml:space="preserve">
-    <value>eg. 0171234567</value>
+    <value>eg. 171234567</value>
   </data>
   <data name="PlaceholderName" xml:space="preserve">
     <value>Your full name</value>

@@ -16,6 +16,7 @@ namespace FEP.Model
         public string Name { get; set; }
         public string Email { get; set; }
         public string ICNo { get; set; }
+        public string CountryCode { get; set; }
         public string MobileNo { get; set; }
         public UserType UserType { get; set; }        
         public bool Display { get; set; }
@@ -121,6 +122,7 @@ namespace FEP.Model
         public int? StateId { get; set; }//for malaysian
         public string StateName { get; set; }//for non malaysian
         public int CountryId { get; set; }//non malaysian
+        public string CountryCode { get; set; }
         public string CompanyPhoneNo { get; set; }
         
         public virtual User User { get; set; }
@@ -239,6 +241,9 @@ namespace FEP.Model
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+        public string CountryCode1 { get; set; }
+        public string CountryCode2 { get; set; }
+        public string CountryCode3 { get; set; }
         public bool Display { get; set; }
     }
 

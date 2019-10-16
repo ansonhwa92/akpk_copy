@@ -173,6 +173,7 @@ namespace FEP.WebApi.Api.Administration
                     Name = s.User.Name,
                     Email = s.User.Email,
                     MobileNo = s.User.MobileNo,
+                    CountryCode = s.User.CountryCode,
                     ICNo = s.User.ICNo,
                     PassportNo = s.User.ICNo,
                     Status = s.User.UserAccount != null ? s.User.UserAccount.IsEnable : false
@@ -224,6 +225,13 @@ namespace FEP.WebApi.Api.Administration
 
             if (ModelState.IsValid)
             {
+                var countryCode = db.Country.Where(c => c.Id == model.CountryId && c.Display).FirstOrDefault();
+
+                if (countryCode == null)
+                {
+                    return InternalServerError();
+                }
+
                 var password = "abc123";
 
                 if (FEPMethod.CurrentSystemMode() != SystemMode.Development)
@@ -256,7 +264,8 @@ namespace FEP.WebApi.Api.Administration
                     StateId = model.StateId,
                     StateName = model.State,
                     CountryId = model.CountryId,
-                    CompanyPhoneNo = model.CompanyPhoneNo
+                    CompanyPhoneNo = model.CompanyPhoneNo,
+                    CountryCode = countryCode.CountryCode1
                 };
 
                 var user = new User
@@ -266,6 +275,7 @@ namespace FEP.WebApi.Api.Administration
                     Email = model.Email,
                     ICNo = model.ICNo,
                     MobileNo = model.MobileNo,
+                    CountryCode = countryCode.CountryCode1,
                     Display = true,
                     CreatedBy = null,
                     CreatedDate = DateTime.Now,
@@ -348,11 +358,19 @@ namespace FEP.WebApi.Api.Administration
                 {
                     return NotFound();
                 }
+                
+                var countryCode = db.Country.Where(c => c.Id == model.CountryId && c.Display).FirstOrDefault();
+
+                if (countryCode == null)
+                {
+                    return InternalServerError();
+                }
 
                 user.Name = model.Name;
                 user.ICNo = model.Type == CompanyType.NonMalaysianCompany ? model.PassportNo : model.ICNo;
                 user.Email = model.Email;
                 user.MobileNo = model.MobileNo;
+                user.CountryCode = countryCode.CountryCode1;
 
                 company.Type = model.Type;
                 company.MinistryId = model.MinistryId;
@@ -366,6 +384,7 @@ namespace FEP.WebApi.Api.Administration
                 company.StateName = model.State;
                 company.PostCode = model.Type != CompanyType.NonMalaysianCompany ? model.PostCodeNonMalaysian : model.PostCodeMalaysian;
                 company.CompanyPhoneNo = model.CompanyPhoneNo;
+                company.CountryCode = countryCode.CountryCode1;
 
                 useraccount.LoginId = model.Email;
 
@@ -374,6 +393,7 @@ namespace FEP.WebApi.Api.Administration
                 db.Entry(user).Property(x => x.ICNo).IsModified = true;
                 db.Entry(user).Property(x => x.Email).IsModified = true;
                 db.Entry(user).Property(x => x.MobileNo).IsModified = true;
+                db.Entry(user).Property(x => x.CountryCode).IsModified = true;
 
                 db.UserAccount.Attach(useraccount);
                 db.Entry(useraccount).Property(x => x.LoginId).IsModified = true;

@@ -24,60 +24,15 @@ namespace FEP.WebApi.Api.Home
             }
             base.Dispose(disposing);
         }
-
-        //[Route("api/Home/Profile/GetIndividualProfile")]
-        //[HttpGet]
-        //public IndividualProfileModel GetIndividualProfile(int id)
-        //{
-        //    var user = db.User.Where(u => u.Id == id)
-        //        .Select(s => new IndividualProfileModel
-        //        {
-        //            Name = s.Name,
-        //            Email = s.Email,
-        //            ICNo = s.ICNo,
-        //            MobileNo = s.MobileNo
-        //        })
-        //        .FirstOrDefault();
-
-        //    return user;
-        //}
-
-        //[Route("api/Home/Profile/GetCompanyProfile")]
-        //[HttpGet]
-        //public CompanyProfileModel GetCompanyProfile(int id)
-        //{
-        //    var user = db.User.Where(u => u.Id == id)
-        //        .Select(s => new CompanyProfileModel
-        //        {
-        //            CompanyName = s.CompanyProfile.CompanyName,
-        //            CompanyRegNo = s.CompanyProfile.CompanyRegNo,
-        //            SectorId = s.CompanyProfile.SectorId,
-        //            Sector = s.CompanyProfile.Sector.Name,
-        //            Address1 = s.CompanyProfile.Address1,
-        //            Address2 = s.CompanyProfile.Address2,
-        //            City = s.CompanyProfile.City,
-        //            PostCode = s.CompanyProfile.PostCode,
-        //            State = s.CompanyProfile.StateName,
-        //            CompanyPhoneNo = s.CompanyProfile.CompanyPhoneNo,
-        //            Name = s.Name,
-        //            Email = s.Email,
-        //            ICNo = s.ICNo,
-        //            MobileNo = s.MobileNo
-        //        })
-        //        .FirstOrDefault();
-
-        //    return user;
-        //}
-
+                
         [Route("api/Home/Profile/EditIndividualProfile")]
         [HttpPut]        
         public IHttpActionResult EditIndividualProfile(int id, [FromBody] EditIndividualProfileModel model)
         {
             var user = db.User.Where(u => u.Id == id && u.Display).FirstOrDefault();
             var individual = db.IndividualProfile.Where(i => i.UserId == id).FirstOrDefault();
-            var useraccount = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
-
-            if (user == null || individual == null || useraccount == null)
+           
+            if (user == null || individual == null)
             {
                 return NotFound();
             }
@@ -96,14 +51,20 @@ namespace FEP.WebApi.Api.Home
                 ModelState.Remove("model.StateId");
             }
 
+            var countryCode = db.Country.Where(c => c.Id == model.CountryId && c.Display).FirstOrDefault();
+
+            if (countryCode == null)
+            {
+                return InternalServerError();
+            }
+
             if (ModelState.IsValid)
             {
                 user.Name = model.Name;
                 user.ICNo = model.ICNo;
-                user.Email = model.Email;
                 user.MobileNo = model.MobileNo;
+                user.CountryCode = countryCode.CountryCode1;
 
-                useraccount.LoginId = model.Email;
 
                 individual.IsMalaysian = model.IsMalaysian;
                 individual.CitizenshipId = model.CitizenshipId;
@@ -117,12 +78,9 @@ namespace FEP.WebApi.Api.Home
 
                 db.User.Attach(user);
                 db.Entry(user).Property(x => x.Name).IsModified = true;
-                db.Entry(user).Property(x => x.ICNo).IsModified = true;
-                db.Entry(user).Property(x => x.Email).IsModified = true;
+                db.Entry(user).Property(x => x.ICNo).IsModified = true;                
                 db.Entry(user).Property(x => x.MobileNo).IsModified = true;
-
-                db.UserAccount.Attach(useraccount);
-                db.Entry(useraccount).Property(x => x.LoginId).IsModified = true;
+                db.Entry(user).Property(x => x.CountryCode).IsModified = true;
 
                 db.Entry(individual).State = EntityState.Modified;
 
@@ -171,22 +129,28 @@ namespace FEP.WebApi.Api.Home
                 ModelState.Remove("model.CompanyRegNo");
             }
 
+            var countryCode = db.Country.Where(c => c.Id == model.CountryId && c.Display).FirstOrDefault();
+
+            if (countryCode == null)
+            {
+                return InternalServerError();
+            }
+
             if (ModelState.IsValid)
             {
 
                 var user = db.User.Where(u => u.Id == id).FirstOrDefault();
                 var company = db.CompanyProfile.Where(c => c.UserId == id).FirstOrDefault();
-                var useraccount = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
-
-                if (user == null || company == null || useraccount == null)
+               
+                if (user == null || company == null)
                 {
                     return NotFound();
                 }
 
                 user.Name = model.Name;
-                user.ICNo = model.Type == CompanyType.NonMalaysianCompany ? model.PassportNo : model.ICNo;
-                user.Email = model.Email;
+                user.ICNo = model.Type == CompanyType.NonMalaysianCompany ? model.PassportNo : model.ICNo;                
                 user.MobileNo = model.MobileNo;
+                user.CountryCode = countryCode.CountryCode1;
 
                 company.Type = model.Type;
                 company.MinistryId = model.MinistryId;
@@ -200,17 +164,13 @@ namespace FEP.WebApi.Api.Home
                 company.StateName = model.State;
                 company.PostCode = model.Type != CompanyType.NonMalaysianCompany ? model.PostCodeNonMalaysian : model.PostCodeMalaysian;
                 company.CompanyPhoneNo = model.CompanyPhoneNo;
-
-                useraccount.LoginId = model.Email;
+                company.CountryCode = countryCode.CountryCode1;
 
                 db.User.Attach(user);
                 db.Entry(user).Property(x => x.Name).IsModified = true;
-                db.Entry(user).Property(x => x.ICNo).IsModified = true;
-                db.Entry(user).Property(x => x.Email).IsModified = true;
+                db.Entry(user).Property(x => x.ICNo).IsModified = true;                
                 db.Entry(user).Property(x => x.MobileNo).IsModified = true;
-
-                db.UserAccount.Attach(useraccount);
-                db.Entry(useraccount).Property(x => x.LoginId).IsModified = true;
+                db.Entry(user).Property(x => x.CountryCode).IsModified = true;
 
                 db.Entry(company).State = EntityState.Modified;
 
@@ -226,19 +186,19 @@ namespace FEP.WebApi.Api.Home
 
         [Route("api/Home/Profile/ChangePassword")]
         [HttpPut]
-        public bool ChangePassword(int id, ChangePasswordModel model)
+        public IHttpActionResult ChangePassword(int id, ChangePasswordModel model)
         {
 
             if (model.ConfirmPassword != model.Password)
             {
-                return false;
+                return BadRequest("Password not match");
             }
 
             var account = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
 
             if (Authentication.VerifyPassword(model.Password, account.HashPassword, account.Salt))
             {
-                return false;
+                return BadRequest("Password not match");
             }
 
             Authentication.GeneratePassword(model.Password);
@@ -253,11 +213,48 @@ namespace FEP.WebApi.Api.Home
             db.Configuration.ValidateOnSaveEnabled = false;
             db.SaveChanges();
 
-            return true;
+            return Ok(true);
 
         }
 
+        [Route("api/Home/Profile/ChangeEmail")]
+        [HttpPut]
+        public IHttpActionResult ChangeEmail(int id, ChangeEmailModel model)
+        {
+            
+            var user = db.User.Where(u => u.Id == id).FirstOrDefault();
+            var account = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
 
-        
+            if (user == null || account == null)
+                return BadRequest();
+
+            user.Email = model.Email;
+            account.LoginId = model.Email;
+            account.IsEnable = false;
+           
+            db.User.Attach(user);
+            db.Entry(user).Property(e => e.Email).IsModified = true;
+           
+            db.UserAccount.Attach(account);
+            db.Entry(account).Property(e => e.LoginId).IsModified = true;
+            db.Entry(account).Property(e => e.IsEnable).IsModified = true;
+
+            ActivateAccount activateaccount = new ActivateAccount
+            {
+                UID = Authentication.RandomString(50, true),//random alphanumeric
+                UserId = user.Id,
+                CreatedDate = DateTime.Now,
+                IsActivate = false
+            };
+
+            db.ActivateAccount.Add(activateaccount);
+
+            db.Configuration.ValidateOnSaveEnabled = false;
+            db.SaveChanges();
+
+            return Ok(new { UserId = user.Id, UID = activateaccount.UID });
+
+        }
+
     }
 }

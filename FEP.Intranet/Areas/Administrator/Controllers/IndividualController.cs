@@ -53,6 +53,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             var countries = await GetCountries();
 
             model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+            model.CountryCode = countries.Where(c => c.Name == "Malaysia").Select(s => s.CountryCode).FirstOrDefault();
 
             model.States = new SelectList(await GetStates(), "Id", "Name", 0);
             model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
@@ -106,14 +107,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 if (response.isSuccess)
                 {
-
-                    //StringBuilder body = new StringBuilder();
-                    //body.Append("Dear " + model.Name + ",");
-                    //body.Append("<br />");
-                    //body.Append("You can sign to FEP Portal <a href = '" + BaseURL + Url.Action("Login", "Auth", new { area = "" }) + "' > here </a>. Sign in Id: " + model.Email + "\n" + "Password: " + response.Data.Password);
-
-                    //await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), new EmailAddress { DisplayName = model.Name, Address = model.Email });
-
+                
                     ParameterListToSend notificationParameter = new ParameterListToSend();
                     notificationParameter.UserFullName = model.Name;
                     notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
@@ -148,7 +142,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             var countries = await GetCountries();
 
             model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
-
+            model.CountryCode = countries.Where(c => c.Name == "Malaysia").Select(s => s.CountryCode).FirstOrDefault();
             model.States = new SelectList(await GetStates(), "Id", "Name", 0);
             model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
             model.Citizenships = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
@@ -183,6 +177,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 PassportNo = response.Data.PassportNo,
                 Email = response.Data.Email,
                 MobileNo = response.Data.MobileNo,
+                CountryCode = response.Data.CountryCode,
                 Address1 = response.Data.Address1,
                 Address2 = response.Data.Address2,
                 PostCodeMalaysian = response.Data.PostCodeMalaysian,
@@ -414,13 +409,6 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-
-                //StringBuilder body = new StringBuilder();
-                //body.Append("Dear " + response.Data.Name + ",");
-                //body.Append("<br />");
-                //body.Append("You can reset your password <a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data }) + "' > here </a>");
-
-                //await EmailMethod.SendEmail("FE Portal Password Reset by Admin", body.ToString(), new EmailAddress { DisplayName = response.Data.Name, Address = Email });
 
                 ParameterListToSend notificationParameter = new ParameterListToSend();
                 notificationParameter.UserFullName = response.Data.Name;

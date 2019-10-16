@@ -136,7 +136,7 @@ namespace FEP.WebApi.Api.Administration
                     Name = s.Name,
                     Email = s.Email,
                     ICNo = s.ICNo,
-                    MobileNo = s.MobileNo,
+                    MobileNo = s.CountryCode + s.MobileNo,
                     Status = s.UserAccount.IsEnable
                 }).ToList();
 
@@ -160,6 +160,7 @@ namespace FEP.WebApi.Api.Administration
                     Name = s.Name,
                     Email = s.Email,
                     MobileNo = s.MobileNo,
+                    CountryCode = s.CountryCode,
                     ICNo = s.ICNo,
                     PassportNo = s.ICNo,
                     IsMalaysian = s.IndividualProfile.IsMalaysian,
@@ -205,6 +206,14 @@ namespace FEP.WebApi.Api.Administration
 
             if (ModelState.IsValid)
             {
+
+                var countryCode = db.Country.Where(c => c.Id == model.CountryId && c.Display).FirstOrDefault();
+
+                if (countryCode == null)
+                {
+                    return InternalServerError();
+                }
+
                 var password = "abc123";
 
                 if (FEPMethod.CurrentSystemMode() != SystemMode.Development)
@@ -243,6 +252,7 @@ namespace FEP.WebApi.Api.Administration
                     Email = model.Email,
                     ICNo = model.ICNo,
                     MobileNo = model.MobileNo,
+                    CountryCode = countryCode.CountryCode1,
                     Display = true,
                     CreatedBy = null,
                     CreatedDate = DateTime.Now,
@@ -309,10 +319,18 @@ namespace FEP.WebApi.Api.Administration
 
             if (ModelState.IsValid)
             {
+                var countryCode = db.Country.Where(c => c.Id == model.CountryId && c.Display).FirstOrDefault();
+
+                if (countryCode == null)
+                {
+                    return InternalServerError();
+                }
+
                 user.Name = model.Name;
                 user.ICNo = model.ICNo;
                 user.Email = model.Email;
                 user.MobileNo = model.MobileNo;
+                user.CountryCode = countryCode.CountryCode1;
 
                 useraccount.LoginId = model.Email;
 
@@ -331,6 +349,7 @@ namespace FEP.WebApi.Api.Administration
                 db.Entry(user).Property(x => x.ICNo).IsModified = true;
                 db.Entry(user).Property(x => x.Email).IsModified = true;
                 db.Entry(user).Property(x => x.MobileNo).IsModified = true;
+                db.Entry(user).Property(x => x.CountryCode).IsModified = true;
 
                 db.UserAccount.Attach(useraccount);
                 db.Entry(useraccount).Property(x => x.LoginId).IsModified = true;

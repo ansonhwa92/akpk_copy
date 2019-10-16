@@ -11,9 +11,9 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Http;
 
-namespace FEP.WebApi.Api.Administration
+namespace FEP.WebApi.Api.Systems
 {
-    [Route("api/File")]
+    [Route("api/System/File")]
     public class FileDocumentController : ApiController
     {
         private DbEntities db = new DbEntities();
@@ -123,7 +123,7 @@ namespace FEP.WebApi.Api.Administration
         }
 
         [HttpGet]
-        [Route("api/File/Download")]
+        [Route("api/System/File/Download")]
         public HttpResponseMessage Download(int id)
         {
 

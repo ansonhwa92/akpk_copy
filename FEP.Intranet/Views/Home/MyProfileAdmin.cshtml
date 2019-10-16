@@ -1,4 +1,4 @@
-﻿@model UserModel
+﻿@model AdminProfileModel
 
 @{
     ViewBag.Title = "My Profile";
@@ -44,6 +44,9 @@
                             <a href="@Url.Action("EditProfile", "Home", new { area = "" })" class="nav-link">Update Profile</a>
                         </li>
                         <li class="nav-item">
+                            <a href="@Url.Action("ChangeEmail", "Home", new { area = "" })" class="nav-link">Change Email</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="@Url.Action("ChangePassword", "Home", new { area = "" })" class="nav-link">Change Password</a>
                         </li>
                     </ul>
@@ -74,7 +77,12 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.MobileNo)
-                            @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="countrycode">@Html.Raw(Model.CountryCode)</span>
+                                </div>
+                                @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
                         </div>
                     </div>
                 </div>

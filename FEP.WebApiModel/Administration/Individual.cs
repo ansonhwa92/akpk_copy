@@ -79,6 +79,8 @@ namespace FEP.WebApiModel.Administration
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Individual))]
         public string MobileNo { get; set; }
 
+        public string CountryCode { get; set; }
+
         [Required(ErrorMessageResourceName = "ValidRequiredEmail", ErrorMessageResourceType = typeof(Language.Individual))]
         [Display(Name = "FieldEmail", ResourceType = typeof(Language.Individual))]
         [EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Individual))]
@@ -166,6 +168,8 @@ namespace FEP.WebApiModel.Administration
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Auth))]
         public string MobileNo { get; set; }
 
+        public string CountryCode { get; set; }
+
         [Required(ErrorMessageResourceName = "ValidRequiredEmail", ErrorMessageResourceType = typeof(Language.Individual))]
         [Display(Name = "FieldEmail", ResourceType = typeof(Language.Auth))]
         [EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Individual))]
@@ -242,6 +246,8 @@ namespace FEP.WebApiModel.Administration
 
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Auth))]
         public string MobileNo { get; set; }
+
+        public string CountryCode { get; set; }
 
         [Display(Name = "FieldEmail", ResourceType = typeof(Language.Auth))]        
         public string Email { get; set; }

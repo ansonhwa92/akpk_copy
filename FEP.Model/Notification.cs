@@ -206,64 +206,67 @@ namespace FEP.Model
 		//---------------------------------------------------
 	}
 
+
 	[Table("Notification")]
 	public class Notification
 	{
 		[Key]
 		public long Id { get; set; }
-		public NotificationType NotificationType { get; set; }
+		public NotificationType? NotificationType { get; set; }
 		public int UserId { get; set; }
+        public NotificationCategory Category { get; set; }
 		public string Message { get; set; }
 		public string Link { get; set; }
 		public DateTime CreatedDate { get; set; }
+        public DateTime SendDate { get; set; }
 		public bool IsRead { get; set; }
 
 		[ForeignKey("UserId")]
 		public virtual User User { get; set; }
 	}
 
-	[Table("NotificationToSend")]
-	public class NotificationToSend
-	{
-		[Key]
-		public long Id { get; set; }
-		public string Message { get; set; }
-		public string Link { get; set; }
-		public DateTime CreatedDate { get; set; }
-		public DateTime SendDate { get; set; }
-		public bool IsSent { get; set; }
-		public DateTime? SentDate { get; set; }
+	//[Table("NotificationToSend")]
+	//public class NotificationToSend
+	//{
+	//	[Key]
+	//	public long Id { get; set; }
+	//	public string Message { get; set; }
+	//	public string Link { get; set; }
+	//	public DateTime CreatedDate { get; set; }
+	//	public DateTime SendDate { get; set; }
+	//	public bool IsSent { get; set; }
+	//	public DateTime? SentDate { get; set; }
 
-		public virtual ICollection<NotificationToSendRecipient> Recipient { get; set; }
-	}
+	//	public virtual ICollection<NotificationToSendRecipient> Recipient { get; set; }
+	//}
 
-	[Table("NotificationToSendRecipient")]
-	public class NotificationToSendRecipient
-	{
-		[Key]
-		public long Id { get; set; }
-		public long NotificationToSendId { get; set; }
-		public int UserId { get; set; }
+	//[Table("NotificationToSendRecipient")]
+	//public class NotificationToSendRecipient
+	//{
+	//	[Key]
+	//	public long Id { get; set; }
+	//	public long NotificationToSendId { get; set; }
+	//	public int UserId { get; set; }
 
-		[ForeignKey("NotificationToSendId")]
-		public virtual NotificationToSend NotificationToSend { get; set; }
+	//	[ForeignKey("NotificationToSendId")]
+	//	public virtual NotificationToSend NotificationToSend { get; set; }
 
-		[ForeignKey("UserId")]
-		public virtual User User { get; set; }
-	}
+	//	[ForeignKey("UserId")]
+	//	public virtual User User { get; set; }
+	//}
 
-	[Table("NotificationSetting")]
-	public class NotificationSetting
-	{
-		[Key]
-		public NotificationType NotificationType { get; set; }
-		public bool IsSendEmail { get; set; }
-		public bool IsSendNotification { get; set; }
-		public string NotificationMessage { get; set; }
-		public string EmailSubject { get; set; }
-		public string EmailMessage { get; set; }
+	//[Table("NotificationSetting")]
+	//public class NotificationSetting
+	//{
+	//	[Key]
+	//	public NotificationType NotificationType { get; set; }
+	//	public bool IsSendEmail { get; set; }
+	//	public bool IsSendNotification { get; set; }
+	//	public string NotificationMessage { get; set; }
+	//	public string EmailSubject { get; set; }
+	//	public string EmailMessage { get; set; }
 
-	}
+	//}
 
 	[Table("TabBulkSMS")]
 	public class TabBulkSMS

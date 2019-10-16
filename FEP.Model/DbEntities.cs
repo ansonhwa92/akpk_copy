@@ -55,11 +55,9 @@ namespace FEP.Model
 
         //notification
         public DbSet<Notification> Notification { get; set; }
-
-        public DbSet<NotificationToSend> NotificationToSend { get; set; }
-        public DbSet<NotificationToSendRecipient> NotificationToSendRecipient { get; set; }
-
-		public DbSet<NotificationSetting> NotificationSetting { get; set; }
+        //public DbSet<NotificationToSend> NotificationToSend { get; set; }
+        //public DbSet<NotificationToSendRecipient> NotificationToSendRecipient { get; set; }
+		//public DbSet<NotificationSetting> NotificationSetting { get; set; }
 
 		//email
 		public DbSet<EmailToSend> EmailToSend { get; set; }

@@ -116,6 +116,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Notification.Designer.cs">
+      <DependentUpon>Notification.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="State.Designer.cs">
       <DependentUpon>State.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -179,6 +184,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+  <EmbeddedResource Include="Profile.resx">
+	<Generator>PublicResXFileCodeGenerator</Generator>
+	<LastGenOutput>Profile.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Event_MessageAlert.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Event_MessageAlert.Designer.cs</LastGenOutput>
@@ -238,6 +247,10 @@
     <EmbeddedResource Include="Ministry.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Ministry.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Notification.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Notification.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="State.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

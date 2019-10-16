@@ -12,6 +12,7 @@ namespace FEP.WebApiModel.Administration
         public int Id { get; set; }
         [Display(Name = "FieldName", ResourceType = typeof(Language.Country))]
         public string Name { get; set; }
+        public string CountryCode { get; set; }
     }
 
     public class CreateCountryModel
@@ -19,6 +20,7 @@ namespace FEP.WebApiModel.Administration
         [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.Country))]
         [Display(Name = "FieldName", ResourceType = typeof(Language.Country))]
         public string Name { get; set; }
+        public string CountryCode { get; set; }
     }
 
     public class EditCountryModel
@@ -29,6 +31,7 @@ namespace FEP.WebApiModel.Administration
         [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.Country))]
         [Display(Name = "FieldName", ResourceType = typeof(Language.Country))]
         public string Name { get; set; }
+        public string CountryCode { get; set; }
     }
 
     public class DeleteCountryModel
@@ -38,5 +41,6 @@ namespace FEP.WebApiModel.Administration
 
         [Display(Name = "FieldName", ResourceType = typeof(Language.Country))]
         public string Name { get; set; }
+        public string CountryCode { get; set; }
     }
 }

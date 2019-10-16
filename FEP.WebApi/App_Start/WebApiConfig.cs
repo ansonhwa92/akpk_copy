@@ -11,6 +11,8 @@ namespace FEP.WebApi
         {
             // Web API configuration and services
 
+            config.EnableCors();
+
             // attribute route
             config.MapHttpAttributeRoutes();
 

@@ -60,13 +60,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             var countries = await GetCountries();
 
             model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+            model.CountryCode = countries.Where(c => c.Name == "Malaysia").Select(s => s.CountryCode).FirstOrDefault();
 
             model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
             model.States = new SelectList(await GetStates(), "Id", "Name", 0);
             model.Ministries = new SelectList(await GetMinistry(), "Id", "Name", 0);
-            model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);           
+            model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
             model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
-                        
+
             return View(model);
         }
 
@@ -169,6 +170,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             var countries = await GetCountries();
 
             model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+            model.CountryCode = countries.Where(c => c.Name == "Malaysia").Select(s => s.CountryCode).FirstOrDefault();
 
             model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
             model.States = new SelectList(await GetStates(), "Id", "Name", 0);
@@ -201,8 +203,8 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 Type = response.Data.Type,
                 CompanyName = response.Data.CompanyName,
                 AgencyName = response.Data.AgencyName,
-                MinistryId = response.Data.Ministry != null ? response.Data.Ministry.Id : (int?) null,
-                SectorId = response.Data.Sector != null ? response.Data.Sector.Id : (int?) null,
+                MinistryId = response.Data.Ministry != null ? response.Data.Ministry.Id : (int?)null,
+                SectorId = response.Data.Sector != null ? response.Data.Sector.Id : (int?)null,
                 CompanyRegNo = response.Data.CompanyRegNo,
                 Address1 = response.Data.Address1,
                 Address2 = response.Data.Address2,
@@ -213,6 +215,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 State = response.Data.State.Name,
                 CountryId = response.Data.Country.Id,
                 CompanyPhoneNo = response.Data.CompanyPhoneNo,
+                CountryCode = response.Data.CountryCode,
                 Name = response.Data.Name,
                 ICNo = response.Data.ICNo,
                 PassportNo = response.Data.PassportNo,
@@ -403,7 +406,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                await LogActivity(Modules.Admin, "Disable Agency User Account", new { id = id});
+                await LogActivity(Modules.Admin, "Disable Agency User Account", new { id = id });
 
                 TempData["SuccessMessage"] = Language.Company.AlertDeactivateSuccess;
 

@@ -79,11 +79,17 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -151,7 +157,7 @@
     <Compile Include="Api\Administration\CompanyController.cs" />
     <Compile Include="Api\Administration\CountryController.cs" />
     <Compile Include="Api\Administration\DepartmentController.cs" />
-    <Compile Include="Api\Administration\FileDocumentController.cs" />
+    <Compile Include="Api\System\FileDocumentController.cs" />
     <Compile Include="Api\Administration\IndividualController.cs" />
     <Compile Include="Api\Administration\MinistryController.cs" />
     <Compile Include="Api\Administration\RoleController.cs" />
@@ -188,8 +194,7 @@
     <Compile Include="Api\Reward\UserRewardRedemptionsController.cs" />
     <Compile Include="Api\RnP\PublicationController.cs" />
     <Compile Include="Api\RnP\SurveyController.cs" />
-    <Compile Include="Api\Notification\EmailController.cs" />
-    <Compile Include="Api\Notification\NotificationController.cs" />
+    <Compile Include="Api\System\NotificationController.cs" />
     <Compile Include="Api\Setting\AccountSettingController.cs" />
     <Compile Include="Api\Reminder\SLAReminderController.cs" />
     <Compile Include="Api\Template\EmailTemplateController.cs" />
@@ -331,6 +336,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Api\Notification\" />
     <Folder Include="App_Data\Temp_Upload\" />
     <Folder Include="bin\" />
     <Folder Include="Views\Auth\" />
@@ -359,6 +365,10 @@
     <ProjectReference Include="..\FEP.Intranet\FEP.Intranet.csproj">
       <Project>{4079286e-ae06-46a4-ad44-02dbb01d8666}</Project>
       <Name>FEP.Intranet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEP.Language\FEP.Language.csproj">
+      <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
+      <Name>FEP.Language</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEP.Model\FEP.Model.csproj">
       <Project>{2a1a9157-1c94-4b4a-96a4-52648bd8076a}</Project>

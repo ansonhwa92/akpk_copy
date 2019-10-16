@@ -145,6 +145,9 @@ namespace FEP.WebApiModel.eLearning
         public HttpPostedFileBase File { get; set; }
         public string IntroImageFileName { get; set; }
 
+        public int UpdatedBy { get; set; }
+        public string UpdatedByName { get; set; }
+
     }
 
     public class CourseRuleModel : BaseModel

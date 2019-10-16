@@ -176,8 +176,9 @@ namespace FEP.WebApi.Api.eLearning
                 course.CreatedDate = DateTime.Now;
                 course.IsDeleted = false;
 
-                // all course activity is log to table courseapprovallog
+                course.CreatedBy = request.CreatedBy;
 
+                // all course activity is log to table courseapprovallog
                 course.CourseApprovalLog = new List<CourseApprovalLog>
                 {
                     new CourseApprovalLog
@@ -594,11 +595,17 @@ namespace FEP.WebApi.Api.eLearning
                     entity.IsFree = model.IsFree;
                     entity.ViewCategory = model.ViewCategory;
                     entity.Price = model.Price;
-                    db.Entry(entity).State = EntityState.Modified;
+
+                    entity.UpdatedBy = model.UpdatedBy;
+                    entity.UpdatedDate = DateTime.Now;
+
+                    db.SetModified(entity);
 
                     db.SaveChanges();
 
-                    return Ok(entity.Id);
+                    model.Id = entity.Id;
+
+                    return Ok(model);
                 }
             }
             return BadRequest(ModelState);

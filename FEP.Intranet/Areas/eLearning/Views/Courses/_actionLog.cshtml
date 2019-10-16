@@ -3,10 +3,14 @@
 
 @model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
 
+
+
 <div class="action-log">
+
     <h6 class="color-darkblue px-3"><i class="la la-comment color-secondary font-icon align-top"></i>Action Log</h6>
     <!-- Kalau banyak action log akan jd scroll ke bwh -->
     <div data-perfect-scrollbar class="position-relative">
+
         @if (Model.CourseApprovalLogs.Count != 0)
         {
 

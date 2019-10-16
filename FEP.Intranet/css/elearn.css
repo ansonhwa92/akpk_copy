@@ -26,3 +26,47 @@ loader {
     left: 50%;
     margin-top: -4.05em;
 }
+
+.title {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 28px;
+}
+
+.subtitle {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 18px;
+    text-transform: capitalize;
+}
+
+.moduleTitle {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.divider {
+    border-width: thin;
+    border-color: lightgray;
+    border-style: solid;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.module-box {
+    border-radius: 3px;
+    border-width: thin;
+    padding: 2px;
+    border-style: none;
+    border-color: #f7efef;
+    margin: 5px;
+}
+
+.handle {
+    cursor: move;
+    cursor: -webkit-grabbing;
+}

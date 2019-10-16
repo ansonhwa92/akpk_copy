@@ -36,137 +36,163 @@
     </div>
 }
 
-<form id="form" method="post">
+    <form id="form" method="post">
 
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.IntroImageFileName)
 
-    <div class="row">
 
-        @*@Html.Partial("_contentSidebar")*@
+        <div class="row">
 
-        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-            <!-- Start Form -->
-            <div class="border-form rounded-top">
-                <div class="form-container tab-content">
-                    <div class="tab-pane active" id="course-details">
-                        <div class="mb-4 mt-2 mr-auto">
-                            @if (Model.Status != CourseStatus.Published)
-                            {
-                                <div class="card text-white bg-dark p-2 float-right border-dark">@Model.Status</div>
-                            }
-                            <div class="boxed">
-                                <img class="introImage" src="@Url.Action("GetImg", "File", new { area = "eLearning", fileName = @Model.IntroImageFileName})"
-                                     height="200" width="500" alt="" />
+            @*@Html.Partial("_contentSidebar")*@
+
+            <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+                <!-- Start Form -->
+                <div class="border-form rounded-top">
+                    <div class="form-container tab-content">
+
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <span class="title">
+                                    @name
+                                </span>
                             </div>
-
-                            <span class="text-muted-light x-small font-italic">Course Name</span>
-                            <h2 class="color-darkblue mb-0">
-                                @name
-                            </h2>
-                        </div>
-                        <span class="text-muted-light x-small font-italic">Course Description</span>
-                        <br />
-                        <div>
-                            <div class="descbox">
-                                @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
-                            </div>
-                        </div>
-
-                        <br />
-                        <span class="text-muted-light x-small font-italic">Course Objectives</span>
-                        <div>
-                            <div class="objbox">
-                                @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
-                            </div>
-                        </div>
-                        <br />
-                        <div>
-                            <div class="row">
-
-                                <a class="btn btn-secondary m-2" href="#">Enroll</a>
-                                <a class="btn btn-secondary m-2" href="#">Start the course</a>
-                            </div>
-                        </div>
-                        <hr />
-
-                        <input name="order" id="order" hidden />
-                        <!----START MODULES -->
-                        <div id="draggable-module">
-                            @{
-
-                                var modules = Model.Modules.OrderBy(x => x.Order).ToList();
-
-                                for (int i = 0; i < modules.Count(); i++)
+                            <div class="col-sm-3">
+                                @if (Model.Status != CourseStatus.Published)
                                 {
-                                    var module = modules[i];
+                                    <div class="card text-white bg-dark p-2 float-right border-dark">@Model.Status</div>
+                                }
+                            </div>
+                        </div>
 
-                                    <div class="module-box" data-id="@module.Order" onclick="openModule(@module.Id)">
-                                        <div class="row">
-                                            <div class="col-sm-9">
-                                                <h3>@module.Title</h3>
+                        <div class="tab-pane active" id="course-details">
+                            <div class="mb-4 mt-2 mr-auto">
 
-                                                <a href="@Url.Action("Content", "CourseModules", new { area = "eLearning", id = module.Id })"
-                                                   data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>
-                                            </div>
+                                <div class="boxed">
+                                    <img class="introImage" src="@Url.Action("GetImg", "File", new { area = "eLearning", fileName = @Model.IntroImageFileName})"
+                                         height="300" width="100%" alt="" />
+                                </div>
+
+
+                            </div>
+
+                            <div class="subtitle">
+                                ABOUT
+                            </div>
+
+                            <div>
+                                <div class="descbox">
+                                    @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
+                                </div>
+                            </div>
+
+                            <div class="subtitle">
+                                What you will learn
+                            </div>
+
+                            <div>
+                                <div class="objbox">
+                                    @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="row">
+
+                                    <a class="btn btn-secondary m-2" href="#">Enroll</a>
+                                    <a class="btn btn-secondary m-2" href="#">Start the course</a>
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div class="subtitle">
+                                MODULES
+                            </div>
+
+                            <!----START MODULES -->
+                            <div id="draggable-module">
+                                @{
+
+                                    var modules = Model.Modules.OrderBy(x => x.Order).ToList();
+
+                                    for (int i = 0; i < modules.Count(); i++)
+                                    {
+                                        var module = modules[i];
+
+                                <div class="module-box" data-id="@module.Order" onclick="openModule(@module.Id)">
+                                    <div class="row  mb-2">
+                                        <div class="col-sm-2">
+                                            <span class="moduleTitle">MODULE @i</span>
                                         </div>
-                                        <div>
-                                            <div>
-                                                @Html.Raw(@module.Description)
 
-                                                <div class="row pl-2">
-                                                    <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count()</span></div>
-                                                    <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo</span></div>
-                                                    <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio</span></div>
-                                                </div>
+                                        <div class="col-sm-10">
+                                            <span class="moduleTitle">@module.Title</span>
+
+                                            @*<a href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = module.Id })"
+                data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>*@
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div>
+                                            @Html.Raw(@module.Description)
+
+                                            <div class="row pl-2">
+                                                <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
+                                                <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
+                                                <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="divider"></div>
+                                </div>
+                                    }
                                 }
-                            }
+                            </div>
+                            <!----END MODULES -->
                         </div>
-                        <!----END MODULES -->
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 
 <style>
-    .module-box {
-        border-radius: 3px;
-        border-width: thin;
-        padding: 15px;
-        border-style: solid;
-        border-color: #f7efef;
-        margin: 5px;
-    }
-
-    .handle {
-        cursor: move;
-        cursor: -webkit-grabbing;
-    }
-
     .form-container {
         max-width: 100% !important
     }
 </style>
 
 @section ContentScript {
+
+
+    <link href="~/css/elearn.css" rel="stylesheet" />
+
+
     <script src="~/Scripts/jquery.truncate.js"></script>
 
     <script src="~/js/elearn.js"></script>
     <script>
 
         $(document).ready(function () {
+            var imgFileName = $('#IntroImageFileName').val();
+
+            if ($.trim(imgFileName) == '') {
+
+                var defaultImgUrl = '@(BaseURL)/Content/logo-akpk.svg';
+                console.log(defaultImgUrl);
+
+                $(".introImage").attr('src', defaultImgUrl);
+            }
+
         });
 
         function openModule(moduleId) {
-            var url = '@Url.Action("Content", "CourseModules", new { area = "eLearning" })?id=' + moduleId;
+            var url = '@Url.Action("View", "CourseModules", new { area = "eLearning" })?id=' + moduleId;
             window.location = url;
         }
     </script>

@@ -13,7 +13,7 @@ namespace FEP.Model.Migrations
         {
             DefaultSLAReminder(db);
             DefaultParameterGroup(db);
-            DefaultTemplate(db);
+           // DefaultTemplate(db);
         }
 
         public static void DefaultSLAReminder(DbEntities db)

@@ -181,6 +181,12 @@ namespace FEP.Model.Migrations
             AddRole(db, "Approver R&P 3", "Approver R&P 3");
             AddRole(db, "Approver eLearning 3", "Approver eLearning 3");
 
+            AddRole(db, "Testing1", "Testing 1", new List<RoleAccess> 
+            { 
+                new RoleAccess { UserAccess = UserAccess.AdminCompanyMenu }, 
+                new RoleAccess { UserAccess = UserAccess.AdminStaffMenu } }
+            );
+
             //staff
             AddStaff(db, "HAROLDEAN LIM @ LIM JIN LOK", "690315065097", "", "0106598960");
             AddStaff(db, "AZMAN BIN HASIM", "690629715005", "", "0192333703");

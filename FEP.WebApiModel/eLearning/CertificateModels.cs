@@ -19,6 +19,8 @@ namespace FEP.WebApiModel.eLearning
         public int selectedTemplate { get; set; }
         public ICollection<CourseCertificateTemplate> Template { get; set; }
         public ICollection<CourseCertificate> Background { get; set; }
+
+        public Course Course { get; set; }
     }
 
     //BACKGROUND

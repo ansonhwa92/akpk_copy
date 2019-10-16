@@ -536,7 +536,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         public async Task<ActionResult> AssignCertificate(int id)
         {
-            var response = await WepApiMethod.SendApiAsync<CertificatesModel>(HttpVerbs.Get, $"eLearning/Certificate");
+            var response = await WepApiMethod.SendApiAsync<CertificatesModel>(HttpVerbs.Get, $"eLearning/Certificates/GetCertificate?id={id}");
 
             if (response.isSuccess)
             {

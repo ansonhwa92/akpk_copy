@@ -18,6 +18,10 @@ namespace FEP.Model.Migrations
             aiman.Seed(context);
             firus.Seed(context);
             tajulSeed.Seed(context);
+
+            // Seed Elearning Default data and Test users and sample data
+            SeedElearning.Seed(context);
+
         }
     }
 }

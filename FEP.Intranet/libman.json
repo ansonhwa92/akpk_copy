@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery-sortable@0.9.13",
+      "destination": "Scripts/jquery-sortable/"
+    }
+  ]
+}

@@ -29,6 +29,7 @@ namespace FEP.Model
         public int CreatedBy { get; set; }
 
         public DateTime CreatedDate { get; set; }
+        public string FileNameOnStorage { get; set; }
 
         public bool Display { get; set; }
 

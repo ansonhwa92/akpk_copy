@@ -41,6 +41,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="eLearning\Certificate.Designer.cs">
+      <DependentUpon>Certificate.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="eLearning\Content.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Content.resx</DependentUpon>
+    </Compile>
+    <Compile Include="eLearning\Course.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Course.resx</DependentUpon>
+    </Compile>
+    <Compile Include="eLearning\Enum.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Enum.resx</DependentUpon>
+    </Compile>
+    <Compile Include="eLearning\Module.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Module.resx</DependentUpon>
+    </Compile>
     <Compile Include="Company.Designer.cs">
       <DependentUpon>Company.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -76,7 +101,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="CourseCategory.Designer.cs">
+    <Compile Include="eLearning\CourseCategory.Designer.cs">
       <DependentUpon>CourseCategory.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -170,6 +195,26 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Individual.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="eLearning\Certificate.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Certificate.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="eLearning\Content.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Content.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="eLearning\Course.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Course.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="eLearning\Enum.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Enum.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="eLearning\Module.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Module.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="EventCategory.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EventCategory.Designer.cs</LastGenOutput>
@@ -182,7 +227,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>General.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="CourseCategory.resx">
+    <EmbeddedResource Include="eLearning\CourseCategory.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CourseCategory.Designer.cs</LastGenOutput>
     </EmbeddedResource>

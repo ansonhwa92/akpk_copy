@@ -1,0 +1,211 @@
+﻿@using FEP.Model
+@using FEP.Model.eLearning
+@using System.Web
+
+@model FEP.WebApiModel.eLearning.CreateOrEditModuleModel
+
+@{
+    /**/
+
+    ViewBag.Title = "View Module";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    var name = Model.Title;
+    var desc = Model.Description;
+
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5">
+                    <a href="~/eLearning/Courses/Content/@Model.CourseId" class="btn btn-outline-primary text-white">
+                        <span class="align-middle">
+                            <i class="la la-long-arrow-left">&nbsp;</i>
+                        </span> Back
+                    </a>
+                </div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Courses</a></li>
+                                <li class="breadcrumb-item"><a href="#">Module</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">View Module : @name</h1>
+                    <div class="header-text">
+                        View a module.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
+            <div class="form-container">
+                <div class="mb-4 mt-2 mr-auto">
+                    @*<span class="text-muted-light x-small font-italic">Module Name</span>*@
+                    <h2 class="color-darkblue mb-0">
+                        @name
+                    </h2>
+                </div>
+                @*<span class="text-muted-light x-small font-italic">Module Description</span>*@
+                <div class="subtitle">
+                    ABOUT
+                </div>
+                <div>
+                    <div class="descbox">
+                        @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
+                    </div>
+                    <p id="afterDesc"></p>
+                </div>
+
+                <br />
+
+                <div class="subtitle">
+                    What you will learn
+                </div>
+                <div>
+                    <div class="objbox">
+                        @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
+                    </div>
+                    <p id="afterObj"></p>
+                </div>
+                <hr />
+                <div>
+
+                    <!----START CONTENT -->
+                    @*<div id="draggable-content">
+                        @{
+
+                            var contents = Model.ModuleContents
+                                .OrderBy(x => x.Order).ToList();
+
+                            for (int i = 0; i < contents.Count(); i++)
+                            {
+                                var content = contents[i];
+
+                                var icon = "la-file-text";
+                                var title = content.ContentType;
+
+                                <div class="content-box" data-id="@content.Id" onclick="openContent(@content.Id)">
+
+                                    @switch (content.ContentType)
+                                    {
+                                        case CourseContentType.RichText:
+                                            icon = "la-file-text";
+                                            break;
+
+                                        case CourseContentType.Video:
+                                            icon = "la-youtube-play";
+
+                                            break;
+
+                                        case CourseContentType.IFrame:
+                                            icon = "la-paperclip";
+
+                                            break;
+
+                                        case CourseContentType.Document:
+                                            icon = "la-file-word-o";
+
+                                            break;
+
+                                        case CourseContentType.Audio:
+
+                                            icon = "la-file-audio-o";
+
+                                            break;
+                                        case CourseContentType.Test:
+
+                                            icon = "la-question-circle";
+
+                                            break;
+                                        case CourseContentType.Assignment:
+
+                                            icon = "la-list-alt";
+
+                                            break;
+
+                                        case CourseContentType.Flash:
+
+                                            icon = "la-flash";
+
+                                            break;
+                                        default:
+                                            icon = "la-file-text";
+                                            break;
+
+                                    }
+
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <div class="pr-3"><i class="la @icon la-2x" data-toggle="tooltip" title=@title></i><span class="pb-1">@content.Title</span></div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </div>
+
+                            }
+                        }
+                    </div>*@
+                </div>
+            </div>
+        </div>
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+
+            <a class="btn btn-default" href="~/eLearning/Courses/Content/@Model.CourseId" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
+
+            <a class="btn btn-default pull-right" href="~/eLearning/CourseModules/Start/@Model.Id" data-toggle="tooltip" data-placement="top" title="Next">@Language.eLearning.Course.Next</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-container {
+        max-width: none !important;
+    }
+
+    .content-box {
+        /*border-radius: 3px;
+        border-width: thin;
+        padding: 15px;
+        border-style: solid;
+        border-color: #f7efef;*/
+        margin: 5px;
+    }
+</style>
+
+@section ContentScript {
+
+    <link href="~/css/elearn.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.truncate.js"></script>
+    <!-- Sortable.js -->
+    <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
+    <script src="~/Scripts/Sortable/jquery-sortable.js"></script>
+    <script src="~/js/elearn.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+        });
+
+        function openContent(Id) {
+            var url = '@Url.Action("View", "CourseContents", new { area = "eLearning" })?id=' + Id;
+            window.location = url;
+        }
+    </script>
+}

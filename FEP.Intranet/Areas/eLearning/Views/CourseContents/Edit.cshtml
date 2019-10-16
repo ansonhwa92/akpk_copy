@@ -1,0 +1,322 @@
+﻿@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+
+@{
+    ViewBag.Title = "Edit Content";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    var name = Model.PageTitle;
+
+    var desc = Model.ContentType.ToString();
+}
+
+<div class="loading">
+    <div class="loader"></div>
+
+</div>
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5">
+
+                    <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-outline-primary text-white">
+                        <span class="align-middle">
+                            <i class="la la-long-arrow-left">&nbsp;</i>
+                        </span>
+                        Back
+                    </a>
+                </div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Courses</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId">Module</a></li>
+                                <li class="breadcrumb-item"><a href="#">Content</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@name : Edit @desc</h1>
+                    <div class="header-text">Edit @desc.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<form action="/CourseContents/Edit" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.CourseId)
+    @Html.HiddenFor(m => m.CourseModuleId)
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.ContentType)
+    @Html.HiddenFor(m => m.PageTitle)
+    @Html.HiddenFor(m => m.VideoType)
+    @Html.HiddenFor(m => m.VideoType)
+    @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+    @Html.HiddenFor(m => m.CompletionType)
+
+    <div class="row">
+
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div id="page-nav" class="sidebar-left page-nav">
+                <div data-perfect-scrollbar class="ps">
+                    <div class="page-section">
+                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                        <ul class="nav page-nav__menu">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">@Model.ContentType</a>
+                            </li>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <div class="form-container">
+
+                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
+                        <div class="">
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
+                        <div class="">
+                            @Html.TextAreaFor(model => model.Description, new { @class = "summernote form-control" })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <hr />
+
+                    @Html.Partial($"_edit{Model.ContentType.ToString()}", Model)
+
+                </div>
+            </div>
+
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+
+                <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+                   title="Back">@Language.General.ButtonBack</a>
+
+                <button type="submit" class="btn btn-default pull-right  ml-2" id="btnSaveAndView" name="SubmitType" value="SaveAndView">
+                    <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save And View
+                </button>
+
+                <button type="submit" class="btn btn-default pull-right" id="btnSave" name="SubmitType" value="Save">
+                    <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save
+                </button>
+            </div>
+        </div>
+    </div>
+    @* } *@
+</form>
+
+<style>
+    /*.questionWrapper,
+    .timerWrapper {
+        display: none;
+    }*/
+
+    .form-container {
+        max-width: none !important;
+    }
+</style>
+
+@section ContentScript {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <link href="~/css/elearn.css" rel="stylesheet" />
+    <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
+    <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+    <script src="~/js/elearn.js"></script>
+    <script src="~/js/elearn-course.js"></script>
+
+    <script>
+        var uploadImgUrl = '@(BaseURL)/eLearning/File/UploadFile';
+        var getImgUrl = '@(BaseURL)/eLearning/File/GetImg/?fileName=';
+
+            //var uploadDocUrl = '@(WebApiURL)/eLearning/File/';
+        var uploadDocUrl = '@(BaseURL)/eLearning/File/UploadFile';
+        var convertFileUrl = '@(BaseURL)eLearning/File/DocToHTML';
+
+
+        $(document).ready(function () {
+
+
+            $('.loading').hide();
+
+            $('#Description').summernote({
+                placeholder: 'Type your description of the content here.',
+                tabsize: 2,
+                height: 200,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['link', 'picture']],
+                ],
+                codeviewFilter: false,
+                codeviewIframeFilter: true,
+                callbacks: {
+                    onFocus: function () {
+                        currentElement = "body";
+                    },
+                    onImageUpload: function (files, editor, $editable) {
+                        uploadFile(uploadImgUrl, files[0], function (message) {
+
+                            var remoteUrl = getImgUrl +  message.FileNameOnStorage;
+
+                            $('#Description').summernote('insertImage', remoteUrl, message.FileName);
+
+                        });
+                    }
+                }
+            });
+
+              $('#Text').summernote({
+                placeholder: 'Type your text here.',
+                tabsize: 2,
+                height: 500,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['link', 'picture']],
+                ],
+                codeviewFilter: false,
+                codeviewIframeFilter: true,
+                callbacks: {
+                    onFocus: function () {
+                        currentElement = "body";
+                    },
+                    onImageUpload: function (files, editor, $editable) {
+                        uploadFile(uploadImgUrl, files[0], function (message) {
+
+                            var remoteUrl = getImgUrl +  message.FileNameOnStorage;
+
+                            $('#Text').summernote('insertImage', remoteUrl, message.FileName);
+
+                        });
+                    }
+                }
+            });
+
+            var completionType = $('#CompletionType').val();
+
+            if (completionType == "AnswerQuestion") {
+                $("#answerQuestion").prop("checked", true);
+                $('#Timer').prop("disabled", true);
+                $('#ContentQuestionId').prop("disabled", false);
+            }
+
+            if (completionType == "ClickButton") {
+                $("#clickButton").prop("checked", true);
+                $('#Timer').prop("disabled", true);
+                $('#ContentQuestionId').prop("disabled", true);
+            }
+
+
+            if (completionType == "Timer") {
+                $("#timer1").prop("checked", true);
+                $('#Timer').prop("disabled", false);
+                $('#ContentQuestionId').prop("disabled", true);
+            }
+
+            var contentType = $('#ContentType').val();
+            if (contentType == 'Video') {
+                if ($('#VideoType').val() == "ExternalVideo") {
+
+                    $("#video1").prop("checked", true);
+                    $('#Url').prop("disabled", false);
+                    $('#File').prop("disabled", true);
+
+                }
+
+                if ($('#VideoType').val() == "UploadVideo") {
+
+                    $("#video2").prop("checked", true);
+                    $('#File').prop("disabled", false);
+                    $('#Url').prop("disabled", true);
+
+                }
+            }
+
+            console.log($('#AudioType').val());
+            if (contentType == 'Audio') {
+                if ($('#AudioType').val() == "SavedAudio") {
+                    $("#audio1").prop("checked", true);
+                    $('#File').prop("disabled", true);
+                    $("#ContentFileId").prop("disabled", false);
+                }
+
+                if ($('#AudioType').val() == "UploadAudio") {
+
+                    $("#audio2").prop("checked", true);
+                    $("#ContentFileId").prop("disabled", true);
+                    $('#File').prop("disabled", false);
+
+                }
+            }
+
+
+            console.log($('#DocumentType').val());
+            if (contentType == 'Document') {
+                if ($('#DocumentType').val() == "SavedDocument") {
+                    $("#document1").prop("checked", true);
+                    $('#File').prop("disabled", true);
+                    $("#ContentFileId").prop("disabled", false);
+                    $('#Url').prop("disabled", true);
+
+                    document.getElementById("otherDoc").style.display = "block";
+                    document.getElementById("slideShareDoc").style.display = "none";
+                }
+
+                if ($('#DocumentType').val() == "UploadDocument") {
+
+                    $("#document2").prop("checked", true);
+                    $('#File').prop("disabled", false);
+                    $("#ContentFileId").prop("disabled", true);
+                    $('#Url').prop("disabled", true);
+
+                    document.getElementById("otherDoc").style.display = "block";
+                    document.getElementById("slideShareDoc").style.display = "none";
+
+                }
+                if ($('#DocumentType').val() == "UseSlideshare") {
+
+                    $("#document3").prop("checked", true);
+                    $('#File').prop("disabled", true);
+                    $("#ContentFileId").prop("disabled", true);
+                    $('#Url').prop("disabled", false);
+
+                    document.getElementById("otherDoc").style.display = "none";
+                    document.getElementById("slideShareDoc").style.display = "block";
+
+                }
+            }
+
+        });
+    </script>
+
+}

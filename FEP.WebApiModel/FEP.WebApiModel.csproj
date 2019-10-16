@@ -80,7 +80,19 @@
     <Compile Include="eEvent\EventExternalExhibitor.cs" />
     <Compile Include="eEvent\EventSpeaker.cs" />
     <Compile Include="eEvent\ExhibitionRoadshowRequest.cs" />
+    <Compile Include="eLearning\BaseModel.cs" />
+    <Compile Include="eLearning\CourseApprovalLog.cs" />
+    <Compile Include="eLearning\CourseGroup.cs" />
+    <Compile Include="eLearning\CourseDiscussion.cs" />
+    <Compile Include="eLearning\CertificateModels.cs" />
+    <Compile Include="eLearning\CourseEventModels.cs" />
+    <Compile Include="eLearning\FileUploadModels.cs" />
+    <Compile Include="eLearning\FileDocumentModels.cs" />
+    <Compile Include="eLearning\QuestionModels.cs" />
+    <Compile Include="eLearning\CourseContentModels.cs" />
+    <Compile Include="eLearning\CourseModels.cs" />
     <Compile Include="eLearning\CourseCategory.cs" />
+    <Compile Include="eLearning\CourseModuleModels.cs" />
     <Compile Include="Home\ProfileModel.cs" />
     <Compile Include="eEvent\EventCategory.cs" />
     <Compile Include="eEvent\MediaInterviewRequest.cs" />
@@ -99,6 +111,12 @@
     <Compile Include="Template\EmailTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="User\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\FEP.Language\FEP.Language.csproj">
       <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
       <Name>FEP.Language</Name>
@@ -108,12 +126,5 @@
       <Name>FEP.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="User\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

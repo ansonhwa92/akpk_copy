@@ -1,0 +1,26 @@
+﻿@using FEP.Model.eLearning
+
+@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+
+
+<div class="form-group">
+
+    @{
+        if (Model.DocumentType != DocumentType.UseSlideshare)
+        {
+            @Html.Raw(Model.Text)
+        }
+        else
+        {
+            <div class="slideshare" id="slideShareDoc">
+                <label>Slideshare</label>
+                <div class="">
+                    <iframe id="myslide" src="@Model.Url" frameborder="0" scrolling="no" width="100%" height="500"
+                            style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen></iframe>
+                </div>
+
+            </div>
+        }
+    }
+
+</div>

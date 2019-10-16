@@ -1,0 +1,17 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+
+@Html.Partial("_contentCompletion", Model)
+<hr />
+
+<div>
+    <div class="form-group">
+        <label>@Language.eLearning.Content.RichText</label>
+        <div class="">
+
+            @Html.TextAreaFor(model => model.Text, new { @class = "summernote form-control" })
+
+            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

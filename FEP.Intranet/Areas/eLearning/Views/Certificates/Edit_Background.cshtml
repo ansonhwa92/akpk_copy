@@ -1,0 +1,122 @@
+﻿@*@model CreateBackgroundModel*@
+@model FEP.WebApiModel.eLearning.CreateBackgroundModel
+
+
+@{
+    ViewBag.Title = "Certificate";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Contentscript{
+    <script type="text/javascript">
+    </script>
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                @*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Learning Management</a></li>
+                                <li class="breadcrumb-item"><a href="#">Certificate Background</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Certificate Background</h1>
+                    <div class="header-text">Delete Certificate Background</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@using (Html.BeginForm("Update_Background", "Certificates", FormMethod.Post, new { enctype = "multipart/form-data", id = "target" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="row">
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div class="sidebar-left">
+                <!-- Steps -->
+                <div class="sidebar-inner sticky">
+                    <ul class="steps steps-vertical">
+                        <li class="step-item complete">
+                            <a href="" class="step-link">
+                                <span class="step-number">1</span>
+                                <span class="step-title">Update Background</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- End Steps -->
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <form>
+                    <div class="form-container form-container-w100">
+                        <div class="d-flex pb-4 align-items-center">
+                            <div>
+                                <h4 class="color-darkblue mb-0">You can update or delete this background</h4>
+                            </div>
+                            <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.Description)
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.TypePageOrientation)
+                                @Html.EnumDropDownListFor(model => model.TypePageOrientation, "-Select-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.TypePageOrientation, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mxw-660">
+                                <div class="row">
+                                    @{var imgUrl = "@(BaseURL)/eLearning/FileUpload/GetImg/?fil0eName=" + Model.FileUpload.FileNameOnStorage;}
+                                    <div class="col-lg-4">
+                                        <div class="box-contain">
+                                            <div class="card text-center">
+                                                <span> <img src="@Url.Action("GetImg", "FileUpload", new { area = "eLearning", fileName = Model.FileUpload.FileNameOnStorage})" height="100" width="150" id="FileUploadId" /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- End Form -->
+            </div>
+
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a class="btn btn-default" href="@Url.Action("Index", "Certificates", new { area = "eLearning" })"
+                   data-toggle="tooltip" data-placement="top" title="Back">Back</a>
+
+                <a class="btn btn-warning" href="@Url.Action("Delete_Background", "Certificates", new { area = "eLearning",  id = Model.Id })"
+                   data-toggle="tooltip" data-placement="top">Delete</a>
+
+                <button type="submit" class="btn btn-secondary pull-right" id="btnSave" name="Submittype" value="Save">Save</button>
+            </div>
+        </div>
+    </div>
+}

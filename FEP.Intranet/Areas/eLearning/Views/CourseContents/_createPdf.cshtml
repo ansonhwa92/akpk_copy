@@ -1,0 +1,17 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+
+@Html.Partial("_contentCompletion", Model)
+<hr />
+
+<div class="form-group">
+    <label>@Language.eLearning.Content.SelectPdf</label>
+    <div class="col-sm-12">
+        <div class="custom-file">
+            <input name="File" id="File" type="file" class="custom-file-input"  accept=".pdf">
+            <label for="File" class="custom-file-label text-truncate">Choose file...</label>
+        </div>
+
+        @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+    </div>
+</div>

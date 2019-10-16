@@ -1,0 +1,85 @@
+﻿    @using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditModuleModel
+
+
+<div class="col-xl-3 col-md-3 col-sm-4 my-2">
+    <div id="page-nav" class="sidebar-left page-nav">
+        <div data-perfect-scrollbar class="ps">
+            <div class="page-section">
+                <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                <ul class="nav page-nav__menu">
+                    <li class="nav-item">
+                        @*<a href="#" class="nav-link">Module</a>*@
+                        <a href="@Url.Action("Content", "Courses", new { area = "eLearning", id = @Model.CourseId })" class="nav-link"> Module </a>
+
+                    </li>
+                   </ul>
+            </div>
+        </div>
+
+        <div data-perfect-scrollbar class="ps">
+            <div class="page-section">
+                <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Add content</h6>
+                <ul class="nav page-nav__menu">
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.RichText,
+                                    createContentFrom = (int) CreateContentFrom.Module})" class="nav-link">
+                            Rich Text
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.IFrame,
+                                    createContentFrom = (int) CreateContentFrom.Module})" class="nav-link">
+                            IFrame
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.Document,
+                                    createContentFrom = (int) CreateContentFrom.Module})" class="nav-link">
+                            Document
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.Video,
+                                    createContentFrom = (int) CreateContentFrom.Module})" class="nav-link">
+                            Video
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.Audio,
+                                    createContentFrom = (int) CreateContentFrom.Module})" class="nav-link">
+                            Audio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.Flash,
+                                    createContentFrom = (int) CreateContentFrom.Module})" class="nav-link">
+                            Flash
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.Pdf,
+                                    createContentFrom = (int) CreateContentFrom.Module})" class="nav-link">
+                            Pdf
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

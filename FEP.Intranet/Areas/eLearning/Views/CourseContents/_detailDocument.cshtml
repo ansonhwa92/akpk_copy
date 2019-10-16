@@ -1,0 +1,28 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+
+@Html.Partial("_contentCompletionDetail", Model)
+<hr />
+
+<div class="form-group">
+    <div class="col-sm-12">
+
+        @if (Model.DocumentType == DocumentType.SavedDocument)
+        {
+            <div class="">
+                @Html.TextAreaFor(model => model.Text, new { @class = "summernote form-control", @readonly = "readonly" })
+            </div>
+        }
+
+        else
+        {
+            <div class="slideshare" id="slideShareDoc">
+                <label>Slideshare</label>
+                <div class="">
+                    <iframe id="myslide" src="@Model.Url" frameborder="0" scrolling="no" width="100%" height="500"
+                            style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen></iframe>
+                </div>
+            </div>
+        }
+    </div>
+</div>

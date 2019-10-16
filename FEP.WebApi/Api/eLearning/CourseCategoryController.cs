@@ -1,4 +1,5 @@
-﻿using FEP.Model;
+﻿using FEP.Model.eLearning;
+using FEP.Model;
 using FEP.WebApiModel.eLearning;
 using System;
 using System.Collections.Generic;
@@ -28,10 +29,11 @@ namespace FEP.WebApi.Api.eLearning
         
         public IHttpActionResult Get()
         {
-            var categories = db.LearningCourseCategory.Where(u => u.Display).Select(s => new CourseCategoryModel
+            var categories = db.RefCourseCategories.Where(u => u.IsDisplayed).Select(s => new CourseCategoryModel
             {
                 Id = s.Id,
-                Name = s.Name
+                Name = s.Name,
+                Description = s.Description
             }).ToList();
 
             return Ok(categories);
@@ -40,10 +42,11 @@ namespace FEP.WebApi.Api.eLearning
                 
         public IHttpActionResult Get(int id)
         {
-            var category = db.LearningCourseCategory.Where(u => u.Display && u.Id == id).Select(s => new CourseCategoryModel
+            var category = db.RefCourseCategories.Where(u => u.IsDisplayed && u.Id == id).Select(s => new CourseCategoryModel
             {
                 Id = s.Id,
-                Name = s.Name
+                Name = s.Name,
+                Description = s.Description
             }).FirstOrDefault();
 
             if (category != null)
@@ -59,13 +62,14 @@ namespace FEP.WebApi.Api.eLearning
         public IHttpActionResult Post([FromBody]CreateCourseCategoryModel model)
         {
 
-            var category = new LearningCourseCategory
+            var category = new RefCourseCategory
             {
                 Name = model.Name,
-                Display = true
+                Description = model.Description,
+                IsDisplayed = true
             };
 
-            db.LearningCourseCategory.Add(category);
+            db.RefCourseCategories.Add(category);
             db.SaveChanges();
 
             return Ok(category.Id);
@@ -77,14 +81,15 @@ namespace FEP.WebApi.Api.eLearning
         public IHttpActionResult Put(int id, [FromBody]EditCourseCategoryModel model)
         {
 
-            var category = db.LearningCourseCategory.Where(s => s.Id == id).FirstOrDefault();
+            var category = db.RefCourseCategories.Where(s => s.Id == id).FirstOrDefault();
 
             if (category != null)
             {
                 category.Name = model.Name;
+                category.Description = model.Description;
 
                 db.Entry(category).State = EntityState.Modified;
-                db.Entry(category).Property(x => x.Display).IsModified = false;
+                db.Entry(category).Property(x => x.IsDisplayed).IsModified = false;
 
                 db.SaveChanges();
 
@@ -100,14 +105,14 @@ namespace FEP.WebApi.Api.eLearning
        
         public IHttpActionResult Delete(int id)
         {
-            var category = db.LearningCourseCategory.Where(u => u.Id == id).FirstOrDefault();
+            var category = db.RefCourseCategories.Where(u => u.Id == id).FirstOrDefault();
 
             if (category != null)
             {
-                category.Display = false;
+                category.IsDisplayed = false;
 
-                db.LearningCourseCategory.Attach(category);
-                db.Entry(category).Property(m => m.Display).IsModified = true;
+                db.RefCourseCategories.Attach(category);
+                db.Entry(category).Property(m => m.IsDisplayed).IsModified = true;
                 db.Configuration.ValidateOnSaveEnabled = false;
 
                 db.SaveChanges();
@@ -127,12 +132,12 @@ namespace FEP.WebApi.Api.eLearning
         {
             if (id == null)
             {
-                if (db.LearningCourseCategory.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Display))
+                if (db.RefCourseCategories.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.IsDisplayed))
                     return Ok(true);
             }
             else
             {
-                if (db.LearningCourseCategory.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
+                if (db.RefCourseCategories.Any(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.IsDisplayed))
                     return Ok(true);
             }
 

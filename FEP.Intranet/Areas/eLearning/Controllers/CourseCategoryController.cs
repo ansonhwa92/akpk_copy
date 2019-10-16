@@ -12,6 +12,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 {
     public class CourseCategoryController : FEPController
     {
+
         public async Task<ActionResult> List()
         {
             var response = await WepApiMethod.SendApiAsync<List<CourseCategoryModel>>(HttpVerbs.Get, $"eLearning/CourseCategory");
@@ -36,7 +37,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (nameResponse.isSuccess)
             {
-                TempData["ErrorMessage"] = Language.CourseCategory.ValidExistName;
+                TempData["ErrorMessage"] = Language.eLearning.CourseCategory.ValidExistName;
                 return RedirectToAction("List");
             }
 
@@ -47,28 +48,29 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 if (response.isSuccess)
                 {
-                    TempData["SuccessMessage"] = Language.CourseCategory.AlertSuccessCreate;
+                    TempData["SuccessMessage"] = Language.eLearning.CourseCategory.AlertSuccessCreate;
 
-                    LogActivity(Modules.Learning, "Create Parameter Course Category", model);
+                   await LogActivity(Modules.Learning, "Create Parameter Course Category", model);
 
                     return RedirectToAction("List");
                 }
             }
 
-            TempData["ErrorMessage"] = Language.CourseCategory.AlertFailCreate;
+            TempData["ErrorMessage"] = Language.eLearning.CourseCategory.AlertFailCreate;
 
             return RedirectToAction("List");
 
         }
 
-        public ActionResult _Edit(int id, string No, string Name)
+        public ActionResult _Edit(int id, string No, string Name, string Desc)
         {
 
             var model = new EditCourseCategoryModel
             {
                 Id = id,
                 No = No,
-                Name = Name
+                Name = Name,
+                Description = Desc
             };
 
             return View(model);
@@ -83,7 +85,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (nameResponse.isSuccess)
             {
-                TempData["ErrorMessage"] = Language.CourseCategory.ValidExistName;
+                TempData["ErrorMessage"] = Language.eLearning.CourseCategory.ValidExistName;
                 return RedirectToAction("List");
             }
 
@@ -94,28 +96,29 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 if (response.isSuccess)
                 {
-                    TempData["SuccessMessage"] = Language.CourseCategory.AlertSuccessUpdate;
+                    TempData["SuccessMessage"] = Language.eLearning.CourseCategory.AlertSuccessUpdate;
 
-                    LogActivity(Modules.Learning, "Update Parameter Course Category", model);
+                    await LogActivity(Modules.Learning, "Update Parameter Course Category", model);
 
                     return RedirectToAction("List");
                 }
             }
 
-            TempData["ErrorMessage"] = Language.CourseCategory.AlertFailUpdate;
+            TempData["ErrorMessage"] = Language.eLearning.CourseCategory.AlertFailUpdate;
 
             return RedirectToAction("List");
 
         }
 
-        public ActionResult _Delete(int id, string No, string Name)
+        public ActionResult _Delete(int id, string No, string Name, string Desc)
         {
 
             var model = new DeleteCourseCategoryModel
             {
                 Id = id,
                 No = No,
-                Name = Name
+                Name = Name,
+                Description = Desc
             };
 
             return View(model);
@@ -130,14 +133,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (response.isSuccess)
             {
-                TempData["SuccessMessage"] = Language.CourseCategory.AlertSuccessDelete;
+                TempData["SuccessMessage"] = Language.eLearning.CourseCategory.AlertSuccessDelete;
 
-                LogActivity(Modules.Learning, "Delete Parameter Course Category", new { id = id });
+                await LogActivity(Modules.Learning, "Delete Parameter Course Category", new { id = id });
 
                 return RedirectToAction("List");
             }
 
-            TempData["ErrorMessage"] = Language.CourseCategory.AlertFailDelete;
+            TempData["ErrorMessage"] = Language.eLearning.CourseCategory.AlertFailDelete;
 
             return RedirectToAction("List");
 

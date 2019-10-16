@@ -1,0 +1,447 @@
+﻿@using FEP.Model
+@using FEP.Model.eLearning
+@model DiscussionView
+
+
+@{
+    ViewBag.Title = "Parameter Course Category";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+
+                <div class="header-col-right float-right mt-5"><a href="@Url.Action("Index", "Parameter", new { area = "Setting" })" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">System Settings</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@Language.eLearning.CourseCategory.TitleList</h1>
+                    <div class="header-text"></div> @* discussion title *@
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<style>
+    .center {
+        margin: 10px;
+        border: 1px dashed lightgray;
+        padding: 10px;
+        text-align: center;
+        font-size: 12px;
+    }
+</style>
+
+<div class="row">
+
+    <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+
+        <div class="border-form rounded-top">
+            @* first post*@
+            <div class="border-1">
+                <div class="pull-right ">
+                    @*<a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonEdit" data-toggle="tooltip"><i class="la la-edit text-muted"></i></a>
+                        <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>*@
+                </div>
+                <div class="pull-left text-center">
+                    <img src="" class="avatar-xl">
+                </div>
+                <div>
+                    <div>
+                        <a href="linkToUserProfile"><span title="@Model.Post[0]CreatedByName">@Model.Post[0].CreatedByName</span></a>
+                        <span class="label label-info label-role">@Model.Post[0].CreatedByLevel</span> •
+                        @Model.Post[0].CreatedDate.ToLongDateString()
+                    </div>
+                    <h4>@Model.Post[0].Topic</h4>
+                    <br>
+                    <div>
+                        @Model.Post[0].Message<br>
+                    </div>
+                    @{ if (Model.Attachment.Count > 0)
+                        {
+                            if (Model.Attachment.Where(m => m.PostId == Model.Post[0].Id).FirstOrDefault() != null)
+                            {
+                                var att = Model.Attachment.Where(m => m.PostId == Model.Post[0].Id).FirstOrDefault();
+                                if (att.Attachment != null)
+                                {
+                                    <div>
+                                        <i class="fa fa-link"><a class="btn btn-link" href="@att.Attachment.FilePath" target="_blank">@att.Attachment.FileName </a></i>
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                </div>
+                <div style="margin-top:0px; padding: 10px;" class="text-right">
+                    <span id="top" class="btn btn-mini btn-primary">Reply</span>
+                </div>
+            </div>
+        </div>
+        <br class="clear hidden-desktop">
+
+        @*reply post*@
+        @{ if (Model.Post.Count > 1)
+            {
+                for (int p = 1; p < Model.Post.Count; p++)
+                {
+                    <div class="border-1">
+                        <div class="text-left" id="@Model.Post[p].Id" style="padding:20px;">
+                            <div>
+                                <div class="pull-right">
+                                    @*<a href="javascript:void(0);" class="tl-edit-reply" data-id="1" data-attachment="" data-attachment_name="">edit</a> • <a href="javascript:void(0);" onclick="myportal.app.confirm('Delete reply?', '<p>Are you sure you want to delete this reply?</p><p>This action cannot be undone</p>', removeReplyFromDom, this)" data-action="https://myakpk.talentlms.com/discussion/deletereply" data-id="1">delete</a>*@
+                                </div>
+                                <div>
+                                    <div class="pull-left text-center">
+                                        <img src="" class="avatar-xl">
+                                    </div>
+                                    <div class="tl-reply-info">
+                                        <a href="linkToUserProfile"><span title="@Model.Post[p].CreatedByName">@Model.Post[p].CreatedByName</span></a>
+                                        <span class="label label-info label-role">@Model.Post[p].CreatedByLevel</span> •
+                                        @{
+                                            if (Model.Post[p].UpdatedDate.HasValue)
+                                            {
+                                                <i>Edited on </i> @Model.Post[p].UpdatedDate.Value.ToLongDateString()
+                                            }
+                                            else
+                                            {
+                                                @Model.Post[p].CreatedDate.ToLongDateString()
+                                            }
+                                        }
+
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <div>@Model.Post[p].Message<br></div><br>
+                                        @{ if (Model.Attachment.Count > 0)
+                                            {
+                                                if (Model.Attachment.Where(m => m.PostId == Model.Post[p].Id).FirstOrDefault() != null)
+                                                {
+                                                    var att = Model.Attachment.Where(m => m.PostId == Model.Post[p].Id).FirstOrDefault();
+                                                    if (att.Attachment != null)
+                                                    {
+                                                        <div>
+                                                            <i class="fa fa-link"><a class="btn btn-link" href="@att.Attachment.FilePath" target="_blank">@att.Attachment.FileName </a></i>
+                                                        </div>
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                        @* <button href="javascript:void(0);" class="btn btn-primary tl-toggle-icon tl-toggle-1 tl-cursor-pointer" data-toggle="tl-comment-form-1">Comment</button>*@
+                                    </div>
+                                    <br />
+
+                                    <button id="Comment" aria-valuenow="@Model.Post[p].Id" onclick="callCustomer(@Model.Post[p].Id)" >Comment</button>
+                                    <div class="border-1" id="CommentArea_@Model.Post[p].Id">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br class="clear hidden-desktop">
+                }
+            }
+            else
+            {
+                <div class="center"><span align="center">Be the first to reply</span></div>
+            }
+        }
+
+
+        <div class="row">
+            <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+
+                <div id="ReplyToDiscussion" class="border-form rounded-top">
+                    @{
+                        Html.RenderPartial("_DiscussionReply");
+                    }
+                </div>
+
+            </div>
+        </div>
+        <div class="control-group" style="line-height: 1em;">
+            <label class="control-label" for="tl-reply-attachment"></label>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+                </div>
+
+
+
+@section ContentScript{
+    <script type="text/javascript">
+
+        function callCustomer(el) {
+            $("div[id*=CommentArea_]").html("");
+
+            var url = '@Url.Action("DisplaySearchResults", "CourseDiscussion")';
+            $('#CommentArea_' + el).load(url + '?id=' + el);
+            alert(el);
+        }
+
+       
+        function clearForm() {
+            $('#addForm').html('');
+
+            $('.editForm').each(function () {
+                $(this).html('');
+                $(this).prev('div.details').removeClass('d-none').addClass('d-block');
+            });
+
+        }
+
+        function showAdd() {
+
+            clearForm();
+
+            $.ajax({
+                type: 'get',
+                url: '@Url.Action("_Create", "CourseDiscussion", new { area = "eLearning" })',
+                success: function (data) {
+
+                    $('#addForm').html(data);
+                    $.validator.unobtrusive.parse('#formAdd');
+
+                },
+                error: function (xhr, status, error) {
+                    $('#detail').html('');
+                }
+            });
+
+        }
+
+        function showDetail(obj) {
+
+            var parent = $(obj).closest('div.editForm');
+            parent.html('');
+            parent.prev('div.details').removeClass('d-none').addClass('d-block');
+        }
+
+        function showEdit(obj, id, no, name) {
+
+            clearForm();
+
+            $.ajax({
+                type: 'get',
+                url: '@Url.Action("_Edit", "CourseDiscussion", new { area = "eLearning" })?id=' + id + '&Name=' + name + '&No=' + no,
+                success: function (data) {
+
+                    var parent = $(obj).closest('div.details');
+
+                    parent.removeClass('d-block').addClass('d-none');
+                    parent.next('div.editForm').html(data);
+
+                    $.validator.unobtrusive.parse('#formEdit');
+
+                },
+                error: function (xhr, status, error) {
+                    $('#detail').html('');
+                }
+            });
+
+        }
+
+        function showDelete(obj, id, no, name) {
+
+            clearForm();
+
+            $.ajax({
+                type: 'get',
+                url: '@Url.Action("_Delete", "CourseDiscussion", new { area = "eLearning" })?id=' + id + '&Name=' + name + '&No=' + no,
+                success: function (data) {
+
+                    var parent = $(obj).closest('div.details');
+
+                    parent.removeClass('d-block').addClass('d-none');
+                    parent.next('div.editForm').html(data);
+
+                },
+                error: function (xhr, status, error) {
+                    $('#detail').html('');
+                }
+            });
+
+        }
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#top").click(function () {
+                $('html, body').animate({
+                    scrollTop: $("#ReplyToDiscussion").offset().top
+                }, 500);
+                $('#NewDiscussionReply_Message').focus();
+            });
+
+            var table = $('.tabledata').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    "type": "post",
+                    "url": '@(WebApiURL)eLearning/Courses/GetAll',
+                    "data": function (filter) {
+                        console.log("-", filter);
+
+                        filter.Code = $('#Filters_Code').val();
+                        filter.Title = $('#Filters_Title').val();
+                        filter.Status = $('#Filters_Status').val();
+                        filter.Price = $('#Filters_Price').val();
+                    },
+                    dataFilter: function (res) {
+                        // do what you need to the data before it loads to the table
+                        // for debugging only for now
+                        return res;
+                    },
+                    error: function (x, y) {
+                        console.log("Error -", x);
+                    }
+                },
+                columns: [
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'Title',
+                        sortable: true
+                    },
+                    {
+                        data: 'Code',
+                        sortable: true
+                    },
+                    {
+                        data: 'Price',
+                        sortable: true
+                    },
+                    {
+                        data: 'Status',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+                            if (row.Status == 0) {
+                                return "<span class='color-grey font-weight-bold'>Draft</span>";
+                            }
+                            else if (row.Status == 1) {
+                                return "<span class='color-yellow font-weight-bold'>Pending Verification</span>";
+                            }
+                            else if (row.Status == 2) {
+                                return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
+                            }
+                            else if (row.Status == 3) {
+                                return "<span class='color-yellow font-weight-bold'>Pending Approval</span>";
+                            }
+                            else if (row.Status == 4) {
+                                return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
+                            }
+                        }
+                    },
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+
+                            var action = "";
+
+                            var canview = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseView));
+                            var canedit = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseEdit));
+                            var canverify = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseVerify));
+                            var canapprove1 = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseApproval1));
+                            var canapprove2 = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseApproval2));
+                            var canapprove3 = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseApproval3));
+                            var canpublish = @Json.Encode(CurrentUser.HasAccess(UserAccess.CoursePublish));
+                            var canwithdraw = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseEnroll));
+
+                            action = '<div class="icon-action">';
+
+                            if (canview) {
+                                action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
+                            }
+
+                            if (row.Status == 0) {          // new
+                                if (canedit) {
+                                    //action += '<a href="@Url.Action("Edit", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
+                                    action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
+                                    action += '<a href="@Url.Action("Delete", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>';
+                                }
+                            }
+                            else if (row.Status == 1) {     // submitted
+                                if (canverify || canapprove1 || canapprove2 || canapprove3) {
+                                    action += '<a href="@Url.Action("Evaluate", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
+                                }
+                            }
+                            else {
+                                action += '';
+                            }
+
+                            action += '</div>';
+
+                            return action;
+                        }
+                    }
+                ],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_ courses"
+                },
+                dom: 'rtip'
+            });
+
+            $('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#quickSearchBtn').click(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change(function () {
+                table.page.len($(this).val()).draw();
+            });
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt', function () {
+                var info = table.page.info();
+                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' courses');
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            }).draw();
+
+        });
+
+    </script>
+
+}
+

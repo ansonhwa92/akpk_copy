@@ -150,7 +150,7 @@ namespace FEP.Model.Migrations
             AddRole(db, "Agency", "Default Agency");
             AddRole(db, "Organizer", "Default Organizer");
 
-            AddRole(db, "Trainer", "Default Trainer");
+            //AddRole(db, "Trainer", "Default Trainer");
             AddRole(db, "Facilitator", "Default Facilitator");
             AddRole(db, "Speaker", "Default Speaker");
 
@@ -160,26 +160,26 @@ namespace FEP.Model.Migrations
 
             AddRole(db, "Admin Event", "Admin Event");
             AddRole(db, "Admin R&P", "Admin R&P");
-            AddRole(db, "Admin eLearning", "Admin eLearning");
+            //AddRole(db, "Admin eLearning", "Admin eLearning");
             
             AddRole(db, "Event Reception", "Event Reception");
             AddRole(db, "Event Moderator", "Event Moderator");
             
             AddRole(db, "Verifier Event", "Verifier Event");
             AddRole(db, "Verifier R&P", "Verifier R&P");
-            AddRole(db, "Verifier eLearning", "Verifier eLearning");
+            //AddRole(db, "Verifier eLearning", "Verifier eLearning");
            
             AddRole(db, "Approver Event 1", "Approver Event 1");
             AddRole(db, "Approver R&P 1", "Approver R&P 1");
-            AddRole(db, "Approver eLearning 1", "Approver eLearning 1");
+            //AddRole(db, "Approver eLearning 1", "Approver eLearning 1");
 
             AddRole(db, "Approver Event 2", "Approver Event 2");
             AddRole(db, "Approver R&P 2", "Approver R&P 2");
-            AddRole(db, "Approver eLearning 2", "Approver eLearning 2");
+            //AddRole(db, "Approver eLearning 2", "Approver eLearning 2");
 
             AddRole(db, "Approver Event 3", "Approver Event 3");
             AddRole(db, "Approver R&P 3", "Approver R&P 3");
-            AddRole(db, "Approver eLearning 3", "Approver eLearning 3");
+            //AddRole(db, "Approver eLearning 3", "Approver eLearning 3");
 
 			//staff
 			AddStaff(db, "HAROLDEAN LIM @ LIM JIN LOK", "690315065097", "", "0106598960");

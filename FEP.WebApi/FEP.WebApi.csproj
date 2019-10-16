@@ -48,6 +48,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Extensions.Microsoft.DependencyInjection, Version=0.0.0.0, Culture=neutral, PublicKeyToken=e767ac9c89543656, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.Extensions.Microsoft.DependencyInjection.7.0.0\lib\netstandard2.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -61,6 +67,12 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.2.2.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -155,7 +167,18 @@
     <Compile Include="Api\eEvent\ExhibitionRoadshowRequestController.cs" />
     <Compile Include="Api\eEvent\MediaInterviewRequestController.cs" />
     <Compile Include="Api\eEvent\PublicEventController.cs" />
+    <Compile Include="Api\eLearning\CourseGroupController.cs" />
+    <Compile Include="Api\eLearning\CourseDiscussionController.cs" />
+    <Compile Include="Api\eLearning\ContentCompletionApiController.cs" />
+    <Compile Include="Api\eLearning\CourseContentsApiController.cs" />
+    <Compile Include="Api\eLearning\CourseModulesApiController.cs" />
+    <Compile Include="Api\eLearning\CourseEventsApiController.cs" />
+    <Compile Include="Api\eLearning\CoursesApiController.cs" />
     <Compile Include="Api\eLearning\CourseCategoryController.cs" />
+    <Compile Include="Api\eLearning\CertificatesController.cs" />
+    <Compile Include="Api\eLearning\FileApiController.cs" />
+    <Compile Include="Api\eLearning\FileUploadController.cs" />
+    <Compile Include="Api\eLearning\VideoApiController.cs" />
     <Compile Include="Api\Home\ProfileController.cs" />
     <Compile Include="Api\Logs\ErrorLogController.cs" />
     <Compile Include="Api\Logs\UserLogController.cs" />
@@ -329,7 +352,7 @@
       <Name>FEP.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEP.WebApiModel\FEP.WebApiModel.csproj">
-      <Project>{91af142d-c57f-4296-a485-d17a80cdc57e}</Project>
+      <Project>{91AF142D-C57F-4296-A485-D17A80CDC57E}</Project>
       <Name>FEP.WebApiModel</Name>
     </ProjectReference>
   </ItemGroup>
@@ -338,6 +361,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -383,4 +409,11 @@
   </Target>
   <Target Name="AfterBuild">
   </Target> -->
+  <Target Name="CopyRoslynFiles" AfterTargets="AfterBuild" Condition="!$(Disable_CopyWebApplication) And '$(OutDir)' != '$(OutputPath)'">
+    <ItemGroup>
+      <RoslynFiles Include="$(CscToolPath)\*" />
+    </ItemGroup>
+    <MakeDir Directories="$(WebProjectOutputDir)\bin\roslyn" />
+    <Copy SourceFiles="@(RoslynFiles)" DestinationFolder="$(WebProjectOutputDir)\bin\roslyn" SkipUnchangedFiles="true" Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
+  </Target>
 </Project>

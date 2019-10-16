@@ -1,0 +1,66 @@
+﻿@model CertificatesModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav {
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Learning Management</a></li>
+                                <li class="breadcrumb-item"><a href="#">Certificate Background & Template</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Certificate Background & Template</h1>
+                    <div class="header-text">List of certificate background & template</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+        <div class="row">
+            <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+                <div id="page-nav" class="sidebar-left page-nav">
+                    <div data-perfect-scrollbar>
+                        <div class="page-section">
+                            <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Certificate</h6>                            
+                            <ul class="nav page-nav__menu">
+                                <li class="nav-item">
+                                    <a href="#background" data-toggle="tab" class="active nav-link">Background</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#template" data-toggle="tab" class="nav-link">Template</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- End content leftbar -->
+            <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+                <!-- Start Tab Content -->
+                <div class="border-form rounded">
+                    <form>
+                        <div class="form-container form-container-w100 tab-content">
+                            @Html.Partial("_Background")
+
+                            @Html.Partial("_Template")
+                            </div>
+                    </form>
+                    </div>
+
+                </div>
+            </div>
+
+

@@ -18,7 +18,7 @@ namespace FEP.Model.eLearning
         public virtual CourseModule Module { get; set; }
         public int UserId { get; set; }
         public int? GroupId { get; set; }
-        public virtual DiscussionGroup Group { get; set; }
+        public virtual Group Group { get; set; }
 
         // refer to first post in discussionpost
         public int FirstPost { get; set; }
@@ -29,6 +29,8 @@ namespace FEP.Model.eLearning
 
         public DiscussionVisibility DiscussionVisibility { get; set; }
 
+        public bool? IsDeleted { get; set; }
+
     }
 
     public class DiscussionPost : BaseEntity
@@ -37,6 +39,7 @@ namespace FEP.Model.eLearning
         public int DiscussionId { get; set; }
         public virtual Discussion Discussion { get; set; }
         public int? ParentId { get; set; }
+        
         public virtual DiscussionPost Parent { get; set; }
 
         [Index]
@@ -45,6 +48,25 @@ namespace FEP.Model.eLearning
         public string Topic { get; set; }
         public string Message { get; set; }
         public virtual ICollection<FileDocument> Attachments { get; set; }
+
+        public bool? IsDeleted { get; set; }
+    }
+
+    [Table("DiscussionAttachment")]
+    public class DiscussionAttachment
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public int PostId { get; set; }
+
+        public int AttachmentId { get; set; }
+
+        [ForeignKey("PostId")]
+        public virtual DiscussionPost Post { get; set; }
+
+        [ForeignKey("AttachmentId")]
+        public virtual FileDocument Attachment { get; set; }
     }
 
 
@@ -71,9 +93,19 @@ namespace FEP.Model.eLearning
         GroupOnly
     }
 
+    //public enum DiscussionAttachment
+    //{
+    //    Document,
+    //    Image,
+    //    Slide,
+    //    Video,
+    //    Audio,
+    //    Flash
+    //}
+
 
     // TODO:
-    public class DiscussionGroup :  BaseEntity
+    public class DiscussionGroup : BaseEntity
     {
 
     }

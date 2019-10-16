@@ -82,9 +82,21 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201910020807540_InitialDB.cs" />
-    <Compile Include="Migrations\201910020807540_InitialDB.Designer.cs">
-      <DependentUpon>201910020807540_InitialDB.cs</DependentUpon>
+    <Compile Include="Migrations\201910021311286_initial.cs" />
+    <Compile Include="Migrations\201910021311286_initial.Designer.cs">
+      <DependentUpon>201910021311286_initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910021607474_atachmenttable.cs" />
+    <Compile Include="Migrations\201910021607474_atachmenttable.Designer.cs">
+      <DependentUpon>201910021607474_atachmenttable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910021610488_atachmenttable2.cs" />
+    <Compile Include="Migrations\201910021610488_atachmenttable2.Designer.cs">
+      <DependentUpon>201910021610488_atachmenttable2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910161616279_changemapgroup.cs" />
+    <Compile Include="Migrations\201910161616279_changemapgroup.Designer.cs">
+      <DependentUpon>201910161616279_changemapgroup.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -112,8 +124,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910020807540_InitialDB.resx">
-      <DependentUpon>201910020807540_InitialDB.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910021311286_initial.resx">
+      <DependentUpon>201910021311286_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910021607474_atachmenttable.resx">
+      <DependentUpon>201910021607474_atachmenttable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910021610488_atachmenttable2.resx">
+      <DependentUpon>201910021610488_atachmenttable2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910161616279_changemapgroup.resx">
+      <DependentUpon>201910161616279_changemapgroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

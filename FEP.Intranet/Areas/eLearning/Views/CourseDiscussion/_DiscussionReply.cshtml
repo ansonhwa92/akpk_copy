@@ -1,0 +1,41 @@
+﻿@model DiscussionView
+
+<style>
+    textarea.textarea-reply {
+        max-width: 99%;
+        min-width: 99%;
+        margin: 10px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+@using (Html.BeginForm("CreateNewReply", "CourseDiscussion", Model.NewDiscussionReply , FormMethod.Post, new { id = "formAdd", enctype = "multipart/form-data" }))
+{
+        @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.NewDiscussionReply.DiscussionId)
+    @*<textarea name="reply_text" id="ReplyTextArea" placeholder="Reply" rows="6" style="max-width:99%; min-width: 99%; margin: 10px;  display: block; margin-left : auto; margin-right: auto;" tabindex=""></textarea>*@
+    @Html.TextAreaFor(m => m.NewDiscussionReply.Message, new { @class = "form-control textarea-reply" })
+    @Html.ValidationMessageFor(m => m.NewDiscussionReply.Message)
+
+    <div class="pull-left" style=" padding: 10px;  margin-left : auto; margin-right: auto;">
+        <span class="fileinput-button" style="margin-left: 0px;">
+            <span class="file-wrapper text-center">
+                <input type="file" name="attachment" tabindex="-1">
+                @*<a class="inputbtn" tabindex="-1" rel="tooltip" data-placement="top" data-original-title="<u>Accepted files</u><br/>ppt, pptx, doc, docx, pdf, gif, jpg, jpeg, png, mp4, webm, ogg, ogv, avi, mpeg, mpg, mov, wmv, 3gp, flv, mp3, aac, wav, wave, wma, ra, aif, aiff<br/><u>Max file size</u>: 20 MB<br/>" data-html="true" href="javascript:void(0);" id="tl-reply-attachment"><i class="icon-attach" style="font-size: 16px;"></i>
+                    &nbsp;Select attachment</a>*@
+                <div class="note error text-error"> </div>
+            </span>
+            <span class="progress progress-success progress-striped active fade " style="position: relative;">
+                <div class="info" style="position: absolute; width: 100%; text-align: center; font-weight: 600;"></div>
+                <div class="bar" style="width: 0%;"></div>
+            </span>
+        </span>
+
+    </div>
+    <div class="pull-right" style=" padding: 10px;  margin-left : auto; margin-right: auto;">
+        <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">Reply</button>
+        @*<span class="btn btn-primary">Reply</span>*@
+    </div>
+}

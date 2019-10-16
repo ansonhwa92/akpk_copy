@@ -161,6 +161,8 @@
     <Compile Include="Api\eEvent\MediaInterviewRequestController.cs" />
     <Compile Include="Api\eEvent\PublicEventController.cs" />
     <Compile Include="Api\eLearning\CourseContentsController.cs" />
+    <Compile Include="Api\eLearning\CourseGroupController.cs" />
+    <Compile Include="Api\eLearning\CourseDiscussionController.cs" />
     <Compile Include="Api\eLearning\CourseModulesController.cs" />
     <Compile Include="Api\eLearning\CoursesController.cs" />
     <Compile Include="Api\eLearning\CourseCategoryController.cs" />

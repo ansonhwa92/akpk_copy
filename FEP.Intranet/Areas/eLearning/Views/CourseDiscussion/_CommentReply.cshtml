@@ -1,0 +1,23 @@
+﻿@model DiscussionView
+
+<style>
+    textarea.textarea-reply {
+        max-width: 99%;
+        min-width: 99%;
+        margin: 10px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+@using (Html.BeginForm("CreateNewComment", "CourseDiscussion", null, FormMethod.Post, new { id = "formAdd", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.NewDiscussionReply.DiscussionId)
+    @*<textarea name="reply_text" id="ReplyTextArea" placeholder="Reply" rows="6" style="max-width:99%; min-width: 99%; margin: 10px;  display: block; margin-left : auto; margin-right: auto;" tabindex=""></textarea>*@
+    @Html.TextAreaFor(m => m.NewDiscussionReply.Message, new { @class = "form-control textarea-reply" })
+    @Html.ValidationMessageFor(m => m.NewDiscussionReply.Message)
+    <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2" style="margin: 10px">Comment</button>
+
+}

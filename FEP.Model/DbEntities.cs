@@ -178,6 +178,7 @@ namespace FEP.Model
         public DbSet<Discussion> Discussions { get; set; }
 
         public DbSet<DiscussionPost> DiscussionPosts { get; set; }
+        public DbSet<DiscussionAttachment> DiscussionAttachment { get; set; }
         //public DbSet<PostQueue> PostQueue { get; set; }
 
         // Elearning Lookup

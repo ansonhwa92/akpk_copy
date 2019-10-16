@@ -1,0 +1,32 @@
+﻿@model JoinCourseGroupModel
+
+@{
+    Layout = null;
+}
+@section ContentScript {
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formJoin", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.LearnerId)
+    <div class="border-1">
+        <div class="row divTd" style="padding: 15px;">
+            <div class="col-2 px-0">
+                @Html.LabelFor(m => m.EnrollmentCode, new { htmlAttributes = new { @class = "form-label" } })
+            </div>
+            <div class="col-10 col-md-10 col-xs-md-5 px-0">
+                @Html.EditorFor(m => m.EnrollmentCode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enrollment Code" } })
+                @Html.ValidationMessageFor(m => m.EnrollmentCode)
+            </div>
+        </div>
+        <div class="row divTd" style="padding: 15px;">
+            <div class="col px-0 text-right">
+                <div class="icon-action">
+                    <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">@Language.General.ButtonAdd</button>
+                    <button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">@Language.General.ButtonCancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

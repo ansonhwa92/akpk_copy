@@ -64,6 +64,10 @@ namespace FEP.WebApiModel.eEvent
 		public string NomineeName { get; set; }
 		public IEnumerable<SelectListItem> Nominees { get; set; }
 
+		[Display(Name = "ExRoadRefNo", ResourceType = typeof(Language.Event))]
+		public string RefNo { get; set; }
+		public int? SLAReminderStatusId { get; set; }
+
 	}
 
 	public class FilterExhibitionRoadshowRequestModel : DataTableModel

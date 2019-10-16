@@ -31,6 +31,13 @@ namespace FEP.Model.Migrations
 			AddAdministrator(db, "Approver 2", "012345678916", "approversecond@yahoo.com", "0123456789");
 			AddAdministrator(db, "Approver 3", "012345678917", "approverthird@yahoo.com", "0123456789");
 
+			AddExternalExhibitor(db, "External Exhibitor 1", "0123456789", "ExternalExhibitor1@yahoo.com", "PrimusCore Sdn Bhd");
+			AddExternalExhibitor(db, "External Exhibitor 2", "0123456789", "ExternalExhibitor2@yahoo.com", "GrabFood Sdn Bhd");
+			AddExternalExhibitor(db, "External Exhibitor 3", "0123456789", "ExternalExhibitor3@yahoo.com", "DH Robotic Sdn Bhd");
+			AddExternalExhibitor(db, "External Exhibitor 4", "0123456789", "ExternalExhibitor4@yahoo.com", "DahMakan Sdn Bhd");
+			AddExternalExhibitor(db, "External Exhibitor 5", "0123456789", "ExternalExhibitor5@yahoo.com", "SilverFern Sdn Bhd");
+			AddExternalExhibitor(db, "External Exhibitor 6", "0123456789", "ExternalExhibitor6@yahoo.com", "FoodPanda Sdn Bhd");
+
 		}
 
 		public static void AddAdministrator(DbEntities db, string Name, string ICNo, string Email, string MobileNo)
@@ -56,21 +63,28 @@ namespace FEP.Model.Migrations
 					DesignationId = null
 				};
 
-				db.User.Add(
-					new User
+				
+			}
+		}
+
+		public static void AddExternalExhibitor(DbEntities db, string Name, string PhoneNo, string Email, string CompanyName)
+		{
+			var externalexhibitor = db.EventExternalExhibitor.Local.Where(r => r.Email == Email).FirstOrDefault() ?? db.EventExternalExhibitor.Where(r => r.Email == Email).FirstOrDefault();
+
+			if (externalexhibitor == null)
+			{
+				db.EventExternalExhibitor.Add(new EventExternalExhibitor
 					{
 						Name = Name,
-						ICNo = ICNo,
 						Email = Email,
-						MobileNo = MobileNo,
-						UserType = UserType.Staff,
+						PhoneNo = PhoneNo,
+						CompanyName = CompanyName,
 						Display = true,
 						CreatedDate = DateTime.Now,
-						UserAccount = useraccount,
-						StaffProfile = staff
 					});
 			}
 		}
+
 
 	}
 }

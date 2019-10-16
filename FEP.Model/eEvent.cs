@@ -25,8 +25,6 @@ namespace FEP.Model
 		public string Remarks { get; set; }
 		public EventStatus? EventStatus { get; set; }
 		public int? EventCategoryId { get; set; }
-		//public int? SpeakerId { get; set; }
-		//public int? ExternalExhibitorId { get; set; }
 		public int? CreatedBy { get; set; }
 		public DateTime? CreatedDate { get; set; }
 		public bool Display { get; set; }
@@ -35,10 +33,7 @@ namespace FEP.Model
 		//----ForeignKey----
 		[ForeignKey("EventCategoryId")]
 		public virtual EventCategory EventCategory { get; set; }
-		//[ForeignKey("SpeakerId")]
-		//public virtual EventSpeaker EventSpeaker { get; set; }
-		//[ForeignKey("ExternalExhibitorId")]
-		//public virtual EventExternalExhibitor ExternalExhibitor { get; set; }
+		
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
 	
@@ -53,6 +48,8 @@ namespace FEP.Model
 		public string Name { get; set; }
 
 		public string Email { get; set; }
+
+		public string CompanyName { get; set; }
 
 		public string PhoneNo { get; set; }
 
@@ -88,17 +85,18 @@ namespace FEP.Model
 		[Key]
 		public int Id { get; set; }
 		public string AgendaTitle { get; set; }
-		public DateTime Time { get; set; }
+		public string AgendaDescription { get; set; }
+		public string Tentative { get; set; }
+		public DateTime? Time { get; set; }
 
 		public int? EventId { get; set; }
 		[ForeignKey("EventId")]
 		public virtual PublicEvent Event { get; set; }
 
-		public int? PersonInCharge { get; set; }
-		[ForeignKey("PersonInCharge")]
+		public int? PersonInChargeId { get; set; }
+		[ForeignKey("PersonInChargeId")]
 		public virtual User User { get; set; }
 
-		public string Remark { get; set; }
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
 		public int? CreatedBy { get; set; }
@@ -112,19 +110,11 @@ namespace FEP.Model
 		[Key]
 		public int Id { get; set; }
 		public SpeakerType? SpeakerType { get; set; }
-		public DateTime? DateAssigned { get; set; }
-		public string Experience { get; set; }
+		public SpeakerStatus? SpeakerStatus { get; set; }
 		public string Email { get; set; }
-		public string Remark { get; set; }
-		public int? PhoneNo { get; set; }
-		public DateTime? DateOfBirth { get; set; }
-		public string AddressStreet1 { get; set; }
-		public string AddressStreet2 { get; set; }
-		public string AddressPoscode { get; set; }
-		public string AddressCity { get; set; }
-		public MediaState? State { get; set; }
-		public MaritialStatus? MaritialStatus { get; set; }
-		public Religion? Religion { get; set; }
+		public string PhoneNo { get; set; }
+		public string Experience { get; set; }
+		public string ExternalUserName { get; set; }
 		public int? UserId { get; set; }
 		[ForeignKey("UserId")]
 		public virtual User User { get; set; }
@@ -311,27 +301,6 @@ namespace FEP.Model
 		public int Id { get; set; }
 		public DateTime Date { get; set; }
 		public string FeedbackDescription { get; set; }
-
-		public int? UserId { get; set; }
-		[ForeignKey("UserId")]
-		public virtual User User { get; set; }
-
-		public int? EventId { get; set; }
-		[ForeignKey("EventId")]
-		public virtual PublicEvent Event { get; set; }
-
-		[ForeignKey("CreatedBy")]
-		public virtual User CreatedByUser { get; set; }
-		public int? CreatedBy { get; set; }
-		public DateTime? CreatedDate { get; set; }
-		public bool Display { get; set; }
-	}
-
-	[Table("EventMember")]
-	public class EventMember
-	{
-		[Key]
-		public int Id { get; set; }
 
 		public int? UserId { get; set; }
 		[ForeignKey("UserId")]

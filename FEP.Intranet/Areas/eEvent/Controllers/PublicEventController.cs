@@ -322,10 +322,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				await LogActivity(Modules.Event, "Delete Public Event");
 				TempData["SuccessMessage"] = "Public Event successfully deleted";
-				return RedirectToAction("List", "EventSpeaker", new { area = "eEvent" });
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
 			}
 			TempData["ErrorMessage"] = "Fail to delete Public Event";
-			return RedirectToAction("List", "EventSpeaker", new { area = "eEvent" });
+			return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
 		}
 
 		// Submit Public Event for Verification
@@ -446,14 +446,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
-				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
-				var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
-					(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
-
-				List<BulkNotificationModel> myNotification = responseSLA.Data;
-				//myNotification[0].NotificationId;
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/PublicEvent/GetSLAId?id={id}");
+				if (responseGetSLAId.isSuccess)
+				{
+					int SLAReminderStatusId = responseGetSLAId.Data;
+					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+					List<BulkNotificationModel> myNotification = responseSLA.Data;
+				}
 
 				//--------------------------------------------------Send Email---------------------------------------------//
 				ParameterListToSend paramToSend = new ParameterListToSend();
@@ -504,15 +504,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
-				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
-				var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
-					(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
-
-				List<BulkNotificationModel> myNotification = responseSLA.Data;
-				//myNotification[0].NotificationId;
-
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/PublicEvent/GetSLAId?id={id}");
+				if (responseGetSLAId.isSuccess)
+				{
+					int SLAReminderStatusId = responseGetSLAId.Data;
+					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+					List<BulkNotificationModel> myNotification = responseSLA.Data;
+				}
 				//--------------------------------------------------Send Email---------------------------------------------//
 
 				ParameterListToSend paramToSend = new ParameterListToSend();
@@ -564,15 +563,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
-				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
-				var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
-					(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
-
-				List<BulkNotificationModel> myNotification = responseSLA.Data;
-				//myNotification[0].NotificationId;
-
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/PublicEvent/GetSLAId?id={id}");
+				if (responseGetSLAId.isSuccess)
+				{
+					int SLAReminderStatusId = responseGetSLAId.Data;
+					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+					List<BulkNotificationModel> myNotification = responseSLA.Data;
+				}
 				//--------------------------------------------------Send Email---------------------------------------------//
 
 				ParameterListToSend paramToSend = new ParameterListToSend();
@@ -624,15 +622,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
-				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
-				var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
-					(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
-
-				List<BulkNotificationModel> myNotification = responseSLA.Data;
-				//myNotification[0].NotificationId;
-
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/PublicEvent/GetSLAId?id={id}");
+				if (responseGetSLAId.isSuccess)
+				{
+					int SLAReminderStatusId = responseGetSLAId.Data;
+					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+					List<BulkNotificationModel> myNotification = responseSLA.Data;
+				}
 				//--------------------------------------------------Send Email---------------------------------------------//
 
 				ParameterListToSend paramToSend = new ParameterListToSend();
@@ -685,15 +682,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var getSLAId = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
-
-				int SLAReminderStatusId = getSLAId.SLAReminderStatusId.Value;
-				var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
-					(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
-
-				List<BulkNotificationModel> myNotification = responseSLA.Data;
-				//myNotification[0].NotificationId;
-
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/PublicEvent/GetSLAId?id={id}");
+				if (responseGetSLAId.isSuccess)
+				{
+					int SLAReminderStatusId = responseGetSLAId.Data;
+					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+					List<BulkNotificationModel> myNotification = responseSLA.Data;
+				}
 				//--------------------------------------------------Send Email---------------------------------------------//
 
 				ParameterListToSend paramToSend = new ParameterListToSend();
@@ -786,7 +782,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		[NonAction]
 		private async Task<IEnumerable<EventSpeakerModel>> GetSpeaker()
 		{
-
 			var speaker = Enumerable.Empty<EventSpeakerModel>();
 
 			var response = await WepApiMethod.SendApiAsync<List<EventSpeakerModel>>(HttpVerbs.Get, $"eEvent/EventSpeaker");

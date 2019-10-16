@@ -30,7 +30,8 @@ namespace FEP.Model
 		PublicEvent,
         MediaInterview,
         ExhibitionRoadshow,
-        EventSpeaker
+        EventSpeaker,
+		EventAgenda
 	}
 
 	[Table("MediaFile")]

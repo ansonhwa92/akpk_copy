@@ -32,7 +32,6 @@
 	</div>
 }
 
-<h3>Are you sure you want to delete this Event Speaker?</h3>
 <div class="row">
 	<div class="col-xl-3 col-md-3 col-sm-4 my-2">
 		<div class="sidebar-left">
@@ -80,92 +79,66 @@
 		<div class="border-form rounded-top">
 			<form>
 				<div class="form-container">
-
+					<div class="mt-2 mb-4 pb-1">
+						<h4 class="color-darkblue mb-0">
+							Are you sure you want to delete this Event Speaker?
+						</h4>
+						<h6 class="font-weight-normal">View Event Speaker details below.</h6>
+					</div>
 					<div class="row">
-						<div class="form-group col-lg-12">
+						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.SpeakerType)
 							@Html.EnumDropDownListFor(model => model.SpeakerType, "-Select Speaker Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
 						</div>
-					</div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.UserId)
-							@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%", @disabled = "disabled" })
+						<div class="form-group col-lg-6">
+							@Html.LabelFor(model => model.SpeakerStatus)
+							@Html.EnumDropDownListFor(model => model.SpeakerStatus, "-Select Speaker Status-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
 						</div>
 					</div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Email)
-							@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
+					@if (Model.SpeakerType == FEP.Model.SpeakerType.Internal)
+					{
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.UserId)
+								@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%", @disabled = "disabled" })
+							</div>
 						</div>
-					</div>
+					}
+					else if (Model.SpeakerType == FEP.Model.SpeakerType.External)
+					{
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.ExternalUserName)
+								@Html.EditorFor(model => model.ExternalUserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Speaker Name", @readonly = "readonly" } })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-6">
+								@Html.LabelFor(model => model.Email)
+								@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
+							</div>
+
+							<div class="form-group col-lg-6">
+								@Html.LabelFor(model => model.PhoneNo)
+								@Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
+							</div>
+						</div>
+					}
 
 					<div class="row">
 						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.DateAssigned, htmlAttributes: new { @class = "control-label col-lg-12" })
-							@Html.EditorFor(model => model.DateAssigned, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Assigned", @disabled = "disabled" } })
+							@Html.LabelFor(model => model.InternalEmail)
+							@Html.EditorFor(model => model.InternalEmail, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
 						</div>
 
 						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-lg-12" })
-							@Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date of Birth", @disabled = "disabled" } })
+							@Html.LabelFor(model => model.InternalPhoneNo)
+							@Html.EditorFor(model => model.InternalPhoneNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
 						</div>
 					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.AddressStreet1)
-							@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 1", @disabled = "disabled" } })
-							@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
-						</div>
-
-						<div class="form-group col-lg-12">
-							@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Street 2", @disabled = "disabled" } })
-							@Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.AddressPoscode)
-							@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode", @readonly = "readonly" } })
-						</div>
-
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.AddressCity)
-							@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City", @readonly = "readonly" } })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.State)
-							@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.MaritialStatus)
-							@Html.EnumDropDownListFor(model => model.MaritialStatus, "-Select Maritial Status-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
-						</div>
-					</div>
-
-					@*<div class="row">
-			<div class="form-group col-lg-12">
-				@Html.LabelFor(model => model.SpeakerPicture)
-				@Html.EditorFor(model => model.SpeakerPictureName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="form-group col-lg-12">
-				@Html.LabelFor(model => model.SpeakerAttachment)
-				@Html.EditorFor(model => model.SpeakerAttachmentName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-			</div>
-		</div>*@
 
 					<div class="row">
 						<div class="form-group col-lg-12">
@@ -176,10 +149,18 @@
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Remark)
-							@Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+							@Html.LabelFor(model => model.Attachments)
+							@Html.Partial("_AttachmentDetails", Model.Attachments)
 						</div>
 					</div>
+
+					@*<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.SpeakerPicture)
+								@Html.EditorFor(model => model.SpeakerPictureName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							</div>
+						</div>*@
+
 				</div>
 			</form>
 
@@ -190,8 +171,8 @@
 				@Html.AntiForgeryToken()
 				@Html.HiddenFor(model => model.Id)
 
-				<a href='@Url.Action("List")' style="text-decoration: none;" class="btn btn-warning btn-flat">Cancel</a>
-				<button type="submit" class="btn btn-primary">Delete</button>
+				<a href='@Url.Action("List")' style="text-decoration: none;" class="btn btn-default btn-flat">Cancel</a>
+				<button type="submit" class="btn btn-secondary">Delete</button>
 			}
 		</div>
 	</div>

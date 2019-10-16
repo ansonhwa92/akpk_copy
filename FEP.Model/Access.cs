@@ -76,6 +76,26 @@ namespace FEP.Model
 		[Display(Name = "Media Interview - Recipient Email After Reject")]
 		Recipient_Reject_MediaInterview = 1016,
 
+
+		//----------------------Exhibition RoadShow Button--------------------//
+		[Display(Name = "Exhibition RoadShow - Recipient Email After Submit Exhibition RoadShow")]
+		Recipient_Submit_ExhibitionRoadShow = 1017,
+
+		[Display(Name = "Exhibition RoadShow - Recipient Email After Verify Exhibition RoadShow")]
+		Recipient_Verify_ExhibitionRoadShow = 1018,
+
+		[Display(Name = "Exhibition RoadShow - Recipient Email After Approval 1")]
+		Recipient_Approver1_ExhibitionRoadShow = 1019,
+
+		[Display(Name = "Exhibition RoadShow - Recipient Email After Approval 2")]
+		Recipient_Approver2_ExhibitionRoadShow = 1020,
+
+		[Display(Name = "Exhibition RoadShow - Recipient Email After Approval 3")]
+		Recipient_Approver3_ExhibitionRoadShow = 1021,
+
+		[Display(Name = "Exhibition RoadShow - Recipient Email After Reject")]
+		Recipient_Reject_ExhibitionRoadShow = 1022,
+
 		//-----------------------------------------------------------//
 
 		[Display(Name = "Public Event - Recipient Email After Submit Public Event")]

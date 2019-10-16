@@ -27,6 +27,10 @@ namespace FEP.WebApiModel.eEvent
 		[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
 		public string PhoneNo { get; set; }
 
+		[Required(ErrorMessage = "Please Insert Company Name")]
+		[Display(Name = "ExhibitorCompanyName", ResourceType = typeof(Language.Event))]
+		public string CompanyName { get; set; }
+
 		[Display(Name = "ExhibitorRemark", ResourceType = typeof(Language.Event))]
 		public string Remark { get; set; }
 	}
@@ -63,8 +67,6 @@ namespace FEP.WebApiModel.eEvent
 	public class DetailsEventExternalExhibitorModel : EventExternalExhibitorModel
 	{
 		public DetailsEventExternalExhibitorModel() { }
-
-		public int Id { get; set; }
 	}
 
 	public class CreateEventExternalExhibitorModel
@@ -86,6 +88,10 @@ namespace FEP.WebApiModel.eEvent
 
 		[Display(Name = "ExhibitorRemark", ResourceType = typeof(Language.Event))]
 		public string Remark { get; set; }
+
+		[Required(ErrorMessage = "Please Insert Company Name")]
+		[Display(Name = "ExhibitorCompanyName", ResourceType = typeof(Language.Event))]
+		public string CompanyName { get; set; }
 	}
 
 	public class EditEventExternalExhibitorModel : CreateEventExternalExhibitorModel

@@ -21,9 +21,12 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44360</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -158,10 +161,12 @@
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
     <Compile Include="Areas\Commerce\CommerceAreaRegistration.cs" />
     <Compile Include="Areas\Commerce\Controllers\CartController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\EventAgendaController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventCategoryController.cs" />
     <Compile Include="Areas\eEvent\Controllers\ExhibitionRoadshowRequestController.cs" />
     <Compile Include="Areas\eEvent\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\eEventAreaRegisteration.cs" />
+    <Compile Include="Areas\eEvent\Models\EventAgenda.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseCategoryController.cs" />
     <Compile Include="Areas\eLearning\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventSpeakerController.cs" />
@@ -740,6 +745,15 @@
     <Content Include="Areas\Commerce\Views\web.config" />
     <Content Include="Areas\Administrator\Views\Staff\_Add.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\_Details.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\Details.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\Edit.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\Delete.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\_Attachment.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventSpeaker\_Attachment.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventSpeaker\_AttachmentDetails.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

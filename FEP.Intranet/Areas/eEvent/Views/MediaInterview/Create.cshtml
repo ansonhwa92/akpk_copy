@@ -223,7 +223,7 @@
 						<div class="row">
 							<div class="form-group col-lg-6">
 								@Html.FEPLabelFor(model => model.Time)
-								@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect" } })
+								@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control " } })
 								@Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
 							</div>
 

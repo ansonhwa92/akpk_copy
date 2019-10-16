@@ -1,6 +1,7 @@
 ﻿using FEP.Helper;
 using FEP.Model;
 using FEP.WebApiModel.eEvent;
+using FEP.WebApiModel.FileDocument;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -38,8 +39,8 @@ namespace FEP.WebApi.Api.eEvent
 			query = query.Where(s =>
 				(request.UserId == null || s.UserId == request.UserId)
 			 && (request.SpeakerType == null || s.SpeakerType == request.SpeakerType)
-			 && (request.DateAssigned == null || DbFunctions.TruncateTime(request.DateAssigned) == DbFunctions.TruncateTime(DateTime.Now))
-			 && (request.Email == null || s.Email.Contains(request.Email))
+			 //&& (request.DateAssigned == null || DbFunctions.TruncateTime(request.DateAssigned) == DbFunctions.TruncateTime(DateTime.Now))
+			 && (request.Email == null || s.User.Email.Contains(request.Email))
 			);
 
 			//quick search 
@@ -49,8 +50,8 @@ namespace FEP.WebApi.Api.eEvent
 
 				query = query.Where(p => p.User.Name.Contains(value)
 				|| p.SpeakerType.GetDisplayName().Contains(value)
-				|| p.Email.Contains(value)
-				|| p.DateAssigned.ToString().Contains(value)
+				|| p.User.Email.Contains(value)
+				//|| p.DateAssigned.ToString().Contains(value)
 				);
 			}
 
@@ -90,31 +91,19 @@ namespace FEP.WebApi.Api.eEvent
 
 						break;
 
-					case "DateAssigned":
+					case "SpeakerStatus":
 
 						if (sortAscending)
 						{
-							query = query.OrderBy(o => o.DateAssigned);
+							query = query.OrderBy(o => o.SpeakerStatus);
 						}
 						else
 						{
-							query = query.OrderByDescending(o => o.DateAssigned);
+							query = query.OrderByDescending(o => o.SpeakerStatus);
 						}
 
 						break;
 
-					case "Email":
-
-						if (sortAscending)
-						{
-							query = query.OrderBy(o => o.Email);
-						}
-						else
-						{
-							query = query.OrderByDescending(o => o.Email);
-						}
-
-						break;
 
 					default:
 						query = query.OrderByDescending(o => o.UserId);
@@ -132,15 +121,16 @@ namespace FEP.WebApi.Api.eEvent
 					Id = i.Id,
 					UserId = i.UserId,
 					UserName = i.User.Name,
-					DateAssigned = i.DateAssigned,
+					SpeakerStatus = i.SpeakerStatus,
 					Email = i.Email,
-					DateOfBirth = i.DateOfBirth,
 					PhoneNo = i.PhoneNo,
 					SpeakerType = i.SpeakerType,
+					ExternalUserName = i.ExternalUserName,
 
 				}).ToList();
 
 			data.ForEach(s => s.SpeakerTypeDesc = s.SpeakerType.GetDisplayName());
+			data.ForEach(s => s.SpeakerStatusDesc = s.SpeakerStatus.GetDisplayName());
 
 			return Ok(new DataTableResponse
 			{
@@ -160,19 +150,13 @@ namespace FEP.WebApi.Api.eEvent
 					Id = s.Id,
 					UserId = s.UserId,
 					SpeakerType = s.SpeakerType,
-					Religion = s.Religion,
-					DateAssigned = s.DateAssigned,
-					DateOfBirth = s.DateOfBirth,
+					ExternalUserName = s.ExternalUserName,
 					PhoneNo = s.PhoneNo,
 					Email = s.Email,
 					Experience = s.Experience,
-					MaritialStatus = s.MaritialStatus,
-					AddressStreet1 = s.AddressStreet1,
-					AddressStreet2 = s.AddressStreet2,
-					AddressPoscode = s.AddressPoscode,
-					AddressCity = s.AddressCity,
-					State = s.State,
-					Remark = s.Remark,
+					SpeakerStatus = s.SpeakerStatus,
+					InternalEmail = s.User.Email,
+					InternalPhoneNo = s.User.MobileNo,
 					//SpeakerPictureName = db.SpeakerFile.Where(f => f.EventSpeakerId == s.Id && f.SpeakerFileType == SpeakerFileType.Picture).Select(i => i.FileName).FirstOrDefault(),
 					//SpeakerAttachmentName = db.SpeakerFile.Where(f => f.EventSpeakerId == s.Id && f.SpeakerFileType == SpeakerFileType.Attachment).Select(i => i.FileName).FirstOrDefault()
 				}).FirstOrDefault();
@@ -181,6 +165,8 @@ namespace FEP.WebApi.Api.eEvent
 			{
 				return NotFound();
 			}
+
+			speaker.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.EventSpeaker && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
 			return Ok(speaker);
 		}
@@ -191,53 +177,32 @@ namespace FEP.WebApi.Api.eEvent
 			var speaker = new EventSpeaker
 			{
 				UserId = model.UserId,
+				ExternalUserName = model.ExternalUserName,
 				SpeakerType = model.SpeakerType,
-				Religion = model.Religion,
-				DateAssigned = model.DateAssigned,
-				DateOfBirth = model.DateOfBirth,
 				PhoneNo = model.PhoneNo,
 				Email = model.Email,
 				Experience = model.Experience,
-				MaritialStatus = model.MaritialStatus,
-				AddressStreet1 = model.AddressStreet1,
-				AddressStreet2 = model.AddressStreet2,
-				AddressPoscode = model.AddressPoscode,
-				AddressCity = model.AddressCity,
-				State = model.State,
-				Remark = model.Remark,
+				SpeakerStatus = model.SpeakerStatus,
 				CreatedBy = null,
 				Display = true,
 				CreatedDate = DateTime.Now,
 			};
+
 			db.EventSpeaker.Add(speaker);
-
-			//SpeakerFile speakerFile = new SpeakerFile
-			//{
-			//	FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.SpeakerPictureName,
-			//	UploadedDate = DateTime.Now,
-			//	CreatedBy = model.UserId,
-			//	EventSpeakerId = model.UserId,
-			//	Display = true,
-			//	SpeakerFileType = SpeakerFileType.Picture
-			//};
-			//db.SpeakerFile.Add(speakerFile);
-
-			//SpeakerFile speakerAttachFile = new SpeakerFile
-			//{
-			//	FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.SpeakerAttachmentName,
-			//	UploadedDate = DateTime.Now,
-			//	CreatedBy = model.UserId,
-			//	EventSpeakerId = model.UserId,
-			//	Display = true,
-			//	SpeakerFileType = SpeakerFileType.Attachment
-			//};
-			//db.SpeakerFile.Add(speakerAttachFile);
-
-
 			db.SaveChanges();
 
+			//files
+			foreach (var fileid in model.FilesId)
+			{
+				var eventfile = new EventFile
+				{
+					FileCategory = EventFileCategory.EventSpeaker,
+					FileId = fileid,
+					ParentId = speaker.Id
+				};
+				db.EventFile.Add(eventfile);
+			}
 			return Ok(speaker.Id);
-
 		}
 
 
@@ -252,64 +217,73 @@ namespace FEP.WebApi.Api.eEvent
 
 			speaker.UserId = model.UserId;
 			speaker.SpeakerType = model.SpeakerType;
-			speaker.Religion = model.Religion;
-			speaker.DateAssigned = model.DateAssigned;
-			speaker.DateOfBirth = model.DateOfBirth;
 			speaker.PhoneNo = model.PhoneNo;
 			speaker.Email = model.Email;
 			speaker.Experience = model.Experience;
-			speaker.MaritialStatus = model.MaritialStatus;
-			speaker.AddressStreet1 = model.AddressStreet1;
-			speaker.AddressStreet2 = model.AddressStreet2;
-			speaker.AddressPoscode = model.AddressPoscode;
-			speaker.AddressCity = model.AddressCity;
-			speaker.State = model.State;
-			speaker.Remark = model.Remark;
+			speaker.SpeakerStatus = model.SpeakerStatus;
+			speaker.ExternalUserName = model.ExternalUserName;
 
 			db.EventSpeaker.Attach(speaker);
 			db.Entry(speaker).Property(x => x.UserId).IsModified = true;
 			db.Entry(speaker).Property(x => x.SpeakerType).IsModified = true;
-			db.Entry(speaker).Property(x => x.Religion).IsModified = true;
-			db.Entry(speaker).Property(x => x.DateAssigned).IsModified = true;
-			db.Entry(speaker).Property(x => x.DateOfBirth).IsModified = true;
 			db.Entry(speaker).Property(x => x.PhoneNo).IsModified = true;
 			db.Entry(speaker).Property(x => x.Email).IsModified = true;
 			db.Entry(speaker).Property(x => x.Experience).IsModified = true;
-			db.Entry(speaker).Property(x => x.MaritialStatus).IsModified = true;
-			db.Entry(speaker).Property(x => x.AddressStreet1).IsModified = true;
-			db.Entry(speaker).Property(x => x.AddressStreet2).IsModified = true;
-			db.Entry(speaker).Property(x => x.AddressPoscode).IsModified = true;
-			db.Entry(speaker).Property(x => x.AddressCity).IsModified = true;
-			db.Entry(speaker).Property(x => x.State).IsModified = true;
-			db.Entry(speaker).Property(x => x.Remark).IsModified = true;
-
+			db.Entry(speaker).Property(x => x.SpeakerStatus).IsModified = true;
+			db.Entry(speaker).Property(x => x.ExternalUserName).IsModified = true;
 
 			db.Entry(speaker).Property(x => x.Display).IsModified = false;
 			db.Entry(speaker).Property(x => x.Id).IsModified = false;
+
+
+			//remove file 
+			var attachments = db.EventFile.Where(s => s.FileCategory == EventFileCategory.EventSpeaker && s.ParentId == model.Id).ToList();
+
+			if (attachments != null)
+			{
+				//delete all
+				if (model.Attachments == null)
+				{
+					foreach (var attachment in attachments)
+					{
+						attachment.FileDocument.Display = false;
+						db.FileDocument.Attach(attachment.FileDocument);
+						db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+
+						db.EventFile.Remove(attachment);
+					}
+				}
+				else
+				{
+					foreach (var attachment in attachments)
+					{
+						if (!model.Attachments.Any(u => u.Id == attachment.FileDocument.Id))//delete if not exist anymore
+						{
+							attachment.FileDocument.Display = false;
+							db.FileDocument.Attach(attachment.FileDocument);
+							db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+
+							db.EventFile.Remove(attachment);
+						}
+					}
+				}
+			}
+
+			//add new file
+			//files
+			foreach (var fileid in model.FilesId)
+			{
+				var eventfile = new EventFile
+				{
+					FileCategory = EventFileCategory.EventSpeaker,
+					FileId = fileid,
+					ParentId = speaker.Id
+				};
+
+				db.EventFile.Add(eventfile);
+			}
+
 			db.Configuration.ValidateOnSaveEnabled = true;
-
-			//SpeakerFile speakerFile = new SpeakerFile
-			//{
-			//	FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.SpeakerPictureName,
-			//	UploadedDate = DateTime.Now,
-			//	CreatedBy = model.UserId,
-			//	EventSpeakerId = model.UserId,
-			//	Display = true,
-			//	SpeakerFileType = SpeakerFileType.Picture
-			//};
-			//db.SpeakerFile.Add(speakerFile);
-
-			//SpeakerFile speakerAttachFile = new SpeakerFile
-			//{
-			//	FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + model.SpeakerAttachmentName,
-			//	UploadedDate = DateTime.Now,
-			//	CreatedBy = model.UserId,
-			//	EventSpeakerId = model.UserId,
-			//	Display = true,
-			//	SpeakerFileType = SpeakerFileType.Attachment
-			//};
-			//db.SpeakerFile.Add(speakerAttachFile);
-
 			db.SaveChanges();
 
 			return Ok(true);

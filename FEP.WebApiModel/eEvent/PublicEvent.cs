@@ -157,7 +157,7 @@ namespace FEP.WebApiModel.PublicEvent
     }
 
 
-	public class DeletePublicEventModel : PublicEventModel
+	public class DeletePublicEventModel : DetailsPublicEventModel
 	{
 		public DeletePublicEventModel() { }
 

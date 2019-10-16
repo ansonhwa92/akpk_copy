@@ -1,7 +1,7 @@
-﻿@model FEP.WebApiModel.eEvent.ListEventSpeakerModel
+﻿@model FEP.WebApiModel.eEvent.ListEventAgendaModel
 
 @{
-	ViewBag.Title = "Event Speaker";
+	ViewBag.Title = "Event Agenda";
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
@@ -15,52 +15,47 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)eEvent/EventSpeaker/GetSpeakerList',
+                    "url": '@(WebApiURL)eEvent/EventAgenda/GetEventAgendaList',
                     "data": function (filter) {
-                        filter.UserId = $('#Filter_UserId').val();
-
+						filter.EventName = $('#Filter_EventName').val();
+						filter.AgendaTitle = $('#Filter_AgendaTitle').val();
+                        filter.Tentative = $('#Filter_Tentative').val();
+                        filter.Time = $('#Filter_Time').val();
                     }
                 },
 				columns: [
-
 					 {
                         sortable: false,
                         render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
-                     }
+                        }
                     },
                     {
-                        data: 'UserName',
-                        sortable: true
-                    },
-                    {
-                        data: 'SpeakerTypeDesc',
+                        data: 'EventName',
                         sortable: true
 					},
+                    {
+                        data: 'AgendaTitle',
+                        sortable: true
+                    },
 
-					//{
-					//	data: 'DateAssigned',
-					//	sortable: true,
-					//	render: function (data, type, row, meta) {
-					//		var x = moment(data);
-					//		if (x.isValid()) {
-					//			return x.format("DD/MM/YYYY");
-					//		}
-					//		else {
-					//			return '';
-					//		}
-					//	}
-					//},
-                  
-					{
-						data: 'SpeakerStatusDesc',
-						sortable: false,
+					 {
+                        data: 'Tentative',
+                        sortable: true
+					},
+					 
+                    {
+                        data: 'Time',
+                       sortable: true,
 						render: function (data, type, row, meta) {
-							if (row.SpeakerStatus == 0) {
-								return "<span class='color-blue font-weight-bold'> Active </span>";
+
+							var x = moment(data);
+
+							if (x.isValid()) {
+								return x.format("hh:mm A");
 							}
-							else if (row.SpeakerStatus == 1) {
-								return "<span class='color-green font-weight-bold'> Inactive </span>";
+							else {
+								return '';
 							}
 						}
                     },
@@ -71,10 +66,12 @@
                             var action = "";
 
                             action = '<div class="icon-action">'
-                                    +   '<a href="@Url.Action("Edit", "EventSpeaker", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Details", "EventSpeaker", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Delete", "EventSpeaker", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
-                                    + '</div>';
+
+						    action +='<a href="@Url.Action("Edit", "EventAgenda", new { area = "eEvent"})/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+                            action +='<a href="@Url.Action("Details", "EventAgenda", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+							action += '<a href="@Url.Action("Delete", "EventAgenda", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+
+							action +='</div>';
 
                             return action;
                         }
@@ -138,15 +135,15 @@
 					<div id="breadcrumb">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item color-"><a href="#">Home</a></li>
 								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
-								<li class="breadcrumb-item"><a href="#">Manage Event Speaker</a></li>
-								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+								<li class="breadcrumb-item"><a href="#">Event Setting</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#">Event Agenda</a></li>
 							</ol>
 						</nav>
 					</div>
-					<h1 class="page-title text-white">Event Speaker List</h1>
-					<div class="header-text">List of created Event Speaker</div>
+					<h1 class="page-title text-white">Event Agenda List</h1>
+					<div class="header-text">List of created event agenda</div>
 				</div>
 			</div>
 		</div>
@@ -159,10 +156,16 @@
 		<div class="dropdown-menu">
 			<div class="filter-head">Filters</div>
 			<div class="filter-body">
-				<div>@Html.DisplayNameFor(m => m.Filter.UserId)</div>
+				<div>@Html.DisplayNameFor(m => m.Filter.AgendaTitle)</div>
 				<div class="sorting-wrap">
 					<div class="sorting-dropdown">
-						@Html.DropDownListFor(m => m.Filter.UserId, Model.Filter.UserIds, "Select All", htmlAttributes: new { @class = "select2 form-control small" })
+						@Html.EditorFor(m => m.Filter.AgendaTitle, new { htmlAttributes = new { @class = "form-control small" } })
+					</div>
+				</div>
+				<div>@Html.DisplayNameFor(m => m.Filter.Tentative)</div>
+				<div class="sorting-wrap">
+					<div class="sorting-dropdown">
+						@Html.EditorFor(m => m.Filter.Tentative, new { htmlAttributes = new { @class = "form-control small" } })
 					</div>
 				</div>
 				@*<div>@Html.DisplayNameFor(m => m.Filter.EventCategoryId)</div>
@@ -197,6 +200,7 @@
 			<button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
 		</div>
 	</div>
+
 </div>
 <hr>
 <div class="table-responsive" data-toggle="lists">
@@ -213,7 +217,7 @@
 			</span>
 		</div>
 		<div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-		<div><a href="@Url.Action("Create", "EventSpeaker", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
+		<div><a href="@Url.Action("Create", "EventAgenda", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
 	</div>
 	<!-- Table -->
 	<table class="table tableStyle1 tabledata">
@@ -221,9 +225,11 @@
 			<tr>
 
 				<th>#</th>
-				<th>@Html.DisplayNameFor(model => model.List.UserName)</th>
-				<th>@Html.DisplayNameFor(model => model.List.SpeakerTypeDesc)</th>
-				<th>@Html.DisplayNameFor(model => model.List.SpeakerStatusDesc)</th>
+				<th>@Html.DisplayNameFor(model => model.List.EventId)</th>
+				<th>@Html.DisplayNameFor(model => model.List.AgendaTitle)</th>
+				<th>@Html.DisplayNameFor(model => model.List.Tentative)</th>
+				<th>@Html.DisplayNameFor(model => model.List.Time)</th>
+			
 				<th>Action</th>
 			</tr>
 		</thead>

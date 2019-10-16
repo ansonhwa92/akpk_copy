@@ -339,9 +339,137 @@ namespace FEP.WebApi.Api.eEvent
 				if (db.EventExhibitionRequest.Any(u => u.EventName.Equals(name, StringComparison.CurrentCultureIgnoreCase) && u.Id != id && u.Display))
 					return Ok(true);
 			}
-
 			return NotFound();
 		}
+
+
+		[Route("api/eEvent/ExhibitionRoadshowRequest/SubmitToVerify")]
+		public string SubmitToVerify(int id)
+		{
+			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (exroad != null)
+			{
+				exroad.ExhibitionStatus = ExhibitionStatus.PendingVerified;
+				db.EventExhibitionRequest.Attach(exroad);
+				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return exroad.RefNo;
+			}
+			return "";
+		}
+
+		[Route("api/eEvent/ExhibitionRoadshowRequest/Verified")]
+		public string Verified(int id)
+		{
+			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (exroad != null)
+			{
+				exroad.ExhibitionStatus = ExhibitionStatus.Verified;
+				db.EventExhibitionRequest.Attach(exroad);
+				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return exroad.RefNo;
+			}
+			return "";
+		}
+
+
+		[Route("api/eEvent/ExhibitionRoadshowRequest/Reject")]
+		public string Reject(int id)
+		{
+			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (exroad != null)
+			{
+				exroad.ExhibitionStatus = ExhibitionStatus.NotVerified;
+				db.EventExhibitionRequest.Attach(exroad);
+				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return exroad.RefNo;
+			}
+			return "";
+		}
+
+		//First Approved Public Event 
+		[Route("api/eEvent/ExhibitionRoadshowRequest/FirstApproved")]
+		public string FirstApproved(int id)
+		{
+
+			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (exroad != null)
+			{
+				exroad.ExhibitionStatus = ExhibitionStatus.ApprovedByApprover1;
+				db.EventExhibitionRequest.Attach(exroad);
+				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return exroad.RefNo;
+			}
+			return "";
+		}
+
+		//Second Approved Public Event 
+		[Route("api/eEvent/ExhibitionRoadshowRequest/SecondApproved")]
+		public string SecondApproved(int id)
+		{
+
+			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (exroad != null)
+			{
+				exroad.ExhibitionStatus = ExhibitionStatus.ApprovedByApprover2;
+				db.EventExhibitionRequest.Attach(exroad);
+				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return exroad.RefNo;
+			}
+			return "";
+		}
+
+		//Final Approved Public Event 
+		[Route("api/eEvent/ExhibitionRoadshowRequest/FinalApproved")]
+		public string FinalApproved(int id)
+		{
+
+			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (exroad != null)
+			{
+				exroad.ExhibitionStatus = ExhibitionStatus.ApprovedByApprover3;
+				db.EventExhibitionRequest.Attach(exroad);
+				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return exroad.RefNo;
+			}
+			return "";
+		}
+
+
+
+
+
+
+
 
 
 

@@ -27,6 +27,19 @@ namespace FEP.WebApi.Api.eEvent
 			base.Dispose(disposing);
 		}
 
+		[HttpGet]
+		public IHttpActionResult Get()
+		{
+			var users = db.PublicEvent.Where(u => u.Display).Select(s => new PublicEventModel
+			{
+				Id = s.Id,
+				RefNo = s.RefNo,
+				EventTitle = s.EventTitle
+			}).ToList();
+
+			return Ok(users);
+		}
+
 		[Route("api/eEvent/PublicEvent/GetEventList")]
 		[HttpPost]
 		public IHttpActionResult Post(FilterPublicEventModel request)
@@ -209,31 +222,6 @@ namespace FEP.WebApi.Api.eEvent
 			});
 		}
 
-		////List
-		//public List<PublicEventModel> Get()
-		//{
-		//	var model = db.PublicEvent.Where(i => i.Display).Select(i => new PublicEventModel
-		//	{
-		//		Id = i.Id,
-		//		EventTitle = i.EventTitle,
-		//		EventObjective = i.EventObjective,
-		//		StartDate = i.StartDate,
-		//		EndDate = i.EndDate,
-		//		Venue = i.Venue,
-		//		Fee = i.Fee,
-		//		EventStatus = i.EventStatus,
-		//		EventCategoryId = i.EventCategoryId,
-		//		EventCategoryName = i.EventCategory.CategoryName,
-		//		TargetedGroup = i.TargetedGroup,
-		//		ParticipantAllowed = i.ParticipantAllowed,
-		//		Reasons = i.Reasons,
-		//		Remarks = i.Remarks
-		//	}).ToList();
-
-		//	return model;
-		//}
-
-		//Details
 		public IHttpActionResult Get(int id)
 		{
 			var model = db.PublicEvent.Where(i => i.Display && i.Id == id)

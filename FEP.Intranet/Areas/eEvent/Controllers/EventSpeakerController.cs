@@ -54,7 +54,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		{
 			var model = new FEP.Intranet.Areas.eEvent.Models.CreateEventSpeakerModel()
 			{
-				DateAssigned = DateTime.Now
+				SpeakerStatus = SpeakerStatus.Active
 			};
 
 			model.UserIds = new SelectList(await GetUsers(), "Id", "Name", 0);
@@ -63,8 +63,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Create(FEP.Intranet.Areas.eEvent.Models.CreateEventSpeakerModel model)
 		{
+			if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
+			{
+				ModelState.AddModelError("Attachments", "Please upload file");
+			}
+
 			if (ModelState.IsValid)
 			{
 				var modelapi = new CreateEventSpeakerModel()
@@ -73,22 +79,25 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					UserId = model.UserId,
 					UserName = model.UserName,
 					SpeakerType = model.SpeakerType,
-					DateAssigned = model.DateAssigned,
 					Experience = model.Experience,
 					Email = model.Email,
-					Remark = model.Remark,
-					Religion = model.Religion,
+					SpeakerStatus = model.SpeakerStatus,
 					PhoneNo = model.PhoneNo,
-					DateOfBirth = model.DateOfBirth,
-					AddressStreet1 = model.AddressStreet1,
-					AddressStreet2 = model.AddressStreet2,
-					AddressPoscode = model.AddressPoscode,
-					AddressCity = model.AddressCity,
-					State = model.State,
-					MaritialStatus = model.MaritialStatus,
+					ExternalUserName = model.ExternalUserName,
 					//SpeakerPictureName = model.SpeakerPicture.FileName,
 					//SpeakerAttachmentName = model.SpeakerAttachment.FileName,
 				};
+
+				//attachment
+				if (model.AttachmentFiles.Count() > 0)
+				{
+					var responseFile = await WepApiMethod.SendApiAsync<List<FileDocument>>($"File?userId={CurrentUser.UserId}", model.AttachmentFiles.ToList());
+
+					if (responseFile.isSuccess)
+					{
+						modelapi.FilesId = responseFile.Data.Select(f => f.Id).ToList();
+					}
+				}
 
 				var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eEvent/EventSpeaker", modelapi);
 
@@ -127,19 +136,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				UserId = response.Data.UserId,
 				UserName = response.Data.UserName,
 				SpeakerType = response.Data.SpeakerType,
-				DateAssigned = response.Data.DateAssigned,
 				Experience = response.Data.Experience,
 				Email = response.Data.Email,
-				Remark = response.Data.Remark,
-				Religion = response.Data.Religion,
 				PhoneNo = response.Data.PhoneNo,
-				DateOfBirth = response.Data.DateOfBirth,
-				AddressStreet1 = response.Data.AddressStreet1,
-				AddressStreet2 = response.Data.AddressStreet2,
-				AddressPoscode = response.Data.AddressPoscode,
-				AddressCity = response.Data.AddressCity,
-				State = response.Data.State,
-				MaritialStatus = response.Data.MaritialStatus,
+				SpeakerStatus = response.Data.SpeakerStatus,
+				ExternalUserName = response.Data.ExternalUserName,
 				//SpeakerPictureName = response.Data.SpeakerPictureName,
 				//SpeakerAttachmentName = response.Data.SpeakerAttachmentName,
 			};
@@ -151,31 +152,38 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Edit(EditEventSpeakerModel model)
+		public async Task<ActionResult> Edit(FEP.Intranet.Areas.eEvent.Models.EditEventSpeakerModel model)
 		{
+			if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
+			{
+				ModelState.AddModelError("Attachments", "Please upload file");
+			}
+
 			if (ModelState.IsValid)
 			{
-				//var modelapi = new EditEventSpeakerModel()
-				//{
-				//	UserId = model.UserId,
-				//	UserName = model.UserName,
-				//	SpeakerType = model.SpeakerType,
-				//	DateAssigned = model.DateAssigned,
-				//	Experience = model.Experience,
-				//	Email = model.Email,
-				//	Remark = model.Remark,
-				//	Religion = model.Religion,
-				//	PhoneNo = model.PhoneNo,
-				//	DateOfBirth = model.DateOfBirth,
-				//	AddressStreet1 = model.AddressStreet1,
-				//	AddressStreet2 = model.AddressStreet2,
-				//	AddressPoscode = model.AddressPoscode,
-				//	AddressCity = model.AddressCity,
-				//	State = model.State,
-				//	MaritialStatus = model.MaritialStatus,
-				//	SpeakerPictureName = model.SpeakerPicture.FileName,
-				//	SpeakerAttachmentName = model.SpeakerAttachment.FileName,
-				//};
+				var modelapi = new EditEventSpeakerModel()
+				{
+					UserId = model.UserId,
+					UserName = model.UserName,
+					SpeakerType = model.SpeakerType,
+					Experience = model.Experience,
+					Email = model.Email,
+					PhoneNo = model.PhoneNo,
+					Attachments = model.Attachments,
+					ExternalUserName = model.ExternalUserName,
+				};
+
+				//attachment
+				if (model.AttachmentFiles.Count() > 0)
+				{
+					var responseFile = await WepApiMethod.SendApiAsync<List<FileDocument>>($"File?userId={CurrentUser.UserId}", model.AttachmentFiles.ToList());
+
+					if (responseFile.isSuccess)
+					{
+						modelapi.FilesId = responseFile.Data.Select(f => f.Id).ToList();
+					}
+
+				}
 
 				var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/EventSpeaker?id={model.Id}", model);
 
@@ -216,19 +224,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				UserId = response.Data.UserId,
 				UserName = response.Data.UserName,
 				SpeakerType = response.Data.SpeakerType,
-				DateAssigned = response.Data.DateAssigned,
 				Experience = response.Data.Experience,
 				Email = response.Data.Email,
-				Remark = response.Data.Remark,
-				Religion = response.Data.Religion,
 				PhoneNo = response.Data.PhoneNo,
-				DateOfBirth = response.Data.DateOfBirth,
-				AddressStreet1 = response.Data.AddressStreet1,
-				AddressStreet2 = response.Data.AddressStreet2,
-				AddressPoscode = response.Data.AddressPoscode,
-				AddressCity = response.Data.AddressCity,
-				State = response.Data.State,
-				MaritialStatus = response.Data.MaritialStatus,
+				SpeakerStatus = response.Data.SpeakerStatus,
+				Attachments = response.Data.Attachments,
+				ExternalUserName = response.Data.ExternalUserName,
+				InternalEmail = response.Data.InternalEmail,
+				InternalPhoneNo = response.Data.InternalPhoneNo,
 				//SpeakerPictureName = response.Data.SpeakerPictureName,
 				//SpeakerAttachmentName = response.Data.SpeakerAttachmentName,
 			};
@@ -243,7 +246,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> DeleteConfirm(int id)
 		{
-
 			var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Delete, $"eEvent/EventSpeaker?id={id}");
 
 			if (response.isSuccess)

@@ -482,8 +482,6 @@ namespace FEP.WebApi.Api.eEvent
 			}
 			return "";
 		}
-
-
 	}
 }
 

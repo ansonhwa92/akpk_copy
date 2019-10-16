@@ -22,15 +22,15 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string EventObjective { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Start Date")]
-		//[DataType(DataType.Date)]
-		//[UIHint("Date")]
+		[DataType(DataType.Date)]
+		[UIHint("Date")]
 		//[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "Start Date")]
 		public DateTime? StartDate { get; set; }
 
 		[Required(ErrorMessage = "Please Insert End Date")]
-		//[DataType(DataType.Date)]
-		//[UIHint("Date")]
+		[DataType(DataType.Date)]
+		[UIHint("Date")]
 		//[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
 		[Display(Name = "End Date")]
 		public DateTime? EndDate { get; set; }
@@ -98,15 +98,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string origin { get; set; }
 		public string RefNo { get; set; }
 
-
-		//File
-		
-		[Display(Name = "File Name")]
-		public string FileName { get; set; }
-		[Display(Name = "File Description")]
-		public string FileDescription { get; set; }
-		[Display(Name = "Uploaded Date")]
-		public DateTime UploadedDate { get; set; }
 	}
 
 	public class CreatePublicEventModel : PublicEventModel

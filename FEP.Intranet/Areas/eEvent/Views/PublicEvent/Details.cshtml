@@ -73,17 +73,21 @@
 			<div>
 				@{if (Model.EventStatus == FEP.Model.EventStatus.New)
 					{
-						<a href='@Url.Action("SubmitToVerify", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-primary btn-block mb-2">Submit for Verification</a>
+						<a href='@Url.Action("SubmitToVerify", "PublicEvent", new { area = "eEvent", id = Model.Id })' 
+						   class="btn btn-primary btn-block mb-2">Submit for Verification</a>
 					}
 					else if (Model.EventStatus == FEP.Model.EventStatus.PendingforVerification)
 					{
-						<a href='@Url.Action("Verified", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-primary btn-block mb-2 ">Submit for Approval</a>
+						<a href='@Url.Action("Verified", "PublicEvent", new { area = "eEvent", id = Model.Id })' 
+						   class="btn btn-primary btn-block mb-2 ">Submit for Approval</a>
 					}
 					else if (Model.EventStatus == FEP.Model.EventStatus.Verified)
 					{
-						<a href='@Url.Action("FirstApproved", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-primary btn-block mb-2 ">Submit for Approval</a>
+						<a href='@Url.Action("FirstApproved", "PublicEvent", new { area = "eEvent", id = Model.Id })' 
+						   class="btn btn-primary btn-block mb-2 ">Submit for Approval</a>
 						<br />
-						<a href='@Url.Action("RejectPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })' class="btn btn-warning btn-block mb-2">Require Amendment</a>
+						<a href='@Url.Action("RejectPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })' 
+						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 					}
 					else if (Model.EventStatus == FEP.Model.EventStatus.VerifiedbyFirstApprover)
 					{

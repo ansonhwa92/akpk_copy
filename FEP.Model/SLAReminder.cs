@@ -87,17 +87,40 @@ namespace FEP.Model
         [Display(Name = "Reset Password")]
         ResetPassword,
 
-
-        [Display(Name = "Verify Public Event")]
+		[Display(Name = "Submit Public Event")]
+		SubmitPublicEvent,
+		[Display(Name = "Verify Public Event")]
         VerifyPublicEvent,
         [Display(Name = "Approve Public Event")]
         ApprovePublicEvent,
-        [Display(Name = "Payment")]
+		[Display(Name = "Publish Public Event")]
+		PublishPublicEvent,
+		[Display(Name = "Reject Public Event")]
+		RejectPublicEvent,
+		[Display(Name = "Cancel Public Event")]
+		CancelPublicEvent,
+
+		[Display(Name = "Submit Exhibition Roadshow")]
+		SubmitExhibitionRoadshow,
+		[Display(Name = "Verify Exhibition Roadshow")]
+		VerifyExhibitionRoadshow,
+		[Display(Name = "Approve Exhibition Roadshow")]
+		ApproveExhibitionRoadshow,
+		[Display(Name = "Reject Exhibition Roadshow")]
+		RejectExhibitionRoadshow,
+
+		[Display(Name = "Submit Media Interview")]
+		SubmitMediaInterview,
+		[Display(Name = "Verify Media Interview")]
+		VerifyMediaInterview,
+		[Display(Name = "Approve Media Interview")]
+		ApproveMediaInterview,
+		[Display(Name = "Reject Media Interview")]
+		RejectMediaInterview,
+
+
+		[Display(Name = "Payment")]
         Payment,
-        [Display(Name = "Verify External Request")]
-        VerifyExternalRequest,
-        [Display(Name = "Approve External Request")]
-        ApproveExternalRequest,
         [Display(Name = "Verify Courses")]
         VerifyCourses,
         [Display(Name = "Approve Courses")]

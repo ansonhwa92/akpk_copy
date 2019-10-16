@@ -133,7 +133,7 @@
     <value>Location</value>
   </data>
   <data name="ExRoadOrganiser" xml:space="preserve">
-    <value>Organiser</value>
+    <value>Organizer</value>
   </data>
   <data name="ExRoadParticipantRequirement" xml:space="preserve">
     <value>Participant Requirement</value>
@@ -162,44 +162,14 @@
   <data name="ExRoadReceivedBys" xml:space="preserve">
     <value>Received By</value>
   </data>
-  <data name="SpAddress1" xml:space="preserve">
-    <value>Address</value>
-  </data>
-  <data name="SpAddress2" xml:space="preserve">
-    <value>Address</value>
-  </data>
-  <data name="SpCity" xml:space="preserve">
-    <value>City</value>
-  </data>
-  <data name="SpDateAssigned" xml:space="preserve">
-    <value>Date Assigned</value>
-  </data>
-  <data name="SpDateOfBirth" xml:space="preserve">
-    <value>Date of Birth</value>
-  </data>
   <data name="SpEmail" xml:space="preserve">
-    <value>Email</value>
+    <value>Email Address</value>
   </data>
   <data name="SpExperience" xml:space="preserve">
     <value>Experience</value>
   </data>
-  <data name="SpMaritialStatus" xml:space="preserve">
-    <value>Maritial Status</value>
-  </data>
   <data name="SpPhoneNo" xml:space="preserve">
     <value>Phone No.</value>
-  </data>
-  <data name="SpPoscode" xml:space="preserve">
-    <value>Poscode</value>
-  </data>
-  <data name="SpReligion" xml:space="preserve">
-    <value>Religion</value>
-  </data>
-  <data name="SpRemark" xml:space="preserve">
-    <value>Remark</value>
-  </data>
-  <data name="SpState" xml:space="preserve">
-    <value>State</value>
   </data>
   <data name="SpType" xml:space="preserve">
     <value>Speaker Type</value>
@@ -295,6 +265,39 @@
     <value>Speakers</value>
   </data>
   <data name="PubEventRefNo" xml:space="preserve">
+    <value>Reference No</value>
+  </data>
+  <data name="ExhibitorCompanyName" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="SpStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="SpStatusDesc" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="AgendaDescription" xml:space="preserve">
+    <value>Descriptions</value>
+  </data>
+  <data name="AgendaEventRefNo" xml:space="preserve">
+    <value>Event Reference No.</value>
+  </data>
+  <data name="AgendaPersonInCharge" xml:space="preserve">
+    <value>Person In-Charge</value>
+  </data>
+  <data name="AgendaSupportDocument" xml:space="preserve">
+    <value>Support Document</value>
+  </data>
+  <data name="AgendaTentative" xml:space="preserve">
+    <value>Tentative</value>
+  </data>
+  <data name="AgendaTime" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="AgendaTitle" xml:space="preserve">
+    <value>Agenda Session</value>
+  </data>
+  <data name="ExRoadRefNo" xml:space="preserve">
     <value>Reference No</value>
   </data>
 </root>

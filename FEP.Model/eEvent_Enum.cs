@@ -112,6 +112,14 @@ namespace FEP.Model
 		External //OBS SPEAKER
 	}
 
+	public enum SpeakerStatus
+	{
+		[Display(Name = "Active")]
+		Active,
+		[Display(Name = "Inactive")]
+		Inactive
+	}
+
 	public enum MediaState
 	{
 		Selangor,
@@ -157,17 +165,20 @@ namespace FEP.Model
 
 	public enum ExhibitionStatus
 	{
+		[Display(Name = "Draft")]
 		New,
-		Cancelled,
-		Approved
-	}
-
-	public enum MaritialStatus
-	{
-		Married,
-		Single,
-		Divorced,
-		Widowed
+		[Display(Name = "Pending Verification")]
+		PendingVerified,
+		[Display(Name = "Pending Approval 1")]
+		Verified,
+		[Display(Name = "Require Amendment")]
+		NotVerified,
+		[Display(Name = "Pending Approval 2")]
+		ApprovedByApprover1,
+		[Display(Name = "Pending Approval 3")]
+		ApprovedByApprover2,
+		[Display(Name = "Approved")]
+		ApprovedByApprover3,
 	}
 
 	public enum Religion

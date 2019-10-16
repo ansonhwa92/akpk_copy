@@ -56,10 +56,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="eEvent_MessageAlert.Designer.cs">
+    <Compile Include="Event_MessageAlert.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>eEvent_MessageAlert.resx</DependentUpon>
+      <DependentUpon>Event_MessageAlert.resx</DependentUpon>
     </Compile>
     <Compile Include="EventCategory.Designer.cs">
       <DependentUpon>EventCategory.resx</DependentUpon>
@@ -154,9 +154,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="eEvent_MessageAlert.resx">
+    <EmbeddedResource Include="Event_MessageAlert.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>eEvent_MessageAlert.Designer.cs</LastGenOutput>
+      <LastGenOutput>Event_MessageAlert.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Company.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -58,6 +58,21 @@ namespace FEP.Model
 		Reject_Media_Interview,
 
 
+		//Exhibition Roadshow
+		[Display(Name = "Exhibition Roadshow - Submit Exhibition Roadshow For Verification")]
+		Submit_Exhibition_RoadShow_For_Verification,
+		[Display(Name = "Exhibition Roadshow - Verify Exhibition Roadshow")]
+		Verify_Exhibition_RoadShow_After_Submit_For_Verification,
+
+		[Display(Name = "Exhibition Roadshow - Approve Exhibition Roadshow By Approver 1")]
+		Approve_Exhibition_RoadShow_ByApprover_1,
+		[Display(Name = "Exhibition Roadshow - Approve Exhibition Roadshow By Approver 2")]
+		Approve_Exhibition_RoadShow_ByApprover_2,
+		[Display(Name = "Exhibition Roadshow - Approve Exhibition Roadshow By Approver 3")]
+		Approve_Exhibition_RoadShow_ByApprover_3,
+
+		[Display(Name = "Exhibition RoadShow - Rejected")]
+		Reject_Exhibition_RoadShow,
 
 		//Payment
 		[Display(Name = "Payment Pending GL")]

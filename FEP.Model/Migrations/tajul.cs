@@ -13,7 +13,7 @@ namespace FEP.Model.Migrations
 		{
 			DefaultSLAReminder(db);
 			DefaultParameterGroup(db);
-			DefaultTemplate(db);
+			//DefaultTemplate(db);
 		}
 
 		public static void DefaultSLAReminder(DbEntities db)
@@ -235,10 +235,6 @@ namespace FEP.Model.Migrations
 
                     }
 
-					db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-					new ParameterGroup { SLAEventType = EventType, TemplateParameterType = paramType });
-                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-						new ParameterGroup { SLAEventType = EventType, TemplateParameterType = paramType });
 				}
 
 

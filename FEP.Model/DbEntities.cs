@@ -200,6 +200,12 @@ namespace FEP.Model
         public DbSet<BulkNotification> BulkNotification { get; set; }
         public DbSet<ParameterGroup> ParameterGroup { get; set; }
 
+        public DbSet<ActivityDummy> ActivityDummy { get; set; }
+        public DbSet<RewardActivityPoint> RewardActivityPoint { get; set; }
+        public DbSet<RewardRedemption> RewardRedemption { get; set; }
+        public DbSet<UserRewardPoints> UserRewardPoints { get; set; }
+        public DbSet<UserRewardRedemption> UserRewardRedemption { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();

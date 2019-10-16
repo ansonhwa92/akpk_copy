@@ -244,7 +244,9 @@
                     </div>
                 </div>
 
-
+                <div class="form-group">
+                    @Html.Label("Tick the following checkbox(s) to send notification using the selected medium :")
+                </div>
                 <div class="divTable">
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
@@ -263,7 +265,7 @@
                     </div>
                     <div id="webBox" class="form-group">
                         <div class="col-md-12">
-                        @Html.LabelFor(model => model.WebMessage, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.WebMessage, htmlAttributes: new { @class = "control-label" })
                             <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamWeb">
                                 <i class="fa fa-plus"></i>
                                 Add Parameters
@@ -329,7 +331,7 @@
                                 <div class="col-md-12">
                                     <div class="col-md-12 pl-0">
                                         @Html.LabelFor(model => model.TemplateSubject, htmlAttributes: new { @class = "control-label" })
-                                        <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamEmailSubject" >
+                                        <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamEmailSubject">
                                             <i class="fa fa-plus"></i>
                                             Add Parameters
                                         </button>
@@ -348,7 +350,7 @@
                                 <div class="col-md-12">
                                     <div class="col-md-12 pl-0">
                                         @Html.LabelFor(model => model.TemplateMessage, htmlAttributes: new { @class = "control-label" })
-                                        <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamEmailBody" >
+                                        <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamEmailBody">
                                             <i class="fa fa-plus"></i>
                                             Add Parameters
                                         </button>

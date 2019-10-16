@@ -38,6 +38,9 @@ namespace FEP.WebApiModel.SLAReminder
         [Display(Name = "Reminder Notice")]
         public int IntervalDuration { get; set; }
 
+        [Display(Name = "SLA Group")]
+        public SLAEventType SLAEventType { get; set; }
+
     }
     public class SLAReminderModel
     {
@@ -46,6 +49,7 @@ namespace FEP.WebApiModel.SLAReminder
 
         [Display(Name = "SLA Event")]
         public SLAEventType SLAEventType { get; set; }
+        public string SLAEventTypeName { get; set; }
 
         [Display(Name = "Stages")]
         public NotificationType NotificationType { get; set; }

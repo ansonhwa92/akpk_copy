@@ -1,0 +1,91 @@
+﻿@model FEP.WebApiModel.Reward.DetailRewardRedemptionModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                @*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Reward</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Reward Redemption Settings</h1>
+                    @*<div class="header-text">List of registered user as individual</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Reward Redemption</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Details", "RewardRedemptions", new { area = "Reward", id = Model.Id })" class="active nav-link">View</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <div class="border-form rounded-top">
+            <div class="form-container form-container-w100">
+                <div class="mb-4 mt-2">
+                    <h4 class="color-darkblue mb-0">Details : Reward</h4>
+                    <h6 class="font-weight-normal">@Model.Description</h6>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(m => m.Description)
+                        @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(m => m.RewardCode)
+                        @Html.EditorFor(m => m.RewardCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(m => m.PointsToRedeem)
+                        @Html.EditorFor(m => m.PointsToRedeem, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(m => m.ValidDuration)
+                        @Html.EditorFor(m => m.ValidDuration, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+            <a href="@Url.Action("List")" class="btn btn-default mr-2">Back</a>
+            <a href="@Url.Action("Redeem", "UserRewardRedemptions", new { area = "Reward", id = Model.Id })" class="btn btn-default mr-2">Redeem Reward</a>
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,284 @@
+﻿@model FEP.WebApiModel.Reward.ListUserRewardPointsModel
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+
+@section ContentScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var table = $('.tabledata').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    "type": "POST",
+                    @{
+                        var sendId = -99;
+                        if(CurrentUser.UserType != UserType.SystemAdmin)
+                        {
+                            sendId = CurrentUser.UserId.Value;
+                        }
+                    }
+                    "url": '@(WebApiURL)Reward/UserRewardPoints/GetUserRewardPointsList?id=@sendId',
+                    "data": function (filter) {
+                        //alert(filter[0]);
+                        filter.ActivityName = $('#filter_ActivityName').val();
+                        filter.PointsReceived = $('#filter_PointsReceived').val();
+                        filter.UserName = $('#filter_UserName').val();
+                        filter.RewardType = $('#filter_RewardType').val();
+                    }
+                },
+                columns: [
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+
+                    { sortable: true, data: 'UserName' },
+                    { sortable: true, data: 'PointsReceived' },
+                    {
+                        sortable: true, data: 'RewardTypeName',
+                        render: function (data, type, row, meta) {
+                            if (data == "Admin Reward") {
+                                return '<span class="badge badge-primary">'+data+'</span>';
+                            }
+                            if (data == "Activity") {
+                                return '<span class="badge badge-secondary">'+data+'</span>';
+                            }
+                        }
+                    },
+                    { sortable: true, data: 'ActivityName' },
+                    { sortable: true, data: 'RewardedByName' },
+                    {
+                        sortable: true, data: 'DateReceived',
+                        render: function (data, type, row, meta) {
+
+							  var x = moment(data);
+
+							  if (x.isValid()) {
+								  return x.format("DD/MM/YYYY HH:mm");
+							  }
+							  else {
+								  return '';
+							  }
+
+                        }
+                    },
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            var action = "";
+                            action = '<div class="icon-action">'
+                                    +   '<a href="@Url.Action("Details", "UserRewardPoints", new { area = "Reward" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+                                    + '</div>';
+
+                            return action;
+                        }
+                    }
+                ],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_ User Reward Points"
+                },
+                dom: 'rtip'
+            });
+            $('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup( function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change( function() {
+                table.page.len($(this).val()).draw();
+            });
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt', function () {
+                var info = table.page.info();
+
+                var start = 0;
+                if (info.recordsTotal != 0) {
+                    start = info.start + 1;
+                }
+
+                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' User Reward Points ');
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            }).draw();
+        });
+    </script>
+}
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                @*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Reward</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">User Reward Points</h1>
+                    @*<div class="header-text">List of registered user as individual</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+
+    <!-- Start content leftbar -->
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> User Reward Points</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="#" data-toggle="tab" class="nav-link active">List</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End content leftbar -->
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded">
+            <div class="form-container form-container-w100">
+                <div class="d-flex  align-items-center mb-4 mt-2">
+                    <h4 class="color-darkblue mr-auto mb-0">User Reward Points List</h4>
+
+                    @if (CurrentUser.UserType != UserType.SystemAdmin)
+                    {
+                        <h6 class="font-weight-normal mb-0">My Collected Points : <b>@ViewBag.TotalPoints</b></h6>
+                        <h6 class="font-weight-normal mb-0">
+                            Points Used :
+                            <b>
+                                <a href="@Url.Action("List", "UserRewardRedemptions", new { area = "Reward" })">
+                                    @ViewBag.PointsUsed
+                                </a>
+                            </b>
+                        </h6>
+                    }
+                    @if (CurrentUser.UserType == UserType.SystemAdmin)
+                    {
+                        <div>
+                            <a href="@Url.Action("AwardUser", "UserRewardPoints", new { area = "Reward" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Award a User</a>
+                        </div>
+                    }
+                </div>
+
+
+
+                <div class="d-flex align-items-center">
+
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="filter dropdown">
+                        <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+                        <div class="dropdown-menu">
+                            <div class="filter-head">Filters</div>
+                            <div class="filter-body">
+                                <div>@Html.DisplayNameFor(m => m.filter.ActivityName)</div>
+                                <div class="sorting-wrap">
+                                    <div class="sorting-dropdown">
+                                        @Html.EditorFor(m => m.filter.ActivityName, new { htmlAttributes = new { @class = "form-control small" } })
+                                    </div>
+                                </div>
+                                <div>@Html.DisplayNameFor(m => m.filter.PointsReceived)</div>
+                                <div class="sorting-wrap">
+                                    <div class="sorting-dropdown">
+                                        @Html.EditorFor(m => m.filter.PointsReceived, new { htmlAttributes = new { @class = "form-control small" } })
+                                    </div>
+                                </div>
+                                <div>@Html.DisplayNameFor(m => m.filter.UserName)</div>
+                                <div class="sorting-wrap">
+                                    <div class="sorting-dropdown">
+                                        @Html.EditorFor(m => m.filter.UserName, new { htmlAttributes = new { @class = "form-control small" } })
+                                    </div>
+                                </div>
+                                <div>@Html.DisplayNameFor(m => m.filter.RewardType)</div>
+                                <div class="sorting-wrap">
+                                    <div class="sorting-dropdown">
+                                        @Html.DropDownListFor(model => model.filter.RewardType, Model.RewardTypeList, "-Select Reward Type-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+                                    </div>
+                                </div>
+                                <div>
+                                    <button id="btnSearch" class="mt-2 btn btn-secondary btn-block">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divider-vertical">&nbsp;</div>
+                    <!-- Search -->
+                    <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+                        <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+                        <div class="input-group-append">
+                            <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+                <hr />
+                <div class="table-responsive">
+                    <div class="d-flex pb-4 align-items-center">
+                        <div>
+                            <!-- Select option -->
+                            <span class="select-arrow">
+                                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+                    </div>
+                    <table class="table tableStyle1 tabledata">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>@Html.DisplayNameFor(model => model.filter.UserName)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.PointsReceived)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.RewardType)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.ActivityName)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.RewardedBy)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.DateReceived)</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

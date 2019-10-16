@@ -100,6 +100,10 @@
     <Compile Include="Logs\ErrorLog.cs" />
     <Compile Include="Logs\UserLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reward\RewardActivityPointModel.cs" />
+    <Compile Include="Reward\RewardRedemption.cs" />
+    <Compile Include="Reward\UserRewardPoints.cs" />
+    <Compile Include="Reward\UserRewardRedemption.cs" />
     <Compile Include="RnP\Publication.cs" />
     <Compile Include="RnP\Research.cs" />
     <Compile Include="Notification\Email.cs" />

@@ -1,5 +1,5 @@
 ﻿using FEP.Model;
-using FEP.WebApiModel.FileDocument;
+using FEP.WebApiModel.FileDocuments;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

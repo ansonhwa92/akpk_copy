@@ -324,7 +324,7 @@ namespace FEP.Model
 		public int Id { get; set; }
 		public DateTime? ApprovedDate { get; set; }
 		public string Remark { get; set; }
-		public ApprovalLevel ApprovalLevel { get; set; }
+		public EventApprovalLevel ApprovalLevel { get; set; }
 		public bool RequireNext { get; set; }
 
 		public int ApproverId { get; set; }
@@ -343,8 +343,8 @@ namespace FEP.Model
 		public int Id { get; set; }
 		public DateTime? ApprovedDate { get; set; }
 		public string Remark { get; set; }
-		public ApprovalLevel Level { get; set; } 
-		public ApprovalStatus Status { get; set; }
+		public EventApprovalLevel Level { get; set; } 
+		public EventApprovalStatus Status { get; set; }
 		public bool RequireNext { get; set; }
 
 		public int ApproverId { get; set; }

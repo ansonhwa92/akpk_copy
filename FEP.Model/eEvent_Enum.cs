@@ -82,7 +82,7 @@ namespace FEP.Model
 		Withdraw
 	}
 
-	public enum ApprovalLevel
+	public enum EventApprovalLevel
 	{
 		[Display(Name = "Verifier")]
 		Verifier,
@@ -94,7 +94,7 @@ namespace FEP.Model
 		Approver3
 	}
 
-	public enum ApprovalStatus
+	public enum EventApprovalStatus
 	{
 		[Display(Name = "None")]
 		None,

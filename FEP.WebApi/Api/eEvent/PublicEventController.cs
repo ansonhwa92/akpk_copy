@@ -1,7 +1,7 @@
 ﻿using FEP.Helper;
 using FEP.Model;
 using FEP.WebApiModel;
-using FEP.WebApiModel.FileDocument;
+using FEP.WebApiModel.FileDocuments;
 using FEP.WebApiModel.PublicEvent;
 using System;
 using System.Collections.Generic;

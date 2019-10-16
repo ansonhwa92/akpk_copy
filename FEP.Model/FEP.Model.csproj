@@ -86,13 +86,9 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201910151409201_x.cs" />
-    <Compile Include="Migrations\201910151409201_x.designer.cs">
-      <DependentUpon>201910151409201_x.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910161116370_x1.cs" />
-    <Compile Include="Migrations\201910161116370_x1.designer.cs">
-      <DependentUpon>201910161116370_x1.cs</DependentUpon>
+    <Compile Include="Migrations\201910162010204_x.cs" />
+    <Compile Include="Migrations\201910162010204_x.designer.cs">
+      <DependentUpon>201910162010204_x.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -120,11 +116,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910151409201_x.resx">
-      <DependentUpon>201910151409201_x.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910161116370_x1.resx">
-      <DependentUpon>201910161116370_x1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910162010204_x.resx">
+      <DependentUpon>201910162010204_x.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

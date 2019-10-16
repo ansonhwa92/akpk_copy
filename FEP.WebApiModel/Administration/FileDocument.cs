@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FEP.WebApiModel.FileDocument
+namespace FEP.WebApiModel.FileDocuments
 {
     public class Attachment
     {

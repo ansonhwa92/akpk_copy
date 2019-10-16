@@ -334,7 +334,7 @@ namespace FEP.WebApi.Api.eLearning
         [HttpPost]
         public IHttpActionResult GetAllTrainers(FilterIndividualModel request)
         {
-            var users = db.UserRole.Where(u => u.User.Display && u.Role.Name == RoleNames.eLearningTrainer).Select(x => x.User);
+            var users = db.UserRole.Where(u => u.UserAccount.User.Display && u.Role.Name == RoleNames.eLearningTrainer).Select(x => x.UserAccount.User);
 
             if (users == null)
                 return NotFound();

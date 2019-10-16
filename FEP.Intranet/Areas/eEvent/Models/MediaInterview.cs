@@ -196,15 +196,15 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Required]
 		[Display(Name = "Level")]
-		public ApprovalLevel Level { get; set; }
+		public EventApprovalLevel Level { get; set; }
 
 		[Required]
 		public int ApproverId { get; set; }
 
 		[Required]
-		[Range((int)(ApprovalStatus.Approved), (int)(ApprovalStatus.Rejected), ErrorMessage = "Please Select")]
+		[Range((int)(EventApprovalStatus.Approved), (int)(EventApprovalStatus.Rejected), ErrorMessage = "Please Select")]
 		[Display(Name = "PubApprovalStatus")]
-		public ApprovalStatus Status { get; set; }
+		public EventApprovalStatus Status { get; set; }
 
 		[Required]
 		[Display(Name = "Remarks")]

@@ -91,7 +91,11 @@
             </span>
         </div>
         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+
+        @if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+        {
         <div><a href="@Url.Action("Create", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>
+        }
     </div>
     <!-- Table -->
     <table class="table tableStyle1 tabledata">
@@ -208,11 +212,14 @@
                             action = '<div class="icon-action">';
 
                             if (canview) {
-                                action += '<a href="@Url.Action("View", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
+                                if (row.Status == 1) {
+                                    action += '<a href="@Url.Action("View", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
+                                }
                             }
 
                             if (row.Status == 0|| row.Status == 1) {          // new
                                 if (canedit) {
+                                    action += '<a href="@Url.Action("View", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
                                     //action += '<a href="@Url.Action("Edit", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
                                     action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
                                     action += '<a href="@Url.Action("Delete", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>';

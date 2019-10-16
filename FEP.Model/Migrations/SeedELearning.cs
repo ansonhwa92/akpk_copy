@@ -304,7 +304,7 @@ namespace FEP.Model.Migrations
             AddRoleAndAccess(db, RoleNames.eLearningTrainer, "Default Trainer",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseDiscussionGroupCreate, UserAccess.CourseGroupCreate,
-                UserAccess.CourseEdit, UserAccess.CourseAddDocument);
+                UserAccess.CourseAddDocument);
             AddRoleAndAccess(db, RoleNames.eLearningAdmin, "Admin eLearning",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseCreate, UserAccess.CourseEdit,

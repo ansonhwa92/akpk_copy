@@ -41,7 +41,7 @@
                     </div>
                     <h1 class="page-title text-white">Manage Module : @name</h1>
                     <div class="header-text">
-                        Manage a course by editing and adding contents.
+                        Manage a module by editing and adding contents.
                     </div>
                 </div>
             </div>
@@ -68,12 +68,14 @@
             <div class="border-form rounded-top">
                 <div class="form-container">
                     <div class="mb-4 mt-2 mr-auto">
-                        <span class="text-muted-light x-small font-italic">Module Name</span>
                         <h2 class="color-darkblue mb-0">
                             @name
                         </h2>
                     </div>
-                    <span class="text-muted-light x-small font-italic">Module Description</span>
+
+                    <div class="subtitle">
+                        ABOUT
+                    </div>
                     <br />
                     <div>
                         <div class="descbox">
@@ -83,7 +85,10 @@
                     </div>
 
                     <br />
-                    <span class="text-muted-light x-small font-italic">Module Objectives</span>
+
+                    <div class="subtitle">
+                        What you will learn
+                    </div>
                     <div>
                         <div class="objbox">
                             @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
@@ -95,7 +100,7 @@
                         <div class="row">
 
                             <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "CourseModules", new { area = "eLearning", id = @Model.Id })">Edit Module</a>
-                            <a class="btn btn-secondary m-2" href="#">View as learner</a>
+                            <a class="btn btn-secondary m-2" href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = @Model.Id })">View as learner</a>
                         </div>
                     </div>
                     <hr />
@@ -114,8 +119,9 @@
                                     var content = contents[i];
 
                                     var icon = "la-file-text";
+                                    var title = content.ContentType;
 
-                                    <div class="content-box" data-id="@content.Order">
+                                    <div class="content-box" data-id="@content.Id" onclick="openModule(@content.Id)">
 
                                         @switch (content.ContentType)
                                         {
@@ -168,7 +174,7 @@
                                         <div>
                                             <div class="row">
                                                 <div class="col-sm-8">
-                                                    <div class="pr-3"><i class="la @icon la-2x"></i><span class="pb-1">@content.Title</span></div>
+                                                    <div class="pr-3"><i class="la @icon la-2x" data-toggle="tooltip" title=@title></i><span class="pb-1">@content.Title</span></div>
                                                 </div>
                                                 <div class="col-sm-4 ">
                                                     <div class="row float-right">
@@ -179,7 +185,7 @@
                                                         <a href="@Url.Action($"Delete", "CourseContents", new { area = "eLearning", id = content.Id})"
                                                            data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o"></i></a>
 
-                                                        <div class="pl-4">
+                                                        <div class="pl-2">
                                                             <i class="fa fa-bars handle color-blue" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Reorder"></i>
                                                         </div>
                                                     </div>
@@ -198,7 +204,7 @@
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
 
                 <a class="btn btn-default" href="~/eLearning/Courses/Content/@Model.CourseId" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
-                <button type="submit" class="btn btn-default pull-right" id="btnSave" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save</button>
+                @*<button type="submit" class="btn btn-default pull-right" id="btnSave" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save</button>*@
             </div>
         </div>
     </div>
@@ -225,6 +231,7 @@
 </style>
 
 @section ContentScript {
+    <link href="~/css/elearn.css" rel="stylesheet" />
     <script src="~/Scripts/jquery.truncate.js"></script>
     <!-- Sortable.js -->
     <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
@@ -257,6 +264,26 @@
                         console.log('order - ', order);
 
                         $('#order').val(order);
+
+                         var url = "@WebApiURL" + "eLearning/CourseModules/OrderContent";
+
+                        var courseId = $('#Id').val();
+                        var createdBy = $('#CreatedBy').val();
+                        var data = { Id: courseId, CreatedBy: createdBy, Order: order };
+
+                        console.log(data);
+
+                        $.ajax({
+                            url: url,
+                            data: data,
+                            type: 'POST',
+                            success: function (result) {
+                                console.log('result - ', result, );
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.log('error - ' + textStatus + " " + errorThrown);
+                            }
+                        });
                     }
                 }
             };
@@ -269,5 +296,10 @@
               console.log('local -', localStorage.getItem("modules"));
 
         });
+
+        function openModule(Id) {
+            var url = '@Url.Action("View", "CourseContents", new { area = "eLearning" })?id=' + Id;
+            window.location = url;
+        }
     </script>
 }

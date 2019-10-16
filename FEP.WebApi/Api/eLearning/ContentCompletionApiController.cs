@@ -31,7 +31,7 @@ namespace FEP.WebApi.Api.eLearning
         /// Mark complete this content, should put the mark in progress
         /// </summary>
         /// <returns></returns>
-        [Route("api/eLearning/ContentCompletion/Complete")]
+        [Route("api/eLearning/ContentCompletions/")]
         [HttpPost]
         [ValidationActionFilter]
         public async Task<IHttpActionResult> Post([FromBody] ContentCompletionModel request)
@@ -43,6 +43,7 @@ namespace FEP.WebApi.Api.eLearning
                 var nextContent = await db.CourseContents.Where(x => x.Order > currentContent.Order &&
                                 x.CourseModuleId == currentContent.CourseModuleId)
                                 .OrderBy(x => x.Order).FirstOrDefaultAsync();
+
 
                 return Ok(nextContent);
 
@@ -66,39 +67,45 @@ namespace FEP.WebApi.Api.eLearning
                             .Include(x => x.Question.MultipleChoiceAnswers)
                             .FirstOrDefaultAsync(x => x.Id == contentId);
 
+            var model = new ContentCompletionModel
+            {
+                CourseId = entity.CourseId,
+                CourseModuleId = entity.CourseModuleId,
+                ContentId = entity.Id,
+                Title = entity.Title,
+            };
 
             if (entity.CompletionType == ContentCompletionType.Timer)
             {
-                return new ContentCompletionModel
-                {
+                model.CompletionType = ContentCompletionType.Timer;
+                model.Timer = entity.Timer;
+                model.QuestionId = null;
+                model.Question = null;
 
-                    CompletionType = ContentCompletionType.Timer,
-                    Timer = entity.Timer,
-                    QuestionId = null,
-                    Question = null
-                };
             }
             else if (entity.CompletionType == ContentCompletionType.ClickButton)
             {
-                return new ContentCompletionModel
-                {
-                    CompletionType = ContentCompletionType.ClickButton,
-                    QuestionId = null,
-                    Question = null,
-                    Timer = 0
-                };
+                model.CompletionType = ContentCompletionType.ClickButton;
+                model.QuestionId = null;
+                model.Question = null;
+                model.Timer = 0;
+
             }
             else if (entity.CompletionType == ContentCompletionType.AnswerQuestion)
             {
-                return new ContentCompletionModel
-                {
-                    CompletionType = ContentCompletionType.AnswerQuestion,
-                    Timer = 0,
-                    QuestionId = entity.Question.Id
-                };
+                model.CompletionType = ContentCompletionType.AnswerQuestion;
+                model.Timer = 0;
+                model.QuestionId = entity.Question.Id;
+            }
+            else
+            {
+                model.CompletionType = ContentCompletionType.ClickButton;
+                model.QuestionId = null;
+                model.Question = null;
+                model.Timer = 0;
             }
 
-            return null;
+            return model;
         }
 
     }

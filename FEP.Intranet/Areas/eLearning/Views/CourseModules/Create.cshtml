@@ -96,15 +96,7 @@
                             @Html.ValidationMessageFor(model => model.Objectives, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
-                    @*<div class="form-group">
-                        <div class="col-md-offset-2 ">
-                            <input type="submit" value="Create" class="btn btn-default" />
-                        </div>
-                    </div>*@
                 </div>
-
-
             </div>
 
 
@@ -130,13 +122,17 @@
 
     <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
     <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+    <script src="~/js/elearn.js"></script>
 
     <script>
+        var uploadImgUrl = '@(BaseURL)/eLearning/File/UploadFile';
+        var getImgUrl = '@(BaseURL)/eLearning/File/GetImg/?fileName=';
+
         $(document).ready(function () {
-            $('.summernote').summernote({
+            $('#Description').summernote({
                 placeholder: 'Type your text here.',
                 tabsize: 2,
-                height: 150,
+                height: 200,
                 toolbar: [
                     //[groupName, [list of button]],
                     ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -145,13 +141,59 @@
                     ['color', ['color']],
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['height', ['height']],
+                    ['insert', ['link', 'picture']],
 
                 ],
                 codeviewFilter: false,
                 codeviewIframeFilter: true,
-                //airMode : true,
+                callbacks: {
+                    onFocus: function () {
+                        currentElement = "body";
+                    },
+                    onImageUpload: function (files, editor, $editable) {
+                        uploadFile(uploadImgUrl, files[0], function (message) {
+
+                            var remoteUrl = getImgUrl + message.FileNameOnStorage;
+
+                            $('#Description').summernote('insertImage', remoteUrl, message.FileName);
+
+                        });
+                    }
+                }
             });
 
+            $('#Objectives').summernote({
+                placeholder: 'Type your text here.',
+                tabsize: 2,
+                height: 200,
+                toolbar: [
+                    //[groupName, [list of button]],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['link', 'picture']],
+
+                ],
+                codeviewFilter: false,
+                codeviewIframeFilter: true,
+                callbacks: {
+                    onFocus: function () {
+                        currentElement = "body";
+                    },
+                    onImageUpload: function (files, editor, $editable) {
+                        uploadFile(uploadImgUrl, files[0], function (message) {
+
+                            var remoteUrl = getImgUrl + message.FileNameOnStorage;
+
+                            $('#Objectives').summernote('insertImage', remoteUrl, message.FileName);
+
+                        });
+                    }
+                }
+            });
         });
     </script>
-    }
+}

@@ -7,7 +7,7 @@ function uploadFile(url, file, callback) {
     data.append("file", file);
 
     //url = url + "/UploadFile";
-    console.log("try upload file - ", data, " url -", url);
+    //console.log("try upload file - ", data, " url -", url);
 
     $.ajax({
         url: url,
@@ -37,7 +37,7 @@ function uploadFile(url, file, callback) {
             }
 
             //console.log('result - ', result, ' result2 - ', message);
-            console.log('message - ', message, ' = ', message.FileNameOnStorage);
+            //console.log('message - ', message, ' = ', message.FileNameOnStorage);
 
             callback(message);
 

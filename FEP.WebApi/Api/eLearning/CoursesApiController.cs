@@ -176,8 +176,9 @@ namespace FEP.WebApi.Api.eLearning
                 course.CreatedDate = DateTime.Now;
                 course.IsDeleted = false;
 
-                // all course activity is log to table courseapprovallog
+                course.CreatedBy = request.CreatedBy;
 
+                // all course activity is log to table courseapprovallog
                 course.CourseApprovalLog = new List<CourseApprovalLog>
                 {
                     new CourseApprovalLog
@@ -452,7 +453,7 @@ namespace FEP.WebApi.Api.eLearning
         }
 
 
-     
+
         [Route("api/eLearning/Courses/AddUser")]
         [HttpPost]
         public IHttpActionResult AddUser(UpdateTrainerCourseModel model)
@@ -541,7 +542,7 @@ namespace FEP.WebApi.Api.eLearning
 
             var courseEvent = new CourseEvent();
 
-            if(entity.Status == CourseStatus.Trial)
+            if (entity.Status == CourseStatus.Trial)
             {
                 courseEvent = entity.CourseEvents.Where(x => x.Status == CourseEventStatus.Trial).FirstOrDefault();
                 model.CourseEventId = courseEvent.Id;
@@ -594,11 +595,17 @@ namespace FEP.WebApi.Api.eLearning
                     entity.IsFree = model.IsFree;
                     entity.ViewCategory = model.ViewCategory;
                     entity.Price = model.Price;
-                    db.Entry(entity).State = EntityState.Modified;
+
+                    entity.UpdatedBy = model.UpdatedBy;
+                    entity.UpdatedDate = DateTime.Now;
+
+                    db.SetModified(entity);
 
                     db.SaveChanges();
 
-                    return Ok(entity.Id);
+                    model.Id = entity.Id;
+
+                    return Ok(model);
                 }
             }
             return BadRequest(ModelState);
@@ -646,12 +653,14 @@ namespace FEP.WebApi.Api.eLearning
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("api/eLearning/Courses/Content")]
+        [Route("api/eLearning/Courses/OrderContent")]
         [HttpPost]
-        [ValidationActionFilter]
-        public async Task<IHttpActionResult> Content(int? Id, int CreatedBy, string order)
+        public async Task<IHttpActionResult> OrderContent([FromBody] OrderModel orderModel)
         {
-            if (Id == null)
+            string Id = orderModel.Id;
+
+
+            if (String.IsNullOrEmpty(Id))
             {
                 return BadRequest();
             }
@@ -659,7 +668,7 @@ namespace FEP.WebApi.Api.eLearning
             var entity = await db.Courses
               .Include(x => x.CourseApprovalLog)
               .Include(x => x.Modules)
-              .FirstOrDefaultAsync(x => x.Id == Id.Value);
+              .FirstOrDefaultAsync(x => x.Id.ToString() == Id);
 
             if (entity == null)
             {
@@ -668,16 +677,13 @@ namespace FEP.WebApi.Api.eLearning
 
             entity.Modules = entity.Modules.OrderBy(x => x.Order).ToList();
 
-            var splitOrder = order.Split(',').ToArray();
-
-            if (entity.Modules.Count() == splitOrder.Count())
+            for (int i = 0; i < orderModel.Order.Count(); i++)
             {
-                int i = 0;
-                foreach (var module in entity.Modules)
-                {
-                    module.Order = int.Parse(splitOrder[i]);
+                var module = entity.Modules.FirstOrDefault(x => x.Id.ToString() == orderModel.Order[i]);
 
-                    i++;
+                if (module != null)
+                {
+                    module.Order = i;
                 }
             }
 
@@ -685,11 +691,7 @@ namespace FEP.WebApi.Api.eLearning
 
             await db.SaveChangesAsync();
 
-            var model = _mapper.Map<CreateOrEditCourseModel>(entity);
-            model.CourseApprovalLogs = entity.CourseApprovalLog;
-            model.Modules = entity.Modules;
-
-            return Ok(model);
+            return Ok();
         }
 
         [Route("api/eLearning/Courses/SaveCertificate")]
@@ -709,8 +711,32 @@ namespace FEP.WebApi.Api.eLearning
 
                 return Ok(entity.Id);
             }
-            
+
             return BadRequest(ModelState);
         }
+
+        [Route("api/eLearning/Courses/UpdateIntroImg")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> UpdateIntroImg(ImageModel model)
+        {
+            var entity = await db.Courses.FirstOrDefaultAsync(x => x.Id.ToString() == model.Id);
+
+            if (entity == null)
+                return BadRequest();
+
+            entity.IntroImageFileName = model.FileName;
+            db.SetModified(entity);
+
+            await db.SaveChangesAsync();
+
+            return Ok();
+        }
+    }
+
+    public class ImageModel
+    {
+        public string Id { get; set; }
+        public string FileName { get; set; }
     }
 }

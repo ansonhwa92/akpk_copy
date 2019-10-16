@@ -1,7 +1,7 @@
 ﻿@using FEP.Model.eLearning
 @model FEP.WebApiModel.eLearning.ContentCompletionModel
 
-<form id="formCompletion" action="/eLearning/ContentCompletions/" method="post">
+<form id="formCompletion" action="/ContentCompletions/Post" method="post">
 
     @Html.AntiForgeryToken()
 
@@ -12,6 +12,7 @@
     @Html.HiddenFor(m => m.Title)
     @Html.HiddenFor(m => m.CourseModuleId)
     @Html.HiddenFor(m => m.CompletionType)
+    @Html.HiddenFor(m => m.ContentId)
 
     <div class="text-center">
         @if (Model.CompletionType == ContentCompletionType.ClickButton)

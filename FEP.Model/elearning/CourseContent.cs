@@ -16,7 +16,7 @@ namespace FEP.Model.eLearning
         public int CourseId { get; set; }
 
         // Content order in module
-        public int Order { get; set; }
+        public int Order { get; set; } = 0;
 
         [Required]
         public CourseContentType ContentType { get; set; }
@@ -55,6 +55,7 @@ namespace FEP.Model.eLearning
         public int Timer { get; set; } //completiontype timer in sec
 
         // END Content completion
+        public string IntroImageFileName { get; set; }
     }
 
     public enum ShowIFrameAs

@@ -20,6 +20,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string GetCategory = "eLearning/CourseCategory/";
         public const string CreateCourse = "eLearning/Courses/Create";
         public const string GetCourse = "eLearning/Courses";
+        public const string EditCourse = "eLearning/Courses/Edit";
         public const string GetFrontContent = "eLearning/Courses/GetFrontContent";
         public const string GetFrontCourse = "eLearning/Courses/GetFrontCourse";
         public const string GetTrainerCourse = "eLearning/Courses/GetTrainerCourse";
@@ -118,8 +119,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                     await LogActivity(Modules.Learning, "Create Course : " + model.Title);
 
-                    //return RedirectToAction("Manage", new { area = "eLearning", id = model.Id });
-
                     var id = response.Data;
 
                     if (!String.IsNullOrEmpty(id))
@@ -127,16 +126,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         return RedirectToAction("Content", "Courses", new { id = id });
                     else
                         return RedirectToAction("Index", "Courses");
-                }
-
-                //// --- FOR TESTING ONLY ----
-                //var course = _mapper.Map<Course>(model);
-                //course.CreatedBy = CurrentUser.Email;
-                //course.CreatedDate = DateTime.Now;
-
-                //db.Courses.Add(course);
-                //await db.SaveChangesAsync();
-                //return RedirectToAction("Manage", "Courses", new { id = model.Id });
+                }   
             }
 
             TempData["ErrorMessage"] = "Cannot add course. Please ensure all required fields are filled in.";
@@ -186,7 +176,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (response.isSuccess)
             {
-                TempData["SuccessMessage"] = "User successfully assigned to role trainer.";
+                TempData["SuccessMessage"] = "User successfully assigned to role trainer/instructor.";
                 await LogActivity(Modules.Learning, "Assign user to trainer", model);
             }
             else
@@ -250,50 +240,50 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
 
-        // post the new order
-        [HttpPost]
-        public async Task<ActionResult> Content(int? Id, int CreatedBy, string order)
-        {
-            if (Id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+        //// post the new order
+        //[HttpPost]
+        //public async Task<ActionResult> Content(int? Id, int CreatedBy, string order)
+        //{
+        //    if (Id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
 
-            if (String.IsNullOrEmpty(order))
-            {
-                RedirectToAction("Content", new { id = Id.Value });
-            }
+        //    if (String.IsNullOrEmpty(order))
+        //    {
+        //        RedirectToAction("Content", new { id = Id.Value });
+        //    }
 
-            var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Post,
-                CourseApiUrl.Content + $"?Id={Id}&CreatedBy={CreatedBy}&order={order}");
+        //    var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Post,
+        //        CourseApiUrl.Content + $"?Id={Id}&CreatedBy={CreatedBy}&order={order}");
 
-            if (response.isSuccess)
-            {
-                TempData["SuccessMessage"] = "Changes saved";
+        //    if (response.isSuccess)
+        //    {
+        //        TempData["SuccessMessage"] = "Changes saved";
 
-                var model = response.Data;
+        //        var model = response.Data;
 
-                await LogActivity(Modules.Learning, "Update Course Content : " + model.Title);
+        //        await LogActivity(Modules.Learning, "Update Course Content : " + model.Title);
 
-                return View(model);
-            }
+        //        return View(model);
+        //    }
 
-            TempData["ErrorMessage"] = "Error in saving order..";
+        //    TempData["ErrorMessage"] = "Error in saving order..";
 
-            // get Model
-            var vm = await TryGetFrontCourse(Id.Value);
+        //    // get Model
+        //    var vm = await TryGetFrontCourse(Id.Value);
 
-            if (vm == null)
-            {
-                TempData["ErrorMessage"] = "No such course.";
+        //    if (vm == null)
+        //    {
+        //        TempData["ErrorMessage"] = "No such course.";
 
-                return RedirectToAction("Index", "Courses");
-            }
+        //        return RedirectToAction("Index", "Courses");
+        //    }
 
-            vm.Modules = vm.Modules.OrderBy(x => x.Order).ToList();
+        //    vm.Modules = vm.Modules.OrderBy(x => x.Order).ToList();
 
-            return View(vm);
-        }
+        //    return View(vm);
+        //}
 
 
 
@@ -454,15 +444,18 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Post, $"eLearning/Courses/Edit", model);
+                model.UpdatedBy = CurrentUser.UserId.Value;
+                model.UpdatedByName = CurrentUser.Name;
+
+                var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Post, CourseApiUrl.EditCourse, model);
 
                 if (response.isSuccess)
                 {
-                    await LogActivity(Modules.Learning, "Edit Course: " + response.Data, model);
+                    await LogActivity(Modules.Learning, "Edit Course: " + response.Data.Title, model);
 
                     if (Submittype == "Save")
-                    {
-                        TempData["SuccessMessage"] = "Course titled " + response.Data + " updated successfully.";
+                    {                        
+                        TempData["SuccessMessage"] = "Course titled " + response.Data.Title + " updated successfully.";
 
                         return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = model.Id });
                     }

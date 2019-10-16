@@ -1,8 +1,10 @@
 ﻿using FEP.Helper;
+using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.Administration;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FEP.WebApiModel.eLearning
@@ -139,6 +141,13 @@ namespace FEP.WebApiModel.eLearning
 
         public int CourseEventId { get; set; }
 
+
+        public HttpPostedFileBase File { get; set; }
+        public string IntroImageFileName { get; set; }
+
+        public int UpdatedBy { get; set; }
+        public string UpdatedByName { get; set; }
+
     }
 
     public class CourseRuleModel : BaseModel
@@ -203,5 +212,13 @@ namespace FEP.WebApiModel.eLearning
         public int CourseEventId { get; set; }
         public string Message { get; set; }
 
+    }
+
+
+    public class OrderModel
+    {
+        public string Id { get; set; }
+        public string CreatedBy { get; set; }
+        public List<string> Order { get; set; }
     }
 }

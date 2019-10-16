@@ -1,39 +1,40 @@
 ﻿@model FEP.WebApiModel.eLearning.CreateOrEditModuleModel
 
 @{
-    ViewBag.Title = "Edit";
-    Layout = "~/Views/Shared/_Layout1.cshtml";
-    var name = ViewBag.CourseTitle;
+ViewBag.Title = "Edit";
+Layout = "~/Views/Shared/_Layout1.cshtml";
+var name = ViewBag.CourseTitle;
 }
 
 @section Nav{
-    <div class="title_header">
-        <div class="title-header-container">
-            <div class="container">
-                <!-- if have button -->
-                <div class="header-col-right float-right mt-5"><a href="~/eLearning/Courses/Content/@Model.Id" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
-                <div class="header-col-left">
-                    <div id="breadcrumb">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
-                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
-                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Courses</a></li>
-                                <li class="breadcrumb-item"><a href="~/eLearning/CourseModules/@Model.Id">Module</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <h1 class="page-title text-white">@name : Edit Module</h1>
-                    <div class="header-text">Edit new module.</div>
-                </div>
+<div class="title_header">
+<div class="title-header-container">
+    <div class="container">
+        <!-- if have button -->
+        <div class="header-col-right float-right mt-5"><a href="~/eLearning/Courses/Content/@Model.Id" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+        <div class="header-col-left">
+            <div id="breadcrumb">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                        <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                        <li class="breadcrumb-item"><a href="~/eLearning/Courses">Courses</a></li>
+                        <li class="breadcrumb-item"><a href="~/eLearning/CourseModules/@Model.Id">Module</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                    </ol>
+                </nav>
             </div>
+            <h1 class="page-title text-white">@name : Edit Module</h1>
+            <div class="header-text">Edit new module.</div>
         </div>
     </div>
+</div>
+</div>
 }
 
-@using (Html.BeginForm())
-{
+<form action="/CourseModules/Edit" method="post" enctype="multipart/form-data">
+
+
     @Html.AntiForgeryToken()
 
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -100,7 +101,7 @@
             </div>
         </div>
     </div>
-}
+</form>
 
 <style>
     .form-container {
@@ -110,17 +111,21 @@
 
 
 @section ContentScript {
-    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
 
     <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
     <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+    <script src="~/js/elearn.js"></script>
 
     <script>
+        var uploadImgUrl = '@(BaseURL)/eLearning/File/UploadFile';
+        var getImgUrl = '@(BaseURL)/eLearning/File/GetImg/?fileName=';
+
         $(document).ready(function () {
-            $('.summernote').summernote({
+            $('#Description').summernote({
                 placeholder: 'Type your text here.',
                 tabsize: 2,
-                height: 150,
+                height: 200,
                 toolbar: [
                     //[groupName, [list of button]],
                     ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -129,59 +134,60 @@
                     ['color', ['color']],
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['height', ['height']],
+                    ['insert', ['link', 'picture']],
 
                 ],
                 codeviewFilter: false,
                 codeviewIframeFilter: true,
-                //airMode : true,
+                callbacks: {
+                    onFocus: function () {
+                        currentElement = "body";
+                    },
+                    onImageUpload: function (files, editor, $editable) {
+                        uploadFile(uploadImgUrl, files[0], function (message) {
+
+                            var remoteUrl = getImgUrl + message.FileNameOnStorage;
+
+                            $('#Description').summernote('insertImage', remoteUrl, message.FileName);
+
+                        });
+                    }
+                }
             });
 
+            $('#Objectives').summernote({
+                placeholder: 'Type your text here.',
+                tabsize: 2,
+                height: 200,
+                toolbar: [
+                    //[groupName, [list of button]],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['link', 'picture']],
+
+                ],
+                codeviewFilter: false,
+                codeviewIframeFilter: true,
+                callbacks: {
+                    onFocus: function () {
+                        currentElement = "body";
+                    },
+                    onImageUpload: function (files, editor, $editable) {
+                        uploadFile(uploadImgUrl, files[0], function (message) {
+
+                            var remoteUrl = getImgUrl + message.FileNameOnStorage;
+
+                            $('#Objectives').summernote('insertImage', remoteUrl, message.FileName);
+
+                        });
+                    }
+                }
+            });
         });
     </script>
 }
-
-
-
-@*@using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        @Html.HiddenFor(m => m.CourseId)
-        @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
-        @Html.HiddenFor(m => m.Id)
-
-        <div class="form-horizontal">
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Objectives, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Objectives, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Objectives, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
-                </div>
-            </div>
-        </div>
-    }*@
 

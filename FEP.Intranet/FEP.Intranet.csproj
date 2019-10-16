@@ -223,6 +223,7 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\logo-akpk.svg" />
     <Content Include="css\base.css" />
     <Content Include="css\custom-admin.css" />
     <Content Include="css\elearn.css" />
@@ -758,10 +759,7 @@
     <Content Include="Areas\eLearning\Views\CourseCategory\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\_contentSidebar.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\Create.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseModules\Delete.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseModules\Details.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\Edit.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseModules\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\Content.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Create.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Delete.cshtml" />
@@ -818,6 +816,8 @@
     <Content Include="Areas\eLearning\Views\Courses\AssignCertificate.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseEvents\_addLearner.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseEvents\Learners.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseModules\View.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseModules\Delete.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

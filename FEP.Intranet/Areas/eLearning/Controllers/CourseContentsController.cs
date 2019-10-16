@@ -119,9 +119,27 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 {
                     TempData["SuccessMessage"] = "Content successfully added.";
 
-                    await LogActivity(Modules.Learning, "Create content : " + model.Title);
+                    await LogActivity(Modules.Learning, "Create content success : " + model.Title);
 
                     contentId = response.Data;
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error adding content.";
+
+                    await LogActivity(Modules.Learning, "Create content failed : " + model.Title);
+
+                    return RedirectToAction(nameof(Create), new
+                    {
+                        area = "eLearning",
+                        @courseId = model.CourseId,
+                        @moduleId = model.CourseModuleId,
+                        @createContentFrom = model.CreateContentFrom,
+                        courseContentType = model.ContentType,
+                        @courseTitle = model.PageTitle
+                    });
+
+
                 }
 
                 // Check if this creation include fileupload, which will require us to save the file
@@ -182,9 +200,18 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             TempData["ErrorMessage"] = "Cannot add content.";
 
-            await GetAllQuestions(model.CourseId);
+            // await GetAllQuestions(model.CourseId);
 
-            return View(model);
+            //return View(model);
+            return RedirectToAction(nameof(Create), new
+            {
+                area = "eLearning",
+                @courseId = model.CourseId,
+                @moduleId = model.CourseModuleId,
+                @createContentFrom = model.CreateContentFrom,
+                courseContentType = model.ContentType,
+                @courseTitle = model.PageTitle
+            });
         }
 
         [HasAccess(UserAccess.CourseEdit)]

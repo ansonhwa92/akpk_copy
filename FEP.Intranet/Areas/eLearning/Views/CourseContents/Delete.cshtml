@@ -79,8 +79,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })
                     <div class="">
-                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     </div>
                 </div>
 
@@ -88,7 +87,6 @@
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
                     <div class="">
                         @Html.TextAreaFor(model => model.Description, new { @class = "summernote form-control" })
-                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <hr />
@@ -153,6 +151,7 @@
             });
 
             $('.summernote').summernote('disable');
+            $('#Text').summernote('disable');
 
             $('input[type="radio"]').prop("checked", true);
 

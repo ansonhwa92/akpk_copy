@@ -29,7 +29,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 if (response.isSuccess)
                 {
-                    TempData["SuccessMessage"] = "Content Completed";
+                    //TempData["SuccessMessage"] = "Content Completed";
 
                     await LogActivity(Modules.Learning, "User : " + user + " complete this content : " + model.Title);
 

@@ -17,8 +17,8 @@
     <div class="text-center">
         @if (Model.CompletionType == ContentCompletionType.ClickButton)
         {
-            <button type="submit" class="btn btn-default pull-right" id="btnComplete" value="Completed">
-                <i class="la la-check font-icon" style="font-size: 1.5rem;"></i>Completed. Continue..
+            <button type="submit" class="btn btn-primary pull-right" id="btnComplete" value="Completed">
+                <i class="la la-check font-icon" style="font-size: 1.5rem;"></i>Completed.
             </button>
         }
 
@@ -29,7 +29,7 @@
 
             <div class="btn btn-default pull-left disabled" id="countdown"></div>
             <button type="submit" class="btn btn-default pull-right" id="btnTimerComplete" value="Completed">
-                <i class="la la-check font-icon" style="font-size: 1.5rem;"></i>Completed. Continue..
+                <i class="la la-check font-icon" style="font-size: 1.5rem;"></i>Completed.
             </button>
         }
         else if (Model.CompletionType == ContentCompletionType.AnswerQuestion)
@@ -41,7 +41,7 @@
             @Html.EditorFor(m => m.FreeTextAnswer)
 
             <button type="submit" class="btn btn-default pull-right" id="btnAnswerComplete" value="Completed">
-                <i class="la la-check font-icon" style="font-size: 1.5rem;"></i>Completed. Continue..
+                <i class="la la-check font-icon" style="font-size: 1.5rem;"></i>Completed.
             </button>
         }
     </div>
@@ -81,13 +81,18 @@
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             // Display the result in the element with id="countdown"
-            document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+            //document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+            //    + minutes + "m " + seconds + "s ";
+            document.getElementById("countdown").innerHTML = hours + "h "
                 + minutes + "m " + seconds + "s ";
 
             // If the count down is finished, write some text
             if (distance < 0) {
                 clearInterval(x);
                 document.getElementById("countdown").innerHTML = "FINISHED";
+
+                document.getElementById("btnTimerComplete").classList.remove("btn-default");
+                document.getElementById("btnTimerComplete").classList.add("btn-primary");
                 btnTimerComplete.disabled = false;
 
             }

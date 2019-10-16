@@ -86,9 +86,8 @@
                 <hr />
                 <div>
 
-                    <input name="order" id="order" hidden />
                     <!----START CONTENT -->
-                    <div id="draggable-content">
+                    @*<div id="draggable-content">
                         @{
 
                             var contents = Model.ModuleContents
@@ -161,13 +160,15 @@
 
                             }
                         }
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </div>
         <div class="border-left border-right border-bottom p-3 rounded-bottom">
 
             <a class="btn btn-default" href="~/eLearning/Courses/Content/@Model.CourseId" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
+
+            <a class="btn btn-default pull-right" href="~/eLearning/CourseModules/Start/@Model.Id" data-toggle="tooltip" data-placement="top" title="Next">@Language.eLearning.Course.Next</a>
         </div>
     </div>
 </div>

@@ -85,8 +85,9 @@
             <div class="border-form rounded-top">
                 <div class="form-container">
 
+                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
                         <div class="">
                             @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })

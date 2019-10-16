@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 
 namespace FEP.WebApi.Api.eLearning
@@ -104,11 +103,10 @@ namespace FEP.WebApi.Api.eLearning
 
                 if (entity != null)
                 {
-
                     entity.Title = model.Title;
                     entity.Description = model.Description;
                     entity.Objectives = model.Objectives;
-        
+
                     db.Entry(entity).State = EntityState.Modified;
 
                     db.SaveChanges();
@@ -129,7 +127,7 @@ namespace FEP.WebApi.Api.eLearning
                 string ptitle = module.Title;
 
                 db.CourseModules.Remove(module);
-              
+
                 db.SaveChanges();
 
                 return ptitle;
@@ -143,12 +141,19 @@ namespace FEP.WebApi.Api.eLearning
         {
             var entity = await db.CourseModules
                 .Include(x => x.ModuleContents)
-                .FirstOrDefaultAsync(x => x.Id == id.Value );
+                .FirstOrDefaultAsync(x => x.Id == id.Value);
 
             if (entity == null)
                 return NotFound();
 
+            var course = await db.Courses.FindAsync(entity.CourseId);
+
+            if (course == null)
+                return NotFound();
+
             var model = _mapper.Map<CreateOrEditModuleModel>(entity);
+            model.Status = course.Status;
+
             model.ModuleContents = entity.ModuleContents;
 
             return Ok(model);
@@ -166,12 +171,10 @@ namespace FEP.WebApi.Api.eLearning
         {
             string Id = orderModel.Id;
 
-
             if (String.IsNullOrEmpty(Id))
             {
                 return BadRequest();
             }
-
 
             var entity = await db.CourseModules
               .Include(x => x.ModuleContents)
@@ -194,12 +197,27 @@ namespace FEP.WebApi.Api.eLearning
                 }
             }
 
-
             db.SetModified(entity);
 
             await db.SaveChangesAsync();
 
             return Ok();
+        }
+
+        /// <returns></returns>
+        [Route("api/eLearning/CourseModules/Start")]
+        [HttpGet]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> Start(int id)
+        {
+            var entity = await db.CourseContents.Where(x => x.CourseModuleId == id).OrderBy(x => x.Order).FirstOrDefaultAsync();
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(entity);
         }
     }
 }

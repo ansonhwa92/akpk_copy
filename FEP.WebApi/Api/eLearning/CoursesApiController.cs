@@ -732,6 +732,23 @@ namespace FEP.WebApi.Api.eLearning
 
             return Ok();
         }
+
+
+        /// <returns></returns>
+        [Route("api/eLearning/Courses/Start")]
+        [HttpGet]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> Start(int id)
+        {
+            var entity = await db.CourseModules.Where(x => x.CourseId == id).OrderBy(x => x.Order).FirstOrDefaultAsync();
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(entity);
+        }
     }
 
     public class ImageModel

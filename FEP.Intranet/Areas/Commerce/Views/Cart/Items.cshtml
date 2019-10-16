@@ -218,7 +218,7 @@
                         <!-- Button -->
                         @*<div><a href="#" class="btn btn-secondary btn-block" id="btnProceedCheckout">Proceed to Checkout</a></div>*@
                         <div><button type="submit" class="btn btn-secondary btn-block" id="btnProceedCheckout">Proceed to Checkout</button></div><br />
-                        <div><button class="btn btn-default btn-block" id="btnEmptyCart">Empty Cart</button></div>
+                        <div><a class="btn btn-default btn-block" href="@Url.Action("Empty", "Cart", new { area = "Commerce", cartid = Model.Cart.Id })">Empty Cart</a></div>
                     }
                     </div>
                 </div>

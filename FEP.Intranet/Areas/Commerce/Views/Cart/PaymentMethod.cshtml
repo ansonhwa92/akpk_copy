@@ -78,9 +78,12 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#paypal" data-toggle="tab">Paypal</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#offlinepayment" data-toggle="tab">Offline Payment</a>
-                            </li>
+                            @if (CurrentUser.UserType == UserType.Company)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#offlinepayment" data-toggle="tab">Offline Payment</a>
+                                </li>
+                            }
                         </ul>
                     </div>
                     <div class="tab-content small">
@@ -416,6 +419,7 @@
                         </div>
                     </div>
                     <!-- Button -->
+                    <div><a href="@Url.Action("TestPay", "Cart", new { area = "Commerce", id = Model.Cart.Id })" class="btn btn-secondary btn-block">Pay (Refund Test)</a></div>
                 </div>
             </div>
             <!-- end column content right -->

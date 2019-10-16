@@ -45,7 +45,7 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
 
             if (mycart == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("BrowsePublications", "Home", new { area = "RnP" });    // TODO
             }
 
             return View(mycart);
@@ -53,6 +53,7 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
 
         // Remove cart item
         // GET: Commerce/Cart/RemoveItem/1
+        [HttpGet]
         public async Task<string> RemoveItem(int itemid)
         {
             var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Commerce/Cart/RemoveItem?itemid={itemid}");
@@ -70,6 +71,29 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             {
                 return "failure";
             }
+        }
+
+        // Empty cart
+        // GET: Commerce/Cart/Empty/1
+        [HttpGet]
+        public async Task<ActionResult> Empty(int cartid)
+        {
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Commerce/Cart/Empty?cartid={cartid}");
+
+            if (!response.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            if (response.Data == true)
+            {
+                return RedirectToAction("Items", "Cart", new { area = "Commerce" });
+            }
+            else
+            {
+                return HttpNotFound();
+            }
+
         }
 
         // Add discount code and go to review
@@ -135,7 +159,21 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
 
             if (ppromo == null)
             {
-                return HttpNotFound();
+                ViewBag.PromoExpired = false;
+                ViewBag.Discount = 0;
+            }
+            else
+            {
+                if ((ppromo.ExpiryDate > DateTime.Now) && (!ppromo.Used))
+                {
+                    ViewBag.PromoExpired = false;
+                    ViewBag.Discount = ppromo.MoneyValue;
+                }
+                else
+                {
+                    ViewBag.PromoExpired = true;
+                    ViewBag.Discount = 0;
+                }
             }
 
             ViewBag.FirstName = pdelivery.FirstName;
@@ -146,17 +184,6 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             ViewBag.City = pdelivery.City;
             ViewBag.State = pdelivery.State.GetDisplayName();
             ViewBag.PhoneNumber = pdelivery.PhoneNumber;
-
-            if ((ppromo.ExpiryDate > DateTime.Now) && (!ppromo.Used))
-            {
-                ViewBag.PromoExpired = false;
-                ViewBag.Discount = ppromo.MoneyValue;
-            }
-            else
-            {
-                ViewBag.PromoExpired = true;
-                ViewBag.Discount = 0;
-            }
 
             return View(mycart);
         }
@@ -248,7 +275,21 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
 
             if (ppromo == null)
             {
-                return HttpNotFound();
+                ViewBag.PromoExpired = false;
+                ViewBag.Discount = 0;
+            }
+            else
+            {
+                if ((ppromo.ExpiryDate > DateTime.Now) && (!ppromo.Used))
+                {
+                    ViewBag.PromoExpired = false;
+                    ViewBag.Discount = ppromo.MoneyValue;
+                }
+                else
+                {
+                    ViewBag.PromoExpired = true;
+                    ViewBag.Discount = 0;
+                }
             }
 
             ViewBag.FirstName = pdelivery.FirstName;
@@ -260,18 +301,24 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             ViewBag.State = pdelivery.State.GetDisplayName();
             ViewBag.PhoneNumber = pdelivery.PhoneNumber;
 
-            if ((ppromo.ExpiryDate > DateTime.Now) && (!ppromo.Used))
+            return View(mycart);
+        }
+
+        // TESTING ONLY!!! (for refund testing)
+
+        // Change cart status to paid
+        // GET: Commerce/Cart/TestPay
+        [HttpGet]
+        public async Task<ActionResult> TestPay(int id)
+        {
+            var resTest = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Commerce/Cart/TestPay?id={id}");
+
+            if (!resTest.isSuccess)
             {
-                ViewBag.PromoExpired = false;
-                ViewBag.Discount = ppromo.MoneyValue;
-            }
-            else
-            {
-                ViewBag.PromoExpired = true;
-                ViewBag.Discount = 0;
+                return HttpNotFound();
             }
 
-            return View(mycart);
+            return RedirectToAction("Items", "Cart", new { area = "Commerce" });
         }
 
         // Refunds
@@ -289,6 +336,34 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             ViewBag.Banks = resBank.Data;
 
             return View();
+        }
+
+        // Process add refund request, then refresh list
+        // POST: Commerce/Cart/RequestRefund
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> RequestRefund(CreateRefundModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Commerce/Cart/RequestRefund", model);
+
+                if (!response.isSuccess)
+                {
+                    return "error";
+                }
+
+                if (response.Data == true)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+
+            return "error";
         }
 
     }

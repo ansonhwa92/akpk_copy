@@ -75,7 +75,10 @@ namespace FEP.Model
         public int BankID { get; set; }
         public string BankAccountNo { get; set; }
         public string ReferenceNo { get; set; }
-        public RefundStatus Status { get; set; }
+        public ReturnStatus ReturnStatus { get; set; }
+        public RefundStatus RefundStatus { get; set; }
+        public string Remarks { get; set; }
+        public string RefundReferenceNo { get; set; }
         public DateTime CreatedDate { get; set; }
         // guarantee letter? (per agency)
 
@@ -124,6 +127,18 @@ namespace FEP.Model
         Shipped,
         [Display(Name = "DeliveryStatusDelivered", ResourceType = typeof(Language.Cart))]
         Delivered
+    }
+
+    public enum ReturnStatus
+    {
+        [Display(Name = "ReturnStatusNone", ResourceType = typeof(Language.Cart))]
+        None,
+        [Display(Name = "ReturnStatusPending", ResourceType = typeof(Language.Cart))]
+        Pending,
+        [Display(Name = "ReturnStatusExpired", ResourceType = typeof(Language.Cart))]
+        Expired,
+        [Display(Name = "ReturnStatusReturned", ResourceType = typeof(Language.Cart))]
+        Returned
     }
 
     public enum RefundStatus

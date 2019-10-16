@@ -192,6 +192,7 @@ namespace FEP.WebApi.Api.Commerce
         // Empty out cart
         // POST: api/Commerce/Cart/Empty
         [Route("api/Commerce/Cart/Empty")]
+        [HttpGet]
         public bool Empty(int cartid)
         {
             var items = db.PurchaseOrderItem.Where(pi => pi.PurchaseOrderId == cartid).ToList();
@@ -271,60 +272,66 @@ namespace FEP.WebApi.Api.Commerce
                 DeliveryStatus = s.DeliveryStatus
             }).FirstOrDefault();
 
-            var items = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id).Select(s => new PurchaseOrderItemModel
+            if (cart != null)
             {
-                Id = s.Id,
-                PurchaseOrderId = s.PurchaseOrderId,
-                ItemId = s.ItemId,
-                Description = s.Description,
-                PurchaseType = s.PurchaseType,
-                Price = s.Price,
-                Quantity = s.Quantity
-            }).ToList();
 
-            var publications = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id && i.PurchaseType == PurchaseType.Publication).Select(s => new PurchaseOrderItemModel
-            {
-                Id = s.Id,
-                PurchaseOrderId = s.PurchaseOrderId,
-                ItemId = s.ItemId,
-                Description = s.Description,
-                PurchaseType = s.PurchaseType,
-                Price = s.Price,
-                Quantity = s.Quantity
-            }).ToList();
+                var items = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id).Select(s => new PurchaseOrderItemModel
+                {
+                    Id = s.Id,
+                    PurchaseOrderId = s.PurchaseOrderId,
+                    ItemId = s.ItemId,
+                    Description = s.Description,
+                    PurchaseType = s.PurchaseType,
+                    Price = s.Price,
+                    Quantity = s.Quantity
+                }).ToList();
 
-            var events = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id && i.PurchaseType == PurchaseType.Event).Select(s => new PurchaseOrderItemModel
-            {
-                Id = s.Id,
-                PurchaseOrderId = s.PurchaseOrderId,
-                ItemId = s.ItemId,
-                Description = s.Description,
-                PurchaseType = s.PurchaseType,
-                Price = s.Price,
-                Quantity = s.Quantity
-            }).ToList();
+                var publications = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id && i.PurchaseType == PurchaseType.Publication).Select(s => new PurchaseOrderItemModel
+                {
+                    Id = s.Id,
+                    PurchaseOrderId = s.PurchaseOrderId,
+                    ItemId = s.ItemId,
+                    Description = s.Description,
+                    PurchaseType = s.PurchaseType,
+                    Price = s.Price,
+                    Quantity = s.Quantity
+                }).ToList();
 
-            var courses = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id && i.PurchaseType == PurchaseType.Course).Select(s => new PurchaseOrderItemModel
-            {
-                Id = s.Id,
-                PurchaseOrderId = s.PurchaseOrderId,
-                ItemId = s.ItemId,
-                Description = s.Description,
-                PurchaseType = s.PurchaseType,
-                Price = s.Price,
-                Quantity = s.Quantity
-            }).ToList();
+                var events = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id && i.PurchaseType == PurchaseType.Event).Select(s => new PurchaseOrderItemModel
+                {
+                    Id = s.Id,
+                    PurchaseOrderId = s.PurchaseOrderId,
+                    ItemId = s.ItemId,
+                    Description = s.Description,
+                    PurchaseType = s.PurchaseType,
+                    Price = s.Price,
+                    Quantity = s.Quantity
+                }).ToList();
 
-            var mycart = new PurchaseOrderFullModel
-            {
-                Cart = cart,
-                Items = items,
-                Publications = publications,
-                Events = events,
-                Courses = courses
-            };
+                var courses = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id && i.PurchaseType == PurchaseType.Course).Select(s => new PurchaseOrderItemModel
+                {
+                    Id = s.Id,
+                    PurchaseOrderId = s.PurchaseOrderId,
+                    ItemId = s.ItemId,
+                    Description = s.Description,
+                    PurchaseType = s.PurchaseType,
+                    Price = s.Price,
+                    Quantity = s.Quantity
+                }).ToList();
 
-            return mycart;
+                var mycart = new PurchaseOrderFullModel
+                {
+                    Cart = cart,
+                    Items = items,
+                    Publications = publications,
+                    Events = events,
+                    Courses = courses
+                };
+
+                return mycart;
+            }
+
+            return null;
         }
 
         // Retrieve discount code value
@@ -344,6 +351,31 @@ namespace FEP.WebApi.Api.Commerce
             }).FirstOrDefault();
 
             return promo;
+        }
+
+        // TESTING ONLY!!!!
+
+        // Update cart status to paid
+        // POST: api/Commerce/Cart/TestPay
+        [Route("api/Commerce/Cart/TestPay")]
+        [HttpGet]
+        public bool TestPay(int id)
+        {
+            var cart = db.PurchaseOrder.Where(p => p.Id == id).FirstOrDefault();
+
+            if (cart != null)
+            {
+                cart.ReceiptNo = "PB0030" + DateTime.Now.ToString("HHmm");
+                cart.PaymentDate = DateTime.Now;
+                cart.Status = CheckoutStatus.Paid;
+                cart.DeliveryStatus = DeliveryStatus.Delivered;
+                db.Entry(cart).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
         }
 
         // Refunds
@@ -489,7 +521,7 @@ namespace FEP.WebApi.Api.Commerce
                     PaymentDate = s.PaymentDate,
                     Status = s.Status,
                     DeliveryStatus = s.DeliveryStatus,
-                    RefundStatus = db.Refund.Where(rf => rf.ItemId == s.Id && rf.UserId == s.UserId).FirstOrDefault().Status
+                    RefundStatus = db.Refund.Where(rf => rf.ItemId == s.Id && rf.UserId == s.UserId).FirstOrDefault().RefundStatus
                 }).ToList();
 
             return Ok(new DataTableResponse
@@ -500,6 +532,216 @@ namespace FEP.WebApi.Api.Commerce
                 data = data.ToArray()
             });
 
+        }
+
+        // Add refund request
+        // POST: api/Commerce/Cart/RequestRefund
+        [Route("api/Commerce/Cart/RequestRefund")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool RequestRefund([FromBody] CreateRefundModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var prefund = new Refund
+                {
+                    ItemId = model.ItemId,
+                    UserId = model.UserId,
+                    FullName = model.FullName,
+                    BankID = model.BankID,
+                    BankAccountNo = model.BankAccountNo,
+                    ReferenceNo = model.ReferenceNo,
+                    CreatedDate = DateTime.Now,
+                    RefundStatus = RefundStatus.Requested
+                };
+
+                db.Refund.Add(prefund);
+                db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        // DataTable function for listing and filtering refund request
+        // POST: api/Commerce/Cart/ListRefund (DataTable)
+        [Route("api/Commerce/Cart/ListRefund")]
+        [HttpPost]
+        public IHttpActionResult ListRefund(FilterRefundRequestModel request)
+        {
+
+            var query = db.Refund.Join(db.PurchaseOrderItem, r => r.ItemId, pi => pi.Id, (r, pi) => 
+                new { pi.PurchaseOrderId, pi.Id, r.ReferenceNo, pi.PurchaseType, pi.Description, pi.Quantity,
+                      pi.Price, r.FullName, r.BankID, r.BankAccountNo, r.ReturnStatus, r.RefundStatus}).Where(
+                      rp => rp.RefundStatus == RefundStatus.Requested).Join(
+                      db.PurchaseOrder, rp => rp.PurchaseOrderId, po => po.Id, (rp, po) =>
+                      new { rp.PurchaseOrderId, rp.Id, rp.ReferenceNo, rp.PurchaseType, rp.Description,
+                            rp.Quantity, rp.Price, rp.FullName, rp.BankID, rp.BankAccountNo, rp.ReturnStatus,
+                            rp.RefundStatus, po.UserId, po.ReceiptNo }).Join(
+                            db.User, rpo => rpo.UserId, u => u.Id, (rpo, u) =>
+                          new { rpo.PurchaseOrderId, rpo.Id, rpo.ReferenceNo, rpo.PurchaseType, rpo.Description,
+                                rpo.Quantity, rpo.Price, rpo.FullName, rpo.BankID, rpo.BankAccountNo,
+                                rpo.ReturnStatus, rpo.RefundStatus, rpo.UserId, rpo.ReceiptNo, u.Name});
+
+            var totalCount = query.Count();
+
+            //advance search
+            query = query.Where(p => (request.Description == null || p.Description.Contains(request.Description))
+               && (request.ReceiptNo == null || p.ReferenceNo.Contains(request.ReceiptNo))
+               && (request.BuyerName == null || p.FullName.Contains(request.BuyerName))
+               );
+
+            //quick search 
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+                query = query.Where(p => p.Description.Contains(value)
+                || p.ReferenceNo.Contains(value)
+                || p.FullName.Contains(value)
+                );
+            }
+
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "ReceiptNo":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.ReferenceNo);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.ReferenceNo);
+                        }
+
+                        break;
+
+                    case "Description":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Description);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Description);
+                        }
+
+                        break;
+
+                    case "FullName":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.FullName);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.FullName);
+                        }
+
+                        break;
+
+                    case "ReturnStatus":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.ReturnStatus);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.ReturnStatus);
+                        }
+
+                        break;
+
+                    case "RefundStatus":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.RefundStatus);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.RefundStatus);
+                        }
+
+                        break;
+
+                    default:
+                        query = query.OrderBy(o => o.RefundStatus).OrderBy(o => o.FullName);
+                        break;
+                }
+
+            }
+            else
+            {
+                query = query.OrderBy(o => o.RefundStatus).OrderBy(o => o.FullName);
+            }
+
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(s => new RefundRequestModel
+                {  
+                    PurchaseOrderId = s.PurchaseOrderId,
+                    OrderItemId = s.Id,
+                    UserId = s.UserId,
+                    BuyerName = s.Name,
+                    ReceiptNo = s.ReceiptNo,
+                    PurchaseType = s.PurchaseType,
+                    Description = s.Description,
+                    Quantity = s.Quantity,
+                    Amount = s.Price * s.Quantity,
+                    FullName = s.FullName,
+                    BankID = s.BankID,
+                    BankAccountNo = s.BankAccountNo,
+                    ReturnStatus = s.ReturnStatus,
+                    RefundStatus = s.RefundStatus
+                }).ToList();
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+
+        }
+
+        // Update refund request to approved
+        // POST: api/Commerce/Cart/ApproveRefund
+        [Route("api/Commerce/Cart/ApproveRefund")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool ApproveRefund([FromBody] UpdateRefundStatusModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var prefund = db.Refund.Where(r => r.ID == model.ID).FirstOrDefault();
+
+                if (prefund != null)
+                {
+                    prefund.RefundStatus = RefundStatus.Complete;
+                    prefund.Remarks = model.Remarks;
+                    prefund.RefundReferenceNo = model.RefundReferenceNo;
+                    db.Entry(prefund).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return true;
+                }
+
+            }
+
+            return false;
         }
 
     }

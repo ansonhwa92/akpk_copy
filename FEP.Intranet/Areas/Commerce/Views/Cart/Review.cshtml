@@ -205,7 +205,7 @@
                                 <div class="media-right font-weight-bolder">RM @itax.ToString("0.00")</div>
                             </div>
                             <div class="media xs-small">
-                                <div class="media-body color-grey2">-Discount (<span style="text-transform: uppercase; font-weight: bold;">@Model.Cart.DiscountCode)</span></div>
+                                <div class="media-body color-grey2">-Discount: <span style="text-transform: uppercase; font-weight: bold;">@Model.Cart.DiscountCode</span></div>
                                 @if (ViewBag.PromoExpired)
                                 {
                                     <div class="media-right font-weight-bolder color-red">Code Expired</div>

@@ -142,6 +142,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Buyer Name.
+        /// </summary>
+        public static string FilterUserName {
+            get {
+                return ResourceManager.GetString("FilterUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offline Payment.
         /// </summary>
         public static string PaymentModeOffline {
@@ -210,6 +219,42 @@ namespace Language {
         public static string RefundStatusRequested {
             get {
                 return ResourceManager.GetString("RefundStatusRequested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expired.
+        /// </summary>
+        public static string ReturnStatusExpired {
+            get {
+                return ResourceManager.GetString("ReturnStatusExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string ReturnStatusNone {
+            get {
+                return ResourceManager.GetString("ReturnStatusNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending.
+        /// </summary>
+        public static string ReturnStatusPending {
+            get {
+                return ResourceManager.GetString("ReturnStatusPending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returned.
+        /// </summary>
+        public static string ReturnStatusReturned {
+            get {
+                return ResourceManager.GetString("ReturnStatusReturned", resourceCulture);
             }
         }
     }

@@ -77,6 +77,8 @@
     <Compile Include="eEvent\ExhibitionRoadshowRequest.cs" />
     <Compile Include="eLearning\BaseModel.cs" />
     <Compile Include="eLearning\CourseApprovalLog.cs" />
+    <Compile Include="eLearning\CourseGroup.cs" />
+    <Compile Include="eLearning\CourseDiscussion.cs" />
     <Compile Include="eLearning\CertificateModels.cs" />
     <Compile Include="eLearning\CourseEventModels.cs" />
     <Compile Include="eLearning\FileUploadModels.cs" />

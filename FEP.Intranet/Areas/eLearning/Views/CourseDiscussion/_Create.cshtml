@@ -1,0 +1,219 @@
+﻿@model CreateCourseDiscussionModel
+
+@{
+    Layout = null;
+}
+@section ContentScript {
+
+
+
+}
+<script src="~/js/vendor/jquery.ui.widget.js"></script>
+<script src="~/js/tmpl.min.js"></script>
+<script src="~/js/load-image.min.js"></script>
+
+<script src="~/js/jquery.iframe-transport.js"></script>
+<script src="~/js/jquery.fileupload.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#GroupId').hide();
+        $('#DiscussionVisibility').on('change', function () {
+            if (this.value == '1') {
+                $("#GroupId").show();
+            }
+            else { $("#GroupId").hide(); }
+            //alert(this.value);
+        });
+
+    });
+
+    //$(function () {
+    //    $('#fileupload').fileupload({
+    //        dataType: 'json',
+    //        progressall: function (e, data) {
+    //            var progress = parseInt(data.loaded / data.total * 100, 10);
+    //            $('#progress .bar').css(
+    //                'width',
+    //                progress + '%'
+    //            );
+    //        },
+    //        add: function (e, data) {
+    //            data.context = $('<p/>').text('Uploading...').appendTo(document.body);
+    //            data.submit();
+    //        },
+    //        done: function (e, data) {
+    //            $.each(data.result.files, function (index, file) {
+    //                $('<p/>').text(file.name).appendTo(document.body);
+    //            });
+    //        }
+    //    });
+    //});
+
+
+    $(function () {
+        'use strict';
+
+        // Initialize the jQuery File Upload widget:
+        //$('#fileupload').fileupload();
+
+        $('#fileupload').fileupload('option', {
+            maxFileSize: 500000000,
+            resizeMaxWidth: 1920,
+            resizeMaxHeight: 1200,
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .bar').css(
+                    'width',
+                    progress + '%'
+                );
+            },
+            add: function (e, data) {
+                $("#inputArea").hide();
+                data.context = $('<p/>').text('Uploading...').appendTo('.innerprogress');
+                $("#GotAttachment").attr("value", "True");
+                alert('damned1');
+                data.submit();
+            },
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    //alert('damned');
+                    $('<p/>').text(file.name).appendTo('.innerprogress');
+                });
+            }
+        });
+    });
+</script>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formAdd", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Post.GotAttachment)
+    <div class="row divTd">
+        <div class="col-1 text-center"></div>
+        <div class="col px-0">
+            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.eLearning.CourseCategory.PlaceholderName } })
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+    </div>
+    <div class="row divTd">
+        @*<div class="col px-0">
+                @Html.EditorFor(m => m.Message, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.CourseDiscussion.PlaceholderName } })
+                @Html.ValidationMessageFor(m => m.Message)
+            </div>*@
+        @*<div class="col px-0">
+                @Html.EditorFor(m => m.Topic, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.CourseDiscussion.PlaceholderName } })
+                @Html.ValidationMessageFor(m => m.Topic)
+            </div>*@
+        <div class="col-1 text-center"></div>
+        <div class="col px-0">
+            @Html.DropDownListFor(m => m.DiscussionVisibility, Model.DiscussionVisibilities, Language.eLearning.CourseCategory.PlaceholderName, htmlAttributes: new { @class = "custom-select" })
+            @Html.ValidationMessageFor(m => m.DiscussionVisibility)
+        </div>
+        <div class="col px-0">
+            @Html.DropDownListFor(m => m.GroupId, Model.Groups, Language.eLearning.CourseCategory.PlaceholderName, htmlAttributes: new { @class = "custom-select" })
+            @Html.ValidationMessageFor(m => m.GroupId)
+        </div>
+    </div>
+    <div class="row divTd">
+
+
+    </div>
+
+    <div class="row divTd">
+        <div class="col-1 text-center"></div>
+        <div class="col px-0">
+            @Html.TextAreaFor(m => m.Post.Message, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Post.Message)
+        </div>
+        <div class="col px-0">
+            <div class="row fileupload-buttonbar" style="padding: 10px 5px 5px 15px;">
+                <span id="inputArea" class="fileinput-button">
+                    <input type="file" name="files[]" multiple>
+                </span>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="row divTd">
+        <div class="col-3 pl-0 text-right">
+            <div class="icon-action">
+                <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">@Language.General.ButtonAdd</button>
+                <button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">@Language.General.ButtonCancel</button>
+            </div>
+        </div>
+    </div>
+}
+@*<form id="fileupload" action="@Url.Action("UploadFiles")" method="POST" enctype="multipart/form-data">
+        <div class="row divTd">
+            <div class="col-1 text-center"></div>
+
+            <div class="col px-0">
+                <div class="row fileupload-buttonbar">
+                    <span id="inputArea" class="fileinput-button">
+                        <input type="file" name="files[]" multiple>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row divTd">
+            <div class="col-1 text-center"></div>
+
+            <div class="col px-0">
+                <div class="progress">
+                    <div class="bar" style="width: 0%; height: 18px; background: green;"></div>
+                </div>
+                <div id="innerprogress">
+                </div>
+                <div class="fileupload-loading"></div>
+
+                <br>
+
+
+
+                <table class="table table-striped">
+                    <tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
+                </table>
+            </div>
+        </div>
+    </form>*@
+
+
+
+@*<script id="template-upload" type="text/x-tmpl">
+        {% for (var i=0, file; file=o.files[i]; i++) { %}
+        <tr class="template-upload fade">
+            <td class="preview"><span class="fade"></span></td>
+            <td class="name"><span>{%=file.name%}</span></td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            {% if (file.error) { %}
+            <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+            {% } else if (o.files.valid && !i) { %}
+            <td>
+                <div class="progress progress-success progress-striped active"><div class="bar" style="width:0%;"></div></div>
+            </td>
+            <td class="start">
+                {% if (!o.options.autoUpload) { %}
+                <button class="btn btn-primary">
+                    <i class="icon-upload icon-white"></i>
+                    <span>{%=locale.fileupload.start%}</span>
+                </button>
+                {% } %}
+            </td>
+            {% } else { %}
+            <td colspan="2"></td>
+            {% } %}
+            <td class="cancel">
+                {% if (!i) { %}
+                <button class="btn btn-warning">
+                    <i class="icon-ban-circle icon-white"></i>
+                    <span>{%=locale.fileupload.cancel%}</span>
+                </button>
+                {% } %}
+            </td>
+        </tr>
+        {% } %}
+    </script>*@

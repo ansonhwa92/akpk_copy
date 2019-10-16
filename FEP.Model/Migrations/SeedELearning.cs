@@ -224,6 +224,7 @@ namespace FEP.Model.Migrations
                 db.CourseCertificateTemplates.Add(new CourseCertificateTemplate
                 {
                     Description = "Template 1",
+                    TypePageOrientation = TypePageOrientation.Portrait,
                     Template = "<h2>CERTIFICATE FOR </h2>"
                 });
 

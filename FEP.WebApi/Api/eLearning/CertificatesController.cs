@@ -38,6 +38,25 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(model);
         }
 
+        [HttpGet]
+        [Route("api/eLearning/Certificates/GetCertificate")]
+        public IHttpActionResult GetCertificate(int id)
+        {
+            var course = db.Courses.Where(u => u.Id == id).FirstOrDefault();
+
+            var bg =  db.CourseCertificates.ToList();
+            var temp =  db.CourseCertificateTemplates.ToList();
+
+            CertificatesModel model = new CertificatesModel
+            {
+                Background = bg.ToList(),
+                Template = temp.ToList(),
+                Course = course
+            };
+
+            return Ok(model);
+        }
+
 
         //GET BACKGROUND
         [Route("api/eLearning/Certificate/GetBackground")]

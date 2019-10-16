@@ -71,12 +71,12 @@
                     <div class="tab-pane active" id="course-details">
                         <div class="mb-4 mt-2 mr-auto">
                             <div class="boxed">
-                                @*<img class="introImage" src="@Url.Action("GetImg", "File", new { area = "eLearning", fileName = @Model.IntroImageFileName })"
-        height="300" width="100%" alt="" />*@
+                                    <img class="introImage" src=""
+                                         height="300" width="100%" alt="" />
+                                </div>
 
-                                <img class="introImage" src="" height="300" width="100%" alt="" />
+
                             </div>
-                        </div>
 
                         <div class="subtitle">
                             ABOUT
@@ -184,13 +184,20 @@
         $(document).ready(function () {
             var imgFileName = $('#IntroImageFileName').val();
 
+            console.log(imgFileName);
+
             if ($.trim(imgFileName) == "") {
 
                 var defaultImgUrl = '@(BaseURL)/Content/logo-akpk.svg';
+
+                console.log("null - ", defaultImgUrl);
+
                 $(".introImage").attr('src', defaultImgUrl);
             }
             else {
                 var defaultImgUrl = '@(BaseURL)/File/GetImg?fileName=' + imgFileName;
+
+                console.log("NOT null - ", defaultImgUrl);
                 $(".introImage").attr('src', defaultImgUrl);
             }
 

@@ -89,7 +89,7 @@
                             <div id="imgDiv" onclick="$('#File').click()">
 
                                 <div class="boxed">
-                                    <img class="introImage" src="@Url.Action("GetImg", "File", new { area = "eLearning", fileName = @Model.IntroImageFileName})"
+                                    <img class="introImage" src=""
                                          height="250" width="500" alt="" />
                                 </div>
                             </div>
@@ -264,15 +264,26 @@
 
             $('#draggable-module').sortable(options);
 
-            var imgFileName = $('#IntroImageFileName').val();
+          var imgFileName = $('#IntroImageFileName').val();
 
-            if ($.trim(imgFileName) == '') {
+            console.log(imgFileName);
+
+            if ($.trim(imgFileName) == "") {
 
                 var defaultImgUrl = '@(BaseURL)/Content/logo-akpk.svg';
-                console.log(defaultImgUrl);
+
+                console.log("null - ", defaultImgUrl);
 
                 $(".introImage").attr('src', defaultImgUrl);
             }
+            else {
+                var defaultImgUrl = '@(BaseURL)/File/GetImg?fileName=' + imgFileName;
+
+                console.log("NOT null - ", defaultImgUrl);
+
+                $(".introImage").attr('src', defaultImgUrl);
+            }
+
 
         });
 

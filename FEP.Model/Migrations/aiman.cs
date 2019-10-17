@@ -63,7 +63,19 @@ namespace FEP.Model.Migrations
 					DesignationId = null
 				};
 
-				
+				db.User.Add(
+					new User
+					{
+						Name = Name,
+						ICNo = ICNo,
+						Email = Email,
+						MobileNo = MobileNo,
+						UserType = UserType.Staff,
+						Display = true,
+						CreatedDate = DateTime.Now,
+						UserAccount = useraccount,
+						StaffProfile = staff
+					});
 			}
 		}
 

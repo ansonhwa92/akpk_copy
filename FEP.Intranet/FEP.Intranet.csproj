@@ -21,9 +21,12 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44360</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -775,7 +778,6 @@
     <Content Include="Areas\eLearning\Views\Courses\Details.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Content.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\EditRules.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseCategory\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\_contentSidebar.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\Create.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\Edit.cshtml" />
@@ -841,16 +843,6 @@
     <Content Include="Areas\eLearning\Views\CourseContents\_detailPdf.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_editPdf.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_viewPdf.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewVideo.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\_viewNav.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\_viewBack.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewRichText.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewDocument.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewIFrame.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewWebLink.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewAudio.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewTest.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewAssignment.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseDiscussion\List.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseDiscussion\_Create.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseDiscussion\_Delete.cshtml" />

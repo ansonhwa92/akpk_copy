@@ -74,4 +74,14 @@ namespace FEP.WebApiModel.eLearning
         public bool isMember { get; set; } = false;
     }
 
+    public class ListCourseModel
+    {
+        public int GroupId { get; set; }
+        public string UserName { get; set; }
+        public int UserId { get; set; }
+        public int LearnerId { get; set; }
+        public int CourseEnrolled { get; set; }
+        public int CourseCompleted { get; set; }
+    }
+
 }

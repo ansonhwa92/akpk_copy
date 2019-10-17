@@ -15,12 +15,13 @@ namespace FEP.WebApiModel.eLearning
         [Display(Name = "Discussion Topic")]
         public string Name { get; set; }
         public int CreatedBy { get; set; }
-        public User CreatedByUser { get; set; }
+        public string CreatedByName { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime? UpdatetedOn { get; set; }
-        public int? FirstPostId { get; set; }
-        public DiscussionPost FirstPost { get; set; }
+        public int FirstPostId { get; set; }
+        public string FirstPost { get; set; }
         public string DiscussionStatus { get; set; }
+        public DiscussionVisibility DiscussionVisibility { get; set; }
     }
 
     public class CourseDiscussionVisibilityModel

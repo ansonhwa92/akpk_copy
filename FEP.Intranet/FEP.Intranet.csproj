@@ -808,6 +808,7 @@
     <Content Include="Areas\eLearning\Views\CourseGroup\Detail.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseGroup\_Edit.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseGroup\_UserList.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseGroup\_CourseList.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

@@ -27,7 +27,7 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">@Language.eLearning.CourseCategory.TitleList</h1>
+                    <h1 class="page-title text-white">@Language.eLearning.CourseDiscussion.TitleList - @Model.Discussion.Name</h1>
                     <div class="header-text"></div> @* discussion title *@
                 </div>
             </div>
@@ -53,41 +53,42 @@
         <div class="border-form rounded-top">
             @* first post*@
             <div class="border-1">
-                <div class="pull-right ">
-                    @*<a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonEdit" data-toggle="tooltip"><i class="la la-edit text-muted"></i></a>
-                        <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>*@
-                </div>
-                <div class="pull-left text-center">
-                    <img src="" class="avatar-xl">
-                </div>
-                <div>
-                    <div>
-                        <a href="linkToUserProfile"><span title="@Model.Post[0]CreatedByName">@Model.Post[0].CreatedByName</span></a>
-                        <span class="label label-info label-role">@Model.Post[0].CreatedByLevel</span> •
-                        @Model.Post[0].CreatedDate.ToLongDateString()
+                <div class="text-left" style="padding:10px;">
+                    <div class="pull-right ">
+                        @*<a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonEdit" data-toggle="tooltip"><i class="la la-edit text-muted"></i></a>
+                            <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>*@
                     </div>
-                    <h4>@Model.Post[0].Topic</h4>
-                    <br>
-                    <div>
-                        @Model.Post[0].Message<br>
+                    <div class="pull-left text-center" style="margin-right:15px;">
+                        <img src="~/dist/assets/images/people/50/guy-6.jpg">
                     </div>
-                    @{ if (Model.Attachment.Count > 0)
-                        {
-                            if (Model.Attachment.Where(m => m.PostId == Model.Post[0].Id).FirstOrDefault() != null)
+                    <div>
+                        <div>
+                            <a href="linkToUserProfile"><span title="@Model.Post[0]CreatedByName">@Model.Post[0].CreatedByName</span></a>
+                            <span class="label label-info label-role">@Model.Post[0].CreatedByLevel</span> •
+                            @Model.Post[0].CreatedDate.ToLongDateString()
+                        </div>
+                        <h4>@Model.Discussion.Name</h4>
+                        <div>
+                            @Model.Post[0].Message<br>
+                        </div>
+                        @{ if (Model.Attachment.Count > 0)
                             {
-                                var att = Model.Attachment.Where(m => m.PostId == Model.Post[0].Id).FirstOrDefault();
-                                if (att.Attachment != null)
+                                if (Model.Attachment.Where(m => m.PostId == Model.Post[0].Id).FirstOrDefault() != null)
                                 {
-                                    <div>
-                                        <i class="fa fa-link"><a class="btn btn-link" href="@att.Attachment.FilePath" target="_blank">@att.Attachment.FileName </a></i>
-                                    </div>
+                                    var att = Model.Attachment.Where(m => m.PostId == Model.Post[0].Id).FirstOrDefault();
+                                    if (att.Attachment != null)
+                                    {
+                                        <div>
+                                            <i class="fa fa-link"><a class="btn btn-link" href="@att.Attachment.FilePath" target="_blank">@att.Attachment.FileName </a></i>
+                                        </div>
+                                    }
                                 }
                             }
                         }
-                    }
-                </div>
-                <div style="margin-top:0px; padding: 10px;" class="text-right">
-                    <span id="top" class="btn btn-mini btn-primary">Reply</span>
+                    </div>
+                    <div style="margin-top:0px; padding: 10px;" class="text-right">
+                        <span id="top" class="btn btn-mini btn-primary">Reply</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -98,16 +99,17 @@
             {
                 for (int p = 1; p < Model.Post.Count; p++)
                 {
-                    <div class="border-1">
-                        <div class="text-left" id="@Model.Post[p].Id" style="padding:20px;">
+                    <div class="border-1" style="margin-left:50px;margin-right:50px;">
+                        <div class="text-left" id="MessagePost_@Model.Post[p].Id" style="padding:10px;">
                             <div>
                                 <div class="pull-right">
                                     @*<a href="javascript:void(0);" class="tl-edit-reply" data-id="1" data-attachment="" data-attachment_name="">edit</a> • <a href="javascript:void(0);" onclick="myportal.app.confirm('Delete reply?', '<p>Are you sure you want to delete this reply?</p><p>This action cannot be undone</p>', removeReplyFromDom, this)" data-action="https://myakpk.talentlms.com/discussion/deletereply" data-id="1">delete</a>*@
                                 </div>
                                 <div>
-                                    <div class="pull-left text-center">
-                                        <img src="" class="avatar-xl">
+                                    <div class="pull-left text-center" style="margin-right:15px;">
+                                        <img src="~/dist/assets/images/people/50/guy-6.jpg">
                                     </div>
+
                                     <div class="tl-reply-info">
                                         <a href="linkToUserProfile"><span title="@Model.Post[p].CreatedByName">@Model.Post[p].CreatedByName</span></a>
                                         <span class="label label-info label-role">@Model.Post[p].CreatedByLevel</span> •
@@ -123,7 +125,7 @@
                                         }
 
                                     </div>
-                                    <br>
+                                    <h4>&nbsp;&nbsp;</h4>
                                     <div>
                                         <div>@Model.Post[p].Message<br></div><br>
                                         @{ if (Model.Attachment.Count > 0)
@@ -143,11 +145,8 @@
                                         }
                                         @* <button href="javascript:void(0);" class="btn btn-primary tl-toggle-icon tl-toggle-1 tl-cursor-pointer" data-toggle="tl-comment-form-1">Comment</button>*@
                                     </div>
-                                    <br />
-
-                                    <button id="Comment" aria-valuenow="@Model.Post[p].Id" onclick="callCustomer(@Model.Post[p].Id)" >Comment</button>
-                                    <div class="border-1" id="CommentArea_@Model.Post[p].Id">
-
+                                    <div class="" id="CommentArea_@Model.Post[p].Id" style="min-height:50px;">
+                                        <button id="Comment_@Model.Post[p].Id" class="btn btn-secondary btn-sm mw-auto mr-2" aria-valuenow="@Model.Post[p].Id" onclick="callCustomer(@Model.Post[p].Id)">Comment</button>
                                     </div>
                                 </div>
                             </div>
@@ -192,14 +191,22 @@
     <script type="text/javascript">
 
         function callCustomer(el) {
-            $("div[id*=CommentArea_]").html("");
+            $("#CommentArea_" +el).html("");
 
             var url = '@Url.Action("DisplaySearchResults", "CourseDiscussion")';
             $('#CommentArea_' + el).load(url + '?id=' + el);
-            alert(el);
+           
         }
 
-       
+        $("div[id*=MessagePost_]").hover(function () {
+            var g = this.id.toString().replace('MessagePost_', '');
+           
+            $("#Comment_" + g).show();
+        }, function () {
+            var gg = this.id.toString().replace('MessagePost_', '');
+            $("#Comment_" + gg).hide();
+            });
+
         function clearForm() {
             $('#addForm').html('');
 

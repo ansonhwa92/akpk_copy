@@ -231,6 +231,28 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> _CourseList(int id)
+        {
+            var model = new List<ListGroupMemberModel>();
+
+            var getgroup = await WepApiMethod.SendApiAsync<List<ListGroupMemberModel>>(HttpVerbs.Get, $"eLearning/CourseGroup/GetAllLearner?id={id}");
+
+            if (getgroup.isSuccess)
+            {
+                model = getgroup.Data;
+
+                //model.UpdatedBy = CurrentUser.UserId.Value;
+
+                return View(model);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "fail get group";
+                return RedirectToAction("List");
+            }
+        }
+
+        [HttpGet]
         public async Task<ActionResult> _Subscribe(int id, int GroupId)
         {
             var model = new List<ListGroupMemberModel>();

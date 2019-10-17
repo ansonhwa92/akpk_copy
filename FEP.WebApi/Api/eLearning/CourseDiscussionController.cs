@@ -30,29 +30,36 @@ namespace FEP.WebApi.Api.eLearning
 
         public IHttpActionResult Get()
         {
-            var categories = db.Discussions.Where(u => u.IsDeleted != true).Select(s => new CourseDiscussionModel
+            using (DbEntities _db = new DbEntities())
             {
-                Id = s.Id,
-                Name = s.Name,
-                CreatedBy = s.UserId,
-                CreatedByUser = db.User.Where(m => m.Id == s.UserId).FirstOrDefault(),
-                CreatedOn = s.CreatedDate,
-                UpdatetedOn = s.UpdatedDate
-            }).ToList();
-
-            foreach (var x in categories)
-            {
-                var _getPost = db.DiscussionPosts.Where(m => m.DiscussionId == x.Id).ToList();
-                if (_getPost.Count > 0)
+                var categories = db.Discussions.Where(u => u.IsDeleted != true).Select(s => new CourseDiscussionModel
                 {
-                    x.FirstPost = _getPost[0];
-                    x.DiscussionStatus = _getPost.Count <= 1 ? "Created on " + x.CreatedOn.ToShortDateString() : "Latest reply " + (x.UpdatetedOn.HasValue ? x.UpdatetedOn.Value.ToShortDateString() : x.CreatedOn.ToShortDateString());
-            } }
+                    Id = s.Id,
+                    Name = s.Name,
+                    CreatedBy = s.CreatedBy,
+                    CreatedByName = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name,
+                    CreatedOn = s.CreatedDate,
+                    UpdatetedOn = s.UpdatedDate,
+                    DiscussionVisibility = s.DiscussionVisibility,
+                    FirstPost = s.Posts.Where(m=>m.Id == s.FirstPost).FirstOrDefault().Message,
+                    FirstPostId = s.FirstPost
+                }).ToList();
 
-            return Ok(categories);
+                //foreach (var x in categories)
+                //{
+                //    var _getPost = db.DiscussionPosts.Where(m => m.DiscussionId == x.Id).ToList();
+                //    if (_getPost.Count > 0)
+                //    {
+                //        x.FirstPost = _getPost[0];
+                //        x.DiscussionStatus = _getPost.Count <= 1 ? "Created on " + x.CreatedOn.ToShortDateString() : "Latest reply " + (x.UpdatetedOn.HasValue ? x.UpdatetedOn.Value.ToShortDateString() : x.CreatedOn.ToShortDateString());
+                //    }
+                //}
+                return Ok(categories);
+            }
+            
         }
 
-
+        [HttpGet]
         public IHttpActionResult Get(int id)
         {
             var category = db.Discussions.Where(u => u.Id == id && u.IsDeleted != true).Select(s => new CourseDiscussionModel

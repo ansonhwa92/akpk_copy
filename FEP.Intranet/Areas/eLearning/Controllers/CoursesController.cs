@@ -241,54 +241,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-
-        //// post the new order
-        //[HttpPost]
-        //public async Task<ActionResult> Content(int? Id, int CreatedBy, string order)
-        //{
-        //    if (Id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-
-        //    if (String.IsNullOrEmpty(order))
-        //    {
-        //        RedirectToAction("Content", new { id = Id.Value });
-        //    }
-
-        //    var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Post,
-        //        CourseApiUrl.Content + $"?Id={Id}&CreatedBy={CreatedBy}&order={order}");
-
-        //    if (response.isSuccess)
-        //    {
-        //        TempData["SuccessMessage"] = "Changes saved";
-
-        //        var model = response.Data;
-
-        //        await LogActivity(Modules.Learning, "Update Course Content : " + model.Title);
-
-        //        return View(model);
-        //    }
-
-        //    TempData["ErrorMessage"] = "Error in saving order..";
-
-        //    // get Model
-        //    var vm = await TryGetFrontCourse(Id.Value);
-
-        //    if (vm == null)
-        //    {
-        //        TempData["ErrorMessage"] = "No such course.";
-
-        //        return RedirectToAction("Index", "Courses");
-        //    }
-
-        //    vm.Modules = vm.Modules.OrderBy(x => x.Order).ToList();
-
-        //    return View(vm);
-        //}
-
-
-
         public async Task<ActionResult> View(int? id)
         {
             if (id == null)
@@ -330,18 +282,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             var model = _mapper.Map<CourseRuleModel>(course);
 
-            //var vm = new CourseRuleModel
-            //{
-            //    Id = model.Id,
-            //    Title = model.Title,
-            //    CompletionCriteriaType = model.CompletionCriteriaType,
-            //    ModulesCompleted = model.ModulesCompleted,
-            //    LearningPath = model.LearningPath,
-            //    PercentageCompletion = model.PercentageCompletion,
-            //    ScoreCalculation = model.ScoreCalculation,
-            //    TestsPassed = model.TestsPassed,
-            //    TraversalRule = model.TraversalRule
-            //};
+            ViewBag.CoursesList = new SelectList(await GetCoursesList(id), "Id", "Name");
+
 
             return View(model);
         }
@@ -358,6 +300,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 if (response.isSuccess)
                 {
+                    ViewBag.CoursesList = new SelectList(await GetCoursesList(model.Id), "Id", "Name");
+
                     TempData["SuccessMessage"] = "Course Rules successfully updated.";
 
                     await LogActivity(Modules.Learning, "Update Course Rule : " + model.Title);
@@ -582,5 +526,19 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         }
 
+        [NonAction]
+        private async Task<IEnumerable<CourseListModel>> GetCoursesList(int? id)
+        {
+            var courses = Enumerable.Empty<CourseListModel>();
+
+            var response = await WepApiMethod.SendApiAsync<IEnumerable<CourseListModel>>(HttpVerbs.Get, $"eLearning/Courses/GetCoursesList?id={id}");
+
+            if (response.isSuccess)
+            {
+                courses = response.Data.OrderBy(o => o.Name);
+            }
+
+            return courses;
+        }
     }
 }

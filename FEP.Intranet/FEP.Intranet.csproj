@@ -906,6 +906,7 @@
     <Content Include="Areas\Reward\Views\RewardRedemptions\DetailsToRedeem.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardPoints\ListAll.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardRedemptions\ListAll.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\EditRules - Copy.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1429,7 +1430,7 @@
     <Folder Include="Areas\SLAReminder\Models\" />
     <Folder Include="Areas\SLAReminder\Views\Shared\" />
     <Folder Include="Areas\Template\Views\Shared\" />
-    <Folder Include="bin\" />
+    <Folder Include="bin\roslyn\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>

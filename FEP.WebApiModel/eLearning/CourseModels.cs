@@ -150,6 +150,12 @@ namespace FEP.WebApiModel.eLearning
 
     }
 
+    public class CourseListModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
     public class CourseRuleModel : BaseModel
     {
         [Required]
@@ -184,6 +190,7 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "LearningPath", ResourceType = typeof(Language.eLearning.Course))]
         public string LearningPath { get; set; }
+
 
     }
 

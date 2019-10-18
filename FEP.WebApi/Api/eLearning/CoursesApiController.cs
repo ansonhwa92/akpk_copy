@@ -733,6 +733,19 @@ namespace FEP.WebApi.Api.eLearning
             return Ok();
         }
 
+        [Route("api/eLearning/Courses/GetCoursesList")]
+        [HttpGet]
+        public IHttpActionResult GetCoursesList(int id)
+        {
+            var courses = db.Courses.Where(u => u.IsDeleted == false && u.Id != id).Select(s => new CourseListModel
+            {
+                Id = s.Id,
+                Name = s.Title,
+            }).ToList();
+
+            return Ok(courses);
+        }
+
 
         /// <returns></returns>
         [Route("api/eLearning/Courses/Start")]

@@ -1,5 +1,4 @@
 ﻿using FEP.Helper;
-using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.Administration;
 using System.Collections.Generic;
@@ -105,7 +104,6 @@ namespace FEP.WebApiModel.eLearning
         [Display(Name = "ScoreCalculation", ResourceType = typeof(Language.eLearning.Course))]
         public ScoreCalculation ScoreCalculation { get; set; }
 
-
         [Display(Name = "CompletionRule", ResourceType = typeof(Language.eLearning.Course))]
         public CompletionCriteriaType CompletionCriteriaType { get; set; } = CompletionCriteriaType.General;
 
@@ -130,10 +128,12 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "CreatedByName", ResourceType = typeof(Language.eLearning.Course))]
         public string CreatedByName { get; set; }
+
         [Display(Name = "Status", ResourceType = typeof(Language.eLearning.Course))]
         public CourseStatus Status { get; set; }
 
         public ICollection<CourseApprovalLog> CourseApprovalLogs { get; set; }
+
         //public ICollection<CourseContent> FrontPageContents { get; set; }
         public ICollection<CourseModule> Modules { get; set; }
 
@@ -141,13 +141,13 @@ namespace FEP.WebApiModel.eLearning
 
         public int CourseEventId { get; set; }
 
-
         public HttpPostedFileBase File { get; set; }
         public string IntroImageFileName { get; set; }
 
         public int UpdatedBy { get; set; }
         public string UpdatedByName { get; set; }
 
+        public CourseApprovalLogModel CourseApprovalLogModel { get; set; }
     }
 
     public class CourseRuleModel : BaseModel
@@ -161,7 +161,6 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "ScoreCalculation", ResourceType = typeof(Language.eLearning.Course))]
         public ScoreCalculation ScoreCalculation { get; set; }
-
 
         [Display(Name = "CompletionRule", ResourceType = typeof(Language.eLearning.Course))]
         public CompletionCriteriaType CompletionCriteriaType { get; set; } = CompletionCriteriaType.General;
@@ -184,7 +183,6 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "LearningPath", ResourceType = typeof(Language.eLearning.Course))]
         public string LearningPath { get; set; }
-
     }
 
     public class TrainerCourseModel
@@ -211,9 +209,7 @@ namespace FEP.WebApiModel.eLearning
         public string CourseName { get; set; }
         public int CourseEventId { get; set; }
         public string Message { get; set; }
-
     }
-
 
     public class OrderModel
     {

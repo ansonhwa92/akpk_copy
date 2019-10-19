@@ -128,6 +128,7 @@ namespace FEP.WebApi.Api.eLearning
                         CreatedByName = entity.CreatedByName,
                         ActionDate = DateTime.Now,
                         Remark = "Course " + entity.Title + " goes for Trial.",
+                        ApprovalStatus = ApprovalStatus.None
                     });
 
                     await db.SaveChangesAsync();

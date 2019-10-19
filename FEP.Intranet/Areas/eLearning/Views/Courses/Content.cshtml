@@ -2,8 +2,6 @@
 @model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
 
 @{
-    /**/
-
     ViewBag.Title = "Manage Course";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 
@@ -47,155 +45,163 @@
     </div>
 }
 
-<form id="form" method="post">
+@Html.AntiForgeryToken()
 
-    @Html.AntiForgeryToken()
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.HiddenFor(m => m.Id)
+@Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+@Html.HiddenFor(m => m.CourseEventId)
+@Html.HiddenFor(m => m.IntroImageFileName)
 
-    @Html.HiddenFor(m => m.Id)
-    @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
-    @Html.HiddenFor(m => m.CourseEventId)
-    @Html.HiddenFor(m => m.IntroImageFileName)
+<div class="row">
 
-    <div class="row">
+    @Html.Partial("_contentSidebar")
 
-            @Html.Partial("_contentSidebar")
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 
-        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
 
-            <!-- Start Form -->
-            <div class="border-form rounded-top">
+            <div class="form-container tab-content">
 
-                <div class="form-container tab-content">
-
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <span class="title">
-                                @name
-                            </span>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="card text-white bg-dark font-weight-bold p-2 float-right border-dark">
-                                @Model.Status
-                            </div>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <span class="title">
+                            @name
+                        </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="card text-white bg-dark font-weight-bold p-2 float-right border-dark">
+                            @Model.Status
                         </div>
                     </div>
-
-                    <div class="tab-pane active" id="course-details">
-                        <div class="mb-4 mt-2 mr-auto">
-                            <input type="file" name="File" id="File" class="file" accept="image/*" hidden />
-
-                            <div id="imgDiv" onclick="$('#File').click()">
-
-                                <div class="boxed">
-                                    <img class="introImage" src=""
-                                         height="250" width="500" alt="" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="subtitle">
-                            ABOUT
-                        </div>
-
-                        <div>
-                            <div class="descbox">
-                                @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
-                            </div>
-                            <p id="afterDesc"></p>
-                        </div>
-
-                        <div class="subtitle">
-                            What you will learn
-                        </div>
-
-                        <div>
-                            <div class="objbox">
-                                @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
-                            </div>
-                            <p id="afterObj"></p>
-                        </div>
-                        <div>
-                            <div class="row">
-
-                                <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
-                                <a class="btn btn-secondary m-2" href="@Url.Action("View", "Courses", new { area = "eLearning", id = @Model.Id })">View as learner</a>
-                            </div>
-                        </div>
-
-                        <div class="subtitle">
-                            MODULES
-                        </div>
-                        <input name="order" id="order" hidden />
-                        <!----START MODULES -->
-                        <div id="draggable-module">
-                            @{
-
-                                var modules = Model.Modules.OrderBy(x => x.Order).ToList();
-
-                                for (int i = 0; i < modules.Count(); i++)
-                                {
-                                    var module = modules[i];
-
-                                    <div class="module-box" data-id="@module.Id" onclick="openModule(@module.Id)">
-
-                                        <div>
-                                            <div class="row mb-2">
-                                                <div class="col-sm-9">
-                                                    <span class="moduleTitle">@module.Title</span>
-                                                </div>
-                                                <div class="col-sm-3 pull-right pt-1">
-                                                    <a href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = module.Id })"
-                                                       data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>
-                                                    <a href="@Url.Action("Content", "CourseModules", new { area = "eLearning", id = module.Id })"
-                                                       data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit "></i></a>
-                                                    <a href="@Url.Action("Delete", "CourseModules", new { area = "eLearning", id = module.Id})"
-                                                       data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o "></i></a>
-
-                                                    <div class="float-right">
-                                                        <i class="fa fa-bars handle color-darkblue" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Reorder"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="modDescbox">
-                                                    @Html.Raw(@module.Description)
-                                                </div>
-
-                                                <div class="row pl-2">
-                                                    <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
-                                                    <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
-                                                    <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="divider"></div>
-                                    </div>
-
-                                }
-                            }
-                        </div>
-                        <!----END MODULES -->
-                    </div>
-
-                    <!-- Popups -->
-                    <!-- popups end -->
                 </div>
 
-                <!--  Start Action Log -->
-                @Html.Partial("_actionLog", Model)
-                <!--  End Action Log -->
+                <div class="tab-pane active" id="course-details">
+                    <div class="mb-4 mt-2 mr-auto">
+                        <input type="file" name="File" id="File" class="file" accept="image/*" hidden />
+
+                        <div id="imgDiv" onclick="$('#File').click()">
+
+                            <div class="boxed">
+                                <img class="introImage" src=""
+                                     height="250" width="500" alt="" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subtitle">
+                        ABOUT
+                    </div>
+
+                    <div>
+                        <div class="descbox">
+                            @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
+                        </div>
+                        <p id="afterDesc"></p>
+                    </div>
+
+                    <div class="subtitle">
+                        What you will learn
+                    </div>
+
+                    <div>
+                        <div class="objbox">
+                            @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
+                        </div>
+                        <p id="afterObj"></p>
+                    </div>
+                    <div>
+                        <div class="row">
+                            @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
+                                      (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                {
+                                    <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
+                                }
+                            }
+                            <a class="btn btn-secondary m-2" href="@Url.Action("View", "Courses", new { area = "eLearning", id = @Model.Id })">View as learner</a>
+                        </div>
+                    </div>
+
+                    <div class="subtitle">
+                        MODULES
+                    </div>
+                    <input name="order" id="order" hidden />
+                    <!----START MODULES -->
+                    <div id="draggable-module">
+                        @{
+
+                            var modules = Model.Modules.OrderBy(x => x.Order).ToList();
+
+                            for (int i = 0; i < modules.Count(); i++)
+                            {
+                                var module = modules[i];
+
+                                <div class="module-box" data-id="@module.Id" onclick="openModule(@module.Id)">
+
+                                    <div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-sm-9">
+                                                <span class="moduleTitle">@module.Title</span>
+                                            </div>
+                                            @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
+                                                     (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||
+                                                     CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                                {
+                                                    <div class="col-sm-3 pull-right pt-1">
+                                                        <a href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                                           data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>
+                                                        <a href="@Url.Action("Content", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                                           data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit "></i></a>
+                                                        <a href="@Url.Action("Delete", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                                           data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o "></i></a>
+
+                                                        <div class="float-right">
+                                                            <i class="fa fa-bars handle color-darkblue" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Reorder"></i>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+
+                                        <div>
+                                            <div class="modDescbox">
+                                                @Html.Raw(@module.Description)
+                                            </div>
+
+                                            <div class="row pl-2">
+                                                <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
+                                                <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
+                                                <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="divider"></div>
+                                </div>
+
+                            }
+                        }
+                    </div>
+                    <!----END MODULES -->
+                </div>
+
+                <!-- Popups -->
+                <!-- popups end -->
             </div>
 
-            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+            <!--  Start Action Log -->
+            @Html.Partial("_actionLog", Model)
+            <!--  End Action Log -->
+        </div>
 
-                <a class="btn btn-default" href="@Url.Action("Index", "Courses", new { area = "eLearning" })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
-                @*<button type="submit" class="btn btn-default pull-right" id="btnSave" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save</button>*@
-            </div>
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+            <a class="btn btn-default" href="@Url.Action("Index", "Courses", new { area = "eLearning" })" data-toggle="tooltip"
+               data-placement="top" title="Back">@Language.General.ButtonBack</a>
         </div>
     </div>
-</form>
+</div>
 
 <style>
 </style>
@@ -266,7 +272,6 @@
 
              var imgFileName = $('#IntroImageFileName').val();
 
-
             if ($.trim(imgFileName) == "") {
 
                 var defaultImgUrl = '@(BaseURL)/Content/logo-akpk.svg';
@@ -276,7 +281,6 @@
                 var defaultImgUrl = '@(BaseURL)/File/GetImg?fileName=' + imgFileName;
                 $(".introImage").attr('src', defaultImgUrl);
             }
-
 
         });
 

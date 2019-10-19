@@ -70,3 +70,30 @@ loader {
     cursor: move;
     cursor: -webkit-grabbing;
 }
+
+
+.rawHtml {
+    background-color: #fafcfd;
+    border: 1px solid #e3eaef;
+    color: #768396;
+    opacity: 1;
+    height: auto;
+    font-size: 0.875rem;
+    box-shadow: none;
+    display: block;
+    width: 100%;
+    padding: .5rem .75rem;
+    font-size: .9375rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border-radius: .25rem;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.la-newspaper-o,
+.la-book,
+.la-check-square {
+    font-size: 1.3125rem;
+}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FEP.Model.eLearning;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,4 +14,6 @@ namespace FEP.WebApiModel.eLearning
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
     }
+
+ 
 }

@@ -156,6 +156,62 @@
   <data name="ClickButton" xml:space="preserve">
     <value>Press complete button</value>
   </data>
+  <data name="CourseStatusAmendment" xml:space="preserve">
+    <value>Amendment</value>
+  </data>
+  <data name="CourseStatusApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="CourseStatusDraft" xml:space="preserve">
+    <value>Draft</value>
+    <comment>CourseStatus</comment>
+  </data>
+  <data name="CourseStatusFirstApproval" xml:space="preserve">
+    <value>First Approver Approved</value>
+  </data>
+  <data name="CourseStatusFirstApproverApproved" xml:space="preserve">
+    <value>Pending Approval</value>
+  </data>
+  <data name="CourseStatusFirstApproverRejected" xml:space="preserve">
+    <value>Require Amendment</value>
+  </data>
+  <data name="CourseStatusPublished" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="CourseStatusSecondApproval" xml:space="preserve">
+    <value>Second Approver Approved</value>
+  </data>
+  <data name="CourseStatusSecondApproverApproved" xml:space="preserve">
+    <value>Pending Approval</value>
+  </data>
+  <data name="CourseStatusSecondApproverRejected" xml:space="preserve">
+    <value>Require Amendment</value>
+  </data>
+  <data name="CourseStatusSubmitted" xml:space="preserve">
+    <value>Pending Verification</value>
+  </data>
+  <data name="CourseStatusThirdApproval" xml:space="preserve">
+    <value>Third Approver Approved</value>
+  </data>
+  <data name="CourseStatusThirdApproverApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="CourseStatusThirdApproverRejected" xml:space="preserve">
+    <value>Require Amendment</value>
+  </data>
+  <data name="CourseStatusTrial" xml:space="preserve">
+    <value>Trial</value>
+    <comment>CourseStatus</comment>
+  </data>
+  <data name="CourseStatusVerified" xml:space="preserve">
+    <value>Pending Approval</value>
+  </data>
+  <data name="CourseStatusVerifierApproval" xml:space="preserve">
+    <value>Verifier Approved</value>
+  </data>
+  <data name="CourseStatusVerifierRejected" xml:space="preserve">
+    <value>Require Amendment</value>
+  </data>
   <data name="Document" xml:space="preserve">
     <value>Document</value>
   </data>

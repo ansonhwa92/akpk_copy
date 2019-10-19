@@ -179,6 +179,7 @@
     <Compile Include="Areas\eLearning\Controllers\CourseDiscussionController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseGroupController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseModulesController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\CourseApprovalsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CoursesController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseEventsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\FileUploadController.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Areas\eLearning\Controllers\CertificatesController.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
     <Compile Include="Areas\eLearning\Helper\AllowCrossSiteJsonAttribute.cs" />
+    <Compile Include="Areas\eLearning\Helper\ExtensionMethods.cs" />
     <Compile Include="Areas\eLearning\Helper\YouTubeUrlHelper.cs" />
     <Compile Include="Areas\eLearning\Helper\SlideshareHelper.cs" />
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />
@@ -775,7 +777,6 @@
     <Content Include="Areas\eLearning\Views\Courses\Edit.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\Details.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Content.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\EditRules.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\_contentSidebar.cshtml" />
@@ -785,10 +786,9 @@
     <Content Include="Areas\eLearning\Views\CourseContents\Create.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Delete.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Edit.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\_contentSidebar.cshtml" />
     <Content Include="libman.json" />
-    <Content Include="Areas\eLearning\Views\Courses\_actionLog.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_actionLog.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\_amendmentHistory.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_viewVideo.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\View.cshtml" />
@@ -906,6 +906,9 @@
     <Content Include="Areas\Reward\Views\RewardRedemptions\DetailsToRedeem.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardPoints\ListAll.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardRedemptions\ListAll.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_approvals.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseApprovals\Approve.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseApprovals\_sidebar.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

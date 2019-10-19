@@ -186,6 +186,7 @@ namespace FEP.WebApi.Api.eLearning
                         CreatedByName = request.CreatedByName,
                         ActionDate = DateTime.Now,
                         Remark = "Course " + request.Title + " created.",
+                        ApprovalStatus = ApprovalStatus.None
                     },
                 };
 
@@ -211,6 +212,9 @@ namespace FEP.WebApi.Api.eLearning
                 return NotFound();
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
+            model.CourseApprovalLogModel = new CourseApprovalLogModel();
+            model.CourseApprovalLogModel.Status = model.Status;
+
             model.Description = HttpUtility.HtmlDecode(model.Description);
             model.Objectives = HttpUtility.HtmlDecode(model.Objectives);
 
@@ -452,8 +456,6 @@ namespace FEP.WebApi.Api.eLearning
             });
         }
 
-
-
         [Route("api/eLearning/Courses/AddUser")]
         [HttpPost]
         public IHttpActionResult AddUser(UpdateTrainerCourseModel model)
@@ -521,7 +523,6 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(true);
         }
 
-
         [Route("api/eLearning/Courses/GetFrontCourse")]
         [HttpGet]
         public async Task<IHttpActionResult> GetFrontCourse(int? id)
@@ -537,8 +538,9 @@ namespace FEP.WebApi.Api.eLearning
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
             model.CourseApprovalLogs = entity.CourseApprovalLog;
-
             model.Modules = entity.Modules;
+            model.CourseApprovalLogModel = new CourseApprovalLogModel();
+            model.CourseApprovalLogModel.Status = model.Status;
 
             var courseEvent = new CourseEvent();
 
@@ -659,7 +661,6 @@ namespace FEP.WebApi.Api.eLearning
         {
             string Id = orderModel.Id;
 
-
             if (String.IsNullOrEmpty(Id))
             {
                 return BadRequest();
@@ -732,7 +733,6 @@ namespace FEP.WebApi.Api.eLearning
 
             return Ok();
         }
-
 
         /// <returns></returns>
         [Route("api/eLearning/Courses/Start")]

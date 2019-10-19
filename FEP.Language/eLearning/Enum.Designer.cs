@@ -178,6 +178,168 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Amendment.
+        /// </summary>
+        public static string CourseStatusAmendment {
+            get {
+                return ResourceManager.GetString("CourseStatusAmendment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approved.
+        /// </summary>
+        public static string CourseStatusApproved {
+            get {
+                return ResourceManager.GetString("CourseStatusApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Draft.
+        /// </summary>
+        public static string CourseStatusDraft {
+            get {
+                return ResourceManager.GetString("CourseStatusDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First Approver Approved.
+        /// </summary>
+        public static string CourseStatusFirstApproval {
+            get {
+                return ResourceManager.GetString("CourseStatusFirstApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Approval.
+        /// </summary>
+        public static string CourseStatusFirstApproverApproved {
+            get {
+                return ResourceManager.GetString("CourseStatusFirstApproverApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Require Amendment.
+        /// </summary>
+        public static string CourseStatusFirstApproverRejected {
+            get {
+                return ResourceManager.GetString("CourseStatusFirstApproverRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Published.
+        /// </summary>
+        public static string CourseStatusPublished {
+            get {
+                return ResourceManager.GetString("CourseStatusPublished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Second Approver Approved.
+        /// </summary>
+        public static string CourseStatusSecondApproval {
+            get {
+                return ResourceManager.GetString("CourseStatusSecondApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Approval.
+        /// </summary>
+        public static string CourseStatusSecondApproverApproved {
+            get {
+                return ResourceManager.GetString("CourseStatusSecondApproverApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Require Amendment.
+        /// </summary>
+        public static string CourseStatusSecondApproverRejected {
+            get {
+                return ResourceManager.GetString("CourseStatusSecondApproverRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Verification.
+        /// </summary>
+        public static string CourseStatusSubmitted {
+            get {
+                return ResourceManager.GetString("CourseStatusSubmitted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Third Approver Approved.
+        /// </summary>
+        public static string CourseStatusThirdApproval {
+            get {
+                return ResourceManager.GetString("CourseStatusThirdApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approved.
+        /// </summary>
+        public static string CourseStatusThirdApproverApproved {
+            get {
+                return ResourceManager.GetString("CourseStatusThirdApproverApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Require Amendment.
+        /// </summary>
+        public static string CourseStatusThirdApproverRejected {
+            get {
+                return ResourceManager.GetString("CourseStatusThirdApproverRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trial.
+        /// </summary>
+        public static string CourseStatusTrial {
+            get {
+                return ResourceManager.GetString("CourseStatusTrial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Approval.
+        /// </summary>
+        public static string CourseStatusVerified {
+            get {
+                return ResourceManager.GetString("CourseStatusVerified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verifier Approved.
+        /// </summary>
+        public static string CourseStatusVerifierApproval {
+            get {
+                return ResourceManager.GetString("CourseStatusVerifierApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Require Amendment.
+        /// </summary>
+        public static string CourseStatusVerifierRejected {
+            get {
+                return ResourceManager.GetString("CourseStatusVerifierRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Document.
         /// </summary>
         public static string Document {

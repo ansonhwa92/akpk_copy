@@ -272,6 +272,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             var model = _mapper.Map<CourseRuleModel>(course);
 
+            ViewBag.CoursesList = new SelectList(await GetCoursesList(id), "Id", "Name");
+
             return View(model);
         }
 
@@ -287,6 +289,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 if (response.isSuccess)
                 {
+                    ViewBag.CoursesList = new SelectList(await GetCoursesList(model.Id), "Id", "Name");
+
                     TempData["SuccessMessage"] = "Course Rules successfully updated.";
 
                     await LogActivity(Modules.Learning, "Update Course Rule : " + model.Title);
@@ -506,6 +510,20 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
             }
+        }
+        [NonAction]
+        private async Task<IEnumerable<CourseListModel>> GetCoursesList(int? id)
+        {
+            var courses = Enumerable.Empty<CourseListModel>();
+
+            var response = await WepApiMethod.SendApiAsync<IEnumerable<CourseListModel>>(HttpVerbs.Get, $"eLearning/Courses/GetCoursesList?id={id}");
+
+            if (response.isSuccess)
+            {
+                courses = response.Data.OrderBy(o => o.Name);
+            }
+
+            return courses;
         }
     }
 }

@@ -16,11 +16,8 @@ namespace FEP.Intranet.Helper
             get
             {
                 return Setting<string>("FilePath");
-                //get { return System.Configuration.ConfigurationManager.AppSettings["ClientSecret"]; }
             }
         }
-
-
 
         private static T Setting<T>(string name)
         {

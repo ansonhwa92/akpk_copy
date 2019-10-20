@@ -125,6 +125,8 @@ namespace FEP.Model.eLearning
         public string IntroImageFileName { get; set; }
 
         public SkillLevel SkillLevel { get; set; }
+
+        public int SLAReminderId { get; set; }
     }
 
     public enum SkillLevel

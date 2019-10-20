@@ -1,7 +1,10 @@
 ﻿using FEP.Helper;
+using FEP.Intranet.Areas.eLearning.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
+using FEP.WebApiModel.SLAReminder;
+using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -62,6 +65,32 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             if (response.isSuccess)
             {
                 await LogActivity(Modules.Learning, "Successfully submit Course For Verification. Course : " + title);
+
+                // -- send email
+                var notifyModel = new NotificationModel
+                {
+                    Id = id,
+                    Type = typeof(Course),
+                    NotificationType = NotificationType.Verify_Courses_Creation,
+                    NotificationCategory = NotificationCategory.Learning,
+                    StartNotificationDate = DateTime.Now,
+                    ParameterListToSend = new ParameterListToSend
+                    {
+                        CourseAuthor = model.CreatedByName,
+                        CourseTitle = title,
+                        CourseApproval = "Course Verification",
+                        Link = this.Url.AbsoluteAction("SubmitForVerification", "Controller", new { id = id, title = title })
+                    },
+                };
+
+                var emailResponse = await EmaiHelper.SendNotification(notifyModel);
+
+                if (emailResponse == null || String.IsNullOrEmpty(emailResponse.Status) || 
+                    !emailResponse.Status.Equals("Success", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    await LogError(Modules.Learning, $"Error Sending Email For Course Verification. Course Title (Id) : {title} - {id}");
+                }
+
                 TempData["SuccessMessage"] = "Successfully submited for Verification";
             }
             else
@@ -110,12 +139,80 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 if (model.ApprovalLevel == ApprovalLevel.Verifier)
                 {
                     TempData["SuccessMessage"] = "Successfully Verified.";
+
+                    // -- send email to approverlevel1
+                    var notifyModel = new NotificationModel
+                    {
+                        Id = model.CourseId,
+                        Type = typeof(Course),
+                        NotificationType = NotificationType.Approve_Courses_Creation_Approver1,
+                        NotificationCategory = NotificationCategory.Learning,
+                        StartNotificationDate = DateTime.Now,
+                        ParameterListToSend = new ParameterListToSend
+                        {
+                            CourseAuthor = model.CreatedByName,
+                            CourseTitle = model.CourseTitle,
+                            CourseApproval = "Course Approval",
+                            Link = this.Url.AbsoluteAction("SubmitForApproval", "Controller", new { id = model.CourseId, title = model.CourseTitle })
+                        },
+                    };
+
+                    var emailResponse = await EmaiHelper.SendNotification(notifyModel);
+
+                    if (emailResponse == null || String.IsNullOrEmpty(emailResponse.Status) ||
+                        !emailResponse.Status.Equals("Success", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        await LogError(Modules.Learning, $"Error Sending Email For Course Approval. Course Title (Id) : {model.CourseTitle} - {model.CourseId}");
+                    }
+                                       
                     return RedirectToAction("Index", "Courses", new { area = "eLearning" });
                 }
 
                 if ((model.ApprovalLevel == ApprovalLevel.Approver1 || model.ApprovalLevel == ApprovalLevel.Approver2) && model.IsNextLevelRequired)
                 {
                     TempData["SuccessMessage"] = "Successfully Approved. Further approval to the next level.";
+
+                    // -- send email to approvers
+                    NotificationType notifyType = NotificationType.Approve_Courses_Creation_Approver1;
+                    if(model.ApprovalLevel == ApprovalLevel.Approver1)
+                    {
+                        notifyType = NotificationType.Approve_Courses_Creation_Approver1;
+                    }
+                    else
+                    if(model.ApprovalLevel == ApprovalLevel.Approver2)
+                    {
+                        notifyType = NotificationType.Approve_Courses_Creation_Approver2;
+                    }
+                    else
+                    if (model.ApprovalLevel == ApprovalLevel.Approver3)
+                    {
+                        notifyType = NotificationType.Approve_Courses_Creation_Approver3;
+                    }
+
+
+                    var notifyModel = new NotificationModel
+                    {
+                        Id = model.CourseId,
+                        Type = typeof(Course),
+                        NotificationType = notifyType,
+                        NotificationCategory = NotificationCategory.Learning,
+                        StartNotificationDate = DateTime.Now,
+                        ParameterListToSend = new ParameterListToSend
+                        {
+                            CourseAuthor = model.CreatedByName,
+                            CourseTitle = model.CourseTitle,
+                            CourseApproval = "Course Approval",
+                            Link = this.Url.AbsoluteAction("SubmitForApproval", "Controller", new { id = model.CourseId, title = model.CourseTitle })
+                        },
+                    };
+
+                    var emailResponse = await EmaiHelper.SendNotification(notifyModel);
+
+                    if (emailResponse == null || String.IsNullOrEmpty(emailResponse.Status) ||
+                        !emailResponse.Status.Equals("Success", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        await LogError(Modules.Learning, $"Error Sending Email For Course Approval. Course Title (Id) : {model.CourseTitle} - {model.CourseId}");
+                    }
                 }
                 else
                 {

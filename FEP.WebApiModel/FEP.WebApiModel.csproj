@@ -88,6 +88,7 @@
     <Compile Include="eLearning\CourseEventModels.cs" />
     <Compile Include="eLearning\FileUploadModels.cs" />
     <Compile Include="eLearning\FileDocumentModels.cs" />
+    <Compile Include="eLearning\CourseNotificationModel.cs" />
     <Compile Include="eLearning\QuestionModels.cs" />
     <Compile Include="eLearning\CourseContentModels.cs" />
     <Compile Include="eLearning\CourseModels.cs" />

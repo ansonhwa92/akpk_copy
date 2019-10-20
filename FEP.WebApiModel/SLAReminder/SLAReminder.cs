@@ -200,6 +200,14 @@ namespace FEP.WebApiModel.SLAReminder
         public string PublicationCode { get; set; }
         public string PublicationApproval { get; set; }
 
+
+        //141-160 for eLearning
+        public string CourseTitle { get; set; }
+        public string CourseCode { get; set; }
+        public string EnrollmentCode { get; set; }
+        public string CourseAuthor { get; set; }
+        public string CourseApproval { get; set; }
+
     }
 
 }

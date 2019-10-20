@@ -191,7 +191,6 @@
     <Compile Include="Areas\eLearning\Controllers\CertificatesController.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
     <Compile Include="Areas\eLearning\Helper\AllowCrossSiteJsonAttribute.cs" />
-    <Compile Include="Areas\eLearning\Helper\EmaiHelper.cs" />
     <Compile Include="Areas\eLearning\Helper\ExtensionMethods.cs" />
     <Compile Include="Areas\eLearning\Helper\YouTubeUrlHelper.cs" />
     <Compile Include="Areas\eLearning\Helper\SlideshareHelper.cs" />
@@ -907,10 +906,13 @@
     <Content Include="Areas\Reward\Views\RewardRedemptions\DetailsToRedeem.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardPoints\ListAll.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardRedemptions\ListAll.cshtml" />
+<<<<<<< HEAD
     <Content Include="Areas\eLearning\Views\Shared\_approvals.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\EditRules - Copy.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseApprovals\Approve.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseApprovals\_sidebar.cshtml" />
+=======
+    <Content Include="Areas\eLearning\Views\Courses\EditRules - Copy.cshtml" />
+>>>>>>> c10939f4edfd492b3cd9ea1bf8bb24f167b356b4
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

@@ -158,6 +158,8 @@
     <Compile Include="Api\Administration\CountryController.cs" />
     <Compile Include="Api\Administration\DepartmentController.cs" />
     <Compile Include="Api\eLearning\CourseApprovalsApiController.cs" />
+    <Compile Include="Api\eLearning\NotificationApiController.cs" />
+    <Compile Include="Api\Notification\EmailController.cs" />
     <Compile Include="Api\System\FileDocumentController.cs" />
     <Compile Include="Api\Administration\IndividualController.cs" />
     <Compile Include="Api\Administration\MinistryController.cs" />
@@ -337,7 +339,6 @@
     <Content Include="Scripts\popper-utils.js.map" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Api\Notification\" />
     <Folder Include="App_Data\Temp_Upload\" />
     <Folder Include="bin\roslyn\" />
     <Folder Include="Views\Auth\" />
@@ -345,6 +346,7 @@
     <Folder Include="Views\Client\" />
     <Folder Include="Views\EventCategory\" />
     <Folder Include="Views\MediaInterviewRequest\" />
+    <Folder Include="Views\Notification\" />
     <Folder Include="Views\Publication\" />
     <Folder Include="Views\PublicEvent\" />
     <Folder Include="Views\Research\" />

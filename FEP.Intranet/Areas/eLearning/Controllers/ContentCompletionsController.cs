@@ -1,4 +1,5 @@
 ﻿using FEP.Helper;
+using FEP.Intranet.Areas.eLearning.Helper;
 using FEP.Model;
 using FEP.WebApiModel.eLearning;
 using System.Collections.Generic;
@@ -48,10 +49,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
         }
 
-        [HttpGet]
+        [ChildActionOnly]
+
         public ActionResult Get(int contentId)
         {
-            var response = Task.Run(() => WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Get, ContentCompletionsApiUrl.Get + $"?contentId={contentId}").GetAwaiter().GetResult()).Result;
+
+            var response = AsyncHelpers.RunSync<WebApiResponse<ContentCompletionModel>>(() => WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Get,
+                ContentCompletionsApiUrl.Get + $"?contentId={contentId}"));
+
+            //var response = Task.Run(() => WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Get, ContentCompletionsApiUrl.Get + $"?contentId={contentId}").GetAwaiter().GetResult());
 
             if (response.isSuccess)
             {

@@ -98,7 +98,7 @@
 
         <div class="border-left border-right border-bottom p-3 rounded-bottom">
 
-            <form action="/CourseContents/DeleteConfirmed" method="post">
+            <form action="@BaseURL/CourseContents/DeleteConfirmed" method="post">
                 @Html.AntiForgeryToken()
 
                 @Html.HiddenFor(m => m.Id)

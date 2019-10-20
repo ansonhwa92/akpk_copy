@@ -190,6 +190,7 @@
     <Compile Include="Areas\eLearning\Controllers\CertificatesController.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
     <Compile Include="Areas\eLearning\Helper\AllowCrossSiteJsonAttribute.cs" />
+    <Compile Include="Areas\eLearning\Helper\AsyncHelpers.cs" />
     <Compile Include="Areas\eLearning\Helper\YouTubeUrlHelper.cs" />
     <Compile Include="Areas\eLearning\Helper\SlideshareHelper.cs" />
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />

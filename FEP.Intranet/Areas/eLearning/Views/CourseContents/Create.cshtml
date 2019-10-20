@@ -49,7 +49,7 @@
     </div>
 }
 
-<form action="/CourseContents/Create" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+<form action="@BaseURL/CourseContents/Create" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
     @Html.AntiForgeryToken()
 
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })

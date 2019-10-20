@@ -192,6 +192,7 @@
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
     <Compile Include="Areas\eLearning\Helper\AllowCrossSiteJsonAttribute.cs" />
     <Compile Include="Areas\eLearning\Helper\EmaiHelper.cs" />
+    <Compile Include="Areas\eLearning\Helper\AsyncHelpers.cs" />
     <Compile Include="Areas\eLearning\Helper\ExtensionMethods.cs" />
     <Compile Include="Areas\eLearning\Helper\YouTubeUrlHelper.cs" />
     <Compile Include="Areas\eLearning\Helper\SlideshareHelper.cs" />

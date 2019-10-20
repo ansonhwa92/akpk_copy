@@ -32,7 +32,7 @@ var name = ViewBag.CourseTitle;
 </div>
 }
 
-<form action="/CourseModules/Edit" method="post" enctype="multipart/form-data">
+<form action="@BaseURL/CourseModules/Edit" method="post" enctype="multipart/form-data">
 
 
     @Html.AntiForgeryToken()

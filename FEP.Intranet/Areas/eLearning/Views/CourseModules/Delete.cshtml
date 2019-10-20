@@ -103,7 +103,7 @@
                 @Html.HiddenFor(model => model.Id)
 
                 <a href="@Url.Action("Content", "Courses", new { area = "eLearning", id = Model.CourseId })" style="text-decoration: none;" class="btn btn-warning btn-flat">Cancel</a>
-                <button type="submit" class="btn btn-primary">Delete</button>
+                <button type="submit" class="btn btn-primary pull-right"><i class="la la-trash font-icon" style="font-size: 1.5rem;"></i>Delete</button>
             }
         </div>
     </div>

@@ -120,11 +120,17 @@ namespace FEP.WebApi.Api.eLearning
         [Route("api/eLearning/CourseModules/Delete")]
         public string Delete(int id)
         {
-            var module = db.CourseModules.Where(p => p.Id == id).FirstOrDefault();
+            var module = db.CourseModules
+                        .Include(x => x.ModuleContents)
+                        .Where(p => p.Id == id).FirstOrDefault();
 
             if (module != null)
             {
                 string ptitle = module.Title;
+
+                db.CourseContents.RemoveRange(module.ModuleContents);
+
+                db.SaveChanges();
 
                 db.CourseModules.Remove(module);
 

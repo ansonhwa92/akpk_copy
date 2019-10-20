@@ -195,7 +195,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 if (SubmitType.Equals("SaveAndView"))
                     return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = contentId });
                 else
-                    return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
+                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = model.CourseId });
             }
 
             TempData["ErrorMessage"] = "Cannot add content.";

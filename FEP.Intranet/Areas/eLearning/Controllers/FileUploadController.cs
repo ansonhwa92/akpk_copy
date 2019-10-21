@@ -16,6 +16,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string UploadFile = "eLearning/FileUpload";
     }
 
+    [AllowAnonymous]
     public class FileUploadController : Controller
     {
         public string storageDir = "";

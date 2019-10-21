@@ -41,6 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DutyRoster.Designer.cs">
+      <DependentUpon>DutyRoster.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="EventRefund.Designer.cs">
+      <DependentUpon>EventRefund.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Profile1.Designer.cs">
       <DependentUpon>Profile.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -189,6 +199,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DutyRoster.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DutyRoster.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EventRefund.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EventRefund.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Profile.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Profile1.Designer.cs</LastGenOutput>

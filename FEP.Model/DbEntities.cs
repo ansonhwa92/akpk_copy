@@ -145,9 +145,13 @@ namespace FEP.Model
 
 		public DbSet<AssignedSpeaker> AssignedSpeaker { get; set; }
 		public DbSet<AssignedExternalExhibitor> AssignedExternalExhibitor { get; set; }
+		public DbSet<DutyRoster> DutyRoster { get; set; }
+		public DbSet<DutyRosterOfficer> DutyRosterOfficer { get; set; }
+		public DbSet<EventRefund> EventRefund { get; set; }
+		
 
-        // Elearning
-        public DbSet<Course> Courses { get; set; }
+		// Elearning
+		public DbSet<Course> Courses { get; set; }
 
         public DbSet<ContentFile> ContentFiles { get; set; }
 

@@ -225,126 +225,126 @@ namespace FEP.Model.Migrations
             }
 
             //publication
-            if (!db.Publication.Any())
-            {
-                db.Publication.Add(new Publication
-                {
-                    CategoryID = 2,
-                    Author = "Prof. Aiman",
-                    Coauthor = null,
-                    Title = "Debt Management 101",
-                    Year = 2018,
-                    Description = "A book about how to manage your debt effectively",
-                    Language = "English",
-                    ISBN = "ISBN 0001-0001-01",
-                    Hardcopy = true,
-                    Digitalcopy = true,
-                    HDcopy = true,
-                    FreeHCopy = false,
-                    FreeDCopy = false,
-                    FreeHDCopy = false,
-                    HPrice = 39.9F,
-                    DPrice = 10,
-                    HDPrice = 45.1F,
-                    Pictures = null,
-                    ProofOfApproval = null,
-                    StockBalance = 100,
-                    CancelRemark = "",
-                    WithdrawalReason = "",
-                    WithdrawalDate = null,
-                    ProofOfWithdrawal = "",
-                    DateAdded = DateTime.Parse("2019-10-13 12:53:17"),
-                    CreatorId = 1,
-                    RefNo = "PUB/1910/0001",
-                    Status = PublicationStatus.Published,
-                    DateCancelled = null,
-                    ViewCount = 0,
-                    PurchaseCount = 0,
-                    DmsPath = "",
-                    NotificationID = 0
-                });
-                db.Publication.Add(new Publication
-                {
-                    CategoryID = 6,
-                    Author = "Dr. Masyitah Ghaffar",
-                    Coauthor = "Dr. Irwan",
-                    Title = "Laporan Kredit 2017",
-                    Year = 2018,
-                    Description = "Laporan kredit bagi tahun 2017",
-                    Language = "Bahasa Malaysia",
-                    ISBN = "ISS 0002-0002",
-                    Hardcopy = true,
-                    Digitalcopy = true,
-                    HDcopy = false,
-                    FreeHCopy = false,
-                    FreeDCopy = true,
-                    FreeHDCopy = false,
-                    HPrice = 12.8F,
-                    DPrice = 0,
-                    HDPrice = 0,
-                    Pictures = null,
-                    ProofOfApproval = null,
-                    StockBalance = 50,
-                    CancelRemark = "",
-                    WithdrawalReason = "",
-                    WithdrawalDate = null,
-                    ProofOfWithdrawal = "",
-                    DateAdded = DateTime.Parse("2019-10-13 14:12:58"),
-                    CreatorId = 1,
-                    RefNo = "PUB/1910/0002",
-                    Status = PublicationStatus.Published,
-                    DateCancelled = null,
-                    ViewCount = 0,
-                    PurchaseCount = 0,
-                    DmsPath = "",
-                    NotificationID = 0
-                });
-            }
+            //if (!db.Publication.Any())
+            //{
+            //    db.Publication.Add(new Publication
+            //    {
+            //        CategoryID = 2,
+            //        Author = "Prof. Aiman",
+            //        Coauthor = null,
+            //        Title = "Debt Management 101",
+            //        Year = 2018,
+            //        Description = "A book about how to manage your debt effectively",
+            //        Language = "English",
+            //        ISBN = "ISBN 0001-0001-01",
+            //        Hardcopy = true,
+            //        Digitalcopy = true,
+            //        HDcopy = true,
+            //        FreeHCopy = false,
+            //        FreeDCopy = false,
+            //        FreeHDCopy = false,
+            //        HPrice = 39.9F,
+            //        DPrice = 10,
+            //        HDPrice = 45.1F,
+            //        Pictures = null,
+            //        ProofOfApproval = null,
+            //        StockBalance = 100,
+            //        CancelRemark = "",
+            //        WithdrawalReason = "",
+            //        WithdrawalDate = null,
+            //        ProofOfWithdrawal = "",
+            //        DateAdded = DateTime.Parse("2019-10-13 12:53:17"),
+            //        CreatorId = 1,
+            //        RefNo = "PUB/1910/0001",
+            //        Status = PublicationStatus.Published,
+            //        DateCancelled = null,
+            //        ViewCount = 0,
+            //        PurchaseCount = 0,
+            //        DmsPath = "",
+            //        NotificationID = 0
+            //    });
+            //    db.Publication.Add(new Publication
+            //    {
+            //        CategoryID = 6,
+            //        Author = "Dr. Masyitah Ghaffar",
+            //        Coauthor = "Dr. Irwan",
+            //        Title = "Laporan Kredit 2017",
+            //        Year = 2018,
+            //        Description = "Laporan kredit bagi tahun 2017",
+            //        Language = "Bahasa Malaysia",
+            //        ISBN = "ISS 0002-0002",
+            //        Hardcopy = true,
+            //        Digitalcopy = true,
+            //        HDcopy = false,
+            //        FreeHCopy = false,
+            //        FreeDCopy = true,
+            //        FreeHDCopy = false,
+            //        HPrice = 12.8F,
+            //        DPrice = 0,
+            //        HDPrice = 0,
+            //        Pictures = null,
+            //        ProofOfApproval = null,
+            //        StockBalance = 50,
+            //        CancelRemark = "",
+            //        WithdrawalReason = "",
+            //        WithdrawalDate = null,
+            //        ProofOfWithdrawal = "",
+            //        DateAdded = DateTime.Parse("2019-10-13 14:12:58"),
+            //        CreatorId = 1,
+            //        RefNo = "PUB/1910/0002",
+            //        Status = PublicationStatus.Published,
+            //        DateCancelled = null,
+            //        ViewCount = 0,
+            //        PurchaseCount = 0,
+            //        DmsPath = "",
+            //        NotificationID = 0
+            //    });
+            //}
 
-            //publication approval
-            if (!db.PublicationApproval.Any())
-            {
-                db.PublicationApproval.Add(new PublicationApproval
-                {
-                    PublicationID = 1,
-                    Level = PublicationApprovalLevels.Verifier,
-                    ApproverId = 1,
-                    Status = PublicationApprovalStatus.Approved,
-                    ApprovalDate = DateTime.Parse("2019-10-14 19:08:37"),
-                    Remarks = "OK",
-                    RequireNext = true
-                });
-                db.PublicationApproval.Add(new PublicationApproval
-                {
-                    PublicationID = 1,
-                    Level = PublicationApprovalLevels.Approver1,
-                    ApproverId = 1,
-                    Status = PublicationApprovalStatus.Approved,
-                    ApprovalDate = DateTime.Parse("2019-10-15 19:17:15"),
-                    Remarks = "OK",
-                    RequireNext = false
-                });
-                db.PublicationApproval.Add(new PublicationApproval
-                {
-                    PublicationID = 2,
-                    Level = PublicationApprovalLevels.Verifier,
-                    ApproverId = 1,
-                    Status = PublicationApprovalStatus.Approved,
-                    ApprovalDate = DateTime.Parse("2019-10-14 19:18:13"),
-                    Remarks = "OK",
-                    RequireNext = true
-                });
-                db.PublicationApproval.Add(new PublicationApproval
-                {
-                    PublicationID = 2,
-                    Level = PublicationApprovalLevels.Approver1,
-                    ApproverId = 1,
-                    Status = PublicationApprovalStatus.Approved,
-                    ApprovalDate = DateTime.Parse("2019-10-15 20:24:10"),
-                    Remarks = "OK",
-                    RequireNext = false
-                });
-            }
+            ////publication approval
+            //if (!db.PublicationApproval.Any())
+            //{
+            //    db.PublicationApproval.Add(new PublicationApproval
+            //    {
+            //        PublicationID = 1,
+            //        Level = PublicationApprovalLevels.Verifier,
+            //        ApproverId = 1,
+            //        Status = PublicationApprovalStatus.Approved,
+            //        ApprovalDate = DateTime.Parse("2019-10-14 19:08:37"),
+            //        Remarks = "OK",
+            //        RequireNext = true
+            //    });
+            //    db.PublicationApproval.Add(new PublicationApproval
+            //    {
+            //        PublicationID = 1,
+            //        Level = PublicationApprovalLevels.Approver1,
+            //        ApproverId = 1,
+            //        Status = PublicationApprovalStatus.Approved,
+            //        ApprovalDate = DateTime.Parse("2019-10-15 19:17:15"),
+            //        Remarks = "OK",
+            //        RequireNext = false
+            //    });
+            //    db.PublicationApproval.Add(new PublicationApproval
+            //    {
+            //        PublicationID = 2,
+            //        Level = PublicationApprovalLevels.Verifier,
+            //        ApproverId = 1,
+            //        Status = PublicationApprovalStatus.Approved,
+            //        ApprovalDate = DateTime.Parse("2019-10-14 19:18:13"),
+            //        Remarks = "OK",
+            //        RequireNext = true
+            //    });
+            //    db.PublicationApproval.Add(new PublicationApproval
+            //    {
+            //        PublicationID = 2,
+            //        Level = PublicationApprovalLevels.Approver1,
+            //        ApproverId = 1,
+            //        Status = PublicationApprovalStatus.Approved,
+            //        ApprovalDate = DateTime.Parse("2019-10-15 20:24:10"),
+            //        Remarks = "OK",
+            //        RequireNext = false
+            //    });
+            //}
 
             /*
             //cart

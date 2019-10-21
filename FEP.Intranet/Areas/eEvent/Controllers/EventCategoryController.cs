@@ -52,7 +52,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
                 {
                     TempData["SuccessMessage"] = Language.EventCategory.AlertSuccessCreate;
 
-                    LogActivity(Modules.Setting, "Create Parameter Event Category", model);
+                    await LogActivity(Modules.Setting, "Create Parameter Event Category", model);
 
                     return RedirectToAction("List");
                 }
@@ -100,7 +100,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
                 {
                     TempData["SuccessMessage"] = Language.EventCategory.AlertSuccessUpdate;
 
-                    LogActivity(Modules.Setting, "Update Parameter Event Category", model);
+                    await LogActivity(Modules.Setting, "Update Parameter Event Category", model);
 
                     return RedirectToAction("List");
                 }

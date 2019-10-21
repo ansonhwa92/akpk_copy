@@ -418,4 +418,62 @@ namespace FEP.Model
 		public virtual User User { get; set; }
 
 	}
+
+	[Table("DutyRoster")]
+	public class DutyRoster
+	{
+		[Key]
+		public int Id { get; set; }
+
+		public DateTime? Date { get; set; }
+
+		public DateTime? StartTime { get; set; }
+
+		public DateTime? EndTime { get; set; }
+
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
+	}
+
+	[Table("DutyRosterOfficer")]
+	public class DutyRosterOfficer
+	{
+		[Key]
+		public int Id { get; set; }
+		public int? DutyRosterId { get; set; }
+		public int? UserId { get; set; }
+
+		[ForeignKey("DutyRosterId")]
+		public virtual DutyRoster DutyRoster { get; set; }
+
+		[ForeignKey("UserId")]
+		public virtual User User { get; set; } 
+	}
+
+
+	[Table("EventRefund")]
+	public class EventRefund
+	{
+		[Key]
+		public int Id { get; set; }
+		public int? EventId { get; set; }
+		public int? UserId { get; set; }
+		public int? BankInformationId { get; set; }
+		public string AccountNumber { get; set; }
+
+		[ForeignKey("EventId")]
+		public virtual PublicEvent PublicEvent { get; set; } 
+
+		[ForeignKey("UserId")]
+		public virtual User User { get; set; }
+
+		[ForeignKey("BankInformationId")]
+		public virtual BankInformation BankInformation { get; set; }
+
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
+	}
+
 }

@@ -167,12 +167,15 @@
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
     <Compile Include="Areas\Commerce\CommerceAreaRegistration.cs" />
     <Compile Include="Areas\Commerce\Controllers\CartController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\DutyRosterController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventAgendaController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventCategoryController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\EventRefundController.cs" />
     <Compile Include="Areas\eEvent\Controllers\ExhibitionRoadshowRequestController.cs" />
     <Compile Include="Areas\eEvent\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\eEventAreaRegisteration.cs" />
     <Compile Include="Areas\eEvent\Models\EventAgenda.cs" />
+    <Compile Include="Areas\eEvent\Models\EventRefund.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseCategoryController.cs" />
     <Compile Include="Areas\eLearning\Controllers\ContentCompletionsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseContentsController.cs" />
@@ -906,6 +909,10 @@
     <Content Include="Areas\Reward\Views\RewardRedemptions\DetailsToRedeem.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardPoints\ListAll.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardRedemptions\ListAll.cshtml" />
+    <Content Include="Areas\eEvent\Views\DutyRoster\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\DutyRoster\_Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\DutyRoster\_Edit.cshtml" />
+    <Content Include="Areas\eEvent\Views\DutyRoster\_Delete.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1419,6 +1426,7 @@
     <Folder Include="Areas\Commerce\Models\" />
     <Folder Include="Areas\Commerce\Views\Shared\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
+    <Folder Include="Areas\eEvent\Views\EventRefund\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Areas\Logs\Models\" />
     <Folder Include="Areas\Logs\Views\Shared\" />

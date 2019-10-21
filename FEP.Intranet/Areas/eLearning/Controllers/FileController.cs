@@ -24,6 +24,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         
     }
 
+    [AllowAnonymous]
     public class FileController : Controller
     {
         public string storageDir = "";

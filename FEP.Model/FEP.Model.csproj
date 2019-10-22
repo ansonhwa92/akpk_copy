@@ -86,22 +86,6 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201910162159042_x.cs" />
-    <Compile Include="Migrations\201910162159042_x.designer.cs">
-      <DependentUpon>201910162159042_x.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910180343234_x1.cs" />
-    <Compile Include="Migrations\201910180343234_x1.designer.cs">
-      <DependentUpon>201910180343234_x1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910180415473_x2.cs" />
-    <Compile Include="Migrations\201910180415473_x2.designer.cs">
-      <DependentUpon>201910180415473_x2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910181044038_x3.cs" />
-    <Compile Include="Migrations\201910181044038_x3.designer.cs">
-      <DependentUpon>201910181044038_x3.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
@@ -127,20 +111,6 @@
       <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
       <Name>FEP.Language</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910162159042_x.resx">
-      <DependentUpon>201910162159042_x.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910180343234_x1.resx">
-      <DependentUpon>201910180343234_x1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910180415473_x2.resx">
-      <DependentUpon>201910180415473_x2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910181044038_x3.resx">
-      <DependentUpon>201910181044038_x3.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

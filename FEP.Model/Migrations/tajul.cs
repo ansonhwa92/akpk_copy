@@ -125,8 +125,6 @@ namespace FEP.Model.Migrations
 			//{
 			foreach (TemplateParameterType paramType in Enum.GetValues(typeof(TemplateParameterType)))
 			{
-				SLAEventType EventType;
-
 				int pType = (int)paramType;
 
 				if (pType >= 1 && pType <= 20)
@@ -163,7 +161,8 @@ namespace FEP.Model.Migrations
 
 					if (paramType == TemplateParameterType.ErrorDetail)
 					{
-						EventType = SLAEventType.Payment;
+						db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+						new ParameterGroup {SLAEventType = SLAEventType.Payment, TemplateParameterType = paramType });
 					}
 
 				}

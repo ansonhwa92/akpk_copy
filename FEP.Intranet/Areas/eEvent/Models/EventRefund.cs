@@ -31,7 +31,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public int? BankInformationId { get; set; }
 
 		[Display(Name = "RefundBankInformationName", ResourceType = typeof(Language.EventRefund))]
-		public int? BankInformationName { get; set; }
+		public string BankInformationName { get; set; }
 
 		[Required(ErrorMessage = "Please insert Account Number")]
 		[Display(Name = "RefundAccountNumber", ResourceType = typeof(Language.EventRefund))]

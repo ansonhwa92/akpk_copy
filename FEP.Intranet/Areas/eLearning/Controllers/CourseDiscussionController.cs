@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eLearning.Controllers
@@ -19,13 +20,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         private string StorageRoot
         {
             //get { return Path.Combine(Server.MapPath("~/Attachments")); }
-            get { return AppSettings.FileDocPath + "DiscussionAttachment"; }
+           // get { return AppSettings.FileDocPath + "DiscussionAttachment"; }
+            get { return HostingEnvironment.MapPath(@"/App_Data/" + "DiscussionAttachment"); }
         }
         // GET: eLearning/CourseDiscussion
         public async Task<ActionResult> List()
         {
             //var gg = new List<CourseDiscussionModel>();
-            //var response = await WepApiMethod.SendApiAsync<List<ListCourseGroupModel>>(HttpVerbs.Get, $"eLearning/CourseGroup");
+            //var response = await WepApiMethod.SendApiAsync<List<ListCourseGroupModel>>(HttpVerbs.Get, $"eLearning /CourseGroup");
             var response = await WepApiMethod.SendApiAsync<List<CourseDiscussionModel>>(HttpVerbs.Get, $"eLearning/CourseDiscussion");
             //using (DbEntities db = new DbEntities())
             //{
@@ -113,7 +115,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                                 var fullPath = Path.Combine(StorageRoot, fileId);
                                 try
                                 {
-
+                                    System.IO.Directory.CreateDirectory(StorageRoot);
                                     filex.SaveAs(fullPath);
                                 }
                                 catch
@@ -125,15 +127,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                                 var attachment = new CreateCourseDiscussionAttachmentModel()
                                 {
                                     Id = 0,
-                                    FileName = fileId,
+                                    FileName = fileName,
                                     FileSize = filex.ContentLength,
                                     FileType = filex.ContentType,
-                                    FilePath = fullPath,
+                                    FilePath = @"~\App_Data\DiscussionAttachment\" + fileId,
                                     FileTag = model.Name,
-                                    FileNameOnStorage = @"data:image/png;base64," + EncodeFile(fullPath),
+                                    FileNameOnStorage = fileId,
                                     CreatedBy = model.UserId,
                                     CreatedDate = _now,
-
                                 };
 
                                 var attachmentresponse = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eLearning/CourseDiscussion/CreateAttachment", attachment);
@@ -309,18 +310,18 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                                 var fullPath = Path.Combine(StorageRoot, fileId);
                                 try
                                 {
-
+                                    System.IO.Directory.CreateDirectory(StorageRoot);
                                     filex.SaveAs(fullPath);
 
                                     var attachment = new CreateCourseDiscussionAttachmentModel()
                                     {
                                         Id = 0,
-                                        FileName = fileId,
+                                        FileName = fileName,
                                         FileSize = filex.ContentLength,
                                         FileType = filex.ContentType,
-                                        FilePath = fullPath,
+                                        FilePath = @"~\App_Data\DiscussionAttachment\" + fileId,
                                         FileTag = "",
-                                        FileNameOnStorage = @"data:image/png;base64," + EncodeFile(fullPath),
+                                        FileNameOnStorage = fileId,
                                         CreatedBy = CurrentUser.UserId.Value,
                                         CreatedDate = _now,
 
@@ -360,19 +361,38 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     _post.CreatedDate = _now;
                     _post.UpdatedBy = CurrentUser.UserId.Value;
 
-                    db.DiscussionPosts.Add(_post);
-                    db.SaveChanges();
-
-                    if (_attachmentId > 0)
+                    //db.DiscussionPosts.Add(_post);
+                    //db.SaveChanges();
+                    var addNewReply = await WepApiMethod.SendApiAsync<DiscussionPost>(HttpVerbs.Post, $"eLearning/CourseDiscussion/AddDiscussionReply", _post);
+                    if (addNewReply.isSuccess)
                     {
-                        DiscussionAttachment _attachment = new DiscussionAttachment()
-                        {
-                            AttachmentId = _attachmentId,
-                            PostId = _post.Id,
-                        };
+                        var addedReply = addNewReply.Data;
 
-                        db.DiscussionAttachment.Add(_attachment);
-                        db.SaveChanges();
+                        if (_attachmentId > 0)
+                        {
+                            var linkAttachment = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eLearning/CourseDiscussion/AddAttachmentToDisccusion?pid={addedReply.Id}&aid={_attachmentId}");
+
+                            if (linkAttachment.isSuccess)
+                            {
+
+                            }
+                            else
+                            {
+
+                            }
+                            //DiscussionAttachment _attachment = new DiscussionAttachment()
+                            //{
+                            //    AttachmentId = _attachmentId,
+                            //    PostId = _post.Id,
+                            //};
+
+                            //db.DiscussionAttachment.Add(_attachment);
+                            //db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        //error
                     }
                 }
 
@@ -383,10 +403,56 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return RedirectToAction("View", new { id = NewPost.NewDiscussionReply.DiscussionId });
         }
 
-        public ActionResult DisplaySearchResults(int id)
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateNewComment(DiscussionView NewPost)
+        {
+            if (NewPost != null)
+            {
+                if (NewPost.NewDiscussionReply != null)
+                {
+                    var DiscussionResponse = await WepApiMethod.SendApiAsync<DiscussionPost>(HttpVerbs.Get, $"eLearning/CourseDiscussion/GetParentPost?id={NewPost.NewDiscussionReply.ParentId}");
+
+                    if (DiscussionResponse.isSuccess)
+                    {
+                        var parentPost = DiscussionResponse.Data;
+
+                        if (NewPost.NewDiscussionReply != null)
+                        {
+                            DateTime _now = DateTime.Now;
+
+                            DiscussionPost _post = new DiscussionPost();
+                            _post.DiscussionId = parentPost.DiscussionId;
+                            _post.ParentId = parentPost.Id;
+                            _post.Topic = parentPost.Topic;
+                            _post.Message = NewPost.NewDiscussionReply.Message;
+                            _post.IsDeleted = false;
+                            _post.UserId = CurrentUser.UserId.Value;
+                            _post.CreatedBy = CurrentUser.UserId.Value;
+                            _post.CreatedDate = _now;
+                            _post.UpdatedBy = CurrentUser.UserId.Value;
+
+                            db.DiscussionPosts.Add(_post);
+                            db.SaveChanges();
+
+                            return RedirectToAction("View", new { id = parentPost.DiscussionId });
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            return RedirectToAction("List");
+        }
+
+
+        public ActionResult _CommentReply(int id)
         {
 
-
+            ViewBag.PostId = id;
             return PartialView("_CommentReply");
         }
 
@@ -751,6 +817,17 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 courses = response.Data;
             }
             return courses;
+        }
+    
+
+        public ActionResult DownloadAttachment(string input, string filetype)
+        {
+            string path = Server.MapPath(input);
+            if (System.IO.File.Exists(path))
+            {
+                return File(path, filetype);
+            }
+            return HttpNotFound();
         }
     }
 

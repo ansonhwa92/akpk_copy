@@ -357,3 +357,4 @@ healthchecksdb
 !/FEP.Model/Migrations/firus.cs
 !/FEP.Model/Migrations/aiman.cs
 !/FEP.Model/Migrations/SeedElearning.cs
+/FEP.Intranet/App_Data/DiscussionAttachment

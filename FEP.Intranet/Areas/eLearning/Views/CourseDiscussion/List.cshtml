@@ -65,15 +65,15 @@
 
         </div>
         <div class="mb-4 d-flex align-items-center">
-            <small class="text-black-70 text-uppercase mr-3">Displaying 10 out of 5,234 discussions</small>
+            @*<small class="text-black-70 text-uppercase mr-3">Displaying 10 out of 5,234 discussions</small>*@
             <div class="dropdown ml-auto">
-                <a href="" data-toggle="dropdown" class="dropdown-toggle text-black-70" aria-expanded="false">All Topics</a>
-                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; transform: translate3d(-82px, 20px, 0px); top: 0px; left: 0px; will-change: transform;">
-                    <a href="" class="dropdown-item active">All Topics</a>
-                    <a href="" class="dropdown-item">General</a>
-                    <a href="" class="dropdown-item">Lessons</a>
-                    <a href="" class="dropdown-item">Customer Support</a>
-                </div>
+                @*<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; transform: translate3d(-82px, 20px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <a href="" data-toggle="dropdown" class="dropdown-toggle text-black-70" aria-expanded="false">All Topics</a>
+            <a href="" class="dropdown-item active">All Topics</a>
+            <a href="" class="dropdown-item">General</a>
+            <a href="" class="dropdown-item">Lessons</a>
+            <a href="" class="dropdown-item">Customer Support</a>
+        </div>*@
             </div>
         </div>
 
@@ -101,7 +101,7 @@
                                     <a href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id" class="forum-thread-icon">
                                         <i class="material-icons">description</i>
                                     </a>
-                                    <a href="student-profile.html" class="forum-thread-user">
+                                    <a href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id" class="forum-thread-user">
                                         <img src="assets/images/people/50/guy-1.jpg" alt="" width="20" class="rounded-circle">
                                     </a>
                                 </div>
@@ -111,7 +111,7 @@
                                     <a href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id" class="text-body"><strong>@item.CreatedByName</strong></a>
                                     <small class="ml-auto text-muted">@item.CreatedOn</small>
                                 </div>
-                                <a class="text-black-70" href="student-forum-thread.html">
+                                <a class="text-black-70" href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id">
                                     @{ if (item.FirstPost != null)
                                         {
                                             if (item.FirstPost != null)
@@ -163,7 +163,7 @@
                                     <a href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id" class="forum-thread-icon">
                                         <i class="material-icons">description</i>
                                     </a>
-                                    <a href="student-profile.html" class="forum-thread-user">
+                                    <a href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id" class="forum-thread-user">
                                         <img src="assets/images/people/50/guy-1.jpg" alt="" width="20" class="rounded-circle">
                                     </a>
                                 </div>
@@ -173,7 +173,7 @@
                                     <a href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id" class="text-body"><strong>@item.CreatedByName</strong></a>
                                     <small class="ml-auto text-muted">@item.CreatedOn</small>
                                 </div>
-                                <a class="text-black-70" href="student-forum-thread.html">
+                                <a class="text-black-70" href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id">
                                     @{ if (item.FirstPost != null)
                                         {
                                             if (item.FirstPost != null)

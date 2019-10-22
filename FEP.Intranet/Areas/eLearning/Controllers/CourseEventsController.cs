@@ -2,6 +2,7 @@
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -198,6 +199,50 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return null;
         }
 
+
+        /// <summary>
+        /// Open the course to public. Check whether there are existing public course event and its status
+        /// If so, decide to reuse or not
+        /// Enrollment code is 
+        /// </summary>
+        /// <param name="id">CourseId</param>
+        /// <returns></returns>
+        public async Task<ActionResult> OpenPublic(int id)
+        {
+            var createdBy = CurrentUser.UserId;
+
+            var course = await db.Courses.FindAsync(id);
+            if(course == null)
+            {
+                TempData["ErrorMessage"] = "Course Not Found";
+                return RedirectToAction("Index", "Courses", new { area = "eLearning"});
+            }
+
+
+            var entity = db.CourseEvents.FirstOrDefault(x => x.CourseId == id && 
+                x.ViewCategory == ViewCategory.Public &&
+                x.Status == CourseEventStatus.AvailableToPublic);
+
+            // already open
+            if(entity != null)
+            {
+                TempData["SuccessMessage"] = "Course is already opened to Public.";
+                return RedirectToAction("Content", "Courses", new { area = "eLearning", id = id });
+            }
+
+            var newEvent = new CourseEvent
+            {
+                CourseId = id,
+                AllowablePercentageBeforeWithdraw = course.DefaultAllowablePercentageBeforeWithdraw,
+                CreatedBy = createdBy.Value,
+                EnrollmentCode = Guid.NewGuid().ToString()
+            };
+
+            // WIP 
+            return null;
+
+            
+        }
 
         protected override void Dispose(bool disposing)
         {

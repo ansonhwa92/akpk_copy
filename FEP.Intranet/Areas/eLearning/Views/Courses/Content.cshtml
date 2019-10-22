@@ -115,7 +115,7 @@
                     <div>
                         <div class="row">
                             @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
-                                      (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                       (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
                                 {
                                     <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
                                 }
@@ -147,8 +147,8 @@
                                                 <span class="moduleTitle">@module.Title</span>
                                             </div>
                                             @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
-                                                     (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||
-                                                     CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                                      (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||
+                                                      CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
                                                 {
                                                     <div class="col-sm-3 pull-right pt-1">
                                                         <a href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = module.Id })"
@@ -186,9 +186,6 @@
                     </div>
                     <!----END MODULES -->
                 </div>
-
-                <!-- Popups -->
-                <!-- popups end -->
             </div>
 
             <!--  Start Action Log -->
@@ -199,6 +196,28 @@
         <div class="border-left border-right border-bottom p-3 rounded-bottom">
             <a class="btn btn-default" href="@Url.Action("Index", "Courses", new { area = "eLearning" })" data-toggle="tooltip"
                data-placement="top" title="Back">@Language.General.ButtonBack</a>
+        </div>
+    </div>
+</div>
+
+<!-- Alert Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="alertBox">
+    <input id="forAction" hidden />
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnYes">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
         </div>
     </div>
 </div>
@@ -325,5 +344,48 @@
 
             });
         });
+
+        function showAlertBox(forAction, title, body) {
+            $("#alertBox .model-title").text(title);
+            $("#alertBox .modal-bodu").text(body);
+
+            $('#forAction').val(forAction); // alert for what action
+
+            $('#alertBox').modal();
+
+        }
+
+        function openPublic() {
+            showAlertBox("openPublic", "Open Course", "Open this course for public?");
+        }
+
+        function openPrivate() {
+            showAlertBox("openPrivate", "Open Course", "Open this course for a private group?");
+        }
+
+        function inviteStudents() {
+            // plan to open modal to invite students
+        }
+
+        $('#btnYes').click(function (e) {
+            e.preventDefault();
+
+            var forAction = $('#forAction').val();
+            var form = $("#formOpen");
+            var courseId = $("#Id").val();
+
+            if (forAction == "openPublic") {
+                form.attr('action', "@BaseURL/eLearning/Courses/OpenPublic?id=" + courseId);
+
+                form.submit();
+            }
+
+            if (forAction == "openPublic") {
+                form.attr('action', "@BaseURL/eLearning/Courses/OpenPrivate?id=" + courseId);
+
+                form.submit();
+            }
+        });
+
     </script>
 }

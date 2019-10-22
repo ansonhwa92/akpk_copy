@@ -128,16 +128,17 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 // Approval level is updated on the response Data
                 model = response.Data;
 
-                await LogActivity(Modules.Learning, "Successfully submit Course For approval. Course : " + model.CourseTitle);
-
                 if (!model.IsApproved)
                 {
+                    await LogActivity(Modules.Learning, "Course NOT APPROVED. Course : " + model.CourseTitle);
+
                     TempData["SuccessMessage"] = "Your request for amendment to the course is succesfully submitted.";
                     return RedirectToAction("Index", "Courses", new { area = "eLearning" });
                 }
 
                 if (model.ApprovalLevel == ApprovalLevel.Verifier)
                 {
+                    await LogActivity(Modules.Learning, "Successfully VERIFIED. Further approval to the next level. Course : " + model.CourseTitle);
                     TempData["SuccessMessage"] = "Successfully Verified.";
 
                     // -- send email to approverlevel1
@@ -170,7 +171,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 if ((model.ApprovalLevel == ApprovalLevel.Approver1 || model.ApprovalLevel == ApprovalLevel.Approver2) && model.IsNextLevelRequired)
                 {
-                    TempData["SuccessMessage"] = "Successfully Approved. Further approval to the next level.";
+                    await LogActivity(Modules.Learning, "Successfully APPROVED. Further approval to the next level. Course : " + model.CourseTitle);
+                    TempData["SuccessMessage"] = "Successfully ssfully submit Course For approvalApproved. Further approval to the next level.";
 
                     // -- send email to approvers
                     NotificationType notifyType = NotificationType.Approve_Courses_Creation_Approver1;
@@ -216,6 +218,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 }
                 else
                 {
+                    await LogActivity(Modules.Learning, "Successfully APPROVED. Course - " + model.CourseTitle);
                     TempData["SuccessMessage"] = "Course is Approved.";
                 }
             }

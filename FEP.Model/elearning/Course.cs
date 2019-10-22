@@ -89,7 +89,7 @@ namespace FEP.Model.eLearning
         /// This value is required for Paid Course and will need to be copied to
         /// CourseEvent when CourseEvent is created
         /// </summary>
-        public decimal DefaultAllowablePercentageBeforeWithdraw { get; set; } = 50.0m;
+        public decimal DefaultAllowablePercentageBeforeWithdraw { get; set; } = 0.0m;
 
         public ViewCategory ViewCategory { get; set; }
 

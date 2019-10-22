@@ -125,7 +125,7 @@
                     }
                     break;
 
-                case CourseStatus.Submitted:
+                @*case CourseStatus.Submitted:
                 case CourseStatus.Verify:
                 case CourseStatus.FirstApproval:
                 case CourseStatus.SecondApproval:
@@ -152,7 +152,7 @@
                         <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
                     }
 
-                    break;
+                    break;*@
 
                 case CourseStatus.Approved:
 
@@ -168,7 +168,7 @@
                     if (CurrentUser.HasAccess(UserAccess.CoursePublish))
                     {
                         <p>
-                            <a href="@Url.Action("Publish", "Courses", new { area = "eLearning", id = @Model.Id })" class="btn btn-default btn-block mb-2">
+                            <a href="@Url.Action("Publish", "Courses", new { area = "eLearning", id = @Model.Id, title = Model.Title })" class="btn btn-default btn-block mb-2">
                                 Publish
                             </a>
                         </p>
@@ -189,11 +189,14 @@
 
                     if (CurrentUser.HasAccess(UserAccess.CoursePublish))
                     {
-                        <p>
-                            <a href="@Url.Action("Unpublish", "Courses", new { area = "eLearning", id = @Model.Id })" class="btn btn-default btn-block mb-2">
-                                Submit For Approval
-                            </a>
-                        </p>
+
+                        <form method="post" id="formOpen">
+                            <p><button class="btn btn-default btn-block" id="btnOpenPublic" onclick="openPublic()">Open to Public</button></p>
+                            <p><button class="btn btn-default btn-block" id="btnOpenPrivate" onclick="openPrivate()">Open to Private Group</button></p>
+
+                        </form>
+
+                        <p><button class="btn btn-default btn-block" id="btnInviteStudent" onclick="inviteStudents">Invite Student</button></p>
                     }
 
                     break;

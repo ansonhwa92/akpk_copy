@@ -25,6 +25,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string Content = "eLearning/Courses/Content";
         public const string DeleteCourse = "eLearning/Courses/Delete";
         public const string Start = "eLearning/Courses/Start";
+        public const string Publish = "eLearning/Courses/Publish";
     }
 
     public class CoursesController : FEPController
@@ -386,7 +387,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 if (response.isSuccess)
                 {
-                    await LogActivity(Modules.Learning, "Edit Course: " + response.Data.Title, model);
+                    await LogActivity(Modules.Learning, $"Edit Course Successfull - {response.Data.Title} - {model.Id}");
 
                     if (Submittype == "Save")
                     {
@@ -511,6 +512,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
             }
         }
+
         [NonAction]
         private async Task<IEnumerable<CourseListModel>> GetCoursesList(int? id)
         {
@@ -525,5 +527,39 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             return courses;
         }
+
+        /// <summary>
+        /// Published course. Course must be in approved state before can be published.
+        /// When published, course can now be offerd to public or by inviting a group.
+        /// </summary>
+        /// <param name="id">Course Id</param>
+        /// <returns></returns>
+        [HasAccess(UserAccess.CoursePublish)]
+        public async Task<ActionResult> Publish(int id, string title)
+        {
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, CourseApiUrl.Publish + $"?id={id}");
+
+            if (response.isSuccess)
+            {
+                if (response.Data == true)
+                {
+                    await LogActivity(Modules.Learning, $"Course published. Course {id} - {title}");
+                    TempData["SuccessMessage"] = "Course is now published. You can start offering this course to public or invite students to enroll.";
+                }
+                else
+                {
+                    await LogError(Modules.Learning, $"Error publishing Course {id} - {title}");
+                    TempData["ErrorMessage"] = "Error publishing course. Perhaps the course is not approved yet?";
+                }
+            }
+            else
+            {
+                await LogError(Modules.Learning, $"API failed - Error publishing course Course {id} - {title}");
+                TempData["ErrorMessage"] = "Could not published the course.";
+            }
+            return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
+        }
+
+
     }
 }

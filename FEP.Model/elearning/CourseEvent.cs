@@ -56,7 +56,7 @@ namespace FEP.Model.eLearning
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (!this.Course.IsFree && AllowablePercentageBeforeWithdraw < 0.0m)
+            if (!this.Course.IsFree && AllowablePercentageBeforeWithdraw <= 0.0m)
                 yield return new ValidationResult("Allowable Percentage Before Withdraw value must be set.");
 
         }

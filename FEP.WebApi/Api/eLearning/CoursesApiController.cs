@@ -762,6 +762,31 @@ namespace FEP.WebApi.Api.eLearning
 
             return Ok(entity);
         }
+
+        /// <summary>
+        /// Publish course. Called by Intranet/Course/Publish
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Route("api/eLearning/Courses/Publish")]
+        [HttpGet]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> Publish(int id)
+        {
+            var entity = await db.Courses.FindAsync(id);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            entity.Status = CourseStatus.Published;
+
+            db.SetModified(entity);
+            await db.SaveChangesAsync();
+
+            return Ok(entity);
+        }
     }
 
     public class ImageModel

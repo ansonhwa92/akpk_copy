@@ -768,25 +768,25 @@ namespace FEP.WebApi.Api.eLearning
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Route("api/eLearning/Courses/Publish")]
-        [HttpGet]
-        [ValidationActionFilter]
-        public async Task<IHttpActionResult> Publish(int id)
-        {
-            var entity = await db.Courses.FindAsync(id);
+        //[Route("api/eLearning/Courses/Publish")]
+        //[HttpGet]
+        //[ValidationActionFilter]
+        //public async Task<IHttpActionResult> Publish(int id)
+        //{
+        //    var entity = await db.Courses.FindAsync(id);
 
-            if (entity == null)
-            {
-                return NotFound();
-            }
+        //    if (entity == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            entity.Status = CourseStatus.Published;
+        //    entity.Status = CourseStatus.Published;
 
-            db.SetModified(entity);
-            await db.SaveChangesAsync();
+        //    db.SetModified(entity);
+        //    await db.SaveChangesAsync();
 
-            return Ok(entity);
-        }
+        //    return Ok(true);
+        //}
     }
 
     public class ImageModel

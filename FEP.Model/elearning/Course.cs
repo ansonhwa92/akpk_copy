@@ -174,6 +174,7 @@ namespace FEP.Model.eLearning
 
         Hidden, //The course is hidden froom search and view, however the point given is still valid
         Deleted,
+
     }
 
     /// <summary>

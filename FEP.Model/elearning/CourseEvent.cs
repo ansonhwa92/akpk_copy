@@ -21,7 +21,7 @@ namespace FEP.Model.eLearning
         /// </summary>
         [Required]
         [Index(IsUnique = true)] 
-        [MaxLength(50)]
+        [MaxLength(150)]
         public string EnrollmentCode { get; set; }
 
         [Index]
@@ -52,8 +52,6 @@ namespace FEP.Model.eLearning
         //https://stackoverflow.com/questions/2417113/asp-net-mvc-conditional-validation 
         public decimal AllowablePercentageBeforeWithdraw { get; set; } = 0.0m;
 
-
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (!this.Course.IsFree && AllowablePercentageBeforeWithdraw <= 0.0m)
@@ -65,7 +63,7 @@ namespace FEP.Model.eLearning
     public enum ViewCategory
     {
         Private,
-        Public
+        Public,
     }
 
 
@@ -74,9 +72,10 @@ namespace FEP.Model.eLearning
         Trial,
         TrialEnded,
         AvailableToPublic,
-        AvailableToGroup,
-        NotAvailableToGroup,
-        
+        AvailableToPrivate,
+        AvailableToPublicAndPrivate,
+
+        Suspended,
         Cancelled        
     }
 }

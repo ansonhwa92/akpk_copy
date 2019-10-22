@@ -528,37 +528,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return courses;
         }
 
-        /// <summary>
-        /// Published course. Course must be in approved state before can be published.
-        /// When published, course can now be offerd to public or by inviting a group.
-        /// </summary>
-        /// <param name="id">Course Id</param>
-        /// <returns></returns>
-        [HasAccess(UserAccess.CoursePublish)]
-        public async Task<ActionResult> Publish(int id, string title)
-        {
-            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, CourseApiUrl.Publish + $"?id={id}");
-
-            if (response.isSuccess)
-            {
-                if (response.Data == true)
-                {
-                    await LogActivity(Modules.Learning, $"Course published. Course {id} - {title}");
-                    TempData["SuccessMessage"] = "Course is now published. You can start offering this course to public or invite students to enroll.";
-                }
-                else
-                {
-                    await LogError(Modules.Learning, $"Error publishing Course {id} - {title}");
-                    TempData["ErrorMessage"] = "Error publishing course. Perhaps the course is not approved yet?";
-                }
-            }
-            else
-            {
-                await LogError(Modules.Learning, $"API failed - Error publishing course Course {id} - {title}");
-                TempData["ErrorMessage"] = "Could not published the course.";
-            }
-            return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
-        }
+       
 
 
     }

@@ -1,0 +1,37 @@
+﻿@using FEP.Model.eLearning
+
+@model FEP.Model.eLearning.CourseStatus
+
+@{ var status = "";
+
+    switch (Model)
+    {
+        case CourseStatus.Verify:
+            status = "Verified. Pending Your Approval.";
+            break;
+        case CourseStatus.Submitted:
+            status = "Pending Verification.";
+            break;
+        case CourseStatus.FirstApproval:
+        case CourseStatus.SecondApproval:
+        case CourseStatus.ThirdApproval:
+            status = "Pending Your Approval.";
+            break;
+        case CourseStatus.Approved:
+            status = "Approved.";
+            break;
+        case CourseStatus.Amendment:
+            status = "Require Amendment.";
+            break;
+        case CourseStatus.Published:
+            status = "Published.";
+            break;
+
+        default:
+            status = Model.GetDisplayName();
+            break;
+    }
+}
+
+
+@status

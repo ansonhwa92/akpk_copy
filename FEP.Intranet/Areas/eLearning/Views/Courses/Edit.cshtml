@@ -95,14 +95,6 @@
                         </div>
                     </div>
 
-                    @*<div class="form-group">
-                        @Html.LabelFor(model => model.Medium, htmlAttributes: new { @class = "control-label " })
-                        <div class="">
-                            @Html.EnumDropDownListFor(model => model.Medium, htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Medium, "", new { @class = "text-danger" })
-                        </div>
-                    </div>*@
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label " })
                         <div class="row">
@@ -166,6 +158,14 @@
                            @type = "text"
                        } })
                             @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ViewCategory, htmlAttributes: new { @class = "control-label " })
+                        <div class="">
+                            @Html.EnumDropDownListFor(model => model.ViewCategory, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ViewCategory, "", new { @class = "text-danger" })
                         </div>
                     </div>
 

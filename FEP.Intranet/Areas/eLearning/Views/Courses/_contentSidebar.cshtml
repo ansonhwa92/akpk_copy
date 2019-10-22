@@ -32,7 +32,7 @@
                         </div>
                     </div>
 
-        <!-- TODO : FUTURE IF IN TRIAL MODE DONT SHOW THE ADD CONTENT -->
+                    <!-- TODO : FUTURE IF IN TRIAL MODE DONT SHOW THE ADD CONTENT -->
                     <div data-perfect-scrollbar class="ps">
                         <div class="page-section">
                             <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Add content</h6>
@@ -126,34 +126,6 @@
                     }
                     break;
 
-                @*case CourseStatus.Submitted:
-                case CourseStatus.Verify:
-                case CourseStatus.FirstApproval:
-                case CourseStatus.SecondApproval:
-                case CourseStatus.ThirdApproval:
-
-                    <div class="page-section">
-                        <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Course</h6>
-                        <ul class="nav page-nav__menu">
-                            <li class="nav-item">
-                                <a id="tab_details" href="#course-trial" data-toggle="tab" class="nav-link active">Approvals</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    if (CurrentUser.HasAccess(UserAccess.CourseVerify) || CurrentUser.HasAccess(UserAccess.CourseApproval1) ||
-                         CurrentUser.HasAccess(UserAccess.CourseApproval2) || CurrentUser.HasAccess(UserAccess.CourseApproval3))
-                    {
-                        <p>
-                            <a href="@Url.Action("SubmitForApproval", "CourseApprovals", new { area = "eLearning", id = @Model.Id })" class="btn btn-default btn-block mb-2">
-                                Submit For Approval
-                            </a>
-                        </p>
-
-                        <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
-                    }
-
-                    break;*@
 
                 case CourseStatus.Approved:
 
@@ -168,11 +140,9 @@
 
                     if (CurrentUser.HasAccess(UserAccess.CoursePublish))
                     {
-                        <p>
-                            <a href="@Url.Action("Publish", "Courses", new { area = "eLearning", id = @Model.Id, title = Model.Title })" class="btn btn-default btn-block mb-2">
-                                Publish
-                            </a>
-                        </p>
+                        <form method="post" id="formPublish">
+                            <p><button class="btn btn-primary btn-block" id="btnPublish" type="button" onclick="publish()">Publish</button></p>
+                        </form>
                     }
 
                     break;
@@ -191,13 +161,16 @@
                     if (CurrentUser.HasAccess(UserAccess.CoursePublish))
                     {
 
-                        <form method="post" id="formOpen">
-                            <p><button class="btn btn-default btn-block" id="btnOpenPublic" onclick="openPublic()">Open to Public</button></p>
-                            <p><button class="btn btn-default btn-block" id="btnOpenPrivate" onclick="openPrivate()">Open to Private Group</button></p>
+                        <p>
+                            <a href="@Url.Action("ChangeViewCategory", "CourseEvents", new { area = "eLearning", id = @Model.Id, title = Model.Title })" class="btn btn-primary btn-block mb-2">
+                                Change View Category
+                            </a>
+                        </p>
 
-                        </form>
-
-                        <p><button class="btn btn-default btn-block" id="btnInviteStudent" onclick="inviteStudents">Invite Student</button></p>
+                        if (Model.ViewCategory == ViewCategory.Private)
+                        {
+                            <p><button class="btn btn-default btn-block" id="btnInviteStudent" onclick="createGroup">Invite Group of Students</button></p>
+                        }
                     }
 
                     break;

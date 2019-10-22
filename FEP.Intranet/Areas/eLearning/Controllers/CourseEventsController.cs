@@ -18,6 +18,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         public const string AddLearner = "eLearning/CourseEvents/AddLearner";
         public const string RemoveLearner = "eLearning/CourseEvents/RemoveLearner";
+
+        public const string Publish = "eLearning/CourseEvents/Publish";
     }
 
     public class CourseEventsController : FEPController
@@ -201,47 +203,73 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
 
         /// <summary>
+        /// Published course. Course must be in approved state before can be published.
+        /// When published, course can now be offerd to public or by inviting a group.
+        /// </summary>
+        /// <param name="id">Course Id</param>
+        /// <returns></returns>
+        //[HasAccess(UserAccess.CoursePublish)]
+        //public async Task<ActionResult> Publish(int id, string title)
+        //{
+        //    var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, CourseApiUrl.Publish + $"?id={id}");
+
+        //    if (response.isSuccess)
+        //    {
+        //        if (response.Data == true)
+        //        {
+        //            await LogActivity(Modules.Learning, $"Course published. Course {id} - {title}");
+        //            TempData["SuccessMessage"] = "Course is now published. You can start offering this course to public or invite students to enroll.";
+        //        }
+        //        else
+        //        {
+        //            await LogError(Modules.Learning, $"Error publishing Course {id} - {title}");
+        //            TempData["ErrorMessage"] = "Error publishing course. Perhaps the course is not approved yet?";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        await LogError(Modules.Learning, $"API failed - Error publishing course Course {id} - {title}");
+        //        TempData["ErrorMessage"] = "Could not published the course.";
+        //    }
+        //    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
+        //}
+
+
+        /// <summary>
         /// Open the course to public. Check whether there are existing public course event and its status
         /// If so, decide to reuse or not
         /// Enrollment code is 
         /// </summary>
         /// <param name="id">CourseId</param>
         /// <returns></returns>
-        public async Task<ActionResult> OpenPublic(int id)
+        public async Task<ActionResult> Publish(int id, string title, ViewCategory viewCategory)
         {
             var createdBy = CurrentUser.UserId;
 
-            var course = await db.Courses.FindAsync(id);
-            if(course == null)
+            var response = await WepApiMethod.SendApiAsync<ChangeCourseStatusModel>(HttpVerbs.Post,
+                CourseEventApiUrl.Publish + $"?id={id}&createdBy={createdBy}");
+
+            if (response.isSuccess)
             {
-                TempData["ErrorMessage"] = "Course Not Found";
-                return RedirectToAction("Index", "Courses", new { area = "eLearning"});
+                await LogActivity(Modules.Learning, $"Success publishing - Course - {id}-{title}");
+
+                if (viewCategory == ViewCategory.Public)
+                {
+                    TempData["SuccessMessage"] = "Published successful. The course is now available for the Public.";
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Published successful. You can now invite group/students to enroll to the course.";
+                }
+            }
+            else
+            {
+                await LogError(Modules.Learning, $"Error publishing - Course - {id}-{title}");
+                TempData["ErrorMessage"] = "Error publishing the course.";
             }
 
+            return RedirectToAction("Content", "Courses", new { area = "eLearning", id = id });
 
-            var entity = db.CourseEvents.FirstOrDefault(x => x.CourseId == id && 
-                x.ViewCategory == ViewCategory.Public &&
-                x.Status == CourseEventStatus.AvailableToPublic);
-
-            // already open
-            if(entity != null)
-            {
-                TempData["SuccessMessage"] = "Course is already opened to Public.";
-                return RedirectToAction("Content", "Courses", new { area = "eLearning", id = id });
-            }
-
-            var newEvent = new CourseEvent
-            {
-                CourseId = id,
-                AllowablePercentageBeforeWithdraw = course.DefaultAllowablePercentageBeforeWithdraw,
-                CreatedBy = createdBy.Value,
-                EnrollmentCode = Guid.NewGuid().ToString()
-            };
-
-            // WIP 
-            return null;
-
-            
         }
 
         protected override void Dispose(bool disposing)

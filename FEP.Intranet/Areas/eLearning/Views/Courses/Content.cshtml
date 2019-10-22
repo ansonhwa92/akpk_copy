@@ -50,9 +50,11 @@
 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 @Html.HiddenFor(m => m.Id)
+@Html.HiddenFor(m => m.Title)
 @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
 @Html.HiddenFor(m => m.CourseEventId)
 @Html.HiddenFor(m => m.IntroImageFileName)
+@Html.HiddenFor(m => m.ViewCategory)
 
 <div class="row">
 
@@ -73,7 +75,7 @@
                     </div>
                     <div class="col-sm-3">
                         <div class="card text-white bg-dark font-weight-bold p-2 float-right border-dark">
-                            @Model.Status
+                            @Html.Partial("_courseStatus", Model.Status)
                         </div>
                     </div>
                 </div>
@@ -113,9 +115,18 @@
                         <p id="afterObj"></p>
                     </div>
                     <div>
+                        <div class="form-group">
+                            <label class="control-label">View Category</label>
+                            <div class="">
+                                @Html.EditorFor(model => model.ViewCategory, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
                         <div class="row">
                             @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
-                                       (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                           (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
                                 {
                                     <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
                                 }
@@ -147,8 +158,8 @@
                                                 <span class="moduleTitle">@module.Title</span>
                                             </div>
                                             @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
-                                                      (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||
-                                                      CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                                          (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||
+                                                          CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
                                                 {
                                                     <div class="col-sm-3 pull-right pt-1">
                                                         <a href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = module.Id })"
@@ -345,22 +356,18 @@
             });
         });
 
+        function publish() {
+            showAlertBox("publish", "Publish Course", "Publish this course?");
+        }
+
         function showAlertBox(forAction, title, body) {
-            $("#alertBox .model-title").text(title);
-            $("#alertBox .modal-bodu").text(body);
+            $("#alertBox .modal-title").text(title);
+            $("#alertBox .modal-body").text(body);
 
             $('#forAction').val(forAction); // alert for what action
 
             $('#alertBox').modal();
 
-        }
-
-        function openPublic() {
-            showAlertBox("openPublic", "Open Course", "Open this course for public?");
-        }
-
-        function openPrivate() {
-            showAlertBox("openPrivate", "Open Course", "Open this course for a private group?");
         }
 
         function inviteStudents() {
@@ -371,21 +378,19 @@
             e.preventDefault();
 
             var forAction = $('#forAction').val();
-            var form = $("#formOpen");
+            //console.log('for action -', forAction);
+
+            var form = $("#formPublish");
             var courseId = $("#Id").val();
+            var title = $("#Title").val();
+            var viewCategory = $("#ViewCategory").val()
 
-            if (forAction == "openPublic") {
-                form.attr('action', "@BaseURL/eLearning/Courses/OpenPublic?id=" + courseId);
-
-                form.submit();
-            }
-
-            if (forAction == "openPublic") {
-                form.attr('action', "@BaseURL/eLearning/Courses/OpenPrivate?id=" + courseId);
+            if (forAction == "publish") {
+                form.attr('action', "@BaseURL/eLearning/CourseEvents/Publish?id=" + courseId + "&title=" + title + "&viewCategory=" + viewCategory);
 
                 form.submit();
             }
+
         });
-
     </script>
 }

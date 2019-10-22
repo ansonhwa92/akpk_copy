@@ -5,6 +5,32 @@
     ViewBag.Title = "Course Approvals";
 
     Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    //var status = "";
+
+    //switch(Model.Status)
+    //{
+    //    case CourseStatus.Verify:
+    //        status = "Verified";
+    //        break;
+    //    case CourseStatus.Submitted:
+    //        status = "Pending Verification";
+    //        break;
+    //    case CourseStatus.FirstApproval:
+    //    case CourseStatus.SecondApproval:
+    //    case CourseStatus.ThirdApproval:
+    //        status = "Pending Approval";
+    //        break;
+    //    case CourseStatus.Approved:
+    //        status = "Approved";
+    //        break;
+    //    case CourseStatus.Amendment:
+    //        status = "Require Amendment";
+    //        break;
+    //    default:
+    //        status = Model.Status.GetDisplayName();
+    //        break;
+    //}
 }
 
 @section Nav {
@@ -48,9 +74,11 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-12">
                             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
-                            <input class="form-control bg-warning-ccd" readonly value="@Model.Status" />
+                            @*<input class="form-control bg-warning-ccd" readonly value="@status" />*@
+                            <span class="form-control bg-warning-ccd"> @Html.Partial("_courseStatus", Model.Status)</span>
+                           
                         </div>
                     </div>
                 </div>

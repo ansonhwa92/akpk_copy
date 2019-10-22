@@ -112,7 +112,7 @@ namespace FEP.WebApi.Api.eLearning
                         CourseId = entity.Id,
                         Status = CourseEventStatus.Trial,
                         Start = DateTime.Now,
-                        EnrollmentCode = "TRIAL-" + entity.Id + DateTime.Now.Ticks,
+                        EnrollmentCode = $"TRIAL({entity.Code}-{DateTime.Now.Ticks}",
                         ViewCategory = ViewCategory.Private,
                     };
 
@@ -594,6 +594,79 @@ namespace FEP.WebApi.Api.eLearning
             {
                 return BadRequest(e.Message);
             }
+        }
+
+        // Called by counter part in intranet
+        // Here, the course status will be changed to Publish. However, CourseEvent will only be created
+        // if the ViewCategory is Public. If ViewCategory is Private, the CourseEvent will be created
+        // once the user create/invite a group with an enrollment code.
+        [Route("api/eLearning/CourseEvents/Publish")]
+        [HttpPost]
+        public async Task<IHttpActionResult> Publish(int id, int createdBy)
+        {
+            var entity = await db.Courses.FindAsync(id);
+            if (entity == null)
+            {
+                return BadRequest();
+            }
+
+            CourseEvent courseEvent = new CourseEvent();
+
+            if (entity.ViewCategory == ViewCategory.Public)
+            {
+                courseEvent = db.CourseEvents.FirstOrDefault(x => x.CourseId == id &&
+                x.ViewCategory == ViewCategory.Public &&
+                x.Status == CourseEventStatus.AvailableToPublic);
+
+                if (courseEvent != null)
+                {
+                    return Ok("Course already open for public.");
+                }
+
+                var newEvent = new CourseEvent
+                {
+                    CourseId = id,
+                    AllowablePercentageBeforeWithdraw = entity.DefaultAllowablePercentageBeforeWithdraw,
+                    CreatedBy = createdBy,
+                    // Public will have an auto generated enrollment code
+                    EnrollmentCode = $"PUBLIC({entity.Code}-{DateTime.Now.Ticks}",
+                    ViewCategory = ViewCategory.Public,
+                    Status = CourseEventStatus.AvailableToPublic,
+                    Start = DateTime.Now,
+                };
+
+                db.CourseEvents.Add(newEvent);
+
+                await db.SaveChangesAsync();
+            }
+
+            entity.Status = CourseStatus.Published;
+
+            if (entity.CourseApprovalLog == null)
+                entity.CourseApprovalLog = new List<CourseApprovalLog>();
+
+            var createdByName = "";
+            var user = await db.User.FindAsync(createdBy);
+            if (user != null)
+                createdByName = user.Name;
+
+            entity.CourseApprovalLog.Add(new CourseApprovalLog
+            {
+                CreatedByName = createdByName,
+                ActionDate = DateTime.Now,
+                Remark = "Course " + entity.Title + " is published.",
+                ApprovalStatus = ApprovalStatus.None
+            });
+
+            await db.SaveChangesAsync();
+
+            ChangeCourseStatusModel data = new ChangeCourseStatusModel
+            {
+                CourseId = entity.Id,
+                CourseName = entity.Title,
+                Message = "Published"
+            };
+            return Ok(data);
         }
     }
 }

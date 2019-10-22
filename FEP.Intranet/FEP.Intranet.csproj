@@ -913,6 +913,9 @@
     <Content Include="Areas\eEvent\Views\DutyRoster\_Create.cshtml" />
     <Content Include="Areas\eEvent\Views\DutyRoster\_Edit.cshtml" />
     <Content Include="Areas\eEvent\Views\DutyRoster\_Delete.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_approvals.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseApprovals\Approve.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseApprovals\_sidebar.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

@@ -63,6 +63,7 @@
     @Html.HiddenFor(m => m.VideoType)
     @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
     @Html.HiddenFor(m => m.CompletionType)
+    <input id="WebApiURL" value="@WebApiURL" hidden />
 
     <div class="row">
 

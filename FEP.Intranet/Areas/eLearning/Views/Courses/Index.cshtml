@@ -222,7 +222,6 @@
                             var canwithdraw = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseEnroll));
 
                             action = '<div class="icon-action">';
-
                             // everyone with access course edit/create/verify/aprove can view
                             // learner access is using courseView
                             action += '<a href="@Url.Action("View", "Courses", new { area = "eLearning" })/' + row.Id +

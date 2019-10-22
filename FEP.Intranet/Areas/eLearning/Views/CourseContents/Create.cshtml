@@ -20,8 +20,7 @@
             <div class="container">
                 <!-- if have button -->
                 <div class="header-col-right float-right mt-5">
-
-                    <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-outline-primary text-white">
+                    <a href="~/eLearning/Courses/Content/@Model.CourseId" class="btn btn-outline-primary text-white">
                         <span class="align-middle">
                             <i class="la la-long-arrow-left">&nbsp;</i>
                         </span>
@@ -63,6 +62,7 @@
     @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
     @Html.HiddenFor(m => m.CompletionType)
 
+    <input id="WebApiURL" value="@WebApiURL" hidden/>
     <div class="row">
 
         <div class="col-xl-3 col-md-3 col-sm-4 my-2">
@@ -155,7 +155,7 @@
         var uploadImgUrl = '@(BaseURL)/eLearning/File/UploadFile';
         var getImgUrl = '@(BaseURL)/eLearning/File/GetImg/?fileName=';
 
-            //var uploadDocUrl = '@(WebApiURL)/eLearning/File/';
+       // var uploadDocUrl = '@(WebApiURL)/eLearning/File/';
         var uploadDocUrl = '@(BaseURL)/eLearning/File/UploadFile';
         var convertFileUrl = '@(BaseURL)eLearning/File/DocToHTML';
 

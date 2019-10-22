@@ -63,6 +63,7 @@
     @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
     @Html.HiddenFor(m => m.CompletionType)
 
+    <input id="WebApiURL" value="@WebApiURL" hidden/>
     <div class="row">
 
         <div class="col-xl-3 col-md-3 col-sm-4 my-2">
@@ -155,7 +156,7 @@
         var uploadImgUrl = '@(BaseURL)/eLearning/File/UploadFile';
         var getImgUrl = '@(BaseURL)/eLearning/File/GetImg/?fileName=';
 
-            //var uploadDocUrl = '@(WebApiURL)/eLearning/File/';
+       // var uploadDocUrl = '@(WebApiURL)/eLearning/File/';
         var uploadDocUrl = '@(BaseURL)/eLearning/File/UploadFile';
         var convertFileUrl = '@(BaseURL)eLearning/File/DocToHTML';
 

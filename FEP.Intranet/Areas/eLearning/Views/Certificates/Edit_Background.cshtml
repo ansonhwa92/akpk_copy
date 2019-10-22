@@ -91,11 +91,12 @@
                         <div>
                             <div class="mxw-660">
                                 <div class="row">
-                                    @{var imgUrl = "@(BaseURL)/eLearning/FileUpload/GetImg/?fil0eName=" + Model.FileUpload.FileNameOnStorage;}
+                                    @{
+                                        var imgUrl = @WebApiURL + "/eLearning/File/GetImg/?fileName=" + Model.FileUpload.FileNameOnStorage;}
                                     <div class="col-lg-4">
                                         <div class="box-contain">
                                             <div class="card text-center">
-                                                <span> <img src="@Url.Action("GetImg", "FileUpload", new { area = "eLearning", fileName = Model.FileUpload.FileNameOnStorage})" height="100" width="150" id="FileUploadId" /></span>
+                                                <span> <img src=@imgUrl height="100" width="150" id="FileUploadId" /></span>
                                             </div>
                                         </div>
                                     </div>

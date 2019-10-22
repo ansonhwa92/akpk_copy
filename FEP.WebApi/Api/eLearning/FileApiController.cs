@@ -1,6 +1,7 @@
 ﻿using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
+using Mammoth;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -201,6 +202,53 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(content.FileDocument.FileNameOnStorage);
 
         }
+
+
+        [Route("api/eLearning/File/GetImg")]
+        [HttpGet]
+        public IHttpActionResult GetImg(string fileName)
+        {
+            var path = Path.Combine(storageDir, fileName);
+
+            var fileInfo = new FileInfo(path);
+
+            return !fileInfo.Exists
+                ? (IHttpActionResult)NotFound()
+                : new FileResult(fileInfo.FullName);
+        }
+
+
+        [Route("api/eLearning/File/GetHTML")]
+        [HttpGet]
+        public async Task<string> DocToHTML(int contentId)
+        {
+            var content = await db.ContentFiles
+                           .Include(x => x.FileDocument)
+                           .FirstOrDefaultAsync(x => x.Id == contentId);
+
+            if (content == null)
+                return "<bold>Error</strong>";
+
+            var fileFullPath = Path.Combine(storageDir, content.FileDocument.FileNameOnStorage);
+
+            try
+            {
+                var converter = new DocumentConverter();
+                var result = converter.ConvertToHtml(fileFullPath);
+                var html = result.Value; // The generated HTML
+                var warnings = result.Warnings;
+
+                if (String.IsNullOrEmpty(html))
+                    return "Error reading the document.";
+
+                return html;
+            }
+            catch (Exception e)
+            {
+                return "Error reading the document.";
+            }
+        }
+
     }
 
     public class ValidateMimeMultipartContentFilter : ActionFilterAttribute

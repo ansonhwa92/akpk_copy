@@ -10,7 +10,6 @@
 
 
 @section Nav {
-
     <div class="title_header">
         <div class="title-header-container">
             <div class="container">
@@ -33,7 +32,6 @@
             </div>
         </div>
     </div>
-
 }
 
 <style>
@@ -56,7 +54,7 @@
                 <div class="text-left" style="padding:10px;">
                     <div class="pull-right ">
                         @*<a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonEdit" data-toggle="tooltip"><i class="la la-edit text-muted"></i></a>
-                        <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>*@
+                            <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>*@
                     </div>
                     <div class="pull-left text-center" style="margin-right:15px;">
                         <img src="~/dist/assets/images/people/50/guy-6.jpg">
@@ -79,7 +77,7 @@
                                     if (att.Attachment != null)
                                     {
                                         <div>
-                                            <i class="fa fa-link"><a class="btn btn-link" href="@att.Attachment.FilePath" target="_blank">@att.Attachment.FileName </a></i>
+                                            <i class="fa fa-link"><a class="btn btn-link" href="@Url.Action("DownloadAttachment", "CourseDiscussion", new { input=att.Attachment.FilePath, filetype = att.Attachment.FileType })" target="_blank">@att.Attachment.FileName </a></i>
                                         </div>
                                     }
                                 }
@@ -95,7 +93,7 @@
         <br class="clear hidden-desktop">
 
         @*reply post*@
-        @{ if (Model.Post.Count > 0)
+        @{ if (Model.Post.Count > 1)
             {
                 for (int p = 1; p < Model.Post.Count; p++)
                 {

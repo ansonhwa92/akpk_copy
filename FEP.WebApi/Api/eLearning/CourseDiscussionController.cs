@@ -1,4 +1,5 @@
-﻿using FEP.Model;
+﻿using FEP.Helper;
+using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System;
@@ -57,6 +58,222 @@ namespace FEP.WebApi.Api.eLearning
                 return Ok(categories);
             }
             
+        }
+
+        [Route("api/eLearning/CourseDiscussion/GetAll")]
+        [HttpPost]
+        public IHttpActionResult GetAll(FilterDiscussionModel request)
+        {
+            var query = db.Discussions.Where(x => (String.IsNullOrEmpty(request.Name) || x.Name.Contains(request.Name)) && x.IsDeleted != true && x.DiscussionVisibility == DiscussionVisibility.Everybody);
+
+            var totalCount = query.Count();
+
+            //quick search
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+                query = query.Where(p => p.Name.Contains(value));
+            }
+
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "DateTimeDisplay":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.CreatedDate);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.CreatedDate);
+                        }
+
+                        break;
+
+                    case "DiscussionCard":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Name);
+                        }
+
+                        break;
+
+                    //case "Status":
+
+                    //    if (sortAscending)
+                    //    {
+                    //        query = query.OrderBy(o => o.Status);
+                    //    }
+                    //    else
+                    //    {
+                    //        query = query.OrderByDescending(o => o.Status);
+                    //    }
+
+                    //    break;
+
+                    default:
+                        query = query.OrderBy(o => o.Id);
+                        break;
+                }
+            }
+            else
+            {
+                query = query.OrderBy(o => o.Id);
+            }
+
+            //var data = query.Skip(request.start).Take(request.length)
+            //    .Select(s => new CourseDiscussionModel
+            //    {
+            //        Id = s.Id,
+            //        Name = s.Name,
+            //        CreatedBy = s.CreatedBy,
+            //        CreatedByName = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name,
+            //        CreatedOn = s.CreatedDate,
+            //        UpdatetedOn = s.UpdatedDate,
+            //        DiscussionVisibility = s.DiscussionVisibility,
+            //        FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message,
+            //        FirstPostId = s.FirstPost
+            //    }).ToList();
+
+            var data = query.Skip(request.start).Take(request.length)
+               .Select(s => new CourseDiscussionListDataTableModel
+               {
+                   Id = s.Id,
+                   Name = s.Name,
+                   DateTimeDisplay = s.UpdatedDate.HasValue? s.UpdatedDate.Value : s.CreatedDate,
+                   CreatedBy = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name,
+                   FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message,
+                   DiscussionCard = new DiscussionCardModel() { Id = s.Id, Name = s.Name, CreatedBy = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name, FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message }
+               }).ToList();
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+        }
+
+        [Route("api/eLearning/CourseDiscussion/GetAllGroup")]
+        [HttpPost]
+        public IHttpActionResult GetAllGroup(FilterDiscussionModel request)
+        {
+            var query = db.Discussions.Where(x => (String.IsNullOrEmpty(request.Name) || x.Name.Contains(request.Name)) && x.IsDeleted != true && x.DiscussionVisibility == DiscussionVisibility.GroupOnly);
+
+            var totalCount = query.Count();
+
+            //quick search
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+                query = query.Where(p => p.Name.Contains(value));
+            }
+
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "Name":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Name);
+                        }
+
+                        break;
+
+                    //case "Code":
+
+                    //    if (sortAscending)
+                    //    {
+                    //        query = query.OrderBy(o => o.Code);
+                    //    }
+                    //    else
+                    //    {
+                    //        query = query.OrderByDescending(o => o.Code);
+                    //    }
+
+                    //    break;
+
+                    //case "Status":
+
+                    //    if (sortAscending)
+                    //    {
+                    //        query = query.OrderBy(o => o.Status);
+                    //    }
+                    //    else
+                    //    {
+                    //        query = query.OrderByDescending(o => o.Status);
+                    //    }
+
+                    //    break;
+
+                    default:
+                        query = query.OrderByDescending(o => o.Id);
+                        break;
+                }
+            }
+            else
+            {
+                query = query.OrderByDescending(o => o.Id);
+            }
+
+            //var data = query.Skip(request.start).Take(request.length)
+            //    .Select(s => new CourseDiscussionModel
+            //    {
+            //        Id = s.Id,
+            //        Name = s.Name,
+            //        CreatedBy = s.CreatedBy,
+            //        CreatedByName = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name,
+            //        CreatedOn = s.CreatedDate,
+            //        UpdatetedOn = s.UpdatedDate,
+            //        DiscussionVisibility = s.DiscussionVisibility,
+            //        FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message,
+            //        FirstPostId = s.FirstPost
+            //    }).ToList();
+
+            var data = query.Skip(request.start).Take(request.length)
+               .Select(s => new CourseDiscussionListDataTableModel
+               {
+                   Id = s.Id,
+                   Name = s.Name,
+                   DateTimeDisplay = s.UpdatedDate.HasValue ? s.UpdatedDate.Value : s.CreatedDate,
+                   CreatedBy = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name,
+                   FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message,
+                   DiscussionCard = new DiscussionCardModel() { Id = s.Id, Name = s.Name, CreatedBy = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name, FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message }
+               }).ToList();
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
         }
 
         [HttpGet]

@@ -30,6 +30,7 @@ namespace FEP.Model
         public bool enableSMSMessage { get; set; }
 
         public string WebMessage { get;set; }
+        public string WebNotifyLink { get; set; }
         public bool enableWebMessage { get; set; }
 
         public DateTime CreatedDate { get; set; }

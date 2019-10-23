@@ -9,7 +9,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-           $('.js-example-basic-single').select2();
+           //$('.js-example-basic-single').select2();
             var table = $('.tabledata').DataTable({
                 serverSide: true,
                 processing: true,
@@ -25,22 +25,22 @@
                 },
                 columns: [
 
-                    /*{
+                    {
                         sortable: false,
                         render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
-                    },*/
+                    },
                     {
                         data: 'NotificationTypeName', 
                         render: function (data, type, row, meta) {
                             return '<b><a href="@Url.Action("Details", "EmailTemplates", new { area = "Template" })/' + row.Id + '" class="text-dark" data-toggle="tooltip" data-placement="top" title="View">'+data+'</a></b>';
-                        }
-                        //sortable: true
+                        },
+                        sortable: true
                     },
                     {
                         data: 'TemplateName',
-                        //sortable: true
+                        sortable: true
                     },
                     /*{
                         data: 'CreatedByName',
@@ -71,11 +71,11 @@
                 paging: true,
                 lengthChange: true,
                 searching: true,
-                ordering: false,
+                ordering: true,
                 orderMulti: false,
                 info: true,
                 autoWidth: false,
-                order: [[1, 'asc']],
+                //order: [[1, 'asc']],
                 language: {
                     processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
                     emptyTable: "No Record Found",
@@ -108,6 +108,10 @@
 
             table.on('order.dt search.dt', function () {
                 var info = table.page.info();
+                var start = 0;
+                if (info.recordsTotal != 0) {
+                    start = info.start + 1;
+                }
                 $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' templates ');
                 $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
             }).draw();
@@ -163,72 +167,104 @@
 
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
         <div class="border-form rounded">
-            <form>
+            
                 <div class="form-container form-container-w100">
-                    <h4 class="color-darkblue mb-4 mt-2">Notification Template List</h4>
-                    @*<div>
-                        <a href="@Url.Action("Create", "EmailTemplates", new { area = "Template" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a>
-                    </div>*@
-                <div class="table-responsive">
-                    <div class="d-flex pb-4 align-items-center">
-                        <div>
-                            <!-- Select option -->
-                            <span class="select-arrow">
-                                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select>
-                            </span>
-                        </div>
-                        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+                    <div class="d-flex align-items-center mb-4 mt-2">
+                        <h4 class="color-darkblue mb-4 mt-2">Notification Template List</h4>
+                        @*<div>
+                            <a href="@Url.Action("Create", "EmailTemplates", new { area = "Template" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a>
+                        </div>*@
                     </div>
-                    <table class="table tableStyle1 tabledata">
-                        <thead>
-                            <tr>
-                                <th>@Html.DisplayNameFor(model => model.List.NotificationTypeName)</th>
-                                <th>@Html.DisplayNameFor(model => model.List.TemplateName)</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        @*<tbody>
-                <tr>
-                    <td class="font-weight-bolder"><a href="edit-email-template.html" class="text-dark">Ask Listing Question</a></td>
-                    <td>Ask Buyer a question</td>
-                    <td>
-                        <div class="icon-action">
-                            <a href="edit-email-template.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="la la-edit text-muted"></i></a>
-
+                    <div class="d-flex align-items-center">
+                        <div class="filter dropdown">
+                            <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+                            <div class="dropdown-menu">
+                                <div class="filter-head">Filters</div>
+                                <div class="filter-body">
+                                    <div>@Html.DisplayNameFor(m => m.Filter.TemplateName)</div>
+                                    <div class="sorting-wrap">
+                                        <div class="sorting-dropdown">
+                                            @Html.EditorFor(m => m.Filter.TemplateName, new { htmlAttributes = new { @class = "form-control small" } })
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <button id="btnSearch" class="mt-2 btn btn-secondary btn-block">Search</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-weight-bolder"><a href="edit-email-template.html" class="text-dark">Ask Listing Question</a></td>
-                    <td>Ask Seller a listing question</td>
-                    <td>
-                        <div class="icon-action">
-                            <a href="edit-email-template.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="la la-edit text-muted"></i></a>
-
+                        <div class="divider-vertical">&nbsp;</div>
+                        <!-- Search -->
+                        <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+                            <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+                            <div class="input-group-append">
+                                <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-weight-bolder"><a href="edit-email-template.html" class="text-dark">Bid Confirmation</a></td>
-                    <td>Notify bidder they placed a bid</td>
-                    <td>
-                        <div class="icon-action">
-                            <a href="edit-email-template.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="la la-edit text-muted"></i></a>
-
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <div class="d-flex pb-4 align-items-center">
+                            <div>
+                                <!-- Select option-->
+                                <span class="select-arrow">
+                                    <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </span>
+                            </div>
+                            <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
                         </div>
-                    </td>
-                </tr>
+                        <table class="table tableStyle1 tabledata">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>@Html.DisplayNameFor(model => model.List.NotificationTypeName)</th>
+                                    <th>@Html.DisplayNameFor(model => model.List.TemplateName)</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            @*<tbody>
+                    <tr>
+                        <td class="font-weight-bolder"><a href="edit-email-template.html" class="text-dark">Ask Listing Question</a></td>
+                        <td>Ask Buyer a question</td>
+                        <td>
+                            <div class="icon-action">
+                                <a href="edit-email-template.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="la la-edit text-muted"></i></a>
 
-            </tbody>*@
-                    </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bolder"><a href="edit-email-template.html" class="text-dark">Ask Listing Question</a></td>
+                        <td>Ask Seller a listing question</td>
+                        <td>
+                            <div class="icon-action">
+                                <a href="edit-email-template.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="la la-edit text-muted"></i></a>
+
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bolder"><a href="edit-email-template.html" class="text-dark">Bid Confirmation</a></td>
+                        <td>Notify bidder they placed a bid</td>
+                        <td>
+                            <div class="icon-action">
+                                <a href="edit-email-template.html" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="la la-edit text-muted"></i></a>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>*@
+                        </table>
+                    </div>
                 </div>
-                </div>
-            </form>
+            
         </div>
     </div>
     @*<div class="d-flex align-items-center">

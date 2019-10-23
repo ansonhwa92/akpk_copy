@@ -65,6 +65,8 @@ namespace FEP.WebApiModel.Template
 
         [Display(Name = "Web Message")]
         public string WebMessage { get; set; }
+        [Display(Name = "Web Notification Link")] 
+        public string WebNotifyLink { get; set; }
         [Display(Name = "Send Web Message")]
         public bool enableWebMessage { get; set; }
 
@@ -142,6 +144,8 @@ namespace FEP.WebApiModel.Template
 
         [Display(Name = "Web Message")]
         public string WebMessage { get; set; }
+        [Display(Name = "Web Notification Link")]
+        public string WebNotifyLink { get; set; }
         [Display(Name = "Send Web Notification")]
         public bool enableWebMessage { get; set; }
 
@@ -204,6 +208,8 @@ namespace FEP.WebApiModel.Template
 
         [Display(Name = "Web Message")]
         public string WebMessage { get; set; }
+        [Display(Name = "Web Notification Link")]
+        public string WebNotifyLink { get; set; }
         [Display(Name = "Send Web Message")]
         public bool enableWebMessage { get; set; }
 

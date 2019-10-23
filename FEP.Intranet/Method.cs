@@ -190,7 +190,8 @@ namespace FEP.Intranet
 
         private static string GetWebApiUrl()
         {
-            return WebConfigurationManager.AppSettings["WebApiURL"] != null ? WebConfigurationManager.AppSettings["WebApiURL"].ToString() : "";
+            string theURL = WebConfigurationManager.AppSettings["WebApiURL"] != null ? WebConfigurationManager.AppSettings["WebApiURL"].ToString() : "";
+            return theURL;
         }
         private static string GetEmailSMSApiUrl()
         {

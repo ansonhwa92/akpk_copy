@@ -83,7 +83,7 @@ namespace FEP.WebApi.Api.Template
                         }
 
                         break;
-                    case "CreatedByName":
+                    /*case "CreatedByName":
 
                         if (sortAscending)
                         {
@@ -118,6 +118,10 @@ namespace FEP.WebApi.Api.Template
                             query = query.OrderByDescending(o => o.LastModified);
                         }
 
+                        break;*/
+
+                    default:
+                        query = query.OrderByDescending(o => o.TemplateName);
                         break;
                 }
             }
@@ -180,6 +184,7 @@ namespace FEP.WebApi.Api.Template
                 SMSMessage = s.SMSMessage,
                 enableWebMessage = s.enableWebMessage,
                 WebMessage = s.WebMessage,
+                WebNotifyLink  =s.WebNotifyLink
 
             }).FirstOrDefault();
 
@@ -217,7 +222,8 @@ namespace FEP.WebApi.Api.Template
                 enableSMSMessage = model.enableSMSMessage,
                 SMSMessage = model.SMSMessage,
                 enableWebMessage = model.enableWebMessage,
-                WebMessage = model.WebMessage
+                WebMessage = model.WebMessage,
+                WebNotifyLink = model.WebNotifyLink
             };
 
             db.NotificationTemplates.Add(NotificationTemplate);
@@ -298,6 +304,7 @@ namespace FEP.WebApi.Api.Template
             template.SMSMessage = model.SMSMessage;
             template.enableWebMessage = model.enableWebMessage;
             template.WebMessage = model.WebMessage;
+            template.WebNotifyLink = model.WebNotifyLink;
             template.LastModified = DateTime.Now;
 
             db.Entry(template).State = EntityState.Modified;
@@ -310,6 +317,7 @@ namespace FEP.WebApi.Api.Template
             db.Entry(template).Property(x => x.SMSMessage).IsModified = true;
             db.Entry(template).Property(x => x.enableWebMessage).IsModified = true;
             db.Entry(template).Property(x => x.WebMessage).IsModified = true;
+            db.Entry(template).Property(x => x.WebNotifyLink).IsModified = true;
             db.Entry(template).Property(x => x.LastModified).IsModified = true;
             db.Entry(template).Property(x => x.CreatedBy).IsModified = false;
 

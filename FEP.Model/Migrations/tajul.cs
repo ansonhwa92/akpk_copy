@@ -11,8 +11,8 @@ namespace FEP.Model.Migrations
 	{
 		public static void Seed(DbEntities db)
 		{
-			DefaultSLAReminder(db);
-			DefaultParameterGroup(db);
+			//DefaultSLAReminder(db);
+			//DefaultParameterGroup(db);
 			DefaultTemplate(db);
 		}
 
@@ -164,78 +164,93 @@ namespace FEP.Model.Migrations
 					{
 						EventType = SLAEventType.Payment;
 					}
-                    if (pType >= 101 && pType <= 120)
-                    {
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.SubmitSurvey, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.CancelSurvey, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.PublishSurvey, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.VerifySurvey, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.ApproveSurvey, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.DistributeSurvey, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.AnswerSurvey, TemplateParameterType = paramType });
-
-                        continue;
-
-                    }
-                    if (pType >= 121 && pType <= 140)
-                    {
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.SubmitPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.CancelPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.PublishPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.ModifyPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.WithdrawPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.CancelModifyPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.CancelWithdrawPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.VerifyPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicationModification, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicationWithdrawal, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.ApprovePublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicationModification, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, TemplateParameterType = paramType });
-
-                        continue;
-
-                    }
+                    
 
 				}
+                if (pType >= 21 && pType <= 40) //Verify & Approval
+                {
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.SubmitPublicEvent, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicEvent, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicEvent, TemplateParameterType = paramType });
+
+                    continue;
+
+                }
+                if (pType >= 101 && pType <= 120)
+                {
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.SubmitSurvey, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.CancelSurvey, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.PublishSurvey, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifySurvey, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ApproveSurvey, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.DistributeSurvey, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.AnswerSurvey, TemplateParameterType = paramType });
+
+                    continue;
+
+                }
+                if (pType >= 121 && pType <= 140)
+                {
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.SubmitPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.CancelPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.PublishPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ModifyPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.WithdrawPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.CancelModifyPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.CancelWithdrawPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifyPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicationModification, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicationWithdrawal, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ApprovePublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicationModification, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, TemplateParameterType = paramType });
+
+                    continue;
+
+                }
 
 
 			}

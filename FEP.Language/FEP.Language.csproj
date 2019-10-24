@@ -76,6 +76,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="RnPForm.Designer.cs" />
     <Compile Include="Staff.Designer.cs">
       <DependentUpon>Staff.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -141,8 +142,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Event.resx</DependentUpon>
     </Compile>
-    <Compile Include="RnPForm.Designer.cs">
-      <DependentUpon>RnPForm.resx</DependentUpon>
+    <Compile Include="RnPForm_old.Designer.cs">
+      <DependentUpon>RnPForm_old.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -201,6 +202,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Company.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="RnPForm.resx" />
     <EmbeddedResource Include="Staff.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Staff.Designer.cs</LastGenOutput>
@@ -269,9 +271,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Event.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="RnPForm.resx">
+    <EmbeddedResource Include="RnPForm_old.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>RnPForm.Designer.cs</LastGenOutput>
+      <LastGenOutput>RnPForm_old.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RnPEnum.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

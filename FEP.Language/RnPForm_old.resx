@@ -507,7 +507,4 @@
   <data name="PubReviewReviewerName" xml:space="preserve">
     <value>Reviewer Name</value>
   </data>
-  <data name="ValidInvalidPrice" xml:space="preserve">
-    <value>Price is invalid</value>
-  </data>
 </root>

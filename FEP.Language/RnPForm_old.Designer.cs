@@ -22,14 +22,14 @@ namespace Language {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class RnPForm {
+    public class RnPForm_old {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal RnPForm() {
+        internal RnPForm_old() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Language {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Language.RnPForm", typeof(RnPForm).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Language.RnPForm_old", typeof(RnPForm_old).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -813,15 +813,6 @@ namespace Language {
         public static string ValidInvalidApprovalStatus {
             get {
                 return ResourceManager.GetString("ValidInvalidApprovalStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Price is invalid.
-        /// </summary>
-        public static string ValidInvalidPrice {
-            get {
-                return ResourceManager.GetString("ValidInvalidPrice", resourceCulture);
             }
         }
         

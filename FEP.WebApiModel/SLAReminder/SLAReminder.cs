@@ -193,6 +193,8 @@ namespace FEP.WebApiModel.SLAReminder
         public string SurveyType { get; set; }
         public string SurveyCode { get; set; }
         public string SurveyApproval { get; set; }
+        public string SurveyLink { get; set; }
+        public string SurveyRespondentEmail { get; set; }
 
         //121-140 for Publication
         public string PublicationTitle { get; set; }

@@ -85,6 +85,7 @@
     <Compile Include="Email.cs" />
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
+    <Compile Include="Groups.cs" />
     <Compile Include="Logs.cs" />
     <Compile Include="Migrations\201910170418287_InitialDB.cs" />
     <Compile Include="Migrations\201910170418287_InitialDB.designer.cs">

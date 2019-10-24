@@ -70,6 +70,7 @@ namespace FEP.Model
         public int SurveyID { get; set; }
         public SurveyResponseTypes Type { get; set; }
         public int UserId { get; set; }     // if 0/Null = anonymous/public respondent
+        public string Email { get; set; }
         public DateTime ResponseDate { get; set; }
         public string Contents { get; set; }
         // foreign keys......................................................................................................

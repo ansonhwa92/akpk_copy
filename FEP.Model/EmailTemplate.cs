@@ -106,6 +106,10 @@ namespace FEP.Model
         SurveyCode = 103,
         [Display(Name = "Survey Approval")]
         SurveyApproval = 104,
+        [Display(Name = "Survey Link")]
+        SurveyLink = 105,
+        [Display(Name = "Respondent Email")]
+        SurveyRespondentEmail = 106,
 
         //121-140 for Publication
         [Display(Name = "Publication Title")]

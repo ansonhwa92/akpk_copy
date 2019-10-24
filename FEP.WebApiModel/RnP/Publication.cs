@@ -129,6 +129,20 @@ namespace FEP.WebApiModel.RnP
         public string Category { get; set; }
     }
 
+    // Class for returning publications for user browsing
+    public class BrowsePublicationModel
+    {
+        public string Keyword { get; set; }
+
+        public string Sorting { get; set; }
+
+        public int LastIndex { get; set; }
+
+        public int ItemCount { get; set; }
+
+        public List<ReturnPublicationModel> Publications { get; set; }
+    }
+
     // class for returning just the auto-fields of publication information to client app
     // returned whenever the client requests for auto-field information on a single publication
     public class ReturnPublicationAutofieldsModel
@@ -360,14 +374,17 @@ namespace FEP.WebApiModel.RnP
         public bool FreeHDCopy { get; set; }
 
         [Display(Name = "PubHPrice", ResourceType = typeof(Language.RnPForm))]
+        [RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceName = "ValidInvalidPrice", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public float HPrice { get; set; }
 
         [Display(Name = "PubDPrice", ResourceType = typeof(Language.RnPForm))]
+        [RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceName = "ValidInvalidPrice", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public float DPrice { get; set; }
 
         [Display(Name = "PubHDPrice", ResourceType = typeof(Language.RnPForm))]
+        [RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceName = "ValidInvalidPrice", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public float HDPrice { get; set; }
 
@@ -381,9 +398,8 @@ namespace FEP.WebApiModel.RnP
 
         [Required(ErrorMessageResourceName = "ValidRequiredStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubStockBalance", ResourceType = typeof(Language.RnPForm))]
-        //[MaxLength(4)]
-        //[MinLength(1)]
-        //[Range(0, 9999, ErrorMessage = "Please enter a valid year")]
+        [RegularExpression("([1-9][0-9]*)", ErrorMessageResourceName = "ValidInvalidStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Range(0, 99999, ErrorMessageResourceName = "ValidInvalidStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
         public int? StockBalance { get; set; }
 
         [Required]

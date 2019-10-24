@@ -94,6 +94,20 @@ namespace FEP.WebApiModel.RnP
         //public List<SurveyApproval> Approvals { get; set; }
     }
 
+    // Class for returning surveys for user browsing
+    public class BrowseSurveyModel
+    {
+        public string Keyword { get; set; }
+
+        public string Sorting { get; set; }
+
+        public int LastIndex { get; set; }
+
+        public int ItemCount { get; set; }
+
+        public List<ReturnSurveyModel> Surveys { get; set; }
+    }
+
     // class for returning just the survey design contents to client app
     // returned whenever the client requests for contents information on a single survey
     public class ReturnSurveyContentsModel
@@ -469,6 +483,9 @@ namespace FEP.WebApiModel.RnP
         // can have the value 0 for public surveys
         [Required]
         public int UserId { get; set; }
+
+        // has value if UserId = 0
+        public string Email { get; set; }
 
         [Required(ErrorMessageResourceName = "ValidRequiredSurveyResponseContents", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "SurveyResponseContents", ResourceType = typeof(Language.RnPForm))]

@@ -120,6 +120,7 @@ namespace FEP.WebApiModel.RnP
     }
 
     // class for returning purchase history information
+    /*
     public class PurchaseHistoryModel
     {
         public int PurchaseOrderId { get; set; }
@@ -146,6 +147,28 @@ namespace FEP.WebApiModel.RnP
 
         public RefundStatus? RefundStatus { get; set; }
     }
+    */
+    public class PurchaseHistoryModel
+    {
+        public int Id { get; set; }
+
+        public int UserId { get; set; }
+
+        [Display(Name = "Receipt No.")]
+        public string ReceiptNo { get; set; }
+
+        [Display(Name = "Payment Date")]
+        public DateTime? PaymentDate { get; set; }
+
+        [Display(Name = "No. of Items")]
+        public int ItemCount { get; set; }
+
+        [Display(Name = "Purchase Status")]
+        public CheckoutStatus Status { get; set; }
+
+        [Display(Name = "Delivery Status")]
+        public DeliveryStatus DeliveryStatus { get; set; }
+    }
 
     // class for setting and returning filters for the datatable list of purchase history
     public class FilterPurchaseHistoryModel : DataTableModel
@@ -157,12 +180,42 @@ namespace FEP.WebApiModel.RnP
         public string ReceiptNo { get; set; }
     }
 
+    // class for returning purchase details information
+    public class PurchaseDetailsModel
+    {
+        public int PurchaseOrderId { get; set; }
+
+        public int OrderItemId { get; set; }
+
+        public int UserId { get; set; }
+
+        [Display(Name = "Receipt No.")]
+        public string ReceiptNo { get; set; }
+
+        [Display(Name = "Item Type")]
+        public PurchaseType PurchaseType { get; set; }
+
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+
+        [Display(Name = "Quantity")]
+        public int Quantity { get; set; }
+
+        [Display(Name = "Total Price")]
+        public float Amount { get; set; }
+
+        [Display(Name = "Refund Status")]
+        public RefundStatus? RefundStatus { get; set; }
+    }
+
     // class for returning purchase history information and creating refund request
     public class CreateRefundModel
     {
         public int ItemId { get; set; }
 
         public int UserId { get; set; }
+
+        public PurchaseType PurchaseType { get; set; }
 
         [Display(Name = "Full Name")]
         [Required]
@@ -188,6 +241,8 @@ namespace FEP.WebApiModel.RnP
 
         public int UserId { get; set; }
 
+        public PurchaseType PurchaseType { get; set; }
+
         [Display(Name = "Full Name")]
         [Required]
         public string FullName { get; set; }
@@ -208,7 +263,17 @@ namespace FEP.WebApiModel.RnP
     {
         public FilterPurchaseHistoryModel Filters { get; set; }
 
-        public PurchaseHistoryModel Items { get; set; }
+        public PurchaseHistoryModel Purchases { get; set; }
+
+        //public CreateRefundModel Refund { get; set; }
+    }
+
+    // class for returning purchase details information and creating refund request
+    public class ListPurchaseDetailsModel
+    {
+        public PurchaseHistoryModel Purchase { get; set; }
+
+        public List<PurchaseDetailsModel> Items { get; set; }
 
         public CreateRefundModel Refund { get; set; }
     }
@@ -278,12 +343,14 @@ namespace FEP.WebApiModel.RnP
 
         //[Display(Name = "Refund Status")]
         //[Required]
-        //public RefundStatus Status { get; set; }
+        public RefundStatus Status { get; set; }
 
         [Display(Name = "Remarks")]
         [Required]
         public string Remarks { get; set; }
 
+        [Display(Name = "Reference No.")]
+        [Required]
         public string RefundReferenceNo { get; set; }
     }
 

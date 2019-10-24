@@ -122,8 +122,12 @@ namespace FEP.Model
         public DbSet<SurveyApproval> SurveyApproval { get; set; }
         public DbSet<SurveyResponse> SurveyResponse { get; set; }
 
-		//eEvent
-		public DbSet<PublicEvent> PublicEvent { get; set; } 
+        //targeted groups
+        public DbSet<TargetedGroups> TargetedGroups { get; set; }
+        public DbSet<TargetedGroupMembers> TargetedGroupMembers { get; set; }
+
+        //eEvent
+        public DbSet<PublicEvent> PublicEvent { get; set; } 
 		public DbSet<EventCalendar> EventCalendar { get; set; }
 		public DbSet<EventAgenda> EventAgenda { get; set; }
 		public DbSet<EventSpeaker> EventSpeaker { get; set; }

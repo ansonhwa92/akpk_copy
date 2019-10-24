@@ -8,6 +8,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Data.Entity;
+using System.Web;
+using FEP.WebApiModel.SLAReminder;
 
 
 namespace FEP.WebApi.Api.Commerce
@@ -398,12 +400,13 @@ namespace FEP.WebApi.Api.Commerce
 
         // DataTable function for listing and filtering purchase history
         // POST: api/Commerce/Cart/PurchaseHistory (DataTable)
+        /*
         [Route("api/Commerce/Cart/PurchaseHistory")]
         [HttpPost]
-        public IHttpActionResult PurchaseHistory(FilterPurchaseHistoryModel request)
+        public IHttpActionResult PurchaseHistory(FilterPurchaseHistoryModel request, int userid)
         {
 
-            var query = db.PurchaseOrderItem.Join(db.PurchaseOrder, pi => pi.PurchaseOrderId, po => po.Id, (pi, po) => new { pi.PurchaseOrderId, pi.Id, po.UserId, po.ReceiptNo, pi.PurchaseType, pi.Description, pi.Quantity, pi.Price, po.Status, po.DeliveryStatus, po.PaymentDate }).Where(ph => ph.Status == CheckoutStatus.Paid);
+            var query = db.PurchaseOrderItem.Join(db.PurchaseOrder, pi => pi.PurchaseOrderId, po => po.Id, (pi, po) => new { pi.PurchaseOrderId, pi.Id, po.UserId, po.ReceiptNo, pi.PurchaseType, pi.Description, pi.Quantity, pi.Price, po.Status, po.DeliveryStatus, po.PaymentDate }).Where(ph => ph.UserId == userid && ph.Status == CheckoutStatus.Paid);
 
             var totalCount = query.Count();
 
@@ -533,6 +536,209 @@ namespace FEP.WebApi.Api.Commerce
             });
 
         }
+        */
+
+        // DataTable function for listing and filtering purchase history (purchase orders)
+        // POST: api/Commerce/Cart/PurchaseHistory (DataTable)
+        [Route("api/Commerce/Cart/PurchaseHistory")]
+        [HttpPost]
+        public IHttpActionResult PurchaseHistory(FilterPurchaseHistoryModel request, int userid)
+        {
+            // get po count
+            var poquery = db.PurchaseOrder.Where(po => po.UserId == userid && po.Status == CheckoutStatus.Paid);
+            var totalCount = poquery.Count();
+
+            // get item count
+            var piquery = db.PurchaseOrderItem.Join(db.PurchaseOrder, pi => pi.PurchaseOrderId, po => po.Id, (pi, po) => new { pi.PurchaseOrderId, pi.Id, po.UserId, po.ReceiptNo, pi.PurchaseType, pi.Description, pi.Quantity, pi.Price, po.Status, po.DeliveryStatus, po.PaymentDate }).Where(ph => ph.UserId == userid && ph.Status == CheckoutStatus.Paid);
+
+            //advance search
+            piquery = piquery.Where(p => (request.Description == null || p.Description.Contains(request.Description))
+               && (request.ReceiptNo == null || p.ReceiptNo.Contains(request.ReceiptNo))
+               );
+
+            //quick search 
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+                piquery = piquery.Where(p => p.Description.Contains(value)
+                || p.ReceiptNo.Contains(value)
+                );
+            }
+
+            // count unique po
+            piquery = piquery.OrderBy(o => o.ReceiptNo);
+            var pidata = piquery.ToList();
+            var lastreceiptno = "";
+            List<string> receiptnos = new List<string> { };
+
+            foreach (var mydata in pidata)
+            {
+                if (mydata.ReceiptNo != lastreceiptno)
+                {
+                    receiptnos.Add(mydata.ReceiptNo);
+                    lastreceiptno = mydata.ReceiptNo;
+                }
+            }
+
+            var filteredCount = receiptnos.Count;
+
+            if (receiptnos.Count == 0) receiptnos.Add("dummyreceiptno");
+
+            // catenate receiptnos
+            //string receiptstring = string.Join(",", receiptnos);
+
+            var query = db.PurchaseOrder.Where(po => receiptnos.Contains(po.ReceiptNo));
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "ReceiptNo":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.ReceiptNo);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.ReceiptNo);
+                        }
+
+                        break;
+
+                    case "PaymentDate":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.PaymentDate);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.PaymentDate);
+                        }
+
+                        break;
+
+                    case "Status":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Status);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Status);
+                        }
+
+                        break;
+
+                    case "DeliveryStatus":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.DeliveryStatus);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.DeliveryStatus);
+                        }
+
+                        break;
+
+                    default:
+                        query = query.OrderBy(o => o.PaymentDate).OrderBy(o => o.ReceiptNo);
+                        break;
+                }
+
+            }
+            else
+            {
+                query = query.OrderBy(o => o.PaymentDate).OrderBy(o => o.ReceiptNo);
+            }
+
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(s => new PurchaseHistoryModel
+                {
+                    Id = s.Id,
+                    UserId = s.UserId,
+                    ReceiptNo = s.ReceiptNo,
+                    PaymentDate = s.PaymentDate,
+                    Status = s.Status,
+                    DeliveryStatus = s.DeliveryStatus,
+                    ItemCount = db.PurchaseOrderItem.Where(pi => pi.PurchaseOrderId == s.Id).Count()
+                }).ToList();
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+
+        }
+
+        // Get purchase order info
+        // GET: api/Commerce/Cart/GetPurchaseOrder/1
+        [HttpGet]
+        [Route("api/Commerce/Cart/GetPurchaseOrder")]
+        public PurchaseHistoryModel GetPurchaseOrder(int cartid)
+        {
+            var cart = db.PurchaseOrder.Where(po => po.Id == cartid).Select(s => new PurchaseHistoryModel
+            {
+                Id = s.Id,
+                UserId = s.UserId,
+                ReceiptNo = s.ReceiptNo,
+                PaymentDate = s.PaymentDate,
+                ItemCount = db.PurchaseOrderItem.Where(pi => pi.PurchaseOrderId == s.Id).Count(),
+                Status = s.Status,
+                DeliveryStatus = s.DeliveryStatus
+            }).FirstOrDefault();
+
+            return cart;
+        }
+
+        // Get purchase order items
+        // GET: api/Commerce/Cart/GetPurchaseOrderItems/1
+        [HttpGet]
+        [Route("api/Commerce/Cart/GetPurchaseOrderItems")]
+        public List<PurchaseDetailsModel> GetPurchaseOrderItems(int cartid)
+        {
+            var cart = db.PurchaseOrder.Where(po => po.Id == cartid).Select(s => new PurchaseHistoryModel
+            {
+                Id = s.Id,
+                UserId = s.UserId,
+                ReceiptNo = s.ReceiptNo,
+                PaymentDate = s.PaymentDate,
+                ItemCount = db.PurchaseOrderItem.Where(pi => pi.PurchaseOrderId == s.Id).Count(),
+                Status = s.Status,
+                DeliveryStatus = s.DeliveryStatus
+            }).FirstOrDefault();
+
+            if (cart != null)
+            {
+                var items = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cartid).Select(s => new PurchaseDetailsModel
+                {
+                    PurchaseOrderId = s.PurchaseOrderId,
+                    OrderItemId = s.ItemId,
+                    UserId = cart.UserId,
+                    ReceiptNo = cart.ReceiptNo,
+                    PurchaseType = s.PurchaseType,
+                    Description = s.Description,
+                    Quantity = s.Quantity,
+                    Amount = s.Quantity * s.Price,
+                    RefundStatus = db.Refund.Where(rf => rf.ItemId == s.Id && rf.UserId == cart.UserId).FirstOrDefault().RefundStatus
+                }).ToList();
+
+                return items;
+            }
+
+            return null;
+        }
 
         // Add refund request
         // POST: api/Commerce/Cart/RequestRefund
@@ -558,6 +764,8 @@ namespace FEP.WebApi.Api.Commerce
                 db.Refund.Add(prefund);
                 db.SaveChanges();
 
+                var emailres = SendEmailNotificationRefundRequest(prefund);
+
                 return true;
             }
 
@@ -571,18 +779,57 @@ namespace FEP.WebApi.Api.Commerce
         public IHttpActionResult ListRefund(FilterRefundRequestModel request)
         {
 
-            var query = db.Refund.Join(db.PurchaseOrderItem, r => r.ItemId, pi => pi.Id, (r, pi) => 
-                new { pi.PurchaseOrderId, pi.Id, r.ReferenceNo, pi.PurchaseType, pi.Description, pi.Quantity,
-                      pi.Price, r.FullName, r.BankID, r.BankAccountNo, r.ReturnStatus, r.RefundStatus}).Where(
+            var query = db.Refund.Join(db.PurchaseOrderItem, r => r.ItemId, pi => pi.Id, (r, pi) =>
+                new {
+                    pi.PurchaseOrderId,
+                    pi.Id,
+                    r.ReferenceNo,
+                    pi.PurchaseType,
+                    pi.Description,
+                    pi.Quantity,
+                    pi.Price,
+                    r.FullName,
+                    r.BankID,
+                    r.BankAccountNo,
+                    r.ReturnStatus,
+                    r.RefundStatus
+                }).Where(
                       rp => rp.RefundStatus == RefundStatus.Requested).Join(
                       db.PurchaseOrder, rp => rp.PurchaseOrderId, po => po.Id, (rp, po) =>
-                      new { rp.PurchaseOrderId, rp.Id, rp.ReferenceNo, rp.PurchaseType, rp.Description,
-                            rp.Quantity, rp.Price, rp.FullName, rp.BankID, rp.BankAccountNo, rp.ReturnStatus,
-                            rp.RefundStatus, po.UserId, po.ReceiptNo }).Join(
+                      new {
+                          rp.PurchaseOrderId,
+                          rp.Id,
+                          rp.ReferenceNo,
+                          rp.PurchaseType,
+                          rp.Description,
+                          rp.Quantity,
+                          rp.Price,
+                          rp.FullName,
+                          rp.BankID,
+                          rp.BankAccountNo,
+                          rp.ReturnStatus,
+                          rp.RefundStatus,
+                          po.UserId,
+                          po.ReceiptNo
+                      }).Join(
                             db.User, rpo => rpo.UserId, u => u.Id, (rpo, u) =>
-                          new { rpo.PurchaseOrderId, rpo.Id, rpo.ReferenceNo, rpo.PurchaseType, rpo.Description,
-                                rpo.Quantity, rpo.Price, rpo.FullName, rpo.BankID, rpo.BankAccountNo,
-                                rpo.ReturnStatus, rpo.RefundStatus, rpo.UserId, rpo.ReceiptNo, u.Name});
+                          new {
+                              rpo.PurchaseOrderId,
+                              rpo.Id,
+                              rpo.ReferenceNo,
+                              rpo.PurchaseType,
+                              rpo.Description,
+                              rpo.Quantity,
+                              rpo.Price,
+                              rpo.FullName,
+                              rpo.BankID,
+                              rpo.BankAccountNo,
+                              rpo.ReturnStatus,
+                              rpo.RefundStatus,
+                              rpo.UserId,
+                              rpo.ReceiptNo,
+                              u.Name
+                          });
 
             var totalCount = query.Count();
 
@@ -690,7 +937,7 @@ namespace FEP.WebApi.Api.Commerce
 
             var data = query.Skip(request.start).Take(request.length)
                 .Select(s => new RefundRequestModel
-                {  
+                {
                     PurchaseOrderId = s.PurchaseOrderId,
                     OrderItemId = s.Id,
                     UserId = s.UserId,
@@ -742,6 +989,160 @@ namespace FEP.WebApi.Api.Commerce
             }
 
             return false;
+        }
+
+        // BULK EMAIL
+
+        [NonAction]
+        public bool SendEmailNotificationRefundRequest(Refund refund)
+        {
+            //if (refund.PurchaseType != PurchaseType.Publication)
+            ParameterListToSend paramToSend = new ParameterListToSend();
+            paramToSend.SurveyTitle = "";// survey.Title;
+            paramToSend.SurveyType = "";
+            paramToSend.SurveyCode = "";// survey.RefNo;
+            paramToSend.SurveyApproval = "";
+            paramToSend.SurveyLink = "";
+            paramToSend.SurveyRespondentEmail = "";// model.Email;
+
+            var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType.Submit_Survey_Response).FirstOrDefault();
+            string Subject = generateBodyMessage("Survey Response Submission", NotificationType.Submit_Survey_Response, paramToSend);
+            string Body = generateBodyMessage(template.TemplateMessage, NotificationType.Submit_Survey_Response, paramToSend);
+
+            List<string> Email = new List<string> { };
+
+            Email = GetEmailsByAccess(UserAccess.RnPSurveyEdit);
+
+            var sendresult = SendBulkEmail(NotificationType.Submit_Survey_Response, NotificationCategory.ResearchAndPublication, Email, paramToSend, Subject, Body);
+            return true;
+        }
+
+        [NonAction]
+        public List<string> GetEmailsByAccess(UserAccess UAccess)
+        {
+            List<string> emails = new List<string> { };
+
+            //var allusers = db.User.Where(u => u.Display).ToList();
+            var allusers = db.User.Where(u => u.Display && (u.UserType == UserType.Staff || u.UserType == UserType.SystemAdmin)).ToList();
+
+            foreach (FEP.Model.User myuser in allusers)
+            {
+                if (myuser.UserAccount.IsEnable)
+                {
+                    var myroles = myuser.UserAccount.UserRoles;
+                    foreach (UserRole myrole in myroles)
+                    {
+                        var myroleid = myrole.RoleId;
+                        var myaccesses = db.RoleAccess.Where(ra => ra.RoleId == myroleid).ToList();
+                        foreach (RoleAccess myaccess in myaccesses)
+                        {
+                            UserAccess myfunction = myaccess.UserAccess;
+                            if (myfunction == UAccess)
+                            {
+                                emails.Add(myuser.Email);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return emails;
+        }
+
+        [NonAction]
+        public string GetPropertyValues(Object obj, string propertyName)
+        {
+            Type t = obj.GetType();
+            System.Reflection.PropertyInfo[] props = t.GetProperties();
+            string value = "";
+            foreach (var prop in props)
+                if (prop.Name == propertyName)
+                {
+                    value = (prop.GetValue(obj))?.ToString();
+                    break;
+                }
+                else
+                    value = "";
+
+            return value;
+        }
+
+        [NonAction]
+        public string generateBodyMessage(string TemplateText, NotificationType NotificationType, ParameterListToSend paramToSend)
+        {
+            var ParamList = db.TemplateParameters.Where(p => p.NotificationType == NotificationType).ToList();
+            string WholeText = TemplateText;
+            foreach (var item in ParamList)
+            {
+                string theValue = GetPropertyValues(paramToSend, item.TemplateParameterType);
+                string textToReplace = "[#" + item.TemplateParameterType + "]";
+                WholeText = WholeText.Replace(textToReplace, theValue);
+            }
+
+            return WholeText;
+        }
+
+        [NonAction]
+        public string generateSubjectMessage(string TemplateText, NotificationType NotificationType, ParameterListToSend paramToSend)
+        {
+            var ParamList = db.TemplateParameters.Where(p => p.NotificationType == NotificationType).ToList();
+            string WholeText = TemplateText;
+            foreach (var item in ParamList)
+            {
+                string theValue = GetPropertyValues(paramToSend, item.TemplateParameterType);
+                string textToReplace = "[#" + item.TemplateParameterType + "]";
+                WholeText = WholeText.Replace(textToReplace, theValue);
+            }
+
+            return WholeText;
+        }
+
+        [NonAction]
+        public async System.Threading.Tasks.Task<IHttpActionResult> SendBulkEmail(NotificationType NotificationType, NotificationCategory NotificationCategory, List<string> Emails, ParameterListToSend ParameterListToSend, string emailSubject, string emailBody, bool customlink = false)
+        {
+            bool success = true;
+            foreach (string receiverEmailAddress in Emails)
+            {
+                int counter = 1;
+                if (customlink)
+                {
+                    var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType).FirstOrDefault();
+                    ParameterListToSend.SurveyLink = ParameterListToSend.SurveyLink.Replace("{email}", receiverEmailAddress);
+                    emailBody = generateBodyMessage(template.TemplateMessage, NotificationType, ParameterListToSend);
+                }
+                var response = await sendEmailUsingAPIAsync(DateTime.Now, (int)NotificationCategory, (int)NotificationType, receiverEmailAddress, emailSubject, emailBody, counter);
+                if (response == null)
+                {
+                    success = false;
+                }
+            }
+
+            return Ok(success);
+        }
+
+        [NonAction]
+        public async System.Threading.Tasks.Task<EmailClass> sendEmailUsingAPIAsync(DateTime emailDate, int notifyCategory, int notifyType, string emailAddress, string emailSubject, string emailBody, int counter)
+        {
+            DateTime myTimeNow = DateTime.Now;
+            int epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            EmailClass emailObj = new EmailClass
+            {
+                datID = emailAddress + "-email" + counter + "-" + epoch.ToString(),
+                datType = notifyCategory,
+                datNotify = notifyType,
+                dtInsert = myTimeNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                dtSchedule = emailDate.AddMinutes(1).ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                dtExpired = emailDate.AddYears(1).ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                emailTo = emailAddress,
+                subject = HttpUtility.HtmlDecode(emailSubject),
+                body = HttpUtility.HtmlDecode(emailBody)
+            };
+            var response = await FEP.Intranet.WepApiMethod.SendApiAsync<EmailClass>(System.Web.Mvc.HttpVerbs.Post, $"BulkEmail", emailObj, FEP.Intranet.WepApiMethod.APIEngine.EmailSMSAPI);
+
+            if (response.isSuccess)
+                return response.Data;
+            else
+                return null;
         }
 
     }

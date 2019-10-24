@@ -61,7 +61,7 @@
                 <div>
                     @{ if ((Model.Auto.Status == PublicationStatus.New) && (CurrentUser.HasAccess(UserAccess.RnPPublicationEdit)))
                         {
-                            <p><button class="btn btn-secondary btn-block mb-2" id="btnSubmit" data-pubid="@Model.Pub.ID">Submit for Approval</button></p>
+                            <p><button class="btn btn-secondary btn-block mb-2" id="btnSubmit" data-pubid="@Model.Pub.ID">Submit for Verification</button></p>
                         }
                         else if ((Model.Auto.Status == PublicationStatus.Approved) && (CurrentUser.HasAccess(UserAccess.RnPPublicationPublish)))
                         {
@@ -125,7 +125,7 @@
                                 }
                                 else if (Model.Auto.Status == PublicationStatus.Verified)
                                 {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Approval">
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Approval @ViewBag.ApprovalStage">
                                 }
                                 else if (Model.Auto.Status == PublicationStatus.ApproverRejected)
                                 {
@@ -161,7 +161,7 @@
                                 }
                                 else if (Model.Auto.Status == PublicationStatus.WithdrawalVerified)
                                 {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Approval">
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Approval @ViewBag.WithdrawalStage">
                                 }
                                 else if (Model.Auto.Status == PublicationStatus.WithdrawalApproverRejected)
                                 {
@@ -502,7 +502,7 @@
                                     <div class="divider-border"></div>
                                     <div class="m-4 text-center">
                                         <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
-                                        <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#cancelsent" id="btnCancelConfirm">Cancel Publication</button><!-- erk, both cancel -->
+                                        <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#cancelsent" id="btnCancelConfirm">Submit Cancellation</button>
                                     </div>
                                 </div>
                             </div>
@@ -536,7 +536,7 @@
                                     <div class="divider-border"></div>
                                     <div class="m-4 text-center">
                                         <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
-                                        <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#cancelsent" id="btnCancelWithdrawalConfirm">Cancel Withdrawal</button><!-- erk, both cancel -->
+                                        <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#cancelsent" id="btnCancelWithdrawalConfirm">Submit Cancellation</button>
                                     </div>
                                 </div>
                             </div>

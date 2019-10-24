@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FEP.WebApiModel.RnP.ReturnSurveyModel>
+﻿@model FEP.WebApiModel.RnP.BrowseSurveyModel
 
 @{
     ViewBag.Title = "Browse Surveys";
@@ -145,9 +145,9 @@
                 <div class="col-lg-3">
                     <div class="search-col-left">
                         <div class="input-keyword mb-5">
-                            <input type="text" class="form-control form-control-rounded" placeholder="Type keyword here..." name="keyword">
+                            <input type="text" class="form-control form-control-rounded" placeholder="Type keyword here..." value="@Model.Keyword" name="keyword" id="textKeyword">
                             <div class="input-group-append">
-                                <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+                                <button class="btn btn-circle" type="button" id="buttonSearch"><i class="fas fa-search text-white"></i></button>
                             </div>
                         </div>
                         <!-- Listing Filter -->
@@ -155,7 +155,7 @@
                             <div class="dropdown-menu">
                                 <div class="listing-filter-inner">
                                     <div class="filter-type">
-                                        <h4 class="color-darkblue">Survey Category</h4>
+                                        <h4 class="color-darkblue">Survey Audience</h4>
                                         <!--
                                         <div class="custom-control custom-radio">
                                             <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" checked>
@@ -164,24 +164,24 @@
                                         -->
                                         <div class="custom-control custom-radio">
                                             <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio2">Public Surveys</label>
+                                            <label class="custom-control-label" for="customRadio2" style="cursor:default;">Anonymous Users</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-secondary btn-rounded">Clear Filter</button>
+                            <button class="btn btn-secondary btn-rounded" id="buttonReset">Clear Filter</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-9">
                     <div class="search-col-right">
                         <div class="top-filter-wrap">
-                            <div class="showing-result">Showing 1 - 6 of 2000 results</div>
+                            <div class="showing-result">Showing 1 - @Model.LastIndex of @Model.ItemCount surveys</div>
                             <div class="sorting-wrap">
                                 <div class="sorting-dropdown">
-                                    <select class="select2 form-control" name="sorting">
-                                        <option value="Default Sorting">Default Sorting</option>
-                                        <option value="Other Sorting">Other Sorting</option>
+                                    <select class="select2 form-control" name="sorting" id="selectSorting">
+                                        <option value="default" @ViewBag.DefaultSorting>Default Sorting</option>
+                                        <option value="expiry" @ViewBag.ExpirySorting>Expiry Date</option>
                                     </select>
                                 </div>
                             </div>
@@ -196,7 +196,7 @@
                                     var coverpic2 = "";
                                     var authorpic = "";
                                 }
-                                @foreach (var item in Model)
+                                @foreach (var item in Model.Surveys)
                                 {
                                     icount++;
                                     if (item.Pictures != "")
@@ -230,10 +230,16 @@
                                                     <a class="card__title" href="@Url.Action("PrivateSurvey", "Home", new { area = "RnP", @id = item.ID })">@item.Title</a>
                                                 }
                                                 <div class="card__author">
-                                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@authorpic"></span><span class="card__name-wrap"><span class="card__instructby">Survey for</span><span class="card__author-name">@if (item.Type == SurveyType.Public)
-                                                    {<text>Public</text> }
-                                                else
-                                                { <text>Targeted Groups</text>}</span></span></a>
+                                                    <a class="card__col-left" href="#">
+                                                        <span class="card__avatar"><img class="card__avatar__image" src="@authorpic"></span><span class="card__name-wrap">
+                                                            <span class="card__instructby">Survey category</span><span class="card__author-name">
+                                                                @if (item.Type == SurveyType.Public)
+                                                                {<text>Public Mass</text> }
+                                                            else
+                                                            { <text>Targeted Users</text>}
+                                                            </span>
+                                                        </span>
+                                                    </a>
                                                 </div>
                                                 <div class="card__info">
                                                     <div class="card__col-left">
@@ -264,3 +270,31 @@
     @Html.Partial("_NewsArticle")
 </main>
 
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#buttonSearch').click(function (event) {
+                var keyword = $('#textKeyword').val();
+                var sorting = $('#selectSorting').val();
+                var myurl = '@Url.Action("BrowseSurveys", "Home", new { area = "RnP" })' + '?keyword=' + keyword + '&sorting=' + sorting;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#selectSorting').change(function (event) {
+                var keyword = $('#textKeyword').val();
+                var sorting = $('#selectSorting').val();
+                var myurl = '@Url.Action("BrowseSurveys", "Home", new { area = "RnP" })' + '?keyword=' + keyword + '&sorting=' + sorting;
+                window.location = myurl;
+            });
+
+            $('#buttonReset').click(function (event) {
+                var myurl = '@Url.Action("BrowseSurveys", "Home", new { area = "RnP" })';
+                window.location = myurl;
+                return false;
+            });
+
+        });
+    </script>
+}

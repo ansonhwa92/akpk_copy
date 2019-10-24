@@ -324,7 +324,24 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
         // Refunds
 
         // GET: Commerce/Cart/PurchaseHistory
-        public async Task<ActionResult> PurchaseHistory()
+        public ActionResult PurchaseHistory()
+        {
+            /*
+            var resBank = await WepApiMethod.SendApiAsync<List<BankInformationModel>>(HttpVerbs.Get, $"Commerce/Cart/GetBanks");
+
+            if (!resBank.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Banks = resBank.Data;
+            */
+
+            return View();
+        }
+
+        // GET: Commerce/Cart/PurchaseDetails
+        public async Task<ActionResult> PurchaseDetails(int cartid)
         {
             var resBank = await WepApiMethod.SendApiAsync<List<BankInformationModel>>(HttpVerbs.Get, $"Commerce/Cart/GetBanks");
 
@@ -334,6 +351,36 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             }
 
             ViewBag.Banks = resBank.Data;
+
+            var resPurchase = await WepApiMethod.SendApiAsync<PurchaseHistoryModel>(HttpVerbs.Get, $"Commerce/Cart/GetPurchaseOrder?cartid={cartid}");
+
+            if (!resPurchase.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var purchase = resPurchase.Data;
+
+            var resItems = await WepApiMethod.SendApiAsync<List<PurchaseDetailsModel>>(HttpVerbs.Get, $"Commerce/Cart/GetPurchaseOrderItems?cartid={cartid}");
+
+            if (!resItems.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var items = resItems.Data;
+
+            //var refund = new CreateRefundModel
+            //{
+            //    ItemId =
+            //};
+
+            var details = new ListPurchaseDetailsModel
+            {
+                Purchase = purchase,
+                Items = items,
+                Refund = null
+            };
 
             return View();
         }

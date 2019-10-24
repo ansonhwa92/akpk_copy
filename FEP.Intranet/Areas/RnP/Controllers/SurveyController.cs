@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 //using FEP.WebApiModel;
 using FEP.Model;
 using FEP.WebApiModel.RnP;
+using FEP.WebApiModel.Integration;
 using FEP.WebApiModel.SLAReminder;
 using System.Net;
 
@@ -83,6 +84,17 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             {
                 ViewBag.TypeName = "Public Mass";
                 model.Type = SurveyType.Public;
+            }
+
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+
+            if (groups.isSuccess)
+            {
+                ViewBag.Groups = groups.Data;
+            }
+            else
+            {
+                ViewBag.Groups = null;
             }
 
             var response = await WepApiMethod.SendApiAsync<List<UpdateSurveyTemplateModel>>(HttpVerbs.Get, $"RnP/Survey/GetTemplates");
@@ -178,7 +190,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             var vmsurvey = new UpdateSurveyModel
-            {                
+            {
                 ID = survey.ID,
                 Type = survey.Type,
                 Category = survey.Category,
@@ -200,6 +212,17 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             else
             {
                 ViewBag.TypeName = "Targeted Groups";
+            }
+
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+
+            if (groups.isSuccess)
+            {
+                ViewBag.Groups = groups.Data;
+            }
+            else
+            {
+                ViewBag.Groups = null;
             }
 
             return View(vmsurvey);
@@ -300,7 +323,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 {
                     actualcontents = survey.Contents;
                 }
-            } else
+            }
+            else
             {
                 actualcontents = survey.Contents;
             }
@@ -445,6 +469,26 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             if (resHis.isSuccess)
             {
                 ViewBag.History = resHis.Data;
+            }
+
+            if (survey.Type == 0)
+            {
+                ViewBag.TypeName = "Public Mass";
+            }
+            else
+            {
+                ViewBag.TypeName = "Targeted Groups";
+            }
+
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+
+            if (groups.isSuccess)
+            {
+                ViewBag.Groups = groups.Data;
+            }
+            else
+            {
+                ViewBag.Groups = null;
             }
 
             return View(vmreview);
@@ -783,6 +827,46 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.History = resHis.Data;
             }
 
+            ViewBag.ApprovalStage = "";
+
+            var resNext = await WepApiMethod.SendApiAsync<SurveyApprovalHistoryModel>(HttpVerbs.Get, $"RnP/Survey/GetNextApproval?id={id}");
+
+            if (resNext.isSuccess)
+            {
+                if (resNext.Data.Level == SurveyApprovalLevels.Approver1)
+                {
+                    ViewBag.ApprovalStage = "1";
+                }
+                else if (resNext.Data.Level == SurveyApprovalLevels.Approver2)
+                {
+                    ViewBag.ApprovalStage = "2";
+                }
+                else if (resNext.Data.Level == SurveyApprovalLevels.Approver3)
+                {
+                    ViewBag.ApprovalStage = "3";
+                }
+            }
+
+            if (survey.Type == 0)
+            {
+                ViewBag.TypeName = "Public Mass";
+            }
+            else
+            {
+                ViewBag.TypeName = "Targeted Groups";
+            }
+
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+
+            if (groups.isSuccess)
+            {
+                ViewBag.Groups = groups.Data;
+            }
+            else
+            {
+                ViewBag.Groups = null;
+            }
+
             return View(vmview);
         }
 
@@ -808,6 +892,26 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             if (survey == null)
             {
                 return HttpNotFound();
+            }
+
+            if (survey.Type == 0)
+            {
+                ViewBag.TypeName = "Public Mass";
+            }
+            else
+            {
+                ViewBag.TypeName = "Targeted Groups";
+            }
+
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+
+            if (groups.isSuccess)
+            {
+                ViewBag.Groups = groups.Data;
+            }
+            else
+            {
+                ViewBag.Groups = null;
             }
 
             return View(survey);
@@ -957,7 +1061,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             var survey = new ReturnSurveyModel
             {
-                ID = surveyapproval.Survey.ID,                
+                ID = surveyapproval.Survey.ID,
                 Type = surveyapproval.Survey.Type,
                 Category = surveyapproval.Survey.Category,
                 Title = surveyapproval.Survey.Title,
@@ -1001,6 +1105,46 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.History = resHis.Data;
             }
 
+            ViewBag.ApprovalStage = "";
+
+            var resNext = await WepApiMethod.SendApiAsync<SurveyApprovalHistoryModel>(HttpVerbs.Get, $"RnP/Survey/GetNextApproval?id={id}");
+
+            if (resNext.isSuccess)
+            {
+                if (resNext.Data.Level == SurveyApprovalLevels.Approver1)
+                {
+                    ViewBag.ApprovalStage = "1";
+                }
+                else if (resNext.Data.Level == SurveyApprovalLevels.Approver2)
+                {
+                    ViewBag.ApprovalStage = "2";
+                }
+                else if (resNext.Data.Level == SurveyApprovalLevels.Approver3)
+                {
+                    ViewBag.ApprovalStage = "3";
+                }
+            }
+
+            if (survey.Type == 0)
+            {
+                ViewBag.TypeName = "Public Mass";
+            }
+            else
+            {
+                ViewBag.TypeName = "Targeted Groups";
+            }
+
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+
+            if (groups.isSuccess)
+            {
+                ViewBag.Groups = groups.Data;
+            }
+            else
+            {
+                ViewBag.Groups = null;
+            }
+
             return View(sevaluation);
         }
 
@@ -1030,7 +1174,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                         if (model.Approval.Level == SurveyApprovalLevels.Verifier)
                         {
                             await LogActivity(Modules.RnP, "Verify Survey: " + title, model);
-                            TempData["SuccessMessage"] = "Survey titled " + title + " updated as Verified.";
+                            TempData["SuccessMessage"] = "Survey titled " + title + " updated as Pending Approval 1.";
 
                             await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Survey_Creation, title, type, refno, "Verified and Pending Approval", model.Approval.Status, model.Approval.RequireNext);
                             // dashboard
@@ -1038,16 +1182,17 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                         else
                         {
                             await LogActivity(Modules.RnP, "Approve Survey: " + title, model);
-                            TempData["SuccessMessage"] = "Survey titled " + title + " updated as Approved.";
 
                             if (model.Approval.Level == SurveyApprovalLevels.Approver1)
                             {
                                 if (model.Approval.RequireNext)
                                 {
+                                    TempData["SuccessMessage"] = "Survey titled " + title + " updated as Pending Approval 2.";
                                     await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, title, type, refno, "Approved by 1st-Level Approver and Pending 2nd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
                                 }
                                 else
                                 {
+                                    TempData["SuccessMessage"] = "Survey titled " + title + " updated as Approved.";
                                     await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, title, type, refno, "Approved by 1st-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                                 }
                             }
@@ -1055,15 +1200,18 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                             {
                                 if (model.Approval.RequireNext)
                                 {
+                                    TempData["SuccessMessage"] = "Survey titled " + title + " updated as Pending Approval 3.";
                                     await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, title, type, refno, "Approved by 2nd-Level Approver and Pending 3rd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
                                 }
                                 else
                                 {
+                                    TempData["SuccessMessage"] = "Survey titled " + title + " updated as Approved.";
                                     await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, title, type, refno, "Approved by 2nd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                                 }
                             }
                             else if (model.Approval.Level == SurveyApprovalLevels.Approver3)
                             {
+                                TempData["SuccessMessage"] = "Survey titled " + title + " updated as Approved.";
                                 await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_3, title, type, refno, "Approved by 3rd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                             }
                             // dashboard
@@ -1238,7 +1386,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             var vmresp = new UpdateSurveyResponseModel
-            {                
+            {
                 SurveyID = surveyinfo.ID,
                 Type = SurveyResponseTypes.Actual,
                 UserId = uid,
@@ -1361,6 +1509,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                             int saveThisID = response.Data.SLAReminderStatusId;
                             //save saveThisID back into survey table
                             var ressave = await SaveNotificationID(id, saveThisID);
+
+                            await LogActivity(Modules.RnP, "Email notification sent for Survey " + code + " - " + approvalmessage);
+
                             return true;
                         }
                         else

@@ -1,0 +1,265 @@
+﻿@model FEP.WebApiModel.RnP.ListPurchaseDetailsModel
+
+@{
+    ViewBag.Title = "Purchase Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Purchase Details</h1>
+                    <div class="header-text">View the list of items in the selected purchase.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="d-flex align-items-center">
+    <div class="divider-vertical">&nbsp;</div>
+</div>
+<hr>
+<div class="table-responsive" data-toggle="lists">
+    <!-- Table -->
+    <table class="table tableStyle1 tabledata">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Receipt No.</th>
+                <th>Item Type</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>TotalPrice</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody class="list" id="table01">
+            @{ var icount = 0; }
+            @foreach (var item in Model.Items)
+            {
+                icount++;
+                <tr>
+                    <td>@icount</td>
+                    <td>@item.ReceiptNo</td>
+                    <td>@item.PurchaseType</td>
+                    <td>@item.Description</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Amount.ToString("0:n2")</td>
+                    <td>
+                        <div class="icon-action">
+                            @if (Model.Purchase.DeliveryStatus >= DeliveryStatus.Shipped)
+                            {
+                                if ((item.RefundStatus == null) && (item.Amount > 0))
+                                {
+                                    <button class="btn btn-secondary" id="btnRefund" data-ptype="@item.PurchaseType" data-itemid="@item.OrderItemId" data-userid="@item.UserId" data-refno="@item.ReceiptNo" data-toggle="tooltip" data-placement="top" title="Request Refund">Request Refund</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-disabled" data-toggle="tooltip" data-placement="top" title="Refund Requested">Refund Requested</button>
+                                }
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="modalRefund" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formrefund", id = "formrefund" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="modal-dialog modal-sm" role="document" style="max-width: 600px;">
+            <div class="modal-content">
+                <div class="m-4 text-left">
+                    <h4 class="color-darkblue mb-0" id="refund_title" style="margin-bottom: .5rem !important">Request for Refund #</h4>
+                    <h6 class="font-weight-normal" id="refund_notes">In order to complete your refund, kindly provide your account details and return your item to the address given below before xxx</h6>
+                </div>
+                <div class="m-4 text-left" style="margin-top: 0rem !important; margin-bottom: 0rem !important;">
+                    <h6 class="p-4 font-weight-normal" id="refund_address" style="background-color: aliceblue;"><b>Agensi Kaunseling & Pengurusan Kredit</b><br />14th floor, Menara TH Perdana<br />1001 Jalan Sultan Ismail<br />50250 Kuala Lumpur, Malaysia</h6>
+                </div>
+                <div class="modal-body">
+                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Refund.FullName, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            <input type="text" class="form-control" name="FullName" id="FullName" placeholder="" />
+                            <span class="text-danger field-validation-error" id="span_fullnameerror" style="display:none;">Please enter Full Name</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Refund.BankID, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            <select class="form-control" name="BankID" id="BankID">
+                                <option value="">Select Bank</option>
+                                @foreach (var bank in ViewBag.Banks)
+                                {
+                                    <option value="@bank.ID">@bank.ShortName</option>
+                                }
+                            </select>
+                            <span class="text-danger field-validation-error" id="span_banknameerror" style="display:none;">Please select Bank</span>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Refund.BankAccountNo, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            <input type="text" class="form-control" name="BankAccountNo" id="BankAccountNo" placeholder="" />
+                            <span class="text-danger field-validation-error" id="span_accountnoerror" style="display:none;">Please enter Account No.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="divider-border"></div>
+                <div class="m-4 text-right">
+                    <input type="hidden" class="form-control" name="ItemId" id="ItemId" value="" />
+                    <input type="hidden" class="form-control" name="PurchaseType" id="PurchaseType" value="" />
+                    <input type="hidden" class="form-control" name="UserId" id="UserId" value="" />
+                    <input type="hidden" class="form-control" name="ReferenceNo" id="ReferenceNo" value="" />
+                    <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button class="btn btn-secondary" data-toggle="modal" data-target="#refundsent" id="btnRefundConfirm">Send Request</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal fade" id="modalResult" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="btnCloseResult" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="~/img/icon-noti-email.svg" alt="image" id="iconResult">
+                <h4 class="color-darkblue mt-4" id="titleResult">Refund Request Sent</h4>
+                <p class="small" id="textResult">Your request for refund has been submitted successfully.</p>
+            </div>
+            <!-- Bila xde modal footer -->
+            <div class="modal-footer py-0">&nbsp;</div>
+        </div>
+    </div>
+</div>
+
+@section ContentScript{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //$('#btnRefund').click(function () {
+            $(document).on('click', '.btn.btn-secondary', function () {
+                var ptype = $(this).data("ptype");
+                var itemid = $(this).data("itemid");
+                var userid = $(this).data("userid");
+                var refno = $(this).data("refno");
+                $('#PurchaseType').val(ptype);
+                $('#ItemId').val(itemid);
+                $('#UserId').val(userid);
+                $('#ReferenceNo').val(refno);
+                $('#refund_title').html("Request for Refund #" + refno);
+                if (ptype == 0) {
+                    $('#refund_notes').html("In order to complete your refund, kindly provide your account details below");
+                    $('#refund_address').hide();
+                }
+                else if (ptype == 1) {
+                    $('#refund_notes').html("In order to complete your refund, kindly provide your account details below");
+                    $('#refund_address').hide();
+                }
+                else if (ptype == 2) {
+                    $('#refund_notes').html("In order to complete your refund, kindly provide your account details and return the publication to the address given below"); //  before xxx
+                    $('#refund_address').show();
+                }
+                $('#modalRefund').modal();
+                return false;
+            });
+
+            function ValidRefund() {
+                var cfullname = $('#FullName').val();
+                var cbankid = $('#BankID').val();
+                var caccountno = $('#BankAccountNo').val();
+                var error1 = false;
+                var error2 = false;
+                var error3 = false;
+                $('#span_fullnameerror').hide();
+                $('#span_banknameerror').hide();
+                $('#span_accountnoerror').hide();
+                if (cfullname.trim() == "") {
+                    $('#span_fullnameerror').show();
+                    error1 = true;
+                }
+                if (cbankid == "") {
+                    $('#span_banknameerror').show();
+                    error2 = true;
+                }
+                if (caccountno.trim() == "") {
+                    $('#span_accountnoerror').show();
+                    error3 = true;
+                }
+                if (error1 || error2 || error3) {
+                    return false;
+                }
+                return true;
+            }
+
+            $('#btnRefundConfirm').click(function (event) {
+                if (!ValidRefund()) {
+                    return false;
+                }
+                var form = $('#formrefund');
+                //alert(form.serialize());
+                //return false;
+                var myurl = '@Url.Action("RequestRefund", "Cart", new { area = "Commerce" })';
+                $.ajax({
+                    url: myurl,
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        $("#modalRefund").modal('hide');
+                        if (data == "success") {
+                            //$("#iconResult").show();
+                            $("#iconResult").attr('src','~/img/icon-noti-email.svg');
+                            $("#titleResult").text('Refund Request Sent');
+                            $("#textResult").text('Your request for refund has been submitted successfully.');
+                            $("#modalResult").modal();
+                        }
+                        else {
+                            //$("#iconResult").hide();
+                            $("#iconResult").attr('src', '~/img/icon-cancellation.svg');
+                            $("#titleResult").text('Refund Request Failed');
+                            $("#textResult").text('Your request for refund is unsuccessful. Please try again later.');
+                            $("#modalResult").modal();
+                        }
+                    }
+                });
+            });
+
+            // redirection after send
+
+            $('#btnCloseSent').click(function (event) {
+                var url = '@Url.Action("PurchaseHistory", "Cart", new { area = "Commerce" })';
+                window.location = url;
+            });
+
+            $('#modalResult').on( "hidden.bs.modal", function () {
+                var url = '@Url.Action("PurchaseHistory", "Cart", new { area = "Commerce" })';
+                window.location = url;
+            });
+
+        });
+
+    </script>
+
+}
+
+

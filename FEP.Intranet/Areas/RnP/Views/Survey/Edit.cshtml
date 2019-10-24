@@ -126,11 +126,14 @@
                             <div class="form-group col-lg-12">
                                 @Html.LabelFor(model => model.TargetGroup, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                                 <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" placeholder="Select group(s)">
-                                    <option value="Group 1">Group 1</option>
-                                    <option value="Group 2">Group 2</option>
-                                    <option value="Group 3">Group 3</option>
-                                    <option value="Group 4">Group 4</option>
-                                    <option value="Group 5">Group 5</option>
+                                    @if (ViewBag.Groups != null)
+                                    {
+                                        foreach (var group in ViewBag.Groups)
+                                        {
+
+                                            <option value="@group.ID">@group.Name</option>
+                                        }
+                                    }
                                 </select>
                                 @Html.HiddenFor(model => model.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.TargetGroup, "", new { @class = "text-danger" })
@@ -249,25 +252,58 @@
             var mystart = $('#StartDate').val();
             var myend = $('#EndDate').val();
 
+            function sortDates(dateType, dateStr) {
+                var date1 = $('#StartDate').val();
+                var date2 = $('#EndDate').val();
+                var revdate1 = date1.substr(6, 4) + date1.substr(3, 2) + date1.substr(0, 2);
+                var revdate2 = date2.substr(6, 4) + date2.substr(3, 2) + date2.substr(0, 2);
+                if (dateType == 1) {
+                    if (revdate2 < revdate1) {
+                        $('#EndDate').val(date1);
+                        $("#date_end").val(date1);
+                    }
+                }
+                else if (dateType == 2) {
+                    if (revdate2 < revdate1) {
+                        $('#StartDate').val(date2);
+                        $("#date_start").val(date2);
+                    }
+                }
+            }
+
             $("#date_start").flatpickr({
                 dateFormat: "d/m/Y",
                 defaultDate: mystart,
+                minDate: "today",
                 maxDate: "31/01/2200",
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#StartDate").val(dateStr);
+                    sortDates(1, dateStr);
                 },
             });
 
             $("#date_end").flatpickr({
                 dateFormat: "d/m/Y",
                 defaultDate: myend,
+                minDate: "today",
                 maxDate: "31/01/2200",
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#EndDate").val(dateStr);
+                    sortDates(2, dateStr);
                 },
             });
 
             var selectedGroup = $('#TargetGroup').val();
+            var grouparray = selectedGroup.split(',');
+
+            $.each(grouparray, function (index, item) {
+                $('#survey_group option').each(function () {
+                    if ($(this).text() == item) {
+                        $(this).prop("selected", true);
+                    }
+                });
+            });
+            /*
             if (selectedGroup.indexOf("Group 1") >= 0) {
                 $('#survey_group option').each(function () {
                     if ($(this).text() == "Group 1") {
@@ -303,13 +339,15 @@
                     }
                 });
             }
+            */
             $('#survey_group').trigger('change');
 
             $('#survey_group').change(function () {
                 var selectedValues = [];
                 var selectedText = "";
                 $("#survey_group :selected").each(function () {
-                    selectedValues.push($(this).val());
+                    //selectedValues.push($(this).val());
+                    selectedValues.push($(this).text());
                 });
                 selectedText = selectedValues.join();
                 $("#TargetGroup").val(selectedText);

@@ -284,7 +284,7 @@
                 <!--input type="submit" value="Create" class="btn btn-default" /-->
                 @Html.HiddenFor(model => model.CreatorId, new { htmlAttributes = new { @class = "form-control" } })
                 <a class="btn btn-default" href="@Url.Action("Edit", "Publication", new { area = "RnP", @id = Model.ID })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
-                <button type="submit" class="btn btn-secondary" id="btnSubmit">Submit for Approval</button>
+                <button type="submit" class="btn btn-secondary" id="btnSubmit">Submit for Verification</button>
                 <button type="button" class="btn btn-default" id="btnDiscard"><i class="la la-trash font-icon" style="font-size: 1.5rem;"></i>Discard</button>
             </div>
         </div>

@@ -84,19 +84,33 @@
                             <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Description)</textarea>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.TargetGroup, htmlAttributes: new { @class = "control-label" })
-                            <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" disabled="disabled">
-                                <option value="Group 1">Group 1</option>
-                                <option value="Group 2">Group 2</option>
-                                <option value="Group 3">Group 3</option>
-                                <option value="Group 4">Group 4</option>
-                                <option value="Group 5">Group 5</option>
-                            </select>
-                            @Html.HiddenFor(model => model.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                    @if (ViewBag.TypeName == "Public Mass")
+                    {
+                        <div class="row" style="display:none;">
+                            <div class="form-group col-lg-12">
+                                @Html.HiddenFor(model => model.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else if (ViewBag.TypeName == "Targeted Groups")
+                    {
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.TargetGroup, htmlAttributes: new { @class = "control-label" })
+                                <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" disabled="disabled">
+                                    @if (ViewBag.Groups != null)
+                                    {
+                                        foreach (var group in ViewBag.Groups)
+                                        {
+
+                                            <option value="@group.ID">@group.Name</option>
+                                        }
+                                    }
+                                </select>
+                                @Html.HiddenFor(model => model.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    }
                     <div class="row">
                         <div class="form-group col-lg-6">
                             @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label", @title = "The start date of the Survey duration" })
@@ -169,7 +183,19 @@
                 maxDate: "31-01-3000",
             });
 
+            //var groups = @*Html.Raw(Json.Encode(ViewBag.Groups))*@;
+
             var selectedGroup = $('#TargetGroup').val();
+            var grouparray = selectedGroup.split(',');
+
+            $.each(grouparray, function (index, item) {
+                $('#survey_group option').each(function () {
+                    if ($(this).text() == item) {
+                        $(this).prop("selected", true);
+                    }
+                });
+            });
+            /*
             if (selectedGroup.indexOf("Group 1") >= 0) {
                 $('#survey_group option').each(function () {
                     if ($(this).text() == "Group 1") {
@@ -205,6 +231,7 @@
                     }
                 });
             }
+            */
             $('#survey_group').trigger('change');
 
             $('#tab_details').click(function () {

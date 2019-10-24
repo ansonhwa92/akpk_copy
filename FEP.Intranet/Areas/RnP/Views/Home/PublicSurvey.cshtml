@@ -48,10 +48,12 @@
                             if (CurrentUser.IsAuthenticated())
                             {
                                 <input type="hidden" name="UserId" class="form-control" value="@CurrentUser.UserId" />
+                                <input type="hidden" name="Email" class="form-control" value="@CurrentUser.Email" />
                             }
                             else
                             {
                                 <input type="hidden" name="UserId" class="form-control" value="0" />
+                                <input type="hidden" name="Email" class="form-control" value="@Model.Response.Email" />
                             }
                             <input type="hidden" name="ResponseDate" class="form-control" value="" />
                             <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;"></textarea>

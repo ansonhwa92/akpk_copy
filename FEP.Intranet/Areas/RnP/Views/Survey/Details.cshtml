@@ -58,7 +58,7 @@
                 <div>
                     @{ if ((Model.Auto.Status == SurveyStatus.New) && (CurrentUser.HasAccess(UserAccess.RnPSurveyEdit)))
                         {
-                            <p><button class="btn btn-secondary btn-block" id="btnSubmit" data-surveyid="@Model.Survey.ID">Submit for Approval</button></p>
+                            <p><button class="btn btn-secondary btn-block" id="btnSubmit" data-surveyid="@Model.Survey.ID">Submit for Verification</button></p>
                         }
                         else if ((Model.Auto.Status == SurveyStatus.Approved) && (CurrentUser.HasAccess(UserAccess.RnPSurveyPublish)))
                         {
@@ -120,7 +120,7 @@
                                 }
                                 else if (Model.Auto.Status == SurveyStatus.Verified)
                                 {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Approval">
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Approval @ViewBag.ApprovalStage">
                                 }
                                 else if (Model.Auto.Status == SurveyStatus.ApproverRejected)
                                 {
@@ -170,19 +170,33 @@
                             <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Survey.Description)</textarea>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Survey.TargetGroup, htmlAttributes: new { @class = "control-label" })
-                            <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" disabled="disabled">
-                                <option value="Group 1">Group 1</option>
-                                <option value="Group 2">Group 2</option>
-                                <option value="Group 3">Group 3</option>
-                                <option value="Group 4">Group 4</option>
-                                <option value="Group 5">Group 5</option>
-                            </select>
-                            @Html.HiddenFor(model => model.Survey.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                    @if (ViewBag.TypeName == "Public Mass")
+                    {
+                        <div class="row" style="display:none;">
+                            <div class="form-group col-lg-12">
+                                @Html.HiddenFor(model => model.Survey.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else if (ViewBag.TypeName == "Targeted Groups")
+                    {
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Survey.TargetGroup, htmlAttributes: new { @class = "control-label" })
+                                <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" disabled="disabled">
+                                    @if (ViewBag.Groups != null)
+                                    {
+                                        foreach (var group in ViewBag.Groups)
+                                        {
+
+                                            <option value="@group.ID">@group.Name</option>
+                                        }
+                                    }
+                                </select>
+                                @Html.HiddenFor(model => model.Survey.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    }
                     <div class="row">
                         <div class="form-group col-lg-6">
                             @Html.LabelFor(model => model.Survey.StartDate, htmlAttributes: new { @class = "control-label", @title = "The start date of the Survey duration" })
@@ -300,7 +314,7 @@
                                 <div class="divider-border"></div>
                                 <div class="m-4 text-center">
                                     <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
-                                    <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#cancelsent" id="btnCancelConfirm">Cancel Publication</button><!-- erk, both cancel -->
+                                    <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#cancelsent" id="btnCancelConfirm">Submit Cancellation</button>
                                 </div>
                             </div>
                         </div>
@@ -373,7 +387,7 @@
                             </div>
                             <div class="modal-body text-center">
                                 <img src="~/img/icon-confirmation.svg" alt="image">
-                                <h4 class="color-darkblue mt-4" >Are you sure to Unpublish the Survey?</h4>
+                                <h4 class="color-darkblue mt-4">Are you sure to Unpublish the Survey?</h4>
                                 <p class="small">Once unpublished, Survey can be re-published at any time if necessary.</p>
                             </div>
                             <div class="divider-border"></div>
@@ -515,6 +529,27 @@
             var mystart = $('#Extension_NewStartDate').val();
             var myend = $('#Extension_NewEndDate').val();
 
+            function sortDates(dateType, dateStr) {
+                var date1 = $('#Extension_NewStartDate').val();
+                var date2 = $('#Extension_NewEndDate').val();
+                var revdate1 = date1.substr(6, 4) + date1.substr(3, 2) + date1.substr(0, 2);
+                var revdate2 = date2.substr(6, 4) + date2.substr(3, 2) + date2.substr(0, 2);
+                if (dateType == 1) {
+                    if (revdate2 < revdate1) {
+                        $('#Extension_NewEndDate').val(date1);
+                        $('#NewEndDate').val(date1);
+                        $("#date_end").val(date1);
+                    }
+                }
+                else if (dateType == 2) {
+                    if (revdate2 < revdate1) {
+                        $('#Extension_NewStartDate').val(date2);
+                        $('#NewStartDate').val(date2);
+                        $("#date_start").val(date2);
+                    }
+                }
+            }
+
             $("#date_start").flatpickr({
                 dateFormat: "d/m/Y",
                 defaultDate: mystart,
@@ -523,6 +558,7 @@
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#Extension_NewStartDate").val(dateStr);
                     $("#NewStartDate").val(dateStr);
+                    sortDates(1, dateStr);
                 },
             });
 
@@ -534,12 +570,23 @@
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#Extension_NewEndDate").val(dateStr);
                     $("#NewEndDate").val(dateStr);
+                    sortDates(2, dateStr);
                 },
             });
 
             // populate target groups
 
             var selectedGroup = $('#Survey_TargetGroup').val();
+            var grouparray = selectedGroup.split(',');
+
+            $.each(grouparray, function (index, item) {
+                $('#survey_group option').each(function () {
+                    if ($(this).text() == item) {
+                        $(this).prop("selected", true);
+                    }
+                });
+            });
+            /*
             if (selectedGroup.indexOf("Group 1") >= 0) {
                 $('#survey_group option').each(function () {
                     if ($(this).text() == "Group 1") {
@@ -575,6 +622,7 @@
                     }
                 });
             }
+            */
             $('#survey_group').trigger('change');
 
             // tab switching

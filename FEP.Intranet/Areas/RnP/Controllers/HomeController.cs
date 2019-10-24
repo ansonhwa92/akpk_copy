@@ -32,23 +32,91 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // TODO: Handle search/filtering, include star rating
         // GET: RnP/Home/BrowsePublications
         [AllowAnonymous]
-        public async Task<ActionResult> BrowsePublications()
+        public async Task<ActionResult> BrowsePublications(string keyword, string sorting, bool? articles, bool? books, bool? factssheet, bool? journals, bool? reviews, bool? reports, bool? researchpapers, bool? digital, bool? hardcopy, bool? bahasamalaysia, bool? english)
         {
-            var resPubs = await WepApiMethod.SendApiAsync<IEnumerable<ReturnPublicationModel>>(HttpVerbs.Get, $"RnP/Publication");
+            if (keyword == null) keyword = "";
+            if (sorting == null) sorting = "default";
+            if (articles == null) articles = true;
+            if (books == null) books = true;
+            if (factssheet == null) factssheet = true;
+            if (journals == null) journals = true;
+            if (reviews == null) reviews = true;
+            if (reports == null) reports = true;
+            if (researchpapers == null) researchpapers = true;
+            if (digital == null) digital = false;
+            if (hardcopy == null) hardcopy = false;
+            if (bahasamalaysia == null) bahasamalaysia = false;
+            if (english == null) english = false;
+
+            // get anonymous surveys
+            var resPubs = await WepApiMethod.SendApiAsync<BrowsePublicationModel>(HttpVerbs.Get, $"RnP/Publication/GetPublications?keyword={keyword}&sorting={sorting}&articles={articles}&books={books}&factssheet={factssheet}&journals={journals}&reviews={reviews}&reports={reports}&researchpapers={researchpapers}&digital={digital}&hardcopy={hardcopy}&bahasamalaysia={bahasamalaysia}&english={english}");
 
             if (!resPubs.isSuccess)
             {
                 return HttpNotFound();
             }
 
-            var publications = resPubs.Data;
+            var browser = resPubs.Data;
 
-            if (publications == null)
+            if (browser == null)
             {
                 return HttpNotFound();
             }
 
-            return View(publications);
+            if (browser.Sorting == "title")
+            {
+                ViewBag.DefaultSorting = "";
+                ViewBag.TitleSorting = "selected";
+                ViewBag.YearSorting = "";
+                ViewBag.AddedSorting = "";
+            }
+            else if (browser.Sorting == "year")
+            {
+                ViewBag.DefaultSorting = "";
+                ViewBag.TitleSorting = "";
+                ViewBag.YearSorting = "selected";
+                ViewBag.AddedSorting = "";
+            }
+            else if (browser.Sorting == "added")
+            {
+                ViewBag.DefaultSorting = "";
+                ViewBag.TitleSorting = "";
+                ViewBag.YearSorting = "";
+                ViewBag.AddedSorting = "selected";
+            }
+            else
+            {
+                ViewBag.DefaultSorting = "selected";
+                ViewBag.TitleSorting = "";
+                ViewBag.YearSorting = "";
+                ViewBag.AddedSorting = "";
+            }
+
+            ViewBag.TypeArticles = "";
+            ViewBag.TypeBooks = "";
+            ViewBag.TypeFactsSheet = "";
+            ViewBag.TypeJournals = "";
+            ViewBag.TypeReviews = "";
+            ViewBag.TypeReports = "";
+            ViewBag.TypeResearchPapers = "";
+            ViewBag.FormatDigital = "";
+            ViewBag.FormatHardcopy = "";
+            ViewBag.LanguageBahasaMalaysia = "";
+            ViewBag.LanguageEnglish = "";
+
+            if ((bool)articles) { ViewBag.TypeArticles = "checked"; }
+            if ((bool)books) { ViewBag.TypeBooks = "checked"; }
+            if ((bool)factssheet) { ViewBag.TypeFactsSheet = "checked"; }
+            if ((bool)journals) { ViewBag.TypeJournals = "checked"; }
+            if ((bool)reviews) { ViewBag.TypeReviews = "checked"; }
+            if ((bool)reports) { ViewBag.TypeReports = "checked"; }
+            if ((bool)researchpapers) { ViewBag.TypeResearchPapers = "checked"; }
+            if ((bool)digital) { ViewBag.FormatDigital = "checked"; }
+            if ((bool)hardcopy) { ViewBag.FormatHardcopy = "checked"; }
+            if ((bool)bahasamalaysia) { ViewBag.LanguageBahasaMalaysia = "checked"; }
+            if ((bool)english) { ViewBag.LanguageEnglish = "checked"; }
+
+            return View(browser);
         }
 
         // Publication details
@@ -140,7 +208,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             ViewBag.PubAuthor = publication.Author;
             ViewBag.PubYear = publication.Year;
             ViewBag.PubLanguage = publication.Language;
-            ViewBag.PubISBN = publication.ISBN ;
+            ViewBag.PubISBN = publication.ISBN;
             ViewBag.PubHardcopy = publication.Hardcopy;
             ViewBag.PubDigitalcopy = publication.Digitalcopy;
             ViewBag.PubHDcopy = publication.HDcopy;
@@ -379,27 +447,79 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return "invalid";
         }
 
-        // Browse surveys
-        // TODO: Handle search/filtering, include star rating
+        // Browse surveys (anonymous)
+        // TODO: Handle search/filtering
         // GET: RnP/Home/BrowseSurveys
         [AllowAnonymous]
-        public async Task<ActionResult> BrowseSurveys()
+        public async Task<ActionResult> BrowseSurveys(string keyword, string sorting)
         {
-            var resSurveys = await WepApiMethod.SendApiAsync<IEnumerable<ReturnSurveyModel>>(HttpVerbs.Get, $"RnP/Survey");
+            if (keyword == null) keyword = "";
+            if (sorting == null) sorting = "default";
+
+            // get anonymous surveys
+            var resSurveys = await WepApiMethod.SendApiAsync<BrowseSurveyModel>(HttpVerbs.Get, $"RnP/Survey/GetAnonymousSurveys?keyword={keyword}&sorting={sorting}");
 
             if (!resSurveys.isSuccess)
             {
                 return HttpNotFound();
             }
 
-            var surveys = resSurveys.Data;
+            var browser = resSurveys.Data;
 
-            if (surveys == null)
+            if (browser == null)
             {
                 return HttpNotFound();
             }
 
-            return View(surveys);
+            if (browser.Sorting == "expiry")
+            {
+                ViewBag.DefaultSorting = "";
+                ViewBag.ExpirySorting = "selected";
+            }
+            else
+            {
+                ViewBag.DefaultSorting = "selected";
+                ViewBag.ExpirySorting = "";
+            }
+
+            return View(browser);
+        }
+
+        // Browse surveys (logged in)
+        // TODO: Handle search/filtering
+        // GET: RnP/Home/BrowseSurveysLoggedIn
+        public async Task<ActionResult> BrowseSurveysLoggedIn(string keyword, string sorting)
+        {
+            if (keyword == null) keyword = "";
+            if (sorting == null) sorting = "default";
+
+            // get non-anonymous surveys
+            var resSurveys = await WepApiMethod.SendApiAsync<BrowseSurveyModel>(HttpVerbs.Get, $"RnP/Survey/GetLoginSurveys?useremail={CurrentUser.Email}&keyword={keyword}&sorting={sorting}");
+
+            if (!resSurveys.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var browser = resSurveys.Data;
+
+            if (browser == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (browser.Sorting == "expiry")
+            {
+                ViewBag.DefaultSorting = "";
+                ViewBag.ExpirySorting = "selected";
+            }
+            else
+            {
+                ViewBag.DefaultSorting = "selected";
+                ViewBag.ExpirySorting = "";
+            }
+
+            return View(browser);
         }
 
         // Answer public survey
@@ -430,7 +550,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             {
                 SurveyID = survey.ID,
                 Type = Model.SurveyResponseTypes.Actual,
-                Contents = ""                
+                Contents = ""
             };
 
             var srmodel = new ReturnSurveyResponseModel
@@ -438,6 +558,15 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 Survey = survey,
                 Response = sresp
             };
+
+            if (survey.StartDate > DateTime.Now)
+            {
+                return RedirectToAction("SurveyNotStarted", "Home", new { area = "RnP", id = survey.ID });
+            }
+            if (survey.EndDate < DateTime.Now)
+            {
+                return RedirectToAction("SurveyExpired", "Home", new { area = "RnP", id = survey.ID });
+            }
 
             return View(srmodel);
         }
@@ -478,13 +607,132 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 Response = sresp
             };
 
+            if (survey.StartDate > DateTime.Now)
+            {
+                return RedirectToAction("SurveyNotStarted", "Home", new { area = "RnP", id = survey.ID });
+            }
+            if (survey.EndDate < DateTime.Now)
+            {
+                return RedirectToAction("SurveyExpired", "Home", new { area = "RnP", id = survey.ID });
+            }
+
             return View(srmodel);
+        }
+
+        // Open and answer targeted survey
+        // GET: RnP/Home/LinkedSurvey or TakeSurvey
+        public async Task<ActionResult> TakeSurvey(string refno, string email)
+        {
+            if (String.IsNullOrEmpty(refno) || String.IsNullOrEmpty(email))
+            {
+                return HttpNotFound();
+            }
+
+            var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey/GetLinkedSurvey?refno={refno}&email={email}");
+
+            if (!resSurvey.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var survey = resSurvey.Data;
+
+            if (survey == null)
+            {
+                return HttpNotFound();
+            }
+
+            var sresp = new UpdateSurveyResponseModel
+            {
+                SurveyID = survey.ID,
+                Type = Model.SurveyResponseTypes.Actual,
+                Email = email,
+                Contents = ""
+            };
+
+            var srmodel = new ReturnSurveyResponseModel
+            {
+                Survey = survey,
+                Response = sresp
+            };
+
+            if (survey.StartDate > DateTime.Now)
+            {
+                return RedirectToAction("SurveyNotStarted", "Home", new { area = "RnP", id = survey.ID });
+            }
+            if (survey.EndDate < DateTime.Now)
+            {
+                return RedirectToAction("SurveyExpired", "Home", new { area = "RnP", id = survey.ID });
+            }
+
+            if (survey.RequireLogin && (!CurrentUser.IsAuthenticated()))
+            {
+                return RedirectToAction("LoginAndReturn", "Auth", new { area = "", returnurl = "~/RnP/Home/TakeSurvey?refno=" + refno + "&email=" + email });
+            }
+            else
+            {
+                return View(srmodel);
+            }
         }
 
         // Thank you for filling in (public?) survey
         // GET: RnP/Home/ThankYou
         [AllowAnonymous]
         public async Task<ActionResult> ThankYou(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey?id={id}");
+
+            if (!resSurvey.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var survey = resSurvey.Data;
+
+            if (survey == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(survey);
+        }
+
+        // Survey not yet active
+        // GET: RnP/Home/SurveyNotStarted
+        [AllowAnonymous]
+        public async Task<ActionResult> SurveyNotStarted(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey?id={id}");
+
+            if (!resSurvey.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var survey = resSurvey.Data;
+
+            if (survey == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(survey);
+        }
+
+        // Survey expired
+        // GET: RnP/Home/SurveyExpired
+        [AllowAnonymous]
+        public async Task<ActionResult> SurveyExpired(int? id)
         {
             if (id == null)
             {

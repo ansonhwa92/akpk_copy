@@ -17,10 +17,10 @@
                 "type": "post",
                 "url": '@(WebApiURL)Administration/Staff/GetAll',
                 "data": function (filter) {
-                    filter.Name = $('#Filter_Name').val();
-                    filter.BranchId = $('#Filter_BranchId').val();
-                    filter.DepartmentId = $('#Filter_DepartmentId').val();
-                    filter.Email = $('#Filter_Email').val();
+                    filter.Name = $('#Filter_User_Name').val();
+                    filter.BranchId = $('#Filter_User_BranchId').val();
+                    filter.DepartmentId = $('#Filter_User_DepartmentId').val();
+                    filter.Email = $('#Filter_User_Email').val();
                 }
             },
             columns: [
@@ -158,7 +158,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h4 class="modal-title">Add Agency User</h4>
+                <h4 class="modal-title">Add Staff</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             
@@ -170,29 +170,30 @@
                         <div class="dropdown-menu">
                             <div class="filter-head">Filters</div>
                             <div class="filter-body">
+                                <div>@Html.DisplayNameFor(m => m.Filter.Name)</div>
                                 <div class="sorting-wrap">
                                     <div class="sorting-dropdown">
-                                        @Html.EditorFor(m => m.Filter.Name, new { htmlAttributes = new { @class = "form-control small" } })
+                                        @Html.EditorFor(m => m.Filter.Name, new { htmlAttributes = new { id = "Filter_User_Name", @class = "form-control small" } })
                                     </div>
                                 </div>
                                 <div>@Html.DisplayNameFor(m => m.Filter.BranchId)</div>
                                 <div class="sorting-wrap">
                                     <div class="sorting-dropdown">
-                                        @Html.DropDownListFor(m => m.Filter.BranchId, Model.Filter.Branchs, "Select All", htmlAttributes: new { @class = "select2 form-control small" })
+                                        @Html.DropDownListFor(m => m.Filter.BranchId, Model.Filter.Branchs, "Select All", htmlAttributes: new { id = "Filter_User_BranchId", @class = "select2 form-control small" })
                                     </div>
                                 </div>
                                 <div>@Html.DisplayNameFor(m => m.Filter.DepartmentId)</div>
                                 <div class="sorting-wrap">
                                     <div class="sorting-dropdown">
-                                        @Html.DropDownListFor(m => m.Filter.DepartmentId, Model.Filter.Departments, "Select All", htmlAttributes: new { @class = "select2 form-control small" })
+                                        @Html.DropDownListFor(m => m.Filter.DepartmentId, Model.Filter.Departments, "Select All", htmlAttributes: new { id = "Filter_User_DepartmentId", @class = "select2 form-control small" })
                                     </div>
                                 </div>
-                                <div>@Html.DisplayNameFor(m => m.Filter.Email)</div>
+                                @*<div>@Html.DisplayNameFor(m => m.Filter.Email)</div>
                                 <div class="sorting-wrap">
                                     <div class="sorting-dropdown">
-                                        @Html.EditorFor(m => m.Filter.Email, new { htmlAttributes = new { @class = "form-control small" } })
+                                        @Html.EditorFor(m => m.Filter.Email, new { htmlAttributes = new { id = "Filter_User_Email", @class = "form-control small" } })
                                     </div>
-                                </div>
+                                </div>*@
                                 <div>
                                     <button id="btnSearchUser" class="btn btn-secondary btn-block">Search</button>
                                 </div>

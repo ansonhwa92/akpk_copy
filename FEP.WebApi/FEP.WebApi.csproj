@@ -157,6 +157,7 @@
     <Compile Include="Api\Administration\CompanyController.cs" />
     <Compile Include="Api\Administration\CountryController.cs" />
     <Compile Include="Api\Administration\DepartmentController.cs" />
+    <Compile Include="Api\Logs\ReportLogController.cs" />
     <Compile Include="Api\System\FileDocumentController.cs" />
     <Compile Include="Api\Administration\IndividualController.cs" />
     <Compile Include="Api\Administration\MinistryController.cs" />

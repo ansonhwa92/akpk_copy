@@ -77,6 +77,9 @@ namespace FEP.Model
 
         public DbSet<ErrorLog> ErrorLog { get; set; }
 
+        public DbSet<ShareLog> ShareLog { get; set; }
+        public DbSet<PageLog> PageLog { get; set; }
+
         //elearning
         //      public DbSet<LearningCourse> LearningCourse { get; set; }
         //public DbSet<LearningCourseCertificate> LearningCourseCertificate { get; set; }

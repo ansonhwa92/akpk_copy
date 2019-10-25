@@ -15,12 +15,12 @@
         protected override void Seed(DbEntities context)
         {
             mhafeez.Seed(context);
-            aiman.Seed(context);
+            //aiman.Seed(context);
             //firus.Seed(context);
             tajulSeed.Seed(context);
 
             // Seed Elearning Default data and Test users and sample data
-            SeedElearning.Seed(context);
+            //SeedElearning.Seed(context);
 
         }
     }

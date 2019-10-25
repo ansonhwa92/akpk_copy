@@ -36,10 +36,9 @@ namespace FEP.WebApi.Api.Administration
             var totalCount = query.Count();
 
             //advance search
-            query = query.Where(s => (request.CompanyName == null || s.CompanyName.Contains(request.CompanyName))
-               && (request.CompanyRegNo == null || s.CompanyRegNo.Contains(request.CompanyRegNo))
+            query = query.Where(s => (request.CompanyName == null || s.CompanyName.Contains(request.CompanyName))               
                && (request.Email == null || s.User.Email.Contains(request.Email))
-               && (request.SectorId == null || s.SectorId == request.SectorId)
+               && (request.Type == null || s.Type == request.Type)
                );
 
             //quick search 

@@ -153,7 +153,7 @@ namespace FEP.WebApi.Api.Administration
 
         public IHttpActionResult Get(int id)
         {
-            var user = db.User.Where(u => u.Id == id)
+            var user = db.User.Where(u => u.Id == id && u.UserType == UserType.Individual && u.Display)
                 .Select(s => new DetailsIndividualModel
                 {
                     Id = s.Id,                    
@@ -294,7 +294,7 @@ namespace FEP.WebApi.Api.Administration
 
         public IHttpActionResult Put(int id, [FromBody] EditIndividualModel model)
         {
-            var user = db.User.Where(u => u.Id == id && u.Display).FirstOrDefault();
+            var user = db.User.Where(u => u.Id == id && u.Display && u.UserType == UserType.Individual).FirstOrDefault();
             var individual = db.IndividualProfile.Where(i => i.UserId == id).FirstOrDefault();
             var useraccount = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
 

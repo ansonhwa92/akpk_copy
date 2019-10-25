@@ -32,7 +32,8 @@ namespace FEP.WebApi.Api.Administration
             var roles = db.Role.Where(u => u.Display).Select(s => new RoleModel
             {
                 Id = s.Id,
-                Name = s.Name
+                Name = s.Name,
+                Description = s.Description
             }).ToList();
 
             return Ok(roles);
@@ -43,7 +44,8 @@ namespace FEP.WebApi.Api.Administration
             var role = db.Role.Where(u => u.Display && u.Id == id).Select(s => new RoleModel
             {
                 Id = s.Id,
-                Name = s.Name
+                Name = s.Name,
+                Description = s.Description
             }).FirstOrDefault();
 
             return Ok(role);

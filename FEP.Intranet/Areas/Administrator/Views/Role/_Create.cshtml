@@ -13,6 +13,10 @@
             @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(m => m.Name)
         </div>
+        <div class="col pl-1">
+            @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Description)
+        </div>
         <div class="col-3 pl-0 text-right">
             <div class="icon-action">
                 <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">Add</button>

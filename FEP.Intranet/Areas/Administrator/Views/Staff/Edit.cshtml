@@ -1,7 +1,7 @@
-﻿@model DetailsStaffModel
+﻿@model EditStaffModel
 
 @{
-    ViewBag.Title = "Activate User Account";
+    ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
@@ -12,19 +12,19 @@
         <div class="title-header-container">
             <div class="container">
                 <!-- if have button -->
-                <div class="header-col-right float-right mt-5"><a href="@Url.Action("List", "Individual", new { area = "Administrator"})" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-right float-right mt-5"><a href="@Url.Action("List", "Staff", new { area = "Administrator"})" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a></div>
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
                                 <li class="breadcrumb-item"><a href="javascript:void(0)">Administration</a></li>
-                                <li class="breadcrumb-item"><a href="@Url.Action("List", "Individual", new { area = "Administrator" })">User</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "Staff", new { area = "Administrator" })">User</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Activate User Account</h1>
+                    <h1 class="page-title text-white">Update Staff</h1>
                     @*<div class="header-text">You can register new individual here</div>*@
                 </div>
             </div>
@@ -33,7 +33,6 @@
 
 }
 
-<h3>Are you sure you want to activate this user account?</h3>
 <div class="row">
     <div class="col-xl-3 col-md-3 col-sm-4 my-2">
         <div id="page-nav" class="sidebar-left page-nav">
@@ -45,7 +44,7 @@
                             <a href="@Url.Action("Details", "Staff", new { area = "Administrator", id = Model.Id })" class="nav-link">View</a>
                         </li>
                         <li class="nav-item">
-                            <a href="@Url.Action("Edit", "Staff", new { area = "Administrator", id = Model.Id })" class="nav-link">Edit Role</a>
+                            <a href="@Url.Action("Edit", "Staff", new { area = "Administrator", id = Model.Id })" class="active nav-link">Edit Role</a>
                         </li>
                         @if (Model.Status)
                         {
@@ -56,7 +55,7 @@
                         else
                         {
                             <li class="nav-item">
-                                <a href="@Url.Action("Activate", "Staff", new { area = "Administrator", id = Model.Id })" class="active nav-link">Activate account</a>
+                                <a href="@Url.Action("Activate", "Staff", new { area = "Administrator", id = Model.Id })" class="nav-link">Activate account</a>
                             </li>
                         }
                     </ul>
@@ -64,10 +63,16 @@
             </div>
         </div>
     </div>
-
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
+        {
+
         <div class="border-form rounded-top">
+
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(m => m.Id)
 
             <div class="form-container">
                 <div class="row">
@@ -121,12 +126,8 @@
                 <div class="row">
                     <div class="form-group col-lg-12">
                         @Html.FEPLabelFor(m => m.Roles)
-                        <div class="input-group">
-                            @foreach (var role in Model.Roles)
-                            {
-                                <span class="badge badge-pill badge-primary ml-1" data-toggle="tooltip" title="@role.Description">@role.Name</span>
-                            }
-                        </div>
+                        @Html.ListBoxFor(m => m.RoleIds, Model.Roles, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
+                        @Html.ValidationMessageFor(m => m.RoleIds)
                     </div>
                 </div>
                 <div class="row">
@@ -148,15 +149,9 @@
             </div>
 
         </div>
-        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
-        {
-            @Html.AntiForgeryToken()
-
-            @Html.HiddenFor(m => m.Id)
-
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
-                <a href="@Url.Action("List")" class="btn btn-default mr-2">Back</a>
-                <button class="btn btn-secondary" type="submit">Activate</button>
+                <a href="@Url.Action("List")" class="btn btn-default mr-2">@Language.General.ButtonBack</a>
+                <button class="btn btn-secondary" type="submit">@Language.General.ButtonSave</button>
             </div>
 
         }

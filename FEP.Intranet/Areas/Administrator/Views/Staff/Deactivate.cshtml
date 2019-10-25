@@ -44,6 +44,9 @@
                         <li class="nav-item">
                             <a href="@Url.Action("Details", "Staff", new { area = "Administrator", id = Model.Id })" class="nav-link">View</a>
                         </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Edit", "Staff", new { area = "Administrator", id = Model.Id })" class="nav-link">Edit Role</a>
+                        </li>
                         @if (Model.Status)
                         {
                             <li class="nav-item">

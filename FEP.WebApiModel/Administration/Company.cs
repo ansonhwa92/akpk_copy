@@ -20,17 +20,14 @@ namespace FEP.WebApiModel.Administration
     public class FilterCompanyModel : DataTableModel
     {
 
-        [Display(Name = "Company Name")]
+        [Display(Name = "FieldCompanyName", ResourceType = typeof(Language.Company))]
         public string CompanyName { get; set; }
-
-        [Display(Name = "Company Registration No")]
-        public string CompanyRegNo { get; set; }
-
-        [Display(Name = "Sector")]
-        public int? SectorId { get; set; }
-
-        [Display(Name = "Email")]
+        
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Company))]
         public string Email { get; set; }
+
+        [Display(Name = "FieldCompanyType", ResourceType = typeof(Language.Company))]
+        public CompanyType? Type { get; set; }
 
         public IEnumerable<SelectListItem> Sectors { get; set; }
 

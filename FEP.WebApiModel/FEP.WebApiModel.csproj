@@ -98,6 +98,7 @@
     <Compile Include="eEvent\MediaInterviewRequest.cs" />
     <Compile Include="eEvent\PublicEvent.cs" />
     <Compile Include="Logs\ErrorLog.cs" />
+    <Compile Include="Logs\ReportLog.cs" />
     <Compile Include="Logs\UserLog.cs" />
     <Compile Include="Notification\Notification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

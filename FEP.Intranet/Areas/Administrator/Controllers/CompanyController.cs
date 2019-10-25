@@ -127,14 +127,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 if (response.isSuccess)
                 {
-
-                    //StringBuilder body = new StringBuilder();
-                    //body.Append("Dear " + model.Name + ",");
-                    //body.Append("<br />");
-                    //body.Append("You can sign to FEP Portal <a href = '" + BaseURL + Url.Action("Login", "Auth", new { area = "" }) + "' > here </a>. Sign in Id: " + model.Email + "\n" + "Password: " + response.Data.Password);
-
-                    //await EmailMethod.SendEmail("New FE Portal Account Created", body.ToString(), new EmailAddress { DisplayName = model.Name, Address = model.Email });
-
+                                       
                     ParameterListToSend notificationParameter = new ParameterListToSend();
                     notificationParameter.UserFullName = model.Name;
                     notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";

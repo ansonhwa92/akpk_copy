@@ -18,6 +18,7 @@ using FEP.Model;
 using FEP.WebApiModel.SLAReminder;
 using System.Text.RegularExpressions;
 using FEP.WebApiModel.Setting;
+using FEP.WebApiModel.Notification;
 
 namespace FEP.Intranet.Controllers
 {
@@ -43,7 +44,16 @@ namespace FEP.Intranet.Controllers
             //    ReceiverId = new List<int> { 1 },
             //};
 
-            //var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+            var model = new CreateNotificationModel
+            {
+                UserId = 1,
+                NotificationType = NotificationType.ActivateAccount,
+                Category = NotificationCategory.Event,
+                Message = "tetst",
+                Link = ""
+            };
+
+            var response2 = await WepApiMethod.SendApiAsync<long>(HttpVerbs.Post, $"System/Notification", model);
 
             return Content("");
         }

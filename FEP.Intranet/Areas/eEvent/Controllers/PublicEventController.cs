@@ -46,27 +46,32 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 		// GET: PublicEvent/Details/Id
 		[HttpGet]
-		public async Task<ActionResult> Details(int? id, string origin)
+		public async Task<ActionResult> Details(int? id, string origin )
 		{
 			if (id == null)
 			{
 				return HttpNotFound();
 			}
 
-			var response = await WepApiMethod.SendApiAsync<DetailsPublicEventModel>(HttpVerbs.Get, $"eEvent/PublicEvent?id={id}");
-
-			if (!response.isSuccess)
+			var response1 = await WepApiMethod.SendApiAsync<DetailsPublicEventModel>(HttpVerbs.Get, $"eEvent/PublicEvent?id={id}");
+			var modelresponse1 = response1.Data;
+			if (!response1.isSuccess)
 			{
 				return HttpNotFound();
 			}
 
-			var model = response.Data;
+			var response2 = await WepApiMethod.SendApiAsync<IEnumerable<PublicEventApprovalHistoryModel>>(HttpVerbs.Get, $"eEvent/PublicEvent/GetHistory?id={id}");
+			var modelresponse2 = response2.Data;
+			if (response2.isSuccess)
+			{
+				ViewBag.ApprovalHistory = modelresponse2;
+			}
 
-			model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
-			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
-			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
+			modelresponse1.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
+			modelresponse1.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
+			modelresponse1.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
 
-			return View(model);
+			return View(modelresponse1);
 		}
 
 
@@ -90,7 +95,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		// POST: PublicEvent/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Create(FEP.Intranet.Areas.eEvent.Models.CreatePublicEventModel model)
+		public async Task<ActionResult> Create(FEP.Intranet.Areas.eEvent.Models.CreatePublicEventModel model, string Submittype)
 		{
 			if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
 			{
@@ -99,7 +104,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			if (model.StartDate > model.EndDate)
 			{
-				ModelState.AddModelError("DateEnd", "End Date must greater or equal than Start Date");
+				ModelState.AddModelError("EndDate", "End Date must greater or equal than Start Date");
 			}
 
 			if (ModelState.IsValid)
@@ -137,11 +142,18 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				if (response.isSuccess)
 				{
 					await LogActivity(Modules.Event, "Create Public Event", model);
+					if (Submittype == "Save")
+					{
+						TempData["SuccessMessage"] = "Public Event successfully created";
+						return RedirectToAction("List");
+					}
+					else if (Submittype == "Submit")
+					{
+						return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", id = response.Data});
+					}
 
-					TempData["SuccessMessage"] = "Public Event successfully created";
-
-					return RedirectToAction("List");
 				}
+				
 			}
 
 			model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
@@ -207,7 +219,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			if (model.StartDate > model.EndDate)
 			{
-				ModelState.AddModelError("DateEnd", "End Date must greater or equal than Start Date");
+				ModelState.AddModelError("EndDate", "End Date must greater or equal than Start Date");
 			}
 
 			if (ModelState.IsValid)
@@ -234,14 +246,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				//attachment
 				if (model.AttachmentFiles.Count() > 0)
 				{
-                    var files = await FileMethod.UploadFile(model.AttachmentFiles.ToList(), CurrentUser.UserId);
+					var files = await FileMethod.UploadFile(model.AttachmentFiles.ToList(), CurrentUser.UserId);
 
-                    if (files != null)
-                    {
-                        modelapi.FilesId = files.Select(f => f.Id).ToList();
-                    }
+					if (files != null)
+					{
+						modelapi.FilesId = files.Select(f => f.Id).ToList();
+					}
 
-                }
+				}
 
 				var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/PublicEvent?id={model.Id}", modelapi);
 
@@ -737,11 +749,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
-			
+
 			var response = await WepApiMethod.SendApiAsync<PublicEventModel>(HttpVerbs.Post, $"eEvent/PublicEvent/PublishedPublicEvent?id={id}");
 			if (response.isSuccess)
 			{
-				
+
 				ParameterListToSend paramToSend = new ParameterListToSend();
 				paramToSend.EventCode = response.Data.RefNo;
 				paramToSend.EventName = response.Data.EventTitle;

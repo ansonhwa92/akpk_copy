@@ -130,8 +130,12 @@ namespace FEP.WebApiModel.PublicEvent
 	{
 		public DetailsPublicEventModel() { }
 
+		public string CreatedByName { get; set; }
+		public DateTime? CreatedDate { get; set; }
+
         public IEnumerable<Attachment> Attachments { get; set; }
-    }
+		public PublicEventApprovalModel ApprovalModel { get; set; }
+	}
 
 
 	public class CreatePublicEventModel : PublicEventModel
@@ -142,7 +146,8 @@ namespace FEP.WebApiModel.PublicEvent
         }
 
         public List<int> FilesId { get; set; }
-    }
+
+	}
 
 
 	public class EditPublicEventModel : CreatePublicEventModel
@@ -161,5 +166,49 @@ namespace FEP.WebApiModel.PublicEvent
 	{
 		public DeletePublicEventModel() { }
 
+	}
+
+	public class PublicEventApprovalModel
+	{
+		[Required]
+		public int Id { get; set; }
+
+		[Required]
+		public int? EventId { get; set; }
+
+		[Required]
+		[Display(Name = "Level")]
+		public EventApprovalLevel Level { get; set; }
+
+		[Required]
+		public int? ApproverId { get; set; }
+
+		[Required]
+		[Range((int)(EventApprovalStatus.Approved), (int)(EventApprovalStatus.Rejected), ErrorMessage = "Please Select")]
+		[Display(Name = "PubApprovalStatus")]
+		public EventApprovalStatus Status { get; set; }
+
+		[Required]
+		[Display(Name = "Remarks")]
+		public string Remarks { get; set; }
+
+		[Display(Name = "Require Next")]
+		public bool RequireNext { get; set; }
+	}
+
+
+	public class PublicEventApprovalHistoryModel
+	{
+		public EventApprovalLevel Level { get; set; }
+
+		public int ApproverId { get; set; }
+
+		public string UserName { get; set; }
+
+		public EventApprovalStatus Status { get; set; }
+
+		public DateTime? ApprovalDate { get; set; }
+
+		public string Remarks { get; set; }
 	}
 }

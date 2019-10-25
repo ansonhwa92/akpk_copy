@@ -101,7 +101,6 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             if (ModelState.IsValid)
             {
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Publication/Create", model);
-
                 if (response.isSuccess)
                 {
                     string[] resparray = response.Data.Split('|');

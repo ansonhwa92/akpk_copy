@@ -147,7 +147,6 @@ namespace FEP.Model
 		public DbSet<AssignedExternalExhibitor> AssignedExternalExhibitor { get; set; }
 		public DbSet<DutyRoster> DutyRoster { get; set; }
 		public DbSet<DutyRosterOfficer> DutyRosterOfficer { get; set; }
-		public DbSet<EventRefund> EventRefund { get; set; }
 		
 
 		// Elearning

@@ -241,7 +241,6 @@ namespace FEP.WebApi.Api.eEvent
 				ParticipantAllowed = i.ParticipantAllowed,
 				Remarks = i.Remarks,
 				RefNo = i.RefNo,
-				
 				}).FirstOrDefault();
 
 			if (model == null)
@@ -482,9 +481,7 @@ namespace FEP.WebApi.Api.eEvent
 		[Route("api/eEvent/PublicEvent/Verified")]
 		public IHttpActionResult Verified(int id)
 		{
-
 			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
-
 			if (publicevent != null)
 			{
 				publicevent.EventStatus = EventStatus.Verified;
@@ -698,5 +695,21 @@ namespace FEP.WebApi.Api.eEvent
 			return Ok(publicevent);
 		}
 
+
+		[Route("api/eEvent/PublicEvent/GetHistory")]
+		public List<PublicEventApprovalHistoryModel> GetHistory(int id)
+		{
+			var phistory = db.PublicEventApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { pa.EventId, pa.ApprovalLevel, pa.ApproverId, pa.ApprovedDate, pa.Status, pa.Remark, UserName = u.Name }).Where(pa => pa.EventId == id && pa.Status != EventApprovalStatus.None).OrderByDescending(pa => pa.ApprovedDate).Select(s => new PublicEventApprovalHistoryModel
+			{
+				Level = s.ApprovalLevel,
+				ApproverId = s.ApproverId,
+				ApprovalDate = s.ApprovedDate,
+				UserName = s.UserName,
+				Status = s.Status,
+				Remarks = s.Remark
+			}).ToList();
+
+			return phistory;
+		}
 	}
 }

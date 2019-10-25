@@ -326,7 +326,7 @@ namespace FEP.Model
 		public string Remark { get; set; }
 		public EventApprovalLevel ApprovalLevel { get; set; }
 		public bool RequireNext { get; set; }
-
+		public EventApprovalStatus Status { get; set; }
 		public int ApproverId { get; set; }
 		[ForeignKey("ApproverId")]
 		public virtual User User { get; set; }
@@ -388,6 +388,8 @@ namespace FEP.Model
 		public int? CreatedBy { get; set; }
 		public DateTime? CreatedDate { get; set; }
 		public bool Display { get; set; }
+		public int? SLAReminderStatusId { get; set; }
+
 	}
 
 	[Table("EventCategory")]
@@ -450,30 +452,4 @@ namespace FEP.Model
 		[ForeignKey("UserId")]
 		public virtual User User { get; set; } 
 	}
-
-
-	[Table("EventRefund")]
-	public class EventRefund
-	{
-		[Key]
-		public int Id { get; set; }
-		public int? EventId { get; set; }
-		public int? UserId { get; set; }
-		public int? BankInformationId { get; set; }
-		public string AccountNumber { get; set; }
-
-		[ForeignKey("EventId")]
-		public virtual PublicEvent PublicEvent { get; set; } 
-
-		[ForeignKey("UserId")]
-		public virtual User User { get; set; }
-
-		[ForeignKey("BankInformationId")]
-		public virtual BankInformation BankInformation { get; set; }
-
-		public int? CreatedBy { get; set; }
-		public DateTime? CreatedDate { get; set; }
-		public bool Display { get; set; }
-	}
-
 }

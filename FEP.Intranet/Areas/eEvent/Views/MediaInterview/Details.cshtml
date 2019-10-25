@@ -176,7 +176,7 @@
 						else if (Model.MediaStatus == FEP.Model.MediaStatus.PendingVerified)
 						{
 							<a href='@Url.Action("Verified", "MediaInterview", new { id = Model.Id })'
-							   class="btn btn-secondary btn-block mb-2" id="btnApprove23">Submit for Approval</a>
+							   class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</a>
 							<br />
 							<a href='@Url.Action("Reject", "MediaInterview", new { id = Model.Id })'
 							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
@@ -198,13 +198,10 @@
 						}
 					}
 				</div>
-
-
-
-
 			</div>
 		</div>
 	</div>
+
 
 	<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 		<!-- Start Form -->
@@ -215,8 +212,6 @@
 						<h4 class="color-darkblue mb-0">Invitation Details</h4>
 						<h6 class="font-weight-normal">View Invitation details below.</h6>
 					</div>
-
-
 					<div class="row">
 						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.RefNo)
@@ -341,14 +336,6 @@
 						</div>
 					</div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.GetFileName)
-							@Html.EditorFor(model => model.GetFileName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "None" } })
-							@Html.ValidationMessageFor(model => model.GetFileName, "", new { @class = "text-danger" })
-						</div>
-					</div>
-
 					<hr />
 					<h4 class="color-darkblue mb-0">Interview Details</h4>
 					<h6 class="font-weight-normal">View Interview details below.</h6>
@@ -429,10 +416,16 @@
 	</div>
 </div>
 
+
+
+
+
+
+
+@*//===============================popup==================================//*@
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myform" }))
 {
 	@Html.AntiForgeryToken()
-
 	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 	<div style="display:none;">

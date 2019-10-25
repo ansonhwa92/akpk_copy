@@ -98,28 +98,28 @@ namespace FEP.Model
 
 		//-----------------------------------------------------------//
 
-		[Display(Name = "Public Event - Recipient Email After Submit Public Event")]
+		[Display(Name = "Public Event - Submit")]
 		Recipient_Submit_PublicEvent = 1029,
 
-		[Display(Name = "Public Event - Recipient Email After Verify Public Event")]
+		[Display(Name = "Public Event - Verify")]
 		Recipient_Verify_PublicEvent = 1030,
 
-		[Display(Name = "Public Event - Recipient Email After Approval 1")]
+		[Display(Name = "Public Event - Approve (Level 1)")]
 		Recipient_Approver1_PublicEvent = 1031,
 
-		[Display(Name = "Public Event - Recipient Email After Approval 2")]
+		[Display(Name = "Public Event - Approve (Level 2)")]
 		Recipient_Approver2_PublicEvent = 1032,
 
-		[Display(Name = "Public Event - Recipient Email After Approval 3")]
+		[Display(Name = "Public Event - Approve (Level 3)")]
 		Recipient_Approver3_PublicEvent = 1033,
 
-		[Display(Name = "Public Event - Recipient Email After Published")]
+		[Display(Name = "Public Event - Published")]
 		Recipient_Published_PublicEvent = 1034,
 
-		[Display(Name = "Public Event - Recipient Email After Reject")]
+		[Display(Name = "Public Event - Require Amendment")]
 		Recipient_Reject_PublicEvent = 1035,
 
-		[Display(Name = "Public Event - Recipient Email After Cancel")]
+		[Display(Name = "Public Event - Cancel")]
 		Recipient_Cancel_PublicEvent = 1036,
 
 

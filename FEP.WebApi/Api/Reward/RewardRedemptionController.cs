@@ -145,6 +145,10 @@ namespace FEP.WebApi.Api.Reward
         {
             if (!ModelState.IsValid) { return BadRequest(); }
 
+            //check if code already exist
+            var rwd = db.RewardRedemption.Where(r => r.RewardCode == model.RewardCode).FirstOrDefault();
+            if(rwd != null) { return BadRequest("Reward Code already exist. Please use another code"); }
+
             var rewardRedemption = new RewardRedemption
             {
                 RewardCode = model.RewardCode,

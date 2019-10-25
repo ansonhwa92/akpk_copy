@@ -38,7 +38,7 @@
                 <div class="page-section">
                     <h6 class="x-small color-darkblue"><i class="la la-eye font-icon color-secondary align-bottom"></i> User Reward Points</h6>
                     <ul class="nav page-nav__menu">
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a href="@Url.Action("List", "UserRewardPoints", new { area = "Reward"})" class="nav-link">User Reward Points List</a>
                         </li>
                         @if (CurrentUser.UserType == UserType.SystemAdmin)
@@ -46,7 +46,7 @@
                             <li class="nav-item">
                                 <a href="@Url.Action("AwardUser", "UserRewardPoints", new { area = "Reward"})" class="nav-link">Award a User</a>
                             </li>
-                        }
+                        }*@
                         <li class="nav-item">
                             <a href="#" class="active nav-link">User Reward Points Detail</a>
                         </li>
@@ -91,8 +91,8 @@
                 {
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.ActivityName)
-                            @Html.EditorFor(m => m.ActivityName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.FEPLabelFor(m => m.CourseName)
+                            @Html.EditorFor(m => m.CourseName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         </div>
                     </div>
                 }
@@ -122,7 +122,7 @@
 
         </div>
         <div class="border-left border-right border-bottom p-3 rounded-bottom">
-            <a href="@Url.Action("List")" class="btn btn-default mr-2">Back</a>
+            <a href="@Url.Action("ListAll")" class="btn btn-default mr-2">Back</a>
         </div>
     </div>
 

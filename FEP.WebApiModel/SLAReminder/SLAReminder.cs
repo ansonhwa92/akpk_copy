@@ -15,6 +15,10 @@ namespace FEP.WebApiModel.SLAReminder
     {
         [Display(Name = "Duration Type")]
         public IEnumerable<SelectListItem> SLADurationTypeList { get; set; }
+        [Display(Name = "Notification Type")]
+        public IEnumerable<SelectListItem> NotificationTypeList { get; set; }
+        [Display(Name = "SLA Event Type")]
+        public IEnumerable<SelectListItem> SLAEventTypeList { get; set; }
         public List<SLAReminderModel> SLAReminderList { get; set; }
 
         public FilterSLAReminderModel filter { get; set; }

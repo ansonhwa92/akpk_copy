@@ -20,6 +20,8 @@ namespace FEP.WebApiModel.Reward
         public int RewardRedemptionId { get; set; }
         [Display(Name = "Description")]
         public string RewardDescription { get; set; }
+        [Display(Name = "Reward Code")]
+        public string RewardCode { get; set; }
         [Display(Name = "Points Used")]
         public int? PointsUsed { get; set; }
 

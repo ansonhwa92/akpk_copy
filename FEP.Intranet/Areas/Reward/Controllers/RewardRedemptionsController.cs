@@ -1,6 +1,7 @@
 ﻿using FEP.Helper;
 using FEP.Model;
 using FEP.WebApiModel.Reward;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,6 +70,10 @@ namespace FEP.Intranet.Areas.Reward.Controllers
             return View(model);
         }
 
+        public class ErrorMsgReceived
+        {
+            public string Message { get; set; }
+        }
         // POST: Reward/RewardRedemptions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -90,13 +95,14 @@ namespace FEP.Intranet.Areas.Reward.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Failed to create  Reward Redemption Settings";
+                    ErrorMsgReceived msg = JsonConvert.DeserializeObject<ErrorMsgReceived>(response.ErrorMessage);
+                    TempData["ErrorMessage"] = "Failed to create Reward Redemption Settings : " + msg.Message;
                     return RedirectToAction("List");
                 }
             }
             else
             {
-                TempData["ErrorMessage"] = "Failed to create  Reward Redemption Settings";
+                TempData["ErrorMessage"] = "Failed to create Reward Redemption Settings";
                 return RedirectToAction("List");
             }
         }

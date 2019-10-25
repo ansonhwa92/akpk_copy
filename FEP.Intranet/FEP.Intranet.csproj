@@ -906,6 +906,7 @@
     <Content Include="Areas\Reward\Views\RewardRedemptions\DetailsToRedeem.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardPoints\ListAll.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardRedemptions\ListAll.cshtml" />
+    <Content Include="Areas\Reward\Views\UserRewardRedemptions\Details.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

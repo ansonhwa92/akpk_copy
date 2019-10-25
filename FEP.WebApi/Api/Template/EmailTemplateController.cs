@@ -162,6 +162,44 @@ namespace FEP.WebApi.Api.Template
             });
         }
 
+        [Route("api/NotificationTemplate/GetTemplateByNotificationType")]
+        [HttpGet]
+        public IHttpActionResult GetTemplateByNotificationType(NotificationType? NotificationType)
+        {
+            if(NotificationType == null)
+            {
+                return NotFound();
+            }
+            var NotificationTemplate = db.NotificationTemplates.Where(t => t.Display && t.NotificationType == NotificationType).Select(s => new NotificationTemplateModel
+            {
+                Id = s.Id,
+                NotificationType = s.NotificationType,
+                TemplateName = s.TemplateName,
+                TemplateSubject = s.TemplateSubject,
+                TemplateRefNo = s.TemplateRefNo,
+                TemplateMessage = s.TemplateMessage,
+                enableEmail = s.enableEmail,
+                CreatedDate = s.CreatedDate,
+                LastModified = s.LastModified,
+                CreatedBy = s.CreatedBy,
+                CreatedByName = s.User.Name,
+
+                enableSMSMessage = s.enableSMSMessage,
+                SMSMessage = s.SMSMessage,
+                enableWebMessage = s.enableWebMessage,
+                WebMessage = s.WebMessage,
+                WebNotifyLink = s.WebNotifyLink
+
+            }).FirstOrDefault();
+
+            if (NotificationTemplate == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(NotificationTemplate);
+        }
+
         [HttpGet]
         // GET: api/EmailTemplate/5
         public IHttpActionResult Get(int id)

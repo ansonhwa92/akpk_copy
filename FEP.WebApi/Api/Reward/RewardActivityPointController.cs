@@ -28,7 +28,7 @@ namespace FEP.WebApi.Api.Reward
         [HttpGet]
         public IHttpActionResult GetActivityList()
         {
-            var model = db.ActivityDummy.ToList();
+            var model = db.Courses.Where(c => c.IsDeleted == false).ToList();
             return Ok(model);
         }
 
@@ -41,7 +41,7 @@ namespace FEP.WebApi.Api.Reward
 
             //advance search
             query = query.Where(s =>
-            (request.ActivityName == null || s.Activity.Name.Contains(request.ActivityName))
+            (request.CourseName == null || s.Course.Title.Contains(request.CourseName))
             && (request.CreatedByName == null || s.User.Name.Contains(request.CreatedByName))
             && (request.Value == 0 || s.Value == request.Value)
             //&& (request.CreatedDate.ToString() == null || s.CreatedDate == request.CreatedDate)
@@ -52,7 +52,7 @@ namespace FEP.WebApi.Api.Reward
             {
                 var value = request.search.value.Trim();
                 query = query.Where(a =>
-                a.Activity.Name.Contains(value) ||
+                a.Course.Title.Contains(value) ||
                 a.User.Name.Contains(value) ||
                 a.Value.ToString().Contains(value)// ||
                 //a.CreatedDate.ToString().Contains(value)
@@ -70,9 +70,9 @@ namespace FEP.WebApi.Api.Reward
                 {
                     case "ActivityName":
                         if (sortAscending)
-                            query = query.OrderBy(o => o.Activity.Name);
+                            query = query.OrderBy(o => o.Course.Title);
                         else
-                            query = query.OrderByDescending(o => o.Activity.Name);
+                            query = query.OrderByDescending(o => o.Course.Title);
                         break;
 
                     case "CreatedByName":
@@ -106,8 +106,8 @@ namespace FEP.WebApi.Api.Reward
                 .Select(s => new DetailRewardActivityPointModel
             {
                 Id = s.Id,
-                ActivityId = s.ActivityId,
-                ActivityName = s.Activity.Name,
+                CourseId = s.CourseId,
+                CourseName = s.Course.Title,
                 Value = s.Value,
                 CreatedDate = s.CreatedDate,
                 CreatedBy = s.CreatedBy,
@@ -133,8 +133,8 @@ namespace FEP.WebApi.Api.Reward
                 .Select(s => new DetailRewardActivityPointModel
                 {
                     Id = s.Id,
-                    ActivityId = s.ActivityId,
-                    ActivityName = s.Activity.Name,
+                    CourseId = s.CourseId,
+                    CourseName = s.Course.Title,
                     Value = s.Value,
                     CreatedBy = s.CreatedBy,
                     CreatedByName = s.User.Name,
@@ -159,7 +159,7 @@ namespace FEP.WebApi.Api.Reward
 
             var RewardActivityPoint = new RewardActivityPoint
             {
-                ActivityId = model.ActivityId,
+                CourseId = model.CourseId,
                 Value = model.Value,
                 CreatedDate = DateTime.Now,
                 CreatedBy = model.CreatedBy.Value,
@@ -179,13 +179,13 @@ namespace FEP.WebApi.Api.Reward
             if (id != model.Id) { return BadRequest(); }
 
             RewardActivityPoint obj = db.RewardActivityPoint.Where(a => a.Id == id).FirstOrDefault();
-            obj.ActivityId = model.ActivityId;
+            obj.CourseId = model.CourseId;
             obj.Value = model.Value;
             obj.CreatedBy = model.CreatedBy.Value;
             obj.CreatedDate = DateTime.Now;
 
             db.Entry(obj).State = System.Data.Entity.EntityState.Modified;
-            db.Entry(obj).Property(x => x.ActivityId).IsModified = true;
+            db.Entry(obj).Property(x => x.CourseId).IsModified = true;
             db.Entry(obj).Property(x => x.Value).IsModified = true;
             db.Entry(obj).Property(x => x.CreatedBy).IsModified = true;
             db.Entry(obj).Property(x => x.CreatedDate).IsModified = true;

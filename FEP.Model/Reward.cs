@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FEP.Model.eLearning;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,9 +14,9 @@ namespace FEP.Model
     {
         [Key]
         public int Id { get; set; }
-        public int ActivityId { get; set; }
-        [ForeignKey("ActivityId")]
-        public virtual ActivityDummy Activity { get; set; }
+        public int CourseId { get; set; }
+        [ForeignKey("CourseId")]
+        public virtual Course Course { get; set; }
         public int Value { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
@@ -45,9 +46,9 @@ namespace FEP.Model
     {
         [Key]
         public int Id { get; set; }
-        public int? ActivityId { get; set; }//add virtual to the REAL Activity later
-        [ForeignKey("ActivityId")]
-        public virtual ActivityDummy Activity { get; set; }
+        public int? CourseId { get; set; }//add virtual to the REAL Activity later
+        [ForeignKey("CourseId")]
+        public virtual Course Course { get; set; }
         public int PointsReceived { get; set; }
         public int UserId { get; set; }
         [ForeignKey("UserId")]
@@ -101,13 +102,7 @@ namespace FEP.Model
         Closed
     }
 
-    [Table("ActivityDummy")]
-    public class ActivityDummy
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+    
 
     public enum ActivityListDummy
     {

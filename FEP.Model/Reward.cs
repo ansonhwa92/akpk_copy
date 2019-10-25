@@ -32,6 +32,7 @@ namespace FEP.Model
         public int Id { get; set; }
         public string RewardCode { get; set; }
         public string Description { get; set; }
+        public int DiscountValue { get; set; }
         public int PointsToRedeem { get; set; }
         public int ValidDuration { get; set; }
         public int CreatedBy { get; set; }

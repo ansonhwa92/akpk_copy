@@ -120,6 +120,7 @@ namespace FEP.Intranet.Areas.Reward.Controllers
                 Id = response.Data.Id,
                 Description = response.Data.Description,
                 RewardCode = response.Data.RewardCode,
+                DiscountValue = response.Data.DiscountValue,
                 PointsToRedeem = response.Data.PointsToRedeem,
                 ValidDuration = response.Data.ValidDuration,
                 CreatedBy = response.Data.CreatedBy
@@ -171,6 +172,7 @@ namespace FEP.Intranet.Areas.Reward.Controllers
                 Id = response.Data.Id,
                 Description = response.Data.Description,
                 RewardCode = response.Data.RewardCode,
+                DiscountValue = response.Data.DiscountValue,
                 PointsToRedeem = response.Data.PointsToRedeem,
                 ValidDuration = response.Data.ValidDuration,
                 CreatedBy = response.Data.CreatedBy,

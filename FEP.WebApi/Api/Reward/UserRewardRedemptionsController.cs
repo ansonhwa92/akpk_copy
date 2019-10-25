@@ -200,10 +200,12 @@ namespace FEP.WebApi.Api.Reward
             UserRewardRedemption model = db.UserRewardRedemption.Where(r =>r.UserId == userId && r.RewardRedemption.RewardCode == rewardCode).FirstOrDefault();
             if(model == null) { return BadRequest("Sorry, Reward Code not valid"); }
 
+            if(model.RewardStatus == RewardStatus.Closed) { return BadRequest("Sorry, Reward already been used"); }
+
             DateTime rewardExpiredDate = model.RedeemDate.AddDays(model.RewardRedemption.ValidDuration);
             if (rewardExpiredDate < DateTime.Now)
             {
-                return Ok(false);
+                { return BadRequest("Sorry, Reward Code expired"); }
             }
 
             model.RewardStatus = RewardStatus.Closed;
@@ -212,7 +214,13 @@ namespace FEP.WebApi.Api.Reward
             db.Configuration.ValidateOnSaveEnabled = true;
             db.SaveChanges();
 
-            return Ok(true);
+            var tempModel = new {
+                UserId = model.UserId,
+                RewardCode = model.RewardRedemption.RewardCode,
+                DiscountValue = model.RewardRedemption.DiscountValue,
+            };
+
+            return Ok(tempModel);
         }
 
         // PUT: api/UserRewardRedemptions/5

@@ -85,7 +85,7 @@ namespace FEP.WebApi.Api.eLearning
 
                 switch (sortBy)
                 {
-                    case "DateTimeDisplay":
+                    case "DisplayDateTime":
 
                         if (sortAscending)
                         {
@@ -153,9 +153,9 @@ namespace FEP.WebApi.Api.eLearning
                {
                    Id = s.Id,
                    Name = s.Name,
-                   DateTimeDisplay = s.UpdatedDate.HasValue? s.UpdatedDate.Value : s.CreatedDate,
                    CreatedBy = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name,
                    FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message,
+                   DisplayDateTime = new DateTimeModel() { CreatedOn = s.CreatedDate, UpdatedOn = s.Posts.Where(m => m.DiscussionId == s.Id).OrderByDescending(m=>m.CreatedDate).FirstOrDefault().CreatedDate},
                    DiscussionCard = new DiscussionCardModel() { Id = s.Id, Name = s.Name, CreatedBy = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name, FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message }
                }).ToList();
 
@@ -261,9 +261,9 @@ namespace FEP.WebApi.Api.eLearning
                {
                    Id = s.Id,
                    Name = s.Name,
-                   DateTimeDisplay = s.UpdatedDate.HasValue ? s.UpdatedDate.Value : s.CreatedDate,
                    CreatedBy = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name,
                    FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message,
+                   DisplayDateTime = new DateTimeModel() { CreatedOn = s.CreatedDate, UpdatedOn = s.Posts.Where(m => m.DiscussionId == s.Id).OrderByDescending(m => m.CreatedDate).FirstOrDefault().CreatedDate },
                    DiscussionCard = new DiscussionCardModel() { Id = s.Id, Name = s.Name, CreatedBy = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name, FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message }
                }).ToList();
 

@@ -98,6 +98,10 @@
     <Compile Include="Migrations\201910161616279_changemapgroup.Designer.cs">
       <DependentUpon>201910161616279_changemapgroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910260357368_removefiledocumentfkfordiscussionpost.cs" />
+    <Compile Include="Migrations\201910260357368_removefiledocumentfkfordiscussionpost.Designer.cs">
+      <DependentUpon>201910260357368_removefiledocumentfkfordiscussionpost.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
@@ -135,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910161616279_changemapgroup.resx">
       <DependentUpon>201910161616279_changemapgroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910260357368_removefiledocumentfkfordiscussionpost.resx">
+      <DependentUpon>201910260357368_removefiledocumentfkfordiscussionpost.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

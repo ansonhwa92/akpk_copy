@@ -101,7 +101,7 @@
                 <tr>
                     <th width="15px">#</th>
                     <th>Discussion</th>
-                    <th width="200px">Time Stamped</th>
+                    <th width="260px">Date &amp; Time</th>
                 </tr>
             </thead>
         </table>
@@ -126,7 +126,7 @@
                 <tr>
                     <th width="15px">#</th>
                     <th>Discussion</th>
-                    <th width="200px">Time Stamped</th>
+                    <th width="260px">Date &amp; Time</th>
                     @*<th>Post</th>
                         <th>Posted By</th>
 
@@ -447,7 +447,11 @@
                    {
                         data: 'DiscussionCard',
                         sortable: true,
-                        render: function (data, type, row, meta) {
+                       render: function (data, type, row, meta) {
+                           var first_post = data.FirstPost;
+                           if (data.FirstPost.length > 50) {
+                               first_post = data.FirstPost.substring(0, 50) + '. . .';
+                           }
                             var result = "";
                             result += '<div class="media align-items-center">';
                             result += '<div class="media-left">';
@@ -468,7 +472,7 @@
                             result += '<a class="text-black-70" href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/' + row.Id + ' "class="text-body"><strong> ' + data.Name +' </strong></a>';
                             result += '</div>';
                             result += '<a class="text-black-70" href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/' + row.Id + '">';
-                            result += data.FirstPost;
+                            result += first_post;
                             result += ' </a>';
                             result += '</div>';
                             result += '</div>';
@@ -477,10 +481,34 @@
                         }
                     },
                     {
-                        data: 'DateTimeDisplay',
+                        data: 'DisplayDateTime',
                         sortable: true,
                         render: function (data) {
-                            return moment(data).format('LLL');
+                            var start = new Date();
+                            var datetimetodisplay = "";
+                            if (data.UpdatedOn != data.CreatedOn) {
+                                datetimetodisplay = new Date(data.UpdatedOn);
+                                var difference = moment(start, "DD/MM/YYYY HH:mm:ss").diff(moment(datetimetodisplay, "DD/MM/YYYY HH:mm:ss"));
+                                var gg = moment.duration(difference);
+                                if (gg._milliseconds < oneday) {
+                                    return 'Last reply ' + moment(datetimetodisplay).fromNow();
+                                }
+                                else {
+                                    return 'Last reply on ' + moment(datetimetodisplay).format('LLL');
+                                }
+                            }
+                            else {
+                                datetimetodisplay = new Date(data.CreatedOn);
+                                var difference = moment(start, "DD/MM/YYYY HH:mm:ss").diff(moment(datetimetodisplay, "DD/MM/YYYY HH:mm:ss"));
+                                var gg = moment.duration(difference);
+                                if (gg._milliseconds < oneday) {
+                                    return 'Created ' + moment(datetimetodisplay).fromNow();
+                                }
+                                else {
+                                    return 'Created on ' + moment(datetimetodisplay).format('LLL');
+                                }
+                                
+                            }
                         }
                     }
                 ],
@@ -526,6 +554,8 @@
 
         });
 
+        const oneday = 60 * 60 * 24 * 1000;
+
     </script>
 
     <script type="text/javascript">
@@ -564,6 +594,11 @@
                         data: 'DiscussionCard',
                         sortable: true,
                         render: function (data, type, row, meta) {
+                            var first_post = data.FirstPost;
+                            if (data.FirstPost.length > 50) {
+                                first_post = data.FirstPost.substring(0, 50) + '. . .';
+                            }
+
                             var result = "";
                             result += '<div class="media align-items-center">';
                             result += '<div class="media-left">';
@@ -584,7 +619,7 @@
                             result += '<a class="text-black-70" href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/' + row.Id + ' "class="text-body"><strong> ' + data.Name +' </strong></a>';
                             result += '</div>';
                             result += '<a class="text-black-70" href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/' + row.Id + '">';
-                            result += data.FirstPost;
+                            result += first_post;
                             result += ' </a>';
                             result += '</div>';
                             result += '</div>';
@@ -593,10 +628,34 @@
                         }
                     },
                     {
-                        data: 'DateTimeDisplay',
+                        data: 'DisplayDateTime',
                         sortable: true,
                         render: function (data) {
-                            return moment(data).format('LLL');
+                            var start = new Date();
+                            var datetimetodisplay = "";
+                            if (data.UpdatedOn != data.CreatedOn) {
+                                datetimetodisplay = new Date(data.UpdatedOn);
+                                var difference = moment(start, "DD/MM/YYYY HH:mm:ss").diff(moment(datetimetodisplay, "DD/MM/YYYY HH:mm:ss"));
+                                var gg = moment.duration(difference);
+                                if (gg._milliseconds < oneday) {
+                                    return 'Last reply ' + moment(datetimetodisplay).fromNow();
+                                }
+                                else {
+                                    return 'Last reply on ' + moment(datetimetodisplay).format('LLL');
+                                }
+                            }
+                            else {
+                                datetimetodisplay = new Date(data.CreatedOn);
+                                var difference = moment(start, "DD/MM/YYYY HH:mm:ss").diff(moment(datetimetodisplay, "DD/MM/YYYY HH:mm:ss"));
+                                var gg = moment.duration(difference);
+                                if (gg._milliseconds < oneday) {
+                                    return 'Created ' + moment(datetimetodisplay).fromNow();
+                                }
+                                else {
+                                    return 'Created on ' + moment(datetimetodisplay).format('LLL');
+                                }
+
+                            }
                         }
                     }
                 ],

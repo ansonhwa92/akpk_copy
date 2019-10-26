@@ -47,8 +47,6 @@ namespace FEP.Model.eLearning
         public virtual User User { get; set; }
         public string Topic { get; set; }
         public string Message { get; set; }
-        public virtual ICollection<FileDocument> Attachments { get; set; }
-
         public bool? IsDeleted { get; set; }
     }
 

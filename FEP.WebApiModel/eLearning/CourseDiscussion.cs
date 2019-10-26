@@ -182,8 +182,8 @@ namespace FEP.WebApiModel.eLearning
         public string FirstPost { get; set; }
         [Display(Name = "Poster")]
         public string CreatedBy { get; set; }
-        [Display(Name = "Update")]
-        public DateTime DateTimeDisplay { get; set; }
+        [Display(Name = "DisplayDateTime")]
+        public DateTimeModel DisplayDateTime { get; set; }
 
         [Display(Name = "DiscussionCard")]
         public DiscussionCardModel DiscussionCard { get; set; }
@@ -195,6 +195,14 @@ namespace FEP.WebApiModel.eLearning
         public string Name { get; set; }
         public string FirstPost { get; set; }
         public string CreatedBy { get; set; }
+    }
+
+    public class DateTimeModel
+    {
+        [Display(Name = "Create")]
+        public DateTime CreatedOn { get; set; }
+        [Display(Name = "Update")]
+        public DateTime? UpdatedOn { get; set; }
     }
 
 }

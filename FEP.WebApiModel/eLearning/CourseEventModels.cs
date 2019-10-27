@@ -1,23 +1,37 @@
-﻿using FEP.Helper;
-using FEP.Model.eLearning;
+﻿using FEP.Model.eLearning;
 using FEP.WebApiModel.Administration;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 
 namespace FEP.WebApiModel.eLearning
 {
     public class CourseEventModel : BaseModel
     {
+        [Required]
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        [Required]
         public string EnrollmentCode { get; set; }
 
+        [Required]
         public int CourseId { get; set; }
-        public virtual Course Course { get; set; }
 
         // The coursestatus at the point of this event, can be either Approved or Draft, changed afterward
         public CourseEventStatus Status { get; set; }
+
+        public bool HasGroup { get; set; }
         public int? GroupId { get; set; }
         public virtual Group Group { get; set; }
+
+        public ViewCategory ViewCategory { get; set; }
+
+        // Required if published for trial
+        public string TrialRemark { get; set; }
+
+        [Range(typeof(decimal), "0.0", "100.0", ErrorMessage = "Value must be between 0 to 100.")]
+        public decimal AllowablePercentageBeforeWithdraw { get; set; } = 0.0m;
     }
 
     public class LearnerEnrollmentModel
@@ -37,7 +51,7 @@ namespace FEP.WebApiModel.eLearning
         public List<Enrollment> Enrollments { get; set; }
 
         public int GroupId { get; set; }
-        public Group Group {get; set;}
+        public Group Group { get; set; }
     }
 
     public class UpdateLearnerEnrollmentModel
@@ -46,4 +60,23 @@ namespace FEP.WebApiModel.eLearning
         public List<int> UserId { get; set; }
     }
 
+    public class InviteLearnerModel
+    {
+        public int CourseId { get; set; }
+        public int CourseEventId { get; set; }
+        public string LearnerEmails { get; set; } //emails separated by comma
+        public int GroupId { get; set; }
+        public string EnrollmentCode { get; set; }
+        public string CourseTitle { get; set; }
+        public string CourseCode { get; set; }
+        public string CreatedBy { get; set; }
+    }
+
+    public class TrxResult<T>
+    {
+        public int CourseId { get; set; }
+        public int ObjectId { get; set; }
+        public bool IsSuccess { get; set; }
+        public string Message { get; set; }
+    }
 }

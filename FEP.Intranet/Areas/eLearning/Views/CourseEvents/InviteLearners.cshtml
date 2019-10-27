@@ -1,0 +1,110 @@
+﻿@model FEP.WebApiModel.eLearning.InviteLearnerModel
+
+@{
+    ViewBag.Title = "Invite Learners";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5">
+                    <a href="@BaseURL/eLearning/Courses"
+                       class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a>
+                </div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@BaseURL/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="@BaseURL/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="@BaseURL/eLearning/Courses">Course</a></li>
+                                <li class="breadcrumb-item"><a href="#">Invite Learners</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Invite Learners</h1>
+                    <div class="header-text">Invite learners to this course.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+    @Html.HiddenFor(m => m.CourseId)
+    @Html.HiddenFor(m => m.CourseEventId)
+
+    <div class="row">
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div id="page-nav" class="sidebar-left page-nav">
+                <div data-perfect-scrollbar class="ps">
+                    <div class="page-section">
+                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                        <ul class="nav page-nav__menu">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Invite Learners</a>
+                            </li>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top col-sm-12">
+                <div class="form-container form-container-w100">
+                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CourseTitle, htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                        <div class="">
+                            @Html.EditorFor(model => model.CourseTitle, new { htmlAttributes = new { @class = "form-control",
+                                @readonly = "readonly"  }})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EnrollmentCode, htmlAttributes: new { @class = "control-label" })
+                        <div class="">
+                            @Html.EditorFor(model => model.EnrollmentCode, new { htmlAttributes = new { @class = "form-control",
+                               @readonly = "readonly" }})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Please key in the email addresses to invite (Separated by comma)", htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
+                        <div class="">
+                            @Html.TextAreaFor(model => model.LearnerEmails, new { htmlAttributes = new { @class = "form-control", 
+                           placeholder = "e.g. brad@pitt.com, mo@salah.com", rows = 15 } })
+                        </div>
+                    </div>
+                 
+                </div>
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a class="btn btn-default" href="@Url.Action("Content", "Courses", new { area = "eLearning", @id=Model.CourseId })"
+                   data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
+                <button type="submit" class="btn btn-default pull-right" id="btnSave" name="Submittype" value="Invite">
+                    <i class="la la-envelope font-icon" style="font-size: 1.5rem;"></i>Invite
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .form-container {
+        max-width: none !important;
+    }
+</style>
+
+@section ContentScript {
+
+}

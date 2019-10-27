@@ -126,10 +126,13 @@ namespace FEP.Model
 
 		[Display(Name = "Payment")]
         Payment,
+
+        // ELearning
         [Display(Name = "Verify Courses")]
         VerifyCourses,
         [Display(Name = "Approve Courses")]
         ApproveCourses,
+
 
         // payment
         // guarantee letter - not verified (reg user), not yet uploaded (admin), upload/reupload (admin)

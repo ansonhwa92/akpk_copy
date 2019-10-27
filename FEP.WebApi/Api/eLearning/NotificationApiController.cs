@@ -3,6 +3,7 @@ using FEP.Model.eLearning;
 using FEP.WebApi.Api.Reminder;
 using FEP.WebApiModel.eLearning;
 using FEP.WebApiModel.SLAReminder;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -44,7 +45,6 @@ namespace FEP.WebApi.Api.eLearning
 
                         receivers = await GetUserIds(UserAccess.CourseVerify);
 
-
                         break;
 
                     case NotificationType.Approve_Courses_Creation_Approver1:
@@ -82,7 +82,6 @@ namespace FEP.WebApi.Api.eLearning
                 }
             }
 
-
             CreateAutoReminder createdAutoReminder = new CreateAutoReminder
             {
                 NotificationCategory = model.NotificationCategory,
@@ -92,15 +91,19 @@ namespace FEP.WebApi.Api.eLearning
                 StartNotificationDate = DateTime.Now
             };
 
+            var emailQueue = new CourseEmailQueue
+            {
+                NotificationCategory = model.NotificationCategory.ToString(),
+                NotificationType = model.NotificationType.ToString(),
+                CourseId = model.Id,
+                Parameters = JsonConvert.SerializeObject(model.ParameterListToSend),
+                Receivers = model.ReceiverId.ToString(),
+            };
+
+            db.CourseEmailQueue.Add(emailQueue);
+            await db.SaveChangesAsync();
 
             var controller = new SLAReminderController();
-
-            //var newUrl = "/Reminder/SLA/GenerateAutoNotificationReminder";
-
-            //var controller = new SLAReminderController
-            //{
-            //    Request = new HttpRequestMessage(HttpMethod.Post, Request.RequestUri.AbsoluteUri.Replace("/eLearning/Notification/SendNotification", newUrl))
-            //};
 
             try
             {

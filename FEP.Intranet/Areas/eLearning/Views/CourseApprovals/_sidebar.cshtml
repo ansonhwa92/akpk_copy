@@ -3,13 +3,6 @@
 
 @model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
 
-@*@Html.HiddenFor(m => m.CourseId)
-    @Html.HiddenFor(m => m.CourseTitle)
-    @Html.HiddenFor(m => m.Status)
-    @Html.HiddenFor(m => m.ApproverId)
-    @Html.HiddenFor(m => m.IsApproved)
-    @Html.HiddenFor(m => m.IsNextLevelRequired)
-    @Html.HiddenFor(m => m.Remark)*@
 
 <div class="col-xl-3 col-md-3 col-sm-4 my-2">
     <div id="page-nav" class="sidebar-left page-nav">
@@ -33,7 +26,7 @@
                 case CourseStatus.Submitted:
                     if (CurrentUser.HasAccess(UserAccess.CourseVerify))
                     {
-                        <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+                        <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Verify & Submit for Approval</button></p>
                         <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
                     }
 

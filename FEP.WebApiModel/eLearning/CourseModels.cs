@@ -85,6 +85,7 @@ namespace FEP.WebApiModel.eLearning
         public int Duration { get; set; }
 
         [Display(Name = "DurationType", ResourceType = typeof(Language.eLearning.Course))]
+        [Range(typeof(decimal), "0.5", "1000", ErrorMessage = "Invalid Value")]
         public DurationType DurationType { get; set; }
 
         [Display(Name = "IsFree", ResourceType = typeof(Language.eLearning.Course))]

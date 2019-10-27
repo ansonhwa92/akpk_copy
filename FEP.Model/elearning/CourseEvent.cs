@@ -10,17 +10,19 @@ using Language;
 namespace FEP.Model.eLearning
 {
 
-
     /// <summary>
     /// This table contains the histury for the course being offered for trial or for public/private groups.
     /// </summary>
-    public class CourseEvent : BaseEntity, IValidatableObject
+    public class CourseEvent : BaseEntity
     {
+        [Required]
+        public string Name { get; set; }
+        public string Description { get; set; }
         /// <summary>
         /// Specific code for enrollment, defined during creation of group of Learners
         /// </summary>
         [Required]
-        [Index(IsUnique = true)] 
+        [Index(IsUnique = true)]    
         [MaxLength(150)]
         public string EnrollmentCode { get; set; }
 
@@ -48,16 +50,19 @@ namespace FEP.Model.eLearning
         public string TrialRemark { get; set; }
 
         // ----- Start value from Course
-        // TODO : May need to have conditional validation at ModelView
-        //https://stackoverflow.com/questions/2417113/asp-net-mvc-conditional-validation 
+
+        [Range(typeof(decimal), "0.0", "100.0", ErrorMessage = "Value must be between 0 to 100.")]
         public decimal AllowablePercentageBeforeWithdraw { get; set; } = 0.0m;
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (!this.Course.IsFree && AllowablePercentageBeforeWithdraw <= 0.0m)
-                yield return new ValidationResult("Allowable Percentage Before Withdraw value must be set.");
 
-        }
+        // TODO : May need to have conditional validation at ModelView
+        //https://stackoverflow.com/questions/2417113/asp-net-mvc-conditional-validation 
+        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        //{
+        //    if (!this.Course.IsFree && AllowablePercentageBeforeWithdraw < 0.0m)
+        //        yield return new ValidationResult("Allowable Percentage Before Withdraw value must be set.");
+
+        //}
     }
 
     public enum ViewCategory

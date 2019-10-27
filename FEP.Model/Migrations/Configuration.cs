@@ -22,11 +22,6 @@
             SeedElearning.Seed(context);
             tajulSeed.Seed(context);
 
-
-
-            tajulSeed.Seed(context);
-
-
         }
     }
 }

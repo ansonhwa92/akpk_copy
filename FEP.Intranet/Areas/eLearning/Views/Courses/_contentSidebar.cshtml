@@ -28,6 +28,9 @@
                                 <li class="nav-item">
                                     <a href="@Url.Action("AssignCertificate", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Certificate</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Enrollment", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Certificate</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -149,13 +152,30 @@
 
                 case CourseStatus.Published:
 
-                    <div class="page-section">
-                        <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Course</h6>
-                        <ul class="nav page-nav__menu">
-                            <li class="nav-item">
-                                <a id="tab_details" href="#course-trial" data-toggle="tab" class="nav-link active">Published</a>
-                            </li>
-                        </ul>
+                    <div data-perfect-scrollbar class="ps">
+                        <div class="page-section">
+                            <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                            <ul class="nav page-nav__menu">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Content", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Content</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("EditRules", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Rules And Path </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Trainers", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Instructors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Users", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Users And Progress</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("AssignCertificate", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Certificate</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Sessions", "CourseEvents", new { area = "eLearning", id = @Model.Id })" class="nav-link">Enrollment</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     if (CurrentUser.HasAccess(UserAccess.CoursePublish))
@@ -169,7 +189,13 @@
 
                         if (Model.ViewCategory == ViewCategory.Private)
                         {
-                            <p><button class="btn btn-default btn-block" id="btnInviteStudent" onclick="createGroup">Invite Group of Students</button></p>
+                            @*<p><button class="btn btn-default btn-block" id="btnInviteStudent" onclick="createGroup">Invite Group of Students</button></p>
+                            *@
+                            <p>
+                                <a href="@Url.Action("Create", "CourseEvents", new { area = "eLearning", id = @Model.Id, title = Model.Title })" class="btn btn-primary btn-block mb-2">
+                                    <i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Session
+                                </a>
+                            </p>
                         }
                     }
 

@@ -75,6 +75,11 @@ namespace FEP.WebApiModel.eLearning
 
         public CourseStatus Status { get; set; }
 
+        [Range(5, 5000)]
+        public int? Height { get; set; } = 100;
+        [Range(5, 5000)]
+        public int? Width { get; set; } = 100;
+
     }
 
 

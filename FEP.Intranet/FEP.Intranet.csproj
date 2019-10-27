@@ -912,6 +912,8 @@
     <Content Include="Areas\eLearning\Views\CourseApprovals\Approve.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseApprovals\_sidebar.cshtml" />
     <Content Include="Areas\eLearning\Views\Shared\_courseStatus.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\Create.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\InviteLearners.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

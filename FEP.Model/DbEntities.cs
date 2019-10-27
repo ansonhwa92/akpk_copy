@@ -159,6 +159,7 @@ namespace FEP.Model
         public DbSet<CourseModule> CourseModules { get; set; }
 
         public DbSet<CourseEvent> CourseEvents { get; set; }
+        public DbSet<CourseInvitation> CourseInvitations { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<GamificationCriteria> GamificationCriteria { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -171,6 +172,7 @@ namespace FEP.Model
         public DbSet<CourseProgress> CourseProgress { get; set; }
         public DbSet<FileUpload> FileUploads { get; set; }
         public DbSet<EnrollmentHistory> EnrollmentHistories { get; set; }
+        public DbSet<CourseEmailQueue> CourseEmailQueue { get; set; }
 
         // Quiz, questions
         public DbSet<Question> Questions { get; set; }

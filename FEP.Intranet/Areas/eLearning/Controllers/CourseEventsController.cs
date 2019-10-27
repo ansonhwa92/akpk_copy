@@ -2,7 +2,6 @@
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -20,38 +19,92 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string RemoveLearner = "eLearning/CourseEvents/RemoveLearner";
 
         public const string Publish = "eLearning/CourseEvents/Publish";
+
+        public const string Create = "eLearning/CourseEvents/Create";
     }
 
     public class CourseEventsController : FEPController
     {
-        private DbEntities db = new DbEntities();
+        private readonly DbEntities db = new DbEntities();
+
+        [Authorize]
+        [HasAccess(UserAccess.CoursePublish)]
+        public ActionResult Create(int? id)
+        {
+            if (id == null)
+            {
+                TempData["ErrorMessage"] = "Cannot find course to Create the session.";
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
+            }
+
+            CourseEventModel model = new CourseEventModel();
+            model.CourseId = id.Value;
+
+            return View(model);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<ActionResult> Create(CourseEventModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<TrxResult<CourseEvent>>(HttpVerbs.Post, CourseEventApiUrl.Create, model);
+
+                if (response.isSuccess)
+                {
+                    if (response.Data.IsSuccess)
+                    {
+                        await LogActivity(Modules.Learning, $"A session -{model.Name} is Created for Course Id : {model.CourseId}");
+
+                        TempData["SuccessMessage"] = $"Successfully created  {model.Name}. You can now invite students to the session.";
+
+                        return RedirectToAction(nameof(InviteLearners), "CourseEvents", 
+                            new { area = "eLearning", courseId = model.CourseId, eventId = response.Data.ObjectId,
+                                    enrollmentCode = model.EnrollmentCode});
+                    }
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = $"Failed to create a session for this Course. - {response.Data}";
+                }
+            }
+            else
+            {
+                await LogError(Modules.Learning, $"Fail create session for Course Id {model.Id} ");
+
+                TempData["ErrorMessage"] = $"Failed to create a session for this Course.";
+            }
+
+            return RedirectToAction("Content", "Courses", new { area = "eLearning", id = model.CourseId });
+        }
 
         [HasAccess(UserAccess.CourseCreate)]
         public async Task<ActionResult> StartTrial(int? id)
         {
+            var createdBy = CurrentUser.UserId.Value;
             if (id == null)
             {
-                return HttpNotFound();
+                TempData["ErrorMessage"] = "Cannot find course to start Trial.";
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
             }
 
-            var response = await WepApiMethod.SendApiAsync<ChangeCourseStatusModel>(HttpVerbs.Post, CourseEventApiUrl.StartTrial + $"?id={id}");
+            var response = await WepApiMethod.SendApiAsync<ChangeCourseStatusModel>(HttpVerbs.Post, CourseEventApiUrl.StartTrial + $"?id={id}&createdBy={createdBy}");
 
             if (response.isSuccess)
             {
                 await LogActivity(Modules.Learning, "Course Start Trial: " + response.Data.CourseName);
 
                 TempData["SuccessMessage"] = "Course " + response.Data.CourseName + " now in Trial Mode. Please assign learners for the trial.";
-
             }
             else
             {
-                await LogActivity(Modules.Learning, "Fail : Course Start Trial: " + response.Data);
+                await LogError(Modules.Learning, "Fail : Course Start Trial: " + response.Data);
                 TempData["ErrorMessage"] = "Failed to Start Trial for this Course.";
             }
 
             return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
         }
-
 
         [HasAccess(UserAccess.CourseCreate)]
         public async Task<ActionResult> StopTrial(int? id)
@@ -68,7 +121,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 await LogActivity(Modules.Learning, "Course Stop Trial: " + response.Data.CourseName);
 
                 TempData["SuccessMessage"] = "Course " + response.Data.CourseName + " has stopped Trial.";
-
             }
             else
             {
@@ -79,7 +131,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
         }
 
-
         // get all the learners for this course or courseevent
         [HttpGet]
         public async Task<ActionResult> Learners(int? id, int courseEventId = -1)
@@ -89,20 +140,16 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return HttpNotFound();
             }
 
-
             var data = new CourseEventModel();
 
             if (courseEventId < 0)
             {
                 data = await TryGetEventByCourseId(id.Value);
-
             }
             else
             {
                 data = await TryGetCourseEvent(courseEventId);
-
             }
-
 
             if (data == null)
             {
@@ -141,14 +188,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (response.isSuccess)
             {
-                TempData["SuccessMessage"] = "User successfully assigned as learner for this course.";
+                TempData["SuccessMessage"] = "Users successfully assigned as learner for this course.";
                 await LogActivity(Modules.Learning, "Assign learner to this course.", model);
             }
             else
             {
                 TempData["ErrorMessage"] = "Fail to assign learner to this course.";
             }
-
 
             return RedirectToAction("Content", "Courses", new { area = "eLearning", id = CourseId });
         }
@@ -174,7 +220,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 TempData["ErrorMessage"] = "Fail to remove learner to this course.";
             }
 
-
             return RedirectToAction("Content", "Courses", new { area = "eLearning", id = CourseId });
         }
 
@@ -189,6 +234,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             return null;
         }
+
         public async Task<CourseEventModel> TryGetEventByCourseId(int id)
         {
             var response = await WepApiMethod.SendApiAsync<CourseEventModel>(HttpVerbs.Get, CourseEventApiUrl.GetEventByCourseId + $"?id={id}");
@@ -201,47 +247,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return null;
         }
 
-
-        /// <summary>
-        /// Published course. Course must be in approved state before can be published.
-        /// When published, course can now be offerd to public or by inviting a group.
-        /// </summary>
-        /// <param name="id">Course Id</param>
-        /// <returns></returns>
-        //[HasAccess(UserAccess.CoursePublish)]
-        //public async Task<ActionResult> Publish(int id, string title)
-        //{
-        //    var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, CourseApiUrl.Publish + $"?id={id}");
-
-        //    if (response.isSuccess)
-        //    {
-        //        if (response.Data == true)
-        //        {
-        //            await LogActivity(Modules.Learning, $"Course published. Course {id} - {title}");
-        //            TempData["SuccessMessage"] = "Course is now published. You can start offering this course to public or invite students to enroll.";
-        //        }
-        //        else
-        //        {
-        //            await LogError(Modules.Learning, $"Error publishing Course {id} - {title}");
-        //            TempData["ErrorMessage"] = "Error publishing course. Perhaps the course is not approved yet?";
-        //        }
-        //    }
-        //    else
-        //    {
-        //        await LogError(Modules.Learning, $"API failed - Error publishing course Course {id} - {title}");
-        //        TempData["ErrorMessage"] = "Could not published the course.";
-        //    }
-        //    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
-        //}
-
-
         /// <summary>
         /// Open the course to public. Check whether there are existing public course event and its status
         /// If so, decide to reuse or not
-        /// Enrollment code is 
+        /// Enrollment code is
         /// </summary>
         /// <param name="id">CourseId</param>
         /// <returns></returns>
+        ///
         public async Task<ActionResult> Publish(int id, string title, ViewCategory viewCategory)
         {
             var createdBy = CurrentUser.UserId;
@@ -269,7 +282,59 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return RedirectToAction("Content", "Courses", new { area = "eLearning", id = id });
+        }
 
+        public ActionResult InviteStudents(int? courseId, int? eventId)
+        {
+            if (courseId == null || eventId == null)
+            {
+                TempData["ErrorMessage"] = "Cannot find course to invite students.";
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
+            }
+
+            CourseEventModel model = new CourseEventModel();
+            model.CourseId = courseId.Value;
+            model.Id = eventId.Value;
+
+            return View(model);
+        }
+
+        public async Task<ActionResult> InviteLearners(int courseId, int eventId, string enrollmentCode)
+        {
+            var createdBy = CurrentUser.UserId;
+
+            var model = new InviteLearnerModel
+            {
+                CourseId = courseId,
+                CourseEventId = eventId,
+                EnrollmentCode = enrollmentCode
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> InviteLearners(InviteLearnerModel model)
+        {
+                       
+            //var response = await WepApiMethod.SendApiAsync<ChangeCourseStatusModel>(HttpVerbs.Post,
+            //    CourseEventApiUrl.Publish + $"?id={id}&createdBy={createdBy}");
+
+            //if (response.isSuccess)
+            //{
+            //    await LogActivity(Modules.Learning, $"Success publishing - Course - {id}");
+
+            //        TempData["SuccessMessage"] = "Published successful. You can now invite group/students to enroll to the course.";
+
+            //}
+            //else
+            //{
+            //    await LogError(Modules.Learning, $"Error publishing - Course - {id}");
+            //    TempData["ErrorMessage"] = "Error publishing the course.";
+            //}
+
+            //return RedirectToAction("Content", "Courses", new { area = "eLearning", id = id });
+            return View();
         }
 
         protected override void Dispose(bool disposing)

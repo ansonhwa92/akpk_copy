@@ -7,7 +7,7 @@
     switch (Model)
     {
         case CourseStatus.Verify:
-            status = "Verified. Pending Your Approval.";
+            status = "Verified. Pending Approval.";
             break;
         case CourseStatus.Submitted:
             status = "Pending Verification.";
@@ -15,7 +15,7 @@
         case CourseStatus.FirstApproval:
         case CourseStatus.SecondApproval:
         case CourseStatus.ThirdApproval:
-            status = "Pending Your Approval.";
+            status = "Pending Approval.";
             break;
         case CourseStatus.Approved:
             status = "Approved.";
@@ -27,8 +27,16 @@
             status = "Published.";
             break;
 
+        case CourseStatus.Trial:
+            status = "Trial";
+            break;
+
+        case CourseStatus.Draft:
+            status = "Draft";
+            break;
+
         default:
-            status = Model.GetDisplayName();
+            status = Model.ToString();
             break;
     }
 }

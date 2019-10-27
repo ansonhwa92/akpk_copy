@@ -229,16 +229,18 @@ namespace FEP.Model.Migrations
                         continue;
                     }
 
-                    if (pType >= 141 && pType <= 160)
-                    {
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.VerifyCourses, TemplateParameterType = paramType });
 
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.ApproveCourses, TemplateParameterType = paramType });
+                }
 
-                        continue;
-                    }
+                if (pType >= 141 && pType <= 160)
+                {
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifyCourses, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ApproveCourses, TemplateParameterType = paramType });
+
+                    continue;
                 }
             }
             //}
@@ -287,6 +289,118 @@ namespace FEP.Model.Migrations
                             enableEmail = true,
                             TemplateSubject = "FE Portal Password Reset",
                             TemplateMessage = "&lt;p style=&quot;font-size: 16px;&quot;&gt;Dear&amp;nbsp;&lt;span style=&quot;font-size: 1rem;&quot;&gt;[#UserFullName],&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;font-size: 16px;&quot;&gt;You can reset your password [#Link].&amp;nbsp;&lt;/p&gt;&lt;p style=&quot;font-size: 16px;&quot;&gt;&lt;br&gt;&lt;/p&gt;",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
+                    case NotificationType.Verify_Courses_Creation:
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "Verify A New Course",
+                            TemplateMessage = "",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
+                    case NotificationType.Approve_Courses_Creation_Approver1:
+                    case NotificationType.Approve_Courses_Creation_Approver2:
+                    case NotificationType.Approve_Courses_Creation_Approver3:
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "Approval needed for Course",
+                            TemplateMessage = "",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
+                    case NotificationType.Course_Approved:
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "Course has been Approved",
+                            TemplateMessage = "",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
+                    case NotificationType.Course_Amendment:
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "Course Require Amendment",
+                            TemplateMessage = "",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
+                    case NotificationType.Course_Invitation:
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "Invitation to Enroll To Course",
+                            TemplateMessage = "",
                             enableSMSMessage = false,
                             SMSMessage = "SMS Message Template",
                             enableWebMessage = false,

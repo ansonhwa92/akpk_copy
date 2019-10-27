@@ -24,9 +24,9 @@ namespace FEP.WebApi.Api.eLearning
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<CreateOrEditCourseModel, Course>();
+                cfg.CreateMap<CourseEventModel, CourseEvent>();
 
-                cfg.CreateMap<Course, CreateOrEditCourseModel>();
+                cfg.CreateMap<CourseEvent, CourseEventModel>();
             });
 
             _mapper = config.CreateMapper();
@@ -51,13 +51,7 @@ namespace FEP.WebApi.Api.eLearning
             if (entity == null)
                 return NotFound();
 
-            var model = new CourseEventModel
-            {
-                CourseId = entity.CourseId,
-                Id = entity.Id,
-                EnrollmentCode = entity.EnrollmentCode,
-                Status = entity.Status
-            };
+            var model = _mapper.Map<CourseEventModel>(entity);
 
             return Ok(model);
         }
@@ -74,19 +68,13 @@ namespace FEP.WebApi.Api.eLearning
             if (entity == null)
                 return NotFound();
 
-            var model = new CourseEventModel
-            {
-                CourseId = entity.CourseId,
-                Id = entity.Id,
-                EnrollmentCode = entity.EnrollmentCode,
-                Status = entity.Status
-            };
+            var model = _mapper.Map<CourseEventModel>(entity);
 
             return Ok(model);
         }
 
         [Route("api/eLearning/CourseEvents/StartTrial")]
-        public async Task<IHttpActionResult> StartTrial(int id)
+        public async Task<IHttpActionResult> StartTrial(int id, int createdBy)
         {
             var entity = await db.Courses
                             .Include(x => x.CourseApprovalLog)
@@ -109,11 +97,13 @@ namespace FEP.WebApi.Api.eLearning
 
                     var newEvent = new CourseEvent
                     {
+                        Name = "Trial Event",
                         CourseId = entity.Id,
                         Status = CourseEventStatus.Trial,
                         Start = DateTime.Now,
                         EnrollmentCode = $"TRIAL({entity.Code}-{DateTime.Now.Ticks}",
                         ViewCategory = ViewCategory.Private,
+                        CreatedBy = createdBy
                     };
 
                     db.CourseEvents.Add(newEvent);
@@ -625,6 +615,7 @@ namespace FEP.WebApi.Api.eLearning
 
                 var newEvent = new CourseEvent
                 {
+                    Name = "Public Course",
                     CourseId = id,
                     AllowablePercentageBeforeWithdraw = entity.DefaultAllowablePercentageBeforeWithdraw,
                     CreatedBy = createdBy,
@@ -667,6 +658,113 @@ namespace FEP.WebApi.Api.eLearning
                 Message = "Published"
             };
             return Ok(data);
+        }
+
+        /// <summary>
+        /// Create course event/session.
+        /// If HasGroup is true, a group will also be created for the session
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/eLearning/CourseEvents/Create")]
+        [HttpPost]
+        public async Task<IHttpActionResult> Create(CourseEventModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = await db.Courses.FindAsync(model.CourseId);
+                if (entity == null)
+                {
+                    return BadRequest();
+                }
+
+                var courseEvent = _mapper.Map<CourseEvent>(model);
+                courseEvent.Status = CourseEventStatus.AvailableToPrivate;
+
+                try
+                {
+                    db.CourseEvents.Add(courseEvent);
+
+                    await db.SaveChangesAsync();
+                }
+                catch (Exception e)
+                {
+                    return BadRequest("Fail save event. - " + e.Message + " " + e.InnerException);
+                }
+
+                if (model.HasGroup)
+                {
+                    var group = new Group
+                    {
+                        CourseEventId = courseEvent.Id,
+                        CourseId = model.CourseId,
+                        EnrollmentCode = model.EnrollmentCode,
+                        CreatedBy = model.CreatedBy,
+                        Description = model.Name,
+                        IsVisible = true,
+                    };
+
+                    try
+                    {
+                        db.Groups.Add(group);
+
+                        await db.SaveChangesAsync();
+
+                        courseEvent.GroupId = group.Id;
+                    }
+                    catch (Exception e)
+                    {
+                        return BadRequest("Session created, but group cannot be created");
+                    }
+
+                    db.SetModified(courseEvent);
+                    await db.SaveChangesAsync();
+                }
+
+                TrxResult<CourseEvent> response = new TrxResult<CourseEvent>
+                {
+                    CourseId = model.CourseId,
+                    IsSuccess = true,
+                    Message = "Success",
+                    ObjectId = model.Id,
+                };
+
+                return Ok(response);
+            }
+
+            return BadRequest("Invalid data");
+        }
+
+
+        /// <summary>
+        /// Invite learners by email. Called by intranet, same name
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/eLearning/CourseEvents/InviteLearners")]
+        [HttpPost]
+        public async Task<IHttpActionResult> InviteLearners(InviteLearnerModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var courseEvent = await db.CourseEvents.FindAsync(model.CourseEventId);
+
+                if (courseEvent == null)
+                    return BadRequest("No course event found");
+
+                if (String.IsNullOrEmpty(model.LearnerEmails))
+                    return BadRequest("No emails found.");
+
+                db.CourseInvitations.Add(new CourseInvitation
+                {
+                    CourseId = model.CourseId,
+                    CourseEventId = model.CourseEventId,
+                    NotificationType = NotificationType.Course_Invitation,
+                    CreatedBy = int.Parse(model.CreatedBy),
+                    Emails = model.LearnerEmails,
+                });
+                await db.SaveChangesAsync();
+
+            }
+            return Ok();
         }
     }
 }

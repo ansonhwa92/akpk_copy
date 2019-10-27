@@ -329,6 +329,13 @@ namespace FEP.Model.Migrations
             AddUser(db, "elapprover2@fep.com", "elapprover2@fep.com", UserType.Individual, RoleNames.eLearningApprover2);
             AddUser(db, "elapprover3@fep.com", "elapprover3@fep.com", UserType.Individual, RoleNames.eLearningApprover3);
 
+
+            AddUser(db, "min.elearn@yahoo.com", "min.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningTrainer, RoleNames.eLearningAdmin);
+            AddUser(db, "v1.elearn@yahoo.com", "v1.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningVerifier);
+            AddUser(db, "app1.elearn@yahoo.com", "app1.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningApprover1);
+            AddUser(db, "app2.elearn@yahoo.com", "app2.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningApprover2);
+            AddUser(db, "app3.elearn@yahoo.com", "app3.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningApprover3);
+
             for (int i = 1; i <= 10; i++)
             {
                 var facilitator = $"elInstructor{i}@fep.com";

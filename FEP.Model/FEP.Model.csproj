@@ -65,6 +65,7 @@
     <Compile Include="elearning\CourseApproval.cs" />
     <Compile Include="elearning\CourseCertificate.cs" />
     <Compile Include="elearning\CourseEvent.cs" />
+    <Compile Include="elearning\CourseInvitation.cs" />
     <Compile Include="elearning\CourseProgress.cs" />
     <Compile Include="elearning\Enrollment.cs" />
     <Compile Include="elearning\EnumConstants.cs" />
@@ -86,15 +87,16 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201910170418287_InitialDB.cs" />
-    <Compile Include="Migrations\201910170418287_InitialDB.designer.cs">
-      <DependentUpon>201910170418287_InitialDB.cs</DependentUpon>
+    <Compile Include="Migrations\201910230949573_initialdb.cs" />
+    <Compile Include="Migrations\201910230949573_initialdb.designer.cs">
+      <DependentUpon>201910230949573_initialdb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
     <Compile Include="Migrations\SeedELearning.cs" />
     <Compile Include="Migrations\mhafeez.cs" />
+    <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="Migrations\tajul.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,8 +119,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910170418287_InitialDB.resx">
-      <DependentUpon>201910170418287_InitialDB.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910230949573_initialdb.resx">
+      <DependentUpon>201910230949573_initialdb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

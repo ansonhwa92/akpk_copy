@@ -221,6 +221,15 @@ namespace FEP.Intranet
             return null;
         }
 
+        public static async Task<HttpResponseMessage> DownloadFile(int id)
+        {
+            var responseFile = await WepApiMethod.SendApiAsync<HttpResponseMessage>(HttpVerbs.Get, $"System/File?id={id}");
+
+            return responseFile.Data;
+
+        }
+
+
     }
 
     public static class ADMethod

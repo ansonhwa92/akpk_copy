@@ -156,9 +156,7 @@ namespace FEP.WebApi.Api.eEvent
 					Experience = s.Experience,
 					SpeakerStatus = s.SpeakerStatus,
 					InternalEmail = s.User.Email,
-					InternalPhoneNo = s.User.MobileNo,
-					//SpeakerPictureName = db.SpeakerFile.Where(f => f.EventSpeakerId == s.Id && f.SpeakerFileType == SpeakerFileType.Picture).Select(i => i.FileName).FirstOrDefault(),
-					//SpeakerAttachmentName = db.SpeakerFile.Where(f => f.EventSpeakerId == s.Id && f.SpeakerFileType == SpeakerFileType.Attachment).Select(i => i.FileName).FirstOrDefault()
+					InternalPhoneNo = s.User.MobileNo					
 				}).FirstOrDefault();
 
 			if (speaker == null)
@@ -189,10 +187,11 @@ namespace FEP.WebApi.Api.eEvent
 			};
 
 			db.EventSpeaker.Add(speaker);
-			db.SaveChanges();
 
-			//files
-			foreach (var fileid in model.FilesId)
+            db.SaveChanges();
+
+            //files
+            foreach (var fileid in model.FilesId)
 			{
 				var eventfile = new EventFile
 				{
@@ -202,9 +201,11 @@ namespace FEP.WebApi.Api.eEvent
 				};
 				db.EventFile.Add(eventfile);
 			}
-			return Ok(speaker.Id);
-		}
 
+            db.SaveChanges();
+
+            return Ok(speaker.Id);
+		}
 
 		public IHttpActionResult Put(int id, [FromBody] EditEventSpeakerModel model)
 		{
@@ -269,8 +270,7 @@ namespace FEP.WebApi.Api.eEvent
 				}
 			}
 
-			//add new file
-			//files
+			//add files
 			foreach (var fileid in model.FilesId)
 			{
 				var eventfile = new EventFile

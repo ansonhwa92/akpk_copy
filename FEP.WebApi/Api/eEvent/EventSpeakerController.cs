@@ -150,6 +150,8 @@ namespace FEP.WebApi.Api.eEvent
 					Email = s.User.Email,
 					Experience = s.Experience,
 					SpeakerStatus = s.SpeakerStatus,
+					InternalEmail = s.User.Email,
+					InternalPhoneNo = s.User.MobileNo					
 				}).FirstOrDefault();
 
 			if (speaker == null)
@@ -178,8 +180,10 @@ namespace FEP.WebApi.Api.eEvent
 
 			db.EventSpeaker.Add(speaker);
 
-			//files
-			foreach (var fileid in model.FilesId)
+            db.SaveChanges();
+
+            //files
+            foreach (var fileid in model.FilesId)
 			{
 				var eventfile = new EventFile
 				{
@@ -189,11 +193,11 @@ namespace FEP.WebApi.Api.eEvent
 				};
 				db.EventFile.Add(eventfile);
 			}
-			db.SaveChanges();
 
-			return Ok(speaker.Id);
+            db.SaveChanges();
+
+            return Ok(speaker.Id);
 		}
-
 
 		public IHttpActionResult Put(int id, [FromBody] EditEventSpeakerModel model)
 		{
@@ -252,8 +256,7 @@ namespace FEP.WebApi.Api.eEvent
 				}
 			}
 
-			//add new file
-			//files
+			//add files
 			foreach (var fileid in model.FilesId)
 			{
 				var eventfile = new EventFile

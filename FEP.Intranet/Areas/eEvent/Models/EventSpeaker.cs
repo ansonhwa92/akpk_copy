@@ -60,10 +60,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 			Attachments = new List<Attachment>();
 			AttachmentFiles = new List<HttpPostedFileBase>();
 		}
-
-		[Required]
+        		
 		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
 		public IEnumerable<Attachment> Attachments { get; set; }
+
 		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
 
 		[Required(ErrorMessage = "Please Select Speaker Type")]
@@ -115,8 +115,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		}
 
 		public int Id { get; set; }
-
-		[Required]
+        		
 		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
 		public IEnumerable<Attachment> Attachments { get; set; }
 		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }

@@ -1,17 +1,20 @@
 ﻿@model IEnumerable<Attachment>
 @{
-	Layout = null;
+    Layout = null;
 }
 <script type="text/javascript">
-	 
+
     function RefreshFile() {
 
         var file_input;
         var file_no;
 
         $('#btnAddFile').click(function () {
+
             file_input = $('<input type="file" name="AttachmentFiles" style="display:none" />');
+
             file_input.trigger('click');
+            
             file_input.change(function () {
 
                 var row = $('<tr><td>' + $(this).val().replace(/.*(\/|\\)/, '') + '</tr>')
@@ -26,19 +29,22 @@
                 });
 
                 cell.append(button);
-                cell.append(file_input);
+                cell.append(this);
 
                 row.append(cell);
 
                 $("table.table-file tbody").append(row);
 
                 $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+
             });
 
         });
 
+
     }
 
+   
 </script>
 
 <div>

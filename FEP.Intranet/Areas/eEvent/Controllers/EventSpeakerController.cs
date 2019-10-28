@@ -89,11 +89,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				//attachment
 				if (model.AttachmentFiles.Count() > 0)
 				{
-					var responseFile = await WepApiMethod.SendApiAsync<List<FileDocument>>($"File?userId={CurrentUser.UserId}", model.AttachmentFiles.ToList());
+					var responseFile = await FileMethod.UploadFile(model.AttachmentFiles.ToList(), CurrentUser.UserId);
 
-					if (responseFile.isSuccess)
+                    if (responseFile != null)
 					{
-						modelapi.FilesId = responseFile.Data.Select(f => f.Id).ToList();
+						modelapi.FilesId = responseFile.Select(f => f.Id).ToList();
 					}
 				}
 
@@ -108,9 +108,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					return RedirectToAction("List");
 				}
 			}
-			TempData["ErrorMessage"] = "Fail to add new Event Speaker";
+			//TempData["ErrorMessage"] = "Fail to add new Event Speaker";
 
-			return RedirectToAction("List");
+            return View(model);
 		}
 
 
@@ -135,10 +135,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				UserName = response.Data.UserName,
 				SpeakerType = response.Data.SpeakerType,
 				Experience = response.Data.Experience,
+				Email = response.Data.Email,
+				PhoneNo = response.Data.PhoneNo,
 				SpeakerStatus = response.Data.SpeakerStatus,
-				//SpeakerPictureName = response.Data.SpeakerPictureName,
-				//SpeakerAttachmentName = response.Data.SpeakerAttachmentName,
-			};
+				ExternalUserName = response.Data.ExternalUserName,
+                Attachments = response.Data.Attachments
+                //SpeakerPictureName = response.Data.SpeakerPictureName,
+                //SpeakerAttachmentName = response.Data.SpeakerAttachmentName,
+            };
 
 			model.UserIds = new SelectList(await GetUsers(), "Id", "Name", 0);
 
@@ -161,6 +165,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					UserId = model.UserId,
 					UserName = model.UserName,
 					SpeakerType = model.SpeakerType,
+                    SpeakerStatus = model.SpeakerStatus,
 					Experience = model.Experience,
 					Attachments = model.Attachments,
 				};
@@ -168,16 +173,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				//attachment
 				if (model.AttachmentFiles.Count() > 0)
 				{
-					var responseFile = await WepApiMethod.SendApiAsync<List<FileDocument>>($"File?userId={CurrentUser.UserId}", model.AttachmentFiles.ToList());
+					var responseFile = await FileMethod.UploadFile(model.AttachmentFiles.ToList(), CurrentUser.UserId);
 
-					if (responseFile.isSuccess)
+                    if (responseFile != null)
 					{
-						modelapi.FilesId = responseFile.Data.Select(f => f.Id).ToList();
+						modelapi.FilesId = responseFile.Select(f => f.Id).ToList();
 					}
-
 				}
 
-				var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/EventSpeaker?id={model.Id}", model);
+				var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/EventSpeaker?id={model.Id}", modelapi);
 
 				if (response.isSuccess)
 				{
@@ -188,11 +192,12 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					return RedirectToAction("List");
 				}
 			}
+
 			model.UserIds = new SelectList(await GetUsers(), "Id", "Name", 0);
 
-			TempData["ErrorMessage"] = "Fail to update Event Speaker";
+			//TempData["ErrorMessage"] = "Fail to update Event Speaker";
 
-			return RedirectToAction("List");
+            return View(model);
 
 		}
 

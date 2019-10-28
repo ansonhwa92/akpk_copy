@@ -153,6 +153,7 @@ namespace FEP.WebApiModel.eEvent
 		{
 			FilesId = new List<int>();
 		}
+
 		public int Id { get; set; }
 
 		public IEnumerable<Attachment> Attachments { get; set; }

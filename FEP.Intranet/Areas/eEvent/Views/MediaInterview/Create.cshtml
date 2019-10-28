@@ -197,9 +197,9 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.DocumentMedia)
-								@Html.TextBoxFor(model => model.DocumentMedia, "", new { type = "file", @class = "form-control" })
-								@Html.ValidationMessageFor(model => model.DocumentMedia, "", new { @class = "text-danger" })
+								@Html.FEPLabelFor(model => model.Attachments)
+								@Html.Partial("_Attachment", Model.Attachments)
+								@Html.ValidationMessageFor(model => model.Attachments, "", new { @class = "text-danger" })
 							</div>
 						</div>
 

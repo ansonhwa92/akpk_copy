@@ -121,7 +121,7 @@
 						<div class="row">
 							<div class="form-group col-lg-6">
 								@Html.FEPLabelFor(model => model.SpeakerType)
-								@Html.EnumDropDownListFor(model => model.SpeakerType, "-Select Speaker Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+								@Html.EnumDropDownListFor(model => model.SpeakerType, htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
 								@Html.ValidationMessageFor(model => model.SpeakerType, "", new { @class = "text-danger" })
 							</div>
 						
@@ -138,30 +138,6 @@
 								@Html.FEPLabelFor(model => model.UserId)
 								@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
 								@Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-							</div>
-						</div>
-
-						<div class="row ExternalUserName @if (Model.SpeakerType == FEP.Model.SpeakerType.External) { <text> d-none</text>}">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.ExternalUserName)
-								@Html.EditorFor(model => model.ExternalUserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Speaker Name" } })
-								@Html.ValidationMessageFor(model => model.ExternalUserName, "", new { @class = "text-danger" })
-							</div>
-						</div>
-
-						<div class="row Email @if (Model.SpeakerType == FEP.Model.SpeakerType.External) { <text> d-none</text>}">
-							<div class="form-group col-lg-6">
-								@Html.FEPLabelFor(model => model.Email)
-								@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address" } })
-								@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-							</div>
-						@*</div>
-
-						<div class="row PhoneNo @if (Model.SpeakerType == FEP.Model.SpeakerType.External) { <text> d-none</text>}">*@
-							<div class="form-group col-lg-6">
-								@Html.FEPLabelFor(model => model.PhoneNo)
-								@Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address" } })
-								@Html.ValidationMessageFor(model => model.PhoneNo, "", new { @class = "text-danger" })
 							</div>
 						</div>
 

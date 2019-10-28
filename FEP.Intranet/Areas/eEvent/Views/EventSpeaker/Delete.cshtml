@@ -109,13 +109,6 @@
 					else if (Model.SpeakerType == FEP.Model.SpeakerType.External)
 					{
 						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.ExternalUserName)
-								@Html.EditorFor(model => model.ExternalUserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Speaker Name", @readonly = "readonly" } })
-							</div>
-						</div>
-
-						<div class="row">
 							<div class="form-group col-lg-6">
 								@Html.LabelFor(model => model.Email)
 								@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
@@ -127,18 +120,6 @@
 							</div>
 						</div>
 					}
-
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.InternalEmail)
-							@Html.EditorFor(model => model.InternalEmail, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
-						</div>
-
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.InternalPhoneNo)
-							@Html.EditorFor(model => model.InternalPhoneNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
-						</div>
-					</div>
 
 					<div class="row">
 						<div class="form-group col-lg-12">

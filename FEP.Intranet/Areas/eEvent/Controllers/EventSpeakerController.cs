@@ -54,6 +54,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		{
 			var model = new FEP.Intranet.Areas.eEvent.Models.CreateEventSpeakerModel()
 			{
+				SpeakerType = SpeakerType.Internal,
 				SpeakerStatus = SpeakerStatus.Active
 			};
 
@@ -80,10 +81,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					UserName = model.UserName,
 					SpeakerType = model.SpeakerType,
 					Experience = model.Experience,
-					Email = model.Email,
 					SpeakerStatus = model.SpeakerStatus,
-					PhoneNo = model.PhoneNo,
-					ExternalUserName = model.ExternalUserName,
 					//SpeakerPictureName = model.SpeakerPicture.FileName,
 					//SpeakerAttachmentName = model.SpeakerAttachment.FileName,
 				};
@@ -137,10 +135,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				UserName = response.Data.UserName,
 				SpeakerType = response.Data.SpeakerType,
 				Experience = response.Data.Experience,
-				Email = response.Data.Email,
-				PhoneNo = response.Data.PhoneNo,
 				SpeakerStatus = response.Data.SpeakerStatus,
-				ExternalUserName = response.Data.ExternalUserName,
 				//SpeakerPictureName = response.Data.SpeakerPictureName,
 				//SpeakerAttachmentName = response.Data.SpeakerAttachmentName,
 			};
@@ -167,10 +162,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					UserName = model.UserName,
 					SpeakerType = model.SpeakerType,
 					Experience = model.Experience,
-					Email = model.Email,
-					PhoneNo = model.PhoneNo,
 					Attachments = model.Attachments,
-					ExternalUserName = model.ExternalUserName,
 				};
 
 				//attachment
@@ -229,9 +221,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				PhoneNo = response.Data.PhoneNo,
 				SpeakerStatus = response.Data.SpeakerStatus,
 				Attachments = response.Data.Attachments,
-				ExternalUserName = response.Data.ExternalUserName,
-				InternalEmail = response.Data.InternalEmail,
-				InternalPhoneNo = response.Data.InternalPhoneNo,
 				//SpeakerPictureName = response.Data.SpeakerPictureName,
 				//SpeakerAttachmentName = response.Data.SpeakerAttachmentName,
 			};

@@ -45,9 +45,6 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
 		public string UserName { get; set; }
 
-		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
-		public string ExternalUserName { get; set; }
-		
 		public IEnumerable<SelectListItem> UserIds { get; set; }
 
 		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
@@ -99,14 +96,7 @@ namespace FEP.WebApiModel.eEvent
 
 	public class DetailsEventSpeakerModel : EventSpeakerModel
 	{
-		public DetailsEventSpeakerModel() { }
-
-		[Display(Name = "SpEmail", ResourceType = typeof(Language.Event))]
-		public string InternalEmail { get; set; }
-
-		[Display(Name = "SpPhoneNo", ResourceType = typeof(Language.Event))]
-		public string InternalPhoneNo { get; set; }
-
+		public DetailsEventSpeakerModel() { }	
 		public IEnumerable<Attachment> Attachments { get; set; }
 	}
 
@@ -127,15 +117,15 @@ namespace FEP.WebApiModel.eEvent
 		public string Experience { get; set; }
 
 		//[Required(ErrorMessage = "Please Insert Email")]
-		[DataType(DataType.EmailAddress)]
-		[Display(Name = "SpEmail", ResourceType = typeof(Language.Event))]
-		public string Email { get; set; }
+		//[DataType(DataType.EmailAddress)]
+		//[Display(Name = "SpEmail", ResourceType = typeof(Language.Event))]
+		//public string Email { get; set; }
 
-		//[Required(ErrorMessage = "Please Insert Phone No")]
-		[DataType(DataType.PhoneNumber)]
-		[Display(Name = "SpPhoneNo", ResourceType = typeof(Language.Event))]
-		[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
-		public string PhoneNo { get; set; }
+		////[Required(ErrorMessage = "Please Insert Phone No")]
+		//[DataType(DataType.PhoneNumber)]
+		//[Display(Name = "SpPhoneNo", ResourceType = typeof(Language.Event))]
+		//[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
+		//public string PhoneNo { get; set; }
 
 		[Display(Name = "SpStatus", ResourceType = typeof(Language.Event))]
 		public SpeakerStatus? SpeakerStatus { get; set; }
@@ -146,9 +136,6 @@ namespace FEP.WebApiModel.eEvent
 
 		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
 		public string UserName { get; set; }
-
-		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
-		public string ExternalUserName { get; set; }
 
 		public IEnumerable<SelectListItem> UserIds { get; set; }
 

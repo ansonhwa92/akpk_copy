@@ -33,10 +33,10 @@ namespace FEP.Model
 		//----ForeignKey----
 		[ForeignKey("EventCategoryId")]
 		public virtual EventCategory EventCategory { get; set; }
-		
+
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
-	
+
 		public virtual ICollection<EventAgenda> EventAgendas { get; set; }
 	}
 
@@ -111,10 +111,7 @@ namespace FEP.Model
 		public int Id { get; set; }
 		public SpeakerType? SpeakerType { get; set; }
 		public SpeakerStatus? SpeakerStatus { get; set; }
-		public string Email { get; set; }
-		public string PhoneNo { get; set; }
 		public string Experience { get; set; }
-		public string ExternalUserName { get; set; }
 		public int? UserId { get; set; }
 		[ForeignKey("UserId")]
 		public virtual User User { get; set; }
@@ -124,8 +121,6 @@ namespace FEP.Model
 		public int? CreatedBy { get; set; }
 		public DateTime? CreatedDate { get; set; }
 		public bool Display { get; set; }
-
-		public virtual ICollection<SpeakerFile> SpeakerFiles { get; set; }
 	}
 
 	[Table("AssignedSpeaker")]
@@ -134,11 +129,11 @@ namespace FEP.Model
 		[Key]
 		public int Id { get; set; }
 		public int PublicEventId { get; set; }
-		[ForeignKey("PublicEventId")] 
+		[ForeignKey("PublicEventId")]
 		public virtual PublicEvent PublicEvent { get; set; }
 
 		public int EventSpeakerId { get; set; }
-		[ForeignKey("EventSpeakerId")] 
+		[ForeignKey("EventSpeakerId")]
 		public virtual EventSpeaker EventSpeaker { get; set; }
 	}
 
@@ -148,7 +143,7 @@ namespace FEP.Model
 		[Key]
 		public int Id { get; set; }
 		public int ExternalExhibitorId { get; set; }
-		[ForeignKey("ExternalExhibitorId")] 
+		[ForeignKey("ExternalExhibitorId")]
 		public virtual EventExternalExhibitor EventExternalExhibitor { get; set; }
 
 		public int PublicEventId { get; set; }
@@ -241,9 +236,6 @@ namespace FEP.Model
 		public DateTime? CreatedDate { get; set; }
 		public bool Display { get; set; }
 		public int? SLAReminderStatusId { get; set; }
-
-		public virtual ICollection<MediaFile> EventMediaFiles { get; set; }
-		//public virtual ICollection<User> Representatives { get; set; }
 	}
 
 
@@ -327,7 +319,7 @@ namespace FEP.Model
 		public EventApprovalLevel ApprovalLevel { get; set; }
 		public bool RequireNext { get; set; }
 		public EventApprovalStatus Status { get; set; }
-		public int ApproverId { get; set; }
+		public int? ApproverId { get; set; }
 		[ForeignKey("ApproverId")]
 		public virtual User User { get; set; }
 
@@ -343,7 +335,7 @@ namespace FEP.Model
 		public int Id { get; set; }
 		public DateTime? ApprovedDate { get; set; }
 		public string Remark { get; set; }
-		public EventApprovalLevel Level { get; set; } 
+		public EventApprovalLevel Level { get; set; }
 		public EventApprovalStatus Status { get; set; }
 		public bool RequireNext { get; set; }
 
@@ -450,6 +442,6 @@ namespace FEP.Model
 		public virtual DutyRoster DutyRoster { get; set; }
 
 		[ForeignKey("UserId")]
-		public virtual User User { get; set; } 
+		public virtual User User { get; set; }
 	}
 }

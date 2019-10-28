@@ -113,8 +113,8 @@ namespace FEP.WebApiModel.PublicEvent
 		public string RefNo { get; set; }
 		public int? SLAReminderStatusId { get; set; }
 
-
-
+		public string CreatedByName { get; set; }
+		public DateTime? CreatedDate { get; set; }
 
 
 		public IEnumerable<SelectListItem> CategoryList { get; set; }
@@ -122,7 +122,7 @@ namespace FEP.WebApiModel.PublicEvent
 		public IEnumerable<SelectListItem> ExternalExhibitorList { get; set; }
 
 
-
+		public IEnumerable<Attachment> Attachments { get; set; }
 	}
 
 
@@ -130,11 +130,6 @@ namespace FEP.WebApiModel.PublicEvent
 	{
 		public DetailsPublicEventModel() { }
 
-		public string CreatedByName { get; set; }
-		public DateTime? CreatedDate { get; set; }
-
-        public IEnumerable<Attachment> Attachments { get; set; }
-		public PublicEventApprovalModel ApprovalModel { get; set; }
 	}
 
 
@@ -156,22 +151,24 @@ namespace FEP.WebApiModel.PublicEvent
         {
             FilesId = new List<int>();
         }
-        
-        public IEnumerable<Attachment> Attachments { get; set; }
-
     }
 
 
 	public class DeletePublicEventModel : DetailsPublicEventModel
 	{
 		public DeletePublicEventModel() { }
+	}
 
+	public class GlobalPublicEventApprovalModel
+	{
+		public PublicEventModel publicevent { get; set; }
+		public PublicEventApprovalModel approval { get; set; }
 	}
 
 	public class PublicEventApprovalModel
 	{
 		[Required]
-		public int Id { get; set; }
+		public int? Id { get; set; }
 
 		[Required]
 		public int? EventId { get; set; }
@@ -201,7 +198,7 @@ namespace FEP.WebApiModel.PublicEvent
 	{
 		public EventApprovalLevel Level { get; set; }
 
-		public int ApproverId { get; set; }
+		public int? ApproverId { get; set; }
 
 		public string UserName { get; set; }
 

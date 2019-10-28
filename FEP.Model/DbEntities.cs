@@ -138,9 +138,7 @@ namespace FEP.Model
 		public DbSet<EventExhibitionRequest> EventExhibitionRequest { get; set; }
 		public DbSet<EventFile> EventFile { get; set; }
 		public DbSet<EventExternalExhibitor> EventExternalExhibitor { get; set; }
-		public DbSet<MediaFile> MediaFile { get; set; }
 		public DbSet<EventCategory> EventCategory { get; set; }
-		public DbSet<SpeakerFile> SpeakerFile { get; set; }
 		public DbSet<ExhibitionNominee> ExhibitionNominee { get; set; }
 
 		public DbSet<AssignedSpeaker> AssignedSpeaker { get; set; }

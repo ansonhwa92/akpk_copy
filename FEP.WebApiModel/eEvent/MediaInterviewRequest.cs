@@ -10,6 +10,12 @@ using System.Threading.Tasks;
 
 namespace FEP.WebApiModel.MediaInterview
 {
+	public class ListMediaInterviewRequestApi
+	{
+		public FilterMediaInterviewRequestApiModel Filter { get; set; }
+		public MediaInterviewRequestApiModel List { get; set; }
+	}
+
 	public class MediaInterviewRequestApiModel
 	{
 		public int Id { get; set; }

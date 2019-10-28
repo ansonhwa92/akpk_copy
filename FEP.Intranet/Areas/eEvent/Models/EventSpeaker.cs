@@ -87,11 +87,12 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		//[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
 		//public string PhoneNo { get; set; }
 
-		//[Required(ErrorMessage = "Please Select User")]
+		[Required(ErrorMessage = "Please Select User")]
 		[Display(Name = "SpUserId", ResourceType = typeof(Language.Event))]
 		public int? UserId { get; set; }
 
-		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
+        [Required(ErrorMessage = "Please Select User")]
+        [Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
 		public string UserName { get; set; }
 
 		//[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]

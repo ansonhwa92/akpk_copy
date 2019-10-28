@@ -31,6 +31,12 @@ namespace FEP.Intranet.Controllers
             return view;
         }
 
+        [AllowAnonymous]
+        public ActionResult Error()
+        {            
+            return View("/Views/Shared/Error.cshtml");
+        }
+
         public ActionResult Dashboard()
         {
             return View();

@@ -50,6 +50,9 @@ namespace FEP.WebApi.Api.Systems
                 root = HttpContext.Current.Server.MapPath("~/App_Data/Upload");
             }
 
+            if (directory == null)
+                directory = "";
+
             Directory.CreateDirectory(Path.Combine(root, directory));
 
             var provider = new MultipartFormDataStreamProvider(root);
@@ -141,9 +144,6 @@ namespace FEP.WebApi.Api.Systems
                 root = HttpContext.Current.Server.MapPath("~/App_Data/Upload");
             }
 
-            //Create HTTP Response.
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-
             //Set the File Path.
             string filePath = Path.Combine(root, filedoc.FilePath);
 
@@ -155,6 +155,9 @@ namespace FEP.WebApi.Api.Systems
 
             //Read the File into a Byte Array.
             byte[] bytes = File.ReadAllBytes(filePath);
+
+            //Create HTTP Response.
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
 
             //Set the Response Content.
             response.Content = new ByteArrayContent(bytes);

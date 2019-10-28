@@ -25,6 +25,43 @@ namespace FEP.Intranet
 
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
         }
+
+        private void Application_Error(object sender, EventArgs e)
+        {
+
+            var httpContext = ((MvcApplication)sender).Context;
+            var currentController = " ";
+            var currentAction = " ";
+            var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
+
+            if (currentRouteData != null)
+            {
+                if (currentRouteData.Values["controller"] != null && !String.IsNullOrEmpty(currentRouteData.Values["controller"].ToString()))
+                {
+                    currentController = currentRouteData.Values["controller"].ToString();
+                }
+
+                if (currentRouteData.Values["action"] != null && !String.IsNullOrEmpty(currentRouteData.Values["action"].ToString()))
+                {
+                    currentAction = currentRouteData.Values["action"].ToString();
+                }
+            }
+
+            string ipAddress = httpContext.Request.UserHostAddress;
+
+            var ex = Server.GetLastError();
+
+            string details = ex.InnerException + " | " + ex.StackTrace;
+
+
+
+
+
+            httpContext.ClearError();
+            httpContext.Response.Clear();
+                       
+            Response.Redirect("~/Home/Error");
+        }
     }
 
     public class DateModelBinder : DefaultModelBinder

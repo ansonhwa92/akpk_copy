@@ -86,10 +86,6 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201910250423488_x.cs" />
-    <Compile Include="Migrations\201910250423488_x.designer.cs">
-      <DependentUpon>201910250423488_x.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201910251156361_x3.cs" />
     <Compile Include="Migrations\201910251156361_x3.designer.cs">
       <DependentUpon>201910251156361_x3.cs</DependentUpon>
@@ -129,9 +125,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910250423488_x.resx">
-      <DependentUpon>201910250423488_x.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910251156361_x3.resx">
       <DependentUpon>201910251156361_x3.cs</DependentUpon>
     </EmbeddedResource>

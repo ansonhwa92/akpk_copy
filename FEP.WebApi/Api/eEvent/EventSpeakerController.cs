@@ -149,9 +149,7 @@ namespace FEP.WebApi.Api.eEvent
 					PhoneNo = s.User.MobileNo,
 					Email = s.User.Email,
 					Experience = s.Experience,
-					SpeakerStatus = s.SpeakerStatus,
-					InternalEmail = s.User.Email,
-					InternalPhoneNo = s.User.MobileNo					
+					SpeakerStatus = s.SpeakerStatus,				
 				}).FirstOrDefault();
 
 			if (speaker == null)

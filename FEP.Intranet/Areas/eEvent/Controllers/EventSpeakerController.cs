@@ -135,13 +135,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				UserName = response.Data.UserName,
 				SpeakerType = response.Data.SpeakerType,
 				Experience = response.Data.Experience,
-				Email = response.Data.Email,
-				PhoneNo = response.Data.PhoneNo,
 				SpeakerStatus = response.Data.SpeakerStatus,
-				ExternalUserName = response.Data.ExternalUserName,
                 Attachments = response.Data.Attachments
-                //SpeakerPictureName = response.Data.SpeakerPictureName,
-                //SpeakerAttachmentName = response.Data.SpeakerAttachmentName,
             };
 
 			model.UserIds = new SelectList(await GetUsers(), "Id", "Name", 0);

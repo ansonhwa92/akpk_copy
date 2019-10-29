@@ -239,6 +239,7 @@ namespace FEP.Model.Migrations
 
 					continue;
 				}
+
 				if (pType >= 141 && pType <= 160)
 				{
 					db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
@@ -282,6 +283,7 @@ namespace FEP.Model.Migrations
                             WebMessage = "Web Message Template",
                             CreatedDate = DateTime.Now,
                             CreatedBy = user.Id,
+                            User = user,
                             Display = true
                         });
 
@@ -311,6 +313,7 @@ namespace FEP.Model.Migrations
                             WebMessage = "Web Message Template",
                             CreatedDate = DateTime.Now,
                             CreatedBy = user.Id,
+                            User = user,
                             Display = true
                         });
 
@@ -338,6 +341,7 @@ namespace FEP.Model.Migrations
                                 WebMessage = "Web Message Template",
                                 CreatedDate = DateTime.Now,
                                 CreatedBy = user.Id,
+                                User = user,
                                 Display = true
                             });
 

@@ -831,8 +831,7 @@ namespace FEP.Model.Migrations
             return designation;
 
         }
-
-
+        
         public static void AddStaff(DbEntities db, string Username, string Name, string ICNo, string Email, string MobileNo, string Department, string Designation, string StaffId)
         {
             var user = db.User.Local.Where(r => r.ICNo == ICNo && r.UserType == UserType.Staff).FirstOrDefault() ?? db.User.Where(r => r.ICNo == ICNo && r.UserType == UserType.Staff).FirstOrDefault();

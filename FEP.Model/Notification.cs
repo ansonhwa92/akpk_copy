@@ -74,7 +74,13 @@ namespace FEP.Model
 		[Display(Name = "Exhibition RoadShow - Rejected")]
 		Reject_Exhibition_RoadShow,
 
-		//Payment
+		[Display(Name = "Exhibition RoadShow - Accept Participation")]
+		AcceptParticipation_Exhibition_RoadShow,
+
+		[Display(Name = "Exhibition RoadShow - Decline Participation")]
+		DeclineParticipation_Exhibition_RoadShow,
+
+		//Payment 
 		[Display(Name = "Payment Pending GL")]
 		Payment_Pending_GL,
 		[Display(Name = "Payment Pending Payment")]
@@ -115,8 +121,12 @@ namespace FEP.Model
 		Verify_Courses_Participant_Withdraw,
 
 		//Approve Courses
-		[Display(Name = "Approve Courses Creation")]
-		Approve_Courses_Creation,
+		[Display(Name = "Approve Courses Creation By First Approver")]
+		Approve_Courses_Creation_Approver1,
+		[Display(Name = "Approve Courses Creation By Second Approver")]
+		Approve_Courses_Creation_Approver2,
+		[Display(Name = "Approve Courses Creation By Third Approver")]
+		Approve_Courses_Creation_Approver3,
 		[Display(Name = "Approve Courses Published Change")]
 		Approve_Courses_Published_Change,
 		[Display(Name = "Approve Courses Published Withdraw")]

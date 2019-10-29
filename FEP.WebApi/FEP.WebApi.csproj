@@ -157,6 +157,8 @@
     <Compile Include="Api\Administration\CompanyController.cs" />
     <Compile Include="Api\Administration\CountryController.cs" />
     <Compile Include="Api\Administration\DepartmentController.cs" />
+    <Compile Include="Api\eEvent\DutyRosterController.cs" />
+    <Compile Include="Api\eEvent\EventRefundController.cs" />
     <Compile Include="Api\Logs\ReportLogController.cs" />
     <Compile Include="Api\System\FileDocumentController.cs" />
     <Compile Include="Api\Administration\IndividualController.cs" />
@@ -237,7 +239,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Method\FEPMethod.cs" />
     <Compile Include="Models\Auth.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Publication.cs" />
@@ -340,6 +341,7 @@
     <Folder Include="Api\Notification\" />
     <Folder Include="App_Data\Temp_Upload\" />
     <Folder Include="bin\" />
+    <Folder Include="Method\" />
     <Folder Include="Views\Auth\" />
     <Folder Include="Views\Cart\" />
     <Folder Include="Views\Client\" />

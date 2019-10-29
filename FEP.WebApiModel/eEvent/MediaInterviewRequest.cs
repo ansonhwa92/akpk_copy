@@ -1,5 +1,6 @@
 ﻿using FEP.Helper;
 using FEP.Model;
+using FEP.WebApiModel.FileDocuments;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,8 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FEP.WebApiModel
+namespace FEP.WebApiModel.MediaInterview
 {
+	public class ListMediaInterviewRequestApi
+	{
+		public FilterMediaInterviewRequestApiModel Filter { get; set; }
+		public MediaInterviewRequestApiModel List { get; set; }
+	}
+
 	public class MediaInterviewRequestApiModel
 	{
 		public int Id { get; set; }
@@ -55,7 +62,7 @@ namespace FEP.WebApiModel
 		public string RefNo { get; set; }
 
 		public int? UserId { get; set; }
-		public string UserName { get; set; }
+		public string RepUserName { get; set; }
 		public string RepDesignation { get; set; }
 		public string RepEmail { get; set; }
 		public string RepMobileNumber { get; set; }
@@ -66,12 +73,7 @@ namespace FEP.WebApiModel
 		public bool Display { get; set; }
 		public int? CreatedBy { get; set; }
 		public DateTime? CreatedDate { get; set; }
-	}
-
-	public class ListMediaInterviewRequestApiModel
-	{
-		public FilterMediaInterviewRequestApiModel Filter { get; set; }
-		public MediaInterviewRequestApiModel List { get; set; }
+		public int? SLAReminderStatusId { get; set; }
 	}
 
 	public class FilterMediaInterviewRequestApiModel : DataTableModel
@@ -101,17 +103,29 @@ namespace FEP.WebApiModel
 	public class DetailsMediaInterviewRequestApiModel : MediaInterviewRequestApiModel
 	{
 		public DetailsMediaInterviewRequestApiModel() { }
+
+		public IEnumerable<Attachment> Attachments { get; set; }
+
 	}
 
-	public class CreateMediaInterviewRequestApiModel
+	public class CreateMediaInterviewRequestApiModel : MediaInterviewRequestApiModel
 	{
-		public CreateMediaInterviewRequestApiModel() { }
+		public CreateMediaInterviewRequestApiModel()
+		{
+			FilesId = new List<int>();
+		}
+
+		public List<int> FilesId { get; set; }
 	}
 
 	public class EditMediaInterviewRequestApiModel : CreateMediaInterviewRequestApiModel
 	{
-		public EditMediaInterviewRequestApiModel() { }
-		public int Id { get; set; }
+		public EditMediaInterviewRequestApiModel()
+		{
+			FilesId = new List<int>();
+		}
+
+		public IEnumerable<Attachment> Attachments { get; set; }
 	}
 
 

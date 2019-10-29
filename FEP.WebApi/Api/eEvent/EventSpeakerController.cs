@@ -122,11 +122,7 @@ namespace FEP.WebApi.Api.eEvent
 					UserId = i.UserId,
 					UserName = i.User.Name,
 					SpeakerStatus = i.SpeakerStatus,
-					Email = i.Email,
-					PhoneNo = i.PhoneNo,
 					SpeakerType = i.SpeakerType,
-					ExternalUserName = i.ExternalUserName,
-
 				}).ToList();
 
 			data.ForEach(s => s.SpeakerTypeDesc = s.SpeakerType.GetDisplayName());
@@ -149,16 +145,12 @@ namespace FEP.WebApi.Api.eEvent
 				{
 					Id = s.Id,
 					UserId = s.UserId,
+                    UserName = s.User.Name,
 					SpeakerType = s.SpeakerType,
-					ExternalUserName = s.ExternalUserName,
-					PhoneNo = s.PhoneNo,
-					Email = s.Email,
+					PhoneNo = s.User.MobileNo,
+					Email = s.User.Email,
 					Experience = s.Experience,
-					SpeakerStatus = s.SpeakerStatus,
-					InternalEmail = s.User.Email,
-					InternalPhoneNo = s.User.MobileNo,
-					//SpeakerPictureName = db.SpeakerFile.Where(f => f.EventSpeakerId == s.Id && f.SpeakerFileType == SpeakerFileType.Picture).Select(i => i.FileName).FirstOrDefault(),
-					//SpeakerAttachmentName = db.SpeakerFile.Where(f => f.EventSpeakerId == s.Id && f.SpeakerFileType == SpeakerFileType.Attachment).Select(i => i.FileName).FirstOrDefault()
+					SpeakerStatus = s.SpeakerStatus,				
 				}).FirstOrDefault();
 
 			if (speaker == null)
@@ -177,10 +169,7 @@ namespace FEP.WebApi.Api.eEvent
 			var speaker = new EventSpeaker
 			{
 				UserId = model.UserId,
-				ExternalUserName = model.ExternalUserName,
 				SpeakerType = model.SpeakerType,
-				PhoneNo = model.PhoneNo,
-				Email = model.Email,
 				Experience = model.Experience,
 				SpeakerStatus = model.SpeakerStatus,
 				CreatedBy = null,
@@ -189,10 +178,11 @@ namespace FEP.WebApi.Api.eEvent
 			};
 
 			db.EventSpeaker.Add(speaker);
-			db.SaveChanges();
 
-			//files
-			foreach (var fileid in model.FilesId)
+            db.SaveChanges();
+
+            //files
+            foreach (var fileid in model.FilesId)
 			{
 				var eventfile = new EventFile
 				{
@@ -202,9 +192,11 @@ namespace FEP.WebApi.Api.eEvent
 				};
 				db.EventFile.Add(eventfile);
 			}
-			return Ok(speaker.Id);
-		}
 
+            db.SaveChanges();
+
+            return Ok(speaker.Id);
+		}
 
 		public IHttpActionResult Put(int id, [FromBody] EditEventSpeakerModel model)
 		{
@@ -217,20 +209,14 @@ namespace FEP.WebApi.Api.eEvent
 
 			speaker.UserId = model.UserId;
 			speaker.SpeakerType = model.SpeakerType;
-			speaker.PhoneNo = model.PhoneNo;
-			speaker.Email = model.Email;
 			speaker.Experience = model.Experience;
 			speaker.SpeakerStatus = model.SpeakerStatus;
-			speaker.ExternalUserName = model.ExternalUserName;
 
 			db.EventSpeaker.Attach(speaker);
 			db.Entry(speaker).Property(x => x.UserId).IsModified = true;
 			db.Entry(speaker).Property(x => x.SpeakerType).IsModified = true;
-			db.Entry(speaker).Property(x => x.PhoneNo).IsModified = true;
-			db.Entry(speaker).Property(x => x.Email).IsModified = true;
 			db.Entry(speaker).Property(x => x.Experience).IsModified = true;
 			db.Entry(speaker).Property(x => x.SpeakerStatus).IsModified = true;
-			db.Entry(speaker).Property(x => x.ExternalUserName).IsModified = true;
 
 			db.Entry(speaker).Property(x => x.Display).IsModified = false;
 			db.Entry(speaker).Property(x => x.Id).IsModified = false;
@@ -269,8 +255,7 @@ namespace FEP.WebApi.Api.eEvent
 				}
 			}
 
-			//add new file
-			//files
+			//add files
 			foreach (var fileid in model.FilesId)
 			{
 				var eventfile = new EventFile
@@ -313,7 +298,7 @@ namespace FEP.WebApi.Api.eEvent
 			{
 				Id = s.Id,
 				UserName = s.User.Name,
-				Email = s.Email,
+				Email = s.User.Email,
 			}).ToList();
 
 			return Ok(speakers);

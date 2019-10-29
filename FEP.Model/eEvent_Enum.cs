@@ -179,6 +179,22 @@ namespace FEP.Model
 		ApprovedByApprover2,
 		[Display(Name = "Approved")]
 		ApprovedByApprover3,
+
+
+		[Display(Name = "Pending Verification")]
+		SubmitVerifyDutyRoster,
+		[Display(Name = "Pending Approval 1")]
+		VerifiedDutyRoster,
+		[Display(Name = "Require Amendment")]
+		NotVerifiedDutyRoster,
+		[Display(Name = "Pending Approval 2")]
+		ApproveDutyRoster1,
+		[Display(Name = "Approved")]
+		ApproveDutyRoster2, 
+		[Display(Name = "Participation Accepted")]
+		AcceptParticipation,
+		[Display(Name = "Participation Declined")]
+		DeclineParticipation,
 	}
 
 	public enum Religion

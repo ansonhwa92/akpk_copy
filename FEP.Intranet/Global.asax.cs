@@ -8,6 +8,7 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using FEP.Helper;
 
 namespace FEP.Intranet
 {
@@ -24,6 +25,41 @@ namespace FEP.Intranet
             ModelBinders.Binders.Add(typeof(DateTime?), new DateModelBinder());
 
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
+        }
+
+        private void Application_Error(object sender, EventArgs e)
+        {
+
+            var httpContext = ((MvcApplication)sender).Context;
+            var currentController = " ";
+            var currentAction = " ";
+            var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
+
+            if (currentRouteData != null)
+            {
+                if (currentRouteData.Values["controller"] != null && !String.IsNullOrEmpty(currentRouteData.Values["controller"].ToString()))
+                {
+                    currentController = currentRouteData.Values["controller"].ToString();
+                }
+
+                if (currentRouteData.Values["action"] != null && !String.IsNullOrEmpty(currentRouteData.Values["action"].ToString()))
+                {
+                    currentAction = currentRouteData.Values["action"].ToString();
+                }
+            }
+
+            string ipAddress = httpContext.Request.UserHostAddress;
+
+            var ex = Server.GetLastError();
+
+            string details = ex.InnerException + " | " + ex.StackTrace;
+
+            FEPHelperMethod.LogError(Model.Modules.Setting, null, currentAction, currentController, "", ipAddress, ex.Message, details);
+
+            httpContext.ClearError();
+            httpContext.Response.Clear();
+                       
+            //Response.Redirect("~/Home/Error");
         }
     }
 

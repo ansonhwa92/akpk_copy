@@ -1,6 +1,5 @@
 ﻿using FEP.Helper;
 using FEP.Model;
-using FEP.WebApi.Method;
 using FEP.WebApiModel.Administration;
 using Newtonsoft.Json;
 using System;
@@ -216,7 +215,7 @@ namespace FEP.WebApi.Api.Administration
 
                 var password = "abc123";
 
-                if (FEPMethod.CurrentSystemMode() != SystemMode.Development)
+                if (FEPHelperMethod.CurrentSystemMode() != SystemMode.Development)
                 {
                     password = Authentication.RandomString(10, true);
                 }

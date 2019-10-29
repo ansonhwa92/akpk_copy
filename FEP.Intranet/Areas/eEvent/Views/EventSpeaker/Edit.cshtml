@@ -1,198 +1,225 @@
 ﻿@model FEP.Intranet.Areas.eEvent.Models.EditEventSpeakerModel
 
 @{
-	ViewBag.Title = "Event Speaker";
-	Layout = "~/Views/Shared/_Layout1.cshtml";
+    ViewBag.Title = "Event Speaker";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
 @section Contentscript{
-	<script type="text/javascript">
-		$(document).ready(function () {
+    <script type="text/javascript">
 
-			RefreshFile();
+        $(document).ready(function () {
 
-		});
-	</script>
+            RefreshFile();
+
+            $('select[name=SpeakerType]').change(function () {
+                $('#UserId').val('');
+                $('#UserName').val('');
+            });
+
+        });
+
+        function showSelect() {
+
+            var speakertype = $('#SpeakerType').val();
+
+            if (speakertype == 0) {
+                url = '@Url.Action("_Select", "Staff", new { area = "Administrator" })';
+            }
+            else {
+                url = '@Url.Action("_Select", "Individual", new { area = "Administrator" })';
+            }
+          
+
+            if (url != '') {
+
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    success: function (data) {
+
+                        $('#modalUser').html(data);
+                        initTable();
+                        debugger
+                        $('#modalUser').children('.modal').first().modal('show');
+
+                    },
+                    error: function (xhr, status, error) {
+                        $('#modalUser').html('');
+                    }
+                });
+            }
+
+        }
+
+        function addUser(userid, name) {
+
+            $('#UserId').val(userid);
+            $('#UserName').val(name);
+
+        }
+
+    </script>
 }
 
 @section Nav {
 
-	<div class="title_header">
-		<div class="title-header-container">
-			<div class="container">
-				<!-- if have button -->
-				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "EventSpeaker", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
-				<div class="header-col-left">
-					<div id="breadcrumb">
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
-								<li class="breadcrumb-item"><a href="#">Manage Event Speaker</a></li>
-								<li class="breadcrumb-item"><a href="#">Event Speaker List</a></li>
-								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
-							</ol>
-						</nav>
-					</div>
-					<h1 class="page-title text-white">Edit Event Speaker</h1>
-					@*<div class="header-text">List of created event</div>*@
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "EventSpeaker", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Event Management</a></li>
+                                <li class="breadcrumb-item"><a href="#">Manage Event Speaker</a></li>
+                                <li class="breadcrumb-item"><a href="#">Event Speaker List</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Edit Event Speaker</h1>
+                    @*<div class="header-text">List of created event</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
 
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "EventSpeaker", FormMethod.Post, new { enctype = "multipart/form-data", id = "target" }))
 {
-	@Html.AntiForgeryToken()
-	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-	@Html.HiddenFor(model => model.Id)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
 
-	<div class="row">
-		<div class="col-xl-3 col-md-3 col-sm-4 my-2">
-			<div class="sidebar-left">
-				<!-- Steps -->
-				<div class="sidebar-inner sticky">
-					<ul class="steps steps-vertical">
-
-
-						<li class="step-item complete">
-							<a href="" class="step-link">
-								<span class="step-number">1</span>
-								<span class="step-title">List Of Event Speaker</span>
-							</a>
-						</li>
-
-						<li class="step-item active">
-							<a href="" class="step-link">
-								<span class="step-number">2</span>
-								<span class="step-title">Edit Event Speaker</span>
-							</a>
-						</li>
-						<!-- rejected -->
-						<!-- <li class="step-item rejected">
-							<a href="" class="step-link">
-								<span class="step-number">2</span>
-								<span class="step-title">Fill Up Event Details</span>
-							</a>
-						</li> -->
-						@*<li class="step-item disabled">
-								<a href="" class="step-link">
-									<span class="step-number">3</span>
-									<span class="step-title">Event Verification Approval</span>
-								</a>
-							</li>*@
-					</ul>
-					<!-- End Steps -->
-				</div>
-			</div>
-		</div>
+    <div class="row">
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div class="sidebar-left">
+                <!-- Steps -->
+                <div class="sidebar-inner sticky">
+                    <ul class="steps steps-vertical">
 
 
-		<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-			<!-- Start Form -->
-			<div class="border-form rounded-top">
-				<form>
-					<div class="form-container">
-						<div class="mt-2 mb-4 pb-1">
-							<h4 class="color-darkblue mb-0">Event Speaker Details</h4>
-							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
-						</div>
-						<div class="row">
-							<div class="form-group col-lg-6">
-								@Html.FEPLabelFor(model => model.SpeakerType)
-								@Html.EnumDropDownListFor(model => model.SpeakerType, "-Select Speaker Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
-								@Html.ValidationMessageFor(model => model.SpeakerType, "", new { @class = "text-danger" })
-							</div>
+                        <li class="step-item complete">
+                            <a href="" class="step-link">
+                                <span class="step-number">1</span>
+                                <span class="step-title">List Of Event Speaker</span>
+                            </a>
+                        </li>
 
-							<div class="form-group col-lg-6">
-								@Html.FEPLabelFor(model => model.SpeakerStatus)
-								@Html.EnumDropDownListFor(model => model.SpeakerStatus, "-Select Speaker Status-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
-								@Html.ValidationMessageFor(model => model.SpeakerStatus, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <li class="step-item active">
+                            <a href="" class="step-link">
+                                <span class="step-number">2</span>
+                                <span class="step-title">Edit Event Speaker</span>
+                            </a>
+                        </li>
+                        <!-- rejected -->
+                        <!-- <li class="step-item rejected">
+                            <a href="" class="step-link">
+                                <span class="step-number">2</span>
+                                <span class="step-title">Fill Up Event Details</span>
+                            </a>
+                        </li> -->
+                        @*<li class="step-item disabled">
+                                <a href="" class="step-link">
+                                    <span class="step-number">3</span>
+                                    <span class="step-title">Event Verification Approval</span>
+                                </a>
+                            </li>*@
+                    </ul>
+                    <!-- End Steps -->
+                </div>
+            </div>
+        </div>
 
 
-						@if (Model.SpeakerType == FEP.Model.SpeakerType.Internal)
-						{
-							<div class="row">
-								<div class="form-group col-lg-12">
-									@Html.FEPLabelFor(model => model.UserId)
-									@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
-									@Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-								</div>
-							</div>
-						}
-						else if (Model.SpeakerType == FEP.Model.SpeakerType.External)
-						{
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <form>
+                    <div class="form-container">
+                        <div class="mt-2 mb-4 pb-1">
+                            <h4 class="color-darkblue mb-0">Event Speaker Details</h4>
+                            <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                @Html.FEPLabelFor(model => model.SpeakerType)                               
+                                @Html.EnumDropDownListFor(model => model.SpeakerType, "-Select Speaker Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.SpeakerType, "", new { @class = "text-danger" })
+                            </div>
 
-							<div class="row">
-								<div class="form-group col-lg-12">
-									@Html.FEPLabelFor(model => model.ExternalUserName)
-									@Html.EditorFor(model => model.ExternalUserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Speaker Name" } })
-									@Html.ValidationMessageFor(model => model.ExternalUserName, "", new { @class = "text-danger" })
-								</div>
-							</div>
+                            <div class="form-group col-lg-6">
+                                @Html.FEPLabelFor(model => model.SpeakerStatus)
+                                @Html.EnumDropDownListFor(model => model.SpeakerStatus, "-Select Speaker Status-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.SpeakerStatus, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-							<div class="row">
-								<div class="form-group col-lg-6">
-									@Html.FEPLabelFor(model => model.Email)
-									@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address" } })
-									@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-								</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.UserId)
+                                @Html.HiddenFor(model => model.UserId)
+                                <div class="input-group">
+                                    @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    <div class="input-group-append" style="cursor:pointer" onclick="showSelect()">
+                                        <span class="input-group-text"><i class="la la-search"></i></span>
+                                    </div>
+                                </div>
+                                @*@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })*@
+                                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-								<div class="form-group col-lg-6">
-									@Html.FEPLabelFor(model => model.PhoneNo)
-									@Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address" } })
-									@Html.ValidationMessageFor(model => model.PhoneNo, "", new { @class = "text-danger" })
-								</div>
-							</div>
-						}
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.Experience)
+                                @Html.TextAreaFor(model => model.Experience, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive" })
+                                @Html.ValidationMessageFor(model => model.Experience, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.Experience)
-								@Html.TextAreaFor(model => model.Experience, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive" })
-								@Html.ValidationMessageFor(model => model.Experience, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.Attachments)
+                                @Html.Partial("_Attachment", Model.Attachments)
+                                @Html.ValidationMessageFor(model => model.Attachments, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.Attachments)
-								@Html.Partial("_Attachment", Model.Attachments)
-								@Html.ValidationMessageFor(model => model.Attachments, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        @*<div class="row">
+                                <div class="form-group col-lg-12">
+                                    @Html.LabelFor(model => model.SpeakerPicture)
+                                    @Html.EditorFor(model => model.SpeakerPictureName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.TextBoxFor(model => model.SpeakerPicture, "", new { type = "file", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.SpeakerPicture, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
 
-						@*<div class="row">
-								<div class="form-group col-lg-12">
-									@Html.LabelFor(model => model.SpeakerPicture)
-									@Html.EditorFor(model => model.SpeakerPictureName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-									@Html.TextBoxFor(model => model.SpeakerPicture, "", new { type = "file", @class = "form-control" })
-									@Html.ValidationMessageFor(model => model.SpeakerPicture, "", new { @class = "text-danger" })
-								</div>
-							</div>
+                            <div class="row">
+                                <div class="form-group col-lg-12">
+                                    @Html.LabelFor(model => model.SpeakerAttachment)
+                                    @Html.EditorFor(model => model.SpeakerAttachmentName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.TextBoxFor(model => model.SpeakerAttachment, "", new { type = "file", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.SpeakerAttachment, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+                    </div>
 
-							<div class="row">
-								<div class="form-group col-lg-12">
-									@Html.LabelFor(model => model.SpeakerAttachment)
-									@Html.EditorFor(model => model.SpeakerAttachmentName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-									@Html.TextBoxFor(model => model.SpeakerAttachment, "", new { type = "file", @class = "form-control" })
-									@Html.ValidationMessageFor(model => model.SpeakerAttachment, "", new { @class = "text-danger" })
-								</div>
-							</div>*@
-					</div>
+                    <!-- End Form -->
+                </form>
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
 
-					<!-- End Form -->
-				</form>
-			</div>
-			<div class="border-left border-right border-bottom p-3 rounded-bottom">
-
-				<a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
-				<button type="submit" class="btn btn-primary btn-flat">Save</button>
-			</div>
-		</div>
-	</div>
+                <a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-flat">Save</button>
+            </div>
+        </div>
+    </div>
 }
+
+<div id="modalUser"></div>

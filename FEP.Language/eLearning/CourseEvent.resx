@@ -117,7 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EnrollmentCode" xml:space="preserve">
+    <value>Enrollment Code</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Group Name</value>
+  </data>
   <data name="IsGroupCreated" xml:space="preserve">
     <value>Create discussion group for this session?</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Session Name</value>
+  </data>
+  <data name="NumberOfLearners" xml:space="preserve">
+    <value># of Learners</value>
+  </data>
+  <data name="Session" xml:space="preserve">
+    <value>Session</value>
   </data>
 </root>

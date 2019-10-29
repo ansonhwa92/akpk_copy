@@ -81,8 +81,8 @@
                     <div class="form-group">
                         @Html.Label("Please key in the email addresses to invite (Separated by comma)", htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
                         <div class="">
-                            @Html.TextAreaFor(model => model.LearnerEmails, new { htmlAttributes = new { @class = "form-control", 
-                           placeholder = "e.g. brad@pitt.com, mo@salah.com", rows = 15 } })
+                            @Html.TextAreaFor(model => model.LearnerEmails, new { @class = "form-control", 
+                           placeholder = "e.g. brad@pitt.com, mo@salah.com", rows = 15 } )
                         </div>
                     </div>
                  

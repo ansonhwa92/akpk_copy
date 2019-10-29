@@ -79,7 +79,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         CourseAuthor = model.CreatedByName,
                         CourseTitle = title,
                         CourseApproval = "Course Verification",
-                        Link = this.Url.AbsoluteAction("SubmitForVerification", "Controller", new { id = id, title = title })
+                        Link = this.Url.AbsoluteAction("View", "CoursesController", new { id = id})
                     },
                 };
 
@@ -154,7 +154,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                             CourseAuthor = model.CreatedByName,
                             CourseTitle = model.CourseTitle,
                             CourseApproval = "Course Approval",
-                            Link = this.Url.AbsoluteAction("SubmitForApproval", "Controller", new { id = model.CourseId, title = model.CourseTitle })
+                            Link = this.Url.AbsoluteAction("View", "CourseController", new { id = model.CourseId })
                         },
                     };
 
@@ -204,7 +204,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                             CourseAuthor = model.CreatedByName,
                             CourseTitle = model.CourseTitle,
                             CourseApproval = "Course Approval",
-                            Link = this.Url.AbsoluteAction("SubmitForApproval", "Controller", new { id = model.CourseId, title = model.CourseTitle })
+                            Link = this.Url.AbsoluteAction("View", "CoursesController", new { id = model.CourseId })
                         },
                     };
 

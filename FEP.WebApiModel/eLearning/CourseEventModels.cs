@@ -1,4 +1,6 @@
-﻿using FEP.Model.eLearning;
+﻿using FEP.Helper;
+using FEP.Model;
+using FEP.Model.eLearning;
 using FEP.WebApiModel.Administration;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -71,6 +73,47 @@ namespace FEP.WebApiModel.eLearning
         public string CourseCode { get; set; }
         public string CreatedBy { get; set; }
     }
+
+
+    public class ReturnListCourseEventModel
+    {
+        public FilterCourseEventModel Filters { get; set; }
+        public ReturnBriefCourseEventModel CourseEvents { get; set; }
+    }
+
+    // class for setting and returning filters for the datatable list of publications
+    public class FilterCourseEventModel : DataTableModel
+    {
+        [Display(Name = "Session", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public int CourseEventId { get; set; }
+
+        [Display(Name = "EnrollmentCode", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string EnrollmentCode { get; set; }
+
+        [Display(Name = "Name", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string Name { get; set; }
+        public int CourseId { get; set; }
+
+    }
+
+    public class ReturnBriefCourseEventModel : BaseModel
+    {
+        [Display(Name = "Name", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string Name { get; set; }
+
+        [Display(Name = "EnrollmentCode", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string EnrollmentCode { get; set; }
+
+        [Display(Name = "NumberOfLearners", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public int NumberOfLearners { get; set; }
+
+        [Display(Name = "Group", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string Group { get; set; }
+        [Display(Name = "Session", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public int CourseEventId { get; set; }
+    }
+
+
 
     public class TrxResult<T>
     {

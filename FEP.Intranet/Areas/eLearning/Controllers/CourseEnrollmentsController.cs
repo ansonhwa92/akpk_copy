@@ -11,35 +11,25 @@ using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eLearning.Controllers
 {
-    public static class CourseEventApiUrl
+    public static class CourseEnrollmentApiUrl
     {
-        public const string StartTrial = "eLearning/CourseEvents/StartTrial";
-        public const string StopTrial = "eLearning/CourseEvents/StopTrial";
-        public const string Get = "eLearning/CourseEvents/";
-        public const string GetEventByCourseId = "eLearning/CourseEvents/GetEventByCourseId";
-
-        public const string AddLearner = "eLearning/CourseEvents/AddLearner";
-        public const string RemoveLearner = "eLearning/CourseEvents/RemoveLearner";
-
-        public const string Publish = "eLearning/CourseEvents/Publish";
-
         public const string Create = "eLearning/CourseEvents/Create";
         public const string InviteLearner = "eLearning/CourseEvents/InviteLearner";
     }
 
-    public class CourseEventsController : FEPController
+    public class CourseEnrollmentsController : FEPController
     {
         private readonly DbEntities db = new DbEntities();
 
-        // List of all sessions available for this course
+        // List of all enrollment  available for this coursevent/session
         // From this list, can also see enrolmments
         [Authorize]
-        public ActionResult Index(int courseId)
+        public ActionResult Index(int courseEventId)
         {
-            var model = new ReturnListCourseEventModel
+            var model = new ReturnListCourseEnrollmentModel
             {
                 CourseEvents = new ReturnBriefCourseEventModel(),
-                Filters = new FilterCourseEventModel { CourseId = courseId },
+                Filters = new FilterCourseEventModel { CourseEventId = courseEventId },
             };
 
             return View(model);
@@ -367,21 +357,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return RedirectToAction("Content", "Courses", new { area = "eLearning", id = model.CourseId });
-        }
-
-        /// <summary>
-        /// View the course Event and list of enrolled users
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<ActionResult> View(int id)
-        {
-            var model = new CourseEventEnrollmentModel
-            {
-                Id = id,
-            };
-
-            return View(model);
         }
 
         protected override void Dispose(bool disposing)

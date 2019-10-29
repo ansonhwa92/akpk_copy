@@ -172,7 +172,6 @@ namespace FEP.Model
         public DbSet<CourseProgress> CourseProgress { get; set; }
         public DbSet<FileUpload> FileUploads { get; set; }
         public DbSet<EnrollmentHistory> EnrollmentHistories { get; set; }
-        public DbSet<CourseEmailQueue> CourseEmailQueue { get; set; }
 
         // Quiz, questions
         public DbSet<Question> Questions { get; set; }

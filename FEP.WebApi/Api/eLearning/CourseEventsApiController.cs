@@ -56,6 +56,131 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(model);
         }
 
+        /// For use in index page, to list all the courses but with some fields only
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/eLearning/CourseEvents/GetByCourse")]
+        [HttpPost]
+        public IHttpActionResult Post(FilterCourseEventModel request)
+        {
+            var query = db.CourseEvents
+                .Include(x => x.Group)
+                .Where(x => x.CourseId == request.CourseId);
+
+            if (!String.IsNullOrEmpty(request.Name))
+                query = query.Where(x => x.Name.ToLower().Contains(request.Name.ToLower()));
+
+            if (!String.IsNullOrEmpty(request.EnrollmentCode))
+                query = query.Where(x => x.EnrollmentCode.ToLower().Contains(request.EnrollmentCode.ToLower()));
+
+            var totalCount = query.Count();
+
+            //quick search
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+                query = query.Where(p => p.Name.Contains(value) || p.EnrollmentCode.Contains(value));
+            }
+
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(x => new ReturnBriefCourseEventModel
+                {
+                    CourseEventId = x.Id,
+                    Name = x.Name,
+                    EnrollmentCode = x.EnrollmentCode,
+                    Group = x.Group.Name,
+                });
+
+
+            foreach(var item in data)
+            {
+                var numberOfLearners = db.Enrollments.Where(x => x.CourseEventId == item.CourseEventId);
+
+                item.NumberOfLearners = numberOfLearners == null ? 0 : numberOfLearners.Sum(x => x.Id);
+            }
+
+
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "Name":
+
+                        if (sortAscending)
+                        {
+                            data = data.OrderBy(o => o.Name);
+                        }
+                        else
+                        {
+                            data = data.OrderByDescending(o => o.Name);
+                        }
+
+                        break;
+
+                    case "EnrollmentCode":
+
+                        if (sortAscending)
+                        {
+                            data = data.OrderBy(o => o.EnrollmentCode);
+                        }
+                        else
+                        {
+                            data = data.OrderByDescending(o => o.EnrollmentCode);
+                        }
+
+                        break;
+
+                    case "NumberOfLearners":
+
+                        if (sortAscending)
+                        {
+                            data = data.OrderBy(o => o.NumberOfLearners);
+                        }
+                        else
+                        {
+                            data = data.OrderByDescending(o => o.NumberOfLearners);
+                        }
+
+                        break;
+
+                    case "Group":
+
+                        if (sortAscending)
+                        {
+                            data = data.OrderBy(o => o.Group);
+                        }
+                        else
+                        {
+                            data = data.OrderByDescending(o => o.Group);
+                        }
+
+                        break;
+
+                    default:
+                        data = data.OrderBy(o => o.Name).OrderBy(o => o.Name);
+                        break;
+                }
+            }
+            else
+            {
+                data = data.OrderBy(o => o.Name).OrderBy(o => o.Name);
+            }
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+        }
+
         [Route("api/eLearning/CourseEvents/GetEventByCourseId")]
         [HttpGet]
         public async Task<IHttpActionResult> GetEventByCourseId(int? id)

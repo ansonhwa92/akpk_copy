@@ -3,7 +3,6 @@ using FEP.Model.eLearning;
 using FEP.WebApi.Api.Reminder;
 using FEP.WebApiModel.eLearning;
 using FEP.WebApiModel.SLAReminder;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -91,58 +90,90 @@ namespace FEP.WebApi.Api.eLearning
                 StartNotificationDate = DateTime.Now
             };
 
-            var emailQueue = new CourseEmailQueue
-            {
-                NotificationCategory = model.NotificationCategory.ToString(),
-                NotificationType = model.NotificationType.ToString(),
-                CourseId = model.Id,
-                Parameters = JsonConvert.SerializeObject(model.ParameterListToSend),
-                Receivers = model.ReceiverId.ToString(),
-            };
+            //var emailToSend = new CourseEmailQueue
+            //{
+            //    NotificationCategory = model.NotificationCategory.ToString(),
+            //    NotificationType = model.NotificationType.ToString(),
+            //    CourseId = model.Id,
+            //    Parameters = JsonConvert.SerializeObject(model.ParameterListToSend),
+            //    Receivers = model.ReceiverId.ToString(),
+            //};
 
-            db.CourseEmailQueue.Add(emailQueue);
+            //db.CourseEmailQueue.Add(emailQueue);
+
             await db.SaveChangesAsync();
+
+            //return Ok();
+
+            // TEMPORARILY DISABLE BELOW BECAUSE IT REQUIRES CONNECTION TO THE EMAIL SERVER WHICH WILL
+            // SLOW DOWN THE TESTING.. SO..., TO ENABLE comment Return Ok above
 
             var controller = new SLAReminderController();
 
             try
             {
-                var result = await controller.GenerateAutoNotificationReminder(createdAutoReminder);
-
-                var response = result as OkNegotiatedContentResult<ReminderResponse>;
-
-                if (response != null)
+                if (model.IsNeedRemainder)
                 {
-                    if (model.Type == typeof(Course))
+                    var result = await controller.GenerateAutoNotificationReminder(createdAutoReminder);
+
+                    var response = result as OkNegotiatedContentResult<ReminderResponse>;
+
+                    if (response != null)
                     {
-                        var course = await db.Courses.FindAsync(model.Id);
-
-                        if (course != null)
+                        if (model.Type == typeof(Course))
                         {
-                            course.SLAReminderId = response.Content.SLAReminderStatusId;
+                            var course = await db.Courses.FindAsync(model.Id);
 
-                            db.SetModified(course);
-                            await db.SaveChangesAsync();
+                            if (course != null)
+                            {
+                                course.SLAReminderId = response.Content.SLAReminderStatusId;
 
-                            return Ok();
+                                db.SetModified(course);
+                                await db.SaveChangesAsync();
+
+                                return Ok();
+                            }
                         }
+                    }
+                    else
+                    {
+                        var log = new ErrorLog
+                        {
+                            CreatedDate = DateTime.Now,
+                            UserId = null,
+                            Module = null,
+                            Source = " Controller: eLearning/NotificationApi Action: SendNotification",
+                            ErrorDescription = "Error sending email",
+                            ErrorDetails = "Null response",
+                            IPAddress = "",
+                        };
+
+                        db.ErrorLog.Add(log);
+                        db.SaveChanges();
                     }
                 }
                 else
                 {
-                    var log = new ErrorLog
-                    {
-                        CreatedDate = DateTime.Now,
-                        UserId = null,
-                        Module = null,
-                        Source = " Controller: eLearning/NotificationApi Action: SendNotification",
-                        ErrorDescription = "Error sending email",
-                        ErrorDetails = "Null response",
-                        IPAddress = "",
-                    };
+                    var result = await controller.GenerateAndSendEmails(model);
 
-                    db.ErrorLog.Add(log);
-                    db.SaveChanges();
+                    var response = result as OkNegotiatedContentResult<ReminderResponse>;
+
+                    if(response == null)
+                    {
+                        var log = new ErrorLog
+                        {
+                            CreatedDate = DateTime.Now,
+                            UserId = null,
+                            Module = null,
+                            Source = " Controller: eLearning/NotificationApi Action: SendNotification",
+                            ErrorDescription = "Error sending email",
+                            ErrorDetails = "Null response",
+                            IPAddress = "",
+                        };
+
+                        db.ErrorLog.Add(log);
+                        db.SaveChanges();
+                    }
                 }
             }
             catch (Exception e)

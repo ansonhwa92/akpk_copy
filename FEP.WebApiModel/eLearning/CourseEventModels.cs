@@ -32,7 +32,7 @@ namespace FEP.WebApiModel.eLearning
         // Required if published for trial
         public string TrialRemark { get; set; }
 
-        [Range(typeof(decimal), "0.0", "100.0", ErrorMessage = "Value must be between 0 to 100.")]
+        [Range(0.0, 100.0, ErrorMessage = "Value must be between 0 to 100.")]
         public decimal AllowablePercentageBeforeWithdraw { get; set; } = 0.0m;
     }
 

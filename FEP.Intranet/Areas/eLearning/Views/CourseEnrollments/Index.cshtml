@@ -1,7 +1,7 @@
 ﻿@using FEP.Model
 @using FEP.Model.eLearning
 
-@model FEP.WebApiModel.eLearning.ReturnListCourseEventModel
+@model FEP.WebApiModel.eLearning.ReturnListCourseEnrollmentModel
 
 @{
     ViewBag.Title = "Index";
@@ -13,20 +13,21 @@
         <div class="title-header-container">
             <div class="container">
                 <!-- if have button -->
-                <div class="header-col-right float-right mt-5"><a href="@BaseURL/eLearning/Courses/Content/@Model.Filters.CourseId" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-right float-right mt-5"><a href="@BaseURL/eLearning/CourseEvents/Index?courseId=@Model.Filters.CourseId" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="@BaseURL/Home">Home</a></li>
                                 <li class="breadcrumb-item"><a href="@BaseURL/eLearning/Home">eLearning</a></li>
-                                <li class="breadcrumb-item"><a href="@BaseURL/eLearning/Courses/Content/@Model.Filters.CourseId">Courses</a></li>
-                                <li class="breadcrumb-item"><a href="#">Sessions</a></li>
+                                <li class="breadcrumb-item"><a href="@BaseURL/eLearning/Courses/Content/@Model.Filters.CourseId">Course</a></li>
+                                <li class="breadcrumb-item"><a href="@BaseURL/eLearning/CourseEvents/Index?courseId=@Model.Filters.CourseId">Sessions</a></li>
+                                <li class="breadcrumb-item"><a href="#">Enrollment</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">List of Sessions</h1>
+                    <h1 class="page-title text-white">Enrollments : </h1>
                     <div class="header-text"></div>
                 </div>
             </div>
@@ -35,6 +36,7 @@
 }
 
 @Html.HiddenFor(m => m.Filters.CourseId)
+@Html.HiddenFor(m => m.Filters.CourseEventId)
 
 <div class="d-flex align-items-center">
     <div class="filter dropdown">
@@ -43,16 +45,10 @@
             <div class="filter-head">Filters</div>
             <div class="filter-body">
 
-                <div>@Html.DisplayNameFor(m => m.Filters.Name) </div>
+                <div>@Html.DisplayNameFor(m => m.Filters.StudentName) </div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        @Html.EditorFor(m => m.Filters.Name, new { htmlAttributes = new { @class = "form-control small" } })
-                    </div>
-                </div>
-                <div>@Html.DisplayNameFor(m => m.Filters.EnrollmentCode)</div>
-                <div class="sorting-wrap">
-                    <div class="sorting-dropdown">
-                        @Html.EditorFor(m => m.Filters.EnrollmentCode, new { htmlAttributes = new { @class = "form-control small" } })
+                        @Html.EditorFor(m => m.Filters.StudentName, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
                 <div>
@@ -86,14 +82,6 @@
         </div>
         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
 
-        @if (CurrentUser.HasAccess(UserAccess.CourseCreate))
-        {
-            <div>
-                <a href="@Url.Action("Create", "CourseEvents", new { area = "eLearning", id = Model.Filters.CourseId })" class="btn btn-secondary">
-                    <i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>New Session
-                </a>
-            </div>
-        }
     </div>
     <!-- Table -->
     <table class="table tableStyle1 tabledata">
@@ -101,10 +89,10 @@
             <tr>
 
                 <th>#</th>
-                <th>@Html.DisplayNameFor(model => model.CourseEvents.Name)</th>
-                <th>@Html.DisplayNameFor(model => model.CourseEvents.EnrollmentCode)</th>
-                <th>@Html.DisplayNameFor(model => model.CourseEvents.NumberOfLearners)</th>
-                <th>@Html.DisplayNameFor(model => model.CourseEvents.Group)</th>
+                <th>@Html.DisplayNameFor(model => model.CourseEnrollment.StudentName)</th>
+                <th>@Html.DisplayNameFor(model => model.CourseEnrollment.DateEnrolled)</th>
+                <th>@Html.DisplayNameFor(model => model.CourseEnrollment.PercentageCompleted)</th>
+                <th>@Html.DisplayNameFor(model => model.CourseEnrollment.Status)</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -132,13 +120,12 @@
                 scrollX: false,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)eLearning/CourseEvents/GetAllEventsByCourse',
+                    "url": '@(WebApiURL)eLearning/CourseEnrollments/Get',
                     "data": function (filter) {
                         console.log("-", filter);
 
-                        filter.Name = $('#Filters_Name').val();
-                        filter.EnrollmentCode = $('#Filters_EnrollmentCode').val();
-                        filter.CourseId = $('#Filters_CourseId').val();
+                        filter.StudentName = $('#Filters_StudentName').val();
+                        filter.CourseEventId = $('#Filters_CourseEventId').val();
                     },
                     dataFilter: function (res) {
                         // do what you need to the data before it loads to the table
@@ -158,20 +145,19 @@
                         }
                     },
                     {
-                        data: 'Name',
+                        data: 'StudentName',
                         sortable: true
                     },
                     {
-                        data: 'EnrollmentCode',
-                        sortable: true
-                    },
-
-                    {
-                        data: 'NumberOfLearners',
+                        data: 'DateEnrolled',
                         sortable: true
                     },
                     {
-                        data: 'Group',
+                        data: 'Status',
+                        sortable: true
+                    },
+                    {
+                        data: 'PercentageCompleted',
                         sortable: true,
                     },
                     {
@@ -184,10 +170,10 @@
 
                             action = '<div class="icon-action">';
 
-                            if (cancreate) {
-                                action += '<a href="@Url.Action("Index", "CourseEnrollments", new { area = "eLearning" })?courseId=' + @Model.Filters.CourseId + "&courseEventId=" + row.Id +
+                            @*if (cancreate) {
+                                action += '<a href="@Url.Action("Index", "CourseEnrollments", new { area = "eLearning" })/' + row.Id +
                                     '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>&nbsp;';
-                            }
+                            }*@
 
                             return action;
                         }

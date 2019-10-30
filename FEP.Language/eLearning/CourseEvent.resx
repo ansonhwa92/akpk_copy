@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DateEnrolled" xml:space="preserve">
+    <value>Date Enrolled</value>
+  </data>
   <data name="EnrollmentCode" xml:space="preserve">
     <value>Enrollment Code</value>
   </data>
@@ -132,7 +135,19 @@
   <data name="NumberOfLearners" xml:space="preserve">
     <value># of Learners</value>
   </data>
+  <data name="PercentageCompleted" xml:space="preserve">
+    <value>% Completed</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>Progress</value>
+  </data>
   <data name="Session" xml:space="preserve">
     <value>Session</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Enrollment Status</value>
+  </data>
+  <data name="StudentName" xml:space="preserve">
+    <value>Name</value>
   </data>
 </root>

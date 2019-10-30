@@ -33,43 +33,42 @@ namespace FEP.WebApi.Api.eLearning
         public async Task<IHttpActionResult> SendNotification(NotificationModel model)
         {
             var receivers = new List<int>();
-            object entity;
 
-            // find receivers
-            if (model.ReceiverId == null || model.ReceiverId.Count() > 0)
+            if (model.ReceiverType == ReceiverType.UserIds || model.ReceiverType == ReceiverType.Both)
             {
-                switch (model.NotificationType)
+                // find receivers
+                if (model.ReceiverId == null || model.ReceiverId.Count() > 0)
                 {
-                    case NotificationType.Verify_Courses_Creation:
+                    switch (model.NotificationType)
+                    {
+                        case NotificationType.Verify_Courses_Creation:
 
-                        receivers = await GetUserIds(UserAccess.CourseVerify);
+                            receivers = await GetUserIds(UserAccess.CourseVerify);
 
-                        break;
+                            break;
 
-                    case NotificationType.Approve_Courses_Creation_Approver1:
+                        case NotificationType.Approve_Courses_Creation_Approver1:
 
-                        receivers = await GetUserIds(UserAccess.CourseApproval1);
-                        break;
+                            receivers = await GetUserIds(UserAccess.CourseApproval1);
+                            break;
 
-                    case NotificationType.Approve_Courses_Creation_Approver2:
+                        case NotificationType.Approve_Courses_Creation_Approver2:
 
-                        receivers = await GetUserIds(UserAccess.CourseApproval2);
-                        break;
+                            receivers = await GetUserIds(UserAccess.CourseApproval2);
+                            break;
 
-                    case NotificationType.Approve_Courses_Creation_Approver3:
+                        case NotificationType.Approve_Courses_Creation_Approver3:
 
-                        receivers = await GetUserIds(UserAccess.CourseApproval3);
-                        break;
+                            receivers = await GetUserIds(UserAccess.CourseApproval3);
+                            break;
 
-                    default:
-                        break;
+                        default:
+                            break;
+                    }
+
+                    model.ReceiverId = receivers;
                 }
-
-                model.ReceiverId = receivers;
             }
-
-            if (model.ReceiverId.Count() <= 0)
-                return BadRequest();
 
             if (model.Type == typeof(Course))
             {

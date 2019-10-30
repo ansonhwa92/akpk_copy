@@ -4,7 +4,7 @@
 <div class="col-xl-3 col-md-3 col-sm-4 my-2">
     <div id="page-nav" class="sidebar-left page-nav">
 
-        if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+        @if (CurrentUser.HasAccess(UserAccess.CourseCreate))
         {
             <div data-perfect-scrollbar class="ps">
                 <div class="page-section">
@@ -24,9 +24,6 @@
                         </li>
                         <li class="nav-item">
                             <a href="@Url.Action("AssignCertificate", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Certificate</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Enrollment", "CoursesEvents", new { area = "eLearning", courseId = @Model.Id })" class="nav-link">Enrollments</a>
                         </li>
                         <li class="nav-item">
                             <a href="@Url.Action("Index", "CourseEvents", new { area = "eLearning", @courseId = @Model.Id })" class="nav-link">Sessions</a>
@@ -126,15 +123,6 @@
 
                 case CourseStatus.Approved:
 
-                    <div class="page-section">
-                        <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Course</h6>
-                        <ul class="nav page-nav__menu">
-                            <li class="nav-item">
-                                <a id="tab_details" href="#course-trial" data-toggle="tab" class="nav-link active">Publish</a>
-                            </li>
-                        </ul>
-                    </div>
-
                     if (CurrentUser.HasAccess(UserAccess.CoursePublish))
                     {
                         <form method="post" id="formPublish">
@@ -148,12 +136,6 @@
 
                     if (CurrentUser.HasAccess(UserAccess.CoursePublish))
                     {
-
-                        <p>
-                            <a href="@Url.Action("ChangeViewCategory", "CourseEvents", new { area = "eLearning", id = @Model.Id, title = Model.Title })" class="btn btn-primary btn-block mb-2">
-                                Change View Category
-                            </a>
-                        </p>
 
                         if (Model.ViewCategory == ViewCategory.Private)
                         {

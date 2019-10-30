@@ -15,18 +15,20 @@ namespace FEP.WebApiModel.eLearning
     {
         [Display(Name = "Session", ResourceType = typeof(Language.eLearning.CourseEvent))]
         public int CourseEventId { get; set; }
-        [Display(Name = "Name", ResourceType = typeof(Language.eLearning.CourseEvent))]
-        public string UserName { get; set; }
+
+        [Display(Name = "StudentName", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string StudentName { get; set; }
+
         public int CourseId { get; set; }
     }
 
     public class ReturnBriefCourseEnrollmentModel : BaseModel
     {
-        [Display(Name = "Name", ResourceType = typeof(Language.eLearning.CourseEvent))]
-        public string Name { get; set; }
+        [Display(Name = "StudentName", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string StudentName { get; set; }
 
-        [Display(Name = "Progress", ResourceType = typeof(Language.eLearning.CourseEvent))]
-        public string Progress { get; set; }
+        [Display(Name = "PercentageCompleted", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string PercentageCompleted { get; set; }
 
         [Display(Name = "Status", ResourceType = typeof(Language.eLearning.CourseEvent))]
         public EnrollmentStatus Status { get; set; }

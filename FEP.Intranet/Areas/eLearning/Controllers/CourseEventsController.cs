@@ -24,7 +24,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string Publish = "eLearning/CourseEvents/Publish";
 
         public const string Create = "eLearning/CourseEvents/Create";
-        public const string InviteLearner = "eLearning/CourseEvents/InviteLearner";
+        public const string InviteLearners = "eLearning/CourseEvents/InviteLearners";
     }
 
     public class CourseEventsController : FEPController
@@ -325,7 +325,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         {
 
             var response = await WepApiMethod.SendApiAsync<InviteLearnerModel>(HttpVerbs.Post,
-                CourseEventApiUrl.InviteLearner, model);
+                CourseEventApiUrl.InviteLearners, model);
 
             if (response.isSuccess)
             {
@@ -346,10 +346,11 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         CourseAuthor = model.CreatedBy,
                         CourseTitle = model.CourseTitle,
                         CourseApproval = "Course Verification",
-                        Link = this.Url.AbsoluteAction("View", "CoursesController", new { id = model.CourseId })
+                        Link = this.Url.AbsoluteAction("View", "CoursesController", new { id = model.CourseId, enrollmentCode = model.EnrollmentCode })
                     },
                     Emails = model.LearnerEmails,
                     IsNeedRemainder = false,
+                    ReceiverType = ReceiverType.Emails,
                 };
 
                 var emailResponse = await EmaiHelper.SendNotification(notifyModel);
@@ -367,21 +368,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return RedirectToAction("Content", "Courses", new { area = "eLearning", id = model.CourseId });
-        }
-
-        /// <summary>
-        /// View the course Event and list of enrolled users
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<ActionResult> View(int id)
-        {
-            var model = new CourseEventEnrollmentModel
-            {
-                Id = id,
-            };
-
-            return View(model);
         }
 
         protected override void Dispose(bool disposing)

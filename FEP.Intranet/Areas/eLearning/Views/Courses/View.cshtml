@@ -39,11 +39,10 @@
 <form id="form" method="post">
 
     @Html.AntiForgeryToken()
-
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.IntroImageFileName)
+    @Html.HiddenFor(m => m.EnrollmentCode)
 
     <div class="row">
 
@@ -71,12 +70,10 @@
                     <div class="tab-pane active" id="course-details">
                         <div class="mb-4 mt-2 mr-auto">
                             <div class="boxed">
-                                    <img class="introImage" src=""
-                                         height="300" width="100%" alt="" />
-                                </div>
-
-
+                                <img class="introImage" src=""
+                                     height="300" width="100%" alt="" />
                             </div>
+                        </div>
 
                         <div class="subtitle">
                             ABOUT
@@ -103,10 +100,14 @@
 
                                 @if (Model.Status == CourseStatus.Published)
                                 {
-                                    <a class="btn btn-secondary m-2" href="#">Enroll</a>
+                                    <a class="btn btn-secondary m-2" href="@Url.Action("EnrollAsync", "CourseEnrollments",
+                                                                          new { area = "eLearning", courseId = @Model.Id, enrollmentCode = Model.EnrollmentCode })">Enroll</a>
+
                                 }
 
-                                @if (Model.Status == CourseStatus.Trial || Model.Status == CourseStatus.Published)
+                                <!-- allow to start course in trial or in published but already enrolled -->
+                                @if (Model.Status == CourseStatus.Trial || 
+                                            (Model.Status == CourseStatus.Published && Model.IsUserEnrolled))
                                 {
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">Start the course</a>
                                 }
@@ -183,7 +184,6 @@
 
         $(document).ready(function () {
             var imgFileName = $('#IntroImageFileName').val();
-
 
             if ($.trim(imgFileName) == "") {
 

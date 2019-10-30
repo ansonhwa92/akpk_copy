@@ -51,7 +51,7 @@ namespace FEP.Model.eLearning
 
         // ----- Start value from Course
 
-        [Range(typeof(decimal), "0.0", "100.0", ErrorMessage = "Value must be between 0 to 100.")]
+        [Range(0.0, 100.0, ErrorMessage = "Value must be between 0 to 100.")]
         public decimal AllowablePercentageBeforeWithdraw { get; set; } = 0.0m;
 
 
@@ -63,6 +63,7 @@ namespace FEP.Model.eLearning
         //        yield return new ValidationResult("Allowable Percentage Before Withdraw value must be set.");
 
         //}
+        public bool IsDisplayed { get; set; } = true;
     }
 
     public enum ViewCategory

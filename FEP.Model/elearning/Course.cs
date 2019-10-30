@@ -29,7 +29,7 @@ namespace FEP.Model.eLearning
         public CourseScheduleType ScheduleType { get; set; }
 
         // Total duration of the course, 10 days? 10 weeeks. Used with DurationType
-        [Range(typeof(decimal), "0.5", "1000", ErrorMessage = "Invalid Value")]
+        [Range(0.5, 1000, ErrorMessage = "Invalid Value")]
         public decimal? Duration { get; set; } 
 
         public DurationType DurationType { get; set; }

@@ -577,8 +577,12 @@ namespace FEP.WebApi.Api.Reminder
             string emailSubject = generateBodyMessage(template.TemplateSubject, model.NotificationType, model.ParameterListToSend);
             string emailBody = generateBodyMessage(template.TemplateMessage, model.NotificationType, model.ParameterListToSend);
 
+            var receivers =new List<string>();
             //send email ke setiap reciever
-            var receivers = model.Emails.Split(',');
+            if (!String.IsNullOrEmpty(model.Emails))
+                 receivers = model.Emails.Split(',').ToList();
+            else
+                return BadRequest();
 
             int counter = 0;
             foreach (var receiver in receivers)

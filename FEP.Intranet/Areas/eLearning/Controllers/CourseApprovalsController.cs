@@ -81,6 +81,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         CourseApproval = "Course Verification",
                         Link = this.Url.AbsoluteAction("View", "CoursesController", new { id = id})
                     },
+                    ReceiverType = ReceiverType.UserIds,
                 };
 
                 var emailResponse = await EmaiHelper.SendNotification(notifyModel);
@@ -156,6 +157,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                             CourseApproval = "Course Approval",
                             Link = this.Url.AbsoluteAction("View", "CourseController", new { id = model.CourseId })
                         },
+                        ReceiverType = ReceiverType.UserIds,
                     };
 
                     var emailResponse = await EmaiHelper.SendNotification(notifyModel);
@@ -206,6 +208,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                             CourseApproval = "Course Approval",
                             Link = this.Url.AbsoluteAction("View", "CoursesController", new { id = model.CourseId })
                         },
+                        ReceiverType = ReceiverType.UserIds,
                     };
 
                     var emailResponse = await EmaiHelper.SendNotification(notifyModel);

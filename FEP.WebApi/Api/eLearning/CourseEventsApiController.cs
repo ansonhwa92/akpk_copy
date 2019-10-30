@@ -59,13 +59,13 @@ namespace FEP.WebApi.Api.eLearning
         /// For use in index page, to list all the courses but with some fields only
         /// </summary>
         /// <returns></returns>
-        [Route("api/eLearning/CourseEvents/GetByCourse")]
+        [Route("api/eLearning/CourseEvents/GetAllEventsByCourse")]
         [HttpPost]
         public IHttpActionResult Post(FilterCourseEventModel request)
         {
             var query = db.CourseEvents
                 .Include(x => x.Group)
-                .Where(x => x.CourseId == request.CourseId);
+                .Where(x => x.CourseId == request.CourseId && x.IsDisplayed == true) ;
 
             if (!String.IsNullOrEmpty(request.Name))
                 query = query.Where(x => x.Name.ToLower().Contains(request.Name.ToLower()));
@@ -75,7 +75,9 @@ namespace FEP.WebApi.Api.eLearning
 
             var totalCount = query.Count();
 
-            //quick search
+            query = query.OrderBy(x => x.CreatedDate);
+
+            //quick search,  and hide course where ViewCategory.Public and Status = Private
             if (!string.IsNullOrEmpty(request.search.value))
             {
                 var value = request.search.value.Trim();
@@ -89,15 +91,17 @@ namespace FEP.WebApi.Api.eLearning
                     Name = x.Name,
                     EnrollmentCode = x.EnrollmentCode,
                     Group = x.Group.Name,
-                });
+                    NumberOfLearners = db.Enrollments
+                        .Where(y => y.CourseEventId == x.Id).Count()
+                }) ;
 
 
-            foreach(var item in data)
-            {
-                var numberOfLearners = db.Enrollments.Where(x => x.CourseEventId == item.CourseEventId);
+            //foreach(var item in data)
+            //{
+            //    var numberOfLearners = db.Enrollments.Where(x => x.CourseEventId == item.CourseEventId).ToList();
 
-                item.NumberOfLearners = numberOfLearners == null ? 0 : numberOfLearners.Sum(x => x.Id);
-            }
+            //    item.NumberOfLearners = numberOfLearners == null ? 0 : numberOfLearners.Count();
+            //}
 
 
             var filteredCount = query.Count();
@@ -712,9 +716,11 @@ namespace FEP.WebApi.Api.eLearning
         }
 
         // Called by counter part in intranet
-        // Here, the course status will be changed to Publish. However, CourseEvent will only be created
-        // if the ViewCategory is Public. If ViewCategory is Private, the CourseEvent will be created
+        // Here, the course status will be changed to Publish.
+        // By default, A public event will becreated.
+        // If ViewCategory is Private, the CourseEvent will be created
         // once the user create/invite a group with an enrollment code.
+        // A course can only have 1 Public course event
         [Route("api/eLearning/CourseEvents/Publish")]
         [HttpPost]
         public async Task<IHttpActionResult> Publish(int id, int createdBy)
@@ -727,28 +733,22 @@ namespace FEP.WebApi.Api.eLearning
 
             CourseEvent courseEvent = new CourseEvent();
 
-            if (entity.ViewCategory == ViewCategory.Public)
+            // check whether a public event has been created
+            var publicEvent = await db.CourseEvents.FirstOrDefaultAsync(x => x.CourseId == id && x.ViewCategory == ViewCategory.Public);
+
+            if(publicEvent == null)
             {
-                courseEvent = db.CourseEvents.FirstOrDefault(x => x.CourseId == id &&
-                x.ViewCategory == ViewCategory.Public &&
-                x.Status == CourseEventStatus.AvailableToPublic);
-
-                if (courseEvent != null)
-                {
-                    return Ok("Course already open for public.");
-                }
-
                 var newEvent = new CourseEvent
                 {
                     Name = "Public Course",
                     CourseId = id,
                     AllowablePercentageBeforeWithdraw = entity.DefaultAllowablePercentageBeforeWithdraw,
                     CreatedBy = createdBy,
-                    // Public will have an auto generated enrollment code
-                    EnrollmentCode = $"PUBLIC({entity.Code}-{DateTime.Now.Ticks}",
+                    EnrollmentCode = $"PUBLIC({entity.Code})",
                     ViewCategory = ViewCategory.Public,
-                    Status = CourseEventStatus.AvailableToPublic,
+                    Status = entity.ViewCategory == ViewCategory.Public ? CourseEventStatus.AvailableToPublic : CourseEventStatus.AvailableToPrivate,
                     Start = DateTime.Now,
+                    IsDisplayed = entity.ViewCategory == ViewCategory.Public ? true : false
                 };
 
                 db.CourseEvents.Add(newEvent);

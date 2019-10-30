@@ -249,7 +249,7 @@
                             }
 
                             if (canpublish) {
-                                if (row.Status == 4 || row.Status == 6) { // approved or published
+                                if (row.Status == 4) { // approved or published
                                     action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id +
                                         '" data-toggle="tooltip" data-placement="top" title="Publish"><i class="la la-book"></i></a>&nbsp;';
                                 }

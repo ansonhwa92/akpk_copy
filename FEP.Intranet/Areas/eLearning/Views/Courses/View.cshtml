@@ -97,7 +97,7 @@
 
                         <div>
                             <div class="row">
-                                @if (Model.Status == CourseStatus.Published)
+                                @if (Model.Status == CourseStatus.Published && !Model.IsUserEnrolled)
                                 {
                                     <button class="btn btn-secondary m-2" onclick="checkLogin()">Enroll</button>
                                  }

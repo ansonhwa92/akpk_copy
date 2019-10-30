@@ -826,7 +826,7 @@ namespace FEP.WebApi.Api.eLearning
                 if (courseEvent != null)
                 {
                     var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.CourseId == id &&
-                        x.CourseEventId == courseEvent.Id && x.LearnerId == userId);
+                        x.CourseEventId == courseEvent.Id && x.Learner.User.Id == userId);
 
                     if (enrollment != null)
                         return Ok(true);

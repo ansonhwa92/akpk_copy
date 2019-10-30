@@ -232,7 +232,7 @@ namespace FEP.WebApi.Api.eLearning
                     {
                         CreatedDate = DateTime.Now,
                         EnrolmmentId = enrollment.Id,
-                        LearnerId = userId,
+                        LearnerId = learner.Id,
                         Remark = "User Enrolled",
                         Status = EnrollmentStatus.Enrolled,
                     });
@@ -273,7 +273,7 @@ namespace FEP.WebApi.Api.eLearning
                 {
                     var enrollment = new Enrollment
                     {
-                        LearnerId = userId,
+                        LearnerId = learner.Id,
                         CourseEventId = courseEvent.Id,
                         CourseId = id,
                         CreatedDate = DateTime.Now,
@@ -283,7 +283,7 @@ namespace FEP.WebApi.Api.eLearning
                     };
 
                     db.Enrollments.Add(enrollment);
-
+                    
                     await db.SaveChangesAsync();
 
                     // create a history
@@ -291,7 +291,7 @@ namespace FEP.WebApi.Api.eLearning
                     {
                         CreatedDate = DateTime.Now,
                         EnrolmmentId = enrollment.Id,
-                        LearnerId = userId,
+                        LearnerId = learner.Id,
                         Remark = "User Enrolled",
                         Status = EnrollmentStatus.Enrolled,
                     });

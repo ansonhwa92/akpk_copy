@@ -587,8 +587,9 @@ namespace FEP.WebApi.Api.Reminder
             int counter = 0;
             foreach (var receiver in receivers)
             {
+                var cleanReceiver = receiver.Trim();
                 var response = await sendEmailUsingAPIAsync(DateTime.Now, (int)model.NotificationCategory,
-                    (int)model.NotificationType, receiver, emailSubject, emailBody, counter);
+                    (int)model.NotificationType, cleanReceiver, emailSubject, emailBody, counter);
 
                 if (response != null)
                 {

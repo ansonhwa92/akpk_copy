@@ -112,14 +112,4 @@ namespace FEP.WebApiModel.eLearning
         [Display(Name = "Session", ResourceType = typeof(Language.eLearning.CourseEvent))]
         public int CourseEventId { get; set; }
     }
-
-
-
-    public class TrxResult<T>
-    {
-        public int CourseId { get; set; }
-        public int ObjectId { get; set; }
-        public bool IsSuccess { get; set; }
-        public string Message { get; set; }
-    }
 }

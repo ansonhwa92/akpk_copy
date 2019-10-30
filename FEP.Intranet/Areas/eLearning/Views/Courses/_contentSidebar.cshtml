@@ -54,6 +54,13 @@
 
                                     @foreach (int val in Enum.GetValues(typeof(CourseContentType)))
                                     {
+                                        if (val == (int)CourseContentType.Powerpoint ||
+                                               val == (int)CourseContentType.Assignment ||
+                                               val == (int)CourseContentType.Instructor)
+                                        {
+                                            continue;
+                                        }
+
                                         <li class="nav-item">
                                             <a href="@Url.Action("Create", "CourseContents",
                                                 new
@@ -85,11 +92,11 @@
                                 Submit For Approval
                             </a>
                         </p>
-                        <p>
+                        @*<p>
                             <a href="@Url.Action("View", "Course", new { area = "eLearning", id = @Model.Id })" class="btn btn-default btn-block mb-2">
                                 View
                             </a>
-                        </p>
+                        </p>*@
 
                     }
 

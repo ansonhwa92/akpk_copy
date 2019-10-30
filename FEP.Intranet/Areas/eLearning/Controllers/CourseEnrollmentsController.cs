@@ -1,5 +1,6 @@
 ﻿using FEP.Helper;
 using FEP.Model;
+using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System;
 using System.Threading.Tasks;
@@ -65,26 +66,36 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 }
             }
 
+            var enrollResponse = new WebApiResponse<TrxResult<Enrollment>>();
+
             if (String.IsNullOrEmpty(enrollmentCode))
             {
-                response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get,
+                enrollResponse = await WepApiMethod.SendApiAsync<TrxResult<Enrollment>>(HttpVerbs.Get,
                 CourseEnrollmentApiUrl.EnrollAsync + $"?id={courseId}&userId={currentUserId}");
             }
             else
             {
-                response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get,
+                enrollResponse = await WepApiMethod.SendApiAsync<TrxResult<Enrollment>>(HttpVerbs.Get,
                 CourseEnrollmentApiUrl.EnrollAsync + $"?id={courseId}&userId={currentUserId}&enrollmentCode={enrollmentCode}");
             }
 
-            if (response.isSuccess)
+            if (enrollResponse.isSuccess)
             {
-                if (response.Data)
+                var result = enrollResponse.Data;
+
+                if (result.IsSuccess)
                 {
+                    await LogActivity(Modules.Learning, Gamification.UserEnrolled.ToString(), $"User {currentUserId} enrolled to the course {courseId} with" +
+                        $" enrollment code - {enrollmentCode} ");
+
                     TempData["SuccessMessage"] = "You are now enrolled to this course.";
 
                     return RedirectToAction("View", "Courses", new { area = "eLearning", id = courseId, enrollmentCode = enrollmentCode });
                 }
             }
+
+            await LogError(Modules.Learning, "User Enrolled Failed ", $"User {currentUserId} failed to enroll to the course {courseId} with" +
+                    $" enrollment code - {enrollmentCode}. Error - {enrollResponse.Data.Message}");
 
             TempData["ErrorMessage"] = "Error enrolling to the course.";
 

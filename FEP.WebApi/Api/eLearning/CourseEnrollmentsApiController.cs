@@ -56,14 +56,14 @@ namespace FEP.WebApi.Api.eLearning
             if (filteredCount > 0)
             {
                 // TODO : Add also course progress, PercentageCompleted,
-                 data = query.Skip(request.start).Take(request.length)
-                .Select(x => new ReturnBriefCourseEnrollmentModel
-                {
-                    CourseEventId = x.CourseEventId,
-                    StudentName = String.IsNullOrEmpty(x.Learner.User.Name) ? "" : x.Learner.User.Name,
-                    DateEnrolled = x.EnrolledDate,
-                    Status = x.Status
-                });
+                data = query.Skip(request.start).Take(request.length)
+               .Select(x => new ReturnBriefCourseEnrollmentModel
+               {
+                   CourseEventId = x.CourseEventId,
+                   StudentName = String.IsNullOrEmpty(x.Learner.User.Name) ? "" : x.Learner.User.Name,
+                   DateEnrolled = x.EnrolledDate,
+                   Status = x.Status
+               });
 
                 //order
                 if (request.order != null)
@@ -162,18 +162,40 @@ namespace FEP.WebApi.Api.eLearning
         [HttpGet]
         public async Task<IHttpActionResult> EnrollAsync(int id, int userId, string enrollmentCode = "")
         {
+            var learner = db.Learners.Find(userId);
+
+            if (learner == null)
+            {
+                var user = await db.User.FindAsync(userId);
+
+                if (user == null)
+                    return Ok(new TrxResult<Enrollment>
+                    {
+                        CourseId = id,
+                        IsSuccess = false,
+                        Message = "User does not exist",
+                    });
+
+                learner = new Learner
+                {
+                    UserId = userId,
+                };
+
+                db.Learners.Add(learner);
+
+                await db.SaveChangesAsync();
+            }
+
             // enroll as public
             if (String.IsNullOrEmpty(enrollmentCode))
             {
                 var courseEvent = await db.CourseEvents.FirstOrDefaultAsync(x => x.CourseId == id && x.ViewCategory == ViewCategory.Public);
 
-                var user = db.User.Find(userId);
-
-                if (courseEvent != null && user != null)
+                if (courseEvent != null)
                 {
                     var enrollment = new Enrollment
                     {
-                        LearnerId = userId,
+                        LearnerId = learner.Id,
                         CourseEventId = courseEvent.Id,
                         CourseId = id,
                         CreatedDate = DateTime.Now,
@@ -184,7 +206,26 @@ namespace FEP.WebApi.Api.eLearning
 
                     db.Enrollments.Add(enrollment);
 
-                    await db.SaveChangesAsync();
+                    try
+                    {
+                        await db.SaveChangesAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        var log = new ErrorLog
+                        {
+                            CreatedDate = DateTime.Now,
+                            UserId = userId,
+                            Module = Modules.Learning,
+                            Source = " Controller: eLearning/CourseEnrollmentApi Action: EnrollAsync",
+                            ErrorDescription = "Error enrolling student - User does not exist. Userid - " + userId,
+                            ErrorDetails = $"CourseEvent - id = {courseEvent.Id}, exception - {e.Message}",
+                            IPAddress = "",
+                        };
+
+                        db.ErrorLog.Add(log);
+                        await db.SaveChangesAsync();
+                    }
 
                     // create a history
                     db.EnrollmentHistories.Add(new EnrollmentHistory
@@ -215,13 +256,18 @@ namespace FEP.WebApi.Api.eLearning
 
                     db.SaveChanges();
 
-                    return Ok(false);
+                    return Ok(new TrxResult<Enrollment>
+                    {
+                        CourseId = id,
+                        IsSuccess = false,
+                        Message = "Public Course Event does not exist.",
+                    });
                 }
             }
             else
             {
                 var courseEvent = await db.CourseEvents.FirstOrDefaultAsync(x => x.CourseId == id &&
-                    x.EnrollmentCode.Equals(enrollmentCode, StringComparison.OrdinalIgnoreCase));
+                     x.EnrollmentCode.Equals(enrollmentCode, StringComparison.OrdinalIgnoreCase));
 
                 if (courseEvent != null)
                 {
@@ -269,10 +315,20 @@ namespace FEP.WebApi.Api.eLearning
 
                     db.SaveChanges();
 
-                    return Ok(false);
+                    return Ok(new TrxResult<Enrollment>
+                    {
+                        CourseId = id,
+                        IsSuccess = false,
+                        Message = "Private Course Event does not exist",
+                    });
                 }
             }
-            return Ok(true);
+            return Ok(new TrxResult<Enrollment>
+            {
+                CourseId = id,
+                IsSuccess = true,
+                Message = "Success",
+            });
         }
     }
 }

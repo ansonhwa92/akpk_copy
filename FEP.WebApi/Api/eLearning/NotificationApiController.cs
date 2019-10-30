@@ -62,6 +62,16 @@ namespace FEP.WebApi.Api.eLearning
                             receivers = await GetUserIds(UserAccess.CourseApproval3);
                             break;
 
+                        case NotificationType.Course_Amendment:
+
+                            receivers = await GetUserIds(UserAccess.CourseCreate);
+                            break;
+
+                        case NotificationType.Course_Approved:
+
+                            receivers = await GetUserIds(UserAccess.CourseCreate);
+                            break;
+
                         default:
                             break;
                     }

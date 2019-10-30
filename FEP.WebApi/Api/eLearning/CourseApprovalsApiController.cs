@@ -69,7 +69,6 @@ namespace FEP.WebApi.Api.eLearning
             await db.SaveChangesAsync();
 
             request.Status = entity.Status;
-            request.ApprovalLevel = ApprovalLevel.Verifier;
 
             return Ok(request);
         }
@@ -78,8 +77,10 @@ namespace FEP.WebApi.Api.eLearning
         /// Check whether approved or not.
         /// Status          Remark
         /// --------        ------
-        /// Verified        First level to approve
-        /// FirstApproval   Second level to approve
+        /// Submitted       ApprovalLevel.Verifier
+        /// Verify        ApprovalLevel.Approval1
+        /// FirstApproval   ApprovalLevel.Approval2
+        /// SecondApproval  ApprovalLevel.Approval3
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -96,9 +97,10 @@ namespace FEP.WebApi.Api.eLearning
                 return BadRequest();
 
             if (entity.Status != CourseStatus.Submitted &&
-                entity.Status != CourseStatus.Verify &&
+                entity.Status != CourseStatus.Verified &&
                 entity.Status != CourseStatus.FirstApproval &&
-                entity.Status != CourseStatus.SecondApproval)
+                entity.Status != CourseStatus.SecondApproval &&
+                entity.Status != CourseStatus.ThirdApproval)
             {
                 return BadRequest();
             }
@@ -122,78 +124,40 @@ namespace FEP.WebApi.Api.eLearning
             if (request.IsApproved)
             {
                 approvalLog.ApprovalStatus = ApprovalStatus.Approved;
+
                 // verifier approved
                 if (entity.Status == CourseStatus.Submitted)
                 {
-                    entity.Status = CourseStatus.Verify;
-                    approvalLog.ApprovalLevel = ApprovalLevel.Verifier;
+                    entity.Status = CourseStatus.Verified;
                 }
                 else
                 { // other than verifier
                     if (request.IsNextLevelRequired)
                     {
-                        if (entity.Status == CourseStatus.Verify)
+                        if (entity.Status == CourseStatus.Verified)
                         {
                             entity.Status = CourseStatus.FirstApproval;
-                            approvalLog.ApprovalLevel = ApprovalLevel.Approver1;
                         }
                         else
                         if (entity.Status == CourseStatus.FirstApproval)
                         {
                             entity.Status = CourseStatus.SecondApproval;
-                            approvalLog.ApprovalLevel = ApprovalLevel.Approver2;
                         }
                         else
                         if (entity.Status == CourseStatus.SecondApproval)
                         {
                             entity.Status = CourseStatus.ThirdApproval;
-                            approvalLog.ApprovalLevel = ApprovalLevel.Approver3;
                         }
                     }
                     else
                     {
-                        if (entity.Status == CourseStatus.Verify)
-                        {
-                            entity.Status = CourseStatus.Approved;
-                            approvalLog.ApprovalLevel = ApprovalLevel.Approver1;
-                        }
-                        else
-                        if (entity.Status == CourseStatus.FirstApproval)
-                        {
-                            entity.Status = CourseStatus.Approved;
-                            approvalLog.ApprovalLevel = ApprovalLevel.Approver2;
-                        }
-                        else
-                        if (entity.Status == CourseStatus.SecondApproval)
-                        {
-                            entity.Status = CourseStatus.Approved;
-                            approvalLog.ApprovalLevel = ApprovalLevel.Approver3;
-                        }
+                        entity.Status = CourseStatus.Approved;
+                        approvalLog.ApprovalStatus = ApprovalStatus.Approved;
                     }
                 }
             }
             else // Rejected
             {
-                if (entity.Status == CourseStatus.Submitted)
-                {
-                    approvalLog.ApprovalLevel = ApprovalLevel.Verifier;
-                }
-                else
-                if (entity.Status == CourseStatus.Verify)
-                {
-                    approvalLog.ApprovalLevel = ApprovalLevel.Approver1;
-                }
-                else
-                if (entity.Status == CourseStatus.FirstApproval)
-                {
-                    approvalLog.ApprovalLevel = ApprovalLevel.Approver2;
-                }
-                else
-                if (entity.Status == CourseStatus.SecondApproval)
-                {
-                    approvalLog.ApprovalLevel = ApprovalLevel.Approver3;
-                }
-
                 entity.Status = CourseStatus.Amendment;
                 approvalLog.ApprovalStatus = ApprovalStatus.Rejected;
             }
@@ -205,7 +169,7 @@ namespace FEP.WebApi.Api.eLearning
             await db.SaveChangesAsync();
 
             request.CourseTitle = entity.Title;
-            request.ApprovalLevel = approvalLog.ApprovalLevel;
+            request.Status = entity.Status;
 
             return Ok(request);
         }

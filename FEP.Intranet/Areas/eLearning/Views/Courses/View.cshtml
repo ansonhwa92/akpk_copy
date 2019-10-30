@@ -97,16 +97,12 @@
 
                         <div>
                             <div class="row">
-
                                 @if (Model.Status == CourseStatus.Published)
                                 {
-                                    <a class="btn btn-secondary m-2" href="@Url.Action("EnrollAsync", "CourseEnrollments",
-                                                                          new { area = "eLearning", courseId = @Model.Id, enrollmentCode = Model.EnrollmentCode })">Enroll</a>
-
-                                }
-
+                                    <button class="btn btn-secondary m-2" onclick="checkLogin()">Enroll</button>
+                                 }
                                 <!-- allow to start course in trial or in published but already enrolled -->
-                                @if (Model.Status == CourseStatus.Trial || 
+                                @if (Model.Status == CourseStatus.Trial ||
                                             (Model.Status == CourseStatus.Published && Model.IsUserEnrolled))
                                 {
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">Start the course</a>
@@ -200,6 +196,38 @@
         function openModule(moduleId) {
             var url = '@Url.Action("View", "CourseModules", new { area = "eLearning" })?id=' + moduleId;
             window.location = url;
+        }
+
+        function checkLogin() {
+
+            var isAuthenticated = '@CurrentUser.IsAuthenticated()';
+
+            console.log('isAuthenticated=', isAuthenticated);
+
+            if (isAuthenticated == 'True') {
+                var form = $("#form");
+                var enrollmentCode = '@Model.EnrollmentCode';
+
+                if ($.trim(enrollmentCode) != '') {
+                    form.attr('action', "@BaseURL/eLearning/CourseEnrollments/EnrollAsync?courseId=@Model.Id" + "&enrollmentCode=" + enrollmentCode);
+                }
+                else {
+                    form.attr('action', "@BaseURL/eLearning/CourseEnrollments/EnrollAsync?courseId=@Model.Id");
+                }
+                form.submit();
+            }
+            else {
+                var returnUrl = '@BaseURL/eLearning/Courses/View?id=@Model.Id';
+                var enrollmentCode = '@Model.EnrollmentCode';
+
+                if ($.trim(enrollmentCode) != '')
+                    returnUrl = returnUrl + '?enrollmentCode=' + enrollmentCode;
+
+                console.log('returnurl = ', returnUrl);
+
+                var url = '@Url.Action("LoginAndReturn", "Auth", new { area = "" })&returnurl=' + returnUrl;
+                window.location = url;
+            }
         }
     </script>
 }

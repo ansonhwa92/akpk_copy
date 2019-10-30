@@ -132,6 +132,8 @@ namespace FEP.Model
         VerifyCourses,
         [Display(Name = "Approve Courses")]
         ApproveCourses,
+        [Display(Name = "Invite To Enroll to Course")]
+        InviteToCourse,
 
 
         // payment

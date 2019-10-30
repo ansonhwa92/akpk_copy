@@ -127,7 +127,9 @@ namespace FEP.Model
 		Approve_Courses_Published_Withdraw,
 		[Display(Name = "Approve Courses Participant Withdraw")]
 		Approve_Courses_Participant_Withdraw,
-        [Display(Name = "Course Is Approve")]
+
+        //Other Courses Action
+        [Display(Name = "Course Is Approved")]
         Course_Approved,
         [Display(Name = "Course Requires Amendment")]
         Course_Amendment,
@@ -285,7 +287,8 @@ namespace FEP.Model
 		[Key]
 		public int DatID { get; set; }
 		public int DatType { get; set; }
-		public DateTime? DTInsert { get; set; }
+        public int DatNotify { get; set; }
+        public DateTime? DTInsert { get; set; }
 		public DateTime? DTSchedule { get; set; }
 		public DateTime? DTExpired { get; set; }
 		public string SMSTo { get; set; }
@@ -299,11 +302,12 @@ namespace FEP.Model
 		[Key]
 		public int DatID { get; set; }
 		public int DatType { get; set; }
-		public DateTime? DTInsert { get; set; }
+        public int DatNotify { get; set; }
+        public DateTime? DTInsert { get; set; }
 		public DateTime? DTSchedule { get; set; }
 		public DateTime? DTExpired { get; set; }
-		public string SMSTo { get; set; }
-		public string Subject { get; set; }
+        public string EmailTo { get; set; }
+        public string Subject { get; set; }
 		public string Body { get; set; }
 		public bool AttachmentState { get; set; }
 		public string Attachment_01 { get; set; }

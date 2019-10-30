@@ -205,6 +205,10 @@ namespace FEP.Model
         public DbSet<UserRewardPoints> UserRewardPoints { get; set; }
         public DbSet<UserRewardRedemption> UserRewardRedemption { get; set; }
 
+        // Email?
+        public DbSet<TabBulkEmail> TabBulkEmail { get; set; }
+        public DbSet<TabBulkSMS> TabBulkSMS { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();

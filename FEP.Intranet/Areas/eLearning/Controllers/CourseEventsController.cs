@@ -346,7 +346,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         CourseAuthor = model.CreatedBy,
                         CourseTitle = model.CourseTitle,
                         CourseApproval = "Course Verification",
-                        Link = this.Url.AbsoluteAction("View", "CoursesController", new { id = model.CourseId, enrollmentCode = model.EnrollmentCode })
+                        Link = this.Url.AbsoluteAction("View", "Courses", new { id = model.CourseId, enrollmentCode = model.EnrollmentCode })
                     },
                     Emails = model.LearnerEmails,
                     IsNeedRemainder = false,

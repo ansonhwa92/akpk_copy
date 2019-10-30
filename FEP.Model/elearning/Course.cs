@@ -153,7 +153,7 @@ namespace FEP.Model.eLearning
         Submitted, // 2
 
         [Display(Name = "CourseStatusVerified", ResourceType = typeof(Language.eLearning.Enum))]
-        Verify, // 3
+        Verified, // 3
 
         [Display(Name = "CourseStatusApproved", ResourceType = typeof(Language.eLearning.Enum))]
         Approved, // Ready to publish 4

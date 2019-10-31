@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FEP.WebApi.Helper;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -15,15 +16,21 @@ namespace FEP.WebApi.Api.eLearning
     /// API Controller for streaming video files.
     public class VideoController : ApiController
     {
-        private const string videoFilePath = "D://FEPDoc";
+
+        public string storageDir = "";
+
+        public VideoController()
+        {
+            storageDir = AppSettings.FileDocPath;
+        }
 
         /// Gets the live video.
         [HttpGet]
         [Route("api/eLearning/Video")]
-        public IHttpActionResult GetLiveVideo(string videoFileId, string fileName)
+        public IHttpActionResult GetLiveVideo(string fileName)
         {
             //actual path
-            string filePath = Path.Combine(videoFilePath, fileName);
+            string filePath = Path.Combine(storageDir, fileName);
             return new VideoFileActionResult(filePath);
         }
 
@@ -33,7 +40,7 @@ namespace FEP.WebApi.Api.eLearning
         [Route("api/eLearning/Video")]
         public IHttpActionResult GetLiveVideoPost(VideoFileDownloadRequest request)
         {
-            string filePath = Path.Combine(HttpContext.Current.Server.MapPath(videoFilePath), request.FileName);
+            string filePath = Path.Combine(HttpContext.Current.Server.MapPath(storageDir), request.FileName);
             return new VideoFileActionResult(filePath);
         }
 

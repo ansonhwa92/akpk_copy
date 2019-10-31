@@ -12,9 +12,9 @@
 else
 {
     <video width="100%" height="540" controls>
-        <source src="@(WebApiURL)eLearning/Video?videoFileId=@Model.FileDocumentId&fileName=@Model.FileDocument.FileNameOnStorage"
+        <source src="@(WebApiURL)eLearning/Video?fileName=@Model.FileDocument.FileNameOnStorage"
                 type="video/mp4">
-        <source src="@(WebApiURL)eLearning/Video?videoFileId=@Model.FileDocumentId&fileName=@Model.FileDocument.FileNameOnStorage"
+        <source src="@(WebApiURL)eLearning/Video?fileName=@Model.FileDocument.FileNameOnStorage"
                 type="video/mpeg">
 
         Your browser does not support the video tag.

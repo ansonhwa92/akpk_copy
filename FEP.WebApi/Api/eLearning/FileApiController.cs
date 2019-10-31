@@ -43,7 +43,6 @@ namespace FEP.WebApi.Api.eLearning
             {
                 string fullPath = Path.Combine(storageDir, fileName);
 
-
                 if (File.Exists(fullPath))
                 {
                     HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
@@ -136,13 +135,13 @@ namespace FEP.WebApi.Api.eLearning
                 var fileDocument = new FileDocument
                 {
                     CreatedBy = request.CreatedBy,
-                    CreatedDate = request.CreatedDate,
+                    CreatedDate = DateTime.Now,
                     FileName = request.FileName,
                     FileNameOnStorage = request.FileNameOnStorage,
                     FilePath = request.FilePath,
                     FileSize = request.FileSize,
                     FileTag = request.FileTag,
-                    FileType = request.FileType,    
+                    FileType = request.FileType,
                     User = request.User
                 };
 
@@ -165,14 +164,13 @@ namespace FEP.WebApi.Api.eLearning
 
                 db.ContentFiles.Add(contentFile);
 
-                await db.SaveChangesAsync();                
+                await db.SaveChangesAsync();
 
                 var content = await db.CourseContents.FirstOrDefaultAsync(x => x.Id == request.ContentId);
 
                 content.ContentFileId = contentFile.Id;
 
                 await db.SaveChangesAsync();
-
 
                 return Ok(contentFile.Id);
             }
@@ -182,16 +180,13 @@ namespace FEP.WebApi.Api.eLearning
             }
         }
 
-
         [Route("api/eLearning/File/GetFileNameOnStorage")]
         [HttpGet]
         public async Task<IHttpActionResult> GetFileNameOnStorage(int contentId)
         {
-
             var content = await db.ContentFiles
                             .Include(x => x.FileDocument)
                             .FirstOrDefaultAsync(x => x.Id == contentId);
-
 
             if (content == null || content.FileDocument == null)
                 return BadRequest();
@@ -200,9 +195,7 @@ namespace FEP.WebApi.Api.eLearning
                 return BadRequest();
 
             return Ok(content.FileDocument.FileNameOnStorage);
-
         }
-
 
         [Route("api/eLearning/File/GetImg")]
         [HttpGet]
@@ -216,7 +209,6 @@ namespace FEP.WebApi.Api.eLearning
                 ? (IHttpActionResult)NotFound()
                 : new FileResult(fileInfo.FullName);
         }
-
 
         [Route("api/eLearning/File/GetHTML")]
         [HttpGet]
@@ -248,7 +240,6 @@ namespace FEP.WebApi.Api.eLearning
                 return "Error reading the document.";
             }
         }
-
     }
 
     public class ValidateMimeMultipartContentFilter : ActionFilterAttribute

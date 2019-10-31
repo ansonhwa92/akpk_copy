@@ -138,8 +138,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         courseContentType = model.ContentType,
                         @courseTitle = model.PageTitle
                     });
-
-
                 }
 
                 // Check if this creation include fileupload, which will require us to save the file

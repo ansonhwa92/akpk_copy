@@ -86,7 +86,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				TargetedGroup = publiceventapproval.publicevent.TargetedGroup,
 				Venue = publiceventapproval.publicevent.Venue,
 				Remarks = publiceventapproval.publicevent.Remarks,
-				Attachments = publiceventapproval.publicevent.Attachments
+				Attachments = publiceventapproval.publicevent.Attachments,
+				CreatedByName = publiceventapproval.publicevent.CreatedByName,
+				CreatedDate = publiceventapproval.publicevent.CreatedDate,
 			};
 
 			if (publiceventapproval.publicevent.EventStatus != EventStatus.New)
@@ -906,97 +908,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/Evaluate", model);
+				var response = await WepApiMethod.SendApiAsync<GlobalPublicEventApprovalModel>(HttpVerbs.Post, $"eEvent/PublicEvent/Evaluate", model);
 
-				if (response.isSuccess)
-				{
-					string[] resparray = response.Data.Split('|');
-					int pid = int.Parse(resparray[0]);
-					string title = resparray[1];
-					string refno = resparray[2];
-					string venue = resparray[3];
-					// log trail/system success notification/dashboard notification/email/sms upon submission
-					// log trail/system success/dashboard notification upon saving as draft
-
-					if (model.approval.Status == EventApprovalStatus.Approved)
-					{
-						if (model.approval.Level == EventApprovalLevel.Verifier)
-						{
-							await LogActivity(Modules.Event, "Verify Public Event: " + title, model);
-							TempData["SuccessMessage"] = "Public Event titled " + title + " updated as Verified.";
-
-							await SendNotification(pid, NotificationCategory.Event, NotificationType.Verify_Public_Event_After_Submit_For_Verification, title, refno, venue, "Verified and Pending Approval", model.approval.Status, model.approval.RequireNext);
-							// dashboard
-						}
-						else
-						{
-							await LogActivity(Modules.Event, "Approve Public Event: " + title, model);
-							TempData["SuccessMessage"] = "Public Event titled " + title + " updated as Approved.";
-
-							if (model.approval.Level == EventApprovalLevel.Approver1)
-							{
-								if (model.approval.RequireNext)
-								{
-									await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Publication_Creation_1, title, refno, venue, "Approved by 1st-Level Approver and Pending 2nd-Level Approval", model.approval.Status, model.approval.RequireNext);
-								}
-								else
-								{
-									await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Publication_Creation_1, title, refno, venue, "Approved by 1st-Level Approver", model.approval.Status, model.approval.RequireNext);
-								}
-							}
-							else if (model.approval.Level == EventApprovalLevel.Approver2)
-							{
-								if (model.approval.RequireNext)
-								{
-									await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Publication_Creation_2, title, refno, venue, "Approved by 2nd-Level Approver and Pending 3rd-Level Approval", model.approval.Status, model.approval.RequireNext);
-								}
-								else
-								{
-									await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Publication_Creation_2, title, refno, venue, "Approved by 2nd-Level Approver", model.approval.Status, model.approval.RequireNext);
-								}
-							}
-							else if (model.approval.Level == EventApprovalLevel.Approver3)
-							{
-								await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Publication_Creation_3, title, refno, venue, "Approved by 3rd-Level Approver", model.approval.Status, model.approval.RequireNext);
-							}
-							// dashboard
-						}
-					}
-					else
-					{
-						await LogActivity(Modules.Event, "Public Event Requires Amendment: " + title, model);
-						TempData["SuccessMessage"] = "Public Event titled " + title + " updated as Requires Amendment.";
-
-
-						if (model.approval.Level == EventApprovalLevel.Verifier)
-						{
-							await SendNotification(pid, NotificationCategory.Event, NotificationType.Verify_Public_Event_After_Submit_For_Verification, title, refno, venue, "Amendment Requested by Verifier", model.approval.Status, false);
-						}
-						else if (model.approval.Level == EventApprovalLevel.Approver1)
-						{
-							await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Public_Event_ByApprover_1, title, refno, venue, "Amendment Requested by 1st-Level Approver", model.approval.Status, false);
-						}
-						else if (model.approval.Level == EventApprovalLevel.Approver2)
-						{
-							await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Public_Event_ByApprover_2, title, refno, venue, "Amendment Requested by 2nd-Level Approver", model.approval.Status, false);
-						}
-						else if (model.approval.Level == EventApprovalLevel.Approver3)
-						{
-							await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Public_Event_ByApprover_3, title, refno, venue, "Amendment Requested by 3rd-Level Approver", model.approval.Status, false);
-						}
-						// dashboard
-					}
-
-					return RedirectToAction("Index", "PublicEvent", new { area = "RnP" });
-				}
-				else
-				{
-
-					return RedirectToAction("List", "PublicEvent", new { area = "eEvent", @id = model.approval.EventId });
-				}
+				if (response.isSuccess) { }
 			}
-
-			//ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
 			return View(model);
 		}
 
@@ -1011,94 +926,94 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 
 
-		private async Task<List<int>> GetNotificationReceivers(NotificationCategory ncat, NotificationType ntype, EventApprovalStatus status, bool forward)
-		{
-			List<int> result = new List<int> { };
-			var response = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"eEvent/PublicEvent/GetNotificationReceivers/?cat={ncat}&type={ntype}&status={status}&forward={forward}");
-			if (response.isSuccess)
-			{
-				result = response.Data;
-			}
-			else
-			{
-				await LogError(Modules.RnP, "Failed to get Auto Notification receivers");
-			}
-			return result;
-		}
+		//private async Task<List<int>> GetNotificationReceivers(NotificationCategory ncat, NotificationType ntype, EventApprovalStatus status, bool forward)
+		//{
+		//	List<int> result = new List<int> { };
+		//	var response = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"eEvent/PublicEvent/GetNotificationReceivers/?cat={ncat}&type={ntype}&status={status}&forward={forward}");
+		//	if (response.isSuccess)
+		//	{
+		//		result = response.Data;
+		//	}
+		//	else
+		//	{
+		//		await LogError(Modules.Event, "Failed to get Auto Notification receivers");
+		//	}
+		//	return result;
+		//}
 
-		private async Task<bool> SaveNotificationID(int id, int notification_id)
-		{
-			var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveNotificationID?id={id}&notificationid={notification_id}");
-			if (!response.isSuccess)
-			{
-				await LogError(Modules.Event, "Failed to save Auto Notification ID (API Error)");
-			}
-			else
-			{
-				if (response.Data == false)
-				{
-					await LogError(Modules.Event, "Failed to save Auto Notification ID (Publication Error)");
-				}
-			}
-			return response.isSuccess;
-		}
+		//private async Task<bool> SaveNotificationID(int id, int notification_id)
+		//{
+		//	var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveNotificationID?id={id}&notificationid={notification_id}");
+		//	if (!response.isSuccess)
+		//	{
+		//		await LogError(Modules.Event, "Failed to save Auto Notification ID (API Error)");
+		//	}
+		//	else
+		//	{
+		//		if (response.Data == false)
+		//		{
+		//			await LogError(Modules.Event, "Failed to save Auto Notification ID (Publication Error)");
+		//		}
+		//	}
+		//	return response.isSuccess;
+		//}
 
-		private async Task<bool> SendNotification(int id, NotificationCategory ncat, NotificationType ntype, string title, string code, string venue, string status, EventApprovalStatus appstatus, bool forward)
-		{
-			try
-			{
-				var receivers = await GetNotificationReceivers(ncat, ntype, appstatus, forward);
-				if (receivers.Count > 0)
-				{
-					ParameterListToSend paramToSend = new ParameterListToSend();
-					paramToSend.EventName = title;
-					paramToSend.EventCode = code;
-					paramToSend.EventLocation = venue;
-					paramToSend.EventApproval = status;
+		//private async Task<bool> SendNotification(int id, NotificationCategory ncat, NotificationType ntype, string title, string code, string venue, string status, EventApprovalStatus appstatus, bool forward)
+		//{
+		//	try
+		//	{
+		//		var receivers = await GetNotificationReceivers(ncat, ntype, appstatus, forward);
+		//		if (receivers.Count > 0)
+		//		{
+		//			ParameterListToSend paramToSend = new ParameterListToSend();
+		//			paramToSend.EventName = title;
+		//			paramToSend.EventCode = code;
+		//			paramToSend.EventLocation = venue;
+		//			paramToSend.EventApproval = status;
 
-					CreateAutoReminder reminder = new CreateAutoReminder
-					{
-						NotificationType = ntype,
-						NotificationCategory = ncat,
-						ParameterListToSend = paramToSend,
-						StartNotificationDate = DateTime.Now,
-						ReceiverId = receivers
-						// new List<int> { 2, 3, 4, 5 }
-					};
-					try
-					{
-						var response = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-						if (response.isSuccess)
-						{
-							int saveThisID = response.Data.SLAReminderStatusId;
-							//save saveThisID back into survey table
-							var ressave = await SaveNotificationID(id, saveThisID);
-							return true;
-						}
-						else
-						{
-							await LogError(Modules.Event, "Failed to generate Auto Notification (API Call Returned Failure)");
-							return false;
-						}
-					}
-					catch
-					{
-						await LogError(Modules.Event, "Failed to generate Auto Notification (API Call Failed)");
-						return false;
-					}
-				}
-				else
-				{
-					await LogError(Modules.Event, "Failed to generate Auto Notification (No Receivers Found)");
-					return false;
-				}
-			}
-			catch
-			{
-				await LogError(Modules.Event, "Failed to generate Auto Notification");
-				return false;
-			}
-		}
+		//			CreateAutoReminder reminder = new CreateAutoReminder
+		//			{
+		//				NotificationType = ntype,
+		//				NotificationCategory = ncat,
+		//				ParameterListToSend = paramToSend,
+		//				StartNotificationDate = DateTime.Now,
+		//				ReceiverId = receivers
+		//				// new List<int> { 2, 3, 4, 5 }
+		//			};
+		//			try
+		//			{
+		//				var response = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+		//				if (response.isSuccess)
+		//				{
+		//					int saveThisID = response.Data.SLAReminderStatusId;
+		//					//save saveThisID back into survey table
+		//					var ressave = await SaveNotificationID(id, saveThisID);
+		//					return true;
+		//				}
+		//				else
+		//				{
+		//					await LogError(Modules.Event, "Failed to generate Auto Notification (API Call Returned Failure)");
+		//					return false;
+		//				}
+		//			}
+		//			catch
+		//			{
+		//				await LogError(Modules.Event, "Failed to generate Auto Notification (API Call Failed)");
+		//				return false;
+		//			}
+		//		}
+		//		else
+		//		{
+		//			await LogError(Modules.Event, "Failed to generate Auto Notification (No Receivers Found)");
+		//			return false;
+		//		}
+		//	}
+		//	catch
+		//	{
+		//		await LogError(Modules.Event, "Failed to generate Auto Notification");
+		//		return false;
+		//	}
+		//}
 
 	}
 }

@@ -126,8 +126,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
         [Required]
 		public int Id { get; set; }
 
-		public string origin { get; set; }
-
         [Required]
         [Display(Name = "Proof of Approval")]
         public IEnumerable<Attachment> Attachments { get; set; }

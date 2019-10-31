@@ -1,11 +1,13 @@
 ﻿using FEP.Helper;
 using FEP.Model;
+using FEP.WebApiModel.FileDocuments;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FEP.WebApiModel.eEvent
@@ -17,8 +19,19 @@ namespace FEP.WebApiModel.eEvent
 		public string EventName { get; set; }
 		[Display(Name = "ExRoadOrganiser", ResourceType = typeof(Language.Event))]
 		public string Organiser { get; set; }
+		[Display(Name = "ExRoadOrganiserEmail", ResourceType = typeof(Language.Event))]
+		public string OrganiserEmail { get; set; }
+		//[Display(Name = "ExRoadLocation", ResourceType = typeof(Language.Event))]
+		//public string Location { get; set; }
+
+
 		[Display(Name = "ExRoadLocation", ResourceType = typeof(Language.Event))]
-		public string Location { get; set; }
+		public string AddressStreet1 { get; set; }
+		public string AddressStreet2 { get; set; }
+		public string AddressPoscode { get; set; }
+		public string AddressCity { get; set; }
+		public MediaState? State { get; set; }
+
 
 		[DataType(DataType.Date)]
 		[UIHint("Date")]
@@ -67,7 +80,8 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadRefNo", ResourceType = typeof(Language.Event))]
 		public string RefNo { get; set; }
 		public int? SLAReminderStatusId { get; set; }
-
+		[Display(Name = "ExRoadExhibitionSupDoc", ResourceType = typeof(Language.Event))]
+		public IEnumerable<Attachment> Attachments { get; set; }
 	}
 
 	public class FilterExhibitionRoadshowRequestModel : DataTableModel
@@ -86,6 +100,7 @@ namespace FEP.WebApiModel.eEvent
 		public ExhibitionStatus? ExhibitionStatus { get; set; }
 		[Display(Name = "ExRoadExhibitionStatusDesc", ResourceType = typeof(Language.Event))]
 		public string ExhibitionStatusDesc { get; set; }
+
 	}
 
 	public class ListExhibitionRoadshowRequestModel
@@ -104,6 +119,20 @@ namespace FEP.WebApiModel.eEvent
 
 	public class CreateExhibitionRoadshowRequestModel
 	{
+		public CreateExhibitionRoadshowRequestModel()
+		{
+			Attachments = new List<Attachment>();
+			AttachmentFiles = new List<HttpPostedFileBase>();
+			FilesId = new List<int>();
+		}
+		public List<int> FilesId { get; set; }
+
+		[Required]
+		[Display(Name = "ExRoadExhibitionSupDoc", ResourceType = typeof(Language.Event))]
+		public IEnumerable<Attachment> Attachments { get; set; }
+
+		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
+
 		[Required(ErrorMessage = "Please insert Event Name")]
 		[Display(Name = "ExRoadEventName", ResourceType = typeof(Language.Event))]
 		public string EventName { get; set; }
@@ -112,9 +141,26 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadOrganiser", ResourceType = typeof(Language.Event))]
 		public string Organiser { get; set; }
 
+		[Required(ErrorMessage = "Please Insert Email")]
+		[DataType(DataType.EmailAddress)]
+		[Display(Name = "ExRoadOrganiserEmail", ResourceType = typeof(Language.Event))]
+		public string OrganiserEmail { get; set; }
+
+		//[Required(ErrorMessage = "Please insert Location")]
+		//[Display(Name = "ExRoadLocation", ResourceType = typeof(Language.Event))]
+		//public string Location { get; set; }
+
 		[Required(ErrorMessage = "Please insert Location")]
 		[Display(Name = "ExRoadLocation", ResourceType = typeof(Language.Event))]
-		public string Location { get; set; }
+		public string AddressStreet1 { get; set; }
+		[Required(ErrorMessage = "Please Insert Address")]
+		public string AddressStreet2 { get; set; }
+		[Required(ErrorMessage = "Please Insert Poscode")]
+		public string AddressPoscode { get; set; }
+		[Required(ErrorMessage = "Please Insert City")]
+		public string AddressCity { get; set; }
+		[Required(ErrorMessage = "Please Select State")]
+		public MediaState? State { get; set; }
 
 		[Required(ErrorMessage = "Please insert Start Date")]
 		[DataType(DataType.Date)]

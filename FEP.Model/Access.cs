@@ -78,23 +78,25 @@ namespace FEP.Model
 
 
 		//----------------------Exhibition RoadShow Button--------------------//
-		[Display(Name = "Exhibition RoadShow - Recipient Email After Submit Exhibition RoadShow")]
+		[Display(Name = "Exhibition RoadShow - Submit")]
 		Recipient_Submit_ExhibitionRoadShow = 1017,
 
-		[Display(Name = "Exhibition RoadShow - Recipient Email After Verify Exhibition RoadShow")]
+		[Display(Name = "Exhibition RoadShow - Verify")]
 		Recipient_Verify_ExhibitionRoadShow = 1018,
 
-		[Display(Name = "Exhibition RoadShow - Recipient Email After Approval 1")]
+		[Display(Name = "Exhibition RoadShow - Approve (Level 1)")]
 		Recipient_Approver1_ExhibitionRoadShow = 1019,
 
-		[Display(Name = "Exhibition RoadShow - Recipient Email After Approval 2")]
+		[Display(Name = "Exhibition RoadShow - Approve (Level 2)")]
 		Recipient_Approver2_ExhibitionRoadShow = 1020,
 
-		[Display(Name = "Exhibition RoadShow - Recipient Email After Approval 3")]
+		[Display(Name = "Exhibition RoadShow - Approve (Level 3)")]
 		Recipient_Approver3_ExhibitionRoadShow = 1021,
 
-		[Display(Name = "Exhibition RoadShow - Recipient Email After Reject")]
+		[Display(Name = "Exhibition RoadShow - Reject")]
 		Recipient_Reject_ExhibitionRoadShow = 1022,
+
+
 
 		//-----------------------------------------------------------//
 

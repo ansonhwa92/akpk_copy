@@ -114,6 +114,15 @@ namespace FEP.Model
 		[Display(Name = "Reject Exhibition Roadshow")]
 		RejectExhibitionRoadshow,
 
+		[Display(Name = "Submit Exhibition Roadshow - Duty Roster")]
+		SubmitExhibitionRoadshowDutyRoster,
+		[Display(Name = "Verify Exhibition Roadshow - Duty Roster")]
+		VerifyExhibitionRoadshowDutyRoster,
+		[Display(Name = "Approve Exhibition Roadshow - Duty Roster")]
+		ApproveExhibitionRoadshowDutyRoster,
+		[Display(Name = "Reject Exhibition Roadshow - Duty Roster")]
+		RejectExhibitionRoadshowDutyRoster,
+
 		[Display(Name = "Submit Media Interview")]
 		SubmitMediaInterview,
 		[Display(Name = "Verify Media Interview")]

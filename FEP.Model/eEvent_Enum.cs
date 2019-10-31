@@ -183,14 +183,12 @@ namespace FEP.Model
 
 		[Display(Name = "Pending Verification")]
 		SubmitVerifyDutyRoster,
-		[Display(Name = "Pending Approval 1")]
+		[Display(Name = "Pending Approval")]
 		VerifiedDutyRoster,
 		[Display(Name = "Require Amendment")]
 		NotVerifiedDutyRoster,
-		[Display(Name = "Pending Approval 2")]
-		ApproveDutyRoster1,
 		[Display(Name = "Approved")]
-		ApproveDutyRoster2, 
+		ApproveDutyRoster,
 		[Display(Name = "Participation Accepted")]
 		AcceptParticipation,
 		[Display(Name = "Participation Declined")]

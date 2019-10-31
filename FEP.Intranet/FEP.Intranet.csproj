@@ -192,6 +192,8 @@
     <Compile Include="Areas\eLearning\Helper\AllowCrossSiteJsonAttribute.cs" />
     <Compile Include="Areas\eLearning\Helper\YouTubeUrlHelper.cs" />
     <Compile Include="Areas\eLearning\Helper\SlideshareHelper.cs" />
+    <Compile Include="Areas\eLearning\Controllers\TOTReportController.cs" />
+    <Compile Include="Areas\eLearning\Models\TOT.cs" />
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />
     <Compile Include="Areas\Logs\Controllers\UserLogController.cs" />
     <Compile Include="Areas\Logs\LogsAreaRegistration.cs" />
@@ -205,6 +207,7 @@
     <Compile Include="Areas\RnP\Controllers\SurveyController.cs" />
     <Compile Include="Areas\RnP\Models\Research.cs" />
     <Compile Include="Areas\RnP\RnPAreaRegistration.cs" />
+    <Compile Include="Areas\Setting\Controllers\HomeController.cs" />
     <Compile Include="Areas\SLAReminder\Controllers\SLARemindersController.cs" />
     <Compile Include="Areas\SLAReminder\SLAReminderAreaRegistration.cs" />
     <Compile Include="Areas\Template\Controllers\EmailTemplatesController.cs" />
@@ -918,6 +921,12 @@
     <Content Include="Areas\Administrator\Views\Individual\_Select.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\_Select.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\Edit.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\List.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\Home\_Menu.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_Menu.cshtml" />
+    <Content Include="Areas\Setting\Views\Home\_Menu.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_Menu.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

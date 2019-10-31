@@ -160,7 +160,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sector Parameter.
+        ///   Looks up a localized string similar to Agency Sector Parameter.
         /// </summary>
         public static string TitleList {
             get {

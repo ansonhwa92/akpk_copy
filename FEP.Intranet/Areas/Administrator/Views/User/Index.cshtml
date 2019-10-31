@@ -8,60 +8,7 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function () {
-
-
-            var t = $('.tabledata').DataTable({
-                serverSide: false,
-                processing: true,
-                paging: true,
-                lengthChange: true,
-                searching: true,
-                ordering: true,
-                orderMulti: false,
-                info: true,
-                autoWidth: false,
-                order: [[2, 'asc']],
-                lengthMenu: [1,2,3,4,5],
-                language: {
-                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
-                    emptyTable: "No Record Found"
-                },
-                buttons: [{
-                    extend: 'exportCSV',
-                    title: 'Holiday List.csv',
-                    url: '@Url.Action("ExportHoliday", "Holiday", new { area = "" })',
-                    exportOptions: {
-                        columns: [1,2]
-                    }
-                }]
-            });
-
-            t.on('click', 'tr', function () {
-
-                //if ($(this).hasClass('selected')) {
-                //    //$(this).removeClass('selected');
-                //}
-                //else {
-                //    t.$('tr.selected').removeClass('selected');
-                //    $(this).addClass('selected');
-
-                    var data = t.row($(this)).data();
-                    showDetail(data.Id);
-
-                //}
-
-            });
-
-            $('#btnSearch').click(function () {
-                t.ajax.reload();
-            });
-
-			$('#export').click(function () { t.button('0').trigger(); });
-
-        });
-
-
+     
 
     </script>
 
@@ -80,8 +27,8 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Administration</a></li>
-                                <li class="breadcrumb-item"><a href="#">User</a></li>
+                                <li class="breadcrumb-item"><a href="#">Settings</a></li>
+                                <li class="breadcrumb-item"><a href="#">User Management</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
@@ -96,25 +43,7 @@
 }
 
 <div class="row">
-    <!-- Start content leftbar -->
-    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
-        <div id="page-nav" class="sidebar-left page-nav">
-            <div data-perfect-scrollbar>
-                <div class="sidebar-inner">
-                    <ul class="steps steps-vertical nav">
-                        <li class="step-item active">
-                            <a href="#step1" class="step-link" data-toggle="tab">
-                                <span class="step-number">1</span>
-                                <span class="step-title">Select Event Category</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- End Steps -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End content leftbar -->
+   
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
         <!-- Start Tab Content -->
         <div class="border-form rounded-top">
@@ -122,44 +51,54 @@
                 <div class="tab-pane active" id="step1">
                     <form>
                         <div class="form-container form-container-w100">
-                            <div class="mt-2 mb-4 pb-1">
-                                <h4 class="color-darkblue mb-0">Event Category List</h4>
-                                <h6 class="font-weight-normal">Select Event Category</h6>
-                            </div>
-                            <div class="d-flex align-items-center mb-3">
-                                <span class="badge badge-light px-3 py-1 mr-2">A</span><span class="sub-Title color-darkblue">User Type</span>
-                            </div>
-                            <div id="selecteventcategory">
-                                <div class="mxw-660">
+
+                            <div class="form-container form-container-w100 tab-content">
+
+                                <div class="tab-pane active mxw-660" id="setting1">
+
                                     <div class="row">
+
                                         <div class="col-lg-4">
                                             <div class="box-contain">
                                                 <div class="card text-center">
                                                     <span>Individual</span>
+                                                    <div>
+                                                        <a href='@Url.Action("List", "Individual", new { area = "Administrator" })'></a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-lg-4">
                                             <div class="box-contain">
                                                 <div class="card text-center">
                                                     <span>Agency</span>
+                                                    <div>
+                                                        <a href='@Url.Action("List", "Company", new { area = "Administrator" })'></a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-lg-4">
                                             <div class="box-contain">
                                                 <div class="card text-center">
                                                     <span>Staff</span>
+                                                    <div>
+                                                        <a href='@Url.Action("List", "Staff", new { area = "Administrator" })'></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>                                      
+                                        </div>
+
                                     </div>
-                                </div>                                
+                                </div>
                             </div>
+
                         </div>
                     </form>
                     <!-- End Form -->
-                   
+
                 </div>
             </div>
         </div>

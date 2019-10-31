@@ -160,7 +160,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ministry Parameter.
+        ///   Looks up a localized string similar to Government Ministry Parameter.
         /// </summary>
         public static string TitleList {
             get {

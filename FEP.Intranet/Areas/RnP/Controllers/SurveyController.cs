@@ -43,6 +43,13 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View();
         }
 
+        //menu
+        [ChildActionOnly]
+        public ActionResult _Menu()
+        {
+            return PartialView();
+        }
+
         // Show select survey type form
         // After type selection, user automatically redirected to creation page
         // GET: RnP/Survey/SelectCategory

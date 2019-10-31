@@ -117,46 +117,112 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AlertFailCreate" xml:space="preserve">
-    <value>Fail to add new sector</value>
+  <data name="AlertCreateFail" xml:space="preserve">
+    <value>Fail to add report</value>
   </data>
-  <data name="AlertFailDelete" xml:space="preserve">
-    <value>Fail to delete sector</value>
+  <data name="AlertCreateSuccess" xml:space="preserve">
+    <value>Report successfully added</value>
   </data>
-  <data name="AlertFailUpdate" xml:space="preserve">
-    <value>Fail to update sector</value>
+  <data name="AlertDeleteFail" xml:space="preserve">
+    <value>Fail to delete report</value>
   </data>
-  <data name="AlertSuccessCreate" xml:space="preserve">
-    <value>Sector successfully added</value>
+  <data name="AlertDeleteSuccess" xml:space="preserve">
+    <value>Report successfully deleted</value>
   </data>
-  <data name="AlertSuccessDelete" xml:space="preserve">
-    <value>Sector successfully deleted</value>
+  <data name="AlertEditFail" xml:space="preserve">
+    <value>Fail to update report</value>
   </data>
-  <data name="AlertSuccessUpdate" xml:space="preserve">
-    <value>Sector successfully updated</value>
+  <data name="AlertEditSuccess" xml:space="preserve">
+    <value>Report successfully updated</value>
   </data>
-  <data name="FieldName" xml:space="preserve">
-    <value>Sector Name</value>
+  <data name="FieldAgeRange" xml:space="preserve">
+    <value>Age Range</value>
   </data>
-  <data name="PlaceholderName" xml:space="preserve">
-    <value>Enter Sector Name</value>
+  <data name="FieldAttachment" xml:space="preserve">
+    <value>Attachment</value>
   </data>
-  <data name="SidebarSector" xml:space="preserve">
-    <value>Sector</value>
+  <data name="FieldCourse" xml:space="preserve">
+    <value>Course</value>
   </data>
-  <data name="SidebarSectorList" xml:space="preserve">
-    <value>Sector List</value>
+  <data name="FieldDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="FieldEndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="FieldModule" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="FieldNoOfFemale" xml:space="preserve">
+    <value>No of Female</value>
+  </data>
+  <data name="FieldNoOfMale" xml:space="preserve">
+    <value>No of Male</value>
+  </data>
+  <data name="FieldNoOfParticipant" xml:space="preserve">
+    <value>No of Participant</value>
+  </data>
+  <data name="FieldSalaryRange" xml:space="preserve">
+    <value>Salary Range</value>
+  </data>
+  <data name="FieldStartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="FieldVenue" xml:space="preserve">
+    <value>Venue</value>
+  </data>
+  <data name="PlaceholderAgeRange" xml:space="preserve">
+    <value>Select Age Range</value>
+  </data>
+  <data name="PlaceholderCourse" xml:space="preserve">
+    <value>Select Course</value>
+  </data>
+  <data name="PlaceholderEndDate" xml:space="preserve">
+    <value>Enter End Date</value>
+  </data>
+  <data name="PlaceholderModule" xml:space="preserve">
+    <value>Select Module</value>
+  </data>
+  <data name="PlaceholderSalaryRange" xml:space="preserve">
+    <value>Select Salary Range</value>
+  </data>
+  <data name="PlaceholderStartDate" xml:space="preserve">
+    <value>Enter Start Date</value>
+  </data>
+  <data name="PlaceholderVenue" xml:space="preserve">
+    <value>Enter Venue</value>
   </data>
   <data name="TitleDescriptionList" xml:space="preserve">
-    <value />
+    <value>List of report from trainer</value>
   </data>
   <data name="TitleList" xml:space="preserve">
-    <value>Agency Sector Parameter</value>
+    <value>Train Of Trainer Report</value>
   </data>
-  <data name="ValidExistName" xml:space="preserve">
-    <value>Sector Name already registered in the system</value>
+  <data name="ValidRequiredAgeRange" xml:space="preserve">
+    <value>Please select Age Range</value>
   </data>
-  <data name="ValidRequiredName" xml:space="preserve">
-    <value>Please enter Sector Name</value>
+  <data name="ValidRequiredCourse" xml:space="preserve">
+    <value>Please select Course</value>
+  </data>
+  <data name="ValidRequiredEndDate" xml:space="preserve">
+    <value>Please enter End Date</value>
+  </data>
+  <data name="ValidRequiredModule" xml:space="preserve">
+    <value>Please select Module</value>
+  </data>
+  <data name="ValidRequiredNoOfFemale" xml:space="preserve">
+    <value>Please enter No of Female Participant</value>
+  </data>
+  <data name="ValidRequiredNoOfMale" xml:space="preserve">
+    <value>Please enter No of Male Participant</value>
+  </data>
+  <data name="ValidRequiredSalaryRange" xml:space="preserve">
+    <value>Please select Salary Range</value>
+  </data>
+  <data name="ValidRequiredStartDate" xml:space="preserve">
+    <value>Please enter Start Date</value>
+  </data>
+  <data name="ValidRequiredVenue" xml:space="preserve">
+    <value>Please enter Venue</value>
   </data>
 </root>

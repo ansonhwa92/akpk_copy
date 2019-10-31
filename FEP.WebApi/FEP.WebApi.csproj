@@ -159,6 +159,7 @@
     <Compile Include="Api\Administration\DepartmentController.cs" />
     <Compile Include="Api\eEvent\DutyRosterController.cs" />
     <Compile Include="Api\eEvent\EventRefundController.cs" />
+    <Compile Include="Api\eLearning\TOTReportController.cs" />
     <Compile Include="Api\Logs\ReportLogController.cs" />
     <Compile Include="Api\System\FileDocumentController.cs" />
     <Compile Include="Api\Administration\IndividualController.cs" />

@@ -102,36 +102,7 @@ namespace FEP.Model.Migrations
 
 
             }
-            /*else
-            {
-                var role = db.Role.Local.Where(r => r.Name.Contains("All Access")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("All Access")).FirstOrDefault();
-
-                List<UserRole> userroles = new List<UserRole>();
-
-                userroles.Add(new UserRole { Role = role });
-                db.User.Add(
-                    new User
-                    {
-                        Name = "Tajul Admin",
-                        Email = "tajulzaid@gmail.com",
-                        UserType = UserType.Individual,
-                        CreatedDate = DateTime.Now,
-                        Display = true,
-                        UserAccount = new UserAccount
-                        {
-                            LoginId = "tajulzaid@gmail.com",
-                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==", //default abc123
-                            Salt = "/ZCqmg==",
-                            IsEnable = true,
-                            LoginAttempt = 0,
-                            LastPasswordChange = DateTime.Now,
-                            LastLogin = DateTime.Now,
-                            UserRoles = userroles
-                        },
-                    }
-                );
-            }*/
-
+           
             AddRole(db, "Individual", "Default Individual");
             AddRole(db, "Individual with paper", "Individual with paper");
             AddRole(db, "Individual with paper to present", "Individual with paper to present");
@@ -169,13 +140,7 @@ namespace FEP.Model.Migrations
             AddRole(db, "Approver Event 3", "Approver Event 3");
             AddRole(db, "Approver R&P 3", "Approver R&P 3");
             //AddRole(db, "Approver eLearning 3", "Approver eLearning 3");
-
-            AddRole(db, "Testing1", "Testing 1", new List<RoleAccess>
-            {
-                new RoleAccess { UserAccess = UserAccess.AdminCompanyMenu },
-                new RoleAccess { UserAccess = UserAccess.AdminStaffMenu } }
-            );
-
+                       
             if (!db.Department.Any())
             {
                 db.Department.AddOrUpdate(s => s.Name,

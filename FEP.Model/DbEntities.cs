@@ -50,6 +50,11 @@ namespace FEP.Model
 
         public DbSet<AccountSetting> AccountSetting { get; set; }
 
+        //tot
+        public DbSet<TOTReport> TOTReport { get; set; }
+
+        public DbSet<TOTReportFile> TOTReportFile { get; set; }
+        
         //file
         public DbSet<FileDocument> FileDocument { get; set; }
 
@@ -81,7 +86,7 @@ namespace FEP.Model
         public DbSet<PageLog> PageLog { get; set; }
 
         //elearning
-        //      public DbSet<LearningCourse> LearningCourse { get; set; }
+        //public DbSet<LearningCourse> LearningCourse { get; set; }
         //public DbSet<LearningCourseCertificate> LearningCourseCertificate { get; set; }
         //public DbSet<LearningCourseCategory> LearningCourseCategory { get; set; }
         //public DbSet<Learner> Learner { get; set; }

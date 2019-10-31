@@ -95,6 +95,7 @@
     <Compile Include="eLearning\CourseModels.cs" />
     <Compile Include="eLearning\CourseCategory.cs" />
     <Compile Include="eLearning\CourseModuleModels.cs" />
+    <Compile Include="eLearning\TOT.cs" />
     <Compile Include="Home\ProfileModel.cs" />
     <Compile Include="eEvent\EventCategory.cs" />
     <Compile Include="eEvent\MediaInterviewRequest.cs" />
@@ -118,9 +119,7 @@
     <Compile Include="SLAReminder\SLAReminder.cs" />
     <Compile Include="Template\EmailTemplate.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="User\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

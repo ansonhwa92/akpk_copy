@@ -23,5 +23,12 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
             return view;
         }
+
+        [ChildActionOnly]
+        public ActionResult _Menu()
+        {
+            return PartialView();
+        }
     }
+
 }

@@ -38,7 +38,7 @@
         <div id="page-nav" class="sidebar-left page-nav">
             <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> User Log</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Error Log</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
                             <a href="@Url.Action("Details", "ErrorLog", new { area = "Logs", id = Model.Id })" class="active nav-link">View</a>
@@ -58,41 +58,40 @@
             <div class="form-container">
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.LogDate)
+                        @Html.LabelFor(m => m.LogDate)
                         @Html.EditorFor(m => m.LogDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.UserName)
+                        @Html.LabelFor(m => m.UserName)
                         @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.ModuleDesc)
+                        @Html.LabelFor(m => m.ModuleDesc)
                         @Html.EditorFor(m => m.ModuleDesc, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.Source)
+                        @Html.LabelFor(m => m.Source)
                         @Html.EditorFor(m => m.Source, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.IPAddress)
+                        @Html.LabelFor(m => m.IPAddress)
                         @Html.EditorFor(m => m.IPAddress, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.Details)
-                        @Html.EditorFor(m => m.Details, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.LabelFor(m => m.Details)
+                        @Html.TextAreaFor(m => m.Details, new { @class = "form-control", rows = 6, @readonly = "readonly" })
                     </div>
                 </div>
-
             </div>
 
         </div>

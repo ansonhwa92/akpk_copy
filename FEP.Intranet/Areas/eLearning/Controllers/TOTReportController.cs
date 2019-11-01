@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eLearning.Controllers
 {
-    [LogError(Model.Modules.Learning)]
+    [LogError(Modules.Learning)]
     public class TOTReportController : FEPController
     {
         // GET: eLearning/TOTReport
@@ -74,8 +74,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Models.CreateTOTReportModel model)
         {
-
-
+            
             if (ModelState.IsValid)
             {
                 var modelapi = new WebApiModel.eLearning.CreateTOTReportModel()
@@ -83,13 +82,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     CreatedBy = CurrentUser.UserId,
                     CourseId = model.CourseId,
                     ModuleId = model.ModuleId,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate,
+                    StartDate = model.StartDate.Value.Date + new TimeSpan(model.StartTime.Value.Hour,model.StartTime.Value.Minute,model.StartTime.Value.Second),
+                    EndDate = model.EndDate.Value.Date + new TimeSpan(model.EndTime.Value.Hour, model.EndTime.Value.Minute, model.EndTime.Value.Second),
                     Venue = model.Venue,
                     NoOfMale = model.NoOfMale,
                     NoOfFemale = model.NoOfFemale,
-                    AgeRange = model.AgeRange,
-                    SalaryRange = model.SalaryRange
+                    AgeRange = model.AgeRange.Value,
+                    SalaryRange = model.SalaryRange.Value
                 };
 
                 //attachment
@@ -103,7 +102,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     }
                 }
 
-                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eLearning/TOTReport", modelapi);
+                var response = await WepApiMethod.SendApiAsync<TOTReport>(HttpVerbs.Post, $"eLearning/TOTReport", modelapi);
 
                 if (response.isSuccess)
                 {
@@ -140,7 +139,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 Id = data.Id,
                 StartDate = data.StartDate,
+                StartTime = data.StartDate,
                 EndDate = data.EndDate,
+                EndTime = data.EndDate,
                 CourseId = data.CourseId,
                 ModuleId = data.ModuleId,
                 Venue = data.Venue,
@@ -148,7 +149,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 SalaryRange = data.SalaryRange,
                 NoOfMale = data.NoOfMale,
                 NoOfFemale = data.NoOfFemale,
-                Attachments = response.Data.Attachments
+                Attachments = data.Attachments
             };
 
             model.Courses = new SelectList(await GetCourses(), "Id", "Name", 0);
@@ -169,13 +170,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     Id = model.Id,
                     CourseId = model.CourseId,
                     ModuleId = model.ModuleId,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate,
+                    StartDate = model.StartDate.Value.Date + new TimeSpan(model.StartTime.Value.Hour, model.StartTime.Value.Minute, model.StartTime.Value.Second),
+                    EndDate = model.EndDate.Value.Date + new TimeSpan(model.EndTime.Value.Hour, model.EndTime.Value.Minute, model.EndTime.Value.Second),
                     Venue = model.Venue,
                     NoOfMale = model.NoOfMale,
                     NoOfFemale = model.NoOfFemale,
-                    AgeRange = model.AgeRange,
-                    SalaryRange = model.SalaryRange
+                    AgeRange = model.AgeRange.Value,
+                    SalaryRange = model.SalaryRange.Value
                 };
 
                 //attachment
@@ -203,7 +204,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             model.Courses = new SelectList(await GetCourses(), "Id", "Name", 0);
             model.Modules = new SelectList(await GetModules(model.CourseId), "Id", "Name", 0);
-
 
             return View(model);
 
@@ -234,7 +234,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirm(int id)
         {
-            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Delete, $"eEvent/EventSpeaker?id={id}");
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Delete, $"eLearning/TOTReport?id={id}");
 
             if (response.isSuccess)
             {
@@ -245,12 +245,11 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return RedirectToAction("List", "TOTReport", new { area = "eLearning" });
             }
 
-            TempData["ErrorMessage"] = "Fail to delete Report";
+            TempData["ErrorMessage"] = "Fail to delete report";
 
-            return RedirectToAction("Details");
+            return RedirectToAction("Delete", new { id = id });
         }
-
-
+        
 
         [NonAction]
         private async Task<IEnumerable<TOTCourseModel>> GetCourses()
@@ -271,10 +270,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [NonAction]
         private async Task<IEnumerable<TOTModuleModel>> GetModules(int CourseId)
         {
-
             var courses = Enumerable.Empty<TOTModuleModel>();
 
-            var response = await WepApiMethod.SendApiAsync<List<TOTModuleModel>>(HttpVerbs.Get, $"eLearning/TOTReport/GetCourses?id={CourseId}");
+            var response = await WepApiMethod.SendApiAsync<List<TOTModuleModel>>(HttpVerbs.Get, $"eLearning/TOTReport/GetModules?courseId={CourseId}");
 
             if (response.isSuccess)
             {
@@ -282,6 +280,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return courses;
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetCourseModules(int id)
+        {
+            var response = await WepApiMethod.SendApiAsync<List<TOTModuleModel>>(HttpVerbs.Get, $"eLearning/TOTReport/GetModules?courseId={id}");
+
+            return Json(JsonConvert.SerializeObject(response.Data), JsonRequestBehavior.AllowGet);
+
         }
 
     }

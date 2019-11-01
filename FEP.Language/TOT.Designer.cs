@@ -160,6 +160,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End Time.
+        /// </summary>
+        public static string FieldEndTime {
+            get {
+                return ResourceManager.GetString("FieldEndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Module.
         /// </summary>
         public static string FieldModule {
@@ -169,7 +178,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No of Female.
+        ///   Looks up a localized string similar to No of Female Participant.
         /// </summary>
         public static string FieldNoOfFemale {
             get {
@@ -178,7 +187,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No of Male.
+        ///   Looks up a localized string similar to No of Male Participant.
         /// </summary>
         public static string FieldNoOfMale {
             get {
@@ -210,6 +219,15 @@ namespace Language {
         public static string FieldStartDate {
             get {
                 return ResourceManager.GetString("FieldStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Time.
+        /// </summary>
+        public static string FieldStartTime {
+            get {
+                return ResourceManager.GetString("FieldStartTime", resourceCulture);
             }
         }
         
@@ -331,6 +349,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter End Time.
+        /// </summary>
+        public static string ValidRequiredEndTime {
+            get {
+                return ResourceManager.GetString("ValidRequiredEndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select Module.
         /// </summary>
         public static string ValidRequiredModule {
@@ -372,6 +399,15 @@ namespace Language {
         public static string ValidRequiredStartDate {
             get {
                 return ResourceManager.GetString("ValidRequiredStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Start Time.
+        /// </summary>
+        public static string ValidRequiredStartTime {
+            get {
+                return ResourceManager.GetString("ValidRequiredStartTime", resourceCulture);
             }
         }
         

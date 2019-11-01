@@ -150,14 +150,17 @@
   <data name="FieldEndDate" xml:space="preserve">
     <value>End Date</value>
   </data>
+  <data name="FieldEndTime" xml:space="preserve">
+    <value>End Time</value>
+  </data>
   <data name="FieldModule" xml:space="preserve">
     <value>Module</value>
   </data>
   <data name="FieldNoOfFemale" xml:space="preserve">
-    <value>No of Female</value>
+    <value>No of Female Participant</value>
   </data>
   <data name="FieldNoOfMale" xml:space="preserve">
-    <value>No of Male</value>
+    <value>No of Male Participant</value>
   </data>
   <data name="FieldNoOfParticipant" xml:space="preserve">
     <value>No of Participant</value>
@@ -167,6 +170,9 @@
   </data>
   <data name="FieldStartDate" xml:space="preserve">
     <value>Start Date</value>
+  </data>
+  <data name="FieldStartTime" xml:space="preserve">
+    <value>Start Time</value>
   </data>
   <data name="FieldVenue" xml:space="preserve">
     <value>Venue</value>
@@ -207,6 +213,9 @@
   <data name="ValidRequiredEndDate" xml:space="preserve">
     <value>Please enter End Date</value>
   </data>
+  <data name="ValidRequiredEndTime" xml:space="preserve">
+    <value>Please enter End Time</value>
+  </data>
   <data name="ValidRequiredModule" xml:space="preserve">
     <value>Please select Module</value>
   </data>
@@ -221,6 +230,9 @@
   </data>
   <data name="ValidRequiredStartDate" xml:space="preserve">
     <value>Please enter Start Date</value>
+  </data>
+  <data name="ValidRequiredStartTime" xml:space="preserve">
+    <value>Please enter Start Time</value>
   </data>
   <data name="ValidRequiredVenue" xml:space="preserve">
     <value>Please enter Venue</value>

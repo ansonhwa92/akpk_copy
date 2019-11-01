@@ -938,6 +938,11 @@
     <Content Include="Areas\eLearning\Views\CourseEvents\InviteLearners.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseEvents\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseEnrollments\Index.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\_Attachment.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\Edit.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\Details.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\Delete.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

@@ -132,8 +132,9 @@ namespace FEP.WebApi.Api.eLearning
                     Id = s.Id,
                     Course = s.Course.Title,
                     Module = s.Module.Title,
-                    Date = s.StartDate,
-                    Venue = s.Venue
+                    Date = s.StartDate.ToString("dd/MM/yyyy"),
+                    Venue = s.Venue,
+                    CreatedBy = s.User.Name + " (" + s.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss") + ")"
                 }).ToList();
 
             return Ok(new DataTableResponse
@@ -153,10 +154,14 @@ namespace FEP.WebApi.Api.eLearning
                 .Select(s => new DetailsTOTReportModel
                 {
                     Id = s.Id,
+                    CourseId = s.CourseId,
                     Course = s.Course.Title,
+                    ModuleId= s.ModuleId,
                     Module = s.Module.Title,
                     StartDate = s.StartDate,
                     EndDate = s.EndDate,
+                    StartTime = s.StartDate,
+                    EndTime = s.EndDate,
                     Venue = s.Venue,
                     NoOfMale = s.NoOfMale,
                     NoOfFemale = s.NoOfFemale,
@@ -194,7 +199,8 @@ namespace FEP.WebApi.Api.eLearning
                     NoOfParticipant = model.NoOfMale + model.NoOfFemale,
                     AgeRange = model.AgeRange,
                     SalaryRange = model.SalaryRange,
-                    CreatedBy = model.CreatedBy
+                    CreatedBy = model.CreatedBy,
+                    CreatedDate = DateTime.Now
                 };
 
                 db.TOTReport.Add(report);
@@ -298,6 +304,59 @@ namespace FEP.WebApi.Api.eLearning
 
             return BadRequest(ModelState);
 
+        }
+
+        [HttpDelete]
+        public IHttpActionResult Delete(long id)
+        {
+
+            var report = db.TOTReport.Where(u => u.Id == id).FirstOrDefault();
+
+            if (report == null)
+            {
+                return NotFound();
+            }
+
+            var files = db.TOTReportFile.Where(t => t.TOTReportId == id).ToList();
+
+            foreach(var file in files)
+            {
+                db.FileDocument.Remove(file.FileDocument);
+                db.TOTReportFile.Remove(file);
+            }
+
+            db.TOTReport.Remove(report);
+            db.SaveChanges();
+
+            return Ok(true);
+        }
+
+        [Route("api/eLearning/TOTReport/GetCourses")]
+        public IHttpActionResult GetCourses()
+        {
+            var courses = db.Courses.Where(c => !c.IsDeleted)
+                .Select(s => new TOTCourseModel
+                {
+                    Id = s.Id,
+                    Name = s.Title,                  
+                })
+                .ToList();
+
+            return Ok(courses);
+        }
+
+        [Route("api/eLearning/TOTReport/GetModules")]
+        public IHttpActionResult GetModules(int courseId)
+        {
+            var modules = db.CourseModules.Where(c => c.CourseId == courseId)
+                .Select(s => new TOTCourseModel
+                {
+                    Id = s.Id,
+                    Name = s.Title,
+                })
+                .ToList();
+
+            return Ok(modules);
         }
 
     }

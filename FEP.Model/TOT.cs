@@ -34,6 +34,9 @@ namespace FEP.Model
 
         [ForeignKey("ModuleId")]
         public virtual CourseModule Module { get; set; }
+
+        [ForeignKey("CreatedBy")]
+        public virtual User User { get; set; }
     }
 
     [Table("TOTReportFile")]

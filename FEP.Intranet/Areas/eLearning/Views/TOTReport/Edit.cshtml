@@ -1,7 +1,7 @@
-﻿@model FEP.Intranet.Areas.eLearning.Models.CreateTOTReportModel
+﻿@model FEP.Intranet.Areas.eLearning.Models.EditTOTReportModel
 
 @{
-    ViewBag.Title = "Train Of Trainer Report - Create";
+    ViewBag.Title = "Train Of Trainer Report - Update";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
@@ -88,7 +88,7 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Add Report</h1>
+                    <h1 class="page-title text-white">Update Report</h1>
                     @*<div class="header-text">List of created event</div>*@
                 </div>
             </div>
@@ -105,7 +105,13 @@
                     <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Report</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="#" data-toggle="tab" class="active nav-link">Create New</a>
+                            <a href="@Url.Action("Details", "TOTReport", new { area = "eLearning", id = Model.Id })" class="nav-link">View</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Edit", "TOTReport", new { area = "eLearning", id = Model.Id })" class="active nav-link">Edit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Delete", "TOTReport", new { area = "eLearning", id = Model.Id })" class="nav-link">Delete</a>
                         </li>
                     </ul>
                 </div>
@@ -114,11 +120,12 @@
     </div>
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 
-        @using (Html.BeginForm("Create", "TOTReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("Edit", "TOTReport", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <div class="border-form rounded-top">
 
                 @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
 
                 <div class="form-container">
                     <div class="row">

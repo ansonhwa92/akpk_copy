@@ -38,7 +38,7 @@ namespace FEP.WebApiModel.eLearning
             Modules = Enumerable.Empty<System.Web.Mvc.SelectListItem>();
         }
 
-
+        [UIHint("Date")]
         [Display(Name = "FieldDate", ResourceType = typeof(Language.TOT))]
         public DateTime? Date { get; set; }
 
@@ -70,19 +70,26 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "FieldModule", ResourceType = typeof(Language.TOT))]
         public string Module { get; set; }
-
-        [UIHint("Date")]
+                
         [Display(Name = "FieldDate", ResourceType = typeof(Language.TOT))]
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
 
         [Display(Name = "FieldVenue", ResourceType = typeof(Language.TOT))]
         public string Venue { get; set; }
+
+        [Display(Name = "FieldCreatedBy", ResourceType = typeof(Language.TOT))]
+        public string CreatedBy { get; set; }
 
     }
 
     public class CreateTOTReportModel
     {
-       
+
+        public CreateTOTReportModel()
+        {
+            FilesId = new List<int>();
+        }
+
         [Required(ErrorMessageResourceName = "ValidRequiredCourse", ErrorMessageResourceType = typeof(Language.TOT))]       
         public int CourseId { get; set; }
 
@@ -119,6 +126,12 @@ namespace FEP.WebApiModel.eLearning
   
     public class EditTOTReportModel
     {
+
+        public EditTOTReportModel()
+        {
+            FilesId = new List<int>();
+        }
+
         public int Id { get; set; }
         
         [Required(ErrorMessageResourceName = "ValidRequiredCourse", ErrorMessageResourceType = typeof(Language.TOT))]
@@ -157,25 +170,37 @@ namespace FEP.WebApiModel.eLearning
     {
         public int Id { get; set; }
                 
+        public int CourseId { get; set; }
+
         [Display(Name = "FieldCourse", ResourceType = typeof(Language.TOT))]
         public string Course { get; set; }
                
+        public int ModuleId { get; set; }
+
         [Display(Name = "FieldModule", ResourceType = typeof(Language.TOT))]
         public string Module { get; set; }
                 
-        [Display(Name = "FieldStartDate", ResourceType = typeof(Language.TOT))]
+        [Display(Name = "FieldStartDate", ResourceType = typeof(Language.TOT))]        
         public DateTime? StartDate { get; set; }
                 
-        [Display(Name = "FieldEndDate", ResourceType = typeof(Language.TOT))]
+        [Display(Name = "FieldEndDate", ResourceType = typeof(Language.TOT))]        
         public DateTime? EndDate { get; set; }
-                
+
+        [Display(Name = "FieldStartTime", ResourceType = typeof(Language.TOT))]
+        [DataType(DataType.Time)]
+        public DateTime? StartTime { get; set; }
+
+        [Display(Name = "FieldEndTime", ResourceType = typeof(Language.TOT))]
+        [DataType(DataType.Time)]
+        public DateTime? EndTime { get; set; }
+
         [Display(Name = "FieldVenue", ResourceType = typeof(Language.TOT))]
         public string Venue { get; set; }
                 
         [Display(Name = "FieldNoOfMale", ResourceType = typeof(Language.TOT))]
         public int NoOfMale { get; set; }
                 
-        [Display(Name = "FieldNoOfMale", ResourceType = typeof(Language.TOT))]
+        [Display(Name = "FieldNoOfFemale", ResourceType = typeof(Language.TOT))]
         public int NoOfFemale { get; set; }
                 
         [Display(Name = "FieldAgeRange", ResourceType = typeof(Language.TOT))]

@@ -41,11 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TOT.Designer.cs">
-      <DependentUpon>TOT.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="DutyRoster.Designer.cs">
       <DependentUpon>DutyRoster.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -60,6 +55,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseEvent.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TOT.Designer.cs">
+      <DependentUpon>TOT.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Profile1.Designer.cs">
       <DependentUpon>Profile.resx</DependentUpon>
@@ -209,9 +209,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TOT.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="DutyRoster.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DutyRoster.Designer.cs</LastGenOutput>
@@ -223,6 +220,10 @@
     <EmbeddedResource Include="eLearning\CourseEvent.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CourseEvent.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TOT.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TOT.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Profile.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

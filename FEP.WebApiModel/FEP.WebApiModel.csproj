@@ -122,10 +122,6 @@
     <Compile Include="SLAReminder\SLAReminder.cs" />
     <Compile Include="Template\EmailTemplate.cs" />
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FEP.Language\FEP.Language.csproj">
       <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
@@ -135,6 +131,9 @@
       <Project>{2a1a9157-1c94-4b4a-96a4-52648bd8076a}</Project>
       <Name>FEP.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

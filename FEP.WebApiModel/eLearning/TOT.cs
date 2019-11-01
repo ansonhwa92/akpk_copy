@@ -148,6 +148,7 @@ namespace FEP.WebApiModel.eLearning
         [Required(ErrorMessageResourceName = "ValidRequiredSalaryRange", ErrorMessageResourceType = typeof(Language.TOT))]
         public TOTSalaryRange SalaryRange { get; set; }
 
+        public IEnumerable<Attachment> Attachments { get; set; }
         public List<int> FilesId { get; set; }
 
     }

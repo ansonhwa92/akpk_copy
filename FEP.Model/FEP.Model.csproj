@@ -54,13 +54,9 @@
   <ItemGroup>
     <Compile Include="Access.cs" />
     <Compile Include="Cart.cs" />
-    <Compile Include="Migrations\201910291236094_x1.cs" />
-    <Compile Include="Migrations\201910291236094_x1.designer.cs">
-      <DependentUpon>201910291236094_x1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910310536135_x2.cs" />
-    <Compile Include="Migrations\201910310536135_x2.designer.cs">
-      <DependentUpon>201910310536135_x2.cs</DependentUpon>
+    <Compile Include="Migrations\201910311702330_x.cs" />
+    <Compile Include="Migrations\201910311702330_x.designer.cs">
+      <DependentUpon>201910311702330_x.cs</DependentUpon>
     </Compile>
     <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />
@@ -96,16 +92,11 @@
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201910290751458_x.cs" />
-    <Compile Include="Migrations\201910290751458_x.designer.cs">
-      <DependentUpon>201910290751458_x.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
     <Compile Include="Migrations\SeedELearning.cs" />
     <Compile Include="Migrations\mhafeez.cs" />
-    <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="Migrations\tajul.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,14 +119,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910290751458_x.resx">
-      <DependentUpon>201910290751458_x.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910291236094_x1.resx">
-      <DependentUpon>201910291236094_x1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910310536135_x2.resx">
-      <DependentUpon>201910310536135_x2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910311702330_x.resx">
+      <DependentUpon>201910311702330_x.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

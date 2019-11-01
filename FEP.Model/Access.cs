@@ -196,7 +196,7 @@ namespace FEP.Model
         CourseApproval2,
         [Display(Name = "Course - Approve (Level 3)")]
         CourseApproval3,
-        [Display(Name = "Course - Withdraw")]
+        [Display(Name = "Course - Enroll/Withdraw")]
 
         // elearning Learner
         CourseEnroll,

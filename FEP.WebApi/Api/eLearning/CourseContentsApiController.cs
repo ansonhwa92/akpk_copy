@@ -248,6 +248,8 @@ namespace FEP.WebApi.Api.eLearning
                 content.VideoType = request.VideoType;
                 content.AudioType = request.AudioType;
                 content.DocumentType = request.DocumentType;
+                content.Height = request.Height;
+                content.Width = request.Width;
 
                 if (request.ContentFileId != null)
                     content.ContentFileId = request.ContentFileId;

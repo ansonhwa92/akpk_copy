@@ -186,6 +186,7 @@ namespace FEP.WebApi.Api.eLearning
                         CreatedByName = request.CreatedByName,
                         ActionDate = DateTime.Now,
                         Remark = "Course " + request.Title + " created.",
+                        ApprovalStatus = ApprovalStatus.None
                     },
                 };
 
@@ -211,6 +212,9 @@ namespace FEP.WebApi.Api.eLearning
                 return NotFound();
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
+            model.CourseApprovalLogModel = new CourseApprovalLogModel();
+            model.CourseApprovalLogModel.Status = model.Status;
+
             model.Description = HttpUtility.HtmlDecode(model.Description);
             model.Objectives = HttpUtility.HtmlDecode(model.Objectives);
 
@@ -452,8 +456,6 @@ namespace FEP.WebApi.Api.eLearning
             });
         }
 
-
-
         [Route("api/eLearning/Courses/AddUser")]
         [HttpPost]
         public IHttpActionResult AddUser(UpdateTrainerCourseModel model)
@@ -521,7 +523,6 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(true);
         }
 
-
         [Route("api/eLearning/Courses/GetFrontCourse")]
         [HttpGet]
         public async Task<IHttpActionResult> GetFrontCourse(int? id)
@@ -537,8 +538,9 @@ namespace FEP.WebApi.Api.eLearning
 
             var model = _mapper.Map<CreateOrEditCourseModel>(entity);
             model.CourseApprovalLogs = entity.CourseApprovalLog;
-
             model.Modules = entity.Modules;
+            model.CourseApprovalLogModel = new CourseApprovalLogModel();
+            model.CourseApprovalLogModel.Status = model.Status;
 
             var courseEvent = new CourseEvent();
 
@@ -605,6 +607,54 @@ namespace FEP.WebApi.Api.eLearning
 
                     model.Id = entity.Id;
 
+                    // check if change is for ViewCategory, if change to Public and the status is Published,
+                    // create a default Public course event
+                    var publicEvent = await db.CourseEvents.FirstOrDefaultAsync(x => x.CourseId == entity.Id && x.ViewCategory == ViewCategory.Public);
+
+                    if (model.ViewCategory == ViewCategory.Public)
+                    {
+                        if (entity.Status == CourseStatus.Published)
+                        {
+                            // check whether a public event already exists
+                            if (publicEvent == null)
+                            {
+                                var newEvent = new CourseEvent
+                                {
+                                    Name = "Public Course",
+                                    CourseId = entity.Id,
+                                    AllowablePercentageBeforeWithdraw = entity.DefaultAllowablePercentageBeforeWithdraw,
+                                    CreatedBy = model.UpdatedBy,
+                                    EnrollmentCode = $"PUBLIC({entity.Code})",
+                                    ViewCategory = ViewCategory.Public,
+                                    Status = entity.ViewCategory == ViewCategory.Public ? CourseEventStatus.AvailableToPublic : CourseEventStatus.AvailableToPrivate,
+                                    Start = DateTime.Now,
+                                    IsDisplayed = entity.ViewCategory == ViewCategory.Public ? true : false
+                                };
+
+                                db.CourseEvents.Add(newEvent);
+                            }
+                            else // change the status only
+                            {
+                                publicEvent.Status = CourseEventStatus.AvailableToPublic;
+                                publicEvent.ViewCategory = ViewCategory.Public;
+                                publicEvent.IsDisplayed = true;
+
+                                db.SetModified(publicEvent);
+
+                            }
+                        }
+                        await db.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        publicEvent.Status = CourseEventStatus.AvailableToPublic;
+                        publicEvent.ViewCategory = ViewCategory.Private;
+                        publicEvent.IsDisplayed = false;
+
+                        db.SetModified(publicEvent);
+                        await db.SaveChangesAsync();
+                    }
+
                     return Ok(model);
                 }
             }
@@ -658,7 +708,6 @@ namespace FEP.WebApi.Api.eLearning
         public async Task<IHttpActionResult> OrderContent([FromBody] OrderModel orderModel)
         {
             string Id = orderModel.Id;
-
 
             if (String.IsNullOrEmpty(Id))
             {
@@ -733,13 +782,26 @@ namespace FEP.WebApi.Api.eLearning
             return Ok();
         }
 
+        [Route("api/eLearning/Courses/GetCoursesList")]
+        [HttpGet]
+        public IHttpActionResult GetCoursesList(int id)
+        {
+            var courses = db.Courses.Where(u => u.IsDeleted == false && u.Id != id).Select(s => new CourseListModel
+            {
+                Id = s.Id,
+                Name = s.Title,
+            }).ToList();
+
+            return Ok(courses);
+        }
 
         /// <returns></returns>
         [Route("api/eLearning/Courses/Start")]
         [HttpGet]
         [ValidationActionFilter]
-        public async Task<IHttpActionResult> Start(int id)
+        public async Task<IHttpActionResult> Start(int id, string userId=null)
         {
+
             var entity = await db.CourseModules.Where(x => x.CourseId == id).OrderBy(x => x.Order).FirstOrDefaultAsync();
 
             if (entity == null)
@@ -748,6 +810,38 @@ namespace FEP.WebApi.Api.eLearning
             }
 
             return Ok(entity);
+        }
+
+        /// <returns></returns>
+        [Route("api/eLearning/Courses/IsUserEnrolled")]
+        [HttpGet]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> IsUserEnrolled(int id, int userId, string enrollmentCode="")
+        {
+            if (!String.IsNullOrEmpty(enrollmentCode))
+            {
+                var courseEvent = await db.CourseEvents.FirstOrDefaultAsync(x => x.CourseId == id &&
+                    x.EnrollmentCode.Equals(enrollmentCode, StringComparison.OrdinalIgnoreCase));
+
+                if (courseEvent != null)
+                {
+                    var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.CourseId == id &&
+                        x.CourseEventId == courseEvent.Id && x.Learner.User.Id == userId);
+
+                    if (enrollment != null)
+                        return Ok(true);
+                }
+            }
+            else
+            {
+                var enrollment = db.Enrollments.Where(x => x.LearnerId == userId &&
+                            x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefault();
+
+                if (enrollment != null)
+                    return Ok(true);
+            }
+
+            return Ok(false);
         }
     }
 

@@ -168,6 +168,7 @@ namespace FEP.Model
         public DbSet<CourseModule> CourseModules { get; set; }
 
         public DbSet<CourseEvent> CourseEvents { get; set; }
+        public DbSet<CourseInvitation> CourseInvitations { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<GamificationCriteria> GamificationCriteria { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -212,6 +213,10 @@ namespace FEP.Model
         public DbSet<RewardRedemption> RewardRedemption { get; set; }
         public DbSet<UserRewardPoints> UserRewardPoints { get; set; }
         public DbSet<UserRewardRedemption> UserRewardRedemption { get; set; }
+
+        // Email?
+        public DbSet<TabBulkEmail> TabBulkEmail { get; set; }
+        public DbSet<TabBulkSMS> TabBulkSMS { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

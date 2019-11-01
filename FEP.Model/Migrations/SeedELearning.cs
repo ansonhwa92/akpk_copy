@@ -28,16 +28,13 @@ namespace FEP.Model.Migrations
 
             SeedAssignTrainerToGroup(db);
 
-           // SeedAdditionalCourses(db);
+            // SeedAdditionalCourses(db);
             SeedRules(db);
-
         }
 
         private static void SeedDefaultData(DbEntities db)
         {
         }
-
-
 
         private static Course AddCourse(DbEntities db, string title, int courseId, CourseStatus courseStatus = CourseStatus.Draft)
         {
@@ -136,7 +133,7 @@ namespace FEP.Model.Migrations
                 db.SaveChanges();
 
                 CourseContent richText = new CourseContent
-                { 
+                {
                     Order = 1,
                     CourseId = course.Id,
                     ContentType = CourseContentType.RichText,
@@ -180,7 +177,6 @@ namespace FEP.Model.Migrations
 
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
-
 
                 i++;
             }
@@ -250,7 +246,7 @@ namespace FEP.Model.Migrations
 
             var userRoles = db.UserRole.Where(x => x.Role.Name == RoleNames.eLearningLearner);
 
-            foreach(var user in userRoles)
+            foreach (var user in userRoles)
             {
                 db.Enrollments.Add(new Enrollment
                 {
@@ -259,9 +255,7 @@ namespace FEP.Model.Migrations
                     EnrolledDate = DateTime.Now,
                     LearnerId = user.Id,
                     Status = EnrollmentStatus.Enrolled,
-
                 });
-
             }
 
             db.SaveChanges();
@@ -335,11 +329,25 @@ namespace FEP.Model.Migrations
             AddUser(db, "elapprover2@fep.com", "elapprover2@fep.com", UserType.Individual, RoleNames.eLearningApprover2);
             AddUser(db, "elapprover3@fep.com", "elapprover3@fep.com", UserType.Individual, RoleNames.eLearningApprover3);
 
+
+            AddUser(db, "min.elearn@yahoo.com", "min.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningTrainer, RoleNames.eLearningAdmin);
+            AddUser(db, "v1.elearn@yahoo.com", "v1.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningVerifier);
+            AddUser(db, "app1.elearn@yahoo.com", "app1.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningApprover1);
+            AddUser(db, "app2.elearn@yahoo.com", "app2.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningApprover2);
+            AddUser(db, "app3.elearn@yahoo.com", "app3.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningApprover3);
+
+            for (int i = 1; i <= 10; i++)
+            {
+                var facilitator = $"elInstructor{i}@fep.com";
+
+                AddUser(db, facilitator, facilitator, UserType.Individual, RoleNames.eLearningFacilitator);
+            }
+
             for (int i = 1; i <= 20; i++)
             {
                 var trainer = $"eltrainer{i}@fep.com";
 
-                AddUser(db, trainer, trainer, UserType.Individual, RoleNames.eLearningTrainer);
+                AddUser(db, trainer, trainer, UserType.Individual, RoleNames.eLearningTrainer, RoleNames.eLearningFacilitator);
             }
 
             for (int i = 1; i <= 20; i++)
@@ -367,12 +375,22 @@ namespace FEP.Model.Migrations
                     return u;
                 };
 
+                //db.RefCourseCategories.AddOrUpdate(
+                //    x => x.Name,
+                //    createCategory("General", "General Category"),
+                //    createCategory("Youth", "Youth Personal Finance Management"),
+                //    createCategory("Individual", "Individual Finance Management"),
+                //    createCategory("Family", "Family Finance Management")
+
+                //    );
+
                 db.RefCourseCategories.AddOrUpdate(
                     x => x.Name,
-                    createCategory("General", "General Category"),
-                    createCategory("Youth", "Youth Personal Finance Management"),
-                    createCategory("Individual", "Individual Finance Management"),
-                    createCategory("Family", "Family Finance Management")
+                    createCategory("Cash Flow", "Cash Flow"),
+                    createCategory("Car", "Car"),
+                    createCategory("House", "House"),
+                    createCategory("Investment", "Investment"),
+                    createCategory("Protection", "Protection")
 
                     );
 
@@ -574,13 +592,14 @@ namespace FEP.Model.Migrations
                         CreatedByName = "system",
                         ActionDate = DateTime.Now,
                         Remark = "Course " + course.Title + " created.",
+                        ApprovalStatus = ApprovalStatus.None
                     },
                 };
 
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
 
-                foreach(var module in course.Modules)
+                foreach (var module in course.Modules)
                 {
                     module.UpdateTotals();
 
@@ -588,8 +607,6 @@ namespace FEP.Model.Migrations
 
                     db.SaveChanges();
                 }
-
-
             }
         }
 
@@ -689,7 +706,7 @@ namespace FEP.Model.Migrations
 
                 if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
 
-                module.ModuleContents.Add(content2);                
+                module.ModuleContents.Add(content2);
 
                 db.SaveChanges();
 

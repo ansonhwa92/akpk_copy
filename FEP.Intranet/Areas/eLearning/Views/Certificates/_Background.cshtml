@@ -17,11 +17,11 @@
                     @{
                         foreach (var item in Model.Background)
                         {
-                            var imgUrl = "@(BaseURL)/eLearning/FileUpload/GetImg/?fil0eName=" + @item.FileUpload.FileNameOnStorage;
+                            var imgUrl = @WebApiURL +"/eLearning/File/GetImg/?fileName=" + @item.FileUpload.FileNameOnStorage;
                             <div class="col-lg-4">
                                 <div class="box-contain">
                                     <div class="card text-center">
-                                        <span> <img src="@Url.Action("GetImg", "FileUpload", new { area = "eLearning", fileName = item.FileUpload.FileNameOnStorage })" height="100" width="150" id="FileUploadId" /></span>
+                                        <span> <img src=@imgUrl height="100" width="150" id="FileUploadId" /></span>
                                         <div>
                                             <a href='@Url.Action("Edit_Background", "Certificates", new { area = "eLearning", id = item.Id })'></a>
                                         </div>

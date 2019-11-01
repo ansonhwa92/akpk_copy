@@ -134,8 +134,17 @@ namespace FEP.Model
 		[Display(Name = "Approve Courses Participant Withdraw")]
 		Approve_Courses_Participant_Withdraw,
 
-		//Survey
-		[Display(Name = "Submit Survey Creation")]
+        //Other Courses Action
+        [Display(Name = "Course Is Approved")]
+        Course_Approved,
+        [Display(Name = "Course Requires Amendment")]
+        Course_Amendment,
+        [Display(Name = "Invitation To Enroll To Course")]
+        Course_Invitation,
+
+
+        //Survey
+        [Display(Name = "Submit Survey Creation")]
 		Submit_Survey_Creation,
 		[Display(Name = "Submit Survey Cancellation")]
 		Submit_Survey_Cancellation,
@@ -284,7 +293,8 @@ namespace FEP.Model
 		[Key]
 		public int DatID { get; set; }
 		public int DatType { get; set; }
-		public DateTime? DTInsert { get; set; }
+        public int DatNotify { get; set; }
+        public DateTime? DTInsert { get; set; }
 		public DateTime? DTSchedule { get; set; }
 		public DateTime? DTExpired { get; set; }
 		public string SMSTo { get; set; }
@@ -298,11 +308,12 @@ namespace FEP.Model
 		[Key]
 		public int DatID { get; set; }
 		public int DatType { get; set; }
-		public DateTime? DTInsert { get; set; }
+        public int DatNotify { get; set; }
+        public DateTime? DTInsert { get; set; }
 		public DateTime? DTSchedule { get; set; }
 		public DateTime? DTExpired { get; set; }
-		public string SMSTo { get; set; }
-		public string Subject { get; set; }
+        public string EmailTo { get; set; }
+        public string Subject { get; set; }
 		public string Body { get; set; }
 		public bool AttachmentState { get; set; }
 		public string Attachment_01 { get; set; }

@@ -72,7 +72,9 @@
     <Compile Include="elearning\Course.cs" />
     <Compile Include="elearning\CourseApproval.cs" />
     <Compile Include="elearning\CourseCertificate.cs" />
+    <Compile Include="elearning\CourseEmailQueue.cs" />
     <Compile Include="elearning\CourseEvent.cs" />
+    <Compile Include="elearning\CourseInvitation.cs" />
     <Compile Include="elearning\CourseProgress.cs" />
     <Compile Include="elearning\Enrollment.cs" />
     <Compile Include="elearning\EnumConstants.cs" />
@@ -103,6 +105,7 @@
     <Compile Include="Migrations\firus.cs" />
     <Compile Include="Migrations\SeedELearning.cs" />
     <Compile Include="Migrations\mhafeez.cs" />
+    <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="Migrations\tajul.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

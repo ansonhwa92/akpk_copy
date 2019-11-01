@@ -63,6 +63,9 @@
     <Reference Include="FEP.Helper">
       <HintPath>..\..\FEP.Helper\FEP.Helper\bin\Debug\FEP.Helper.dll</HintPath>
     </Reference>
+    <Reference Include="Mammoth, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mammoth.1.4.0.0\lib\net45\Mammoth.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -157,6 +160,12 @@
     <Compile Include="Api\Administration\CompanyController.cs" />
     <Compile Include="Api\Administration\CountryController.cs" />
     <Compile Include="Api\Administration\DepartmentController.cs" />
+    <Compile Include="Api\eLearning\AppSettings.cs" />
+    <Compile Include="Api\eLearning\CourseApprovalsApiController.cs" />
+    <Compile Include="Api\eLearning\CourseEnrollmentsApiController.cs" />
+    <Compile Include="Api\eLearning\FileResult.cs" />
+    <Compile Include="Api\eLearning\NotificationApiController.cs" />
+    <Compile Include="Api\Notification\EmailController.cs" />
     <Compile Include="Api\eEvent\DutyRosterController.cs" />
     <Compile Include="Api\eEvent\EventRefundController.cs" />
     <Compile Include="Api\eLearning\TOTReportController.cs" />
@@ -339,15 +348,16 @@
     <Content Include="Scripts\popper-utils.js.map" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Api\Notification\" />
     <Folder Include="App_Data\Temp_Upload\" />
     <Folder Include="bin\" />
     <Folder Include="Method\" />
+    <Folder Include="bin\roslyn\" />
     <Folder Include="Views\Auth\" />
     <Folder Include="Views\Cart\" />
     <Folder Include="Views\Client\" />
     <Folder Include="Views\EventCategory\" />
     <Folder Include="Views\MediaInterviewRequest\" />
+    <Folder Include="Views\Notification\" />
     <Folder Include="Views\Publication\" />
     <Folder Include="Views\PublicEvent\" />
     <Folder Include="Views\Research\" />

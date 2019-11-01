@@ -60,7 +60,7 @@
     @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
 
     <div class="row">
-        
+
         @if (Model.Status == CourseStatus.Draft)
         {
             @Html.Partial("_contentSidebar")
@@ -101,8 +101,12 @@
                     <br />
                     <div>
                         <div class="row">
-
-                            <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "CourseModules", new { area = "eLearning", id = @Model.Id })">Edit Module</a>
+                            @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
+(CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                {
+                                    <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "CourseModules", new { area = "eLearning", id = @Model.Id })">Edit Module</a>
+                                }
+                            }
                             <a class="btn btn-secondary m-2" href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = @Model.Id })">View as learner</a>
                         </div>
                     </div>
@@ -179,20 +183,26 @@
                                                 <div class="col-sm-8">
                                                     <div class="pr-3"><i class="la @icon la-2x" data-toggle="tooltip" title=@title></i><span class="pb-1">@content.Title</span></div>
                                                 </div>
-                                                <div class="col-sm-4 ">
-                                                    <div class="row float-right">
-                                                        <a href="@Url.Action($"View", "CourseContents", new { area = "eLearning", id = content.Id })"
-                                                           data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>
-                                                        <a href="@Url.Action($"Edit", "CourseContents", new { area = "eLearning", id = content.Id })"
-                                                           data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit"></i></a>
-                                                        <a href="@Url.Action($"Delete", "CourseContents", new { area = "eLearning", id = content.Id})"
-                                                           data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o"></i></a>
+                                                @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
+                                                             (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||
+                                                             CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                                    {
+                                                        <div class="col-sm-4 ">
+                                                            <div class="row float-right">
+                                                                <a href="@Url.Action($"View", "CourseContents", new { area = "eLearning", id = content.Id })"
+                                                                   data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>
+                                                                <a href="@Url.Action($"Edit", "CourseContents", new { area = "eLearning", id = content.Id })"
+                                                                   data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit"></i></a>
+                                                                <a href="@Url.Action($"Delete", "CourseContents", new { area = "eLearning", id = content.Id })"
+                                                                   data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o"></i></a>
 
-                                                        <div class="pl-2">
-                                                            <i class="fa fa-bars handle color-blue" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Reorder"></i>
+                                                                <div class="pl-2">
+                                                                    <i class="fa fa-bars handle color-blue" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Reorder"></i>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
+                                                    }
+                                                }
                                             </div>
                                         </div>
                                         <hr />

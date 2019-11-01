@@ -4,7 +4,6 @@ using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -313,7 +312,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         // Start the module
         public async Task<ActionResult> Start(int id)
         {
-
             //var content = await db.CourseContents.Where(x => x.CourseModuleId == id).OrderBy(x => x.Order).FirstOrDefaultAsync();
 
             //if (content == null)
@@ -325,14 +323,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = response.Data.Id });
             }
-
             else
             {
                 TempData["ErrorMessage"] = "Could not find the next content";
 
                 return RedirectToAction("View", "CourseModules", new { area = "eLearning", @id = id });
             }
-
         }
     }
 }

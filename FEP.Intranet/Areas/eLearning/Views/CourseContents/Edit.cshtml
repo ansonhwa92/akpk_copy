@@ -48,7 +48,7 @@
     </div>
 }
 
-<form action="/CourseContents/Edit" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+<form action="@BaseURL/CourseContents/Edit" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 
     @Html.AntiForgeryToken()
 
@@ -63,6 +63,7 @@
     @Html.HiddenFor(m => m.VideoType)
     @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
     @Html.HiddenFor(m => m.CompletionType)
+    <input id="WebApiURL" value="@WebApiURL" hidden />
 
     <div class="row">
 

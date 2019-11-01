@@ -21,9 +21,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string Upload = "eLearning/File";
 
         public const string GetFileNameOnStorage = "elearning/File/GetFileNameOnStorage";
-        
+        public const string GetFileFromApi = "elearning/File/GetFileFromApi";
+        public const string GetHTML = "elearning/File/GetHTML";
+
     }
 
+    [AllowAnonymous]
     public class FileController : Controller
     {
         public string storageDir = "";
@@ -100,58 +103,18 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return File(bytes, "image/png");
         }
 
-        public ActionResult GetPdf(string fileName)
-        {
-            var path = Path.Combine(storageDir, fileName);
-
-            var bytes = System.IO.File.ReadAllBytes(path);
-
-            return File(bytes, "application/pdf");
-        }
-
-
-        public ActionResult GetPpt(string fileName)
-        {
-            var path = Path.Combine(storageDir, fileName);
-
-            var bytes = System.IO.File.ReadAllBytes(path);
-
-            return File(bytes, "application/pptx");
-        }
-
-        public string DocToHTML(string fileType, string courseId, string fileName)
-        {
-            var fileFullPath = Path.Combine(storageDir, fileName);
-
-            try
-            {
-                var converter = new DocumentConverter();
-                var result = converter.ConvertToHtml(fileFullPath);
-                var html = result.Value; // The generated HTML
-                var warnings = result.Warnings;
-                
-                if(String.IsNullOrEmpty(html))
-                    return "Error reading the document.";
-
-                return html;
-            }
-            catch(Exception e)
-            {
-                return "Error reading the document.";
-            }
-        }
-
 
         // For ajax call getting the document based on contentid
+        // called when the select change
         public async Task<string> GetDoc(string contentId)
         {
             // this should be queried from webapi
             var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Get,
-                        FileApiUrl.GetFileNameOnStorage + $"?contentId={contentId}");
+                        FileApiUrl.GetHTML + $"?contentId={contentId}");
 
             if (response.isSuccess)
             {
-                return DocToHTML("", "", response.Data.ToString());
+                return response.Data.ToString();
 
             }
             else
@@ -161,6 +124,31 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
         }
 
+
+        // ONLY TO BE USED FOR CONVERSION  WHEN FILE FIRST TIME UPLOADED
+        // THE FILE WILL ALSO BE SENT TO API ONCE SAVED AND AVAILABLE FOR FUTURE USE
+        public string DocToHTML(string fileType, string courseId, string fileName)
+        {
+
+            var fileFullPath = Path.Combine(storageDir, fileName);
+
+            try
+            {
+                var converter = new DocumentConverter();
+                var result = converter.ConvertToHtml(fileFullPath);
+                var html = result.Value; // The generated HTML
+                var warnings = result.Warnings;
+
+                if (String.IsNullOrEmpty(html))
+                    return "Error reading the document.";
+
+                return html;
+            }
+            catch (Exception e)
+            {               
+                return "Error reading the document.";
+            }
+        }
 
         // FOR API CALL
         public async Task<WebApiResponse<T>> UploadToApi<T>(HttpPostedFileBase file)
@@ -215,6 +203,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return res;
             
         }
+
 
         private static string GetWebApiUrl()
         {

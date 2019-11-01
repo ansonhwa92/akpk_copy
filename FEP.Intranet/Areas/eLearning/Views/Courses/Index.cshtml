@@ -94,7 +94,7 @@
 
         @if (CurrentUser.HasAccess(UserAccess.CourseCreate))
         {
-        <div><a href="@Url.Action("Create", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>
+            <div><a href="@Url.Action("Create", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>
         }
     </div>
     <!-- Table -->
@@ -115,7 +115,6 @@
 
 <style>
 
-
     .dataTables_scrollBody {
         overflow-x: hidden !important;
         overflow-y: auto !important;
@@ -123,6 +122,8 @@
 </style>
 
 @section ContentScript{
+
+    <link href="~/css/elearn.css" rel="stylesheet" />
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -183,10 +184,22 @@
                                     return "<span class='color-grey font-weight-bold'>Draft</span>";
 
                                 case @Json.Encode(CourseStatus.Submitted) :
-                                    return "<span class='color-grey font-weight-bold'>Pending Verification</span>";
+                                    return "<span class='color-yellow font-weight-bold'>Pending Verification</span>";
 
+                                case @Json.Encode(CourseStatus.Verified) :
                                 case @Json.Encode(CourseStatus.FirstApproval) :
-                                    return "<span class='color-yellow font-weight-bold'>Pending Approval</span>";
+                                case @Json.Encode(CourseStatus.SecondApproval) :
+                                case @Json.Encode(CourseStatus.ThirdApproval) :
+                                    return "<span class='color-secondary font-weight-bold'>Pending Approval</span>";
+
+                                case @Json.Encode(CourseStatus.Amendment) :
+                                    return "<span class='text-warning font-weight-bold'>Require amendment</span>";
+
+                                case @Json.Encode(CourseStatus.Approved) :
+                                    return "<span class='color-green font-weight-bold'>Approved</span>";
+
+                                case @Json.Encode(CourseStatus.Published) :
+                                    return "<span class='color-blue font-weight-bold'>Published</span>";
 
                                 default:
                                     return "<span class='color-red font-weight-bold'>" + row.Status + "</span>";
@@ -200,7 +213,6 @@
 
                             var action = "";
 
-                            var canview = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseView));
                             var canedit = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseEdit));
                             var canverify = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseVerify));
                             var canapprove1 = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseApproval1));
@@ -210,31 +222,38 @@
                             var canwithdraw = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseEnroll));
 
                             action = '<div class="icon-action">';
+                            // everyone with access course edit/create/verify/aprove can view
+                            // learner access is using courseView
+                            action += '<a href="@Url.Action("View", "Courses", new { area = "eLearning" })/' + row.Id +
+                                '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>&nbsp;';
 
-                            if (canview) {
-                                if (row.Status == 1) {
-                                    action += '<a href="@Url.Action("View", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
+                            if (canedit) {
+                                if (row.Status == 0 || row.Status == 5) { // Draft or Amendment
+                                    action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id +
+                                        '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit "></i></a>';
+                                    action += '<a href="@Url.Action("Delete", "Courses", new { area = "eLearning" })/' + row.Id +
+                                        '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o "></i></i></a>';
+                                }
+                                else {
+                                    action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id +
+                                        '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit "></i></a>';
                                 }
                             }
 
-                            if (row.Status == 0|| row.Status == 1) {          // new
-                                if (canedit) {
-                                    action += '<a href="@Url.Action("View", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
-                                    //action += '<a href="@Url.Action("Edit", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
-                                    action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
-                                    action += '<a href="@Url.Action("Delete", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>';
+                            if (canverify || canapprove1 || canapprove2 || canapprove3) {
+                                if (row.Status == 2 || row.Status == 3 || row.Status == 4 || row.Status == 5 ||
+                                    row.Status == 6 || row.Status == 7 || row.Status == 8) { // submitted to 3rd approval
+                                    action += '<a href="@Url.Action("Approve", "CourseApprovals", new { area = "eLearning" })/' + row.Id +
+                                        '" data-toggle="tooltip" data-placement="top" title="Approvals"><i class="la la-check-square"></i></a>&nbsp;';
                                 }
-                            }
-                            else if (row.Status == 1) {     // submitted
-                                if (canverify || canapprove1 || canapprove2 || canapprove3) {
-                                    action += '<a href="@Url.Action("Evaluate", "Courses", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Evaluate"><i class="la la-edit text-muted"></i></a>';
-                                }
-                            }
-                            else {
-                                action += '';
                             }
 
-                            action += '</div>';
+                            if (canpublish) {
+                                if (row.Status == 4) { // approved or published
+                                    action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id +
+                                        '" data-toggle="tooltip" data-placement="top" title="Publish"><i class="la la-book"></i></a>&nbsp;';
+                                }
+                            }
 
                             return action;
                         }
@@ -281,8 +300,6 @@
             }).draw();
 
         });
-
     </script>
 
 }
-

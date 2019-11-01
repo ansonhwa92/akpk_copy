@@ -39,11 +39,10 @@
 <form id="form" method="post">
 
     @Html.AntiForgeryToken()
-
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.IntroImageFileName)
+    @Html.HiddenFor(m => m.EnrollmentCode)
 
     <div class="row">
 
@@ -71,12 +70,10 @@
                     <div class="tab-pane active" id="course-details">
                         <div class="mb-4 mt-2 mr-auto">
                             <div class="boxed">
-                                    <img class="introImage" src=""
-                                         height="300" width="100%" alt="" />
-                                </div>
-
-
+                                <img class="introImage" src=""
+                                     height="300" width="100%" alt="" />
                             </div>
+                        </div>
 
                         <div class="subtitle">
                             ABOUT
@@ -100,13 +97,13 @@
 
                         <div>
                             <div class="row">
-
-                                @if (Model.Status == CourseStatus.Published)
+                                @if (Model.Status == CourseStatus.Published && !Model.IsUserEnrolled)
                                 {
-                                    <a class="btn btn-secondary m-2" href="#">Enroll</a>
-                                }
-
-                                @if (Model.Status == CourseStatus.Trial || Model.Status == CourseStatus.Published)
+                                    <button class="btn btn-secondary m-2" onclick="checkLogin()">Enroll</button>
+                                 }
+                                <!-- allow to start course in trial or in published but already enrolled -->
+                                @if (Model.Status == CourseStatus.Trial ||
+                                            (Model.Status == CourseStatus.Published && Model.IsUserEnrolled))
                                 {
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">Start the course</a>
                                 }
@@ -184,7 +181,6 @@
         $(document).ready(function () {
             var imgFileName = $('#IntroImageFileName').val();
 
-
             if ($.trim(imgFileName) == "") {
 
                 var defaultImgUrl = '@(BaseURL)/Content/logo-akpk.svg';
@@ -200,6 +196,38 @@
         function openModule(moduleId) {
             var url = '@Url.Action("View", "CourseModules", new { area = "eLearning" })?id=' + moduleId;
             window.location = url;
+        }
+
+        function checkLogin() {
+
+            var isAuthenticated = '@CurrentUser.IsAuthenticated()';
+
+            console.log('isAuthenticated=', isAuthenticated);
+
+            if (isAuthenticated == 'True') {
+                var form = $("#form");
+                var enrollmentCode = '@Model.EnrollmentCode';
+
+                if ($.trim(enrollmentCode) != '') {
+                    form.attr('action', "@BaseURL/eLearning/CourseEnrollments/EnrollAsync?courseId=@Model.Id" + "&enrollmentCode=" + enrollmentCode);
+                }
+                else {
+                    form.attr('action', "@BaseURL/eLearning/CourseEnrollments/EnrollAsync?courseId=@Model.Id");
+                }
+                form.submit();
+            }
+            else {
+                var returnUrl = '@BaseURL/eLearning/Courses/View?id=@Model.Id';
+                var enrollmentCode = '@Model.EnrollmentCode';
+
+                if ($.trim(enrollmentCode) != '')
+                    returnUrl = returnUrl + '?enrollmentCode=' + enrollmentCode;
+
+                console.log('returnurl = ', returnUrl);
+
+                var url = '@Url.Action("LoginAndReturn", "Auth", new { area = "" })&returnurl=' + returnUrl;
+                window.location = url;
+            }
         }
     </script>
 }

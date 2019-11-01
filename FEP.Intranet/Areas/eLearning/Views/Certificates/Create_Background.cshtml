@@ -71,6 +71,14 @@
 
                         <div class="row">
                             <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.TypePageOrientation)
+                                @Html.EnumDropDownListFor(model => model.TypePageOrientation, "-Select-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.TypePageOrientation, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-lg-12">
                                 @Html.FEPLabelFor(model => model.File)
                                 @Html.TextBoxFor(model => model.File, "", new { type = "file", @class = "form-control multiple" })
                                 @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })

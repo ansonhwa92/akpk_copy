@@ -2,9 +2,7 @@
 using FEP.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
-using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.eLearning;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -28,7 +26,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string Content = "eLearning/Courses/Content";
         public const string DeleteCourse = "eLearning/Courses/Delete";
         public const string Start = "eLearning/Courses/Start";
-
+        public const string Publish = "eLearning/Courses/Publish";
+        public const string IsUserEnrolled = "eLearning/Courses/IsUserEnrolled";
     }
 
     public class CoursesController : FEPController
@@ -103,7 +102,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         // POST: eLearning/Courses/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.        
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateOrEditCourseModel model)
@@ -128,7 +127,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         return RedirectToAction("Content", "Courses", new { id = id });
                     else
                         return RedirectToAction("Index", "Courses");
-                }   
+                }
             }
 
             TempData["ErrorMessage"] = "Cannot add course. Please ensure all required fields are filled in.";
@@ -186,15 +185,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 TempData["ErrorMessage"] = "Fail to assign role.";
             }
 
-
             return RedirectToAction("Trainers", "Courses", new { area = "eLearning", id = CourseId });
-
         }
 
         [HttpPost]
         public async Task<ActionResult> DeleteUser(int CourseId, int[] Ids)
         {
-
             var model = new UpdateTrainerCourseModel
             {
                 CourseId = CourseId,
@@ -213,9 +209,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 TempData["ErrorMessage"] = "Fail to remove user.";
             }
 
-
             return RedirectToAction("Trainers", "Courses", new { area = "eLearning", id = CourseId });
-
         }
 
         [HasAccess(UserAccess.CourseCreate)]
@@ -233,7 +227,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 TempData["ErrorMessage"] = "No such course.";
 
                 return RedirectToAction("Index", "Courses");
-
             }
 
             model.Modules = model.Modules.OrderBy(x => x.Order).ToList();
@@ -241,55 +234,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-
-        //// post the new order
-        //[HttpPost]
-        //public async Task<ActionResult> Content(int? Id, int CreatedBy, string order)
-        //{
-        //    if (Id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-
-        //    if (String.IsNullOrEmpty(order))
-        //    {
-        //        RedirectToAction("Content", new { id = Id.Value });
-        //    }
-
-        //    var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Post,
-        //        CourseApiUrl.Content + $"?Id={Id}&CreatedBy={CreatedBy}&order={order}");
-
-        //    if (response.isSuccess)
-        //    {
-        //        TempData["SuccessMessage"] = "Changes saved";
-
-        //        var model = response.Data;
-
-        //        await LogActivity(Modules.Learning, "Update Course Content : " + model.Title);
-
-        //        return View(model);
-        //    }
-
-        //    TempData["ErrorMessage"] = "Error in saving order..";
-
-        //    // get Model
-        //    var vm = await TryGetFrontCourse(Id.Value);
-
-        //    if (vm == null)
-        //    {
-        //        TempData["ErrorMessage"] = "No such course.";
-
-        //        return RedirectToAction("Index", "Courses");
-        //    }
-
-        //    vm.Modules = vm.Modules.OrderBy(x => x.Order).ToList();
-
-        //    return View(vm);
-        //}
-
-
-
-        public async Task<ActionResult> View(int? id)
+        [HasAccess(UserAccess.CourseView)]
+        public async Task<ActionResult> View(int? id, string enrollmentCode = "")
         {
             if (id == null)
             {
@@ -303,10 +249,20 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 TempData["ErrorMessage"] = "No such course.";
 
                 return RedirectToAction("Index", "Courses");
+            }
 
+            // check if user enrolled
+            var currentUserId = CurrentUser.UserId.Value;
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, 
+                CourseApiUrl.IsUserEnrolled + $"?id={id}&userId={currentUserId}&enrollmentCode={enrollmentCode}");
+
+            if (response.isSuccess)
+            {
+                model.IsUserEnrolled = response.Data;
             }
 
             model.Modules = model.Modules.OrderBy(x => x.Order).ToList();
+            model.EnrollmentCode = enrollmentCode;
 
             return View(model);
         }
@@ -330,23 +286,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             var model = _mapper.Map<CourseRuleModel>(course);
 
-            //var vm = new CourseRuleModel
-            //{
-            //    Id = model.Id,
-            //    Title = model.Title,
-            //    CompletionCriteriaType = model.CompletionCriteriaType,
-            //    ModulesCompleted = model.ModulesCompleted,
-            //    LearningPath = model.LearningPath,
-            //    PercentageCompletion = model.PercentageCompletion,
-            //    ScoreCalculation = model.ScoreCalculation,
-            //    TestsPassed = model.TestsPassed,
-            //    TraversalRule = model.TraversalRule
-            //};
+            ViewBag.CoursesList = new SelectList(await GetCoursesList(id), "Id", "Name");
 
             return View(model);
         }
 
-        [HasAccess(UserAccess.CourseCreate)]
+        [HasAccess(UserAccess.CourseEdit)]
         [HttpPost]
         public async Task<ActionResult> EditRules(CourseRuleModel model)
         {
@@ -358,6 +303,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 if (response.isSuccess)
                 {
+                    ViewBag.CoursesList = new SelectList(await GetCoursesList(model.Id), "Id", "Name");
+
                     TempData["SuccessMessage"] = "Course Rules successfully updated.";
 
                     await LogActivity(Modules.Learning, "Update Course Rule : " + model.Title);
@@ -377,7 +324,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-        public async Task<CreateOrEditCourseModel> TryGetCourse(int id)
+        public static async Task<CreateOrEditCourseModel> TryGetCourse(int id)
         {
             var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Get, CourseApiUrl.GetCourse + $"?id={id}");
 
@@ -389,7 +336,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return null;
         }
 
-        public async Task<CreateOrEditCourseModel> TryGetFrontCourse(int id)
+        public static async Task<CreateOrEditCourseModel> TryGetFrontCourse(int id)
         {
             var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Get, CourseApiUrl.GetFrontCourse + $"?id={id}");
 
@@ -414,7 +361,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
         // GET: eLearning/Courses/Edit/5
-        [HasAccess(UserAccess.CourseCreate)]
+        [HasAccess(UserAccess.CourseEdit)]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -453,10 +400,10 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 if (response.isSuccess)
                 {
-                    await LogActivity(Modules.Learning, "Edit Course: " + response.Data.Title, model);
+                    await LogActivity(Modules.Learning, $"Edit Course Successfull - {response.Data.Title} - {model.Id}");
 
                     if (Submittype == "Save")
-                    {                        
+                    {
                         TempData["SuccessMessage"] = "Course titled " + response.Data.Title + " updated successfully.";
 
                         return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = model.Id });
@@ -474,11 +421,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 }
             }
 
-            return View(model);
+            await GetCategories();
 
+            return View(model);
         }
 
-
+        [HasAccess(UserAccess.CourseCreate)]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -519,7 +467,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 await LogActivity(Modules.Learning, "Delete Course: " + response.Data);
 
                 TempData["SuccessMessage"] = "Course titled " + response.Data + " successfully deleted.";
-
             }
             else
             {
@@ -529,6 +476,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return RedirectToAction("Index", "Courses", new { area = "eLearning" });
         }
 
+        [HasAccess(UserAccess.CourseEdit)]
         public async Task<ActionResult> AssignCertificate(int id)
         {
             var response = await WepApiMethod.SendApiAsync<CertificatesModel>(HttpVerbs.Get, $"eLearning/Certificates/GetCertificate?id={id}");
@@ -557,17 +505,16 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 TempData["ErrorMessage"] = "Fail to assign certificate.";
             }
 
-
             return RedirectToAction("Content", "Courses", new { area = "eLearning", id = model.courseId });
         }
 
         // Start the course
+        [HasAccess(UserAccess.CourseView)]
         public async Task<ActionResult> Start(int id)
         {
+            var currentUserId = CurrentUser.UserId.Value;
 
-            //var module = await db.CourseModules.Where(x => x.CourseId == id).OrderBy(x => x.Order).FirstOrDefaultAsync();
-
-            var response = await WepApiMethod.SendApiAsync<CourseContent>(HttpVerbs.Get, CourseApiUrl.Start + $"?id={id}");
+            var response = await WepApiMethod.SendApiAsync<CourseContent>(HttpVerbs.Get, CourseApiUrl.Start + $"?id={id}&userId={currentUserId}");
 
             if (response.isSuccess)
             {
@@ -579,8 +526,21 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
             }
-
         }
 
+        [NonAction]
+        private async Task<IEnumerable<CourseListModel>> GetCoursesList(int? id)
+        {
+            var courses = Enumerable.Empty<CourseListModel>();
+
+            var response = await WepApiMethod.SendApiAsync<IEnumerable<CourseListModel>>(HttpVerbs.Get, $"eLearning/Courses/GetCoursesList?id={id}");
+
+            if (response.isSuccess)
+            {
+                courses = response.Data.OrderBy(o => o.Name);
+            }
+
+            return courses;
+        }
     }
 }

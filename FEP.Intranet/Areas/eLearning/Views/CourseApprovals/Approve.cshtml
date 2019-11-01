@@ -1,0 +1,244 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
+
+@{
+    ViewBag.Title = "Course Approvals";
+
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    //var status = "";
+
+    //switch(Model.Status)
+    //{
+    //    case CourseStatus.Verify:
+    //        status = "Verified";
+    //        break;
+    //    case CourseStatus.Submitted:
+    //        status = "Pending Verification";
+    //        break;
+    //    case CourseStatus.FirstApproval:
+    //    case CourseStatus.SecondApproval:
+    //    case CourseStatus.ThirdApproval:
+    //        status = "Pending Approval";
+    //        break;
+    //    case CourseStatus.Approved:
+    //        status = "Approved";
+    //        break;
+    //    case CourseStatus.Amendment:
+    //        status = "Require Amendment";
+    //        break;
+    //    default:
+    //        status = Model.Status.GetDisplayName();
+    //        break;
+    //}
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href='@Url.Action("Index", "Courses", new { area = "eLearning" })' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Course</a></li>
+                                <li class="breadcrumb-item"><a href="#">Course Approvals</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Course @Model.Title</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    @Html.Partial("_sidebar")
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <div class="border-form rounded-top">
+
+            <div class="form-container">
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label " })
+                        @Html.EditorFor(model => model.Category.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
+                            @*<input class="form-control bg-warning-ccd" readonly value="@status" />*@
+                            <span class="form-control bg-warning-ccd"> @Html.Partial("_courseStatus", Model.Status)</span>
+                           
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label " })
+                        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
+                        <span class="rawHtml">@Html.Raw(Model.Description)</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(model => model.Objectives, htmlAttributes: new { @class = "control-label " })
+
+                        <span class="rawHtml">@Html.Raw(Model.Objectives)</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label " })
+                    <div class="row">
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @type = "text" } })
+                        </div>
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.DurationType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(model => model.Language)
+                        @Html.EditorFor(model => model.Language, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>@Language.eLearning.Course.IsFree</label>
+                    <div class="col-sm-12">
+
+                        @{ if (Model.IsFree)
+                            {
+
+                                <div class="free-radio row pl-4 pb-2">
+                                    <div class="col-sm-2">
+                                        <input type="radio" class="custom-control-input free  form-control" checked="checked"
+                                               id="free" name="IsFree">
+                                        <label class="custom-control-label control-label" for="free">@Language.eLearning.Course.Free</label>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="free-radio row pl-4 ">
+                                    <div class="col-sm-2">
+                                        <input type="radio" class="custom-control-input paid form-control" checked="checked"
+                                               id="paid" name="IsFree">
+                                        <label class="custom-control-label control-label" for="paid">@Language.eLearning.Course.Paid</label>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.LabelFor(model => model.Price)
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
+
+                @Html.Action("Get", "CourseApprovals", new { @id = Model.Id, @status = Model.Status, @title = Model.Title })
+            </div>
+
+            @Html.Partial("_actionLog", Model)
+        </div>
+
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+            <a class="btn btn-default" href="@Url.Action("Index", "Courses", new { area = "eLearning" })" data-toggle="tooltip"
+               data-placement="top" title="Back">@Language.General.ButtonBack</a>
+        </div>
+    </div>
+</div>
+
+@section ContentScript{
+
+    <link href="~/css/elearn.css" rel="stylesheet" />
+
+    <script src="~/js/elearn.js"></script>
+
+    <script>
+
+        $('#btnApprove').click(function (event) {
+            $("#modalApprove").modal();
+            return false;
+        });
+
+        function ValidApprove() {
+            var aremarks = $('#Approval_Remark').val();
+            $('#span_approveremarkserror').hide();
+            if (aremarks.trim() == "") {
+                $('#span_approveremarkserror').show();
+                return false;
+            }
+            return true;
+        }
+
+        $('#btnApproveConfirm').click(function (event) {
+            if (!ValidApprove()) {
+                return false;
+            }
+            $('#Remark').val($('#Approval_Remark').val());
+            $('#IsApproved').val(true);
+
+            $('#myform').submit();
+        });
+
+        $('#btnReject').click(function (event) {
+            $("#modalReject").modal();
+            return false;
+        });
+
+        function ValidReject() {
+            var rremarks = $('#Reject_Remark').val();
+            $('#span_rejectremarkserror').hide();
+            if (rremarks.trim() == "") {
+                $('#span_rejectremarkserror').show();
+                return false;
+            }
+            return true;
+        }
+
+        $('#btnRejectConfirm').click(function (event) {
+            if (!ValidReject()) {
+                return false;
+            }
+            $('#Remark').val($('#Reject_Remark').val());
+            $('#IsApproved').val(false);
+
+            $('#myform').submit();
+
+        });
+    </script>
+
+}

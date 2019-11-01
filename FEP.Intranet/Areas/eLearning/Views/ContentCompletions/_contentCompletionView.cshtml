@@ -1,7 +1,7 @@
 ﻿@using FEP.Model.eLearning
 @model FEP.WebApiModel.eLearning.ContentCompletionModel
 
-<form id="formCompletion" action="/ContentCompletions/Post" method="post">
+<form id="formCompletion" action="@BaseURL/ContentCompletions/Post" method="post">
 
     @Html.AntiForgeryToken()
 

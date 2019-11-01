@@ -82,14 +82,17 @@
     <Compile Include="eEvent\EventRefund.cs" />
     <Compile Include="eEvent\EventSpeaker.cs" />
     <Compile Include="eEvent\ExhibitionRoadshowRequest.cs" />
+    <Compile Include="eLearning\ApiResponseModel.cs" />
     <Compile Include="eLearning\BaseModel.cs" />
     <Compile Include="eLearning\CourseApprovalLog.cs" />
+    <Compile Include="eLearning\CourseEnrollmentModels.cs" />
     <Compile Include="eLearning\CourseGroup.cs" />
     <Compile Include="eLearning\CourseDiscussion.cs" />
     <Compile Include="eLearning\CertificateModels.cs" />
     <Compile Include="eLearning\CourseEventModels.cs" />
     <Compile Include="eLearning\FileUploadModels.cs" />
     <Compile Include="eLearning\FileDocumentModels.cs" />
+    <Compile Include="eLearning\CourseNotificationModel.cs" />
     <Compile Include="eLearning\QuestionModels.cs" />
     <Compile Include="eLearning\CourseContentModels.cs" />
     <Compile Include="eLearning\CourseModels.cs" />

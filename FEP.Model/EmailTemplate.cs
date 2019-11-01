@@ -117,7 +117,18 @@ namespace FEP.Model
         [Display(Name = "Publication Approval")]
         PublicationApproval = 124,
 
+
+        //141-160 for eLearning
+        [Display(Name = "Course Title")]
+        CourseTitle = 141,
+        [Display(Name = "Course Author")]
+        CourseAuthor = 142,
+        [Display(Name = "Course Code")]
+        CourseCode = 143,
+        [Display(Name = "Course Approval")]
+        CourseApproval = 144,
+        [Display(Name = "Enrollment Code")]
+        EnrollmentCode = 145,
+
     }
-
-
 }

@@ -56,6 +56,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="eLearning\CourseEvent.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CourseEvent.resx</DependentUpon>
+    </Compile>
     <Compile Include="Profile1.Designer.cs">
       <DependentUpon>Profile.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -214,6 +219,10 @@
     <EmbeddedResource Include="EventRefund.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EventRefund.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="eLearning\CourseEvent.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CourseEvent.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Profile.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

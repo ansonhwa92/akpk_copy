@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FEP.Model;
+using FEP.WebApiModel.FileDocuments;
+using System.Web;
+
 
 namespace FEP.WebApiModel.RnP
 {
@@ -74,11 +77,11 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "PubHDPrice", ResourceType = typeof(Language.RnPForm))]
         public float HDPrice { get; set; }
 
-        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
-        public string Pictures { get; set; }
+        //[Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        //public string Pictures { get; set; }
 
-        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
-        public string ProofOfApproval { get; set; }
+        //[Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        //public string ProofOfApproval { get; set; }
 
         [Display(Name = "PubStockBalance", ResourceType = typeof(Language.RnPForm))]
         public int? StockBalance { get; set; }
@@ -92,8 +95,8 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "PubWithdrawalDate", ResourceType = typeof(Language.RnPForm))]
         public DateTime? WithdrawalDate { get; set; }
 
-        [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
-        public string ProofOfWithdrawal { get; set; }
+        //[Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
+        //public string ProofOfWithdrawal { get; set; }
 
         [Display(Name = "PubDateAdded", ResourceType = typeof(Language.RnPForm))]
         public DateTime DateAdded { get; set; }
@@ -127,6 +130,18 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "PubCategoryNameList", ResourceType = typeof(Language.RnPForm))]
         public string Category { get; set; }
+
+        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+
+        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+
+        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+
+        [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfWithdrawal { get; set; }
     }
 
     // Class for returning publications for user browsing
@@ -313,10 +328,8 @@ namespace FEP.WebApiModel.RnP
 
     // class for updating of publication information by client app
     // used to create and edit publication information
-    public class UpdatePublicationModel
+    public class PublicationModel
     {
-        public int ID { get; set; }
-
         [Required(ErrorMessageResourceName = "ValidRequiredCategory", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubCategoryID", ResourceType = typeof(Language.RnPForm))]
         public int CategoryID { get; set; }
@@ -374,31 +387,38 @@ namespace FEP.WebApiModel.RnP
         public bool FreeHDCopy { get; set; }
 
         [Display(Name = "PubHPrice", ResourceType = typeof(Language.RnPForm))]
-        [RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceName = "ValidInvalidPrice", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        //[RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceName = "ValidInvalidPrice", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public float HPrice { get; set; }
 
         [Display(Name = "PubDPrice", ResourceType = typeof(Language.RnPForm))]
-        [RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceName = "ValidInvalidPrice", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        //[RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceName = "ValidInvalidPrice", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public float DPrice { get; set; }
 
         [Display(Name = "PubHDPrice", ResourceType = typeof(Language.RnPForm))]
-        [RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceName = "ValidInvalidPrice", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        //[RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceName = "ValidInvalidPrice", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public float HDPrice { get; set; }
 
-        //[Required(ErrorMessageResourceName = "ValidRequiredPictures", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        /*
         [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
-        public string Pictures { get; set; }
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> CoverPictureFiles { get; set; }
 
-        //[Required(ErrorMessageResourceName = "ValidRequiredProofOfApproval", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> AuthorPictureFiles { get; set; }
+
+        [Required]
         [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
-        public string ProofOfApproval { get; set; }         // uploaded proof of approval
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+        public IEnumerable<HttpPostedFileBase> ProofOfApprovalFiles { get; set; }
+        */
 
         [Required(ErrorMessageResourceName = "ValidRequiredStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubStockBalance", ResourceType = typeof(Language.RnPForm))]
-        [RegularExpression("([1-9][0-9]*)", ErrorMessageResourceName = "ValidInvalidStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        //[RegularExpression("([1-9][0-9]*)", ErrorMessageResourceName = "ValidInvalidStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Range(0, 99999, ErrorMessageResourceName = "ValidInvalidStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
         public int? StockBalance { get; set; }
 
@@ -406,6 +426,205 @@ namespace FEP.WebApiModel.RnP
         public int CreatorId { get; set; }
 
         public string CreatorName { get; set; }
+    }
+
+    // for creating
+    public class CreatePublicationModel : PublicationModel
+    {
+        public CreatePublicationModel()
+        {
+            CoverPictures = new List<Attachment>();
+            AuthorPictures = new List<Attachment>();
+            ProofOfApproval = new List<Attachment>();
+            CoverPictureFiles = new List<HttpPostedFileBase>();
+            AuthorPictureFiles = new List<HttpPostedFileBase>();
+            ProofOfApprovalFiles = new List<HttpPostedFileBase>();
+            CoverFilesId = new List<int>();
+            AuthorFilesId = new List<int>();
+            ProofFilesId = new List<int>();
+        }
+
+        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> CoverPictureFiles { get; set; }
+
+        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> AuthorPictureFiles { get; set; }
+
+        [Required]
+        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+        public IEnumerable<HttpPostedFileBase> ProofOfApprovalFiles { get; set; }
+
+        public List<int> CoverFilesId { get; set; }
+        public List<int> AuthorFilesId { get; set; }
+        public List<int> ProofFilesId { get; set; }
+    }
+
+    // for editing
+    public class EditPublicationModel : PublicationModel
+    {
+        public EditPublicationModel()
+        {
+            CoverPictures = new List<Attachment>();
+            AuthorPictures = new List<Attachment>();
+            ProofOfApproval = new List<Attachment>();
+            CoverPictureFiles = new List<HttpPostedFileBase>();
+            AuthorPictureFiles = new List<HttpPostedFileBase>();
+            ProofOfApprovalFiles = new List<HttpPostedFileBase>();
+            CoverFilesId = new List<int>();
+            AuthorFilesId = new List<int>();
+            ProofFilesId = new List<int>();
+        }
+
+        [Required]
+        public int ID { get; set; }
+
+        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> CoverPictureFiles { get; set; }
+
+        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> AuthorPictureFiles { get; set; }
+
+        [Required]
+        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+        public IEnumerable<HttpPostedFileBase> ProofOfApprovalFiles { get; set; }
+
+        public List<int> CoverFilesId { get; set; }
+        public List<int> AuthorFilesId { get; set; }
+        public List<int> ProofFilesId { get; set; }
+    }
+
+    // for details
+    public class DetailsPublicationModel : PublicationModel
+    {
+        public DetailsPublicationModel() { }
+
+        [Required]
+        public int ID { get; set; }
+
+        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+
+        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+
+        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+
+        [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfWithdrawal { get; set; }
+    }
+
+    // class for updating of publication information by client app
+    // used to create and edit publication information
+    public class PublicationModelNoFile
+    {
+        [Required(ErrorMessageResourceName = "ValidRequiredCategory", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public int CategoryID { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredAuthor", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public string Author { get; set; }
+
+        public string Coauthor { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredTitle", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public string Title { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredYear", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public int? Year { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredDescription", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public string Description { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredLanguage", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public string Language { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredISBN", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public string ISBN { get; set; }
+
+        public bool Hardcopy { get; set; }
+
+        public bool Digitalcopy { get; set; }
+
+        public bool HDcopy { get; set; }
+
+        public bool FreeHCopy { get; set; }
+
+        public bool FreeDCopy { get; set; }
+
+        public bool FreeHDCopy { get; set; }
+
+        public float HPrice { get; set; }
+
+        public float DPrice { get; set; }
+
+        public float HDPrice { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public int? StockBalance { get; set; }
+
+        [Required]
+        public int CreatorId { get; set; }
+
+        public string CreatorName { get; set; }
+    }
+
+    // for creating
+    public class CreatePublicationModelNoFile : PublicationModelNoFile
+    {
+        public CreatePublicationModelNoFile()
+        {
+            CoverPictures = new List<Attachment>();
+            AuthorPictures = new List<Attachment>();
+            ProofOfApproval = new List<Attachment>();
+            CoverFilesId = new List<int>();
+            AuthorFilesId = new List<int>();
+            ProofFilesId = new List<int>();
+        }
+
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+
+        [Required]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+
+        public List<int> CoverFilesId { get; set; }
+        public List<int> AuthorFilesId { get; set; }
+        public List<int> ProofFilesId { get; set; }
+    }
+
+    // for editing
+    public class EditPublicationModelNoFile : PublicationModelNoFile
+    {
+        public EditPublicationModelNoFile()
+        {
+            CoverPictures = new List<Attachment>();
+            AuthorPictures = new List<Attachment>();
+            ProofOfApproval = new List<Attachment>();
+            CoverFilesId = new List<int>();
+            AuthorFilesId = new List<int>();
+            ProofFilesId = new List<int>();
+        }
+
+        [Required]
+        public int ID { get; set; }
+
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+
+        [Required]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+
+        public List<int> CoverFilesId { get; set; }
+        public List<int> AuthorFilesId { get; set; }
+        public List<int> ProofFilesId { get; set; }
     }
 
     // class for updating of publication cancellation information by client app
@@ -424,6 +643,13 @@ namespace FEP.WebApiModel.RnP
     // used to create and edit publication withdrawal information
     public class UpdatePublicationWithdrawalModel
     {
+        public UpdatePublicationWithdrawalModel()
+        {
+            ProofOfWithdrawal = new List<Attachment>();
+            ProofOfWithdrawalFiles = new List<HttpPostedFileBase>();
+            ProofFilesId = new List<int>();
+        }
+
         [Required]
         public int ID { get; set; }
 
@@ -433,14 +659,17 @@ namespace FEP.WebApiModel.RnP
 
         [Required(ErrorMessageResourceName = "ValidRequiredProofOfWithdrawal", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
-        public string ProofOfWithdrawal { get; set; }
+        public IEnumerable<Attachment> ProofOfWithdrawal { get; set; }
+        public IEnumerable<HttpPostedFileBase> ProofOfWithdrawalFiles { get; set; }
+
+        public List<int> ProofFilesId { get; set; }
     }
 
     // class for returning publication information for submission as well as cancellation form to client app
     // used to create form for viewing publication (admin only)
     public class UpdatePublicationViewModel
     {
-        public UpdatePublicationModel Pub { get; set; }
+        public DetailsPublicationModel Pub { get; set; }
         public ReturnPublicationAutofieldsModel Auto { get; set; }
         public UpdatePublicationWithdrawalModel Withdrawal { get; set; }
         public UpdatePublicationCancellationModel Cancellation { get; set; }

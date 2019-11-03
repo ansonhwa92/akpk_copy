@@ -202,6 +202,10 @@ namespace FEP.WebApiModel.SLAReminder
         public string PublicationCode { get; set; }
         public string PublicationApproval { get; set; }
 
+        public string RefundType { get; set; }
+        public string RefundFullName { get; set; }
+        public string RefundReferenceNo { get; set; }
+        public string RefundRemarks { get; set; }
 
         //141-160 for eLearning
         public string CourseTitle { get; set; }

@@ -182,6 +182,10 @@ namespace FEP.Model
         [Display(Name = "Approve Publication Modification")]
         ApprovePublicationModification,
         [Display(Name = "Approve Publication Withdrawal")]
-        ApprovePublicationWithdrawal
+        ApprovePublicationWithdrawal,
+
+        [Display(Name = "Refund Publication")]
+        RefundPublication
+        // other refunds can add here (in case wanna use different params)
     }
 }

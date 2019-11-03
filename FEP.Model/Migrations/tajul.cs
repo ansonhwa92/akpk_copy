@@ -8,9 +8,9 @@ namespace FEP.Model.Migrations
     {
         public static void Seed(DbEntities db)
         {
-            DefaultSLAReminder(db);
-            DefaultParameterGroup(db);
-            DefaultTemplate(db);
+            //DefaultSLAReminder(db);
+            //DefaultParameterGroup(db);
+            //DefaultTemplate(db);
         }
 
         public static void DefaultSLAReminder(DbEntities db)
@@ -70,17 +70,17 @@ namespace FEP.Model.Migrations
                 new SLAReminder { SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Published_Withdraw, ETCode = "ET024EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
                 new SLAReminder { SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Participant_Withdraw, ETCode = "ET025EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
-                    // survey
-                    new SLAReminder { SLAEventType = SLAEventType.SubmitSurvey, NotificationType = NotificationType.Submit_Survey_Creation, ETCode = "ET101RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                    new SLAReminder { SLAEventType = SLAEventType.CancelSurvey, NotificationType = NotificationType.Submit_Survey_Cancellation, ETCode = "ET102RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                    new SLAReminder { SLAEventType = SLAEventType.PublishSurvey, NotificationType = NotificationType.Submit_Survey_Publication, ETCode = "ET103RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                    new SLAReminder { SLAEventType = SLAEventType.VerifySurvey, NotificationType = NotificationType.Verify_Survey_Creation, ETCode = "ET111RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                    new SLAReminder { SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_1, ETCode = "ET121RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                    new SLAReminder { SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_2, ETCode = "ET122RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                    new SLAReminder { SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_3, ETCode = "ET123RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                    new SLAReminder { SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_Final, ETCode = "ET124RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                    new SLAReminder { SLAEventType = SLAEventType.DistributeSurvey, NotificationType = NotificationType.Submit_Survey_Distribution, ETCode = "ET131RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                    new SLAReminder { SLAEventType = SLAEventType.AnswerSurvey, NotificationType = NotificationType.Submit_Survey_Response, ETCode = "ET132RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                // survey
+                new SLAReminder { SLAEventType = SLAEventType.SubmitSurvey, NotificationType = NotificationType.Submit_Survey_Creation, ETCode = "ET101RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.CancelSurvey, NotificationType = NotificationType.Submit_Survey_Cancellation, ETCode = "ET102RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.PublishSurvey, NotificationType = NotificationType.Submit_Survey_Publication, ETCode = "ET103RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.VerifySurvey, NotificationType = NotificationType.Verify_Survey_Creation, ETCode = "ET111RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_1, ETCode = "ET121RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_2, ETCode = "ET122RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_3, ETCode = "ET123RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_Final, ETCode = "ET124RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.DistributeSurvey, NotificationType = NotificationType.Submit_Survey_Distribution, ETCode = "ET131RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.AnswerSurvey, NotificationType = NotificationType.Submit_Survey_Response, ETCode = "ET132RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
                 // publication
                 new SLAReminder { SLAEventType = SLAEventType.SubmitPublication, NotificationType = NotificationType.Submit_Publication_Creation, ETCode = "ET201RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
@@ -105,6 +105,10 @@ namespace FEP.Model.Migrations
                 new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_2, ETCode = "ET230RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
                 new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_3, ETCode = "ET231RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
                 new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_Final, ETCode = "ET232RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+
+                new SLAReminder { SLAEventType = SLAEventType.RefundPublication, NotificationType = NotificationType.Submit_Publication_Refund, ETCode = "ET241RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.RefundPublication, NotificationType = NotificationType.Approve_Publication_Refund_Incomplete, ETCode = "ET242RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { SLAEventType = SLAEventType.RefundPublication, NotificationType = NotificationType.Approve_Publication_Refund_Complete, ETCode = "ET243RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
                 //system
                 new SLAReminder { SLAEventType = SLAEventType.ActivateAccount, NotificationType = NotificationType.ActivateAccount, ETCode = "ET001SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days },
@@ -160,86 +164,99 @@ namespace FEP.Model.Migrations
                     {
                         EventType = SLAEventType.Payment;
                     }
-                    if (pType >= 101 && pType <= 120)
-                    {
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.SubmitSurvey, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.CancelSurvey, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.PublishSurvey, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.VerifySurvey, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.ApproveSurvey, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.DistributeSurvey, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.AnswerSurvey, TemplateParameterType = paramType });
-
-                        continue;
-                    }
-                    if (pType >= 121 && pType <= 140)
-                    {
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.SubmitPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.CancelPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.PublishPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.ModifyPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.WithdrawPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.CancelModifyPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.CancelWithdrawPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.VerifyPublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicationModification, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicationWithdrawal, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.ApprovePublication, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicationModification, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, TemplateParameterType = paramType });
-
-                        continue;
-                    }
-
-                    if (pType >= 141 && pType <= 160)
-                    {
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.VerifyCourses, TemplateParameterType = paramType });
-
-                        db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                        new ParameterGroup { SLAEventType = SLAEventType.ApproveCourses, TemplateParameterType = paramType });
-
-                        continue;
-                    }
                 }
+
+                if (pType >= 101 && pType <= 120)
+                {
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.SubmitSurvey, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.CancelSurvey, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.PublishSurvey, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifySurvey, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ApproveSurvey, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.DistributeSurvey, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.AnswerSurvey, TemplateParameterType = paramType });
+
+                    continue;
+                }
+
+                if (pType >= 121 && pType <= 130)
+                {
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.SubmitPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.CancelPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.PublishPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ModifyPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.WithdrawPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.CancelModifyPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.CancelWithdrawPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifyPublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicationModification, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicationWithdrawal, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ApprovePublication, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicationModification, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, TemplateParameterType = paramType });
+
+                    continue;
+                }
+
+                if (pType >= 131 && pType <= 140)
+                {
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.RefundPublication, TemplateParameterType = paramType });
+
+                    // other refunds can add here
+
+                    continue;
+                }
+
+                if (pType >= 141 && pType <= 160)
+                {
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifyCourses, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ApproveCourses, TemplateParameterType = paramType });
+
+                    continue;
+                }
+
             }
             //}
         }

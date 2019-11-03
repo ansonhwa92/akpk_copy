@@ -199,21 +199,21 @@
                                 @foreach (var item in Model.Surveys)
                                 {
                                     icount++;
-                                    if (item.Pictures != "")
-                                    {
-                                        coverpic1 = BaseURL + "/" + "img" + "/" + item.Pictures;
-                                        coverpic2 = BaseURL + "/" + "img" + "/" + item.Pictures;
-                                        authorpic = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                    //if (item.Pictures != "")
+                                    //{
+                                    //    coverpic1 = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                    //    coverpic2 = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                    //    authorpic = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                    //    coverpic1 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
+                                    //    coverpic2 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
+                                    //    authorpic = BaseURL + "/" + "img" + "/47.jpg";
+                                    //}
+                                    //else
+                                    //{
                                         coverpic1 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
                                         coverpic2 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
                                         authorpic = BaseURL + "/" + "img" + "/47.jpg";
-                                    }
-                                    else
-                                    {
-                                        coverpic1 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
-                                        coverpic2 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
-                                        authorpic = BaseURL + "/" + "img" + "/47.jpg";
-                                    }
+                                    //}
 
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="card__wrapper">

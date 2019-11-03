@@ -621,6 +621,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Open and answer targeted survey
         // GET: RnP/Home/LinkedSurvey or TakeSurvey
+        [AllowAnonymous]
         public async Task<ActionResult> TakeSurvey(string refno, string email)
         {
             if (String.IsNullOrEmpty(refno) || String.IsNullOrEmpty(email))

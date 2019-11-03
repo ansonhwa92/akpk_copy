@@ -220,6 +220,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Survey.CoverPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_CoverPictureDetails", Model.Survey.CoverPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Survey.AuthorPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_AuthorPictureDetails", Model.Survey.AuthorPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Survey.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_ProofOfApprovalDetails", Model.Survey.ProofOfApproval)
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane" id="survey-design">
                     <div class="mb-4 mt-2 mr-auto">

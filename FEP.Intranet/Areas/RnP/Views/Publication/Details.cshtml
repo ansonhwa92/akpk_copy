@@ -300,34 +300,31 @@
                             @Html.EditorFor(model => model.Pub.HDPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         </div>
                     </div>
-                    <!--
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pub.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                            <div class="custom-file">
-                                @Html.EditorFor(model => model.Pub.ProofOfApproval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-                                <label class="custom-file-label" for="customFile">No file choosen</label>
-                            </div>
-                            <div id="fileList"></div>
-                        </div>
-                    </div>
-                    -->
-                    <div class="row" style="display:none;">
-                        <div class="form-group col-lg-12">
-
-                            @Html.LabelFor(model => model.Pub.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pub.ProofOfApproval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="form-group col-lg-6">
-
                             @Html.LabelFor(model => model.Pub.StockBalance, htmlAttributes: new { @class = "control-label" })
                             @Html.EditorFor(model => model.Pub.StockBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         </div>
                         <div class="form-group col-lg-6">
                             &nbsp;
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.CoverPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_CoverPictureDetails", Model.Pub.CoverPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.AuthorPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_AuthorPictureDetails", Model.Pub.AuthorPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_ProofOfApprovalDetails", Model.Pub.ProofOfApproval)
                         </div>
                     </div>
                 </div>
@@ -440,7 +437,7 @@
                 <!-- publish (same as above) -->
                 <!-- withraw -->
                 <div class="modal fade" id="modalWithdraw" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formwithdraw", id = "formwithdraw" }))
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", name = "formwithdraw", id = "target" }))
                     {
                         @Html.AntiForgeryToken()
 
@@ -461,8 +458,10 @@
                                     </div>
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.Withdrawal.ProofOfWithdrawal, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                                        <input type="text" class="form-control" name="ProofOfWithdrawal" id="ProofOfWithdrawal" placeholder="" />
-                                        <span class="text-danger field-validation-error" id="span_prooferror" style="display:none;">Please upload Proof of Withdrawal</span>
+                                        @Html.Partial("_ProofOfWithdrawal", Model.Withdrawal.ProofOfWithdrawal)
+                                        @Html.ValidationMessageFor(model => model.Withdrawal.ProofOfWithdrawal, "", new { @class = "text-danger" })
+                                        @*<input type="text" class="form-control" name="ProofOfWithdrawal" id="ProofOfWithdrawal" placeholder="" />*@
+                                        @*<span class="text-danger field-validation-error" id="span_prooferror" style="display:none;">Please upload Proof of Withdrawal</span>*@
                                     </div>
                                 </div>
                                 <div class="divider-border"></div>
@@ -753,16 +752,17 @@
 
             function ValidWithdrawal() {
                 var wreason = $('#WithdrawalReason').val();
-                var wproof = $('#ProofOfWithdrawal').val();
+                //var wproof = $('#ProofOfWithdrawal').val();
                 $('#span_reasonerror').hide();
-                $('#span_prooferror').hide();
+                //$('#span_prooferror').hide();
                 if (wreason.trim() == "") {
                     $('#span_reasonerror').show();
                 }
-                if (wproof.trim() == "") {
-                    $('#span_prooferror').show();
-                }
-                if ((wreason.trim() == "") || (wproof.trim() == "")) {
+                //if (wproof.trim() == "") {
+                //    $('#span_prooferror').show();
+                //}
+                //if ((wreason.trim() == "") || (wproof.trim() == "")) {
+                if (wreason.trim() == "") {
                     return false;
                 }
                 return true;
@@ -901,6 +901,8 @@
                 var url = '@Url.Action("Details", "Publication", new { area = "RnP" })?id=' + pid;
                 window.location = url;
             });
+
+            RefreshFile4();
 
         });
     </script>

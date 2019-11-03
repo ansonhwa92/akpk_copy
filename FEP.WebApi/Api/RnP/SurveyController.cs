@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Data.Entity;
 using System.Web;
 using FEP.WebApiModel.SLAReminder;
+using FEP.WebApiModel.FileDocuments;
 
 
 namespace FEP.WebApi.Api.RnP
@@ -213,8 +214,8 @@ namespace FEP.WebApi.Api.RnP
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
                 Status = s.Status,
                 CancelRemark = s.CancelRemark,
@@ -287,8 +288,8 @@ namespace FEP.WebApi.Api.RnP
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
                 Status = s.Status,
                 CancelRemark = s.CancelRemark,
@@ -357,8 +358,8 @@ namespace FEP.WebApi.Api.RnP
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
                 Status = s.Status,
                 CancelRemark = s.CancelRemark,
@@ -426,8 +427,8 @@ namespace FEP.WebApi.Api.RnP
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
                 Status = s.Status,
                 CancelRemark = s.CancelRemark,
@@ -443,6 +444,10 @@ namespace FEP.WebApi.Api.RnP
             {
                 return NotFound();
             }
+
+            survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return Ok(survey);
             //return survey;
@@ -468,11 +473,16 @@ namespace FEP.WebApi.Api.RnP
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
-                ProofOfApproval = s.ProofOfApproval,
+                //ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
                 Status = s.Status,
                 CreatorName = ""
             }).FirstOrDefault();
+
+            if (survey == null)
+            {
+                return NotFound();
+            }
 
             var user = db.User.Where(u => u.Id == survey.CreatorId).FirstOrDefault();
             if (user != null)
@@ -480,10 +490,9 @@ namespace FEP.WebApi.Api.RnP
                 survey.CreatorName = user.Name;
             }
 
-            if (survey == null)
-            {
-                return NotFound();
-            }
+            survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return Ok(survey);
             //return survey;
@@ -507,7 +516,7 @@ namespace FEP.WebApi.Api.RnP
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
-                ProofOfApproval = s.ProofOfApproval,
+                //ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
                 Status = s.Status,
                 CreatorName = ""
@@ -523,6 +532,10 @@ namespace FEP.WebApi.Api.RnP
             {
                 survey.CreatorName = user.Name;
             }
+
+            survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == survey.ID), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == survey.ID), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == survey.ID), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             if (survey.Type == SurveyType.Targeted)
             {
@@ -588,8 +601,8 @@ namespace FEP.WebApi.Api.RnP
                 EndDate = s.EndDate,
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
                 RefNo = s.RefNo,
@@ -605,6 +618,10 @@ namespace FEP.WebApi.Api.RnP
             {
                 survey.CreatorName = user.Name;
             }
+
+            survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return survey;
         }
@@ -629,8 +646,8 @@ namespace FEP.WebApi.Api.RnP
                 EndDate = s.EndDate,
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 CancelRemark = s.CancelRemark,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
@@ -648,6 +665,10 @@ namespace FEP.WebApi.Api.RnP
             {
                 survey.CreatorName = user.Name;
             }
+
+            survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return survey;
         }
@@ -670,8 +691,8 @@ namespace FEP.WebApi.Api.RnP
                 EndDate = s.EndDate,
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 CancelRemark = s.CancelRemark,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
@@ -689,6 +710,10 @@ namespace FEP.WebApi.Api.RnP
             {
                 survey.CreatorName = user.Name;
             }
+
+            survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             var sapproval = db.SurveyApproval.Where(pa => pa.SurveyID == id && pa.Status == SurveyApprovalStatus.None).Select(s => new ReturnUpdateSurveyApprovalModel
             {
@@ -774,7 +799,7 @@ namespace FEP.WebApi.Api.RnP
         [Route("api/RnP/Survey/Create")]
         [HttpPost]
         [ValidationActionFilter]
-        public string Create([FromBody] UpdateSurveyModel model)
+        public string Create([FromBody] CreateSurveyModelNoFile model)
         {
 
             if (ModelState.IsValid)
@@ -793,8 +818,8 @@ namespace FEP.WebApi.Api.RnP
                     TemplateDescription = "",
                     Contents = "",
                     Active = false,
-                    Pictures = model.Pictures,
-                    ProofOfApproval = model.ProofOfApproval,
+                    //Pictures = model.Pictures,
+                    //ProofOfApproval = model.ProofOfApproval,
                     CancelRemark = "",
                     DateAdded = DateTime.Now,
                     CreatorId = model.CreatorId,
@@ -808,6 +833,45 @@ namespace FEP.WebApi.Api.RnP
                 db.Survey.Add(survey);
                 db.SaveChanges();
                 //if (db.SaveChanges() > 0) {
+
+                //files 1
+                foreach (var fileid in model.CoverFilesId)
+                {
+                    var coverfile = new SurveyFile
+                    {
+                        FileCategory = SurveyFileCategory.CoverImage,
+                        FileId = fileid,
+                        ParentId = survey.ID
+                    };
+
+                    db.SurveyFile.Add(coverfile);
+                }
+
+                //files 2
+                foreach (var fileid in model.AuthorFilesId)
+                {
+                    var authorfile = new SurveyFile
+                    {
+                        FileCategory = SurveyFileCategory.AuthorImage,
+                        FileId = fileid,
+                        ParentId = survey.ID
+                    };
+
+                    db.SurveyFile.Add(authorfile);
+                }
+
+                //files 3
+                foreach (var fileid in model.ProofFilesId)
+                {
+                    var prooffile = new SurveyFile
+                    {
+                        FileCategory = SurveyFileCategory.ProofOfApproval,
+                        FileId = fileid,
+                        ParentId = survey.ID
+                    };
+
+                    db.SurveyFile.Add(prooffile);
+                }
 
                 // modify survey by adding ref no based on year, month and new ID
                 var refno = "";
@@ -844,7 +908,7 @@ namespace FEP.WebApi.Api.RnP
         [Route("api/RnP/Survey/Edit")]
         [HttpPost]
         [ValidationActionFilter]
-        public string Edit([FromBody] UpdateSurveyModel model)
+        public string Edit([FromBody] EditSurveyModelNoFile model)
         {
 
             if (ModelState.IsValid)
@@ -861,11 +925,141 @@ namespace FEP.WebApi.Api.RnP
                     survey.StartDate = DateTime.Parse(model.StartDate.ToString("yyyy/MM/dd") + " 00:00:00");
                     survey.EndDate = DateTime.Parse(model.EndDate.ToString("yyyy/MM/dd") + " 23:59:59");
                     survey.RequireLogin = model.RequireLogin;
-                    survey.Pictures = model.Pictures;
-                    survey.ProofOfApproval = model.ProofOfApproval;
+                    //survey.Pictures = model.Pictures;
+                    //survey.ProofOfApproval = model.ProofOfApproval;
                     //survey.CreatorId = model.CreatorId;
 
                     db.Entry(survey).State = EntityState.Modified;
+
+                    //files 1
+
+                    var attachments1 = db.SurveyFile.Where(s => s.FileCategory == SurveyFileCategory.CoverImage && s.ParentId == model.ID).ToList();
+
+                    if (attachments1 != null)
+                    {
+                        if (model.CoverPictures == null)
+                        {
+                            foreach (var attachment in attachments1)
+                            {
+                                attachment.FileDocument.Display = false;
+                                db.FileDocument.Attach(attachment.FileDocument);
+                                db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                db.SurveyFile.Remove(attachment);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var attachment in attachments1)
+                            {
+                                if (!model.CoverPictures.Any(u => u.Id == attachment.FileDocument.Id))
+                                {
+                                    attachment.FileDocument.Display = false;
+                                    db.FileDocument.Attach(attachment.FileDocument);
+                                    db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                    db.SurveyFile.Remove(attachment);
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var fileid in model.CoverFilesId)
+                    {
+                        var coverfile = new SurveyFile
+                        {
+                            FileCategory = SurveyFileCategory.CoverImage,
+                            FileId = fileid,
+                            ParentId = survey.ID
+                        };
+
+                        db.SurveyFile.Add(coverfile);
+                    }
+
+                    //files 2
+
+                    var attachments2 = db.SurveyFile.Where(s => s.FileCategory == SurveyFileCategory.AuthorImage && s.ParentId == model.ID).ToList();
+
+                    if (attachments2 != null)
+                    {
+                        if (model.AuthorPictures == null)
+                        {
+                            foreach (var attachment in attachments2)
+                            {
+                                attachment.FileDocument.Display = false;
+                                db.FileDocument.Attach(attachment.FileDocument);
+                                db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                db.SurveyFile.Remove(attachment);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var attachment in attachments2)
+                            {
+                                if (!model.AuthorPictures.Any(u => u.Id == attachment.FileDocument.Id))
+                                {
+                                    attachment.FileDocument.Display = false;
+                                    db.FileDocument.Attach(attachment.FileDocument);
+                                    db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                    db.SurveyFile.Remove(attachment);
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var fileid in model.AuthorFilesId)
+                    {
+                        var authorfile = new SurveyFile
+                        {
+                            FileCategory = SurveyFileCategory.AuthorImage,
+                            FileId = fileid,
+                            ParentId = survey.ID
+                        };
+
+                        db.SurveyFile.Add(authorfile);
+                    }
+
+                    //files 3
+
+                    var attachments3 = db.SurveyFile.Where(s => s.FileCategory == SurveyFileCategory.ProofOfApproval && s.ParentId == model.ID).ToList();
+
+                    if (attachments3 != null)
+                    {
+                        if (model.ProofOfApproval == null)
+                        {
+                            foreach (var attachment in attachments3)
+                            {
+                                attachment.FileDocument.Display = false;
+                                db.FileDocument.Attach(attachment.FileDocument);
+                                db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                db.SurveyFile.Remove(attachment);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var attachment in attachments3)
+                            {
+                                if (!model.ProofOfApproval.Any(u => u.Id == attachment.FileDocument.Id))
+                                {
+                                    attachment.FileDocument.Display = false;
+                                    db.FileDocument.Attach(attachment.FileDocument);
+                                    db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                    db.SurveyFile.Remove(attachment);
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var fileid in model.ProofFilesId)
+                    {
+                        var prooffile = new SurveyFile
+                        {
+                            FileCategory = SurveyFileCategory.ProofOfApproval,
+                            FileId = fileid,
+                            ParentId = survey.ID
+                        };
+
+                        db.SurveyFile.Add(prooffile);
+                    }
+
                     db.SaveChanges();
 
                     return model.Title;
@@ -1052,7 +1246,7 @@ namespace FEP.WebApi.Api.RnP
         // Function to publish a survey from details page.
         // GET: api/RnP/Survey/PublishByID
         [Route("api/RnP/Survey/PublishByID")]
-        public string PublishByID(int id)
+        public string PublishByID(int id, string BaseURL)
         {
 
             var survey = db.Survey.Where(p => p.ID == id).FirstOrDefault();
@@ -1072,7 +1266,7 @@ namespace FEP.WebApi.Api.RnP
                 }
                 else
                 {
-                    var emailres = SendEmailNotificationSurveyBroadcast(survey);
+                    var emailres = SendEmailNotificationSurveyBroadcast(survey, BaseURL);
                     return survey.Title + "|" + "Targeted Groups" + "|" + survey.RefNo;
                 }
             }
@@ -1622,14 +1816,14 @@ namespace FEP.WebApi.Api.RnP
         // BULK EMAIL
 
         [NonAction]
-        public bool SendEmailNotificationSurveyBroadcast(Survey survey)
+        public bool SendEmailNotificationSurveyBroadcast(Survey survey, string BaseURL)
         {
             ParameterListToSend paramToSend = new ParameterListToSend();
             paramToSend.SurveyTitle = survey.Title;
             paramToSend.SurveyType = "Research";
             paramToSend.SurveyCode = survey.RefNo;
             paramToSend.SurveyApproval = "";
-            paramToSend.SurveyLink = HomeURL + "/" + SubURL + "/RnP/Home/TakeSurvey?refno=" + survey.RefNo + "&email={email}";
+            paramToSend.SurveyLink = $"<a href = '" + BaseURL + "/RnP/Home/TakeSurvey?refno=" + survey.RefNo + "&email={email}' > Take the Survey </a>";
             paramToSend.SurveyRespondentEmail = "";
 
             var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType.Submit_Survey_Distribution).FirstOrDefault();

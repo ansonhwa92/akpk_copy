@@ -158,16 +158,22 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="display:none;">
+                        <div class="row">
                             <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Survey.Pictures, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Survey.Pictures, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.LabelFor(model => model.Survey.CoverPictures, htmlAttributes: new { @class = "control-label" })
+                                @Html.Partial("_CoverPictureDetails", Model.Survey.CoverPictures)
                             </div>
                         </div>
-                        <div class="row" style="display:none;">
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Survey.AuthorPictures, htmlAttributes: new { @class = "control-label" })
+                                @Html.Partial("_AuthorPictureDetails", Model.Survey.AuthorPictures)
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group col-lg-12">
                                 @Html.LabelFor(model => model.Survey.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Survey.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.Partial("_ProofOfApprovalDetails", Model.Survey.ProofOfApproval)
                             </div>
                         </div>
                     </div>
@@ -280,43 +286,6 @@
                     }
                 });
             });
-            /*
-            if (selectedGroup.indexOf("Group 1") >= 0) {
-                $('#survey_group option').each(function () {
-                    if ($(this).text() == "Group 1") {
-                        $(this).prop("selected", true);
-                    }
-                });
-            }
-            if (selectedGroup.indexOf("Group 2") >= 0) {
-                $('#survey_group option').each(function () {
-                    if ($(this).text() == "Group 2") {
-                        $(this).prop("selected", true);
-                    }
-                });
-            }
-            if (selectedGroup.indexOf("Group 3") >= 0) {
-                $('#survey_group option').each(function () {
-                    if ($(this).text() == "Group 3") {
-                        $(this).prop("selected", true);
-                    }
-                });
-            }
-            if (selectedGroup.indexOf("Group 4") >= 0) {
-                $('#survey_group option').each(function () {
-                    if ($(this).text() == "Group 4") {
-                        $(this).prop("selected", true);
-                    }
-                });
-            }
-            if (selectedGroup.indexOf("Group 5") >= 0) {
-                $('#survey_group option').each(function () {
-                    if ($(this).text() == "Group 5") {
-                        $(this).prop("selected", true);
-                    }
-                });
-            }
-            */
             $('#survey_group').trigger('change');
 
             $('#btnDiscard').click(function (event) {

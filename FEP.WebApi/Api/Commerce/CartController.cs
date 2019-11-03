@@ -724,7 +724,7 @@ namespace FEP.WebApi.Api.Commerce
                 var items = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cartid).Select(s => new PurchaseDetailsModel
                 {
                     PurchaseOrderId = s.PurchaseOrderId,
-                    OrderItemId = s.ItemId,
+                    OrderItemId = s.Id,
                     UserId = cart.UserId,
                     ReceiptNo = cart.ReceiptNo,
                     PurchaseType = s.PurchaseType,
@@ -753,6 +753,7 @@ namespace FEP.WebApi.Api.Commerce
                 {
                     ItemId = model.ItemId,
                     UserId = model.UserId,
+                    PurchaseType = model.PurchaseType,
                     FullName = model.FullName,
                     BankID = model.BankID,
                     BankAccountNo = model.BankAccountNo,
@@ -788,13 +789,14 @@ namespace FEP.WebApi.Api.Commerce
                     pi.Description,
                     pi.Quantity,
                     pi.Price,
+                    r.ID,
                     r.FullName,
                     r.BankID,
                     r.BankAccountNo,
                     r.ReturnStatus,
                     r.RefundStatus
                 }).Where(
-                      rp => rp.RefundStatus == RefundStatus.Requested).Join(
+                      rp => rp.RefundStatus >= RefundStatus.Requested).Join(
                       db.PurchaseOrder, rp => rp.PurchaseOrderId, po => po.Id, (rp, po) =>
                       new {
                           rp.PurchaseOrderId,
@@ -804,6 +806,7 @@ namespace FEP.WebApi.Api.Commerce
                           rp.Description,
                           rp.Quantity,
                           rp.Price,
+                          rp.ID,
                           rp.FullName,
                           rp.BankID,
                           rp.BankAccountNo,
@@ -821,6 +824,7 @@ namespace FEP.WebApi.Api.Commerce
                               rpo.Description,
                               rpo.Quantity,
                               rpo.Price,
+                              rpo.ID,
                               rpo.FullName,
                               rpo.BankID,
                               rpo.BankAccountNo,
@@ -938,6 +942,7 @@ namespace FEP.WebApi.Api.Commerce
             var data = query.Skip(request.start).Take(request.length)
                 .Select(s => new RefundRequestModel
                 {
+                    ID = s.ID,
                     PurchaseOrderId = s.PurchaseOrderId,
                     OrderItemId = s.Id,
                     UserId = s.UserId,
@@ -964,6 +969,7 @@ namespace FEP.WebApi.Api.Commerce
 
         }
 
+        /*
         // Update refund request to approved
         // POST: api/Commerce/Cart/ApproveRefund
         [Route("api/Commerce/Cart/ApproveRefund")]
@@ -990,30 +996,138 @@ namespace FEP.WebApi.Api.Commerce
 
             return false;
         }
+        */
+
+        // Update refund request status
+        // POST: api/Commerce/Cart/UpdateRefundStatus
+        [Route("api/Commerce/Cart/UpdateRefundStatus")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool UpdateRefundStatus([FromBody] UpdateRefundStatusModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var prefund = db.Refund.Where(r => r.ID == model.ID).FirstOrDefault();
+
+                if (prefund != null)
+                {
+                    prefund.RefundStatus = model.Status;
+                    prefund.Remarks = model.Remarks;
+                    prefund.RefundReferenceNo = model.RefundReferenceNo;
+                    db.Entry(prefund).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    var emailres = SendEmailNotificationRefundStatusUpdate(prefund);
+
+                    return true;
+                }
+
+            }
+
+            return false;
+        }
 
         // BULK EMAIL
 
         [NonAction]
+        private string GetRefundType(PurchaseType ptype)
+        {
+            if (ptype == PurchaseType.Event)
+            {
+                return "eEvent";
+            }
+            else if (ptype == PurchaseType.Course)
+            {
+                return "eLearning";
+            }
+            else if (ptype == PurchaseType.Publication)
+            {
+                return "Publication";
+            }
+            else
+            {
+                return "Unknown";
+            }
+        }
+
+        [NonAction]
         public bool SendEmailNotificationRefundRequest(Refund refund)
         {
-            //if (refund.PurchaseType != PurchaseType.Publication)
             ParameterListToSend paramToSend = new ParameterListToSend();
-            paramToSend.SurveyTitle = "";// survey.Title;
-            paramToSend.SurveyType = "";
-            paramToSend.SurveyCode = "";// survey.RefNo;
-            paramToSend.SurveyApproval = "";
-            paramToSend.SurveyLink = "";
-            paramToSend.SurveyRespondentEmail = "";// model.Email;
+            paramToSend.RefundType = GetRefundType(refund.PurchaseType);
+            paramToSend.RefundFullName = refund.FullName;
+            paramToSend.RefundReferenceNo = refund.ReferenceNo;
+            paramToSend.RefundRemarks = "Refund not processed yet.";
 
-            var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType.Submit_Survey_Response).FirstOrDefault();
-            string Subject = generateBodyMessage("Survey Response Submission", NotificationType.Submit_Survey_Response, paramToSend);
-            string Body = generateBodyMessage(template.TemplateMessage, NotificationType.Submit_Survey_Response, paramToSend);
+            var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType.Submit_Publication_Refund).FirstOrDefault();
+            string Subject = generateBodyMessage("Publication Refund Request", NotificationType.Submit_Publication_Refund, paramToSend);
+            string Body = generateBodyMessage(template.TemplateMessage, NotificationType.Submit_Publication_Refund, paramToSend);
 
             List<string> Email = new List<string> { };
+            List<string> Email1 = new List<string> { };
+            List<string> Email2 = new List<string> { };
 
-            Email = GetEmailsByAccess(UserAccess.RnPSurveyEdit);
+            Email1 = GetEmailsByAccess(UserAccess.Refunds);
+            Email2 = GetEmailsByAccess(UserAccess.RnPPublicationEdit);
+            Email = Email1.Concat(Email2).ToList();
 
-            var sendresult = SendBulkEmail(NotificationType.Submit_Survey_Response, NotificationCategory.ResearchAndPublication, Email, paramToSend, Subject, Body);
+            if (Email.Count > 0)
+            {
+                List<string> uniqueemails = Email.Distinct().ToList();
+                Email = uniqueemails;
+            }
+
+            var sendresult = SendBulkEmail(NotificationType.Submit_Publication_Refund, NotificationCategory.System, Email, paramToSend, Subject, Body);
+            return true;
+        }
+
+        [NonAction]
+        public bool SendEmailNotificationRefundStatusUpdate(Refund refund)
+        {
+            ParameterListToSend paramToSend = new ParameterListToSend();
+            paramToSend.RefundType = GetRefundType(refund.PurchaseType);
+            paramToSend.RefundFullName = refund.FullName;
+            paramToSend.RefundReferenceNo = refund.ReferenceNo;
+            paramToSend.RefundRemarks = refund.Remarks;
+
+            string Subject;
+            string Body;
+
+            if (refund.RefundStatus == RefundStatus.Incomplete)
+            {
+                var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType.Approve_Publication_Refund_Incomplete).FirstOrDefault();
+                Subject = generateBodyMessage("Publication Refund Incomplete", NotificationType.Approve_Publication_Refund_Incomplete, paramToSend);
+                Body = generateBodyMessage(template.TemplateMessage, NotificationType.Approve_Publication_Refund_Incomplete, paramToSend);
+            }
+            else
+            {
+                var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType.Approve_Publication_Refund_Complete).FirstOrDefault();
+                Subject = generateBodyMessage("Publication Refund Complete", NotificationType.Approve_Publication_Refund_Complete, paramToSend);
+                Body = generateBodyMessage(template.TemplateMessage, NotificationType.Approve_Publication_Refund_Complete, paramToSend);
+            }
+
+            List<string> Email = new List<string> { };
+            List<string> Email1 = new List<string> { };
+            List<string> Email2 = new List<string> { };
+
+            Email1 = GetEmailsById(refund.UserId);
+            Email2 = GetEmailsByAccess(UserAccess.RnPPublicationEdit);
+            Email = Email1.Concat(Email2).ToList();
+
+            if (Email.Count > 0)
+            {
+                List<string> uniqueemails = Email.Distinct().ToList();
+                Email = uniqueemails;
+            }
+
+            if (refund.RefundStatus == RefundStatus.Incomplete)
+            {
+                var sendresult = SendBulkEmail(NotificationType.Approve_Publication_Refund_Incomplete, NotificationCategory.System, Email, paramToSend, Subject, Body);
+            }
+            else
+            {
+                var sendresult = SendBulkEmail(NotificationType.Approve_Publication_Refund_Complete, NotificationCategory.System, Email, paramToSend, Subject, Body);
+            }
             return true;
         }
 
@@ -1044,6 +1158,21 @@ namespace FEP.WebApi.Api.Commerce
                         }
                     }
                 }
+            }
+
+            return emails;
+        }
+
+        [NonAction]
+        public List<string> GetEmailsById(int userid)
+        {
+            List<string> emails = new List<string> { };
+
+            var allusers = db.User.Where(u => u.Display && u.Id == userid).ToList();
+
+            foreach (FEP.Model.User myuser in allusers)
+            {
+                emails.Add(myuser.Email);
             }
 
             return emails;

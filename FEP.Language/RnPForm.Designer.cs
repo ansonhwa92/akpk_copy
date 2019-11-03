@@ -320,7 +320,29 @@ namespace Language {
                 return ResourceManager.GetString("PubLanguage", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Pictures.
+        /// </summary>
+        public static string PubPictures
+        {
+            get
+            {
+                return ResourceManager.GetString("PubPictures", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to AuthorPictures.
+        /// </summary>
+        public static string PubAuthorPictures
+        {
+            get
+            {
+                return ResourceManager.GetString("PubAuthorPictures", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Proof Of Approval.
         /// </summary>
@@ -682,14 +704,25 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thumbnail.
+        ///   Looks up a localized string similar to Survey Images.
         /// </summary>
         public static string SurveyPictures {
             get {
                 return ResourceManager.GetString("SurveyPictures", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Author Images.
+        /// </summary>
+        public static string SurveyAuthorPictures
+        {
+            get
+            {
+                return ResourceManager.GetString("SurveyAuthorPictures", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Proof of Approval.
         /// </summary>

@@ -9,11 +9,14 @@
     <div class="title_header">
         <div class="title-header-container">
             <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/Commerce/Cart/PurchaseHistory" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/Commerce/Cart/PurchaseHistory">Purchase History</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
@@ -26,10 +29,10 @@
     </div>
 }
 
-<div class="d-flex align-items-center">
+@*<div class="d-flex align-items-center">
     <div class="divider-vertical">&nbsp;</div>
 </div>
-<hr>
+<hr>*@
 <div class="table-responsive" data-toggle="lists">
     <!-- Table -->
     <table class="table tableStyle1 tabledata">
@@ -55,18 +58,18 @@
                     <td>@item.PurchaseType</td>
                     <td>@item.Description</td>
                     <td>@item.Quantity</td>
-                    <td>@item.Amount.ToString("0:n2")</td>
+                    <td>@item.Amount.ToString("0.00")</td>
                     <td>
                         <div class="icon-action">
                             @if (Model.Purchase.DeliveryStatus >= DeliveryStatus.Shipped)
                             {
                                 if ((item.RefundStatus == null) && (item.Amount > 0))
                                 {
-                                    <button class="btn btn-secondary" id="btnRefund" data-ptype="@item.PurchaseType" data-itemid="@item.OrderItemId" data-userid="@item.UserId" data-refno="@item.ReceiptNo" data-toggle="tooltip" data-placement="top" title="Request Refund">Request Refund</button>
+                                    <button class="btn btn-secondary block" id="btnRefund" data-ptype="@item.PurchaseType" data-itemid="@item.OrderItemId" data-userid="@item.UserId" data-refno="@item.ReceiptNo" data-toggle="tooltip" data-placement="top" title="Request Refund">Request Refund</button>
                                 }
                                 else
                                 {
-                                    <button class="btn btn-disabled" data-toggle="tooltip" data-placement="top" title="Refund Requested">Refund Requested</button>
+                                    <button class="btn btn-disabled block" data-toggle="tooltip" data-placement="top" title="Refund Requested">Refund Requested</button>
                                 }
                             }
                         </div>
@@ -157,6 +160,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            var cid = @Model.Purchase.Id;
+
             //$('#btnRefund').click(function () {
             $(document).on('click', '.btn.btn-secondary', function () {
                 var ptype = $(this).data("ptype");
@@ -216,6 +221,7 @@
                 if (!ValidRefund()) {
                     return false;
                 }
+                $("#modalRefund").modal('hide');
                 var form = $('#formrefund');
                 //alert(form.serialize());
                 //return false;
@@ -225,7 +231,6 @@
                     type: "POST",
                     data: form.serialize(),
                     success: function (data) {
-                        $("#modalRefund").modal('hide');
                         if (data == "success") {
                             //$("#iconResult").show();
                             $("#iconResult").attr('src','~/img/icon-noti-email.svg');
@@ -247,12 +252,12 @@
             // redirection after send
 
             $('#btnCloseSent').click(function (event) {
-                var url = '@Url.Action("PurchaseHistory", "Cart", new { area = "Commerce" })';
+                var url = '@Url.Action("PurchaseDetails", "Cart", new { area = "Commerce" })' + '?cartid=' + cid;
                 window.location = url;
             });
 
             $('#modalResult').on( "hidden.bs.modal", function () {
-                var url = '@Url.Action("PurchaseHistory", "Cart", new { area = "Commerce" })';
+                var url = '@Url.Action("PurchaseDetails", "Cart", new { area = "Commerce" })' + '?cartid=' + cid;
                 window.location = url;
             });
 

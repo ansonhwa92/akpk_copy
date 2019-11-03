@@ -382,7 +382,7 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
                 Refund = null
             };
 
-            return View();
+            return View(details);
         }
 
         // Process add refund request, then refresh list
@@ -394,6 +394,34 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             if (ModelState.IsValid)
             {
                 var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Commerce/Cart/RequestRefund", model);
+
+                if (!response.isSuccess)
+                {
+                    return "error";
+                }
+
+                if (response.Data == true)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+
+            return "error";
+        }
+
+        // Process update refund action, then refresh list
+        // POST: Commerce/Cart/UpdateRefundStatus
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> UpdateRefundStatus(UpdateRefundStatusModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Commerce/Cart/UpdateRefundStatus", model);
 
                 if (!response.isSuccess)
                 {

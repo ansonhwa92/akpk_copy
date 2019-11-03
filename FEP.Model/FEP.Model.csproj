@@ -87,9 +87,17 @@
     <Compile Include="File.cs" />
     <Compile Include="Groups.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201910170418287_InitialDB.cs" />
-    <Compile Include="Migrations\201910170418287_InitialDB.designer.cs">
-      <DependentUpon>201910170418287_InitialDB.cs</DependentUpon>
+    <Compile Include="Migrations\201910280507514_2810.cs" />
+    <Compile Include="Migrations\201910280507514_2810.designer.cs">
+      <DependentUpon>201910280507514_2810.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910280827132_2810_2.cs" />
+    <Compile Include="Migrations\201910280827132_2810_2.designer.cs">
+      <DependentUpon>201910280827132_2810_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911020929064_0211.cs" />
+    <Compile Include="Migrations\201911020929064_0211.designer.cs">
+      <DependentUpon>201911020929064_0211.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -118,8 +126,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910170418287_InitialDB.resx">
-      <DependentUpon>201910170418287_InitialDB.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910280507514_2810.resx">
+      <DependentUpon>201910280507514_2810.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910280827132_2810_2.resx">
+      <DependentUpon>201910280827132_2810_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911020929064_0211.resx">
+      <DependentUpon>201911020929064_0211.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

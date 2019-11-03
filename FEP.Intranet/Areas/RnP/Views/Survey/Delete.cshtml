@@ -133,6 +133,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.CoverPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_CoverPictureDetails", Model.CoverPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.AuthorPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_AuthorPictureDetails", Model.AuthorPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_ProofOfApprovalDetails", Model.ProofOfApproval)
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane" id="survey-design">
                     <div class="mb-4 mt-2 mr-auto">
@@ -195,43 +213,6 @@
                     }
                 });
             });
-            /*
-            if (selectedGroup.indexOf("Group 1") >= 0) {
-                $('#survey_group option').each(function () {
-                    if ($(this).text() == "Group 1") {
-                        $(this).prop("selected", true);
-                    }
-                });
-            }
-            if (selectedGroup.indexOf("Group 2") >= 0) {
-                $('#survey_group option').each(function () {
-                    if ($(this).text() == "Group 2") {
-                        $(this).prop("selected", true);
-                    }
-                });
-            }
-            if (selectedGroup.indexOf("Group 3") >= 0) {
-                $('#survey_group option').each(function () {
-                    if ($(this).text() == "Group 3") {
-                        $(this).prop("selected", true);
-                    }
-                });
-            }
-            if (selectedGroup.indexOf("Group 4") >= 0) {
-                $('#survey_group option').each(function () {
-                    if ($(this).text() == "Group 4") {
-                        $(this).prop("selected", true);
-                    }
-                });
-            }
-            if (selectedGroup.indexOf("Group 5") >= 0) {
-                $('#survey_group option').each(function () {
-                    if ($(this).text() == "Group 5") {
-                        $(this).prop("selected", true);
-                    }
-                });
-            }
-            */
             $('#survey_group').trigger('change');
 
             $('#tab_details').click(function () {

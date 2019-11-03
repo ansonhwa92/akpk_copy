@@ -281,6 +281,8 @@ namespace FEP.WebApiModel.RnP
     // class for returning refund request information
     public class RefundRequestModel
     {
+        public int ID { get; set; }
+
         public int PurchaseOrderId { get; set; }
 
         public int OrderItemId { get; set; }

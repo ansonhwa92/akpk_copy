@@ -499,6 +499,12 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         }
 
         [HttpGet]
+        public ActionResult _Select()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public async Task<ActionResult> _Details(int? id)
         {
             if (id == null)

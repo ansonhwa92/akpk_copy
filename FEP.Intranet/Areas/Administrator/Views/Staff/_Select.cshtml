@@ -24,23 +24,7 @@
                 }
             },
             columns: [
-                {
-                    sortable: false,
-                    render: function (data, type, row, meta) {
-
-                        var action = "";
-
-                        action = '<div class="custom-control custom-checkbox">'
-                                    +'<input id="' + row.Id + '" name="select" type="checkbox" value="' + row.Id + '" class="custom-control-input">'
-                                    +'<label class="custom-control-label" for="' + row.Id + '">'
-                                        +'<span class="text-hide">Check</span>'
-                                    +'</label>'
-                                +'</div>';
-
-                        return action;
-                    }
-
-                },
+                
                 {
                     sortable: false,
                     render: function (data, type, row, meta) {
@@ -73,6 +57,14 @@
                         else {
                             return "<span class='color-grey font-weight-bold'>Disable</span>"
                         }
+
+                    }
+                },
+                {
+                    sortable: false,
+                    render: function (data, type, row, meta) {
+
+                        return '<a href="#" class="btn-xs btnAddUser" data-dismiss="modal">Select</a>';
 
                     }
                 }
@@ -119,33 +111,13 @@
             $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
         }).draw();
 
-        $("#customCheckAll").click(function () {
+        table.on('click', '.btnAddUser', function () {
 
-            if ($(this).prop("checked") == true) {
-                $('input[type="checkbox"][name="select"]').prop("checked", true);
-            }
-            else {
-                $('input[type="checkbox"][name="select"]').prop("checked", false);
-            }
+            var data = table.row($(this).parents('tr')).data();
+            addUser(data.Id, data.Name);//pass to main
+
 
         });
-
-        addStaff = function () {
-
-            var userids = [];
-
-            table.$('input[type="checkbox"][name="select"]').each(function () {
-
-                if (this.checked) {                    
-                    userids.push(this.value);
-                }
-            });
-
-            if (userids.length > 0) {
-                addUser(userids);//pass to main page
-            }
-                  
-        };
 
     }
 
@@ -158,7 +130,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h4 class="modal-title">Add Staff</h4>
+                <h4 class="modal-title">Select Staff</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             

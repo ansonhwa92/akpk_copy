@@ -921,6 +921,8 @@
     <Content Include="Areas\eEvent\Views\MediaInterview\_AttachmentDetails.cshtml" />
     <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\_Attachment.cshtml" />
     <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\_Select.cshtml" />
+    <Content Include="Areas\Administrator\Views\Staff\_Select.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

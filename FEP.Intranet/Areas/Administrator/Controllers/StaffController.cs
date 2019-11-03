@@ -148,6 +148,17 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> _Select()
+        {
+            var filter = new FilterStaffModel();
+
+            filter.Branchs = new SelectList(await GetBranches(), "Id", "Name", 0);
+            filter.Departments = new SelectList(await GetDepartments(), "Id", "Name", 0);
+
+            return View(new ListStaffModel { Filter = filter });
+        }
+
+        [HttpGet]
         public async Task<ActionResult> _Details(int? id)
         {
             if (id == null)

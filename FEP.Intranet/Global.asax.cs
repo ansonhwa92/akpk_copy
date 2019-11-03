@@ -8,6 +8,7 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using FEP.Helper;
 
 namespace FEP.Intranet
 {
@@ -53,14 +54,12 @@ namespace FEP.Intranet
 
             string details = ex.InnerException + " | " + ex.StackTrace;
 
-
-
-
+            FEPHelperMethod.LogError(Model.Modules.Setting, null, currentAction, currentController, "", ipAddress, ex.Message, details);
 
             httpContext.ClearError();
             httpContext.Response.Clear();
                        
-            Response.Redirect("~/Home/Error");
+            //Response.Redirect("~/Home/Error");
         }
     }
 

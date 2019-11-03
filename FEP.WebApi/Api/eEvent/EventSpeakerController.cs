@@ -145,6 +145,7 @@ namespace FEP.WebApi.Api.eEvent
 				{
 					Id = s.Id,
 					UserId = s.UserId,
+                    UserName = s.User.Name,
 					SpeakerType = s.SpeakerType,
 					PhoneNo = s.User.MobileNo,
 					Email = s.User.Email,

@@ -15,9 +15,8 @@ using HttpGetAttribute = System.Web.Http.HttpGetAttribute;
 using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
 using HttpPutAttribute = System.Web.Http.HttpPutAttribute;
 using NonActionAttribute = System.Web.Http.NonActionAttribute;
-using System.Web;
-using System.Threading.Tasks;
 using FEP.WebApiModel.Notification;
+using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace FEP.WebApi.Api.Reminder
 {
@@ -619,6 +618,56 @@ namespace FEP.WebApi.Api.Reminder
             else
                 return false;
         }
-        //--------------------------------------------------------------------------------------------------
-    }
+		//--------------------------------------------------------------------------------------------------
+
+		/// <summary>
+		/// Used to send emails (without Remainder) when we only have email address, especially for invitation
+		/// to people outside of the system.
+		/// Now use to send invitation to enroll to course.
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
+		public async Task<IHttpActionResult> GenerateAndSendEmails(WebApiModel.eLearning.NotificationModel model)
+		{
+			var template = db.NotificationTemplates.Where(t => t.NotificationType == model.NotificationType).FirstOrDefault();
+			string emailSubject = generateBodyMessage(template.TemplateSubject, model.NotificationType, model.ParameterListToSend);
+			string emailBody = generateBodyMessage(template.TemplateMessage, model.NotificationType, model.ParameterListToSend);
+
+			var receivers = new List<string>();
+			//send email ke setiap reciever
+			if (!String.IsNullOrEmpty(model.Emails))
+				receivers = model.Emails.Split(',').ToList();
+			else
+				return BadRequest();
+
+			int counter = 0;
+			foreach (var receiver in receivers)
+			{
+				var cleanReceiver = receiver.Trim();
+				var response = await sendEmailUsingAPIAsync(DateTime.Now, (int)model.NotificationCategory,
+					(int)model.NotificationType, cleanReceiver, emailSubject, emailBody, counter);
+
+				if (response != null)
+				{
+					string EmailNotificationId = response.datID; //assumed returned Id
+																 // --> CALL insert BulkNotificationGroup API (NotificationMedium : Email, int [SLAReminderStatusId])
+					BulkNotificationModel objEmailNotification = new BulkNotificationModel
+					{
+						NotificationMedium = NotificationMedium.Email,
+						NotificationId = EmailNotificationId
+					};
+
+					var responseEmailNotificationGroup = RegisterBulkNotificationGroupFunc(objEmailNotification);
+				}
+				counter++;
+			}
+
+			ReminderResponse result = new ReminderResponse
+			{
+				Status = "Success",
+			};
+			return Ok(result);
+		}
+	}
 }
+

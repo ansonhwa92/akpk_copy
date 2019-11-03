@@ -34,8 +34,15 @@ namespace FEP.WebApi.Api.Template
                                 .First()
                                 .GetCustomAttributes(typeof(DisplayAttribute), false)[0]).Name;
         }
+        public string GetDisplayNameNotificationCategory(Enum val)
+        {
+            return ((DisplayAttribute)val.GetType()
+                .GetMember(Enum.GetName(typeof(NotificationCategory), val).ToString())
+                                .First()
+                                .GetCustomAttributes(typeof(DisplayAttribute), false)[0]).Name;
+        }
 
-        
+
         // GET: api/EmailTemplate
         [Route("api/Template/Email/GetAll")]
         [HttpPost]
@@ -48,6 +55,7 @@ namespace FEP.WebApi.Api.Template
             query = query.Where(s => 
             (request.TemplateName == null || s.TemplateName.Contains(request.TemplateName))
             && (request.CreatedByName == null || s.User.Name.Contains(request.CreatedByName))
+            && (request.NotificationCategory == null || s.NotificationCategory == request.NotificationCategory)
             );
 
             //quick search
@@ -83,7 +91,7 @@ namespace FEP.WebApi.Api.Template
                         }
 
                         break;
-                    case "CreatedByName":
+                    /*case "CreatedByName":
 
                         if (sortAscending)
                         {
@@ -118,6 +126,10 @@ namespace FEP.WebApi.Api.Template
                             query = query.OrderByDescending(o => o.LastModified);
                         }
 
+                        break;*/
+
+                    default:
+                        query = query.OrderByDescending(o => o.TemplateName);
                         break;
                 }
             }
@@ -131,6 +143,7 @@ namespace FEP.WebApi.Api.Template
                 {
                     Id = s.Id,
                     NotificationType = s.NotificationType,
+                    NotificationCategory = s.NotificationCategory,
                     TemplateName = s.TemplateName,
                     CreatedDate = s.CreatedDate,
                     LastModified = s.LastModified,
@@ -147,6 +160,14 @@ namespace FEP.WebApi.Api.Template
             foreach (var item in emailTemplates)
             {
                 item.NotificationTypeName = GetDisplayName(item.NotificationType);
+                if (item.NotificationCategory != 0)
+                {
+                    item.NotificationCategoryName = GetDisplayNameNotificationCategory(item.NotificationCategory);
+                }
+                else
+                {
+                    item.NotificationCategoryName = "unknown";
+                }
             }
 
             return Ok(new DataTableResponse
@@ -156,6 +177,44 @@ namespace FEP.WebApi.Api.Template
                 recordsFiltered = filteredCount,
                 data = emailTemplates.ToArray()
             });
+        }
+
+        [Route("api/NotificationTemplate/GetTemplateByNotificationType")]
+        [HttpGet]
+        public IHttpActionResult GetTemplateByNotificationType(NotificationType? NotificationType)
+        {
+            if(NotificationType == null)
+            {
+                return NotFound();
+            }
+            var NotificationTemplate = db.NotificationTemplates.Where(t => t.Display && t.NotificationType == NotificationType).Select(s => new NotificationTemplateModel
+            {
+                Id = s.Id,
+                NotificationType = s.NotificationType,
+                TemplateName = s.TemplateName,
+                TemplateSubject = s.TemplateSubject,
+                TemplateRefNo = s.TemplateRefNo,
+                TemplateMessage = s.TemplateMessage,
+                enableEmail = s.enableEmail,
+                CreatedDate = s.CreatedDate,
+                LastModified = s.LastModified,
+                CreatedBy = s.CreatedBy,
+                CreatedByName = s.User.Name,
+
+                enableSMSMessage = s.enableSMSMessage,
+                SMSMessage = s.SMSMessage,
+                enableWebMessage = s.enableWebMessage,
+                WebMessage = s.WebMessage,
+                WebNotifyLink = s.WebNotifyLink
+
+            }).FirstOrDefault();
+
+            if (NotificationTemplate == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(NotificationTemplate);
         }
 
         [HttpGet]
@@ -180,6 +239,7 @@ namespace FEP.WebApi.Api.Template
                 SMSMessage = s.SMSMessage,
                 enableWebMessage = s.enableWebMessage,
                 WebMessage = s.WebMessage,
+                WebNotifyLink  =s.WebNotifyLink
 
             }).FirstOrDefault();
 
@@ -204,6 +264,7 @@ namespace FEP.WebApi.Api.Template
             var NotificationTemplate = new NotificationTemplate
             {
                 NotificationType = model.NotificationType,
+                NotificationCategory = model.NotificationCategory,
                 TemplateName = model.TemplateName,
                 TemplateSubject = model.TemplateSubject,
                 TemplateRefNo = model.TemplateRefNo,
@@ -217,7 +278,8 @@ namespace FEP.WebApi.Api.Template
                 enableSMSMessage = model.enableSMSMessage,
                 SMSMessage = model.SMSMessage,
                 enableWebMessage = model.enableWebMessage,
-                WebMessage = model.WebMessage
+                WebMessage = model.WebMessage,
+                WebNotifyLink = model.WebNotifyLink
             };
 
             db.NotificationTemplates.Add(NotificationTemplate);
@@ -289,6 +351,7 @@ namespace FEP.WebApi.Api.Template
 
             NotificationTemplate template = db.NotificationTemplates.Where(t => t.Id == id).FirstOrDefault();
             template.NotificationType = model.NotificationType;
+            template.NotificationCategory = model.NotificationCategory;
             template.TemplateName = model.TemplateName;
             template.TemplateMessage = model.TemplateMessage;
             template.TemplateSubject = model.TemplateSubject;
@@ -298,10 +361,12 @@ namespace FEP.WebApi.Api.Template
             template.SMSMessage = model.SMSMessage;
             template.enableWebMessage = model.enableWebMessage;
             template.WebMessage = model.WebMessage;
+            template.WebNotifyLink = model.WebNotifyLink;
             template.LastModified = DateTime.Now;
 
             db.Entry(template).State = EntityState.Modified;
             db.Entry(template).Property(x => x.NotificationType).IsModified = true;
+            db.Entry(template).Property(x => x.NotificationCategory).IsModified = true;
             db.Entry(template).Property(x => x.TemplateName).IsModified = true;
             db.Entry(template).Property(x => x.TemplateMessage).IsModified = true;
             db.Entry(template).Property(x => x.TemplateSubject).IsModified = true;
@@ -310,6 +375,7 @@ namespace FEP.WebApi.Api.Template
             db.Entry(template).Property(x => x.SMSMessage).IsModified = true;
             db.Entry(template).Property(x => x.enableWebMessage).IsModified = true;
             db.Entry(template).Property(x => x.WebMessage).IsModified = true;
+            db.Entry(template).Property(x => x.WebNotifyLink).IsModified = true;
             db.Entry(template).Property(x => x.LastModified).IsModified = true;
             db.Entry(template).Property(x => x.CreatedBy).IsModified = false;
 

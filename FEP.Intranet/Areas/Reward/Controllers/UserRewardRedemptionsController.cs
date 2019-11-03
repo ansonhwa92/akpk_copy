@@ -114,7 +114,7 @@ namespace FEP.Intranet.Areas.Reward.Controllers
                 model.RewardStatus = RewardStatus.Open;
                 model.RedeemDate = DateTime.Now;
 
-                var response = await WepApiMethod.SendApiAsync<CreateUserRewardRedemptionModel>
+                var response = await WepApiMethod.SendApiAsync<int>
                     (HttpVerbs.Post, $"Reward/UserRewardRedemptions", model);
 
                 if (response.isSuccess)
@@ -145,7 +145,7 @@ namespace FEP.Intranet.Areas.Reward.Controllers
         public async Task<ActionResult> UpdateUsedReward(int? id)
         {
             if(id == null) { return HttpNotFound(); }
-            var response = await WepApiMethod.SendApiAsync<int>
+            var response = await WepApiMethod.SendApiAsync<bool>
                 (HttpVerbs.Put, $"Reward/UserRewardRedemptions/UsedReward?id={id}");
 
             if (!response.isSuccess) { return HttpNotFound(); }

@@ -15,7 +15,9 @@ using HttpGetAttribute = System.Web.Http.HttpGetAttribute;
 using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
 using HttpPutAttribute = System.Web.Http.HttpPutAttribute;
 using NonActionAttribute = System.Web.Http.NonActionAttribute;
-using RouteAttribute = System.Web.Http.RouteAttribute;
+using System.Web;
+using System.Threading.Tasks;
+using FEP.WebApiModel.Notification;
 
 namespace FEP.WebApi.Api.Reminder
 {
@@ -182,6 +184,7 @@ namespace FEP.WebApi.Api.Reminder
                 if (item.NotificationMedium == NotificationMedium.Web)
                 {
                     // --> CALL WEB API utk delete future WEB MSG
+                    var responseWebNotify = StopWebNotifyUsingAPI(item.NotificationId);
                 }
             }
 
@@ -336,26 +339,44 @@ namespace FEP.WebApi.Api.Reminder
 
                 if (template.enableWebMessage)
                 {
-                    foreach (var notifyDate in ScheduleMessage)
+                    foreach (var receiver in reminder.ReceiverId)
                     {
-                        string WebTextToSend = generateWEBMessage(template.WebMessage, template.NotificationType, reminder.ParameterListToSend);
-                        // --> CALL WEB API HERE-----
-                        //                          |   send received notificationId here
-                        //                         \|/
-                        string WEBNotificationId = "102"; //assumed returned Id
-                                                          // --> CALL insert BulkNotificationGroup API (NotificationMedium : Web, [SLAReminderStatusId])
-                        BulkNotificationModel objWEBNotification = new BulkNotificationModel
+                        int counter = 1;
+
+                        foreach (var notifyDate in ScheduleMessage)
                         {
-                            SLAReminderStatusId = SLAReminderId,
-                            NotificationMedium = NotificationMedium.Web,
-                            NotificationId = WEBNotificationId
-                        };
-
-                        var responseWEBNotificationGroup = RegisterBulkNotificationGroup(objWEBNotification);
-
-                        /*var responseWEBNotificationGroup = await WepApiMethod.SendApiAsync<BulkNotificationModel>
-                            (HttpVerbs.Post, $"Reminder/SLA/RegisterBulkNotificationGroup/", objWEBNotification);*/
+                            string WebTextToSend = generateWEBMessage(template.WebMessage, template.NotificationType, reminder.ParameterListToSend);
+                            string WebLinkTextToSend = generateWEBLinkMessage(template.WebNotifyLink, template.NotificationType, reminder.ParameterListToSend);
+                            // --> CALL WEB API HERE-----
+                            //                          |   send received notificationId here
+                            //                         \|/
+                            CreateNotificationModel model = new CreateNotificationModel
+                            {
+                                UserId = receiver,
+                                NotificationType = reminder.NotificationType,
+                                Category = reminder.NotificationCategory,
+                                Message = WebTextToSend,
+                                Link = WebLinkTextToSend,
+                                SendDate = notifyDate
+                            };
+                            var response = await sendWebNotifyAPI(model);
+                            if (response != -1)
+                            {
+                                string WEBNotificationId = response.ToString(); //assumed returned Id
+                                // --> CALL insert BulkNotificationGroup API (NotificationMedium : Web, [SLAReminderStatusId])
+                                BulkNotificationModel objWEBNotification = new BulkNotificationModel
+                                {
+                                    SLAReminderStatusId = SLAReminderId,
+                                    NotificationMedium = NotificationMedium.Web,
+                                    NotificationId = WEBNotificationId
+                                };
+                                var responseWEBNotificationGroup = RegisterBulkNotificationGroup(objWEBNotification);
+                            }
+                            
+                            counter++;
+                        }
                     }
+                    
                 }
 
                 ReminderResponse result = new ReminderResponse
@@ -455,6 +476,19 @@ namespace FEP.WebApi.Api.Reminder
         }
 
         [NonAction]
+        public string generateWEBLinkMessage(string WebLinkText, NotificationType NotificationType, ParameterListToSend paramToSend)
+        {
+            var ParamList = db.TemplateParameters.Where(p => p.NotificationType == NotificationType).ToList();
+            string WEBLinkTextToSend = WebLinkText;
+            foreach (var item in ParamList)
+            {
+                string theValue = GetPropertyValues(paramToSend, item.TemplateParameterType);
+                string textToReplace = "[#" + item.TemplateParameterType + "]";
+                WEBLinkTextToSend = WEBLinkTextToSend.Replace(textToReplace, theValue);
+            }
+            return WEBLinkTextToSend;
+        }
+        [NonAction]
         public string generateBodyMessage(string TemplateText, NotificationType NotificationType, ParameterListToSend paramToSend)
         {
             var ParamList = db.TemplateParameters.Where(p => p.NotificationType == NotificationType).ToList();
@@ -510,6 +544,18 @@ namespace FEP.WebApi.Api.Reminder
             else
                 return null;
         }
+        
+        [NonAction]
+        public async Task<long> sendWebNotifyAPI (CreateNotificationModel model)
+        {
+            var response = await WepApiMethod.SendApiAsync<long>
+                (HttpVerbs.Post, $"System/Notification", model, WepApiMethod.APIEngine.IntranetAPI);
+
+            if (response.isSuccess)
+                return response.Data;
+            else
+                return -1;
+        }
 
         [NonAction]
         public async Task<SMSClass> sendSMSUsingAPIAsync
@@ -556,61 +602,23 @@ namespace FEP.WebApi.Api.Reminder
             var response = await WepApiMethod.SendApiAsync<EmailClass>
                 (HttpVerbs.Delete, $"BulkSMS/" + smsId, null, WepApiMethod.APIEngine.EmailSMSAPI);
 
+			if (response.isSuccess)
+				return response.Data;
+			else
+				return null;
+		}
+
+        [NonAction]
+        public async Task<bool> StopWebNotifyUsingAPI(string webNotifyId)
+        {
+            var response = await WepApiMethod.SendApiAsync<bool>
+                (HttpVerbs.Delete, $"System/Notification?id={webNotifyId}");
+
             if (response.isSuccess)
                 return response.Data;
             else
-                return null;
+                return false;
         }
-
         //--------------------------------------------------------------------------------------------------
-
-        /// <summary>
-        /// Used to send emails (without Remainder) when we only have email address, especially for invitation
-        /// to people outside of the system.
-        /// Now use to send invitation to enroll to course.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public async Task<IHttpActionResult> GenerateAndSendEmails(WebApiModel.eLearning.NotificationModel model)
-        {
-            var template = db.NotificationTemplates.Where(t => t.NotificationType == model.NotificationType).FirstOrDefault();
-            string emailSubject = generateBodyMessage(template.TemplateSubject, model.NotificationType, model.ParameterListToSend);
-            string emailBody = generateBodyMessage(template.TemplateMessage, model.NotificationType, model.ParameterListToSend);
-
-            var receivers =new List<string>();
-            //send email ke setiap reciever
-            if (!String.IsNullOrEmpty(model.Emails))
-                 receivers = model.Emails.Split(',').ToList();
-            else
-                return BadRequest();
-
-            int counter = 0;
-            foreach (var receiver in receivers)
-            {
-                var cleanReceiver = receiver.Trim();
-                var response = await sendEmailUsingAPIAsync(DateTime.Now, (int)model.NotificationCategory,
-                    (int)model.NotificationType, cleanReceiver, emailSubject, emailBody, counter);
-
-                if (response != null)
-                {
-                    string EmailNotificationId = response.datID; //assumed returned Id
-                                                                 // --> CALL insert BulkNotificationGroup API (NotificationMedium : Email, int [SLAReminderStatusId])
-                    BulkNotificationModel objEmailNotification = new BulkNotificationModel
-                    {
-                        NotificationMedium = NotificationMedium.Email,
-                        NotificationId = EmailNotificationId
-                    };
-
-                    var responseEmailNotificationGroup = RegisterBulkNotificationGroupFunc(objEmailNotification);
-                }
-                counter++;
-            }
-
-            ReminderResponse result = new ReminderResponse
-            {
-                Status = "Success",
-            };
-            return Ok(result);
-        }
     }
 }

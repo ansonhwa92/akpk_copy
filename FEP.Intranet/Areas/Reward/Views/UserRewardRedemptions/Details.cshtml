@@ -1,4 +1,4 @@
-﻿@model FEP.WebApiModel.Reward.DetailRewardActivityPointModel
+﻿@model FEP.WebApiModel.Reward.DetailUserRewardRedemptionModel
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout1.cshtml";
@@ -21,7 +21,7 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Activity Points</h1>
+                    <h1 class="page-title text-white">User Reward Redemption</h1>
                     @*<div class="header-text">List of registered user as individual</div>*@
                 </div>
             </div>
@@ -34,56 +34,79 @@
 
     <div class="col-xl-3 col-md-3 col-sm-4 my-2">
         <div id="page-nav" class="sidebar-left page-nav">
-            <div data-perfect-scrollbar>
+            <div data-perfect-scrollbar class="ps">
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Activity Points</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-eye font-icon color-secondary align-bottom"></i> User Reward Points</h6>
                     <ul class="nav page-nav__menu">
+                        @*<li class="nav-item">
+                                <a href="@Url.Action("List", "UserRewardPoints", new { area = "Reward"})" class="nav-link">User Reward Points List</a>
+                            </li>
+                            @if (CurrentUser.UserType == UserType.SystemAdmin)
+                            {
+                                <li class="nav-item">
+                                    <a href="@Url.Action("AwardUser", "UserRewardPoints", new { area = "Reward"})" class="nav-link">Award a User</a>
+                                </li>
+                            }*@
                         <li class="nav-item">
-                            <a href="@Url.Action("Details", "RewardActivityPoints", new { area = "Reward", id = Model.Id })" class="active nav-link">View</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Edit", "RewardActivityPoints", new { area = "Reward", id = Model.Id })" class="nav-link">Edit</a>
+                            <a href="#" class="active nav-link">User Reward Redemption Detail</a>
                         </li>
                     </ul>
                 </div>
+
             </div>
         </div>
     </div>
+
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-        <div class="border-form rounded-top">
+
+        <div class="border-form rounded">
             <div class="form-container form-container-w100">
                 <div class="mb-4 mt-2">
-                    <h4 class="color-darkblue mb-0">Details : Activity Points</h4>
-                    <h6 class="font-weight-normal">@Model.CourseName</h6>
+                    <h4 class="color-darkblue mb-0">Details : User Reward Redemption</h4>
                 </div>
+
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.CourseName)
-                        @Html.EditorFor(m => m.CourseName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.FEPLabelFor(m => m.UserName)
+                        @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(m => m.RewardDescription)
+                        @Html.EditorFor(m => m.RewardDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.Value)
-                        @Html.EditorFor(m => m.Value, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.FEPLabelFor(m => m.RewardCode)
+                        @Html.EditorFor(m => m.RewardCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.CreatedByName)
-                        @Html.EditorFor(m => m.CreatedByName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.FEPLabelFor(m => m.RedeemDate)
+                        @Html.EditorFor(m => m.RedeemDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.CreatedDate)
-                        @Html.EditorFor(m => m.CreatedDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.FEPLabelFor(m => m.RewardStatus)
+                        @Html.EditorFor(m => m.RewardStatus, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     </div>
                 </div>
+
             </div>
+
         </div>
         <div class="border-left border-right border-bottom p-3 rounded-bottom">
-            <a href="@Url.Action("List")" class="btn btn-default mr-2">Back</a>
+            <a href="@Url.Action("ListAll")" class="btn btn-default mr-2">Back</a>
         </div>
     </div>
+
 </div>
+

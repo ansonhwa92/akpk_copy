@@ -100,7 +100,7 @@ namespace FEP.Intranet.Areas.Reward.Controllers
             if(response.isSuccess)
             {
                 //List<SelectListItem> items = new List<SelectListItem>();
-                model.userList = response.Data.Select(e => new SelectListItem()
+                model.userList = response.Data.Where(u => u.UserType != UserType.SystemAdmin).Select(e => new SelectListItem()
                     {
                         Text = e.Name,
                         Value = e.Id.ToString()
@@ -136,18 +136,18 @@ namespace FEP.Intranet.Areas.Reward.Controllers
                     await LogActivity(Modules.Setting, "Award Points to User");
                     TempData["SuccessMessage"] = "Points Awarded successfully";
 
-                    return RedirectToAction("List");
+                    return RedirectToAction("ListAll");
                 }
                 else
                 {
                     TempData["ErrorMessage"] = "Failed to create Award Points";
-                    return RedirectToAction("List");
+                    return RedirectToAction("ListAll");
                 }
             }
             else
             {
                 TempData["ErrorMessage"] = "Failed to create Award Points";
-                return RedirectToAction("List");
+                return RedirectToAction("ListAll");
             }
         }
 

@@ -31,6 +31,7 @@
                     },
                     { sortable: true, data: 'RewardCode' },
                     { sortable: true, data: 'Description' },
+                    { sortable: true, data: 'DiscountValue' },
                     { sortable: true, data: 'PointsToRedeem' },
                     { sortable: true, data: 'ValidDuration' },
                     {
@@ -125,7 +126,10 @@
                     <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> Reward Redemption</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="#" data-toggle="tab" class="nav-link active">List</a>
+                            <a href="#" class="nav-link active">Reward Catalog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("ListAll", "UserRewardRedemptions", new { area = "Reward" })"  class="nav-link">User Redemption List</a>
                         </li>
                     </ul>
                 </div>
@@ -217,10 +221,11 @@
                                 <th></th>
                                 <th>@Html.DisplayNameFor(model => model.filter.RewardCode)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.Description)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.DiscountValue)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.PointsToRedeem)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.ValidDuration)</th>
                                 @*<th>@Html.DisplayNameFor(model => model.filter.CreatedByName)</th>
-                                <th>@Html.DisplayNameFor(model => model.filter.CreatedDate)</th>*@
+        <th>@Html.DisplayNameFor(model => model.filter.CreatedDate)</th>*@
                                 <th></th>
                             </tr>
                         </thead>

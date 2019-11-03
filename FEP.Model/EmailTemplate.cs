@@ -30,12 +30,13 @@ namespace FEP.Model
         public bool enableSMSMessage { get; set; }
 
         public string WebMessage { get;set; }
+        public string WebNotifyLink { get; set; }
         public bool enableWebMessage { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public DateTime? LastModified { get; set; }
 
-        
+        public NotificationCategory NotificationCategory { get; set; }
 
         public int CreatedBy { get; set; }
         [ForeignKey("CreatedBy")]

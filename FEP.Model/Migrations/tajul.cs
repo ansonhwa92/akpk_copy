@@ -17,101 +17,102 @@ namespace FEP.Model.Migrations
         {
             //if (!db.SLAReminder.Any())
 
-            //{
-            db.SLAReminder.AddOrUpdate(s => s.NotificationType,
-                new SLAReminder { SLAEventType = SLAEventType.SubmitPublicEvent, NotificationType = NotificationType.Submit_Public_Event_For_Verification, ETCode = "ET001PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.VerifyPublicEvent, NotificationType = NotificationType.Verify_Public_Event_After_Submit_For_Verification, ETCode = "ET002PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublicEvent, NotificationType = NotificationType.Approve_Public_Event_ByApprover_1, ETCode = "ET003PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublicEvent, NotificationType = NotificationType.Approve_Public_Event_ByApprover_2, ETCode = "ET004PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublicEvent, NotificationType = NotificationType.Approve_Public_Event_ByApprover_3, ETCode = "ET005PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.CancelPublicEvent, NotificationType = NotificationType.Cancel_Public_Event, ETCode = "ET006PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.RejectPublicEvent, NotificationType = NotificationType.Reject_Public_Event, ETCode = "ET007PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.PublishPublicEvent, NotificationType = NotificationType.Publish_Public_Event, ETCode = "ET008PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+			//{
+			db.SLAReminder.AddOrUpdate(s => s.NotificationType,
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.SubmitPublicEvent, NotificationType = NotificationType.Submit_Public_Event_For_Verification, ETCode = "ET001PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.VerifyPublicEvent, NotificationType = NotificationType.Verify_Public_Event_After_Submit_For_Verification, ETCode = "ET002PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApprovePublicEvent, NotificationType = NotificationType.Approve_Public_Event_ByApprover_1, ETCode = "ET003PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApprovePublicEvent, NotificationType = NotificationType.Approve_Public_Event_ByApprover_2, ETCode = "ET004PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApprovePublicEvent, NotificationType = NotificationType.Approve_Public_Event_ByApprover_3, ETCode = "ET005PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.CancelPublicEvent, NotificationType = NotificationType.Cancel_Public_Event, ETCode = "ET006PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.RejectPublicEvent, NotificationType = NotificationType.Reject_Public_Event, ETCode = "ET007PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.PublishPublicEvent, NotificationType = NotificationType.Publish_Public_Event, ETCode = "ET008PE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
-                //EVENT EXTERNAL - MEDIA INTERVIEW
-                new SLAReminder { SLAEventType = SLAEventType.SubmitMediaInterview, NotificationType = NotificationType.Submit_Media_Interview_For_Verification, ETCode = "ET001EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.VerifyMediaInterview, NotificationType = NotificationType.Verify_Media_Interview_After_Submit_For_Verification, ETCode = "ET002EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveMediaInterview, NotificationType = NotificationType.Approve_Media_Interview_ByApprover_1, ETCode = "ET003EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveMediaInterview, NotificationType = NotificationType.Approve_Media_Interview_ByApprover_2, ETCode = "ET004EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveMediaInterview, NotificationType = NotificationType.Approve_Media_Interview_ByApprover_3, ETCode = "ET005EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.RejectMediaInterview, NotificationType = NotificationType.Reject_Media_Interview, ETCode = "ET006EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				//EVENT EXTERNAL - MEDIA INTERVIEW
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.SubmitMediaInterview, NotificationType = NotificationType.Submit_Media_Interview_For_Verification, ETCode = "ET001EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.VerifyMediaInterview, NotificationType = NotificationType.Verify_Media_Interview_After_Submit_For_Verification, ETCode = "ET002EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveMediaInterview, NotificationType = NotificationType.Approve_Media_Interview_ByApprover_1, ETCode = "ET003EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveMediaInterview, NotificationType = NotificationType.Approve_Media_Interview_ByApprover_2, ETCode = "ET004EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveMediaInterview, NotificationType = NotificationType.Approve_Media_Interview_ByApprover_3, ETCode = "ET005EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.RejectMediaInterview, NotificationType = NotificationType.Reject_Media_Interview, ETCode = "ET006EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
-                //EVENT EXTERNAL - EXHIBITION ROADSHOW
-                new SLAReminder { SLAEventType = SLAEventType.SubmitExhibitionRoadshow, NotificationType = NotificationType.Submit_Exhibition_RoadShow_For_Verification, ETCode = "ET007EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.VerifyExhibitionRoadshow, NotificationType = NotificationType.Verify_Exhibition_RoadShow_After_Submit_For_Verification, ETCode = "ET008EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveExhibitionRoadshow, NotificationType = NotificationType.Approve_Exhibition_RoadShow_ByApprover_1, ETCode = "ET009EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveExhibitionRoadshow, NotificationType = NotificationType.Approve_Exhibition_RoadShow_ByApprover_2, ETCode = "ET010EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveExhibitionRoadshow, NotificationType = NotificationType.Approve_Exhibition_RoadShow_ByApprover_3, ETCode = "ET011EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.RejectExhibitionRoadshow, NotificationType = NotificationType.Reject_Exhibition_RoadShow, ETCode = "ET012EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				//EVENT EXTERNAL - EXHIBITION ROADSHOW
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.SubmitExhibitionRoadshow, NotificationType = NotificationType.Submit_Exhibition_RoadShow_For_Verification, ETCode = "ET007EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.VerifyExhibitionRoadshow, NotificationType = NotificationType.Verify_Exhibition_RoadShow_After_Submit_For_Verification, ETCode = "ET008EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveExhibitionRoadshow, NotificationType = NotificationType.Approve_Exhibition_RoadShow_ByApprover_1, ETCode = "ET009EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveExhibitionRoadshow, NotificationType = NotificationType.Approve_Exhibition_RoadShow_ByApprover_2, ETCode = "ET010EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveExhibitionRoadshow, NotificationType = NotificationType.Approve_Exhibition_RoadShow_ByApprover_3, ETCode = "ET011EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.RejectExhibitionRoadshow, NotificationType = NotificationType.Reject_Exhibition_RoadShow, ETCode = "ET012EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
 
-                new SLAReminder { SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Pending_GL, ETCode = "ET003PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Pending_Payment, ETCode = "ET004PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Verify_GL, ETCode = "ET005PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Verify_Payment, ETCode = "ET006PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Verify_Refund_Request, ETCode = "ET007PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Approve_Refund_Request, ETCode = "ET008PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Pending_Refund, ETCode = "ET009PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Payment, SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Pending_GL, ETCode = "ET003PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Payment, SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Verify_GL, ETCode = "ET005PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Payment, SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Verify_Payment, ETCode = "ET006PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Payment, SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Verify_Refund_Request, ETCode = "ET007PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Payment, SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Approve_Refund_Request, ETCode = "ET008PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Payment, SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Pending_Payment, ETCode = "ET004PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Payment, SLAEventType = SLAEventType.Payment, NotificationType = NotificationType.Payment_Pending_Refund, ETCode = "ET009PY", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
-                new SLAReminder { SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Creation, ETCode = "ET016EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Published_Change, ETCode = "ET017EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Published_Withdraw, ETCode = "ET018EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Participant_Withdraw, ETCode = "ET019EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
-                new SLAReminder { SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Creation_Approver1, ETCode = "ET020EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Creation_Approver2, ETCode = "ET021EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Creation_Approver3, ETCode = "ET022EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Published_Change, ETCode = "ET023EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Published_Withdraw, ETCode = "ET024EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Participant_Withdraw, ETCode = "ET025EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				//EVENT EXTERNAL - 
+				//new SLAReminder { SLAEventType = SLAEventType.VerifyExternalRequest, NotificationType = NotificationType.Verify_External_Request_Exhibition_ESS, ETCode = "ET011EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				//new SLAReminder { SLAEventType = SLAEventType.VerifyExternalRequest, NotificationType = NotificationType.Verify_External_Request_Duty_Roster, ETCode = "ET012EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				//new SLAReminder { SLAEventType = SLAEventType.ApproveExternalRequest, NotificationType = NotificationType.Approve_External_Request_Exhibition_Participation, ETCode = "ET013EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				//new SLAReminder { SLAEventType = SLAEventType.ApproveExternalRequest, NotificationType = NotificationType.Approve_External_Request_Duty_Roster, ETCode = "ET014EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
-                // survey
-                new SLAReminder { SLAEventType = SLAEventType.SubmitSurvey, NotificationType = NotificationType.Submit_Survey_Creation, ETCode = "ET101RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.CancelSurvey, NotificationType = NotificationType.Submit_Survey_Cancellation, ETCode = "ET102RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.PublishSurvey, NotificationType = NotificationType.Submit_Survey_Publication, ETCode = "ET103RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.VerifySurvey, NotificationType = NotificationType.Verify_Survey_Creation, ETCode = "ET111RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_1, ETCode = "ET121RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_2, ETCode = "ET122RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_3, ETCode = "ET123RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_Final, ETCode = "ET124RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.DistributeSurvey, NotificationType = NotificationType.Submit_Survey_Distribution, ETCode = "ET131RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.AnswerSurvey, NotificationType = NotificationType.Submit_Survey_Response, ETCode = "ET132RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Creation, ETCode = "ET016EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Published_Change, ETCode = "ET017EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Published_Withdraw, ETCode = "ET018EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Participant_Withdraw, ETCode = "ET019EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
-                // publication
-                new SLAReminder { SLAEventType = SLAEventType.SubmitPublication, NotificationType = NotificationType.Submit_Publication_Creation, ETCode = "ET201RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.CancelPublication, NotificationType = NotificationType.Submit_Publication_Cancellation, ETCode = "ET202RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.PublishPublication, NotificationType = NotificationType.Submit_Publication_Publication, ETCode = "ET203RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ModifyPublication, NotificationType = NotificationType.Submit_Publication_Modification, ETCode = "ET204RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.WithdrawPublication, NotificationType = NotificationType.Submit_Publication_Withdrawal, ETCode = "ET205RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.CancelModifyPublication, NotificationType = NotificationType.Submit_Publication_Modification_Cancellation, ETCode = "ET206RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.CancelWithdrawPublication, NotificationType = NotificationType.Submit_Publication_Withdrawal_Cancellation, ETCode = "ET207RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.VerifyPublication, NotificationType = NotificationType.Verify_Publication_Creation, ETCode = "ET211RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.VerifyPublicationModification, NotificationType = NotificationType.Verify_Publication_Modification, ETCode = "ET212RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.VerifyPublicationWithdrawal, NotificationType = NotificationType.Verify_Publication_Withdrawal, ETCode = "ET213RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublication, NotificationType = NotificationType.Approve_Publication_Creation_1, ETCode = "ET221RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublication, NotificationType = NotificationType.Approve_Publication_Creation_2, ETCode = "ET222RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublication, NotificationType = NotificationType.Approve_Publication_Creation_3, ETCode = "ET223RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublication, NotificationType = NotificationType.Approve_Publication_Creation_Final, ETCode = "ET224RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationModification, NotificationType = NotificationType.Approve_Publication_Modification_1, ETCode = "ET225RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationModification, NotificationType = NotificationType.Approve_Publication_Modification_2, ETCode = "ET226RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationModification, NotificationType = NotificationType.Approve_Publication_Modification_3, ETCode = "ET227RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationModification, NotificationType = NotificationType.Approve_Publication_Modification_Final, ETCode = "ET228RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_1, ETCode = "ET229RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_2, ETCode = "ET230RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_3, ETCode = "ET231RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_Final, ETCode = "ET232RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Published_Change, ETCode = "ET021EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Published_Withdraw, ETCode = "ET022EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Participant_Withdraw, ETCode = "ET023EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Creation, ETCode = "ET020EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
-                new SLAReminder { SLAEventType = SLAEventType.RefundPublication, NotificationType = NotificationType.Submit_Publication_Refund, ETCode = "ET241RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.RefundPublication, NotificationType = NotificationType.Approve_Publication_Refund_Incomplete, ETCode = "ET242RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.RefundPublication, NotificationType = NotificationType.Approve_Publication_Refund_Complete, ETCode = "ET243RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                    // survey
+                    new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.SubmitSurvey, NotificationType = NotificationType.Submit_Survey_Creation, ETCode = "ET101RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                    new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.CancelSurvey, NotificationType = NotificationType.Submit_Survey_Cancellation, ETCode = "ET102RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                    new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.PublishSurvey, NotificationType = NotificationType.Submit_Survey_Publication, ETCode = "ET103RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                    new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifySurvey, NotificationType = NotificationType.Verify_Survey_Creation, ETCode = "ET111RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+					new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_1, ETCode = "ET121RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+					new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_2, ETCode = "ET122RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                    new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_3, ETCode = "ET123RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                    new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveSurvey, NotificationType = NotificationType.Approve_Survey_Creation_Final, ETCode = "ET124RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                    new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.DistributeSurvey, NotificationType = NotificationType.Submit_Survey_Distribution, ETCode = "ET131RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                    new SLAReminder { NotificationCategory = NotificationCategory.Learning,  SLAEventType = SLAEventType.AnswerSurvey, NotificationType = NotificationType.Submit_Survey_Response, ETCode = "ET132RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
-                //system
-                new SLAReminder { SLAEventType = SLAEventType.ActivateAccount, NotificationType = NotificationType.ActivateAccount, ETCode = "ET001SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.ResetPassword, NotificationType = NotificationType.ResetPassword, ETCode = "ET002SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days },
-                new SLAReminder { SLAEventType = SLAEventType.SystemError, NotificationType = NotificationType.SystemError, ETCode = "ET003SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days }
-                );
-            //}
-        }
+				// publication
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.SubmitPublication, NotificationType = NotificationType.Submit_Publication_Creation, ETCode = "ET201RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.CancelPublication, NotificationType = NotificationType.Submit_Publication_Cancellation, ETCode = "ET202RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.PublishPublication, NotificationType = NotificationType.Submit_Publication_Publication, ETCode = "ET203RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ModifyPublication, NotificationType = NotificationType.Submit_Publication_Modification, ETCode = "ET204RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.WithdrawPublication, NotificationType = NotificationType.Submit_Publication_Withdrawal, ETCode = "ET205RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.CancelModifyPublication, NotificationType = NotificationType.Submit_Publication_Modification_Cancellation, ETCode = "ET206RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.CancelWithdrawPublication, NotificationType = NotificationType.Submit_Publication_Withdrawal_Cancellation, ETCode = "ET207RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.VerifyPublication, NotificationType = NotificationType.Verify_Publication_Creation, ETCode = "ET211RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.VerifyPublicationModification, NotificationType = NotificationType.Verify_Publication_Modification, ETCode = "ET212RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.VerifyPublicationWithdrawal, NotificationType = NotificationType.Verify_Publication_Withdrawal, ETCode = "ET213RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ApprovePublication, NotificationType = NotificationType.Approve_Publication_Creation_1, ETCode = "ET221RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ApprovePublication, NotificationType = NotificationType.Approve_Publication_Creation_2, ETCode = "ET222RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ApprovePublication, NotificationType = NotificationType.Approve_Publication_Creation_3, ETCode = "ET223RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ApprovePublication, NotificationType = NotificationType.Approve_Publication_Creation_Final, ETCode = "ET224RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ApprovePublicationModification, NotificationType = NotificationType.Approve_Publication_Modification_1, ETCode = "ET225RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ApprovePublicationModification, NotificationType = NotificationType.Approve_Publication_Modification_2, ETCode = "ET226RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ApprovePublicationModification, NotificationType = NotificationType.Approve_Publication_Modification_3, ETCode = "ET227RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ApprovePublicationModification, NotificationType = NotificationType.Approve_Publication_Modification_Final, ETCode = "ET228RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_1, ETCode = "ET229RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_2, ETCode = "ET230RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_3, ETCode = "ET231RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.ResearchAndPublication, SLAEventType = SLAEventType.ApprovePublicationWithdrawal, NotificationType = NotificationType.Approve_Publication_Withdrawal_Final, ETCode = "ET232RP", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+
+				//system
+				new SLAReminder { NotificationCategory = NotificationCategory.System, SLAEventType = SLAEventType.ActivateAccount, NotificationType = NotificationType.ActivateAccount, ETCode = "ET001SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.System, SLAEventType = SLAEventType.ResetPassword, NotificationType = NotificationType.ResetPassword, ETCode = "ET002SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.System, SLAEventType = SLAEventType.SystemError, NotificationType = NotificationType.SystemError, ETCode = "ET003SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days }
+				);
+			//}
+		}
 
         public static void DefaultParameterGroup(DbEntities db)
         {
@@ -156,12 +157,27 @@ namespace FEP.Model.Migrations
                         new ParameterGroup { SLAEventType = SLAEventType.ActivateAccount, TemplateParameterType = paramType });
                     }
 
-                    if (paramType == TemplateParameterType.ErrorDetail)
-                    {
-                        EventType = SLAEventType.Payment;
-                    }
-                }
+					if (paramType == TemplateParameterType.ErrorDetail)
+					{
+						EventType = SLAEventType.Payment;
+					}
+                    
 
+				}
+                if (pType >= 21 && pType <= 40) //Verify & Approval
+                {
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.SubmitPublicEvent, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicEvent, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicEvent, TemplateParameterType = paramType });
+
+                    continue;
+
+                }
                 if (pType >= 101 && pType <= 120)
                 {
                     db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
@@ -186,9 +202,9 @@ namespace FEP.Model.Migrations
                     new ParameterGroup { SLAEventType = SLAEventType.AnswerSurvey, TemplateParameterType = paramType });
 
                     continue;
-                }
 
-                if (pType >= 121 && pType <= 130)
+                }
+                if (pType >= 121 && pType <= 140)
                 {
                     db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
                     new ParameterGroup { SLAEventType = SLAEventType.SubmitPublication, TemplateParameterType = paramType });
@@ -230,255 +246,96 @@ namespace FEP.Model.Migrations
                     new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicationWithdrawal, TemplateParameterType = paramType });
 
                     continue;
+
                 }
 
-                if (pType >= 131 && pType <= 140)
-                {
-                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                    new ParameterGroup { SLAEventType = SLAEventType.RefundPublication, TemplateParameterType = paramType });
 
-                    // other refunds can add here
+			}
+			//}
 
-                    continue;
-                }
-
-                if (pType >= 141 && pType <= 160)
-                {
-                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                    new ParameterGroup { SLAEventType = SLAEventType.VerifyCourses, TemplateParameterType = paramType });
-
-                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
-                    new ParameterGroup { SLAEventType = SLAEventType.ApproveCourses, TemplateParameterType = paramType });
-
-                    continue;
-                }
-
-            }
-            //}
-        }
+		}
 
         public static void DefaultTemplate(DbEntities db)
         {
            
             var user = db.User.Local.Where(r => r.Name.Contains("System Admin")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("System Admin")).FirstOrDefault();
 
-            foreach (NotificationType notifyType in Enum.GetValues(typeof(NotificationType)))
-            {
-
+			foreach (NotificationType notifyType in Enum.GetValues(typeof(NotificationType)))
+			{
+                var tempSLA = db.SLAReminder.Where(s => s.NotificationType == notifyType).FirstOrDefault();
+                NotificationCategory tempCategory = (int)0;
+                if (tempSLA != null) { tempCategory = tempSLA.NotificationCategory; }
                 switch (notifyType)
-                {
-
+				{
+                    
                     case NotificationType.ActivateAccount:
 
+                        
                         db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
-                        new NotificationTemplate
-                        {
-                            NotificationType = notifyType,
+						new NotificationTemplate
+						{
+							NotificationType = notifyType,
+                            NotificationCategory = tempCategory,
                             TemplateName = notifyType.DisplayName(),
-                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
-                            enableEmail = true,
-                            TemplateSubject = "New FE Portal Account Created",
-                            TemplateMessage = "&lt;p&gt;Dear&amp;nbsp;&lt;span style=&quot;font-size: 1rem;&quot;&gt;[#UserFullName],&lt;/span&gt;&lt;/p&gt;&lt;p&gt;You can activate your account [#Link].&amp;nbsp;&lt;/p&gt;&lt;p&gt;Your login details:&lt;/p&gt;&lt;p&gt;[#LoginDetail]&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(255, 255, 255); font-size: 12px; text-align: center; white-space: nowrap; background-color: rgb(41, 182, 246);&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/p&gt;",
-                            enableSMSMessage = false,
-                            SMSMessage = "SMS Message Template",
-                            enableWebMessage = false,
-                            WebMessage = "Web Message Template",
-                            CreatedDate = DateTime.Now,
-                            CreatedBy = user.Id,
-                            User = user,
-                            Display = true
-                        });
-
-                        db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType },
-                            new TemplateParameters { NotificationType = notifyType, TemplateParameterType = "[#UserFullName]" },
-                            new TemplateParameters { NotificationType = notifyType, TemplateParameterType = "[#Link]" },
-                            new TemplateParameters { NotificationType = notifyType, TemplateParameterType = "[#LoginDetail]" }
-                            );
+							TemplateRefNo = "T" + ((int)notifyType).ToString(),
+							enableEmail = true,
+							TemplateSubject = "New FE Portal Account Created",
+							TemplateMessage = "&lt;p&gt;Dear&amp;nbsp;&lt;span style=&quot;font-size: 1rem;&quot;&gt;[#UserFullName],&lt;/span&gt;&lt;/p&gt;&lt;p&gt;You can activate your account [#Link].&amp;nbsp;&lt;/p&gt;&lt;p&gt;Your login details:&lt;/p&gt;&lt;p&gt;[#LoginDetail]&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(255, 255, 255); font-size: 12px; text-align: center; white-space: nowrap; background-color: rgb(41, 182, 246);&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/p&gt;",
+							enableSMSMessage = false,
+							SMSMessage = "SMS Message Template",
+							enableWebMessage = false,
+							WebMessage = "Web Message Template",
+							CreatedDate = DateTime.Now,
+							CreatedBy = user.Id,
+							Display = true
+						});
 
 
-                        break;
+						break;
 
                     case NotificationType.ResetPassword:
 
-                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
-                        new NotificationTemplate
-                        {
-                            NotificationType = notifyType,
+						db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+						new NotificationTemplate
+						{
+							NotificationType = notifyType,
+                            NotificationCategory = tempCategory,
                             TemplateName = notifyType.DisplayName(),
-                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
-                            enableEmail = true,
-                            TemplateSubject = "FE Portal Password Reset",
-                            TemplateMessage = "&lt;p style=&quot;font-size: 16px;&quot;&gt;Dear&amp;nbsp;&lt;span style=&quot;font-size: 1rem;&quot;&gt;[#UserFullName],&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;font-size: 16px;&quot;&gt;You can reset your password [#Link].&amp;nbsp;&lt;/p&gt;&lt;p style=&quot;font-size: 16px;&quot;&gt;&lt;br&gt;&lt;/p&gt;",
-                            enableSMSMessage = false,
-                            SMSMessage = "SMS Message Template",
-                            enableWebMessage = false,
-                            WebMessage = "Web Message Template",
-                            CreatedDate = DateTime.Now,
-                            CreatedBy = user.Id,
-                            User = user,
-                            Display = true
-                        });
-
-
-                        db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType },
-                            new TemplateParameters { NotificationType = notifyType, TemplateParameterType = "[#UserFullName]" },
-                            new TemplateParameters { NotificationType = notifyType, TemplateParameterType = "[#Link]" }
-                            );
-
-                        break;
-
-                    case NotificationType.Verify_Courses_Creation:
-
-                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
-                        new NotificationTemplate
-                        {
-                            NotificationType = notifyType,
-                            TemplateName = notifyType.DisplayName(),
-                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
-                            enableEmail = true,
-                            TemplateSubject = "Verify A New Course : [#CourseTitle]",
-                            TemplateMessage = @"Hi,<br />
-                                                <p>A course [#CourseTitle] requires verification.</p><br />
-                                                Please click <a href='[#Link]'>here</a> to verify.<br />
-                                                Thank you.<br />",
-                            enableSMSMessage = false,
-                            SMSMessage = "SMS Message Template",
-                            enableWebMessage = false,
-                            WebMessage = "Web Message Template",
-                            CreatedDate = DateTime.Now,
-                            CreatedBy = user.Id,
-                            User = user,
-                            Display = true
-                        });
-
-                        break;
-
-                    case NotificationType.Approve_Courses_Creation_Approver1:
-                    case NotificationType.Approve_Courses_Creation_Approver2:
-                    case NotificationType.Approve_Courses_Creation_Approver3:
-
-                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
-                        new NotificationTemplate
-                        {
-                            NotificationType = notifyType,
-                            TemplateName = notifyType.DisplayName(),
-                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
-                            enableEmail = true,
-                            TemplateSubject = "Approval needed for Course : [#CourseTitle]",
-                            TemplateMessage = @"Hi, <br />
-                                                A course [#CourseTitle] requires Approval.<br />
-                                                Please  click <a href='[#Link]'>here</a> to approve.<br />
-                                                Thank you.<br />",
-                            enableSMSMessage = false,
-                            SMSMessage = "SMS Message Template",
-                            enableWebMessage = false,
-                            WebMessage = "Web Message Template",
-                            CreatedDate = DateTime.Now,
-                            CreatedBy = user.Id,
-                            User = user,
-                            Display = true
-                        });
-
-                        break;
-
-                    case NotificationType.Course_Approved:
-
-                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
-                        new NotificationTemplate
-                        {
-                            NotificationType = notifyType,
-                            TemplateName = notifyType.DisplayName(),
-                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
-                            enableEmail = true,
-                            TemplateSubject = "Course  [#CourseTitle] has been Approved",
-                            TemplateMessage = @"Hi, <br />
-                                                The course [#CourseTitle] has been approved.<br />
-                                                Please  click <a href='[#Link]'>here</a> to view.<br />
-                                                Thank you.<br />",
-                            enableSMSMessage = false,
-                            SMSMessage = "SMS Message Template",
-                            enableWebMessage = false,
-                            WebMessage = "Web Message Template",
-                            CreatedDate = DateTime.Now,
-                            CreatedBy = user.Id,
-                            User = user,
-                            Display = true
-                        });
-
-                        break;
-
-                    case NotificationType.Course_Amendment:
-
-                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
-                        new NotificationTemplate
-                        {
-                            NotificationType = notifyType,
-                            TemplateName = notifyType.DisplayName(),
-                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
-                            enableEmail = true,
-                            TemplateSubject = "Course [#CourseTitle] Require Amendment",
-                            TemplateMessage = @"Hi, <br />
-                                                A course [#CourseTitle] requires ammendment.<br />
-                                                Please  click <a href='[#Link]'>here</a> to view.<br />
-                                                Thank you.<br />",
-                            enableSMSMessage = false,
-                            SMSMessage = "SMS Message Template",
-                            enableWebMessage = false,
-                            WebMessage = "Web Message Template",
-                            CreatedDate = DateTime.Now,
-                            CreatedBy = user.Id,
-                            User = user,
-                            Display = true
-                        });
-
-                        break;
-
-                    case NotificationType.Course_Invitation:
-
-                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
-                        new NotificationTemplate
-                        {
-                            NotificationType = notifyType,
-                            TemplateName = notifyType.DisplayName(),
-                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
-                            enableEmail = true,
-                            TemplateSubject = "Invitation to Enroll To Course [#CourseTitle]",
-                            TemplateMessage = @"Hi, <br />
-                                                You are invited to enroll to the course [#CourseTitle]<br />
-                                                Please  click <a href='[#Link]'>here</a> to enroll.<br />
-                                                Thank you.<br />",
-                            enableSMSMessage = false,
-                            SMSMessage = "SMS Message Template",
-                            enableWebMessage = false,
-                            WebMessage = "Web Message Template",
-                            CreatedDate = DateTime.Now,
-                            CreatedBy = user.Id,
-                            User = user,
-                            Display = true
-                        });
+							TemplateRefNo = "T" + ((int)notifyType).ToString(),
+							enableEmail = true,
+							TemplateSubject = "FE Portal Password Reset",
+							TemplateMessage = "&lt;p style=&quot;font-size: 16px;&quot;&gt;Dear&amp;nbsp;&lt;span style=&quot;font-size: 1rem;&quot;&gt;[#UserFullName],&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;font-size: 16px;&quot;&gt;You can reset your password [#Link].&amp;nbsp;&lt;/p&gt;&lt;p style=&quot;font-size: 16px;&quot;&gt;&lt;br&gt;&lt;/p&gt;",
+							enableSMSMessage = false,
+							SMSMessage = "SMS Message Template",
+							enableWebMessage = false,
+							WebMessage = "Web Message Template",
+							CreatedDate = DateTime.Now,
+							CreatedBy = user.Id,
+							Display = true
+						});
 
                         break;
 
                     default:
 
-                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
-                            new NotificationTemplate
-                            {
-                                NotificationType = notifyType,
+						db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+							new NotificationTemplate
+							{
+								NotificationType = notifyType,
+                                NotificationCategory = tempCategory,
                                 TemplateName = notifyType.DisplayName(),
-                                TemplateRefNo = "T" + ((int)notifyType).ToString(),
-                                enableEmail = true,
-                                TemplateSubject = "Subject: " + notifyType.DisplayName(),
-                                TemplateMessage = "Email Body Template",
-                                enableSMSMessage = true,
-                                SMSMessage = "SMS Message Template",
-                                enableWebMessage = true,
-                                WebMessage = "Web Message Template",
-                                CreatedDate = DateTime.Now,
-                                CreatedBy = user.Id,
-                                User = user,
-                                Display = true
-                            });
+								TemplateRefNo = "T" + ((int)notifyType).ToString(),
+								enableEmail = true,
+								TemplateSubject = "Subject: " + notifyType.DisplayName(),
+								TemplateMessage = "Email Body Template",
+								enableSMSMessage = true,
+								SMSMessage = "SMS Message Template",
+								enableWebMessage = true,
+								WebMessage = "Web Message Template",
+								CreatedDate = DateTime.Now,
+								CreatedBy = user.Id,
+								Display = true
+							});
 
                         break;
 

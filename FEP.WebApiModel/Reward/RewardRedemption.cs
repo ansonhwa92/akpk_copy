@@ -14,6 +14,8 @@ namespace FEP.WebApiModel.Reward
         public string RewardCode { get; set; }
         [Display(Name = "Description")]
         public string Description { get; set; }
+        [Display(Name = "Discount Value")]
+        public int DiscountValue { get; set; }
         [Display(Name = "Points To Redeem")]
         public int PointsToRedeem { get; set; }
         [Display(Name = "Valid Duration (Days)")]
@@ -63,6 +65,8 @@ namespace FEP.WebApiModel.Reward
         public string RewardCode { get; set; }
         [Display(Name = "Description")]
         public string Description { get; set; }
+        [Display(Name = "Discount Value")] 
+        public int DiscountValue { get; set; }
         [Display(Name = "Points To Redeem")]
         public int? PointsToRedeem { get; set; }
         [Display(Name = "Valid Duration (Days)")]

@@ -114,6 +114,7 @@ namespace FEP.Intranet.Areas.Template.Controllers
                     SMSMessage = model.SMSMessage,
                     enableWebMessage = model.enableWebMessage,
                     WebMessage = model.WebMessage,
+                    WebNotifyLink = model.WebNotifyLink,
                     //Display = true
                 };
 
@@ -136,7 +137,10 @@ namespace FEP.Intranet.Areas.Template.Controllers
                 if (obj.enableWebMessage)
                 {
                     if (obj.WebMessage != null)
+                    {
                         ParamList = ParamList.Union(ParameterListing(obj.WebMessage)).ToList();
+                        ParamList = ParamList.Union(ParameterListing(obj.WebNotifyLink)).ToList();
+                    }
                 }
 
                 obj.ParameterList = ParamList;
@@ -161,33 +165,33 @@ namespace FEP.Intranet.Areas.Template.Controllers
                     NotificationCategory = NotificationCategory.Event,
                     ParameterListToSend = paramToSend,
                     StartNotificationDate = DateTime.Now,
-                    ReceiverId = new List<int> { 2 }
+                    ReceiverId = new List<int> { 231 }
                 };
 
-                /*var response = await WepApiMethod.SendApiAsync<ReminderResponse>
-                    (HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);*/
+                var response = await WepApiMethod.SendApiAsync<ReminderResponse>
+                    (HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
 
-                int SLAReminderStatusId = 26;
+                /*int SLAReminderStatusId = 8;
                 var response = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
-                    (HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+                    (HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");*/
 
                 if (response.isSuccess)
                 {
-                    await LogActivity(Modules.Setting, "Create Email Template");
-                    TempData["SuccessMessage"] = "Email Template created successfully";
+                    await LogActivity(Modules.Setting, "Create Notification Template");
+                    TempData["SuccessMessage"] = "Notification Template created successfully";
 
                     
                     return RedirectToAction("List");
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Failed to create Email Template";
+                    TempData["ErrorMessage"] = "Failed to create Notification Template";
                     return RedirectToAction("List");
                 }
             }
             else
             {
-                TempData["ErrorMessage"] = "Failed to create Email Template";
+                TempData["ErrorMessage"] = "Failed to create Notification Template";
                 return RedirectToAction("List");
             }
 
@@ -242,6 +246,7 @@ namespace FEP.Intranet.Areas.Template.Controllers
             {
                 Id = response.Data.Id,
                 NotificationType = response.Data.NotificationType,
+                NotificationCategory = response.Data.NotificationCategory,
                 TemplateName = response.Data.TemplateName,
                 TemplateSubject = response.Data.TemplateSubject,
                 TemplateRefNo = response.Data.TemplateRefNo,
@@ -251,6 +256,7 @@ namespace FEP.Intranet.Areas.Template.Controllers
                 SMSMessage = response.Data.SMSMessage,
                 enableWebMessage = response.Data.enableWebMessage,
                 WebMessage = response.Data.WebMessage,
+                WebNotifyLink = response.Data.WebNotifyLink
             };
             model.NotificationTypeList = (Enum.GetValues(typeof(NotificationType)).Cast<int>()
                 .Select(e => new SelectListItem()
@@ -323,7 +329,11 @@ namespace FEP.Intranet.Areas.Template.Controllers
                 if (model.enableWebMessage)
                 {
                     if (model.WebMessage != null)
+                    {
                         ParamList = ParamList.Union(ParameterListing(model.WebMessage)).ToList();
+                        ParamList = ParamList.Union(ParameterListing(model.WebNotifyLink)).ToList();
+                    }
+                        
                 }
 
                 model.ParameterList = ParamList;
@@ -332,20 +342,20 @@ namespace FEP.Intranet.Areas.Template.Controllers
                 if (response.isSuccess)
                 {
 					//aiman edit
-                    await LogActivity(Modules.Setting, "Update Email Template");
-                    TempData["SuccessMessage"] = "Email Template updated successfully";
+                    await LogActivity(Modules.Setting, "Update Notification Template");
+                    TempData["SuccessMessage"] = "Notification Template updated successfully";
 
                     return RedirectToAction("Details", "EmailTemplates", new { area = "Template", @id = model.Id });
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Failed to update Email Template";
+                    TempData["ErrorMessage"] = "Failed to update Notification Template";
                     return RedirectToAction("Details", "EmailTemplates", new { area = "Template", @id = model.Id });
                 }
             }
             else
             {
-                TempData["ErrorMessage"] = "Failed to update Email Template";
+                TempData["ErrorMessage"] = "Failed to update Notification Template";
                 return RedirectToAction("Details", "EmailTemplates", new { area = "Template", @id = model.Id });
             }
         }
@@ -392,15 +402,15 @@ namespace FEP.Intranet.Areas.Template.Controllers
             if (response.isSuccess)
             {
 				//aiman edit
-                await LogActivity(Modules.Setting, "Delete Email Template");
+                await LogActivity(Modules.Setting, "Delete Notification Template");
 
-                TempData["SuccessMessage"] = "Email Template successfully deleted.";
+                TempData["SuccessMessage"] = "Notification Template successfully deleted.";
                 return RedirectToAction("List");
             }
             else
             {
 
-                TempData["ErrorMessage"] = "Failed to delete Email Template.";
+                TempData["ErrorMessage"] = "Failed to delete Notification Template.";
                 return RedirectToAction("List");
             }
 

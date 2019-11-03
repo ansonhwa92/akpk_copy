@@ -65,8 +65,8 @@
                         <div class="form-group col-lg-12">
                             <label>@Html.DisplayNameFor(model => model.ActivityDummyList)</label>
                             <div class="col-lg-12 pl-0">
-                                @Html.DropDownListFor(model => model.ActivityId, Model.ActivityDummyList, "-Select Activity-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
-                                @Html.ValidationMessageFor(model => model.ActivityId, "", new { @class = "text-danger" })
+                                @Html.DropDownListFor(model => model.CourseId, Model.ActivityDummyList, "-Select Course-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+                                @Html.ValidationMessageFor(model => model.CourseId, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>

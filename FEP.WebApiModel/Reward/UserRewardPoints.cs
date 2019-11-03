@@ -13,10 +13,10 @@ namespace FEP.WebApiModel.Reward
 {
     public class UserRewardPointsModel
     {
-        [Display(Name = "Activity")]
-        public int? ActivityId { get; set; }
-        [Display(Name = "Activity")]
-        public string ActivityName { get; set; }
+        [Display(Name = "Course")]
+        public int? CourseId { get; set; }
+        [Display(Name = "Course")]
+        public string CourseName { get; set; }
         [Display(Name = "Points Received")]
         public int PointsReceived { get; set; }
         [Display(Name = "User")]
@@ -76,8 +76,8 @@ namespace FEP.WebApiModel.Reward
     }
     public class FilterUserRewardPointsModel : DataTableModel
     {
-        [Display(Name = "Activity")]
-        public string ActivityName { get; set; }
+        [Display(Name = "Course")]
+        public string CourseName { get; set; }
         [Display(Name = "Points Received")]
         public int? PointsReceived { get; set; }
         [Display(Name = "User")]

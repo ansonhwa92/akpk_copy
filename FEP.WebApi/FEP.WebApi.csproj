@@ -350,9 +350,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Temp_Upload\" />
-    <Folder Include="bin\" />
-    <Folder Include="Method\" />
     <Folder Include="bin\roslyn\" />
+    <Folder Include="Method\" />
     <Folder Include="Views\Auth\" />
     <Folder Include="Views\Cart\" />
     <Folder Include="Views\Client\" />

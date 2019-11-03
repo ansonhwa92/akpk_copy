@@ -134,8 +134,16 @@ namespace FEP.Model
 		[Display(Name = "Approve Courses Participant Withdraw")]
 		Approve_Courses_Participant_Withdraw,
 
-        //Survey
-        [Display(Name = "Survey Created and Submitted for Verification")]
+		//Other Courses Action
+		[Display(Name = "Course Is Approved")]
+		Course_Approved,
+		[Display(Name = "Course Requires Amendment")]
+		Course_Amendment,
+		[Display(Name = "Invitation To Enroll To Course")]
+		Course_Invitation,
+
+		//Survey
+		[Display(Name = "Survey Created and Submitted for Verification")]
         Submit_Survey_Creation,
         [Display(Name = "Survey Cancelled")]
         Submit_Survey_Cancellation,

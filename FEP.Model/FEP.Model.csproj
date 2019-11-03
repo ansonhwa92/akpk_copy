@@ -58,6 +58,10 @@
     <Compile Include="Migrations\201911031348515_x.designer.cs">
       <DependentUpon>201911031348515_x.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911032045527_x1.cs" />
+    <Compile Include="Migrations\201911032045527_x1.designer.cs">
+      <DependentUpon>201911032045527_x1.cs</DependentUpon>
+    </Compile>
     <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="DbEntities.cs" />
@@ -122,6 +126,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201911031348515_x.resx">
       <DependentUpon>201911031348515_x.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911032045527_x1.resx">
+      <DependentUpon>201911032045527_x1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -248,7 +248,10 @@ namespace FEP.WebApi.Api.eEvent
 					RepMobileNumber = i.User.MobileNo,
 					ContactPerson = i.ContactPerson,
 					CreatedBy = i.CreatedBy,
-					CreatedDate = i.CreatedDate
+					CreatedDate = i.CreatedDate,
+					RefNo = i.RefNo,
+					MediaStatus = i.MediaStatus,
+					
 				}).FirstOrDefault();
 
 			if (media == null)
@@ -256,7 +259,7 @@ namespace FEP.WebApi.Api.eEvent
 				return NotFound();
 			}
 
-			media.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.PublicEvent && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+			media.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.ExhibitionRoadshow && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
 			return Ok(media);
 		}
@@ -297,13 +300,14 @@ namespace FEP.WebApi.Api.eEvent
 			{
 				var eventfile = new EventFile
 				{
-					FileCategory = EventFileCategory.PublicEvent,
+					FileCategory = EventFileCategory.MediaInterview,
 					FileId = fileid,
 					ParentId = media.Id
 				};
 
 				db.EventFile.Add(eventfile);
 			}
+			db.SaveChanges();
 
 			var refno = "EVT/" + DateTime.Now.ToString("yyMM");
 			refno += "/" + media.Id.ToString("D4");
@@ -387,7 +391,7 @@ namespace FEP.WebApi.Api.eEvent
 			{
 				var eventfile = new EventFile
 				{
-					FileCategory = EventFileCategory.PublicEvent,
+					FileCategory = EventFileCategory.MediaInterview,
 					FileId = fileid,
 					ParentId = media.Id
 				};
@@ -584,32 +588,32 @@ namespace FEP.WebApi.Api.eEvent
 			return Ok(publicevent);
 		}
 
-		[Route("api/eEvent/MediaInterviewRequest/Evaluate")]
-		[HttpPost]
-		[ValidationActionFilter]
-		public string Evaluate([FromBody] MediaInterviewApprovalModel model, int id)
-		{
-			if (ModelState.IsValid)
-			{
-				var mediaapproval = db.EventMediaInterviewApproval.Where(x => x.Id == id).FirstOrDefault();
+		//[Route("api/eEvent/MediaInterviewRequest/Evaluate")]
+		//[HttpPost]
+		//[ValidationActionFilter]
+		//public string Evaluate([FromBody] MediaInterviewApprovalModel model, int id)
+		//{
+		//	if (ModelState.IsValid)
+		//	{
+		//		var mediaapproval = db.EventMediaInterviewApproval.Where(x => x.Id == id).FirstOrDefault();
 
-				if (mediaapproval != null)
-				{
-					mediaapproval.ApproverId = model.ApproverId;
-					mediaapproval.Status = model.Status;
-					mediaapproval.ApprovedDate = DateTime.Now;
-					mediaapproval.Remark = model.Remarks;
-					mediaapproval.RequireNext = model.RequireNext;
-					mediaapproval.MediaId = id;
-					mediaapproval.Level = model.Level;
+		//		if (mediaapproval != null)
+		//		{
+		//			mediaapproval.ApproverId = model.ApproverId;
+		//			mediaapproval.Status = model.Status;
+		//			mediaapproval.ApprovedDate = DateTime.Now;
+		//			mediaapproval.Remark = model.Remarks;
+		//			mediaapproval.RequireNext = model.RequireNext;
+		//			mediaapproval.MediaId = id;
+		//			mediaapproval.Level = model.Level;
 
-					db.Entry(mediaapproval).State = EntityState.Modified;
-					db.SaveChanges();
+		//			db.Entry(mediaapproval).State = EntityState.Modified;
+		//			db.SaveChanges();
 
-				}
-			}
-			return "";
-		}
+		//		}
+		//	}
+		//	return "";
+		//}
 	}
 }
 

@@ -70,13 +70,21 @@ namespace FEP.Model
 		Approve_Exhibition_RoadShow_ByApprover_2,
 		[Display(Name = "Exhibition Roadshow - Approve Exhibition Roadshow By Approver 3")]
 		Approve_Exhibition_RoadShow_ByApprover_3,
-
 		[Display(Name = "Exhibition RoadShow - Rejected")]
 		Reject_Exhibition_RoadShow,
 
+		[Display(Name = "Exhibition RoadShow - Submit Duty Roster")]
+		Submit_DutyRoster_For_Verification,
+		[Display(Name = "Exhibition RoadShow - Verify Duty Roster")]
+		Verify_DutyRoster,
+		[Display(Name = "Exhibition RoadShow - Reject Duty Roster")]
+		NotVerify_DutyRoster,
+		[Display(Name = "Exhibition RoadShow - Approve Duty Roster")]
+		Approve_DutyRoster,
+
+
 		[Display(Name = "Exhibition RoadShow - Accept Participation")]
 		AcceptParticipation_Exhibition_RoadShow,
-
 		[Display(Name = "Exhibition RoadShow - Decline Participation")]
 		DeclineParticipation_Exhibition_RoadShow,
 

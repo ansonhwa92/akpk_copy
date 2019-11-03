@@ -357,7 +357,12 @@ namespace FEP.Model
 		public string RefNo { get; set; }
 		public string EventName { get; set; }
 		public string Organiser { get; set; }
-		public string Location { get; set; }
+		public string OrganiserEmail { get; set; }
+		public string AddressStreet1 { get; set; }
+		public string AddressStreet2 { get; set; }
+		public string AddressPoscode { get; set; }
+		public string AddressCity { get; set; }
+		public MediaState? State { get; set; }
 		public DateTime? StartDate { get; set; }
 		public DateTime? EndDate { get; set; }
 		public DateTime? StartTime { get; set; }

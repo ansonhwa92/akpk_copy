@@ -176,6 +176,7 @@
     <Compile Include="Areas\eEvent\eEventAreaRegisteration.cs" />
     <Compile Include="Areas\eEvent\Models\EventAgenda.cs" />
     <Compile Include="Areas\eEvent\Models\EventRefund.cs" />
+    <Compile Include="Areas\eEvent\Models\ExhibitionRoadshowRequest.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseCategoryController.cs" />
     <Compile Include="Areas\eLearning\Controllers\ContentCompletionsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseContentsController.cs" />
@@ -924,6 +925,8 @@
     <Content Include="Areas\eEvent\Views\EventSpeaker\_Attachment.cshtml" />
     <Content Include="Areas\eEvent\Views\MediaInterview\_Attachment.cshtml" />
     <Content Include="Areas\eEvent\Views\MediaInterview\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\_Attachment.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\_AttachmentDetails.cshtml" />
     <Content Include="Areas\Administrator\Views\Individual\_Select.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\_Select.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\Edit.cshtml" />

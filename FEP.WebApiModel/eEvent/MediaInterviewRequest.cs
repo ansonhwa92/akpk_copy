@@ -53,6 +53,8 @@ namespace FEP.WebApiModel.MediaInterview
 
 		[Display(Name = "End Date")]
 		public DateTime? DateEnd { get; set; }
+
+		[DataType(DataType.Time)]
 		public DateTime? Time { get; set; }
 		public string Location { get; set; }
 		public MediaLanguage? Language { get; set; }
@@ -102,10 +104,9 @@ namespace FEP.WebApiModel.MediaInterview
 
 	public class DetailsMediaInterviewRequestApiModel : MediaInterviewRequestApiModel
 	{
-		public DetailsMediaInterviewRequestApiModel() { }
-
 		public IEnumerable<Attachment> Attachments { get; set; }
 
+		public MediaInterviewApprovalModel approval { get; set; }
 	}
 
 	public class CreateMediaInterviewRequestApiModel : MediaInterviewRequestApiModel
@@ -132,5 +133,33 @@ namespace FEP.WebApiModel.MediaInterview
 	public class DeleteMediaInterviewRequestApiModel : MediaInterviewRequestApiModel
 	{
 		public DeleteMediaInterviewRequestApiModel() { }
+	}
+
+	public class MediaInterviewApprovalModel
+	{
+		[Required]
+		public int? Id { get; set; }
+
+		[Required]
+		public int? MediaId { get; set; }
+
+		[Required]
+		[Display(Name = "Level")]
+		public EventApprovalLevel Level { get; set; }
+
+		[Required]
+		public int? ApproverId { get; set; }
+
+		[Required]
+		[Range((int)(EventApprovalStatus.Approved), (int)(EventApprovalStatus.Rejected), ErrorMessage = "Please Select")]
+		[Display(Name = "PubApprovalStatus")]
+		public EventApprovalStatus Status { get; set; }
+
+		[Required]
+		[Display(Name = "Remarks")]
+		public string Remarks { get; set; }
+
+		[Display(Name = "Require Next")]
+		public bool RequireNext { get; set; }
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using FEP.Helper;
 using FEP.Model;
 using FEP.WebApiModel.eEvent;
+using FEP.WebApiModel.FileDocuments;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -143,7 +144,12 @@ namespace FEP.WebApi.Api.eEvent
 					Id = i.Id,
 					EventName = i.EventName,
 					Organiser = i.Organiser,
-					Location = i.Location,
+					OrganiserEmail = i.OrganiserEmail,
+					AddressStreet1 = i.AddressStreet1,
+					AddressStreet2 = i.AddressStreet2,
+					AddressPoscode = i.AddressPoscode,
+					AddressCity = i.AddressCity,
+					State = i.State,
 					StartDate = i.StartDate,
 					EndDate = i.EndDate,
 					StartTime = i.StartTime,
@@ -153,7 +159,6 @@ namespace FEP.WebApi.Api.eEvent
 					ReceivedById = i.ReceivedById,
 					ReceivedDate = i.ReceivedDate,
 					Receive_Via = i.Receive_Via,
-					//NomineeId = i.NomineeId
 				}).ToList();
 
 			data.ForEach(s => s.ExhibitionStatusDesc = s.ExhibitionStatus.GetDisplayName());
@@ -177,7 +182,12 @@ namespace FEP.WebApi.Api.eEvent
 					Id = s.Id,
 					EventName = s.EventName,
 					Organiser = s.Organiser,
-					Location = s.Location,
+					OrganiserEmail = s.OrganiserEmail,
+					AddressStreet1 = s.AddressStreet1,
+					AddressStreet2 = s.AddressStreet2,
+					AddressPoscode = s.AddressPoscode,
+					AddressCity = s.AddressCity,
+					State = s.State,
 					StartDate = s.StartDate,
 					EndDate = s.EndDate,
 					StartTime = s.StartTime,
@@ -188,8 +198,6 @@ namespace FEP.WebApi.Api.eEvent
 					ReceivedByName = s.ReceivedBy.Name,
 					ReceivedDate = s.ReceivedDate,
 					Receive_Via = s.Receive_Via,
-					//NomineeId = s.NomineeId,
-					//NomineeName = s.Nominee.Name
 				}).FirstOrDefault();
 
 			if (exhibition == null)
@@ -198,6 +206,7 @@ namespace FEP.WebApi.Api.eEvent
 			}
 
 			exhibition.NomineeId = db.ExhibitionNominee.Where(u => u.ExhibitionRoadshowId == id).Select(s => s.UserId).ToArray();
+			exhibition.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.ExhibitionRoadshow && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
 			return Ok(exhibition);
 		}
@@ -209,7 +218,12 @@ namespace FEP.WebApi.Api.eEvent
 			{
 				EventName = model.EventName,
 				Organiser = model.Organiser,
-				Location = model.Location,
+				OrganiserEmail = model.OrganiserEmail,
+				AddressStreet1 = model.AddressStreet1,
+				AddressStreet2 = model.AddressStreet2,
+				AddressPoscode = model.AddressPoscode,
+				AddressCity = model.AddressCity,
+				State = model.State,
 				StartDate = model.StartDate,
 				EndDate = model.EndDate,
 				StartTime = model.StartTime,
@@ -221,9 +235,10 @@ namespace FEP.WebApi.Api.eEvent
 				Receive_Via = model.Receive_Via,
 				Display = true,
 				CreatedDate = DateTime.Now,
-				//NomineeId = model.NomineeId
 			};
+
 			db.EventExhibitionRequest.Add(exroad);
+			db.SaveChanges();
 
 			foreach (var nomineeid in model.NomineeId)
 			{
@@ -234,7 +249,20 @@ namespace FEP.WebApi.Api.eEvent
 				};
 				db.ExhibitionNominee.Add(nominee);
 			}
+			db.SaveChanges();
 
+			//files
+			foreach (var fileid in model.FilesId)
+			{
+				var eventfile = new EventFile
+				{
+					FileCategory = EventFileCategory.ExhibitionRoadshow,
+					FileId = fileid,
+					ParentId = exroad.Id
+				};
+
+				db.EventFile.Add(eventfile);
+			}
 			db.SaveChanges();
 
 			//save refno exhibition roadshow request
@@ -260,7 +288,12 @@ namespace FEP.WebApi.Api.eEvent
 
 			exroad.EventName = model.EventName;
 			exroad.Organiser = model.Organiser;
-			exroad.Location = model.Location;
+			exroad.OrganiserEmail = model.OrganiserEmail;
+			exroad.AddressStreet1 = model.AddressStreet1;
+			exroad.AddressStreet2 = model.AddressStreet2;
+			exroad.AddressPoscode = model.AddressPoscode;
+			exroad.AddressCity = model.AddressCity;
+			exroad.State = model.State;
 			exroad.StartDate = model.StartDate;
 			exroad.EndDate = model.EndDate;
 			exroad.StartTime = model.StartTime;
@@ -270,12 +303,16 @@ namespace FEP.WebApi.Api.eEvent
 			exroad.ReceivedById = model.ReceivedById;
 			exroad.ReceivedDate = model.ReceivedDate;
 			exroad.Receive_Via = model.Receive_Via;
-			//exroad.NomineeId = model.NomineeId;
 
 			db.EventExhibitionRequest.Attach(exroad);
 			db.Entry(exroad).Property(x => x.EventName).IsModified = true;
 			db.Entry(exroad).Property(x => x.Organiser).IsModified = true;
-			db.Entry(exroad).Property(x => x.Location).IsModified = true;
+			db.Entry(exroad).Property(x => x.OrganiserEmail).IsModified = true;
+			db.Entry(exroad).Property(x => x.AddressStreet1).IsModified = true;
+			db.Entry(exroad).Property(x => x.AddressStreet2).IsModified = true;
+			db.Entry(exroad).Property(x => x.AddressPoscode).IsModified = true;
+			db.Entry(exroad).Property(x => x.AddressCity).IsModified = true;
+			db.Entry(exroad).Property(x => x.State).IsModified = true;
 			db.Entry(exroad).Property(x => x.StartDate).IsModified = true;
 			db.Entry(exroad).Property(x => x.EndDate).IsModified = true;
 			db.Entry(exroad).Property(x => x.StartTime).IsModified = true;
@@ -284,7 +321,6 @@ namespace FEP.WebApi.Api.eEvent
 			db.Entry(exroad).Property(x => x.ReceivedById).IsModified = true;
 			db.Entry(exroad).Property(x => x.ReceivedDate).IsModified = true;
 			db.Entry(exroad).Property(x => x.Receive_Via).IsModified = true;
-			//db.Entry(exroad).Property(x => x.NomineeId).IsModified = true;
 
 			db.Entry(exroad).Property(x => x.ExhibitionStatus).IsModified = false;
 			db.Entry(exroad).Property(x => x.Display).IsModified = false;
@@ -300,6 +336,53 @@ namespace FEP.WebApi.Api.eEvent
 				};
 
 				db.ExhibitionNominee.Add(nominee);
+			}
+
+			//remove file 
+			var attachments = db.EventFile.Where(s => s.FileCategory == EventFileCategory.ExhibitionRoadshow && s.ParentId == model.Id).ToList();
+
+			if (attachments != null)
+			{
+				//delete all
+				if (model.Attachments == null)
+				{
+					foreach (var attachment in attachments)
+					{
+						attachment.FileDocument.Display = false;
+						db.FileDocument.Attach(attachment.FileDocument);
+						db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+
+						db.EventFile.Remove(attachment);
+					}
+				}
+				else
+				{
+					foreach (var attachment in attachments)
+					{
+						if (!model.Attachments.Any(u => u.Id == attachment.FileDocument.Id))//delete if not exist anymore
+						{
+							attachment.FileDocument.Display = false;
+							db.FileDocument.Attach(attachment.FileDocument);
+							db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+
+							db.EventFile.Remove(attachment);
+						}
+					}
+				}
+			}
+
+			//add new file
+			//files
+			foreach (var fileid in model.FilesId)
+			{
+				var eventfile = new EventFile
+				{
+					FileCategory = EventFileCategory.ExhibitionRoadshow,
+					FileId = fileid,
+					ParentId = exroad.Id
+				};
+
+				db.EventFile.Add(eventfile);
 			}
 
 			db.Configuration.ValidateOnSaveEnabled = true;
@@ -464,14 +547,125 @@ namespace FEP.WebApi.Api.eEvent
 			return "";
 		}
 
+		[Route("api/eEvent/ExhibitionRoadshowRequest/SubmitDutyRoster")]
+		public string SubmitDutyRoster(int id)
+		{
 
+			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
 
+			if (exroad != null)
+			{
+				exroad.ExhibitionStatus = ExhibitionStatus.SubmitVerifyDutyRoster;
+				db.EventExhibitionRequest.Attach(exroad);
+				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
 
+				//return model.Title;
+				return exroad.RefNo;
+			}
+			return "";
+		}
 
+		[Route("api/eEvent/ExhibitionRoadshowRequest/VerifiedDutyRoster")]
+		public string VerifiedDutyRoster(int id)
+		{
 
+			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
 
+			if (exroad != null)
+			{
+				exroad.ExhibitionStatus = ExhibitionStatus.VerifiedDutyRoster;
+				db.EventExhibitionRequest.Attach(exroad);
+				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
 
+				//return model.Title;
+				return exroad.RefNo;
+			}
+			return "";
+		}
 
+		[Route("api/eEvent/ExhibitionRoadshowRequest/RejectDutyRoster")]
+		public string RejectDutyRoster(int id)
+		{
+
+			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (exroad != null)
+			{
+				exroad.ExhibitionStatus = ExhibitionStatus.NotVerifiedDutyRoster;
+				db.EventExhibitionRequest.Attach(exroad);
+				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return exroad.RefNo;
+			}
+			return "";
+		}
+
+		[Route("api/eEvent/ExhibitionRoadshowRequest/ApproveDutyRoster")]
+		public string ApproveDutyRoster(int id)
+		{
+
+			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (exroad != null)
+			{
+				exroad.ExhibitionStatus = ExhibitionStatus.ApproveDutyRoster;
+				db.EventExhibitionRequest.Attach(exroad);
+				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return exroad.RefNo;
+			}
+			return "";
+		}
+
+		[Route("api/eEvent/ExhibitionRoadshowRequest/AcceptParticipation")]
+		public string AcceptParticipation(int id)
+		{
+
+			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (exroad != null)
+			{
+				exroad.ExhibitionStatus = ExhibitionStatus.AcceptParticipation;
+				db.EventExhibitionRequest.Attach(exroad);
+				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return exroad.RefNo;
+			}
+			return "";
+		}
+
+		[Route("api/eEvent/ExhibitionRoadshowRequest/DeclineParticipation")]
+		public string DeclineParticipation(int id)
+		{
+
+			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (exroad != null)
+			{
+				exroad.ExhibitionStatus = ExhibitionStatus.DeclineParticipation;
+				db.EventExhibitionRequest.Attach(exroad);
+				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return exroad.RefNo;
+			}
+			return "";
+		}
 
 	}
 }

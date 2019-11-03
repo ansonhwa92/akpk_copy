@@ -51,19 +51,16 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string Email { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Start Date")]
-		[DataType(DataType.Date)]
 		[Display(Name = "Start Date")]
 		public DateTime? DateStart { get; set; }
 
 		[Required(ErrorMessage = "Please Insert End Date")]
-		[DataType(DataType.Date)]
 		[Display(Name = "End Date")]
 		public DateTime? DateEnd { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Time")]
-		[DataType(DataType.Time)]
-		[UIHint("Time")]
 		[Display(Name = "Time")]
+		[DataType(DataType.Time)]
 		public DateTime? Time { get; set; }
 
 		[Required(ErrorMessage = "Please Select Language")]
@@ -139,8 +136,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 	{
 		public DetailsMediaInterviewModel() { }
 
-		public MediaInterviewApprovalModel Approval { get; set; }
-
 		[Display(Name = "Proof of Approval")]
 		public IEnumerable<Attachment> Attachments { get; set; }
 	}
@@ -161,11 +156,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Contact Person")]
 		public string ContactPerson { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "Start Date")]
 		public DateTime? DateStart { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "End Date")]
 		public DateTime? DateEnd { get; set; }
 
@@ -184,33 +177,5 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		{
 			this.MediaInterviewList = ListMediaInterview;
 		}
-	}
-
-	public class MediaInterviewApprovalModel
-	{
-		[Required]
-		public int Id { get; set; }
-
-		[Required]
-		public int MediaId { get; set; }
-
-		[Required]
-		[Display(Name = "Level")]
-		public EventApprovalLevel Level { get; set; }
-
-		[Required]
-		public int ApproverId { get; set; }
-
-		[Required]
-		[Range((int)(EventApprovalStatus.Approved), (int)(EventApprovalStatus.Rejected), ErrorMessage = "Please Select")]
-		[Display(Name = "PubApprovalStatus")]
-		public EventApprovalStatus Status { get; set; }
-
-		[Required]
-		[Display(Name = "Remarks")]
-		public string Remarks { get; set; }
-
-		[Display(Name = "Require Next")]
-		public bool RequireNext { get; set; }
 	}
 }

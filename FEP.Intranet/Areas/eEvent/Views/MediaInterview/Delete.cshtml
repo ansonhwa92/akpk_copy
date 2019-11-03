@@ -1,4 +1,4 @@
-﻿@model FEP.WebApiModel.MediaInterview.DeleteMediaInterviewRequestApiModel
+﻿@model FEP.Intranet.Areas.eEvent.Models.DetailsMediaInterviewModel
 
 @{
 	ViewBag.Title = "Media Interview";
@@ -238,10 +238,9 @@
 
 					<div class="row">
 						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.RepUserId, htmlAttributes: new { @class = "control-label col-lg-12" })
+							@Html.LabelFor(model => model.RepUserName, htmlAttributes: new { @class = "control-label col-lg-12" })
 							<div class="col-lg-12">
 								@Html.EditorFor(model => model.RepUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.RepUserId, "", new { @class = "text-danger" })
 							</div>
 						</div>
 					</div>

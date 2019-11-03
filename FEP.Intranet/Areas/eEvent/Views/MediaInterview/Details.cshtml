@@ -344,12 +344,10 @@
 						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.DateStart, htmlAttributes: new { @class = "control-label col-lg-12" })
 							@Html.EditorFor(model => model.DateStart, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start", disabled = "disabled" } })
-							@Html.ValidationMessageFor(model => model.DateStart, "", new { @class = "text-danger" })
 						</div>
 						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.DateStart)
 							@Html.EditorFor(model => model.DateEnd, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End", disabled = "disabled" } })
-							@Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
@@ -357,13 +355,11 @@
 						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.Time)
 							@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect", disabled = "disabled" } })
-							@Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
 						</div>
 
 						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.Language)
 							@Html.EnumDropDownListFor(model => model.Language, "-Select Language-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", disabled = "disabled" })
-							@Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
@@ -371,7 +367,6 @@
 						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.Topic)
 							@Html.EditorFor(model => model.Topic, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
-							@Html.ValidationMessageFor(model => model.Topic, "", new { @class = "text-danger" })
 						</div>
 					</div>
 
@@ -427,13 +422,13 @@
 	@Html.AntiForgeryToken()
 	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-	<div style="display:none;">
-		@Html.EditorFor(model => model.Approval.Id, new { htmlAttributes = new { @class = "form-control" } })
-		@Html.EditorFor(model => model.Approval.MediaId, new { htmlAttributes = new { @class = "form-control" } })
-		@Html.EditorFor(model => model.Approval.Level, new { htmlAttributes = new { @class = "form-control" } })
-		@Html.EditorFor(model => model.Approval.ApproverId, new { htmlAttributes = new { @class = "form-control" } })
-		@Html.EditorFor(model => model.Approval.Status, new { htmlAttributes = new { @class = "form-control" } })
-	</div>
+<div style="display:none;">
+	@Html.HiddenFor(model => model.approval.Id, new { htmlAttributes = new { @class = "form-control" } })
+	@Html.HiddenFor(model => model.approval.MediaId, new { htmlAttributes = new { @class = "form-control" } })
+	@Html.HiddenFor(model => model.approval.Level, new { htmlAttributes = new { @class = "form-control" } })
+	@Html.HiddenFor(model => model.approval.ApproverId, new { htmlAttributes = new { @class = "form-control" } })
+	@Html.HiddenFor(model => model.approval.Status, new { htmlAttributes = new { @class = "form-control" } })
+</div>
 
 	<div class="modal fade" id="modalApprove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-sm" role="document">
@@ -444,7 +439,7 @@
 						if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Submit_MediaInterview))
 						{
 							<h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
-							@Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
 						}
 					}
 					else if (Model.MediaStatus == FEP.Model.MediaStatus.Verified)
@@ -456,11 +451,11 @@
 							<div class="form-group">
 								<div class="ml-4">
 									<div class="custom-control custom-radio">
-										@Html.RadioButtonFor(model => model.Approval.RequireNext, true, new { @id = "option1" })
+										@Html.RadioButtonFor(model => model.approval.RequireNext, true, new { @id = "option1" })
 										<label for="option1">Yes, submit to next level approval</label>
 									</div>
 									<div class="custom-control custom-radio">
-										@Html.RadioButtonFor(model => model.Approval.RequireNext, false, new { @id = "option2" })
+										@Html.RadioButtonFor(model => model.approval.RequireNext, false, new { @id = "option2" })
 										<label for="option2">No, skip and approve this Publication</label>
 									</div>
 								</div>
@@ -468,11 +463,11 @@
 						}
 						else if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver3_MediaInterview))
 						{
-							@Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
 						}
 					}
 					<div class="form-group">
-						@Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+						@Html.LabelFor(model => model.approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
 						<textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
 						<span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
 					</div>

@@ -214,6 +214,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Supporting Document.
+        /// </summary>
+        public static string ExRoadExhibitionSupDoc {
+            get {
+                return ResourceManager.GetString("ExRoadExhibitionSupDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Location.
         /// </summary>
         public static string ExRoadLocation {
@@ -223,7 +232,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nominee.
+        ///   Looks up a localized string similar to Select Nominees.
         /// </summary>
         public static string ExRoadNomineeId {
             get {
@@ -232,7 +241,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nominee.
+        ///   Looks up a localized string similar to Select Nominees.
         /// </summary>
         public static string ExRoadNomineeName {
             get {
@@ -241,11 +250,20 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Organizer.
+        ///   Looks up a localized string similar to Organiser Name.
         /// </summary>
         public static string ExRoadOrganiser {
             get {
                 return ResourceManager.GetString("ExRoadOrganiser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organiser Email.
+        /// </summary>
+        public static string ExRoadOrganiserEmail {
+            get {
+                return ResourceManager.GetString("ExRoadOrganiserEmail", resourceCulture);
             }
         }
         

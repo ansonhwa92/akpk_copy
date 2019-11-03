@@ -35,11 +35,9 @@ namespace FEP.WebApiModel.PublicEvent
 		[Display(Name = "PubEventTargetedGroup", ResourceType = typeof(Language.Event))]
 		public EventTargetGroup? TargetedGroup { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "PubEventStartDate", ResourceType = typeof(Language.Event))]
 		public DateTime? StartDate { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "PubEventEndDate", ResourceType = typeof(Language.Event))]
 		public DateTime? EndDate { get; set; }
 
@@ -58,11 +56,9 @@ namespace FEP.WebApiModel.PublicEvent
 		[Display(Name = "PubEventObjective", ResourceType = typeof(Language.Event))]
 		public string EventObjective { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "PubEventStartDate", ResourceType = typeof(Language.Event))]
 		public DateTime? StartDate { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "PubEventEndDate", ResourceType = typeof(Language.Event))]
 		public DateTime? EndDate { get; set; }
 

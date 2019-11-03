@@ -22,12 +22,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string EventObjective { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Start Date")]
-		[DataType(DataType.Date)]
 		[Display(Name = "Start Date")]
 		public DateTime? StartDate { get; set; }
 
 		[Required(ErrorMessage = "Please Insert End Date")]
-		[DataType(DataType.Date)]
 		[Display(Name = "End Date")]
 		public DateTime? EndDate { get; set; }
 
@@ -140,7 +138,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public int? CreatedBy { get; set; }
 		public string CreatedByName { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "Created Date")]
 		public DateTime CreatedDate { get; set; }
 
@@ -174,11 +171,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string RefNo { get; set; }
 
 
-		[DataType(DataType.Date)]
 		[Display(Name = "Start Date")]
 		public DateTime StartDate { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "End Date")]
 		public DateTime EndDate { get; set; }
 

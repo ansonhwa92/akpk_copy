@@ -222,11 +222,11 @@ namespace FEP.WebApi.Api.eEvent
 			});
 		}
 
-		//public IHttpActionResult Get(int id)
-		public GlobalPublicEventApprovalModel Get(int id)
+		public IHttpActionResult Get(int id)
+		//public GlobalPublicEventApprovalModel Get(int id)
 		{
 			var model = db.PublicEvent.Where(i => i.Display && i.Id == id)
-				.Select(i => new PublicEventModel
+				.Select(i => new DetailsPublicEventModel
 				{
 					Id = i.Id,
 					EventTitle = i.EventTitle,
@@ -244,30 +244,36 @@ namespace FEP.WebApi.Api.eEvent
 					RefNo = i.RefNo,
 					CreatedDate = i.CreatedDate,
 					CreatedByName = i.CreatedByUser.Name,
+					
 				}).FirstOrDefault();
 
-			var approval = db.PublicEventApproval.Where(pa => pa.EventId == id && pa.Status == EventApprovalStatus.None).Select(s => new PublicEventApprovalModel
-			{
-				Id = s.Id,
-				EventId = s.EventId,
-				Level = s.ApprovalLevel,
-				ApproverId = 0,
-				Status = EventApprovalStatus.None,
-				Remarks = "",
-				RequireNext = s.RequireNext
-			}).FirstOrDefault();
+			//var approval = db.PublicEventApproval.Where(pa => pa.EventId == id && pa.Status == EventApprovalStatus.None).Select(s => new PublicEventApprovalModel
+			//{
+			//	Id = s.Id,
+			//	EventId = s.EventId,
+			//	Level = s.ApprovalLevel,
+			//	ApproverId = 0,
+			//	Status = EventApprovalStatus.None,
+			//	Remarks = "",
+			//	RequireNext = s.RequireNext
+			//}).FirstOrDefault();
 
-			var evaluation = new GlobalPublicEventApprovalModel
+			//var evaluation = new DetailsPublicEventModel
+			//{
+			//	//publicevent = model,
+			//	approval = approval
+			//};
+
+			if (model == null)
 			{
-				publicevent = model,
-				approval = approval
-			};
+				return NotFound();
+			}
 
 			model.SpeakerId = db.AssignedSpeaker.Where(u => u.PublicEventId == id).Select(s => s.EventSpeakerId).ToArray();
 			model.ExternalExhibitorId = db.AssignedExternalExhibitor.Where(u => u.PublicEventId == id).Select(s => s.ExternalExhibitorId).ToArray();
 			model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.PublicEvent && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
-			return evaluation;
+			return Ok(model);
 		}
 
 		//Create
@@ -758,106 +764,106 @@ namespace FEP.WebApi.Api.eEvent
 			return phistory;
 		}
 
-		[Route("api/eEvent/PublicEvent/Evaluate")]
-		[HttpPost]
-		[ValidationActionFilter]
-		public string Evaluate([FromBody] GlobalPublicEventApprovalModel model)
-		{
+		//[Route("api/eEvent/PublicEvent/Evaluate")]
+		//[HttpPost]
+		//[ValidationActionFilter]
+		//public string Evaluate([FromBody] GlobalPublicEventApprovalModel model)
+		//{
 
-			if (ModelState.IsValid)
-			{
-				var papproval = db.PublicEventApproval.Where(pa => pa.Id == model.approval.Id).FirstOrDefault();
+		//	if (ModelState.IsValid)
+		//	{
+		//		var papproval = db.PublicEventApproval.Where(pa => pa.Id == model.approval.Id).FirstOrDefault();
 
-				if (papproval != null)
-				{
-					papproval.ApproverId = model.approval.ApproverId;
-					papproval.Status = model.approval.Status;
-					papproval.ApprovedDate = DateTime.Now;
-					papproval.Remark = model.approval.Remarks;
-					papproval.RequireNext = model.approval.RequireNext;
-					// requirenext is always set to true when coming from verifier approval, and always false from approver3
+		//		if (papproval != null)
+		//		{
+		//			papproval.ApproverId = model.approval.ApproverId;
+		//			papproval.Status = model.approval.Status;
+		//			papproval.ApprovedDate = DateTime.Now;
+		//			papproval.Remark = model.approval.Remarks;
+		//			papproval.RequireNext = model.approval.RequireNext;
+		//			// requirenext is always set to true when coming from verifier approval, and always false from approver3
 
-					db.Entry(papproval).State = EntityState.Modified;
-					// HERE
-					db.SaveChanges();
+		//			db.Entry(papproval).State = EntityState.Modified;
+		//			// HERE
+		//			db.SaveChanges();
 
-					var publicevent = db.PublicEvent.Where(p => p.Id == papproval.EventId).FirstOrDefault();
-					if (publicevent != null)
-					{
-						// proceed depending on status (assuming user can only pick approve and reject)
-						if (model.approval.Status == EventApprovalStatus.Rejected)
-						{
-							if (publicevent.EventStatus == EventStatus.PendingforVerification)
-							{
-								publicevent.EventStatus = EventStatus.RejectNeedToEdit;
-								db.Entry(publicevent).State = EntityState.Modified;
-								db.SaveChanges();
-							}
-							else if (publicevent.EventStatus == EventStatus.Verified)
-							{
-								publicevent.EventStatus = EventStatus.RejectNeedToEdit;
-								db.Entry(publicevent).State = EntityState.Modified;
-								db.SaveChanges();
-							}
-						}
-						else
-						{
-							// proceed depending on requirenext
-							if (model.approval.RequireNext == false)
-							{
-								// no more approvals necessary (assumes verifier will never get here)
-								publicevent.EventStatus = EventStatus.Approved;
-								db.Entry(publicevent).State = EntityState.Modified;
-								db.SaveChanges();
-							}
-							else
-							{
-								EventApprovalLevel nextlevel;
-								switch (papproval.ApprovalLevel)
-								{
-									case EventApprovalLevel.Verifier:
-										nextlevel = EventApprovalLevel.Approver1;
-										publicevent.EventStatus = EventStatus.Verified;
-										db.Entry(publicevent).State = EntityState.Modified;
-										break;
-									case EventApprovalLevel.Approver1:
-										nextlevel = EventApprovalLevel.Approver2;
-										break;
-									case EventApprovalLevel.Approver2:
-										nextlevel = EventApprovalLevel.Approver3;
-										break;
-									default:
-										nextlevel = EventApprovalLevel.Approver1;
-										break;
-								}
+		//			var publicevent = db.PublicEvent.Where(p => p.Id == papproval.EventId).FirstOrDefault();
+		//			if (publicevent != null)
+		//			{
+		//				// proceed depending on status (assuming user can only pick approve and reject)
+		//				if (model.approval.Status == EventApprovalStatus.Rejected)
+		//				{
+		//					if (publicevent.EventStatus == EventStatus.PendingforVerification)
+		//					{
+		//						publicevent.EventStatus = EventStatus.RejectNeedToEdit;
+		//						db.Entry(publicevent).State = EntityState.Modified;
+		//						db.SaveChanges();
+		//					}
+		//					else if (publicevent.EventStatus == EventStatus.Verified)
+		//					{
+		//						publicevent.EventStatus = EventStatus.RejectNeedToEdit;
+		//						db.Entry(publicevent).State = EntityState.Modified;
+		//						db.SaveChanges();
+		//					}
+		//				}
+		//				else
+		//				{
+		//					// proceed depending on requirenext
+		//					if (model.approval.RequireNext == false)
+		//					{
+		//						// no more approvals necessary (assumes verifier will never get here)
+		//						publicevent.EventStatus = EventStatus.Approved;
+		//						db.Entry(publicevent).State = EntityState.Modified;
+		//						db.SaveChanges();
+		//					}
+		//					else
+		//					{
+		//						EventApprovalLevel nextlevel;
+		//						switch (papproval.ApprovalLevel)
+		//						{
+		//							case EventApprovalLevel.Verifier:
+		//								nextlevel = EventApprovalLevel.Approver1;
+		//								publicevent.EventStatus = EventStatus.Verified;
+		//								db.Entry(publicevent).State = EntityState.Modified;
+		//								break;
+		//							case EventApprovalLevel.Approver1:
+		//								nextlevel = EventApprovalLevel.Approver2;
+		//								break;
+		//							case EventApprovalLevel.Approver2:
+		//								nextlevel = EventApprovalLevel.Approver3;
+		//								break;
+		//							default:
+		//								nextlevel = EventApprovalLevel.Approver1;
+		//								break;
+		//						}
 
-								// create next approval record
-								var pnewapproval = new PublicEventApproval
-								{
-									EventId = papproval.EventId,
-									ApprovalLevel = nextlevel,
-									ApproverId = 0,
-									Status = EventApprovalStatus.None,
-									ApprovedDate = DateTime.Now,
-									Remark = "",
-									RequireNext = false
-								};
+		//						// create next approval record
+		//						var pnewapproval = new PublicEventApproval
+		//						{
+		//							EventId = papproval.EventId,
+		//							ApprovalLevel = nextlevel,
+		//							ApproverId = 0,
+		//							Status = EventApprovalStatus.None,
+		//							ApprovedDate = DateTime.Now,
+		//							Remark = "",
+		//							RequireNext = false
+		//						};
 
-								db.PublicEventApproval.Add(pnewapproval);
-								// HERE
-								db.SaveChanges();
-							}
+		//						db.PublicEventApproval.Add(pnewapproval);
+		//						// HERE
+		//						db.SaveChanges();
+		//					}
 
-						}
+		//				}
 
-						//return publication.Title;
-						return publicevent.Id + "|" + publicevent.EventTitle + "|" + publicevent.RefNo + "|" + publicevent.Venue + "|" + publicevent.EventStatus;
-					}
-				}
-			}
+		//				//return publication.Title;
+		//				return publicevent.Id + "|" + publicevent.EventTitle + "|" + publicevent.RefNo + "|" + publicevent.Venue + "|" + publicevent.EventStatus;
+		//			}
+		//		}
+		//	}
 
-			return "";
-		}
+		//	return "";
+		//}
 
 
 	}

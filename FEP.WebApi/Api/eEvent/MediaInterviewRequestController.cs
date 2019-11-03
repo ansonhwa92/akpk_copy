@@ -1,6 +1,7 @@
 ﻿using FEP.Helper;
 using FEP.Intranet.Areas.eEvent.Models;
 using FEP.Model;
+using FEP.WebApiModel.FileDocuments;
 using FEP.WebApiModel.MediaInterview;
 using System;
 using System.Collections.Generic;
@@ -254,6 +255,8 @@ namespace FEP.WebApi.Api.eEvent
 			{
 				return NotFound();
 			}
+
+			media.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.PublicEvent && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
 			return Ok(media);
 		}

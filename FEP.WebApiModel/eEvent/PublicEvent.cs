@@ -36,12 +36,10 @@ namespace FEP.WebApiModel.PublicEvent
 		public EventTargetGroup? TargetedGroup { get; set; }
 
 		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "PubEventStartDate", ResourceType = typeof(Language.Event))]
 		public DateTime? StartDate { get; set; }
 
 		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "PubEventEndDate", ResourceType = typeof(Language.Event))]
 		public DateTime? EndDate { get; set; }
 
@@ -61,12 +59,10 @@ namespace FEP.WebApiModel.PublicEvent
 		public string EventObjective { get; set; }
 
 		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "PubEventStartDate", ResourceType = typeof(Language.Event))]
 		public DateTime? StartDate { get; set; }
 
 		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "PubEventEndDate", ResourceType = typeof(Language.Event))]
 		public DateTime? EndDate { get; set; }
 
@@ -129,7 +125,7 @@ namespace FEP.WebApiModel.PublicEvent
 	public class DetailsPublicEventModel : PublicEventModel
 	{
 		public DetailsPublicEventModel() { }
-
+		//public PublicEventApprovalModel approval { get; set; }
 	}
 
 
@@ -159,11 +155,11 @@ namespace FEP.WebApiModel.PublicEvent
 		public DeletePublicEventModel() { }
 	}
 
-	public class GlobalPublicEventApprovalModel
-	{
-		public PublicEventModel publicevent { get; set; }
-		public PublicEventApprovalModel approval { get; set; }
-	}
+	//public class GlobalPublicEventApprovalModel
+	//{
+	//	public PublicEventModel publicevent { get; set; }
+	//	public PublicEventApprovalModel approval { get; set; }
+	//}
 
 	public class PublicEventApprovalModel
 	{

@@ -54,9 +54,9 @@
   <ItemGroup>
     <Compile Include="Access.cs" />
     <Compile Include="Cart.cs" />
-    <Compile Include="Migrations\201911010809329_x.cs" />
-    <Compile Include="Migrations\201911010809329_x.designer.cs">
-      <DependentUpon>201911010809329_x.cs</DependentUpon>
+    <Compile Include="Migrations\201911031348515_x.cs" />
+    <Compile Include="Migrations\201911031348515_x.designer.cs">
+      <DependentUpon>201911031348515_x.cs</DependentUpon>
     </Compile>
     <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />
@@ -119,8 +119,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911010809329_x.resx">
-      <DependentUpon>201911010809329_x.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911031348515_x.resx">
+      <DependentUpon>201911031348515_x.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

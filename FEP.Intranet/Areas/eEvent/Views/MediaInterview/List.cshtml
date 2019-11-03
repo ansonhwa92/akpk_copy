@@ -24,7 +24,6 @@
                     }
                 },
 				columns: [
-
 					 {
                         sortable: false,
                         render: function (data, type, row, meta) {
@@ -47,23 +46,23 @@
                         data: 'ContactPerson',
                         sortable: true
 					},
-					  {
-                        data: 'DateStart',
-						sortable: true,
-						  render: function (data, type, row, meta) {
+					{
+                      data: 'DateStart',
+					  sortable: true,
+					  render: function (data, type, row, meta) {
 
-							  var x = moment(data);
+						  var x = moment(data);
 
-							  if (x.isValid()) {
-								  return x.format("DD/MM/YYYY");
-							  }
-							  else {
-								  return '';
-							  }
+						  if (x.isValid()) {
+							  return x.format("DD/MM/YYYY");
+						  }
+						  else {
+							  return '';
+						  }
 
-                        }
+                      }
 					},
-					   {
+					{
                         data: 'DateEnd',
 						sortable: true,
 						render: function (data, type, row, meta) {
@@ -118,19 +117,9 @@
 
 							 action = '<div class="icon-action">'
 
-							if (row.MediaStatus == 0) {
-
 								action += '<a href="@Url.Action("Edit", "MediaInterview", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
 								action += '<a href="@Url.Action("Details", "MediaInterview", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
 								action += '<a href="@Url.Action("Delete", "MediaInterview", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
-							} else
-							{
-							action += '<a href="@Url.Action("Details", "MediaInterview", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-							}
-
-
-
-
 
 							  action += '</div>';
 

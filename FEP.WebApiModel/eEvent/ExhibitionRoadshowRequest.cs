@@ -32,24 +32,15 @@ namespace FEP.WebApiModel.eEvent
 		public string AddressCity { get; set; }
 		public MediaState? State { get; set; }
 
-
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "ExRoadStartDate", ResourceType = typeof(Language.Event))]
 		public DateTime? StartDate { get; set; }
 
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "ExRoadEndDate", ResourceType = typeof(Language.Event))]
 		public DateTime? EndDate { get; set; }
 
-		[DataType(DataType.Time)]
-		[UIHint("Time")]
 		[Display(Name = "ExRoadStartTime", ResourceType = typeof(Language.Event))]
 		public DateTime? StartTime { get; set; }
 
-		[DataType(DataType.Time)]
-		[UIHint("Time")]
 		[Display(Name = "ExRoadEndTime", ResourceType = typeof(Language.Event))]
 		public DateTime? EndTime { get; set; }
 		[Display(Name = "ExRoadParticipantRequirement", ResourceType = typeof(Language.Event))]
@@ -63,8 +54,6 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadReceivedByName", ResourceType = typeof(Language.Event))]
 		public string ReceivedByName { get; set; }
 
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "ExRoadReceivedDate", ResourceType = typeof(Language.Event))]
 		public DateTime? ReceivedDate { get; set; }
 		[Display(Name = "ExRoadReceive_Via", ResourceType = typeof(Language.Event))]
@@ -80,8 +69,7 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadRefNo", ResourceType = typeof(Language.Event))]
 		public string RefNo { get; set; }
 		public int? SLAReminderStatusId { get; set; }
-		[Display(Name = "ExRoadExhibitionSupDoc", ResourceType = typeof(Language.Event))]
-		public IEnumerable<Attachment> Attachments { get; set; }
+		
 	}
 
 	public class FilterExhibitionRoadshowRequestModel : DataTableModel
@@ -114,24 +102,17 @@ namespace FEP.WebApiModel.eEvent
 	{
 		public DetailsExhibitionRoadshowRequestModel() { }
 
-		public int Id { get; set; }
+		[Display(Name = "ExRoadExhibitionSupDoc", ResourceType = typeof(Language.Event))]
+		public IEnumerable<Attachment> Attachments { get; set; }
 	}
 
 	public class CreateExhibitionRoadshowRequestModel
 	{
 		public CreateExhibitionRoadshowRequestModel()
 		{
-			Attachments = new List<Attachment>();
-			AttachmentFiles = new List<HttpPostedFileBase>();
 			FilesId = new List<int>();
 		}
 		public List<int> FilesId { get; set; }
-
-		[Required]
-		[Display(Name = "ExRoadExhibitionSupDoc", ResourceType = typeof(Language.Event))]
-		public IEnumerable<Attachment> Attachments { get; set; }
-
-		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
 
 		[Required(ErrorMessage = "Please insert Event Name")]
 		[Display(Name = "ExRoadEventName", ResourceType = typeof(Language.Event))]
@@ -146,10 +127,6 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadOrganiserEmail", ResourceType = typeof(Language.Event))]
 		public string OrganiserEmail { get; set; }
 
-		//[Required(ErrorMessage = "Please insert Location")]
-		//[Display(Name = "ExRoadLocation", ResourceType = typeof(Language.Event))]
-		//public string Location { get; set; }
-
 		[Required(ErrorMessage = "Please insert Location")]
 		[Display(Name = "ExRoadLocation", ResourceType = typeof(Language.Event))]
 		public string AddressStreet1 { get; set; }
@@ -163,26 +140,20 @@ namespace FEP.WebApiModel.eEvent
 		public MediaState? State { get; set; }
 
 		[Required(ErrorMessage = "Please insert Start Date")]
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "ExRoadStartDate", ResourceType = typeof(Language.Event))]
 		public DateTime? StartDate { get; set; }
 
 		[Required(ErrorMessage = "Please insert End Date")]
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "ExRoadEndDate", ResourceType = typeof(Language.Event))]
 		public DateTime? EndDate { get; set; }
 
 		[Required(ErrorMessage = "Please insert Start Time")]
 		[DataType(DataType.Time)]
-		[UIHint("Time")]
 		[Display(Name = "ExRoadStartTime", ResourceType = typeof(Language.Event))]
 		public DateTime? StartTime { get; set; }
 
 		[Required(ErrorMessage = "Please insert End Time")]
 		[DataType(DataType.Time)]
-		[UIHint("Time")]
 		[Display(Name = "ExRoadEndTime", ResourceType = typeof(Language.Event))]
 		public DateTime? EndTime { get; set; }
 
@@ -204,8 +175,6 @@ namespace FEP.WebApiModel.eEvent
 		public string ReceivedByName { get; set; }
 
 		[Required(ErrorMessage = "Please insert Receive Date")]
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "ExRoadReceivedDate", ResourceType = typeof(Language.Event))]
 		public DateTime? ReceivedDate { get; set; }
 
@@ -228,9 +197,14 @@ namespace FEP.WebApiModel.eEvent
 
 	public class EditExhibitionRoadshowRequestModel : CreateExhibitionRoadshowRequestModel
 	{
-		public EditExhibitionRoadshowRequestModel() { }
+		public EditExhibitionRoadshowRequestModel()
+		{
+			FilesId = new List<int>();
+		}
 
 		public int Id { get; set; }
+
+		public IEnumerable<Attachment> Attachments { get; set; }
 	}
 
 	public class DeleteExhibitionRoadshowRequestModel : ExhibitionRoadshowRequestModel

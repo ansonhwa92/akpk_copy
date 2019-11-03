@@ -1,6 +1,7 @@
 ﻿using FEP.Helper;
 using FEP.Intranet.Areas.eEvent.Models;
 using FEP.Model;
+using FEP.WebApiModel.FileDocuments;
 using FEP.WebApiModel.MediaInterview;
 using System;
 using System.Collections.Generic;
@@ -247,13 +248,18 @@ namespace FEP.WebApi.Api.eEvent
 					RepMobileNumber = i.User.MobileNo,
 					ContactPerson = i.ContactPerson,
 					CreatedBy = i.CreatedBy,
-					CreatedDate = i.CreatedDate
+					CreatedDate = i.CreatedDate,
+					RefNo = i.RefNo,
+					MediaStatus = i.MediaStatus,
+					
 				}).FirstOrDefault();
 
 			if (media == null)
 			{
 				return NotFound();
 			}
+
+			media.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.ExhibitionRoadshow && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
 			return Ok(media);
 		}
@@ -301,6 +307,7 @@ namespace FEP.WebApi.Api.eEvent
 
 				db.EventFile.Add(eventfile);
 			}
+			db.SaveChanges();
 
 			var refno = "EVT/" + DateTime.Now.ToString("yyMM");
 			refno += "/" + media.Id.ToString("D4");
@@ -581,32 +588,32 @@ namespace FEP.WebApi.Api.eEvent
 			return Ok(publicevent);
 		}
 
-		[Route("api/eEvent/MediaInterviewRequest/Evaluate")]
-		[HttpPost]
-		[ValidationActionFilter]
-		public string Evaluate([FromBody] MediaInterviewApprovalModel model, int id)
-		{
-			if (ModelState.IsValid)
-			{
-				var mediaapproval = db.EventMediaInterviewApproval.Where(x => x.Id == id).FirstOrDefault();
+		//[Route("api/eEvent/MediaInterviewRequest/Evaluate")]
+		//[HttpPost]
+		//[ValidationActionFilter]
+		//public string Evaluate([FromBody] MediaInterviewApprovalModel model, int id)
+		//{
+		//	if (ModelState.IsValid)
+		//	{
+		//		var mediaapproval = db.EventMediaInterviewApproval.Where(x => x.Id == id).FirstOrDefault();
 
-				if (mediaapproval != null)
-				{
-					mediaapproval.ApproverId = model.ApproverId;
-					mediaapproval.Status = model.Status;
-					mediaapproval.ApprovedDate = DateTime.Now;
-					mediaapproval.Remark = model.Remarks;
-					mediaapproval.RequireNext = model.RequireNext;
-					mediaapproval.MediaId = id;
-					mediaapproval.Level = model.Level;
+		//		if (mediaapproval != null)
+		//		{
+		//			mediaapproval.ApproverId = model.ApproverId;
+		//			mediaapproval.Status = model.Status;
+		//			mediaapproval.ApprovedDate = DateTime.Now;
+		//			mediaapproval.Remark = model.Remarks;
+		//			mediaapproval.RequireNext = model.RequireNext;
+		//			mediaapproval.MediaId = id;
+		//			mediaapproval.Level = model.Level;
 
-					db.Entry(mediaapproval).State = EntityState.Modified;
-					db.SaveChanges();
+		//			db.Entry(mediaapproval).State = EntityState.Modified;
+		//			db.SaveChanges();
 
-				}
-			}
-			return "";
-		}
+		//		}
+		//	}
+		//	return "";
+		//}
 	}
 }
 

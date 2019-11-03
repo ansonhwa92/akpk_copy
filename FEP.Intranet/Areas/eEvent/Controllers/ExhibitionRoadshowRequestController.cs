@@ -262,7 +262,27 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			var model = response.Data;
+			var model = new FEP.Intranet.Areas.eEvent.Models.DetailsExhibitionRoadshowRequestModel()
+			{
+				EventName = response.Data.EventName,
+				Organiser = response.Data.Organiser,
+				OrganiserEmail = response.Data.OrganiserEmail,
+				AddressStreet1 = response.Data.AddressStreet1,
+				AddressStreet2 = response.Data.AddressStreet2,
+				AddressPoscode = response.Data.AddressPoscode,
+				AddressCity = response.Data.AddressCity,
+				State = response.Data.State,
+				StartDate = response.Data.StartDate,
+				EndDate = response.Data.EndDate,
+				StartTime = response.Data.StartTime,
+				EndTime = response.Data.EndTime,
+				ExhibitionStatus = response.Data.ExhibitionStatus,
+				ParticipationRequirement = response.Data.ParticipationRequirement,
+				ReceivedById = response.Data.ReceivedById,
+				ReceivedDate = response.Data.ReceivedDate,
+				Receive_Via = response.Data.Receive_Via,
+				Attachments = response.Data.Attachments,
+			};
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
 			model.Nominees = new SelectList(await GetUsers(), "Id", "Name", 0);

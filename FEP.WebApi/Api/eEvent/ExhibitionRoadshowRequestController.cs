@@ -238,6 +238,7 @@ namespace FEP.WebApi.Api.eEvent
 			};
 
 			db.EventExhibitionRequest.Add(exroad);
+			db.SaveChanges();
 
 			foreach (var nomineeid in model.NomineeId)
 			{
@@ -248,6 +249,7 @@ namespace FEP.WebApi.Api.eEvent
 				};
 				db.ExhibitionNominee.Add(nominee);
 			}
+			db.SaveChanges();
 
 			//files
 			foreach (var fileid in model.FilesId)
@@ -261,7 +263,6 @@ namespace FEP.WebApi.Api.eEvent
 
 				db.EventFile.Add(eventfile);
 			}
-
 			db.SaveChanges();
 
 			//save refno exhibition roadshow request
@@ -320,7 +321,6 @@ namespace FEP.WebApi.Api.eEvent
 			db.Entry(exroad).Property(x => x.ReceivedById).IsModified = true;
 			db.Entry(exroad).Property(x => x.ReceivedDate).IsModified = true;
 			db.Entry(exroad).Property(x => x.Receive_Via).IsModified = true;
-			//db.Entry(exroad).Property(x => x.NomineeId).IsModified = true;
 
 			db.Entry(exroad).Property(x => x.ExhibitionStatus).IsModified = false;
 			db.Entry(exroad).Property(x => x.Display).IsModified = false;

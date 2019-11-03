@@ -246,6 +246,7 @@ namespace FEP.Intranet.Areas.Template.Controllers
             {
                 Id = response.Data.Id,
                 NotificationType = response.Data.NotificationType,
+                NotificationCategory = response.Data.NotificationCategory,
                 TemplateName = response.Data.TemplateName,
                 TemplateSubject = response.Data.TemplateSubject,
                 TemplateRefNo = response.Data.TemplateRefNo,

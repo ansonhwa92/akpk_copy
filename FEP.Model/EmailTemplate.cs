@@ -36,7 +36,7 @@ namespace FEP.Model
         public DateTime CreatedDate { get; set; }
         public DateTime? LastModified { get; set; }
 
-        
+        public NotificationCategory NotificationCategory { get; set; }
 
         public int CreatedBy { get; set; }
         [ForeignKey("CreatedBy")]

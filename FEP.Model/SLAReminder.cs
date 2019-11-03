@@ -19,6 +19,8 @@ namespace FEP.Model
         public int SLAResolutionTime { get; set; }
         public int IntervalDuration { get; set; }
         public SLADurationType? SLADurationType { get; set; }
+
+        public NotificationCategory NotificationCategory { get; set; }
     }
 
     [Table("SLAReminderStatus")]
@@ -55,7 +57,9 @@ namespace FEP.Model
         [Display(Name = "Research And Publication")]
         ResearchAndPublication = 3,
         [Display(Name = "System")]
-        System = 4
+        System = 4,
+        [Display(Name = "Payment")]
+        Payment = 5
     }
     public enum NotificationMedium
     {

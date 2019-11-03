@@ -228,6 +228,7 @@
 
             @Html.HiddenFor(m => m.Id)
             @Html.HiddenFor(m => m.NotificationType)
+            @Html.HiddenFor(m => m.NotificationCategory)
 
             <div class="form-container form-container-w100">
                 <div class="mb-4 mt-2">
@@ -279,7 +280,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="col-md-12 pl-0">
-                                        @Html.LabelFor(model => model.WebMessage, htmlAttributes: new { @class = "control-label"  })
+                                        @Html.LabelFor(model => model.WebMessage, htmlAttributes: new { @class = "control-label" })
                                         <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamWeb">
                                             <i class="fa fa-plus"></i>
                                             Add Parameters
@@ -290,7 +291,7 @@
                             <div class="col-md-12 pl-0">
                                 @Html.TextAreaFor(model => model.WebMessage, new { @class = "form-control", @maxlength = "100", @style = "max-width 100%" })
                                 @Html.ValidationMessageFor(model => model.WebMessage, "", new { @class = "text-danger" })
-                                
+
                             </div>
                         </div>
 
@@ -307,12 +308,12 @@
                                 </div>
                             </div>
                             <div class="col-md-12 pl-0">
-                                @Html.EditorFor(model => model.WebNotifyLink, new { htmlAttributes = new { @class = "form-control", @placeholder="http://" } })
+                                @Html.EditorFor(model => model.WebNotifyLink, new { htmlAttributes = new { @class = "form-control", @placeholder = "http://" } })
                                 @Html.ValidationMessageFor(model => model.WebNotifyLink, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
-                        
+
 
 
 

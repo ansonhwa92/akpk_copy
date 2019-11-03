@@ -19,6 +19,7 @@
                     "data": function (filter) {
                         //alert(filter[0]);
                         filter.TemplateName = $('#Filter_TemplateName').val();
+                        filter.NotificationCategory = $('#Filter_NotificationCategory').val();
                         //filter.CreatedBy = $('#Filter_CreatedBy').val();
                         //filter.CreatedDate = $('#Filter_CreatedDate').val();
                     }
@@ -30,6 +31,10 @@
                         render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
+                    },
+                    {
+                        data: 'NotificationCategoryName',
+                        sortable: true
                     },
                     {
                         data: 'NotificationTypeName', 
@@ -187,7 +192,14 @@
                                             @Html.EditorFor(m => m.Filter.TemplateName, new { htmlAttributes = new { @class = "form-control small" } })
                                         </div>
                                     </div>
-                                    
+
+                                    <div>@Html.DisplayNameFor(m => m.Filter.NotificationCategory)</div>
+                                    <div class="sorting-wrap">
+                                        <div class="sorting-dropdown">
+                                            @Html.EnumDropDownListFor(m => m.Filter.NotificationCategory, "Select Category", new { @class = "form-control small" })
+                                        </div>
+                                    </div>
+
                                     <div>
                                         <button id="btnSearch" class="mt-2 btn btn-secondary btn-block">Search</button>
                                     </div>
@@ -223,6 +235,7 @@
                             <thead>
                                 <tr>
                                     <th></th>
+                                    <th>@Html.DisplayNameFor(model => model.List.NotificationCategory)</th>
                                     <th>@Html.DisplayNameFor(model => model.List.NotificationTypeName)</th>
                                     <th>@Html.DisplayNameFor(model => model.List.TemplateName)</th>
                                     <th></th>

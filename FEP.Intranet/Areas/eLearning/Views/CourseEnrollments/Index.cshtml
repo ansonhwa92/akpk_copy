@@ -126,6 +126,7 @@
 
                         filter.StudentName = $('#Filters_StudentName').val();
                         filter.CourseEventId = $('#Filters_CourseEventId').val();
+                        filter.CourseId = $('#Filters_CourseId').val();
                     },
                     dataFilter: function (res) {
                         // do what you need to the data before it loads to the table
@@ -150,16 +151,34 @@
                     },
                     {
                         data: 'DateEnrolled',
-                        sortable: true
-                    },
-                    {
-                        data: 'Status',
-                        sortable: true
+                        sortable: true,                      
                     },
                     {
                         data: 'PercentageCompleted',
                         sortable: true,
                     },
+                    {
+                        data: 'Status',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+
+                            switch (row.Status) {
+                                case @Json.Encode(EnrollmentStatus.Enrolled) :
+                                    return "<span class='color-green font-weight-bold'>Enrolled</span>";
+
+                                case @Json.Encode(EnrollmentStatus.Completed) :
+                                    return "<span class='color-navy-blue font-weight-bold'>Completed</span>";
+
+                                case @Json.Encode(EnrollmentStatus.Invited) :
+                                    return "<span class='color-yellow font-weight-bold'>Invited Verification</span>";
+
+                                default:
+                                    return "<span class='color-red font-weight-bold'>" + row.Status + "</span>";
+
+                            }
+                        }
+                    },
+   
                     {
                         sortable: false,
                         render: function (data, type, row, meta) {

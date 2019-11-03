@@ -194,6 +194,13 @@ namespace FEP.WebApi.Api.eLearning
 
                 await db.SaveChangesAsync();
 
+                course.UpdateCourseStat();
+
+                db.SetModified(course);
+
+                await db.SaveChangesAsync();
+
+
                 return Ok(course.Id.ToString());
             }
             else
@@ -834,7 +841,7 @@ namespace FEP.WebApi.Api.eLearning
             }
             else
             {
-                var enrollment = db.Enrollments.Where(x => x.LearnerId == userId &&
+                var enrollment = db.Enrollments.Where(x => x.Learner.User.Id == userId &&
                             x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefault();
 
                 if (enrollment != null)
@@ -843,6 +850,8 @@ namespace FEP.WebApi.Api.eLearning
 
             return Ok(false);
         }
+
+
     }
 
     public class ImageModel

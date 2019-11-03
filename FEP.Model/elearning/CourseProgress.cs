@@ -23,20 +23,14 @@ namespace FEP.Model.eLearning
         public virtual Learner Learner { get; set; }
         
         public int ModuleId { get; set; }
+        public int ContentId { get; set; }
        
-        public ProgressItem ProgressItem { get; set; }
-        public int ItemId { get; set; }
+        public CourseContentType CourseContentType { get; set; }
         public bool IsCompleted { get; set; }
         public decimal Score { get; set; } = 0.0m;
 
+        public int? CourseId { get; set;  }
 
-    }
-
-    public enum ProgressItem
-    {
-        Module,
-        Test,
-        Asssigment
     }
 
  }

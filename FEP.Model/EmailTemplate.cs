@@ -106,6 +106,10 @@ namespace FEP.Model
         SurveyCode = 103,
         [Display(Name = "Survey Approval")]
         SurveyApproval = 104,
+        [Display(Name = "Survey Link")]
+        SurveyLink = 105,
+        [Display(Name = "Respondent Email")]
+        SurveyRespondentEmail = 106,
 
         //121-140 for Publication
         [Display(Name = "Publication Title")]
@@ -117,6 +121,14 @@ namespace FEP.Model
         [Display(Name = "Publication Approval")]
         PublicationApproval = 124,
 
+        [Display(Name = "Refund Type")]
+        RefundType = 131,
+        [Display(Name = "Customer Name")]
+        RefundFullName = 132,
+        [Display(Name = "Reference/Receipt No.")]
+        RefundReferenceNo = 133,
+        [Display(Name = "Remarks")]
+        RefundRemarks = 134,
 
         //141-160 for eLearning
         [Display(Name = "Course Title")]

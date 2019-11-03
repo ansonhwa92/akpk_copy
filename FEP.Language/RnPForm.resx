@@ -256,7 +256,7 @@
     <value>End Date</value>
   </data>
   <data name="SurveyPictures" xml:space="preserve">
-    <value>Thumbnail</value>
+    <value>Survey Pictures</value>
   </data>
   <data name="SurveyProofOfApproval" xml:space="preserve">
     <value>Proof of Approval</value>
@@ -506,5 +506,17 @@
   </data>
   <data name="PubReviewReviewerName" xml:space="preserve">
     <value>Reviewer Name</value>
+  </data>
+  <data name="ValidInvalidPrice" xml:space="preserve">
+    <value>Price is invalid</value>
+  </data>
+  <data name="PubAuthorPictures" xml:space="preserve">
+    <value>Author Images</value>
+  </data>
+  <data name="PubPictures" xml:space="preserve">
+    <value>Publication Images</value>
+  </data>
+  <data name="SurveyAuthorPictures" xml:space="preserve">
+    <value>Author Images</value>
   </data>
 </root>

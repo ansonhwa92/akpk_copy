@@ -165,6 +165,7 @@
     <Compile Include="Api\eLearning\CourseEnrollmentsApiController.cs" />
     <Compile Include="Api\eLearning\FileResult.cs" />
     <Compile Include="Api\eLearning\NotificationApiController.cs" />
+    <Compile Include="Api\Integration\GroupController.cs" />
     <Compile Include="Api\Notification\EmailController.cs" />
     <Compile Include="Api\eEvent\DutyRosterController.cs" />
     <Compile Include="Api\eEvent\EventRefundController.cs" />
@@ -356,6 +357,7 @@
     <Folder Include="Views\Cart\" />
     <Folder Include="Views\Client\" />
     <Folder Include="Views\EventCategory\" />
+    <Folder Include="Views\Group\" />
     <Folder Include="Views\MediaInterviewRequest\" />
     <Folder Include="Views\Notification\" />
     <Folder Include="Views\Publication\" />

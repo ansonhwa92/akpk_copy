@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace FEP.Model.Migrations
 {
-	public static class firus
-	{
-		public static void Seed(DbEntities db)
-		{
-			//publication category
+    public static class firus
+    {
+        public static void Seed(DbEntities db)
+        {
+            //publication category
+            /*
 			if (!db.PublicationCategory.Any())
 			{
 				db.PublicationCategory.Add(new PublicationCategory { Name = "Articles" });
@@ -21,169 +22,55 @@ namespace FEP.Model.Migrations
 				db.PublicationCategory.Add(new PublicationCategory { Name = "Reports" });
 				db.PublicationCategory.Add(new PublicationCategory { Name = "Research Papers" });
 			}
-
-            /*
-            // rnp admin
-
-            var user0 = db.User.Local.Where(r => r.Name.Contains("R&P Admin")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Admin")).FirstOrDefault();
-
-            if (user0 == null)
-            {
-
-                db.User.Add(
-                    new User
-                    {
-                        Name = "R&P Admin",
-                        Email = "adminrnp@yahoo.com",
-                        UserType = UserType.Staff,
-                        CreatedDate = DateTime.Now,
-                        Display = true,
-                        UserAccount = new UserAccount
-                        {
-                            LoginId = "adminrnp@yahoo.com",
-                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==",
-                            Salt = "/ZCqmg==",
-                            IsEnable = true,
-                            LoginAttempt = 0,
-                            LastPasswordChange = DateTime.Now,
-                            LastLogin = DateTime.Now,
-                            //UserRoles = userroles
-                        },
-                    }
-                );
-
-            }
             */
 
+            //target groups
             /*
-            // rnp verifier
-
-            var user1 = db.User.Local.Where(r => r.Name.Contains("R&P Verifier")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Verifier")).FirstOrDefault();
-
-            if (user1 == null)
+            if (!db.TargetedGroups.Any())
             {
-
-                db.User.Add(
-                    new User
-                    {
-                        Name = "R&P Verifier",
-                        Email = "verifierrnp@yahoo.com",
-                        UserType = UserType.Staff,
-                        CreatedDate = DateTime.Now,
-                        Display = true,
-                        UserAccount = new UserAccount
-                        {
-                            LoginId = "verifierrnp@yahoo.com",
-                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==",
-                            Salt = "/ZCqmg==",
-                            IsEnable = true,
-                            LoginAttempt = 0,
-                            LastPasswordChange = DateTime.Now,
-                            LastLogin = DateTime.Now,
-                            //UserRoles = userroles
-                            },
-                    }
-                );
-
-            }
-            */
-
-            /*
-            //rnp approver 1
-
-            var user2 = db.User.Local.Where(r => r.Name.Contains("R&P Approver 1")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Approver 1")).FirstOrDefault();
-
-            if (user2 == null)
-            {
-
-                db.User.Add(
-                    new User
-                    {
-                        Name = "R&P Approver 1",
-                        Email = "ApproverRNP1@fep.com",
-                        UserType = UserType.Staff,
-                        CreatedDate = DateTime.Now,
-                        Display = true,
-                        UserAccount = new UserAccount
-                        {
-                            LoginId = "ApproverRNP1@fep.com",
-                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==",
-                            Salt = "/ZCqmg==",
-                            IsEnable = true,
-                            LoginAttempt = 0,
-                            LastPasswordChange = DateTime.Now,
-                            LastLogin = DateTime.Now,
-                            //UserRoles = userroles
-                            },
-                    }
-                );
-
-            }
-
-            //rnp approver 2
-
-            var user3 = db.User.Local.Where(r => r.Name.Contains("R&P Approver 2")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Approver 2")).FirstOrDefault();
-
-            if (user3 == null)
-            {
-
-                db.User.Add(
-                    new User
-                    {
-                        Name = "R&P Approver 2",
-                        Email = "ApproverRNP2@fep.com",
-                        UserType = UserType.Staff,
-                        CreatedDate = DateTime.Now,
-                        Display = true,
-                        UserAccount = new UserAccount
-                        {
-                            LoginId = "ApproverRNP2@fep.com",
-                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==",
-                            Salt = "/ZCqmg==",
-                            IsEnable = true,
-                            LoginAttempt = 0,
-                            LastPasswordChange = DateTime.Now,
-                            LastLogin = DateTime.Now,
-                            //UserRoles = userroles
-                            },
-                    }
-                );
-
-            }
-
-            //rnp approver 3
-
-            var user4 = db.User.Local.Where(r => r.Name.Contains("R&P Approver 3")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("R&P Approver 3")).FirstOrDefault();
-
-            if (user4 == null)
-            {
-
-                db.User.Add(
-                    new User
-                    {
-                        Name = "R&P Approver 3",
-                        Email = "ApproverRNP3@fep.com",
-                        UserType = UserType.Staff,
-                        CreatedDate = DateTime.Now,
-                        Display = true,
-                        UserAccount = new UserAccount
-                        {
-                            LoginId = "ApproverRNP3@fep.com",
-                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==",
-                            Salt = "/ZCqmg==",
-                            IsEnable = true,
-                            LoginAttempt = 0,
-                            LastPasswordChange = DateTime.Now,
-                            LastLogin = DateTime.Now,
-                            //UserRoles = userroles
-                            },
-                    }
-                );
-
+                db.TargetedGroups.Add(new TargetedGroups
+                {
+                    Name = "Group 1",
+                    Description = "Male (18-25) in JB",
+                    MinAge = 18,
+                    MaxAge = 25,
+                    Gender = MemberGender.Male,
+                    MinSalary = 1500,
+                    MaxSalary = 3500,
+                    Status = 1,
+                    PaymentStatus = 1,
+                    Delinquent = 0,
+                    EmploymentType = 2,
+                    State = 1,
+                    City = "Johor Bahru",
+                    DateCreated = DateTime.Now,
+                    CreatorId = 1,
+                    Active = true
+                });
+                db.TargetedGroups.Add(new TargetedGroups
+                {
+                    Name = "Group 2",
+                    Description = "Any (40-55)",
+                    MinAge = 40,
+                    MaxAge = 55,
+                    Gender = MemberGender.Any,
+                    MinSalary = null,
+                    MaxSalary = null,
+                    Status = null,
+                    PaymentStatus = null,
+                    Delinquent = null,
+                    EmploymentType = null,
+                    State = null,
+                    City = "",
+                    DateCreated = DateTime.Now,
+                    CreatorId = 1,
+                    Active = true
+                });
             }
             */
 
             //banks
+            /*
             if (!db.BankInformation.Any())
             {
                 db.BankInformation.Add(new BankInformation { ShortName = "Maybank" });
@@ -203,8 +90,10 @@ namespace FEP.Model.Migrations
                 db.BankInformation.Add(new BankInformation { ShortName = "UOB Bank" });
                 db.BankInformation.Add(new BankInformation { ShortName = "Maybank2E" });
             }
+            */
 
             //promotion codes
+            /*
             if (!db.PromotionCode.Any())
             {
                 db.PromotionCode.Add(new PromotionCode {
@@ -223,128 +112,133 @@ namespace FEP.Model.Migrations
                     Used = false
                 });
             }
+            */
 
             //publication
-            //if (!db.Publication.Any())
-            //{
-            //    db.Publication.Add(new Publication
-            //    {
-            //        CategoryID = 2,
-            //        Author = "Prof. Aiman",
-            //        Coauthor = null,
-            //        Title = "Debt Management 101",
-            //        Year = 2018,
-            //        Description = "A book about how to manage your debt effectively",
-            //        Language = "English",
-            //        ISBN = "ISBN 0001-0001-01",
-            //        Hardcopy = true,
-            //        Digitalcopy = true,
-            //        HDcopy = true,
-            //        FreeHCopy = false,
-            //        FreeDCopy = false,
-            //        FreeHDCopy = false,
-            //        HPrice = 39.9F,
-            //        DPrice = 10,
-            //        HDPrice = 45.1F,
-            //        Pictures = null,
-            //        ProofOfApproval = null,
-            //        StockBalance = 100,
-            //        CancelRemark = "",
-            //        WithdrawalReason = "",
-            //        WithdrawalDate = null,
-            //        ProofOfWithdrawal = "",
-            //        DateAdded = DateTime.Parse("2019-10-13 12:53:17"),
-            //        CreatorId = 1,
-            //        RefNo = "PUB/1910/0001",
-            //        Status = PublicationStatus.Published,
-            //        DateCancelled = null,
-            //        ViewCount = 0,
-            //        PurchaseCount = 0,
-            //        DmsPath = "",
-            //        NotificationID = 0
-            //    });
-            //    db.Publication.Add(new Publication
-            //    {
-            //        CategoryID = 6,
-            //        Author = "Dr. Masyitah Ghaffar",
-            //        Coauthor = "Dr. Irwan",
-            //        Title = "Laporan Kredit 2017",
-            //        Year = 2018,
-            //        Description = "Laporan kredit bagi tahun 2017",
-            //        Language = "Bahasa Malaysia",
-            //        ISBN = "ISS 0002-0002",
-            //        Hardcopy = true,
-            //        Digitalcopy = true,
-            //        HDcopy = false,
-            //        FreeHCopy = false,
-            //        FreeDCopy = true,
-            //        FreeHDCopy = false,
-            //        HPrice = 12.8F,
-            //        DPrice = 0,
-            //        HDPrice = 0,
-            //        Pictures = null,
-            //        ProofOfApproval = null,
-            //        StockBalance = 50,
-            //        CancelRemark = "",
-            //        WithdrawalReason = "",
-            //        WithdrawalDate = null,
-            //        ProofOfWithdrawal = "",
-            //        DateAdded = DateTime.Parse("2019-10-13 14:12:58"),
-            //        CreatorId = 1,
-            //        RefNo = "PUB/1910/0002",
-            //        Status = PublicationStatus.Published,
-            //        DateCancelled = null,
-            //        ViewCount = 0,
-            //        PurchaseCount = 0,
-            //        DmsPath = "",
-            //        NotificationID = 0
-            //    });
-            //}
+            /*
+            if (!db.Publication.Any())
+            {
+                db.Publication.Add(new Publication
+                {
+                    CategoryID = 2,
+                    Author = "Prof. Aiman",
+                    Coauthor = null,
+                    Title = "Debt Management 101",
+                    Year = 2018,
+                    Description = "A book about how to manage your debt effectively",
+                    Language = "English",
+                    ISBN = "ISBN 0001-0001-01",
+                    Hardcopy = true,
+                    Digitalcopy = true,
+                    HDcopy = true,
+                    FreeHCopy = false,
+                    FreeDCopy = false,
+                    FreeHDCopy = false,
+                    HPrice = 39.9F,
+                    DPrice = 10,
+                    HDPrice = 45.1F,
+                    Pictures = null,
+                    ProofOfApproval = null,
+                    StockBalance = 100,
+                    CancelRemark = "",
+                    WithdrawalReason = "",
+                    WithdrawalDate = null,
+                    ProofOfWithdrawal = "",
+                    DateAdded = DateTime.Parse("2019-10-13 12:53:17"),
+                    CreatorId = 1,
+                    RefNo = "PUB/1910/0001",
+                    Status = PublicationStatus.Published,
+                    DateCancelled = null,
+                    ViewCount = 0,
+                    PurchaseCount = 0,
+                    DmsPath = "",
+                    NotificationID = 0
+                });
+                db.Publication.Add(new Publication
+                {
+                    CategoryID = 6,
+                    Author = "Dr. Masyitah Ghaffar",
+                    Coauthor = "Dr. Irwan",
+                    Title = "Laporan Kredit 2017",
+                    Year = 2018,
+                    Description = "Laporan kredit bagi tahun 2017",
+                    Language = "Bahasa Malaysia",
+                    ISBN = "ISS 0002-0002",
+                    Hardcopy = true,
+                    Digitalcopy = true,
+                    HDcopy = false,
+                    FreeHCopy = false,
+                    FreeDCopy = true,
+                    FreeHDCopy = false,
+                    HPrice = 12.8F,
+                    DPrice = 0,
+                    HDPrice = 0,
+                    Pictures = null,
+                    ProofOfApproval = null,
+                    StockBalance = 50,
+                    CancelRemark = "",
+                    WithdrawalReason = "",
+                    WithdrawalDate = null,
+                    ProofOfWithdrawal = "",
+                    DateAdded = DateTime.Parse("2019-10-13 14:12:58"),
+                    CreatorId = 1,
+                    RefNo = "PUB/1910/0002",
+                    Status = PublicationStatus.Published,
+                    DateCancelled = null,
+                    ViewCount = 0,
+                    PurchaseCount = 0,
+                    DmsPath = "",
+                    NotificationID = 0
+                });
+            }
+            */
 
-            ////publication approval
-            //if (!db.PublicationApproval.Any())
-            //{
-            //    db.PublicationApproval.Add(new PublicationApproval
-            //    {
-            //        PublicationID = 1,
-            //        Level = PublicationApprovalLevels.Verifier,
-            //        ApproverId = 1,
-            //        Status = PublicationApprovalStatus.Approved,
-            //        ApprovalDate = DateTime.Parse("2019-10-14 19:08:37"),
-            //        Remarks = "OK",
-            //        RequireNext = true
-            //    });
-            //    db.PublicationApproval.Add(new PublicationApproval
-            //    {
-            //        PublicationID = 1,
-            //        Level = PublicationApprovalLevels.Approver1,
-            //        ApproverId = 1,
-            //        Status = PublicationApprovalStatus.Approved,
-            //        ApprovalDate = DateTime.Parse("2019-10-15 19:17:15"),
-            //        Remarks = "OK",
-            //        RequireNext = false
-            //    });
-            //    db.PublicationApproval.Add(new PublicationApproval
-            //    {
-            //        PublicationID = 2,
-            //        Level = PublicationApprovalLevels.Verifier,
-            //        ApproverId = 1,
-            //        Status = PublicationApprovalStatus.Approved,
-            //        ApprovalDate = DateTime.Parse("2019-10-14 19:18:13"),
-            //        Remarks = "OK",
-            //        RequireNext = true
-            //    });
-            //    db.PublicationApproval.Add(new PublicationApproval
-            //    {
-            //        PublicationID = 2,
-            //        Level = PublicationApprovalLevels.Approver1,
-            //        ApproverId = 1,
-            //        Status = PublicationApprovalStatus.Approved,
-            //        ApprovalDate = DateTime.Parse("2019-10-15 20:24:10"),
-            //        Remarks = "OK",
-            //        RequireNext = false
-            //    });
-            //}
+            //publication approval
+            /*
+            if (!db.PublicationApproval.Any())
+            {
+                db.PublicationApproval.Add(new PublicationApproval
+                {
+                    PublicationID = 1,
+                    Level = PublicationApprovalLevels.Verifier,
+                    ApproverId = 1,
+                    Status = PublicationApprovalStatus.Approved,
+                    ApprovalDate = DateTime.Parse("2019-10-14 19:08:37"),
+                    Remarks = "OK",
+                    RequireNext = true
+                });
+                db.PublicationApproval.Add(new PublicationApproval
+                {
+                    PublicationID = 1,
+                    Level = PublicationApprovalLevels.Approver1,
+                    ApproverId = 1,
+                    Status = PublicationApprovalStatus.Approved,
+                    ApprovalDate = DateTime.Parse("2019-10-15 19:17:15"),
+                    Remarks = "OK",
+                    RequireNext = false
+                });
+                db.PublicationApproval.Add(new PublicationApproval
+                {
+                    PublicationID = 2,
+                    Level = PublicationApprovalLevels.Verifier,
+                    ApproverId = 1,
+                    Status = PublicationApprovalStatus.Approved,
+                    ApprovalDate = DateTime.Parse("2019-10-14 19:18:13"),
+                    Remarks = "OK",
+                    RequireNext = true
+                });
+                db.PublicationApproval.Add(new PublicationApproval
+                {
+                    PublicationID = 2,
+                    Level = PublicationApprovalLevels.Approver1,
+                    ApproverId = 1,
+                    Status = PublicationApprovalStatus.Approved,
+                    ApprovalDate = DateTime.Parse("2019-10-15 20:24:10"),
+                    Remarks = "OK",
+                    RequireNext = false
+                });
+            }
+            */
 
             /*
             //cart

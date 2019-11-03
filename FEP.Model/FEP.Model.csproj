@@ -91,6 +91,7 @@
     <Compile Include="Email.cs" />
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
+    <Compile Include="Groups.cs" />
     <Compile Include="Logs.cs" />
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />

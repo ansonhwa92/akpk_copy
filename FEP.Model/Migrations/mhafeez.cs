@@ -729,9 +729,13 @@ namespace FEP.Model.Migrations
                 {
                     module = Modules.Setting;
                 }
-                else //if (access >= 6001 && access <= 7000)
+                else if (access >= 6001 && access <= 7000)
                 {
                     module = Modules.Report;
+                }
+                else
+                {
+                    module = Modules.Payment;
                 }
 
                 db.Access.AddOrUpdate(a => a.UserAccess, new Access { UserAccess = useraccess, Module = module, Description = useraccess.DisplayName() });

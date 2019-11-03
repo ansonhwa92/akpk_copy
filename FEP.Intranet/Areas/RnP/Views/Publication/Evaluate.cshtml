@@ -1,34 +1,34 @@
 ﻿@model FEP.WebApiModel.RnP.ReturnPublicationApprovalModel
 
 @{
-	ViewBag.Title = "Evaluate Publication";
-	Layout = "~/Views/Shared/_Layout1.cshtml";
+    ViewBag.Title = "Evaluate Publication";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
 @section Nav{
-	<div class="title_header">
-		<div class="title-header-container">
-			<div class="container">
-				<!-- if have button -->
-				<div class="header-col-right float-right mt-5"><a href="~/RnP/Publication" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
-				<div class="header-col-left">
-					<div id="breadcrumb">
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="~/Home">Home</a></li>
-								<li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
-								<li class="breadcrumb-item"><a href="~/RnP/Publication">Publication</a></li>
-								<li class="breadcrumb-item"><a href="#">Publication Request</a></li>
-								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
-							</ol>
-						</nav>
-					</div>
-					<h1 class="page-title text-white">Publication Request Ref No: @Model.Pub.RefNo</h1>
-					<div class="header-text"><!--View details of publication.--></div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/RnP/Publication" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
+                                <li class="breadcrumb-item"><a href="~/RnP/Publication">Publication</a></li>
+                                <li class="breadcrumb-item"><a href="#">Publication Request</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Publication Request Ref No: @Model.Pub.RefNo</h1>
+                    <div class="header-text"><!--View details of publication.--></div>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 <div class="row">
@@ -111,7 +111,7 @@
                                 }
                                 else if (Model.Pub.Status == PublicationStatus.Verified)
                                 {
-                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Approval">
+                                    <input class="form-control bg-warning-ccd" name="Pub.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Approval @ViewBag.ApprovalStage">
                                 }
                                 else if (Model.Pub.Status == PublicationStatus.ApproverRejected)
                                 {
@@ -286,34 +286,31 @@
                             @Html.EditorFor(model => model.Pub.HDPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         </div>
                     </div>
-                    <!--
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pub.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                            <div class="custom-file">
-                                @Html.EditorFor(model => model.Pub.ProofOfApproval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-                                <label class="custom-file-label" for="customFile">No file choosen</label>
-                            </div>
-                            <div id="fileList"></div>
-                        </div>
-                    </div>
-                    -->
-                    <div class="row" style="display:none;">
-                        <div class="form-group col-lg-12">
-
-                            @Html.LabelFor(model => model.Pub.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pub.ProofOfApproval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="form-group col-lg-6">
-
                             @Html.LabelFor(model => model.Pub.StockBalance, htmlAttributes: new { @class = "control-label" })
                             @Html.EditorFor(model => model.Pub.StockBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         </div>
                         <div class="form-group col-lg-6">
                             &nbsp;
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.CoverPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_CoverPictureDetails", Model.Pub.CoverPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.AuthorPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_AuthorPictureDetails", Model.Pub.AuthorPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_ProofOfApprovalDetails", Model.Pub.ProofOfApproval)
                         </div>
                     </div>
                 </div>
@@ -410,13 +407,13 @@
                                             @Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
                                         }
                                     }
-                                            <div class="form-group">
-                                                @Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                                                <textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
-                                                @*Html.TextAreaFor(model => model.Approval.Remarks, new { htmlAttributes = new { @class = "form-control" }, cols = 48, @rows = 5 })*@
-                                                @*Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })*@
-                                                <span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
-                                            </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                                        <textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
+                                        @*Html.TextAreaFor(model => model.Approval.Remarks, new { htmlAttributes = new { @class = "form-control" }, cols = 48, @rows = 5 })*@
+                                        @*Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })*@
+                                        <span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
+                                    </div>
                                 </div>
                                 <div class="divider-border"></div>
                                 <div class="m-4 text-center">

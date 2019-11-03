@@ -70,6 +70,7 @@ namespace FEP.Model
         [Key]
         public int ID { get; set; }
         public int ItemId { get; set; }
+        public PurchaseType PurchaseType { get; set; }
         public int UserId { get; set; }
         public string FullName { get; set; }
         public int BankID { get; set; }

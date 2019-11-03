@@ -115,6 +115,7 @@ namespace FEP.Model
         //publication
         public DbSet<Publication> Publication { get; set; }
 
+        public DbSet<PublicationFile> PublicationFile { get; set; }
         public DbSet<PublicationCategory> PublicationCategory { get; set; }
         public DbSet<PublicationApproval> PublicationApproval { get; set; }
         public DbSet<PublicationWithdrawal> PublicationWithdrawal { get; set; }
@@ -127,11 +128,16 @@ namespace FEP.Model
         //research
         public DbSet<Survey> Survey { get; set; }
 
+        public DbSet<SurveyFile> SurveyFile { get; set; }
         public DbSet<SurveyApproval> SurveyApproval { get; set; }
         public DbSet<SurveyResponse> SurveyResponse { get; set; }
 
-		//eEvent
-		public DbSet<PublicEvent> PublicEvent { get; set; } 
+        //targeted groups
+        public DbSet<TargetedGroups> TargetedGroups { get; set; }
+        public DbSet<TargetedGroupMembers> TargetedGroupMembers { get; set; }
+
+        //eEvent
+        public DbSet<PublicEvent> PublicEvent { get; set; } 
 		public DbSet<EventCalendar> EventCalendar { get; set; }
 		public DbSet<EventAgenda> EventAgenda { get; set; }
 		public DbSet<EventSpeaker> EventSpeaker { get; set; }

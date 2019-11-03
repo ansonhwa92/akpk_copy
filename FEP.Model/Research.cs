@@ -27,8 +27,8 @@ namespace FEP.Model
         public string TemplateName { get; set; }
         public string TemplateDescription { get; set; }
         public bool Active { get; set; }
-        public string Pictures { get; set; }
-        public string ProofOfApproval { get; set; }
+        //public string Pictures { get; set; }
+        //public string ProofOfApproval { get; set; }
         public string CancelRemark { get; set; }
         // aut-filled in data................................................................................................
         public DateTime DateAdded { get; set; }
@@ -43,6 +43,18 @@ namespace FEP.Model
         public int NotificationID { get; set; }
         // sub-tables
         public virtual ICollection<SurveyApproval> Approvals { get; set; }
+    }
+
+    [Table("SurveyFile")]
+    public class SurveyFile
+    {
+        [Key]
+        public int ID { get; set; }
+        public SurveyFileCategory FileCategory { get; set; }
+        public int FileId { get; set; }
+        public int ParentId { get; set; }
+        [ForeignKey("FileId")]
+        public virtual FileDocument FileDocument { get; set; }
     }
 
     [Table("SurveyApproval")]
@@ -70,6 +82,7 @@ namespace FEP.Model
         public int SurveyID { get; set; }
         public SurveyResponseTypes Type { get; set; }
         public int UserId { get; set; }     // if 0/Null = anonymous/public respondent
+        public string Email { get; set; }
         public DateTime ResponseDate { get; set; }
         public string Contents { get; set; }
         // foreign keys......................................................................................................
@@ -115,6 +128,16 @@ namespace FEP.Model
         Unpublished,
         [Display(Name = "SurveyStatusTrashed", ResourceType = typeof(Language.RnPEnum))]                    // cancelled
         Trashed
+    }
+
+    public enum SurveyFileCategory
+    {
+        [Display(Name = "Cover Image")]
+        CoverImage,
+        [Display(Name = "Author Image")]
+        AuthorImage,
+        [Display(Name = "Proof of Approval")]
+        ProofOfApproval
     }
 
     public enum SurveyApprovalLevels

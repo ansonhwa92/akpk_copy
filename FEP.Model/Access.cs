@@ -35,8 +35,10 @@ namespace FEP.Model
 		Setting = 5,
 		[Display(Name = "Report")]
 		Report = 6,
+        [Display(Name = "Payment")]
+        Payment = 7
 
-	}
+    }
 
 
 	public enum UserAccess
@@ -123,7 +125,7 @@ namespace FEP.Model
 		Recipient_Cancel_PublicEvent = 1036,
 
 
-		//research 2001 - 3000
+		//research & publication 2001 - 3000
 		[Display(Name = "R&P Management Menu")]
 		RnPMenu = 2001,
 		[Display(Name = "Publication Menu")]
@@ -245,6 +247,13 @@ namespace FEP.Model
 
 
 
+        //payment 7001 - 8000
+        [Display(Name = "Offline Payment")]
+        OfflinePayment = 7001,
+        [Display(Name = "Refunds")]
+        Refunds = 7002
 
-	}
+
+
+    }
 }

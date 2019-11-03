@@ -103,6 +103,7 @@
     <Compile Include="eEvent\EventCategory.cs" />
     <Compile Include="eEvent\MediaInterviewRequest.cs" />
     <Compile Include="eEvent\PublicEvent.cs" />
+    <Compile Include="Integration\Groups.cs" />
     <Compile Include="Logs\ErrorLog.cs" />
     <Compile Include="Logs\ReportLog.cs" />
     <Compile Include="Logs\UserLog.cs" />

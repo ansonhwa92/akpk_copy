@@ -1,6 +1,7 @@
 ﻿using FEP.Helper;
 using FEP.Model;
 using FEP.WebApiModel.RnP;
+using FEP.WebApiModel.Integration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Data.Entity;
+using System.Web;
+using FEP.WebApiModel.SLAReminder;
+using FEP.WebApiModel.FileDocuments;
 
 
 namespace FEP.WebApi.Api.RnP
@@ -16,6 +20,9 @@ namespace FEP.WebApi.Api.RnP
     public class SurveyController : ApiController
     {
         private DbEntities db = new DbEntities();
+
+        private string HomeURL = "http://10.250.1.134";
+        private string SubURL = "FEP_UAT_6";
 
         protected override void Dispose(bool disposing)
         {
@@ -170,8 +177,8 @@ namespace FEP.WebApi.Api.RnP
                     Status = s.Status,
                     ApprovalLevel = db.SurveyApproval.Where(sa => sa.SurveyID == s.ID && sa.Status == SurveyApprovalStatus.None).OrderByDescending(sa => sa.ApprovalDate).FirstOrDefault().Level
                 }).ToList();
-                //Duration = s.StartDate.ToString("dd/MM/yyyy") + " - " + s.EndDate.ToString("dd/MM/yyyy"),
-                //Progress = s.InviteCount.ToString() + " / " + s.SubmitCount.ToString(),
+            //Duration = s.StartDate.ToString("dd/MM/yyyy") + " - " + s.EndDate.ToString("dd/MM/yyyy"),
+            //Progress = s.InviteCount.ToString() + " / " + s.SubmitCount.ToString(),
 
             return Ok(new DataTableResponse
             {
@@ -183,12 +190,18 @@ namespace FEP.WebApi.Api.RnP
 
         }
 
-        // Alternative function for listing (all)
-        // GET: api/RnP/Survey (list) - CURRENTLY USED FOR ANONYMOUS BROWSING
+        // GET: api/RnP/Survey (list) - CURRENTLY NOT USED
+        // (i.e. public/targeted surveys that don't require Login)
         public List<ReturnSurveyModel> Get()
         {
-            // TODO: not expired and active only
-            var surveys = db.Survey.Where(v => v.Status == SurveyStatus.Published && v.Type == SurveyType.Public).OrderBy(v => v.StartDate).OrderBy(v => v.Title).Select(s => new ReturnSurveyModel
+            // duration checked at browser view (so we can show EXPIRED for recent surveys and hide older ones)
+            // NOPE!
+            // If we wanna do that we'll do separate function for expired surveys
+            // TODO: but startdate checking disabled for now 
+            // active (for now = published) only
+            // TODO: time portion may make duration checking fail
+            var currdate = DateTime.Now;
+            var tempsurveys = db.Survey.Where(v => v.Status == SurveyStatus.Published && v.RequireLogin == false && v.EndDate > currdate).OrderBy(v => v.StartDate).OrderBy(v => v.Title).Select(s => new ReturnSurveyModel
             {
                 ID = s.ID,
                 Type = s.Type,
@@ -201,8 +214,8 @@ namespace FEP.WebApi.Api.RnP
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
                 Status = s.Status,
                 CancelRemark = s.CancelRemark,
@@ -214,7 +227,185 @@ namespace FEP.WebApi.Api.RnP
                 SubmitCount = s.SubmitCount
             }).ToList();
 
+            // can do this in the select above but doing it here for clarity (compare with next function)
+
+            List<ReturnSurveyModel> surveys = new List<ReturnSurveyModel> { };
+
+            foreach (ReturnSurveyModel sitem in tempsurveys)
+            {
+                if (sitem.Type == SurveyType.Public)
+                {
+                    surveys.Add(sitem);
+                }
+            }
+
             return surveys;
+        }
+
+        // GET: api/RnP/Survey/GetAnonymousSurveys (list) - CURRENTLY USED FOR ANONYMOUS BROWSING
+        // (i.e. public/targeted surveys that don't require Login)
+        // This function is a synonym for the above function
+        [Route("api/RnP/Survey/GetAnonymousSurveys")]
+        [HttpGet]
+        public BrowseSurveyModel GetAnonymousSurveys(string keyword, string sorting)
+        {
+            // duration checked at browser view (so we can show EXPIRED for recent surveys and hide older ones)
+            // NOPE!
+            // TODO: but startdate checking disabled for now 
+            // active (for now = published) only
+            // TODO: time portion may make duration checking fail
+            // NOTE: survey will be included only if it's public mass and doesn't require login
+
+            var currdate = DateTime.Now;
+
+            var query = db.Survey.Where(v => v.Status == SurveyStatus.Published && v.RequireLogin == false && v.Type == SurveyType.Public && v.StartDate <= currdate && v.EndDate >= currdate);
+
+            var totalCount = query.Count();
+
+            query = query.Where(v => (keyword == null || keyword == "" || v.Title.Contains(keyword)));
+
+            var filteredCount = query.Count();
+
+            if (sorting == "expiry")
+            {
+                query = query.OrderBy(o => o.EndDate).OrderBy(o => o.Title);
+            }
+            else
+            {
+                query = query.OrderBy(o => o.Title).OrderBy(o => o.EndDate);
+            }
+
+            var data = query.Skip(0).Take(filteredCount).Select(s => new ReturnSurveyModel
+            {
+                ID = s.ID,
+                Type = s.Type,
+                Category = s.Category,
+                Title = s.Title,
+                Description = s.Description,
+                TargetGroup = s.TargetGroup,
+                StartDate = s.StartDate,
+                EndDate = s.EndDate,
+                RequireLogin = s.RequireLogin,
+                Contents = s.Contents,
+                Active = s.Active,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
+                DateAdded = s.DateAdded,
+                Status = s.Status,
+                CancelRemark = s.CancelRemark,
+                CreatorId = s.CreatorId,
+                RefNo = s.RefNo,
+                DateCancelled = s.DateCancelled,
+                DmsPath = s.DmsPath,
+                InviteCount = s.InviteCount,
+                SubmitCount = s.SubmitCount
+            }).ToList();
+
+            var browser = new BrowseSurveyModel
+            {
+                Keyword = keyword,
+                Sorting = sorting,
+                LastIndex = filteredCount,
+                ItemCount = totalCount,
+                Surveys = data
+            };
+
+            return browser;
+        }
+
+        // GET: api/RnP/Survey/GetLoginSurveys (list) - CURRENTLY USED FOR NON-ANONYMOUS BROWSING
+        // (i.e. public/targeted surveys that require Login)
+        [Route("api/RnP/Survey/GetLoginSurveys")]
+        [HttpGet]
+        public BrowseSurveyModel GetLoginSurveys(string useremail, string keyword, string sorting)
+        {
+            // duration checked at browser view (so we can show EXPIRED for recent surveys and hide older ones)
+            // NOPE!
+            // TODO: but startdate checking disabled for now 
+            // active (for now = published) only
+            // TODO: time portion may make duration checking fail
+            // NOTE: survey included if it requires login (regardless of type: public or targeted)
+
+            var currdate = DateTime.Now;
+
+            var query = db.Survey.Where(v => v.Status == SurveyStatus.Published && v.RequireLogin == true && v.StartDate <= currdate && v.EndDate >= currdate);
+
+            var totalCount = query.Count();
+
+            query = query.Where(v => (keyword == null || keyword == "" || v.Title.Contains(keyword)));
+
+            var filteredCount = query.Count();
+
+            if (sorting == "expiry")
+            {
+                query = query.OrderBy(o => o.EndDate).OrderBy(o => o.Title);
+            }
+            else
+            {
+                query = query.OrderBy(o => o.Title).OrderBy(o => o.EndDate);
+            }
+
+            var data = query.Skip(0).Take(filteredCount).Select(s => new ReturnSurveyModel
+            {
+                ID = s.ID,
+                Type = s.Type,
+                Category = s.Category,
+                Title = s.Title,
+                Description = s.Description,
+                TargetGroup = s.TargetGroup,
+                StartDate = s.StartDate,
+                EndDate = s.EndDate,
+                RequireLogin = s.RequireLogin,
+                Contents = s.Contents,
+                Active = s.Active,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
+                DateAdded = s.DateAdded,
+                Status = s.Status,
+                CancelRemark = s.CancelRemark,
+                CreatorId = s.CreatorId,
+                RefNo = s.RefNo,
+                DateCancelled = s.DateCancelled,
+                DmsPath = s.DmsPath,
+                InviteCount = s.InviteCount,
+                SubmitCount = s.SubmitCount
+            }).ToList();
+
+            int newfilteredCount = 0;
+
+            List<ReturnSurveyModel> surveys = new List<ReturnSurveyModel> { };
+
+            foreach (ReturnSurveyModel sitem in data)
+            {
+                if (sitem.Type == SurveyType.Targeted)
+                {
+                    var groups = sitem.TargetGroup.Split(',');
+                    foreach (string group in groups)
+                    {
+                        if (UserInGroup(useremail, group))
+                        {
+                            surveys.Add(sitem);
+                            newfilteredCount++;
+                        }
+                    }
+                }
+                else
+                {
+                    surveys.Add(sitem);
+                    newfilteredCount++;
+                }
+            }
+
+            var browser = new BrowseSurveyModel
+            {
+                Keyword = keyword,
+                Sorting = sorting,
+                LastIndex = newfilteredCount,
+                ItemCount = totalCount,
+                Surveys = data
+            };
+
+            return browser;
         }
 
         // Function to get a single survey
@@ -236,8 +427,8 @@ namespace FEP.WebApi.Api.RnP
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
                 Status = s.Status,
                 CancelRemark = s.CancelRemark,
@@ -246,13 +437,17 @@ namespace FEP.WebApi.Api.RnP
                 DateCancelled = s.DateCancelled,
                 DmsPath = s.DmsPath,
                 InviteCount = s.InviteCount,
-                SubmitCount = s.SubmitCount                
+                SubmitCount = s.SubmitCount
             }).FirstOrDefault();
 
             if (survey == null)
             {
                 return NotFound();
             }
+
+            survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return Ok(survey);
             //return survey;
@@ -278,11 +473,16 @@ namespace FEP.WebApi.Api.RnP
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
                 Active = s.Active,
-                ProofOfApproval = s.ProofOfApproval,
+                //ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
                 Status = s.Status,
                 CreatorName = ""
             }).FirstOrDefault();
+
+            if (survey == null)
+            {
+                return NotFound();
+            }
 
             var user = db.User.Where(u => u.Id == survey.CreatorId).FirstOrDefault();
             if (user != null)
@@ -290,13 +490,66 @@ namespace FEP.WebApi.Api.RnP
                 survey.CreatorName = user.Name;
             }
 
-            if (survey == null)
-            {
-                return NotFound();
-            }
+            survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return Ok(survey);
             //return survey;
+        }
+
+        // Function to get a single survey
+        // GET: api/RnP/Survey/GetLinkedSurvey/
+        [Route("api/RnP/Survey/GetLinkedSurvey")]
+        public ReturnSurveyModel GetLinkedSurvey(string refno, string email)
+        {
+            var survey = db.Survey.Where(v => v.RefNo == refno).Select(s => new ReturnSurveyModel
+            {
+                ID = s.ID,
+                Type = s.Type,
+                Category = s.Category,
+                Title = s.Title,
+                Description = s.Description,
+                TargetGroup = s.TargetGroup,
+                StartDate = s.StartDate,
+                EndDate = s.EndDate,
+                RequireLogin = s.RequireLogin,
+                Contents = s.Contents,
+                Active = s.Active,
+                //ProofOfApproval = s.ProofOfApproval,
+                DateAdded = s.DateAdded,
+                Status = s.Status,
+                CreatorName = ""
+            }).FirstOrDefault();
+
+            if (survey == null)
+            {
+                return null;
+            }
+
+            var user = db.User.Where(u => u.Id == survey.CreatorId).FirstOrDefault();
+            if (user != null)
+            {
+                survey.CreatorName = user.Name;
+            }
+
+            survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == survey.ID), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == survey.ID), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == survey.ID), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+
+            if (survey.Type == SurveyType.Targeted)
+            {
+                var groups = survey.TargetGroup.Split(',');
+                foreach (string group in groups)
+                {
+                    if (UserInGroup(email, group))
+                    {
+                        return survey;
+                    }
+                }
+            }
+
+            return null;
         }
 
         // Function to get survey templates
@@ -348,8 +601,8 @@ namespace FEP.WebApi.Api.RnP
                 EndDate = s.EndDate,
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
                 RefNo = s.RefNo,
@@ -365,6 +618,10 @@ namespace FEP.WebApi.Api.RnP
             {
                 survey.CreatorName = user.Name;
             }
+
+            survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return survey;
         }
@@ -389,8 +646,8 @@ namespace FEP.WebApi.Api.RnP
                 EndDate = s.EndDate,
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 CancelRemark = s.CancelRemark,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
@@ -408,6 +665,10 @@ namespace FEP.WebApi.Api.RnP
             {
                 survey.CreatorName = user.Name;
             }
+
+            survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return survey;
         }
@@ -430,8 +691,8 @@ namespace FEP.WebApi.Api.RnP
                 EndDate = s.EndDate,
                 RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 CancelRemark = s.CancelRemark,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
@@ -449,6 +710,10 @@ namespace FEP.WebApi.Api.RnP
             {
                 survey.CreatorName = user.Name;
             }
+
+            survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             var sapproval = db.SurveyApproval.Where(pa => pa.SurveyID == id && pa.Status == SurveyApprovalStatus.None).Select(s => new ReturnUpdateSurveyApprovalModel
             {
@@ -534,7 +799,7 @@ namespace FEP.WebApi.Api.RnP
         [Route("api/RnP/Survey/Create")]
         [HttpPost]
         [ValidationActionFilter]
-        public string Create([FromBody] UpdateSurveyModel model)
+        public string Create([FromBody] CreateSurveyModelNoFile model)
         {
 
             if (ModelState.IsValid)
@@ -546,15 +811,15 @@ namespace FEP.WebApi.Api.RnP
                     Title = model.Title,
                     Description = model.Description,
                     TargetGroup = model.TargetGroup,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate,
+                    StartDate = DateTime.Parse(model.StartDate.ToString("yyyy/MM/dd") + " 00:00:00"),
+                    EndDate = DateTime.Parse(model.EndDate.ToString("yyyy/MM/dd") + " 23:59:59"),
                     RequireLogin = model.RequireLogin,
                     TemplateName = "",
                     TemplateDescription = "",
                     Contents = "",
                     Active = false,
-                    Pictures = model.Pictures,
-                    ProofOfApproval = model.ProofOfApproval,
+                    //Pictures = model.Pictures,
+                    //ProofOfApproval = model.ProofOfApproval,
                     CancelRemark = "",
                     DateAdded = DateTime.Now,
                     CreatorId = model.CreatorId,
@@ -568,6 +833,45 @@ namespace FEP.WebApi.Api.RnP
                 db.Survey.Add(survey);
                 db.SaveChanges();
                 //if (db.SaveChanges() > 0) {
+
+                //files 1
+                foreach (var fileid in model.CoverFilesId)
+                {
+                    var coverfile = new SurveyFile
+                    {
+                        FileCategory = SurveyFileCategory.CoverImage,
+                        FileId = fileid,
+                        ParentId = survey.ID
+                    };
+
+                    db.SurveyFile.Add(coverfile);
+                }
+
+                //files 2
+                foreach (var fileid in model.AuthorFilesId)
+                {
+                    var authorfile = new SurveyFile
+                    {
+                        FileCategory = SurveyFileCategory.AuthorImage,
+                        FileId = fileid,
+                        ParentId = survey.ID
+                    };
+
+                    db.SurveyFile.Add(authorfile);
+                }
+
+                //files 3
+                foreach (var fileid in model.ProofFilesId)
+                {
+                    var prooffile = new SurveyFile
+                    {
+                        FileCategory = SurveyFileCategory.ProofOfApproval,
+                        FileId = fileid,
+                        ParentId = survey.ID
+                    };
+
+                    db.SurveyFile.Add(prooffile);
+                }
 
                 // modify survey by adding ref no based on year, month and new ID
                 var refno = "";
@@ -604,7 +908,7 @@ namespace FEP.WebApi.Api.RnP
         [Route("api/RnP/Survey/Edit")]
         [HttpPost]
         [ValidationActionFilter]
-        public string Edit([FromBody] UpdateSurveyModel model)
+        public string Edit([FromBody] EditSurveyModelNoFile model)
         {
 
             if (ModelState.IsValid)
@@ -618,14 +922,144 @@ namespace FEP.WebApi.Api.RnP
                     survey.Title = model.Title;
                     survey.Description = model.Description;
                     survey.TargetGroup = model.TargetGroup;
-                    survey.StartDate = model.StartDate;
-                    survey.EndDate = model.EndDate;
+                    survey.StartDate = DateTime.Parse(model.StartDate.ToString("yyyy/MM/dd") + " 00:00:00");
+                    survey.EndDate = DateTime.Parse(model.EndDate.ToString("yyyy/MM/dd") + " 23:59:59");
                     survey.RequireLogin = model.RequireLogin;
-                    survey.Pictures = model.Pictures;
-                    survey.ProofOfApproval = model.ProofOfApproval;
+                    //survey.Pictures = model.Pictures;
+                    //survey.ProofOfApproval = model.ProofOfApproval;
                     //survey.CreatorId = model.CreatorId;
 
                     db.Entry(survey).State = EntityState.Modified;
+
+                    //files 1
+
+                    var attachments1 = db.SurveyFile.Where(s => s.FileCategory == SurveyFileCategory.CoverImage && s.ParentId == model.ID).ToList();
+
+                    if (attachments1 != null)
+                    {
+                        if (model.CoverPictures == null)
+                        {
+                            foreach (var attachment in attachments1)
+                            {
+                                attachment.FileDocument.Display = false;
+                                db.FileDocument.Attach(attachment.FileDocument);
+                                db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                db.SurveyFile.Remove(attachment);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var attachment in attachments1)
+                            {
+                                if (!model.CoverPictures.Any(u => u.Id == attachment.FileDocument.Id))
+                                {
+                                    attachment.FileDocument.Display = false;
+                                    db.FileDocument.Attach(attachment.FileDocument);
+                                    db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                    db.SurveyFile.Remove(attachment);
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var fileid in model.CoverFilesId)
+                    {
+                        var coverfile = new SurveyFile
+                        {
+                            FileCategory = SurveyFileCategory.CoverImage,
+                            FileId = fileid,
+                            ParentId = survey.ID
+                        };
+
+                        db.SurveyFile.Add(coverfile);
+                    }
+
+                    //files 2
+
+                    var attachments2 = db.SurveyFile.Where(s => s.FileCategory == SurveyFileCategory.AuthorImage && s.ParentId == model.ID).ToList();
+
+                    if (attachments2 != null)
+                    {
+                        if (model.AuthorPictures == null)
+                        {
+                            foreach (var attachment in attachments2)
+                            {
+                                attachment.FileDocument.Display = false;
+                                db.FileDocument.Attach(attachment.FileDocument);
+                                db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                db.SurveyFile.Remove(attachment);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var attachment in attachments2)
+                            {
+                                if (!model.AuthorPictures.Any(u => u.Id == attachment.FileDocument.Id))
+                                {
+                                    attachment.FileDocument.Display = false;
+                                    db.FileDocument.Attach(attachment.FileDocument);
+                                    db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                    db.SurveyFile.Remove(attachment);
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var fileid in model.AuthorFilesId)
+                    {
+                        var authorfile = new SurveyFile
+                        {
+                            FileCategory = SurveyFileCategory.AuthorImage,
+                            FileId = fileid,
+                            ParentId = survey.ID
+                        };
+
+                        db.SurveyFile.Add(authorfile);
+                    }
+
+                    //files 3
+
+                    var attachments3 = db.SurveyFile.Where(s => s.FileCategory == SurveyFileCategory.ProofOfApproval && s.ParentId == model.ID).ToList();
+
+                    if (attachments3 != null)
+                    {
+                        if (model.ProofOfApproval == null)
+                        {
+                            foreach (var attachment in attachments3)
+                            {
+                                attachment.FileDocument.Display = false;
+                                db.FileDocument.Attach(attachment.FileDocument);
+                                db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                db.SurveyFile.Remove(attachment);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var attachment in attachments3)
+                            {
+                                if (!model.ProofOfApproval.Any(u => u.Id == attachment.FileDocument.Id))
+                                {
+                                    attachment.FileDocument.Display = false;
+                                    db.FileDocument.Attach(attachment.FileDocument);
+                                    db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                    db.SurveyFile.Remove(attachment);
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var fileid in model.ProofFilesId)
+                    {
+                        var prooffile = new SurveyFile
+                        {
+                            FileCategory = SurveyFileCategory.ProofOfApproval,
+                            FileId = fileid,
+                            ParentId = survey.ID
+                        };
+
+                        db.SurveyFile.Add(prooffile);
+                    }
+
                     db.SaveChanges();
 
                     return model.Title;
@@ -797,7 +1231,7 @@ namespace FEP.WebApi.Api.RnP
                 db.SaveChanges();
 
                 //return survey.Title;
-                if (survey.Type  == SurveyType.Public)
+                if (survey.Type == SurveyType.Public)
                 {
                     return survey.Title + "|" + "Public Mass" + "|" + survey.RefNo;
                 }
@@ -812,7 +1246,7 @@ namespace FEP.WebApi.Api.RnP
         // Function to publish a survey from details page.
         // GET: api/RnP/Survey/PublishByID
         [Route("api/RnP/Survey/PublishByID")]
-        public string PublishByID(int id)
+        public string PublishByID(int id, string BaseURL)
         {
 
             var survey = db.Survey.Where(p => p.ID == id).FirstOrDefault();
@@ -832,6 +1266,7 @@ namespace FEP.WebApi.Api.RnP
                 }
                 else
                 {
+                    var emailres = SendEmailNotificationSurveyBroadcast(survey, BaseURL);
                     return survey.Title + "|" + "Targeted Groups" + "|" + survey.RefNo;
                 }
             }
@@ -1089,6 +1524,7 @@ namespace FEP.WebApi.Api.RnP
                     SurveyID = model.SurveyID,
                     Type = model.Type,
                     UserId = model.UserId,
+                    Email = model.Email,
                     Contents = model.Contents,
                     ResponseDate = DateTime.Now
                 };
@@ -1116,12 +1552,20 @@ namespace FEP.WebApi.Api.RnP
                     SurveyID = model.SurveyID,
                     Type = model.Type,
                     UserId = model.UserId,
+                    Email = model.Email,
                     Contents = model.Contents,
                     ResponseDate = DateTime.Now
                 };
 
                 db.SurveyResponse.Add(surveyresponse);
                 db.SaveChanges();
+
+                var survey = db.Survey.Where(p => p.ID == model.SurveyID).FirstOrDefault();
+
+                if (survey != null)
+                {
+                    var emailres = SendEmailNotificationSurveySubmission(surveyresponse, survey);
+                }
 
                 return "ok";
             }
@@ -1321,6 +1765,240 @@ namespace FEP.WebApi.Api.RnP
             {
                 return false;
             }
+        }
+
+        // Private functions
+
+        // Targeted Groups lookup
+
+        // Check if logged in user's email is in target group
+        // TODO: use group id
+        [NonAction]
+        private bool UserInGroup(string email, string groupname)
+        {
+            var group = db.TargetedGroups.Where(g => g.Active == true && g.Name == groupname).FirstOrDefault();
+
+            if (group != null)
+            {
+                var user = db.TargetedGroupMembers.Where(gm => gm.TargetedGroupID == group.ID && gm.Email == email).FirstOrDefault();
+
+                if (user != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // Get emails of all group members
+        // TODO: use group id
+        [NonAction]
+        private List<string> GetGroupMemberEmails(string groupname)
+        {
+            List<string> memberemails = new List<string> { };
+
+            var group = db.TargetedGroups.Where(g => g.Active == true && g.Name == groupname).FirstOrDefault();
+
+            if (group != null)
+            {
+                var members = db.TargetedGroupMembers.Where(gm => gm.TargetedGroupID == group.ID).ToList();
+
+                foreach (TargetedGroupMembers mymember in members)
+                {
+                    memberemails.Add(mymember.Email);
+                }
+            }
+
+            return memberemails;
+        }
+
+        // BULK EMAIL
+
+        [NonAction]
+        public bool SendEmailNotificationSurveyBroadcast(Survey survey, string BaseURL)
+        {
+            ParameterListToSend paramToSend = new ParameterListToSend();
+            paramToSend.SurveyTitle = survey.Title;
+            paramToSend.SurveyType = "Research";
+            paramToSend.SurveyCode = survey.RefNo;
+            paramToSend.SurveyApproval = "";
+            paramToSend.SurveyLink = $"<a href = '" + BaseURL + "/RnP/Home/TakeSurvey?refno=" + survey.RefNo + "&email={email}' > Take the Survey </a>";
+            paramToSend.SurveyRespondentEmail = "";
+
+            var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType.Submit_Survey_Distribution).FirstOrDefault();
+            string Subject = generateBodyMessage("Survey Broadcast", NotificationType.Submit_Survey_Distribution, paramToSend);
+            string Body = generateBodyMessage(template.TemplateMessage, NotificationType.Submit_Survey_Distribution, paramToSend);
+
+            List<string> Email = new List<string> { };
+            List<string> tmail = new List<string> { };
+
+            var groups = survey.TargetGroup.Split(',');
+            foreach (string group in groups)
+            {
+                tmail = GetGroupMemberEmails(group);
+                Email = Email.Concat(tmail).ToList();
+            }
+
+            if (Email.Count > 0)
+            {
+                List<string> uniqueemails = Email.Distinct().ToList();
+                Email = uniqueemails;
+            }
+
+            var sendresult = SendBulkEmail(NotificationType.Submit_Survey_Distribution, NotificationCategory.ResearchAndPublication, Email, paramToSend, Subject, Body, true);
+            return true;
+        }
+
+        [NonAction]
+        public bool SendEmailNotificationSurveySubmission(SurveyResponse model, Survey survey)
+        {
+            ParameterListToSend paramToSend = new ParameterListToSend();
+            paramToSend.SurveyTitle = survey.Title;
+            paramToSend.SurveyType = "";
+            paramToSend.SurveyCode = survey.RefNo;
+            paramToSend.SurveyApproval = "";
+            paramToSend.SurveyLink = "";
+            paramToSend.SurveyRespondentEmail = model.Email;
+
+            var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType.Submit_Survey_Response).FirstOrDefault();
+            string Subject = generateBodyMessage("Survey Response Submission", NotificationType.Submit_Survey_Response, paramToSend);
+            string Body = generateBodyMessage(template.TemplateMessage, NotificationType.Submit_Survey_Response, paramToSend);
+
+            List<string> Email = new List<string> { };
+
+            Email = GetEmailsByAccess(UserAccess.RnPSurveyEdit);
+
+            var sendresult = SendBulkEmail(NotificationType.Submit_Survey_Response, NotificationCategory.ResearchAndPublication, Email, paramToSend, Subject, Body);
+            return true;
+        }
+
+        [NonAction]
+        public List<string> GetEmailsByAccess(UserAccess UAccess)
+        {
+            List<string> emails = new List<string> { };
+
+            //var allusers = db.User.Where(u => u.Display).ToList();
+            var allusers = db.User.Where(u => u.Display && (u.UserType == UserType.Staff || u.UserType == UserType.SystemAdmin)).ToList();
+
+            foreach (FEP.Model.User myuser in allusers)
+            {
+                if (myuser.UserAccount.IsEnable)
+                {
+                    var myroles = myuser.UserAccount.UserRoles;
+                    foreach (UserRole myrole in myroles)
+                    {
+                        var myroleid = myrole.RoleId;
+                        var myaccesses = db.RoleAccess.Where(ra => ra.RoleId == myroleid).ToList();
+                        foreach (RoleAccess myaccess in myaccesses)
+                        {
+                            UserAccess myfunction = myaccess.UserAccess;
+                            if (myfunction == UAccess)
+                            {
+                                emails.Add(myuser.Email);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return emails;
+        }
+
+        [NonAction]
+        public string GetPropertyValues(Object obj, string propertyName)
+        {
+            Type t = obj.GetType();
+            System.Reflection.PropertyInfo[] props = t.GetProperties();
+            string value = "";
+            foreach (var prop in props)
+                if (prop.Name == propertyName)
+                {
+                    value = (prop.GetValue(obj))?.ToString();
+                    break;
+                }
+                else
+                    value = "";
+
+            return value;
+        }
+
+        [NonAction]
+        public string generateBodyMessage(string TemplateText, NotificationType NotificationType, ParameterListToSend paramToSend)
+        {
+            var ParamList = db.TemplateParameters.Where(p => p.NotificationType == NotificationType).ToList();
+            string WholeText = TemplateText;
+            foreach (var item in ParamList)
+            {
+                string theValue = GetPropertyValues(paramToSend, item.TemplateParameterType);
+                string textToReplace = "[#" + item.TemplateParameterType + "]";
+                WholeText = WholeText.Replace(textToReplace, theValue);
+            }
+
+            return WholeText;
+        }
+
+        [NonAction]
+        public string generateSubjectMessage(string TemplateText, NotificationType NotificationType, ParameterListToSend paramToSend)
+        {
+            var ParamList = db.TemplateParameters.Where(p => p.NotificationType == NotificationType).ToList();
+            string WholeText = TemplateText;
+            foreach (var item in ParamList)
+            {
+                string theValue = GetPropertyValues(paramToSend, item.TemplateParameterType);
+                string textToReplace = "[#" + item.TemplateParameterType + "]";
+                WholeText = WholeText.Replace(textToReplace, theValue);
+            }
+
+            return WholeText;
+        }
+
+        [NonAction]
+        public async System.Threading.Tasks.Task<IHttpActionResult> SendBulkEmail(NotificationType NotificationType, NotificationCategory NotificationCategory, List<string> Emails, ParameterListToSend ParameterListToSend, string emailSubject, string emailBody, bool customlink = false)
+        {
+            bool success = true;
+            foreach (string receiverEmailAddress in Emails)
+            {
+                int counter = 1;
+                if (customlink)
+                {
+                    var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType).FirstOrDefault();
+                    ParameterListToSend.SurveyLink = ParameterListToSend.SurveyLink.Replace("{email}", receiverEmailAddress);
+                    emailBody = generateBodyMessage(template.TemplateMessage, NotificationType, ParameterListToSend);
+                }
+                var response = await sendEmailUsingAPIAsync(DateTime.Now, (int)NotificationCategory, (int)NotificationType, receiverEmailAddress, emailSubject, emailBody, counter);
+                if (response == null)
+                {
+                    success = false;
+                }
+            }
+
+            return Ok(success);
+        }
+
+        [NonAction]
+        public async System.Threading.Tasks.Task<EmailClass> sendEmailUsingAPIAsync(DateTime emailDate, int notifyCategory, int notifyType, string emailAddress, string emailSubject, string emailBody, int counter)
+        {
+            DateTime myTimeNow = DateTime.Now;
+            int epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            EmailClass emailObj = new EmailClass
+            {
+                datID = emailAddress + "-email" + counter + "-" + epoch.ToString(),
+                datType = notifyCategory,
+                datNotify = notifyType,
+                dtInsert = myTimeNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                dtSchedule = emailDate.AddMinutes(1).ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                dtExpired = emailDate.AddYears(1).ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                emailTo = emailAddress,
+                subject = HttpUtility.HtmlDecode(emailSubject),
+                body = HttpUtility.HtmlDecode(emailBody)
+            };
+            var response = await FEP.Intranet.WepApiMethod.SendApiAsync<EmailClass>(System.Web.Mvc.HttpVerbs.Post, $"BulkEmail", emailObj, FEP.Intranet.WepApiMethod.APIEngine.EmailSMSAPI);
+
+            if (response.isSuccess)
+                return response.Data;
+            else
+                return null;
         }
     }
 }

@@ -40,14 +40,15 @@ namespace FEP.Model
         public float HPrice { get; set; }
         public float DPrice { get; set; }
         public float HDPrice { get; set; }
-        public string Pictures { get; set; }        // 1st pic: cover, 2nd pic: cover 2, 3rd pic: author
-        public string ProofOfApproval { get; set; }
+        //public string CoverPictures { get; set; }
+        //public string AuthorPictures { get; set; }
+        //public string ProofOfApproval { get; set; }
         public int? StockBalance { get; set; }
         public string CancelRemark { get; set; }
         // withdrawal info...................................................................................................
         public string WithdrawalReason { get; set; }
         public DateTime? WithdrawalDate { get; set; }
-        public string ProofOfWithdrawal { get; set; }
+        //public string ProofOfWithdrawal { get; set; }
         // auto-filled in data...............................................................................................
         public DateTime DateAdded { get; set; }
         public int CreatorId { get; set; }
@@ -66,6 +67,18 @@ namespace FEP.Model
         // sub-tables........................................................................................................
         public virtual ICollection<PublicationApproval> Approvals { get; set; }
         public virtual ICollection<PublicationWithdrawal> Withdrawals { get; set; }
+    }
+
+    [Table("PublicationFile")]
+    public class PublicationFile
+    {
+        [Key]
+        public int ID { get; set; }
+        public PublicationFileCategory FileCategory { get; set; }
+        public int FileId { get; set; }
+        public int ParentId { get; set; }
+        [ForeignKey("FileId")]
+        public virtual FileDocument FileDocument { get; set; }
     }
 
     [Table("PublicationApproval")]
@@ -265,6 +278,18 @@ namespace FEP.Model
         Withdrawn
     }
     */
+
+    public enum PublicationFileCategory
+    {
+        [Display(Name = "Cover Image")]
+        CoverImage,
+        [Display(Name = "Author Image")]
+        AuthorImage,
+        [Display(Name = "Proof of Approval")]
+        ProofOfApproval,
+        [Display(Name = "Proof of Withdrawal")]
+        ProofOfWithdrawal
+    }
 
     public enum PublicationApprovalLevels
     {

@@ -200,6 +200,7 @@
                 }
                 $('#span_nameerror').hide();
                 $('#span_descerror').hide();
+                var tname = $('#TemplateName').val();
                 var form = $('#formtemplate');
                 //alert(form.serialize());
                 //return false;
@@ -218,7 +219,7 @@
                         }
                         else {
                             $("#resultTitle").text('Saved as Template');
-                            $("#resultText").text('Your Survey design has been successfully saved as a Template.');
+                            $("#resultText").text('Your Survey design has been successfully saved as a Template named: ' + tname + ".");
                         }
                         $("#modalTemplateSaved").modal();
                     }

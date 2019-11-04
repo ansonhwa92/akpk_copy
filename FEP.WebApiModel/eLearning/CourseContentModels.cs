@@ -104,6 +104,7 @@ namespace FEP.WebApiModel.eLearning
         public ICollection<FreeTextAnswer> FreeTextAnswers { get; set; }
         public string FreeTextAnswer { get; set; }
 
+        public int? nextModuleId { get; set; }
         public int? nextContentId { get; set; }
 
 

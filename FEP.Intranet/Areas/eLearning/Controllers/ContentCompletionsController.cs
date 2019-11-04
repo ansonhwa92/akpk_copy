@@ -33,11 +33,24 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     await LogActivity(Modules.Learning, $"User : {CurrentUser?.Name} complete this content : {model.Title}");
 
                     var nextContent = response.Data.nextContentId;
+                    var nextModule = response.Data.nextModuleId;
+                    var courseId = response.Data.CourseId;
 
                     //if (nextContent < 0) // go to index, no more content this module
                     if (nextContent == null)
-                        return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
-                    else
+                    {
+                        if (nextModule == null) // No more module and content, lets go to the course page
+                        {
+                            TempData["SuccessMessage"] = "Congratulations, you have completed this course.";
+
+                            return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = courseId });
+                        }
+                        else  // go to next module
+                        {
+                            return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = nextModule.Value });
+                        }
+                    }
+                    else // go to next content
                         return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = nextContent.Value });
                 }
             }

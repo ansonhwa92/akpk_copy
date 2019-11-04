@@ -115,18 +115,18 @@ namespace FEP.WebApi.Api.eLearning
 
                             break;
 
-                        //case "PercentageCompleted":
+                        case "PercentageCompleted":
 
-                        //    if (sortAscending)
-                        //    {
-                        //        query = query.OrderBy(o => o.PercentageCompleted);
-                        //    }
-                        //    else
-                        //    {
-                        //        query = query.OrderByDescending(o => o.PercentageCompleted);
-                        //    }
+                            if (sortAscending)
+                            {
+                                query = query.OrderBy(o => o.PercentageCompleted);
+                            }
+                            else
+                            {
+                                query = query.OrderByDescending(o => o.PercentageCompleted);
+                            }
 
-                        //    break;
+                            break;
 
                         default:
                             query = query.OrderBy(o => o.Learner.User.Name);
@@ -139,13 +139,16 @@ namespace FEP.WebApi.Api.eLearning
                 }
             }
 
-            var data = query.Skip(request.start).Take(request.length)
+            var finalResult = query.ToList();
+
+            var data = finalResult.Skip(request.start).Take(request.length)
                .Select(x => new ReturnBriefCourseEnrollmentModel
                {
                    CourseEventId = x.CourseEventId,
                    StudentName = String.IsNullOrEmpty(x.Learner.User.Name) ? "" : x.Learner.User.Name,
                    DateEnrolled = x.EnrolledDate.ToString(),
-                   Status = x.Status
+                   Status = x.Status,
+                   PercentageCompleted = x.PercentageCompleted.ToString()
                }).ToArray();
 
             return Ok(new DataTableResponse
@@ -164,9 +167,9 @@ namespace FEP.WebApi.Api.eLearning
         [HttpGet]
         public async Task<IHttpActionResult> EnrollAsync(int id, int userId, string enrollmentCode = "")
         {
-            var learner = db.Learners.Find(userId);
+            var learner = await db.Learners.FirstOrDefaultAsync(x => x.UserId ==userId);
 
-            if (learner == null)
+            if (learner == null) // create new learner
             {
                 var user = await db.User.FindAsync(userId);
 

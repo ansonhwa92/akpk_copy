@@ -130,7 +130,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 }
             }
 
-            TempData["ErrorMessage"] = "Cannot add course. Please ensure all required fields are filled in.";
+            TempData["ErrorMessage"] = "Cannot add course. Please ensure all required fields are filled in correctly.";
 
             await GetCategories();
 
@@ -256,12 +256,25 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             if (CurrentUser.UserId != null)
             {
                 var currentUserId = CurrentUser.UserId.Value;
-                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get,
-                    CourseApiUrl.IsUserEnrolled + $"?id={id}&userId={currentUserId}&enrollmentCode={enrollmentCode}");
 
-                if (response.isSuccess)
+                if (String.IsNullOrEmpty(enrollmentCode))
                 {
-                    model.IsUserEnrolled = response.Data;
+                    var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get,
+                        CourseApiUrl.IsUserEnrolled + $"?id={id}&userId={currentUserId}");
+                    if (response.isSuccess)
+                    {
+                        model.IsUserEnrolled = response.Data;
+                    }
+                }
+                else
+                {
+                    var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get,
+                        CourseApiUrl.IsUserEnrolled + $"?id={id}&userId={currentUserId}&enrollmentCode={enrollmentCode}");
+
+                    if (response.isSuccess)
+                    {
+                        model.IsUserEnrolled = response.Data;
+                    }
                 }
             }
 

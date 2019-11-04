@@ -40,10 +40,28 @@ namespace FEP.WebApi.Api.eLearning
                                 .OrderBy(x => x.Order).FirstOrDefaultAsync();
 
                 if (nextContent != null)
+                {
                     request.nextContentId = nextContent.Id;
+                    request.nextModuleId = currentContent.CourseModuleId;
+                }
                 else
-                    request.nextContentId = null;
+                {
+                    // get next module
+                    var nextModule = await db.CourseModules.Where(x => x.CourseId == request.CourseId &&
+                        x.Order > currentContent.CourseModuleId).OrderBy(x => x.Order).FirstOrDefaultAsync();
 
+                    if (nextModule == null)
+                    {
+                        request.nextContentId = null;
+                        request.nextModuleId = null;
+                    }
+                    else
+                    {
+                        // Wrong
+                        request.nextModuleId = nextModule.Id;
+                        request.nextContentId = null;
+                    }
+                }
 
                 var course = await db.Courses.FindAsync(currentContent.CourseId);
 
@@ -114,14 +132,16 @@ namespace FEP.WebApi.Api.eLearning
                     // calculate progress.
                     var progressCount = db.CourseProgress.Where(x => x.EnrollmentId == enrollment.Id).Count();
 
+                    course.UpdateCourseStat();
+
                     var totalContent = course.TotalContents;
 
-                    var progressPercent = (progressCount / totalContent) * 100m;
+                    var progressPercent = ((decimal)progressCount / (decimal)totalContent) * 100m;
 
-                    enrollment.TotalContentsCompleted = totalContent - progressCount;
+                    enrollment.TotalContentsCompleted = progressCount;
                     enrollment.PercentageCompleted = progressPercent;
 
-                    if(nextContent == null || enrollment.TotalContentsCompleted == totalContent)
+                    if((request.nextContentId == null && request.nextModuleId == null) || enrollment.TotalContentsCompleted == totalContent)
                     {
                         enrollment.Status = EnrollmentStatus.Completed;
                     }
@@ -129,6 +149,8 @@ namespace FEP.WebApi.Api.eLearning
                     db.SetModified(enrollment);
 
                     await db.SaveChangesAsync();
+
+                    request.CourseId = course.Id;
 
                     return Ok(request);
 

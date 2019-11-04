@@ -50,7 +50,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		[HttpGet]
 		public async Task<ActionResult> Create(FEP.Intranet.Areas.eEvent.Models.CreateExhibitionRoadshowRequestModel model)
 		{
-
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
 			model.Nominees = new SelectList(await GetUsers(), "Id", "Name", 0);
 

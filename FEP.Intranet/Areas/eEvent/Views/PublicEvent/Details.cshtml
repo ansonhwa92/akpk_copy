@@ -327,14 +327,17 @@
 							@Html.Partial("_AttachmentDetails", Model.Attachments)
 						</div>
 					</div>
-
 				</div>
+
+
 				<div id="event-agenda" class="tab-pane">
 					<div class="mb-4 mt-2 mr-auto">
 						<h4 class="color-darkblue mb-0">Event Agenda</h4>
 						<h6 class="font-weight-normal">Check agenda list here.</h6>
 					</div>
 				</div>
+
+
 				<div class="tab-pane" id="amendment-history">
 					<div class="mb-4 mt-2 mr-auto">
 						<h4 class="color-darkblue mb-0">Amendment History</h4>
@@ -380,7 +383,7 @@
 				</div>
 				<!-- Popups -->
 				<!-- Start Form -->
-				@using (Html.BeginForm("Details", "PublicEvent", FormMethod.Post, new { id = "myform" }))
+				@*@using (Html.BeginForm("Details", "PublicEvent", FormMethod.Post, new { id = "myform" }))
 				{
 					@Html.AntiForgeryToken()
 
@@ -547,8 +550,8 @@
 						}
 					}
 					<div class="border-form rounded mg-2">
-						<div class="small text-muted">@Model.publicevent.CreatedDate</div>
-						<div class="small"><span class="card__author-name color-darkblue">@Model.publicevent.CreatedByName</span><br>Public Event is created.</div>
+						<div class="small text-muted">@Model.CreatedDate</div>
+						<div class="small"><span class="card__author-name color-darkblue">@Model.CreatedByName</span><br>Public Event is created.</div>
 					</div>
 				</div>
 			</div>

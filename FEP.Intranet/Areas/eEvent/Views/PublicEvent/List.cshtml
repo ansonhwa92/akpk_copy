@@ -114,6 +114,9 @@
 							}
 							else if (row.EventStatus == 8) {
                                 return "<span class='color-primary font-weight-bold'> Pending Approval 1</span>";
+							}
+							 else if (row.EventStatus == null) { //column status tak boleh null value
+                                return "<span class='color-blue font-weight-bold'> N/A </span>";
                             }
 						}
                     },

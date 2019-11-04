@@ -106,6 +106,9 @@
                             }
                             else if (row.MediaStatus == 8) {
                                 return "<span class='color-green font-weight-bold'>" + data + "</span>";
+							}
+							else if (row.MediaStatus == null) { //column status tak boleh null value
+                                return "<span class='color-blue font-weight-bold'> N/A </span>";
                             }
 						}
                     },

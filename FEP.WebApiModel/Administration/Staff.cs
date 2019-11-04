@@ -140,14 +140,7 @@ namespace FEP.WebApiModel.Administration
         [Display(Name = "FieldDepartment", ResourceType = typeof(Language.Staff))]
         public string Name { get; set; }
     }
-
-    public class BranchModel
-    {
-        public int Id { get; set; }
-        [Display(Name = "FieldBranch", ResourceType = typeof(Language.Staff))]
-        public string Name { get; set; }
-    }
-
+      
     public class DesignationModel
     {
         public int Id { get; set; }

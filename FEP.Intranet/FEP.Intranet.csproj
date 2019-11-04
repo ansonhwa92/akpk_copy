@@ -21,12 +21,9 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44360</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>
-    </IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -158,6 +155,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
+    <Compile Include="Areas\Administrator\Controllers\BranchController.cs" />
     <Compile Include="Areas\Administrator\Controllers\CompanyController.cs" />
     <Compile Include="Areas\Administrator\Controllers\IndividualController.cs" />
     <Compile Include="Areas\Administrator\Controllers\MinistryController.cs" />
@@ -969,6 +967,10 @@
     <Content Include="Areas\RnP\Views\Survey\_ProofOfApprovalDetails.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\_ProofOfWithdrawal.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\_ProofOfWithdrawalDetails.cshtml" />
+    <Content Include="Areas\Administrator\Views\Branch\_Create.cshtml" />
+    <Content Include="Areas\Administrator\Views\Branch\_Delete.cshtml" />
+    <Content Include="Areas\Administrator\Views\Branch\_Edit.cshtml" />
+    <Content Include="Areas\Administrator\Views\Branch\List.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

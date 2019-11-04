@@ -1,4 +1,4 @@
-﻿@model CreateRoleModel
+﻿@model CreateBranchModel
 
 @{
     Layout = null;
@@ -10,12 +10,12 @@
     <div class="row divTd">
         <div class="col-1 text-center"></div>
         <div class="col px-0">
-            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(m => m.Name)
+            @Html.DropDownListFor(m => m.StateId, Model.States, Language.Branch.PlaceholderState, htmlAttributes: new { @class = "custom-select" })
+            @Html.ValidationMessageFor(m => m.StateId)
         </div>
         <div class="col pl-1">
-            @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(m => m.Description)
+            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.Branch.PlaceholderName } })
+            @Html.ValidationMessageFor(m => m.Name)
         </div>
         <div class="col-3 pl-0 text-right">
             <div class="icon-action">

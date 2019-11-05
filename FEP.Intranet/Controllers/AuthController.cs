@@ -619,7 +619,7 @@ namespace FEP.Intranet.Controllers
 
                     ParameterListToSend notificationParameter = new ParameterListToSend();
                     notificationParameter.UserFullName = response.Data.Name;
-                    notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
+                    notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/SetPassword/" + response.Data.UID + "' > here </a>";
 
                     CreateAutoReminder notification = new CreateAutoReminder
                     {

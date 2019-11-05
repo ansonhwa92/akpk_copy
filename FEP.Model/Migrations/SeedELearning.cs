@@ -30,6 +30,10 @@ namespace FEP.Model.Migrations
 
             // SeedAdditionalCourses(db);
             SeedRules(db);
+
+            DefaultSLAReminder(db);
+            DefaultParameterGroup(db);
+            DefaultTemplate(db);
         }
 
         private static void SeedDefaultData(DbEntities db)
@@ -788,5 +792,224 @@ namespace FEP.Model.Migrations
                 db.SaveChanges();
             }
         }
+
+        public static void DefaultSLAReminder(DbEntities db)
+        {
+
+            db.SLAReminder.AddOrUpdate(s => s.NotificationType,
+
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Creation, ETCode = "ET016EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Published_Change, ETCode = "ET017EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Published_Withdraw, ETCode = "ET018EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Participant_Withdraw, ETCode = "ET019EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Creation_Approver1, ETCode = "ET020EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Creation_Approver2, ETCode = "ET021EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Creation_Approver3, ETCode = "ET022EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Published_Change, ETCode = "ET023EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Published_Withdraw, ETCode = "ET024EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Participant_Withdraw, ETCode = "ET025EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Course_Amendment, ETCode = "ET026EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Course_Approved, ETCode = "ET027EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days }
+
+            );
+        }
+
+        public static void DefaultParameterGroup(DbEntities db)
+        {
+
+            foreach (TemplateParameterType paramType in Enum.GetValues(typeof(TemplateParameterType)))
+            {
+                SLAEventType EventType;
+
+                int pType = (int)paramType;
+
+                if (pType >= 141 && pType <= 160)
+                {
+                    db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifyCourses, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+                    new ParameterGroup { SLAEventType = SLAEventType.ApproveCourses, TemplateParameterType = paramType });
+
+                    continue;
+                }
+
+            }
+
+        }
+
+        public static void DefaultTemplate(DbEntities db)
+        {
+
+            var user = db.User.Local.Where(r => r.Name.Contains("System Admin")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("System Admin")).FirstOrDefault();
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {                    
+                    NotificationType = NotificationType.Verify_Courses_Creation,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Verify_Courses_Creation.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Verify_Courses_Creation).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Verify A New Course : [#CourseTitle]",
+                    TemplateMessage = @"Hi,<br />
+                                        <p>A course [#CourseTitle] requires verification.</p><br />
+                                        Please click <a href='[#Link]'>here</a> to verify.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {                    
+                    NotificationType = NotificationType.Approve_Courses_Creation_Approver1,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Approve_Courses_Creation_Approver1.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Approve_Courses_Creation_Approver1).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Approval needed for Course : [#CourseTitle]",
+                    TemplateMessage = @"Hi, <br />
+                                        A course [#CourseTitle] requires Approval.<br />
+                                        Please  click <a href='[#Link]'>here</a> to approve.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.Approve_Courses_Creation_Approver2,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Approve_Courses_Creation_Approver1.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Approve_Courses_Creation_Approver1).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Approval needed for Course : [#CourseTitle]",
+                    TemplateMessage = @"Hi, <br />
+                                        A course [#CourseTitle] requires Approval.<br />
+                                        Please  click <a href='[#Link]'>here</a> to approve.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.Approve_Courses_Creation_Approver3,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Approve_Courses_Creation_Approver1.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Approve_Courses_Creation_Approver1).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Approval needed for Course : [#CourseTitle]",
+                    TemplateMessage = @"Hi, <br />
+                                        A course [#CourseTitle] requires Approval.<br />
+                                        Please  click <a href='[#Link]'>here</a> to approve.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.Course_Approved,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Course_Approved.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Course_Approved).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Course  [#CourseTitle] has been Approved",
+                    TemplateMessage = @"Hi, <br />
+                                        The course [#CourseTitle] has been approved.<br />
+                                        Please  click <a href='[#Link]'>here</a> to view.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.Course_Amendment,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Course_Amendment.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Course_Amendment).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Course [#CourseTitle] Require Amendment",
+                    TemplateMessage = @"Hi, <br />
+                                        A course [#CourseTitle] requires ammendment.<br />
+                                        Please  click <a href='[#Link]'>here</a> to view.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.Course_Invitation,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Course_Invitation.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Course_Invitation).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Invitation to Enroll To Course [#CourseTitle]",
+                    TemplateMessage = @"Hi, <br />
+                                        You are invited to enroll to the course [#CourseTitle]<br />
+                                        Please  click <a href='[#Link]'>here</a> to enroll.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+        }
+
     }
 }

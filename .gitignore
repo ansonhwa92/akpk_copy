@@ -358,6 +358,7 @@ healthchecksdb
 !/FEP.Model/Migrations/aiman.cs
 !/FEP.Model/Migrations/SeedElearning.cs
 !/FEP.Model/Migrations/SeedElearningEmail.cs
+!/FEP.Model/Migrations/tajul.cs
 
 # App_Data
 /FEP.WebApi/App_Data/*

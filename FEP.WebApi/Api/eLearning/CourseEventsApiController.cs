@@ -850,7 +850,7 @@ namespace FEP.WebApi.Api.eLearning
                     CourseId = model.CourseId,
                     IsSuccess = true,
                     Message = "Success",
-                    ObjectId = model.Id,
+                    ObjectId = courseEvent.Id,
                 };
 
                 return Ok(response);

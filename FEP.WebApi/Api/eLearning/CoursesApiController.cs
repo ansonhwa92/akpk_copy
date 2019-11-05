@@ -194,6 +194,12 @@ namespace FEP.WebApi.Api.eLearning
 
                 await db.SaveChangesAsync();
 
+                course.UpdateCourseStat();
+
+                db.SetModified(course);
+
+                await db.SaveChangesAsync();
+
                 return Ok(course.Id.ToString());
             }
             else
@@ -640,24 +646,15 @@ namespace FEP.WebApi.Api.eLearning
                                 publicEvent.IsDisplayed = true;
 
                                 db.SetModified(publicEvent);
-
                             }
                         }
-                        await db.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        publicEvent.Status = CourseEventStatus.AvailableToPublic;
-                        publicEvent.ViewCategory = ViewCategory.Private;
-                        publicEvent.IsDisplayed = false;
-
-                        db.SetModified(publicEvent);
                         await db.SaveChangesAsync();
                     }
 
                     return Ok(model);
                 }
             }
+
             return BadRequest(ModelState);
         }
 
@@ -799,9 +796,8 @@ namespace FEP.WebApi.Api.eLearning
         [Route("api/eLearning/Courses/Start")]
         [HttpGet]
         [ValidationActionFilter]
-        public async Task<IHttpActionResult> Start(int id, string userId=null)
+        public async Task<IHttpActionResult> Start(int id, string userId = null)
         {
-
             var entity = await db.CourseModules.Where(x => x.CourseId == id).OrderBy(x => x.Order).FirstOrDefaultAsync();
 
             if (entity == null)
@@ -816,7 +812,7 @@ namespace FEP.WebApi.Api.eLearning
         [Route("api/eLearning/Courses/IsUserEnrolled")]
         [HttpGet]
         [ValidationActionFilter]
-        public async Task<IHttpActionResult> IsUserEnrolled(int id, int userId, string enrollmentCode="")
+        public async Task<IHttpActionResult> IsUserEnrolled(int id, int userId, string enrollmentCode = "")
         {
             if (!String.IsNullOrEmpty(enrollmentCode))
             {
@@ -834,7 +830,7 @@ namespace FEP.WebApi.Api.eLearning
             }
             else
             {
-                var enrollment = db.Enrollments.Where(x => x.LearnerId == userId &&
+                var enrollment = db.Enrollments.Where(x => x.Learner.User.Id == userId &&
                             x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefault();
 
                 if (enrollment != null)

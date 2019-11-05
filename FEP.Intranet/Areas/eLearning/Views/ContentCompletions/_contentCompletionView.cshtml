@@ -13,6 +13,7 @@
     @Html.HiddenFor(m => m.CourseModuleId)
     @Html.HiddenFor(m => m.CompletionType)
     @Html.HiddenFor(m => m.ContentId)
+    @Html.HiddenFor(m => m.UserId)
 
     <div class="text-center">
         @if (Model.CompletionType == ContentCompletionType.ClickButton)

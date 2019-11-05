@@ -305,7 +305,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
 
-        public async Task<ActionResult> InviteLearners(int courseId, int eventId, string enrollmentCode, string title)
+        public ActionResult InviteLearners(int courseId, int eventId, string enrollmentCode, string title)
         {
             var createdBy = CurrentUser.UserId;
 

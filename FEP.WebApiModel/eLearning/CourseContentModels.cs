@@ -26,7 +26,6 @@ namespace FEP.WebApiModel.eLearning
 
         public int CourseModuleId { get; set; }
 
-
         public int CourseId { get; set; }
         public string PageTitle { get; set; }
 
@@ -79,7 +78,6 @@ namespace FEP.WebApiModel.eLearning
         public int? Height { get; set; } = 100;
         [Range(5, 5000)]
         public int? Width { get; set; } = 100;
-
     }
 
 
@@ -89,6 +87,8 @@ namespace FEP.WebApiModel.eLearning
         public int ContentId { get; set; }
         public int? CourseModuleId { get; set; }
         public int? CourseId { get; set; }
+
+        public int UserId { get; set; }
 
         public ContentCompletionType CompletionType { get; set; }
         public int? Timer { get; set; }
@@ -103,6 +103,9 @@ namespace FEP.WebApiModel.eLearning
         public string OrderAnswerString { get; set; }
         public ICollection<FreeTextAnswer> FreeTextAnswers { get; set; }
         public string FreeTextAnswer { get; set; }
+
+        public int? nextModuleId { get; set; }
+        public int? nextContentId { get; set; }
 
 
     }

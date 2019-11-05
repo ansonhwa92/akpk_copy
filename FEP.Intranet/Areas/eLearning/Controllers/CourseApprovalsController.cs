@@ -79,7 +79,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         CourseAuthor = model.CreatedByName,
                         CourseTitle = title,
                         CourseApproval = "Course Verification",
-                        Link = this.Url.AbsoluteAction("View", "Courses", new { id = id}),
+                        Link = this.Url.AbsoluteAction("Approve", "CourseApprovals", new { id = id}),
                     },
                     ReceiverType = ReceiverType.UserIds,
                 };

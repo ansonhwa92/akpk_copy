@@ -130,7 +130,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 }
             }
 
-            TempData["ErrorMessage"] = "Cannot add course. Please ensure all required fields are filled in.";
+            TempData["ErrorMessage"] = "Cannot add course. Please ensure all required fields are filled in correctly.";
 
             await GetCategories();
 
@@ -234,7 +234,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-        [HasAccess(UserAccess.CourseView)]
+        //[HasAccess(UserAccess.CourseView)]
+        [AllowAnonymous]
         public async Task<ActionResult> View(int? id, string enrollmentCode = "")
         {
             if (id == null)
@@ -252,13 +253,29 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             // check if user enrolled
-            var currentUserId = CurrentUser.UserId.Value;
-            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, 
-                CourseApiUrl.IsUserEnrolled + $"?id={id}&userId={currentUserId}&enrollmentCode={enrollmentCode}");
-
-            if (response.isSuccess)
+            if (CurrentUser.UserId != null)
             {
-                model.IsUserEnrolled = response.Data;
+                var currentUserId = CurrentUser.UserId.Value;
+
+                if (String.IsNullOrEmpty(enrollmentCode))
+                {
+                    var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get,
+                        CourseApiUrl.IsUserEnrolled + $"?id={id}&userId={currentUserId}");
+                    if (response.isSuccess)
+                    {
+                        model.IsUserEnrolled = response.Data;
+                    }
+                }
+                else
+                {
+                    var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get,
+                        CourseApiUrl.IsUserEnrolled + $"?id={id}&userId={currentUserId}&enrollmentCode={enrollmentCode}");
+
+                    if (response.isSuccess)
+                    {
+                        model.IsUserEnrolled = response.Data;
+                    }
+                }
             }
 
             model.Modules = model.Modules.OrderBy(x => x.Order).ToList();

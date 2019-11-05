@@ -83,7 +83,7 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "Duration", ResourceType = typeof(Language.eLearning.Course))]
         [Range(0.5, 1000, ErrorMessage = "Invalid Value")]
-        public int Duration { get; set; }
+        public decimal Duration { get; set; }
 
         [Display(Name = "DurationType", ResourceType = typeof(Language.eLearning.Course))]
         public DurationType DurationType { get; set; }

@@ -33,9 +33,8 @@ namespace FEP.Model.eLearning
         /// The learner score for this course, manually calculated
         /// </summary>
         public decimal? Score { get; set; }
-        public int TotalModulesCompleted { get; set; }
-        public int TotalTestCompleted { get; set; }
-        public int TotalAssignmentCompleted { get; set; }
+        public int TotalContentsCompleted { get; set; }
+        public decimal? PercentageCompleted { get; set; }
 
         /// <summary>
         /// Store progress of each mdule, test, assigment
@@ -43,14 +42,7 @@ namespace FEP.Model.eLearning
         public virtual ICollection<CourseProgress> CourseProgress { get; set; }
 
         public virtual ICollection<EnrollmentHistory> EnrollmentHistories { get; set; }
-
-        public void GetProgress()
-        {
-            TotalModulesCompleted = this.CourseProgress.Where(x => x.ProgressItem == ProgressItem.Module).Count();
-            TotalTestCompleted = this.CourseProgress.Where(x => x.ProgressItem == ProgressItem.Test).Count();
-            TotalAssignmentCompleted = this.CourseProgress.Where(x => x.ProgressItem == ProgressItem.Asssigment).Count();
-
-        }
+      
     }
 
     public class EnrollmentHistory : BaseEntity

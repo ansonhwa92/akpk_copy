@@ -30,20 +30,7 @@ namespace FEP.Intranet.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Test()
         {
-            //ParameterListToSend paramToSend = new ParameterListToSend();
-            //paramToSend.EventCode = "";
-            //paramToSend.EventName = "";
-            //paramToSend.EventApproval = "Pending Approval";
-
-            //CreateAutoReminder reminder = new CreateAutoReminder
-            //{
-            //    NotificationType = NotificationType.Verify_Public_Event_Creation,
-            //    NotificationCategory = NotificationCategory.Event,
-            //    ParameterListToSend = paramToSend,
-            //    StartNotificationDate = DateTime.Now,
-            //    ReceiverId = new List<int> { 1 },
-            //};
-
+           
             var model = new CreateNotificationModel
             {
                 UserId = 1,
@@ -608,18 +595,10 @@ namespace FEP.Intranet.Controllers
 
                 if (response.Data != null)
                 {
-                    //var uid = response.Data.UID;
-
-                    //StringBuilder body = new StringBuilder();
-                    //body.Append("Dear " + response.Data.Name + ",");
-                    //body.Append("<br />");
-                    //body.Append("You can reset your password <a href = '" + BaseURL + Url.Action("SetPassword", "Auth", new { id = response.Data }) + "' > here </a>");
-
-                    //await EmailMethod.SendEmail("FE Portal Account Password Reset", body.ToString(), new EmailAddress { DisplayName = response.Data.Name, Address = model.Email });
-
+                    
                     ParameterListToSend notificationParameter = new ParameterListToSend();
                     notificationParameter.UserFullName = response.Data.Name;
-                    notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
+                    notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/SetPassword/" + response.Data.UID + "' > here </a>";
 
                     CreateAutoReminder notification = new CreateAutoReminder
                     {

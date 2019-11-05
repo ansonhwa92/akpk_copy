@@ -97,7 +97,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             await LogError(Modules.Learning, "User Enrolled Failed ", $"User {currentUserId} failed to enroll to the course {courseId} with" +
                     $" enrollment code - {enrollmentCode}. Error - {enrollResponse.Data.Message}");
 
-            TempData["ErrorMessage"] = "Error enrolling to the course.";
+            TempData["ErrorMessage"] = "Error enrolling to the course." + enrollResponse.Data.Message;
 
             return RedirectToAction("View", "Courses", new { area = "eLearning", id = courseId, enrollmentCode = enrollmentCode });
         }

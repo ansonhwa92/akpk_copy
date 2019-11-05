@@ -3,7 +3,6 @@ using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,7 +34,21 @@ namespace FEP.WebApi.Api.eLearning
             var query = db.Enrollments
                 .Include(x => x.Group)
                 .Include(x => x.Learner.User)
-                .Where(x => x.CourseEventId == request.CourseEventId);
+                .Where(x => x.CourseId == request.CourseId);
+
+            if (request.CourseEventId > 0)
+            {
+                query = query.Where(x => x.CourseEventId == request.CourseEventId);
+            }
+            else
+            {
+                var publicEvent = db.CourseEvents.FirstOrDefault(x => x.CourseId == request.CourseId && x.EnrollmentCode.ToUpper().Contains("PUBLIC"));
+
+                if (publicEvent != null)
+                    query = query.Where(x => x.CourseEventId == publicEvent.Id);
+                else
+                    query = query.Where(x => x.CourseEventId < 0);
+            }
 
             if (!String.IsNullOrEmpty(request.StudentName))
                 query = query.Where(x => x.Learner.User.Name.ToLower().Contains(request.StudentName.ToLower()));
@@ -51,19 +64,9 @@ namespace FEP.WebApi.Api.eLearning
 
             var filteredCount = query.Count();
 
-            var data = new List<ReturnBriefCourseEnrollmentModel>().AsQueryable();
-
             if (filteredCount > 0)
             {
                 // TODO : Add also course progress, PercentageCompleted,
-                data = query.Skip(request.start).Take(request.length)
-               .Select(x => new ReturnBriefCourseEnrollmentModel
-               {
-                   CourseEventId = x.CourseEventId,
-                   StudentName = String.IsNullOrEmpty(x.Learner.User.Name) ? "" : x.Learner.User.Name,
-                   DateEnrolled = x.EnrolledDate,
-                   Status = x.Status
-               });
 
                 //order
                 if (request.order != null)
@@ -77,11 +80,11 @@ namespace FEP.WebApi.Api.eLearning
 
                             if (sortAscending)
                             {
-                                data = data.OrderBy(o => o.StudentName);
+                                query = query.OrderBy(o => o.Learner.User.Name);
                             }
                             else
                             {
-                                data = data.OrderByDescending(o => o.StudentName);
+                                query = query.OrderByDescending(o => o.Learner.User.Name);
                             }
 
                             break;
@@ -90,11 +93,11 @@ namespace FEP.WebApi.Api.eLearning
 
                             if (sortAscending)
                             {
-                                data = data.OrderBy(o => o.DateEnrolled);
+                                query = query.OrderBy(o => o.EnrolledDate);
                             }
                             else
                             {
-                                data = data.OrderByDescending(o => o.DateEnrolled);
+                                query = query.OrderByDescending(o => o.EnrolledDate);
                             }
 
                             break;
@@ -103,11 +106,11 @@ namespace FEP.WebApi.Api.eLearning
 
                             if (sortAscending)
                             {
-                                data = data.OrderBy(o => o.Status);
+                                query = query.OrderBy(o => o.Status);
                             }
                             else
                             {
-                                data = data.OrderByDescending(o => o.Status);
+                                query = query.OrderByDescending(o => o.Status);
                             }
 
                             break;
@@ -116,42 +119,44 @@ namespace FEP.WebApi.Api.eLearning
 
                             if (sortAscending)
                             {
-                                data = data.OrderBy(o => o.PercentageCompleted);
+                                query = query.OrderBy(o => o.PercentageCompleted);
                             }
                             else
                             {
-                                data = data.OrderByDescending(o => o.PercentageCompleted);
+                                query = query.OrderByDescending(o => o.PercentageCompleted);
                             }
 
                             break;
 
                         default:
-                            data = data.OrderBy(o => o.StudentName).OrderBy(o => o.StudentName);
+                            query = query.OrderBy(o => o.Learner.User.Name);
                             break;
                     }
                 }
                 else
                 {
-                    data = data.OrderBy(o => o.StudentName).OrderBy(o => o.StudentName);
+                    query = query.OrderBy(o => o.Learner.User.Name);
                 }
             }
-            else
-            {
-                data = query.Select(x => new ReturnBriefCourseEnrollmentModel
-                {
-                    CourseEventId = x.CourseEventId,
-                    StudentName = String.IsNullOrEmpty(x.Learner.User.Name) ? "" : x.Learner.User.Name,
-                    DateEnrolled = x.EnrolledDate,
-                    Status = x.Status
-                });
-            }
+
+            var finalResult = query.ToList();
+
+            var data = finalResult.Skip(request.start).Take(request.length)
+               .Select(x => new ReturnBriefCourseEnrollmentModel
+               {
+                   CourseEventId = x.CourseEventId,
+                   StudentName = String.IsNullOrEmpty(x.Learner.User.Name) ? "" : x.Learner.User.Name,
+                   DateEnrolled = x.EnrolledDate.ToString(),
+                   Status = x.Status,
+                   PercentageCompleted = x.PercentageCompleted.ToString()
+               }).ToArray();
 
             return Ok(new DataTableResponse
             {
                 draw = request.draw,
                 recordsTotal = totalCount,
                 recordsFiltered = filteredCount,
-                data = data.ToArray()
+                data = data
             });
         }
 
@@ -162,9 +167,9 @@ namespace FEP.WebApi.Api.eLearning
         [HttpGet]
         public async Task<IHttpActionResult> EnrollAsync(int id, int userId, string enrollmentCode = "")
         {
-            var learner = db.Learners.Find(userId);
+            var learner = await db.Learners.FirstOrDefaultAsync(x => x.UserId ==userId);
 
-            if (learner == null)
+            if (learner == null) // create new learner
             {
                 var user = await db.User.FindAsync(userId);
 
@@ -193,6 +198,18 @@ namespace FEP.WebApi.Api.eLearning
 
                 if (courseEvent != null)
                 {
+                    var course = await db.Courses.FirstOrDefaultAsync(x => x.Id == courseEvent.CourseId);
+
+                    if (course == null || course?.ViewCategory == ViewCategory.Private)
+                    {
+                        return Ok(new TrxResult<Enrollment>
+                        {
+                            CourseId = id,
+                            IsSuccess = false,
+                            Message = "Course is not opened for public.",
+                        });
+                    }
+
                     var enrollment = new Enrollment
                     {
                         LearnerId = learner.Id,
@@ -283,7 +300,7 @@ namespace FEP.WebApi.Api.eLearning
                     };
 
                     db.Enrollments.Add(enrollment);
-                    
+
                     await db.SaveChangesAsync();
 
                     // create a history
@@ -329,6 +346,39 @@ namespace FEP.WebApi.Api.eLearning
                 IsSuccess = true,
                 Message = "Success",
             });
+        }
+
+
+
+
+        [Route("api/eLearning/CourseEnrollments/GetEnrollment")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetEnrollment(int id, int userId, string enrollmentCode = "")
+        {
+            if (!String.IsNullOrEmpty(enrollmentCode))
+            {
+                var courseEvent = await db.CourseEvents.FirstOrDefaultAsync(x => x.CourseId == id &&
+                    x.EnrollmentCode.Equals(enrollmentCode, StringComparison.OrdinalIgnoreCase));
+
+                if (courseEvent != null)
+                {
+                    var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.CourseId == id &&
+                        x.CourseEventId == courseEvent.Id && x.Learner.User.Id == userId);
+
+                    if (enrollment != null)
+                        return Ok(enrollment);
+                }
+            }
+            else
+            {
+                var enrollment = db.Enrollments.Where(x => x.Learner.User.Id == userId &&
+                            x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefault();
+
+                if (enrollment != null)
+                    return Ok(enrollment);
+            }
+
+            return BadRequest();
         }
     }
 }

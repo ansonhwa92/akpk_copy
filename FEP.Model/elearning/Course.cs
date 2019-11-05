@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace FEP.Model.eLearning
 {
@@ -128,6 +129,14 @@ namespace FEP.Model.eLearning
         public SkillLevel SkillLevel { get; set; }
 
         public int SLAReminderId { get; set; }
+
+        public int TotalContents { get; set; }
+
+        public void UpdateCourseStat()
+        {
+            TotalModules = this.Modules.Count();            
+            TotalContents = this.Modules.Sum(x => x.TotalContent);
+        }
     }
 
     public enum SkillLevel

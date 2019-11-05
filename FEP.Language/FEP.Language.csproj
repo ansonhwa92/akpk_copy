@@ -56,6 +56,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseEvent.resx</DependentUpon>
     </Compile>
+    <Compile Include="Branch.Designer.cs">
+      <DependentUpon>Branch.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="TOT.Designer.cs">
       <DependentUpon>TOT.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -221,6 +226,10 @@
     <EmbeddedResource Include="eLearning\CourseEvent.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CourseEvent.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Branch.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Branch.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="TOT.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

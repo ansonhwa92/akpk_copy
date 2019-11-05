@@ -34,7 +34,8 @@ namespace FEP.WebApiModel.eLearning
         public EnrollmentStatus Status { get; set; }
 
         [Display(Name = "DateEnrolled", ResourceType = typeof(Language.eLearning.CourseEvent))]
-        public DateTime? DateEnrolled { get; set; }
+        public string DateEnrolled { get; set; }
+
         [Display(Name = "Session", ResourceType = typeof(Language.eLearning.CourseEvent))]
         public int CourseEventId { get; set; }
     }

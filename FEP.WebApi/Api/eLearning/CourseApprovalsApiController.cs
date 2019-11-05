@@ -129,6 +129,7 @@ namespace FEP.WebApi.Api.eLearning
                 if (entity.Status == CourseStatus.Submitted)
                 {
                     entity.Status = CourseStatus.Verified;
+                    approvalLog.ApprovalLevel = ApprovalLevel.Verifier;
                 }
                 else
                 { // other than verifier
@@ -137,22 +138,25 @@ namespace FEP.WebApi.Api.eLearning
                         if (entity.Status == CourseStatus.Verified)
                         {
                             entity.Status = CourseStatus.FirstApproval;
+                            approvalLog.ApprovalLevel = ApprovalLevel.Approver1;
                         }
                         else
                         if (entity.Status == CourseStatus.FirstApproval)
                         {
                             entity.Status = CourseStatus.SecondApproval;
+                            approvalLog.ApprovalLevel = ApprovalLevel.Approver2;
                         }
                         else
                         if (entity.Status == CourseStatus.SecondApproval)
                         {
                             entity.Status = CourseStatus.ThirdApproval;
+                            approvalLog.ApprovalLevel = ApprovalLevel.Approver3;
                         }
                     }
                     else
                     {
                         entity.Status = CourseStatus.Approved;
-                        approvalLog.ApprovalStatus = ApprovalStatus.Approved;
+                        approvalLog.ApprovalStatus = ApprovalStatus.Approved;                        
                     }
                 }
             }

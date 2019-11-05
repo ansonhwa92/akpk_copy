@@ -89,13 +89,15 @@
                     <h4>@Model.Title</h4>
                 </div>
 
+                @*@Html.TextAreaFor(model => model.Description, new { @class = "summernote form-control editor" })*@
+
                 @Html.Raw(Model.Description)
 
                 @Html.Partial($"_view{Model.ContentType.ToString()}", Model)
 
                 <hr />
 
-    
+
 
                 @Html.Action("Get", "ContentCompletions", new { @contentId = Model.Id })
             </div>
@@ -117,5 +119,29 @@
 </style>
 
 @section ContentScript {
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
 
+    <script>
+
+        $(document).ready(function () {
+            tinymce.init({
+                selector: '.editor',
+                plugins: "autoresize",
+                autoresize_on_init: true,
+                width: 1200,
+                height: 800,
+                menubar: false,
+                statusbar: false,
+                toolbar: false,
+                readonly: true,
+                relative_urls : false,
+                remove_script_host : false,
+                convert_urls: true,
+                branding: false,
+            });
+        });
+
+
+    </script>
 }
+

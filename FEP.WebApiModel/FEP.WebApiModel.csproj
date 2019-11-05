@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Administration\FileDocument.cs" />
+    <Compile Include="Administration\Branch.cs" />
     <Compile Include="Administration\Role.cs" />
     <Compile Include="Administration\Ministry.cs" />
     <Compile Include="Administration\Sector.cs" />

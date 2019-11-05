@@ -141,6 +141,8 @@ namespace FEP.Model.Migrations
             AddRole(db, "Approver R&P 3", "Approver R&P 3");
             //AddRole(db, "Approver eLearning 3", "Approver eLearning 3");
 
+            AddRole(db, "Admin Finance", "Admin Finance");
+
             if (!db.Department.Any())
             {
                 db.Department.AddOrUpdate(s => s.Name,
@@ -698,7 +700,6 @@ namespace FEP.Model.Migrations
             DefaultSLAReminder(db);
             DefaultParameterGroup(db);
             DefaultTemplate(db);
-
 
         }
 

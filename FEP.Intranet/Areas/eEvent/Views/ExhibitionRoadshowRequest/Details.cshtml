@@ -169,8 +169,27 @@
 		<!-- Start Form -->
 		<div class="border-form rounded-top">
 			<div class="form-container">
-
-z
+				<div class="mt-2 mb-4 px-3 pt-4">
+					<h4 class="color-darkblue mb-0">Exhibition/Roadshow Request Details</h4>
+					<h6 class="font-weight-normal">Review your request details before delete</h6>
+				</div>
+				<!-- Start Tabbing Review Step for submission -->
+				<div class="custom-tab px-3">
+					<ul class="nav nav-line">
+						<li class="nav-item">
+							<a class="nav-link active" href="#exhibitiondetails" data-toggle="tab">Exhibition Details</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#eventdetails" data-toggle="tab">Event Details</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#dutyroster" data-toggle="tab">Duty Roster</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#amendmenthistory" data-toggle="tab">Amendment History</a>
+						</li>
+					</ul>
+				</div>
 				<div class="tab-content">
 					<div class="tab-pane active" id="exhibitiondetails">
 						<form>
@@ -244,29 +263,29 @@ z
 								<div class="row">
 									<div class="form-group col-lg-12">
 										@Html.FEPLabelFor(model => model.AddressStreet1)
-										@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
+										@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" , @readonly = "readonly"} })
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="form-group col-lg-12">
-										@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
+										@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" , @readonly = "readonly"} })
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="form-group col-lg-6">
-										@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode" } })
+										@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode" , @readonly = "readonly"} })
 									</div>
 									<div class="form-group col-lg-6">
-										@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
+										@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City", @readonly = "readonly" } })
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="form-group col-lg-12">
 										@Html.FEPLabelFor(model => model.State)
-										@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+										@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" , @disabled = "disabled"})
 									</div>
 								</div>
 
@@ -383,17 +402,17 @@ z
 						</form>
 					</div>
 
-					<!--<div class="tab-pane" id="amendmenthistory">
-					<form>
-						<div class="form-container">
-							<div class="sub-Title my-4">
-								Amendment History
+					<div class="tab-pane" id="amendmenthistory">
+						<form>
+							<div class="form-container">
+								<div class="sub-Title my-4">
+									Amendment History
+								</div>
+
+
 							</div>
-
-
-						</div>
-							</form>
-						</div>-->
+						</form>
+					</div>
 
 
 				</div>

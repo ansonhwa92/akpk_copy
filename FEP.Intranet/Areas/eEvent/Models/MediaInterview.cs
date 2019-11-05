@@ -50,13 +50,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Email")]
 		public string Email { get; set; }
 
-		[Required(ErrorMessage = "Please Insert Start Date")]
-		[Display(Name = "Start Date")]
-		public DateTime? DateStart { get; set; }
-
-		[Required(ErrorMessage = "Please Insert End Date")]
-		[Display(Name = "End Date")]
-		public DateTime? DateEnd { get; set; }
+		
 
 		[Required(ErrorMessage = "Please Insert Time")]
 		[Display(Name = "Time")]
@@ -115,6 +109,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public IEnumerable<Attachment> Attachments { get; set; }
 
 		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
+
+		[Required(ErrorMessage = "Please Insert Start Date")]
+		[Display(Name = "Start Date")]
+		public DateTime? DateStart { get; set; }
+
+		[Required(ErrorMessage = "Please Insert End Date")]
+		[Display(Name = "End Date")]
+		public DateTime? DateEnd { get; set; }
 	}
 
 	public class EditMediaInterviewModel : MediaInterviewModel
@@ -130,6 +132,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public IEnumerable<Attachment> Attachments { get; set; }
 
 		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
+
+		[Required(ErrorMessage = "Please Insert Start Date")]
+		[Display(Name = "Start Date")]
+		public DateTime? DateStart { get; set; }
+
+		[Required(ErrorMessage = "Please Insert End Date")]
+		[Display(Name = "End Date")]
+		public DateTime? DateEnd { get; set; }
 	}
 
 	public class DetailsMediaInterviewModel : MediaInterviewModel
@@ -138,6 +148,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Display(Name = "Proof of Approval")]
 		public IEnumerable<Attachment> Attachments { get; set; }
+
+		[Display(Name = "Start Date")]
+		[DataType(DataType.Date)]
+		public DateTime? DateStart { get; set; }
+
+		[Display(Name = "End Date")]
+		[DataType(DataType.Date)]
+		public DateTime? DateEnd { get; set; }
 	}
 
 	public class DeleteMediaInterviewModel : DetailsMediaInterviewModel
@@ -157,9 +175,11 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string ContactPerson { get; set; }
 
 		[Display(Name = "Start Date")]
+		[DataType(DataType.Date)]
 		public DateTime? DateStart { get; set; }
 
 		[Display(Name = "End Date")]
+		[DataType(DataType.Date)]
 		public DateTime? DateEnd { get; set; }
 
 		[Display(Name = "Status")]

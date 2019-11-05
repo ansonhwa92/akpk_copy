@@ -30,9 +30,11 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 
 		[Display(Name = "ExRoadStartDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? StartDate { get; set; }
 
 		[Display(Name = "ExRoadEndDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? EndDate { get; set; }
 
 		[DataType(DataType.Time)]
@@ -59,6 +61,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string ReceivedByName { get; set; }
 
 		[Display(Name = "ExRoadReceivedDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? ReceivedDate { get; set; }
 
 		[Display(Name = "ExRoadReceive_Via", ResourceType = typeof(Language.Event))]
@@ -86,7 +89,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		}
 
 		[Display(Name = "ExRoadExhibitionSupDoc", ResourceType = typeof(Language.Event))]
-		public IEnumerable<Attachment> Attachments { get; set; } 
+		public IEnumerable<Attachment> Attachments { get; set; }
 
 		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
 
@@ -152,6 +155,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Required(ErrorMessage = "Please insert Receive Date")]
 		[Display(Name = "ExRoadReceivedDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
+		[UIHint("Date")]
 		public DateTime? ReceivedDate { get; set; }
 
 		[Required(ErrorMessage = "Please insert Receive Via")]

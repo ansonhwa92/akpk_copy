@@ -293,7 +293,7 @@ namespace FEP.WebApi.Api.eEvent
 				TargetedGroup = model.TargetedGroup,
 				ParticipantAllowed = model.ParticipantAllowed,
 				Remarks = model.Remarks,
-				CreatedBy = null,
+				CreatedBy = model.CreatedBy,
 				Display = true,
 				CreatedDate = DateTime.Now,
 			};
@@ -503,18 +503,18 @@ namespace FEP.WebApi.Api.eEvent
 				db.Configuration.ValidateOnSaveEnabled = false;
 
 				// create first approval record (using existing ID)
-				var approval = new PublicEventApproval
-				{
-					EventId = publicevent.Id,
-					ApprovalLevel = EventApprovalLevel.Verifier,
-					ApproverId = null,
-					Status = EventApprovalStatus.None,
-					ApprovedDate = DateTime.Now,
-					Remark = "",
-					RequireNext = false
-				};
+				//var approval = new PublicEventApproval
+				//{
+				//	EventId = publicevent.Id,
+				//	ApprovalLevel = EventApprovalLevel.Verifier,
+				//	ApproverId = null,
+				//	Status = EventApprovalStatus.None,
+				//	ApprovedDate = DateTime.Now,
+				//	Remark = "",
+				//	RequireNext = false
+				//};
 
-				db.PublicEventApproval.Add(approval);
+				//db.PublicEventApproval.Add(approval);
 				db.SaveChanges();
 
 				PublicEventModel model = new PublicEventModel

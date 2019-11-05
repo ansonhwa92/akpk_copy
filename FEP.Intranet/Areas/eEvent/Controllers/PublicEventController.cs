@@ -62,6 +62,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			var model = new FEP.Intranet.Areas.eEvent.Models.DetailsPublicEventModel()
 			{
+				Id = response.Data.Id,
 				EventTitle = response.Data.EventTitle,
 				EventObjective = response.Data.EventObjective,
 				StartDate = response.Data.StartDate,
@@ -79,7 +80,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				Attachments = response.Data.Attachments,
 				SpeakerId = response.Data.SpeakerId,
 				ExternalExhibitorId = response.Data.ExternalExhibitorId,
-				CreatedByName = response.Data.CreatedByName
+				CreatedByName = response.Data.CreatedByName,
+				CreatedDate = response.Data.CreatedDate,
+
 			};
 
 			if (model == null)
@@ -144,6 +147,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					SpeakerId = model.SpeakerId,
 					ExternalExhibitorId = model.ExternalExhibitorId,
 					Remarks = model.Remarks,
+					CreatedBy = CurrentUser.UserId,
+					CreatedDate = DateTime.Now,
 				};
 
 				//attachment
@@ -200,6 +205,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			var model = new FEP.Intranet.Areas.eEvent.Models.EditPublicEventModel()
 			{
+				Id = response.Data.Id,
 				EventTitle = response.Data.EventTitle,
 				EventObjective = response.Data.EventObjective,
 				StartDate = response.Data.StartDate,
@@ -313,6 +319,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			var model = new FEP.Intranet.Areas.eEvent.Models.DetailsPublicEventModel()
 			{
+				Id = response.Data.Id,
 				EventTitle = response.Data.EventTitle,
 				EventObjective = response.Data.EventObjective,
 				StartDate = response.Data.StartDate,
@@ -577,7 +584,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
 					if (response3.isSuccess) { }
 
-					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is approved on first level.");
+					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is approved on second level.");
 					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
 				}
 

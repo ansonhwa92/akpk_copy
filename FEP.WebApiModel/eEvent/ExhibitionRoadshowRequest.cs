@@ -33,9 +33,11 @@ namespace FEP.WebApiModel.eEvent
 		public MediaState? State { get; set; }
 
 		[Display(Name = "ExRoadStartDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? StartDate { get; set; }
 
 		[Display(Name = "ExRoadEndDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? EndDate { get; set; }
 
 		[Display(Name = "ExRoadStartTime", ResourceType = typeof(Language.Event))]
@@ -55,6 +57,7 @@ namespace FEP.WebApiModel.eEvent
 		public string ReceivedByName { get; set; }
 
 		[Display(Name = "ExRoadReceivedDate", ResourceType = typeof(Language.Event))]
+		[UIHint("Date")]
 		public DateTime? ReceivedDate { get; set; }
 		[Display(Name = "ExRoadReceive_Via", ResourceType = typeof(Language.Event))]
 		public string Receive_Via { get; set; }
@@ -81,8 +84,10 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadLocation", ResourceType = typeof(Language.Event))]
 		public string Location { get; set; }
 		[Display(Name = "ExRoadStartDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? StartDate { get; set; }
 		[Display(Name = "ExRoadEndDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? EndDate { get; set; }
 		[Display(Name = "ExRoadExhibitionStatus", ResourceType = typeof(Language.Event))]
 		public ExhibitionStatus? ExhibitionStatus { get; set; }
@@ -176,6 +181,8 @@ namespace FEP.WebApiModel.eEvent
 
 		[Required(ErrorMessage = "Please insert Receive Date")]
 		[Display(Name = "ExRoadReceivedDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
+		[UIHint("Date")]
 		public DateTime? ReceivedDate { get; set; }
 
 		[Required(ErrorMessage = "Please insert Receive Via")]

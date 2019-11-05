@@ -9,6 +9,34 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 
+			 $('#tab_invitation').click(function () {
+               $('#invitation-details').show();
+			   $('#amendment-history').hide();
+			   $('#interview-details').hide();
+			   $('#rep-details').hide();
+			 });
+
+			 $('#tab_interview').click(function () {
+			   $('#invitation-details').hide();
+			   $('#amendment-history').hide();
+			   $('#interview-details').show();
+			   $('#rep-details').hide();
+			 });
+
+			 $('#tab_rep').click(function () {
+			   $('#invitation-details').hide();
+			   $('#amendment-history').hide();
+			   $('#interview-details').hide();
+			   $('#rep-details').show();
+            });
+
+            $('#tab_history').click(function () {
+               $('#invitation-details').hide();
+			   $('#amendment-history').show();
+			   $('#interview-details').hide();
+			   $('#rep-details').hide();
+            });
+
 			$('#btnApprove').click(function (event) {
                 $("#modalApprove").modal();
                 return false;
@@ -126,83 +154,75 @@
 		<div id="page-nav" class="sidebar-left page-nav">
 			<div data-perfect-scrollbar>
 
-				<div class="sidebar-inner">
-					<ul class="steps steps-vertical nav">
-						<li class="step-item complete">
-							<a href="#step1" class="step-link" data-toggle="tab">
-								<span class="step-number">1</span>
-								<span class="step-title">Media Interview List</span>
-							</a>
+				<div class="page-section">
+					<h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Request Information</h6>
+					<ul class="nav page-nav__menu">
+						<li class="nav-item">
+							<a id="tab_invitation" href="#invitation-details" data-toggle="tab" class="nav-link active">View Invitation Details</a>
 						</li>
-
-
-						<li class="step-item active">
-							<a href="#step2" class="step-link" data-toggle="tab">
-								<span class="step-number">2</span>
-								<span class="step-title">View Invitation Details</span>
-							</a>
+						<li class="nav-item">
+							<a id="tab_interview" href="#interview-details" data-toggle="tab" class="nav-link active">View Interview Details</a>
 						</li>
-
-
-						<li class="step-item active">
-							<a href="#step3" class="step-link" data-toggle="tab">
-								<span class="step-number">3</span>
-								<span class="step-title">View Interview Details</span>
-							</a>
+						<li class="nav-item">
+							<a id="tab_rep" href="#rep-details" data-toggle="tab" class="nav-link active">View Recommended Rep. Details</a>
 						</li>
-
-
-						<li class="step-item active">
-							<a href="#step4" class="step-link" data-toggle="tab">
-								<span class="step-number">4</span>
-								<span class="step-title">View Recommended Rep. Details</span>
-							</a>
-						</li>
-
-
-						<li class="step-item disabled">
-							<a href="#step5" class="step-link" data-toggle="tab">
-								<span class="step-number">5</span>
-								<span class="step-title">Review & Submission</span>
-							</a>
+						<li class="nav-item">
+							<a id="tab_history" href="#amendment-history" data-toggle="tab" class="nav-link active">Amendment History</a>
 						</li>
 					</ul>
-					<!-- End Steps -->
 				</div>
-				<!-- Buttons Div -->
-
-				<br />
-
 
 
 				<div>
 					@{if (Model.MediaStatus == FEP.Model.MediaStatus.New)
 						{
-							<a href='@Url.Action("SubmitToVerify", "MediaInterview", new { id = Model.Id })'
+							<a href='@Url.Action("SubmitToVerify", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
 						}
 						else if (Model.MediaStatus == FEP.Model.MediaStatus.PendingVerified)
 						{
-							<a href='@Url.Action("Verified", "MediaInterview", new { id = Model.Id })'
-							   class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</a>
+							<a href='@Url.Action("Verified", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
 							<br />
-							<a href='@Url.Action("Reject", "MediaInterview", new { id = Model.Id })'
+							<a href='@Url.Action("Reject", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 						}
 						else if (Model.MediaStatus == FEP.Model.MediaStatus.Verified)
 						{
-							<a href='@Url.Action("FirstApproved", "MediaInterview", new { id = Model.Id })'
+							<a href='@Url.Action("FirstApproved", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+							<br />
+							<a href='@Url.Action("Reject", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 						}
 						else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1)
 						{
-							<a href='@Url.Action("SecondApproved", "MediaInterview", new { id = Model.Id })'
+							<a href='@Url.Action("SecondApproved", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+							<br />
+							<a href='@Url.Action("Reject", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 						}
 						else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover2)
 						{
-							<a href='@Url.Action("FinalApproved", "MediaInterview", new { id = Model.Id })'
+							<a href='@Url.Action("FinalApproved", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-success btn-block mb-2">Approved</a>
+							<br />
+							<a href='@Url.Action("Reject", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
+						}
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.NotVerified)
+						{
+							<a href='@Url.Action("SubmitToVerify", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
+						}
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover3)
+						{
+							<a href='@Url.Action("RepAvailable", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-outline-secondary btn-block mb-2">Representative Available</a>
+
+							<a href='@Url.Action("RepNotAvailable", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-outline-danger btn-block mb-2">Representative Not Available</a>
 						}
 					}
 				</div>
@@ -215,7 +235,7 @@
 		<div class="border-form rounded-top">
 			<div class="form-container tab-content">
 
-				<div class="tab-pane active" id="invitationdetails">
+				<div class="tab-pane active" id="invitation-details">
 					<form>
 						<div class="form-container">
 							<div class="sub-Title my-4">
@@ -229,7 +249,6 @@
 								</div>
 								<div class="form-group col-lg-6">
 									@Html.LabelFor(model => model.MediaStatus)
-									@*@Html.EditorFor(model => model.MediaStatus, new { htmlAttributes = new { @class = "form-control bg-warning-ccd", @placeholder = "Status", @readonly = "readonly" } })*@
 									@{ if (Model.MediaStatus == FEP.Model.MediaStatus.New)
 										{
 											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Draft">
@@ -343,12 +362,19 @@
 									@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
 								</div>
 							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.Attachments)
+									@Html.Partial("_AttachmentDetails", Model.Attachments)
+								</div>
+							</div>
 						</div>
 						<!-- End Form -->
 					</form>
 				</div>
 
-				<div class="tab-pane" id="interviewdetails">
+				<div class="tab-pane" id="interview-details">
 					<form>
 						<div class="form-container">
 							<div class="sub-Title my-4">
@@ -389,7 +415,7 @@
 					</form>
 				</div>
 
-				<div class="tab-pane" id="repdetails">
+				<div class="tab-pane" id="rep-details">
 					<form>
 						<div class="form-container">
 							<div class="sub-Title my-4">
@@ -403,9 +429,37 @@
 								</div>
 							</div>
 
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.RepEmail)
+									@Html.EditorFor(model => model.RepEmail, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.RepMobileNumber)
+									@Html.EditorFor(model => model.RepMobileNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.RepDesignation)
+									@Html.EditorFor(model => model.RepDesignation, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								</div>
+							</div>
+
 						</div>
 						<!-- End Form -->
 					</form>
+				</div>
+
+				<div class="tab-pane" id="amendment-history">
+					<div class="mb-4 mt-2 mr-auto">
+						<h4 class="color-darkblue mb-0">Amendment History</h4>
+						<h6 class="font-weight-normal">Check amendment list here.</h6>
+					</div>
 				</div>
 			</div>
 

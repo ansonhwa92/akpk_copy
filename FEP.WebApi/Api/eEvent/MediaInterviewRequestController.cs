@@ -246,12 +246,13 @@ namespace FEP.WebApi.Api.eEvent
 					RepUserName = i.User.Name,
 					RepEmail = i.User.Email,
 					RepMobileNumber = i.User.MobileNo,
+					RepDesignation = i.User.StaffProfile.Designation.Name,
 					ContactPerson = i.ContactPerson,
 					CreatedBy = i.CreatedBy,
 					CreatedDate = i.CreatedDate,
 					RefNo = i.RefNo,
 					MediaStatus = i.MediaStatus,
-					
+					CreatedByName = i.CreatedByUser.Name,
 				}).FirstOrDefault();
 
 			if (media == null)
@@ -259,7 +260,7 @@ namespace FEP.WebApi.Api.eEvent
 				return NotFound();
 			}
 
-			media.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.ExhibitionRoadshow && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+			media.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.MediaInterview && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
 			return Ok(media);
 		}
@@ -286,7 +287,7 @@ namespace FEP.WebApi.Api.eEvent
 				Language = model.Language,
 				Topic = model.Topic,
 				UserId = model.UserId,
-				CreatedBy = null,
+				CreatedBy = model.CreatedBy,
 				CreatedDate = DateTime.Now,
 				Display = true,
 				MediaStatus = MediaStatus.New
@@ -353,7 +354,7 @@ namespace FEP.WebApi.Api.eEvent
 			db.Entry(media).Property(x => x.Display).IsModified = false;
 
 			//remove file 
-			var attachments = db.EventFile.Where(s => s.FileCategory == EventFileCategory.PublicEvent && s.ParentId == model.Id).ToList();
+			var attachments = db.EventFile.Where(s => s.FileCategory == EventFileCategory.MediaInterview && s.ParentId == model.Id).ToList();
 
 			if (attachments != null)
 			{
@@ -579,6 +580,60 @@ namespace FEP.WebApi.Api.eEvent
 			}
 			return Ok();
 		}
+
+		[Route("api/eEvent/MediaInterviewRequest/RepAvailable")]
+		public IHttpActionResult RepAvailable(int id)
+		{
+			var media = db.EventMediaInterviewRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (media != null)
+			{
+				media.MediaStatus = MediaStatus.RepAvailable;
+				db.EventMediaInterviewRequest.Attach(media);
+				db.Entry(media).Property(m => m.MediaStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				MediaInterviewRequestApiModel model = new MediaInterviewRequestApiModel
+				{
+					Id = media.Id,
+					RefNo = media.RefNo,
+					MediaStatus = media.MediaStatus,
+					MediaName = media.MediaName,
+					MediaStatusDesc = media.MediaStatus.GetDisplayName(),
+				};
+				return Ok(model);
+			}
+			return Ok();
+		}
+
+		[Route("api/eEvent/MediaInterviewRequest/RepNotAvailable")]
+		public IHttpActionResult RepNotAvailable(int id)
+		{
+			var media = db.EventMediaInterviewRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (media != null)
+			{
+				media.MediaStatus = MediaStatus.RepNotAvailable;
+				db.EventMediaInterviewRequest.Attach(media);
+				db.Entry(media).Property(m => m.MediaStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				MediaInterviewRequestApiModel model = new MediaInterviewRequestApiModel
+				{
+					Id = media.Id,
+					RefNo = media.RefNo,
+					MediaStatus = media.MediaStatus,
+					MediaName = media.MediaName,
+					MediaStatusDesc = media.MediaStatus.GetDisplayName(),
+				};
+				return Ok(model);
+			}
+			return Ok();
+		}
+
+
 
 		[Route("api/eEvent/MediaInterviewRequest/GetSLAId")]
 		public IHttpActionResult GetSLAId(int id)

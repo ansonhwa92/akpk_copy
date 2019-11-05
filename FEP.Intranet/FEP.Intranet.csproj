@@ -969,6 +969,7 @@
     <Content Include="Areas\RnP\Views\Survey\_ProofOfApprovalDetails.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\_ProofOfWithdrawal.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\_ProofOfWithdrawalDetails.cshtml" />
+    <Content Include="Areas\eEvent\Views\Home\BrowseEvent.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

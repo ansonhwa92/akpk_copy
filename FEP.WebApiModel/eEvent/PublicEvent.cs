@@ -36,9 +36,11 @@ namespace FEP.WebApiModel.PublicEvent
 		public EventTargetGroup? TargetedGroup { get; set; }
 
 		[Display(Name = "PubEventStartDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? StartDate { get; set; }
 
 		[Display(Name = "PubEventEndDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? EndDate { get; set; }
 
 		[Display(Name = "PubEventStatus", ResourceType = typeof(Language.Event))]
@@ -57,9 +59,11 @@ namespace FEP.WebApiModel.PublicEvent
 		public string EventObjective { get; set; }
 
 		[Display(Name = "PubEventStartDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? StartDate { get; set; }
 
 		[Display(Name = "PubEventEndDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? EndDate { get; set; }
 
 		[Display(Name = "PubEventVenue", ResourceType = typeof(Language.Event))]
@@ -105,6 +109,7 @@ namespace FEP.WebApiModel.PublicEvent
 		public string RefNo { get; set; }
 		public int? SLAReminderStatusId { get; set; }
 
+		public int? CreatedBy { get; set; }
 		public string CreatedByName { get; set; }
 		public DateTime? CreatedDate { get; set; }
 

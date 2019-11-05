@@ -48,8 +48,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult> Create(FEP.Intranet.Areas.eEvent.Models.CreateExhibitionRoadshowRequestModel model)
+		public async Task<ActionResult> Create()
 		{
+			var model = new FEP.Intranet.Areas.eEvent.Models.CreateExhibitionRoadshowRequestModel();
+
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
 			model.Nominees = new SelectList(await GetUsers(), "Id", "Name", 0);
 
@@ -168,7 +170,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				ReceivedDate = response.Data.ReceivedDate,
 				Receive_Via = response.Data.Receive_Via,
 				Attachments = response.Data.Attachments,
-				
 			};
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
@@ -278,6 +279,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				ExhibitionStatus = response.Data.ExhibitionStatus,
 				ParticipationRequirement = response.Data.ParticipationRequirement,
 				ReceivedById = response.Data.ReceivedById,
+				ReceivedByName = response.Data.ReceivedByName,
 				ReceivedDate = response.Data.ReceivedDate,
 				Receive_Via = response.Data.Receive_Via,
 				Attachments = response.Data.Attachments,

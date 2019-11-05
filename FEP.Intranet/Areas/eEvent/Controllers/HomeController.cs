@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using FEP.Helper;
@@ -21,10 +22,18 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
                 return RedirectToAction("Dashboard", "Home", new { area = "" });
             }
 
-            return view;
-        }
+			return RedirectToAction("BrowseEvent", "Home", new { area = "eEvent" });
+		}
 
-        [ChildActionOnly]
+		[AllowAnonymous]
+		public async Task<ActionResult> BrowseEvent()
+		{
+
+
+			return View();
+		}
+
+		[ChildActionOnly]
         public ActionResult _Menu()
         {
             return PartialView();

@@ -32,7 +32,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 		// GET: eEventMediaInterview/MediaInterview/Details/5
 		[HttpGet]
-		public async Task<ActionResult> Details(int? id, string origin)
+		public async Task<ActionResult> Details(int? id)
 		{
 			if (id == null)
 			{
@@ -40,13 +40,47 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			}
 
 			var response = await WepApiMethod.SendApiAsync<DetailsMediaInterviewRequestApiModel>(HttpVerbs.Get, $"eEvent/MediaInterviewRequest?id={id}");
-
 			if (!response.isSuccess)
 			{
 				return HttpNotFound();
 			}
 
-			var model = response.Data;
+			var model = new FEP.Intranet.Areas.eEvent.Models.DetailsMediaInterviewModel()
+			{
+				Id = response.Data.Id,
+				MediaName = response.Data.MediaName,
+				MediaType = response.Data.MediaType,
+				ContactPerson = response.Data.ContactPerson,
+				ContactNo = response.Data.ContactNo,
+				AddressStreet1 = response.Data.AddressStreet1,
+				AddressStreet2 = response.Data.AddressStreet2,
+				AddressPoscode = response.Data.AddressPoscode,
+				AddressCity = response.Data.AddressCity,
+				State = response.Data.State,
+				Email = response.Data.Email,
+				DateStart = response.Data.DateStart,
+				DateEnd = response.Data.DateEnd,
+				Time = response.Data.Time,
+				Language = response.Data.Language,
+				Topic = response.Data.Topic,
+				RepUserId = response.Data.UserId,
+				RepUserName = response.Data.RepUserName,
+				MediaStatus = response.Data.MediaStatus,
+				RefNo = response.Data.RefNo,
+				RepEmail = response.Data.RepEmail,
+				RepMobileNumber = response.Data.RepMobileNumber,
+				RepDesignation = response.Data.RepDesignation,
+				CreatedByName = response.Data.CreatedByName,
+				CreatedDate = response.Data.CreatedDate,
+				Attachments = response.Data.Attachments,
+			};
+
+			if (model == null)
+			{
+				return HttpNotFound();
+			}
+
+			model.RepresentativeList = new SelectList(await GetUser(), "Id", "Name", 0);
 
 			return View(model);
 		}
@@ -65,7 +99,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		// POST: eEventMediaInterview/MediaInterview/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Create(FEP.Intranet.Areas.eEvent.Models.CreateMediaInterviewModel model)
+		public async Task<ActionResult> Create(FEP.Intranet.Areas.eEvent.Models.CreateMediaInterviewModel model, string Submittype)
 		{
 			if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
 			{
@@ -118,12 +152,19 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 				if (response.isSuccess)
 				{
-					await LogActivity(Modules.Event, "Create Media Interview ", model);
+					await LogActivity(Modules.Event, "Create Media Interview", model);
+					if (Submittype == "Save")
+					{
+						TempData["SuccessMessage"] = "Media Interview successfully created";
+						return RedirectToAction("List");
+					}
+					else if (Submittype == "Submit")
+					{
+						return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", id = response.Data });
+					}
 
-					TempData["SuccessMessage"] = "Media Interview successfully created";
-
-					return RedirectToAction("List");
 				}
+
 			}
 
 			model.RepresentativeList = new SelectList(await GetUser(), "Id", "Name");
@@ -169,6 +210,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				RefNo = response.Data.RefNo,
 				RepEmail = response.Data.RepEmail,
 				RepMobileNumber = response.Data.RepMobileNumber,
+				Attachments = response.Data.Attachments
 			};
 
 			model.RepresentativeList = new SelectList(await GetUser(), "Id", "Name");
@@ -207,7 +249,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Topic = model.Topic,
 					UserId = model.RepUserId,
 					MediaStatus = model.MediaStatus,
-					RefNo = model.RefNo
+					RefNo = model.RefNo,
+					Attachments = model.Attachments
 				};
 
 
@@ -277,6 +320,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				RepEmail = response.Data.RepEmail,
 				RepMobileNumber = response.Data.RepMobileNumber,
 				Attachments = response.Data.Attachments,
+				MediaStatus = response.Data.MediaStatus,
+				RefNo = response.Data.RefNo,
+				RepDesignation = response.Data.RepDesignation,
+
 			};
 
 			if (model == null)
@@ -328,7 +375,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<MediaInterviewRequestApiModel>(HttpVerbs.Post, $"eEvent/MediaInterviewRequestRequest/SubmitToVerify?id={id}");
+			var response = await WepApiMethod.SendApiAsync<MediaInterviewRequestApiModel>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/SubmitToVerify?id={id}");
 			if (response.isSuccess)
 			{
 
@@ -415,8 +462,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequestRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
 					if (response3.isSuccess) { }
 
-					await LogActivity(Modules.Event, "Submit Media Interview Ref No: " + response.Data.RefNo + " for verification.");
-					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully submitted for verification.";
+					await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + " is verified.");
+					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully verified and submitted for approval.";
 				}
 				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
 			}
@@ -470,8 +517,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequestRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
 					if (response3.isSuccess) { }
 
-					await LogActivity(Modules.Event, "Submit Media Interview Ref No: " + response.Data.RefNo + " for verification.");
-					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully submitted for verification.";
+					await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + " is approved on first level.");
+					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
 				}
 				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
 			}
@@ -524,8 +571,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequestRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
 					if (response3.isSuccess) { }
 
-					await LogActivity(Modules.Event, "Submit Media Interview Ref No: " + response.Data.RefNo + " for verification.");
-					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully submitted for verification.";
+					await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + " is approved on second level.");
+					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
 				}
 				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
 			}
@@ -579,8 +626,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequestRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
 					if (response3.isSuccess) { }
 
-					await LogActivity(Modules.Event, "Submit Media Interview Ref No: " + response.Data.RefNo + " for verification.");
-					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully submitted for verification.";
+					await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + " for approved.");
+					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully approved.";
 				}
 				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
 			}
@@ -634,8 +681,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequestRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
 					if (response3.isSuccess) { }
 
-					await LogActivity(Modules.Event, "Submit Media Interview Ref No: " + response.Data.RefNo + " for verification.");
-					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully submitted for verification.";
+					await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + " is rejected and require amendment.");
+					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully rejected and require amendment.";
 				}
 				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
 			}
@@ -645,6 +692,60 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
 			}
 		}
+
+
+		public async Task<ActionResult> RepAvailable(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<MediaInterviewRequestApiModel>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/RepAvailable?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + ", Representative is available.");
+				TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully updated.";
+				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to reject Media Interview.";
+				return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
+			}
+		}
+
+
+
+
+		public async Task<ActionResult> RepNotAvailable(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<MediaInterviewRequestApiModel>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/RepNotAvailable?id={id}");
+			if (response.isSuccess)
+			{
+				await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + ", Representative is not available.");
+				TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully updated.";
+				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to reject Media Interview.";
+				return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
+			}
+		}
+
+
+
+
+
+
+
+
+
+
 
 	}
 }

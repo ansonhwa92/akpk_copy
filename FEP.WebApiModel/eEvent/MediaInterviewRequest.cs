@@ -49,9 +49,11 @@ namespace FEP.WebApiModel.MediaInterview
 		public string Email { get; set; }
 
 		[Display(Name = "Start Date")]
+		[DataType(DataType.Date)]
 		public DateTime? DateStart { get; set; }
 
 		[Display(Name = "End Date")]
+		[DataType(DataType.Date)]
 		public DateTime? DateEnd { get; set; }
 
 		[DataType(DataType.Time)]
@@ -74,6 +76,7 @@ namespace FEP.WebApiModel.MediaInterview
 		public string EventTitle { get; set; }
 		public bool Display { get; set; }
 		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
 		public DateTime? CreatedDate { get; set; }
 		public int? SLAReminderStatusId { get; set; }
 	}
@@ -90,9 +93,11 @@ namespace FEP.WebApiModel.MediaInterview
 		public string ContactPerson { get; set; }
 
 		[Display(Name = "Start Date")]
+		[DataType(DataType.Date)]
 		public DateTime? DateStart { get; set; }
 
 		[Display(Name = "End Date")]
+		[DataType(DataType.Date)]
 		public DateTime? DateEnd { get; set; }
 
 		[Display(Name = "Status")]

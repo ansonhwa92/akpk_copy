@@ -64,6 +64,20 @@
 						</a>
 					</li>
 
+					<li class="step-item disabled">
+						<a href="" class="step-link">
+							<span class="step-number">4</span>
+							<span class="step-title">Duty Roster</span>
+						</a>
+					</li>
+
+					<li class="step-item disabled">
+						<a href="" class="step-link">
+							<span class="step-number">5</span>
+							<span class="step-title">Amendment History</span>
+						</a>
+					</li>
+
 				</ul>
 				<!-- End Steps -->
 			</div>
@@ -169,29 +183,29 @@
 								<div class="row">
 									<div class="form-group col-lg-12">
 										@Html.FEPLabelFor(model => model.AddressStreet1)
-										@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
+										@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1", @readonly = "readonly" } })
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="form-group col-lg-12">
-										@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
+										@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1", @readonly = "readonly" } })
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="form-group col-lg-6">
-										@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode" } })
+										@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode", @readonly = "readonly" } })
 									</div>
 									<div class="form-group col-lg-6">
-										@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
+										@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City", @readonly = "readonly" } })
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="form-group col-lg-12">
 										@Html.FEPLabelFor(model => model.State)
-										@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+										@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" , @disabled = "disabled"})
 									</div>
 								</div>
 

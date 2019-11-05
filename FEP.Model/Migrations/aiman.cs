@@ -154,13 +154,13 @@ namespace FEP.Model.Migrations
 
                 if (pType >= 21 && pType <= 40) //Verify & Approval
                 {
-                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
                     new ParameterGroup { SLAEventType = SLAEventType.SubmitPublicEvent, TemplateParameterType = paramType });
 
-                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
                     new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicEvent, TemplateParameterType = paramType });
 
-                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
                     new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicEvent, TemplateParameterType = paramType });
 
                     continue;

@@ -1,5 +1,4 @@
 ﻿using FEP.Helper;
-using FEP.Intranet.Areas.eEvent.Models;
 using FEP.Model;
 using FEP.WebApiModel.FileDocuments;
 using FEP.WebApiModel.MediaInterview;

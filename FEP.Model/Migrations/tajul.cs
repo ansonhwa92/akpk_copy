@@ -269,7 +269,9 @@ namespace FEP.Model.Migrations
             foreach (NotificationType notifyType in Enum.GetValues(typeof(NotificationType)))
             {
                 var tempSLA = db.SLAReminder.Where(s => s.NotificationType == notifyType).FirstOrDefault();
+                
                 NotificationCategory tempCategory = (int)0;
+                
                 if (tempSLA != null) { tempCategory = tempSLA.NotificationCategory; }
 
                 var template = db.NotificationTemplates.Local.Where(r => r.NotificationType == notifyType).FirstOrDefault() ?? db.NotificationTemplates.Where(r => r.NotificationType == notifyType).FirstOrDefault();
@@ -291,6 +293,7 @@ namespace FEP.Model.Migrations
                             SMSMessage = "SMS Message Template",
                             enableWebMessage = true,
                             WebMessage = "Web Message Template",
+                            WebNotifyLink = "",
                             CreatedDate = DateTime.Now,
                             CreatedBy = user.Id,
                             User = user,

@@ -105,14 +105,12 @@ namespace FEP.Model
 		Payment_Pending_Refund,
 
 		//Verify External Request
-
 		//[Display(Name = "Verify External RequestExhibition ESS")]
 		//Verify_External_Request_Exhibition_ESS,
 		//[Display(Name = "Verify External RequestDuty Roster")]
 		//Verify_External_Request_Duty_Roster,
 
 		////Approve External Request
-
 		//[Display(Name = "Approve External Request Exhibition Participation")]
 		//Approve_External_Request_Exhibition_Participation,
 		//[Display(Name = "Approve External Request Duty Roster")]

@@ -41,10 +41,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DutyRoster.Designer.cs">
+      <DependentUpon>DutyRoster.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="EventRefund.Designer.cs">
+      <DependentUpon>EventRefund.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="eLearning\CourseEvent.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseEvent.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Branch.Designer.cs">
+      <DependentUpon>Branch.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="TOT.Designer.cs">
+      <DependentUpon>TOT.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Profile1.Designer.cs">
       <DependentUpon>Profile.resx</DependentUpon>
@@ -81,6 +101,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="RnPForm.Designer.cs" />
     <Compile Include="Staff.Designer.cs">
       <DependentUpon>Staff.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -146,8 +167,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Event.resx</DependentUpon>
     </Compile>
-    <Compile Include="RnPForm.Designer.cs">
-      <DependentUpon>RnPForm.resx</DependentUpon>
+    <Compile Include="RnPForm_old.Designer.cs">
+      <DependentUpon>RnPForm_old.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -194,9 +215,25 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DutyRoster.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DutyRoster.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EventRefund.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EventRefund.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="eLearning\CourseEvent.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CourseEvent.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Branch.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Branch.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TOT.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TOT.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Profile.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -210,6 +247,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Company.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="RnPForm.resx" />
     <EmbeddedResource Include="Staff.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Staff.Designer.cs</LastGenOutput>
@@ -278,9 +316,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Event.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="RnPForm.resx">
+    <EmbeddedResource Include="RnPForm_old.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>RnPForm.Designer.cs</LastGenOutput>
+      <LastGenOutput>RnPForm_old.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RnPEnum.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

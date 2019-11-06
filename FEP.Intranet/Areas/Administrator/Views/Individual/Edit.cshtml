@@ -67,9 +67,9 @@
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Administration</a></li>
-                                <li class="breadcrumb-item"><a href="#">User</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Setting</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "Individual", new { area = "Administrator" })">User Management</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
@@ -271,8 +271,8 @@
 
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
-                <a href="@Url.Action("List")" class="btn btn-default mr-2">Back</a>
-                <button class="btn btn-secondary" type="submit">Save</button>
+                <a href="@Url.Action("List")" class="btn btn-default mr-2">@Language.General.ButtonBack</a>
+                <button class="btn btn-secondary" type="submit">@Language.General.ButtonSave</button>
             </div>
 
         }

@@ -1,4 +1,4 @@
-﻿@model FEP.WebApiModel.RnP.UpdatePublicationModel
+﻿@model FEP.WebApiModel.RnP.EditPublicationModel
 
 @{
     ViewBag.Title = "Edit Publication";
@@ -31,7 +31,7 @@
     </div>
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", id = "target" }))
 {
     @Html.AntiForgeryToken()
 
@@ -208,27 +208,6 @@
                             @Html.ValidationMessageFor(model => model.HDPrice, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <!--
-    <div class="row">
-        <div class="form-group col-lg-12">
-            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-            <div class="custom-file">
-                @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
-                <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-                <label class="custom-file-label" for="customFile">No file choosen</label>
-                @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
-            </div>
-            <div id="fileList"></div>
-        </div>
-    </div>
-    -->
-                    <div class="row" style="display:none;">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                            @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="form-group col-lg-6">
                             @Html.LabelFor(model => model.StockBalance, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
@@ -237,6 +216,27 @@
                         </div>
                         <div class="form-group col-lg-6">
                             &nbsp;
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.CoverPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_CoverPicture", Model.CoverPictures)
+                            @Html.ValidationMessageFor(model => model.CoverPictures, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.AuthorPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_AuthorPicture", Model.AuthorPictures)
+                            @Html.ValidationMessageFor(model => model.AuthorPictures, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            @Html.Partial("_ProofOfApproval", Model.ProofOfApproval)
+                            @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
@@ -273,6 +273,19 @@
                         selected = ' selected';
                     }
                     $('#Year').append('<option value="' + i + '"' + selected + '>' + i + '</option>');
+                }
+            }
+
+            function toggleStock() {
+                var hasHc = $('#Hardcopy').is(':checked');
+                var hasDc = $('#Digitalcopy').is(':checked');
+                var hasPc = $('#HDcopy').is(':checked');
+                if (hasHc || hasPc) {
+                    $('#StockBalance').prop('readonly', false);
+                }
+                else {
+                    $('#StockBalance').val('0');
+                    $('#StockBalance').prop('readonly', true);
                 }
             }
 
@@ -342,6 +355,7 @@
                     $('#HPrice').val('0.00');
                     $('#HPrice').prop('readonly', true);
                 }
+                toggleStock();
             });
 
             $('#FreeHCopy').change(function () {
@@ -352,6 +366,7 @@
                 } else {
                     $('#HPrice').prop('readonly', false);
                 }
+                toggleStock();
             });
 
             $('#Digitalcopy').change(function () {
@@ -363,6 +378,7 @@
                     $('#DPrice').val('0.00');
                     $('#DPrice').prop('readonly', true);
                 }
+                toggleStock();
             });
 
             $('#FreeDCopy').change(function () {
@@ -373,6 +389,7 @@
                 } else {
                     $('#DPrice').prop('readonly', false);
                 }
+                toggleStock();
             });
 
             $('#HDcopy').change(function () {
@@ -384,6 +401,7 @@
                     $('#HDPrice').val('0.00');
                     $('#HDPrice').prop('readonly', true);
                 }
+                toggleStock();
             });
 
             $('#FreeHDCopy').change(function () {
@@ -394,11 +412,15 @@
                 } else {
                     $('#HDPrice').prop('readonly', false);
                 }
+                toggleStock();
             });
 
             populateYears();
+            toggleStock();
 
+            RefreshFile1();
+            RefreshFile2();
+            RefreshFile3();
         });
     </script>
 }
-

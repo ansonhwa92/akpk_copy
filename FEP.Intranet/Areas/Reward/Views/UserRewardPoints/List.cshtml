@@ -19,7 +19,7 @@
                     "url": '@(WebApiURL)Reward/UserRewardPoints/GetUserRewardPointsList?id=@sendId',
                     "data": function (filter) {
                         //alert(filter[0]);
-                        filter.ActivityName = $('#filter_ActivityName').val();
+                        filter.CourseName = $('#filter_CourseName').val();
                         filter.PointsReceived = $('#filter_PointsReceived').val();
                         filter.UserName = $('#filter_UserName').val();
                         filter.RewardType = $('#filter_RewardType').val();
@@ -46,7 +46,7 @@
                             }
                         }
                     },
-                    { sortable: true, data: 'ActivityName' },
+                    { sortable: true, data: 'CourseName' },
                     { sortable: true, data: 'RewardedByName' },
                     {
                         sortable: true, data: 'DateReceived',
@@ -192,10 +192,10 @@
                         <div class="dropdown-menu">
                             <div class="filter-head">Filters</div>
                             <div class="filter-body">
-                                <div>@Html.DisplayNameFor(m => m.filter.ActivityName)</div>
+                                <div>@Html.DisplayNameFor(m => m.filter.CourseName)</div>
                                 <div class="sorting-wrap">
                                     <div class="sorting-dropdown">
-                                        @Html.EditorFor(m => m.filter.ActivityName, new { htmlAttributes = new { @class = "form-control small" } })
+                                        @Html.EditorFor(m => m.filter.CourseName, new { htmlAttributes = new { @class = "form-control small" } })
                                     </div>
                                 </div>
                                 <div>@Html.DisplayNameFor(m => m.filter.PointsReceived)</div>
@@ -255,7 +255,7 @@
                                 <th>@Html.DisplayNameFor(model => model.filter.UserName)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.PointsReceived)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.RewardType)</th>
-                                <th>@Html.DisplayNameFor(model => model.filter.ActivityName)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.CourseName)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.RewardedBy)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.DateReceived)</th>
                                 <th></th>

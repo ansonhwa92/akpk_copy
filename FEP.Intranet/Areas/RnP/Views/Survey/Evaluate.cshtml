@@ -113,7 +113,7 @@
                                 }
                                 else if (Model.Survey.Status == SurveyStatus.Verified)
                                 {
-                                    <input class="form-control bg-warning-ccd" name="Survey.Status" id="Survey_Status" type="text" readonly="readonly" value="Pending Approval">
+                                    <input class="form-control bg-warning-ccd" name="Survey.Status" id="Survey_Status" type="text" readonly="readonly" value="Pending Approval @ViewBag.ApprovalStage">
                                 }
                                 else if (Model.Survey.Status == SurveyStatus.ApproverRejected)
                                 {
@@ -163,19 +163,33 @@
                             <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Survey.Description)</textarea>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Survey.TargetGroup, htmlAttributes: new { @class = "control-label" })
-                            <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" disabled="disabled">
-                                <option value="Group 1">Group 1</option>
-                                <option value="Group 2">Group 2</option>
-                                <option value="Group 3">Group 3</option>
-                                <option value="Group 4">Group 4</option>
-                                <option value="Group 5">Group 5</option>
-                            </select>
-                            @Html.HiddenFor(model => model.Survey.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                    @if (ViewBag.TypeName == "Public Mass")
+                    {
+                        <div class="row" style="display:none;">
+                            <div class="form-group col-lg-12">
+                                @Html.HiddenFor(model => model.Survey.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else if (ViewBag.TypeName == "Targeted Groups")
+                    {
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Survey.TargetGroup, htmlAttributes: new { @class = "control-label" })
+                                <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" disabled="disabled">
+                                    @if (ViewBag.Groups != null)
+                                    {
+                                        foreach (var group in ViewBag.Groups)
+                                        {
+
+                                            <option value="@group.ID">@group.Name</option>
+                                        }
+                                    }
+                                </select>
+                                @Html.HiddenFor(model => model.Survey.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    }
                     <div class="row">
                         <div class="form-group col-lg-6">
                             @Html.LabelFor(model => model.Survey.StartDate, htmlAttributes: new { @class = "control-label", @title = "The start date of the Survey duration" })
@@ -197,6 +211,24 @@
                                 @Html.Label("no", "No")
                                 @Html.ValidationMessageFor(model => model.Survey.RequireLogin, "", new { @class = "text-danger" })
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Survey.CoverPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_CoverPictureDetails", Model.Survey.CoverPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Survey.AuthorPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_AuthorPictureDetails", Model.Survey.AuthorPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Survey.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_ProofOfApprovalDetails", Model.Survey.ProofOfApproval)
                         </div>
                     </div>
                 </div>
@@ -308,13 +340,13 @@
                                             @Html.HiddenFor(model => model.Approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
                                         }
                                     }
-                                            <div class="form-group">
-                                                @Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                                                <textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
-                                                @*Html.TextAreaFor(model => model.Approval.Remarks, new { htmlAttributes = new { @class = "form-control" }, cols = 48, @rows = 5 })*@
-                                                @*Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })*@
-                                                <span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
-                                            </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                                        <textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
+                                        @*Html.TextAreaFor(model => model.Approval.Remarks, new { htmlAttributes = new { @class = "form-control" }, cols = 48, @rows = 5 })*@
+                                        @*Html.ValidationMessageFor(model => model.Approval.Remarks, "", new { @class = "text-danger" })*@
+                                        <span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
+                                    </div>
                                 </div>
                                 <div class="divider-border"></div>
                                 <div class="m-4 text-center">
@@ -454,6 +486,16 @@
             });
 
             var selectedGroup = $('#Survey_TargetGroup').val();
+            var grouparray = selectedGroup.split(',');
+
+            $.each(grouparray, function (index, item) {
+                $('#survey_group option').each(function () {
+                    if ($(this).text() == item) {
+                        $(this).prop("selected", true);
+                    }
+                });
+            });
+            /*
             if (selectedGroup.indexOf("Group 1") >= 0) {
                 $('#survey_group option').each(function () {
                     if ($(this).text() == "Group 1") {
@@ -489,6 +531,7 @@
                     }
                 });
             }
+            */
             $('#survey_group').trigger('change');
 
             $('#tab_details').click(function () {

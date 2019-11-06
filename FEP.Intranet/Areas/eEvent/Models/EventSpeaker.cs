@@ -21,7 +21,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "SpExperience", ResourceType = typeof(Language.Event))]
 		public string Experience { get; set; }
 
-		//[Required(ErrorMessage = "Please Insert Email")]
 		[DataType(DataType.EmailAddress)]
 		[Display(Name = "SpEmail", ResourceType = typeof(Language.Event))]
 		public string Email { get; set; }
@@ -30,30 +29,13 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "SpPhoneNo", ResourceType = typeof(Language.Event))]
 		public int? PhoneNo { get; set; }
 
-		//[Required(ErrorMessage = "Please Select User")]
 		[Display(Name = "SpUserId", ResourceType = typeof(Language.Event))]
 		public int? UserId { get; set; }
 
 		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
 		public string UserName { get; set; }
 
-		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
-		public string ExternalUserName { get; set; }
-
 		public IEnumerable<SelectListItem> UserIds { get; set; }
-
-		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		//public HttpPostedFileBase SpeakerPicture { get; set; }
-
-		//[Display(Name = "SpPictureName", ResourceType = typeof(Language.Event))]
-		//public string SpeakerPictureName { get; set; }
-
-
-		//[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
-		//public HttpPostedFileBase SpeakerAttachment { get; set; }
-
-		//[Display(Name = "SpAttachmentName", ResourceType = typeof(Language.Event))]
-		//public string SpeakerAttachmentName { get; set; }
 	}
 
 	public class CreateEventSpeakerModel
@@ -63,10 +45,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 			Attachments = new List<Attachment>();
 			AttachmentFiles = new List<HttpPostedFileBase>();
 		}
-
-		[Required]
+        		
 		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
 		public IEnumerable<Attachment> Attachments { get; set; }
+
 		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
 
 		[Required(ErrorMessage = "Please Select Speaker Type")]
@@ -81,31 +63,20 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "SpExperience", ResourceType = typeof(Language.Event))]
 		public string Experience { get; set; }
 
-		[DataType(DataType.EmailAddress)]
-		[Display(Name = "SpEmail", ResourceType = typeof(Language.Event))]
-		public string Email { get; set; }
+		//[DataType(DataType.PhoneNumber)]
+		//[Display(Name = "SpPhoneNo", ResourceType = typeof(Language.Event))]
+		//[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
+		//public string PhoneNo { get; set; }
 
-		[DataType(DataType.PhoneNumber)]
-		[Display(Name = "SpPhoneNo", ResourceType = typeof(Language.Event))]
-		[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
-		public string PhoneNo { get; set; }
-
-		//[Required(ErrorMessage = "Please Select User")]
+		[Required(ErrorMessage = "Please Select User")]
 		[Display(Name = "SpUserId", ResourceType = typeof(Language.Event))]
 		public int? UserId { get; set; }
 
-		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
+        [Required(ErrorMessage = "Please Select User")]
+        [Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
 		public string UserName { get; set; }
 
-		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
-		public string ExternalUserName { get; set; }
-
 		public IEnumerable<SelectListItem> UserIds { get; set; }
-
-		//[Required]
-		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		//public HttpPostedFileBase SpeakerPicture { get; set; }
-
 	}
 
 
@@ -118,8 +89,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		}
 
 		public int Id { get; set; }
-
-		[Required]
+        		
 		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
 		public IEnumerable<Attachment> Attachments { get; set; }
 		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
@@ -135,42 +105,13 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "SpExperience", ResourceType = typeof(Language.Event))]
 		public string Experience { get; set; }
 
-		//[Required(ErrorMessage = "Please Insert Email")]
-		[DataType(DataType.EmailAddress)]
-		[Display(Name = "SpEmail", ResourceType = typeof(Language.Event))]
-		public string Email { get; set; }
-
-		//[Required(ErrorMessage = "Please Insert Phone No")]
-		[DataType(DataType.PhoneNumber)]
-		[Display(Name = "SpPhoneNo", ResourceType = typeof(Language.Event))]
-		[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
-		public string PhoneNo { get; set; }
-
-		//[Required(ErrorMessage = "Please Select User")]
 		[Display(Name = "SpUserId", ResourceType = typeof(Language.Event))]
 		public int? UserId { get; set; }
 
 		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
 		public string UserName { get; set; }
 
-		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
-		public string ExternalUserName { get; set; }
-
 		public IEnumerable<SelectListItem> UserIds { get; set; }
-
-		//[Required]
-		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		//public HttpPostedFileBase SpeakerPicture { get; set; }
-
-		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		//public string SpeakerPictureName { get; set; }
-
-		//[Required]
-		//[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
-		//public HttpPostedFileBase SpeakerAttachment { get; set; }
-
-		//[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
-		//public string SpeakerAttachmentName { get; set; }
 	}
 
 	public class DetailsEventSpeakerModel
@@ -203,25 +144,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
 		public string UserName { get; set; }
 
-		[Display(Name = "SpUserName", ResourceType = typeof(Language.Event))]
-		public string ExternalUserName { get; set; }
-
 		public IEnumerable<SelectListItem> UserIds { get; set; }
-
-		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		//public HttpPostedFileBase SpeakerPicture { get; set; }
-
-		//[Display(Name = "SpPicture", ResourceType = typeof(Language.Event))]
-		//public string SpeakerPictureName { get; set; }
 
 		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
 		public IEnumerable<Attachment> Attachments { get; set; }
-
-		[Display(Name = "SpEmail", ResourceType = typeof(Language.Event))]
-		public string InternalEmail { get; set; }
-
-		[Display(Name = "SpPhoneNo", ResourceType = typeof(Language.Event))]
-		public string InternalPhoneNo { get; set; }
 
 	}
 }

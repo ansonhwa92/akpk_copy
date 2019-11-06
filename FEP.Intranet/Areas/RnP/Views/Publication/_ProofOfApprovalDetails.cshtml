@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Attachment>
+@{
+	Layout = null;
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+
+    });
+</script>
+
+<div>
+    
+
+    <div id="files3" style="display:none"></div>
+    <table class="table table-file3 table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileName)
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ var i = 0;}
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FileName)
+                        @Html.Hidden("ProofOfApprovals[" + i + "].Id", item.Id)
+                    </td>
+                    <td>
+                        <a href="@Html.Raw(WebApiURL)System/File/Download?id=@item.Id" data-toggle="tooltip" title="Download File"><i class="fa fa-file-download"></i></a>
+                    </td>
+                </tr>
+                ++i;
+            }
+        </tbody>
+    </table>
+
+</div>
+
+

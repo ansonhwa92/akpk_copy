@@ -21,12 +21,9 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44360</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>
-    </IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -158,6 +155,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
+    <Compile Include="Areas\Administrator\Controllers\BranchController.cs" />
     <Compile Include="Areas\Administrator\Controllers\CompanyController.cs" />
     <Compile Include="Areas\Administrator\Controllers\IndividualController.cs" />
     <Compile Include="Areas\Administrator\Controllers\MinistryController.cs" />
@@ -167,12 +165,16 @@
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
     <Compile Include="Areas\Commerce\CommerceAreaRegistration.cs" />
     <Compile Include="Areas\Commerce\Controllers\CartController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\DutyRosterController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventAgendaController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventCategoryController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\EventRefundController.cs" />
     <Compile Include="Areas\eEvent\Controllers\ExhibitionRoadshowRequestController.cs" />
     <Compile Include="Areas\eEvent\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\eEventAreaRegisteration.cs" />
     <Compile Include="Areas\eEvent\Models\EventAgenda.cs" />
+    <Compile Include="Areas\eEvent\Models\EventRefund.cs" />
+    <Compile Include="Areas\eEvent\Models\ExhibitionRoadshowRequest.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseCategoryController.cs" />
     <Compile Include="Areas\eLearning\Controllers\ContentCompletionsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseContentsController.cs" />
@@ -198,6 +200,8 @@
     <Compile Include="Areas\eLearning\Helper\ExtensionMethods.cs" />
     <Compile Include="Areas\eLearning\Helper\YouTubeUrlHelper.cs" />
     <Compile Include="Areas\eLearning\Helper\SlideshareHelper.cs" />
+    <Compile Include="Areas\eLearning\Controllers\TOTReportController.cs" />
+    <Compile Include="Areas\eLearning\Models\TOT.cs" />
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />
     <Compile Include="Areas\Logs\Controllers\UserLogController.cs" />
     <Compile Include="Areas\Logs\LogsAreaRegistration.cs" />
@@ -211,6 +215,7 @@
     <Compile Include="Areas\RnP\Controllers\SurveyController.cs" />
     <Compile Include="Areas\RnP\Models\Research.cs" />
     <Compile Include="Areas\RnP\RnPAreaRegistration.cs" />
+    <Compile Include="Areas\Setting\Controllers\HomeController.cs" />
     <Compile Include="Areas\SLAReminder\Controllers\SLARemindersController.cs" />
     <Compile Include="Areas\SLAReminder\SLAReminderAreaRegistration.cs" />
     <Compile Include="Areas\Template\Controllers\EmailTemplatesController.cs" />
@@ -883,7 +888,6 @@
     <Content Include="Areas\eEvent\Views\EventAgenda\Delete.cshtml" />
     <Content Include="Areas\eEvent\Views\EventAgenda\_Attachment.cshtml" />
     <Content Include="Areas\eEvent\Views\EventAgenda\_AttachmentDetails.cshtml" />
-    <Content Include="Areas\eEvent\Views\EventSpeaker\_Attachment.cshtml" />
     <Content Include="Areas\eEvent\Views\EventSpeaker\_AttachmentDetails.cshtml" />
     <Content Include="Areas\Commerce\Views\Cart\Items.cshtml" />
     <Content Include="Areas\Commerce\Views\Cart\Review.cshtml" />
@@ -910,6 +914,27 @@
     <Content Include="Areas\Reward\Views\RewardRedemptions\DetailsToRedeem.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardPoints\ListAll.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardRedemptions\ListAll.cshtml" />
+    <Content Include="Areas\eEvent\Views\DutyRoster\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\DutyRoster\_Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\DutyRoster\_Edit.cshtml" />
+    <Content Include="Areas\eEvent\Views\DutyRoster\_Delete.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_approvals.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseApprovals\Approve.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseApprovals\_sidebar.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventSpeaker\_Attachment.cshtml" />
+    <Content Include="Areas\eEvent\Views\MediaInterview\_Attachment.cshtml" />
+    <Content Include="Areas\eEvent\Views\MediaInterview\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\_Attachment.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\_Select.cshtml" />
+    <Content Include="Areas\Administrator\Views\Staff\_Select.cshtml" />
+    <Content Include="Areas\Administrator\Views\Staff\Edit.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\List.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\Home\_Menu.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_Menu.cshtml" />
+    <Content Include="Areas\Setting\Views\Home\_Menu.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_Menu.cshtml" />
     <Content Include="Areas\eLearning\Views\Shared\_approvals.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseApprovals\Approve.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseApprovals\_sidebar.cshtml" />
@@ -918,6 +943,35 @@
     <Content Include="Areas\eLearning\Views\CourseEvents\InviteLearners.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseEvents\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseEnrollments\Index.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\_Attachment.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\Edit.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\Details.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\Delete.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\PurchaseDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\BrowseSurveysLoggedIn.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\PrivateSurvey.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\SurveyExpired.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\SurveyNotStarted.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\TakeSurvey.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_CoverPicture.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_CoverPictureDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_AuthorPicture.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_AuthorPictureDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_ProofOfApproval.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_ProofOfApprovalDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_AuthorPicture.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_AuthorPictureDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_CoverPicture.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_CoverPictureDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_ProofOfApproval.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_ProofOfApprovalDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_ProofOfWithdrawal.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_ProofOfWithdrawalDetails.cshtml" />
+    <Content Include="Areas\Administrator\Views\Branch\_Create.cshtml" />
+    <Content Include="Areas\Administrator\Views\Branch\_Delete.cshtml" />
+    <Content Include="Areas\Administrator\Views\Branch\_Edit.cshtml" />
+    <Content Include="Areas\Administrator\Views\Branch\List.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1545,6 +1599,7 @@
     <Folder Include="Areas\Commerce\Models\" />
     <Folder Include="Areas\Commerce\Views\Shared\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
+    <Folder Include="Areas\eEvent\Views\EventRefund\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Areas\Logs\Models\" />
     <Folder Include="Areas\Logs\Views\Shared\" />
@@ -1565,6 +1620,9 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\FEP.Language\FEP.Language.csproj">
       <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
       <Name>FEP.Language</Name>
@@ -1577,9 +1635,6 @@
       <Project>{91af142d-c57f-4296-a485-d17a80cdc57e}</Project>
       <Name>FEP.WebApiModel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

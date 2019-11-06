@@ -1,0 +1,144 @@
+﻿@model DetailsTOTReportModel
+
+@{
+    ViewBag.Title = "Train Of Trainer Report - Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Contentscript{
+    <script type="text/javascript">
+
+
+
+    </script>
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "TOTReport", new { area = "eLearning"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="#">Train Of Trainer</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Report Details</h1>
+                    @*<div class="header-text">List of created event</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Report</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Details", "TOTReport", new { area = "eLearning", id = Model.Id })" class="active nav-link">View</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Edit", "TOTReport", new { area = "eLearning", id = Model.Id })" class="nav-link">Edit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Delete", "TOTReport", new { area = "eLearning", id = Model.Id })" class="nav-link">Delete</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        
+        <div class="border-form rounded-top">
+
+            <div class="form-container">
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(model => model.Course)
+                        <input type="text" value="@Model.Course" readonly class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(model => model.Module)
+                        <input type="text" value="@Model.Module" readonly class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        @Html.FEPLabelFor(model => model.StartDate)
+                        <input type="text" value="@Model.StartDate.Value.ToString("dd/MM/yyyy")" readonly class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        @Html.FEPLabelFor(model => model.EndDate)
+                        <input type="text" value="@Model.EndDate.Value.ToString("dd/MM/yyyy")" readonly class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        @Html.FEPLabelFor(model => model.StartTime)
+                        <input type="text" value="@Model.StartDate.Value.ToString("hh:mm tt")" readonly class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        @Html.FEPLabelFor(model => model.EndTime)
+                        <input type="text" value="@Model.EndDate.Value.ToString("hh:mm tt")" readonly class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(model => model.Venue)
+                        <input type="text" value="@Model.Venue" readonly class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        @Html.FEPLabelFor(model => model.NoOfMale)
+                        <input type="text" value="@Model.NoOfMale" readonly class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        @Html.FEPLabelFor(model => model.NoOfFemale)
+                        <input type="text" value="@Model.NoOfFemale" readonly class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        @Html.FEPLabelFor(model => model.AgeRange)
+                        <input type="text" value="@Model.AgeRange.GetDisplayName()" readonly class="form-control" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        @Html.FEPLabelFor(model => model.SalaryRange)
+                        <input type="text" value="@Model.SalaryRange.GetDisplayName()" readonly class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.FEPLabelFor(model => model.Attachments)
+                        @Html.Partial("_AttachmentDetails", Model.Attachments)
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+            <a href="@Url.Action("List")" class="btn btn-default mr-2">Back</a>
+            <button class="btn btn-secondary" type="submit">Save</button>
+        </div>
+
+    </div>
+
+</div>

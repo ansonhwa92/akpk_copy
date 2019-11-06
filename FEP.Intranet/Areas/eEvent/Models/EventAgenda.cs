@@ -26,7 +26,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string Tentative { get; set; }
 
 		[Required(ErrorMessage = "Please insert Time")]
-		[UIHint("Time")]
 		[DataType(DataType.Time)]
 		[Display(Name = "AgendaTime", ResourceType = typeof(Language.Event))]
 		public DateTime? Time { get; set; }

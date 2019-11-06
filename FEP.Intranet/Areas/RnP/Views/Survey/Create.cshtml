@@ -1,4 +1,4 @@
-﻿@model FEP.WebApiModel.RnP.UpdateSurveyModel
+﻿@model FEP.WebApiModel.RnP.CreateSurveyModel
 
 @{
     ViewBag.Title = "Create Survey";
@@ -31,7 +31,7 @@
     </div>
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", id = "target" }))
 {
     @Html.AntiForgeryToken()
 
@@ -83,7 +83,6 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                            @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.HiddenFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
                             @*Html.EnumDropDownListFor(model => model.Type, new { @class = "form-control", @Value = @ViewBag.TypeId, @readonly = "readonly" })*@
                             <input class="form-control" type="text" name="TypeName" id="TypeName" readonly="readonly" value="@ViewBag.TypeName">
@@ -126,11 +125,14 @@
                             <div class="form-group col-lg-12">
                                 @Html.LabelFor(model => model.TargetGroup, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                                 <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" placeholder="Select group(s)">
-                                    <option value="Group 1">Group 1</option>
-                                    <option value="Group 2">Group 2</option>
-                                    <option value="Group 3">Group 3</option>
-                                    <option value="Group 4">Group 4</option>
-                                    <option value="Group 5">Group 5</option>
+                                    @if (ViewBag.Groups != null)
+                                    {
+                                        foreach (var group in ViewBag.Groups)
+                                        {
+
+                                            <option value="@group.ID">@group.Name</option>
+                                        }
+                                    }
                                 </select>
                                 @Html.HiddenFor(model => model.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.TargetGroup, "", new { @class = "text-danger" })
@@ -167,48 +169,6 @@
                             @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <!--
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pictures, htmlAttributes: new { @class = "control-label" })
-                            <div class="custom-file">
-                                @Html.EditorFor(model => model.Pictures, new { htmlAttributes = new { @class = "form-control" } })
-                                <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-                                <label class="custom-file-label" for="customFile">No file choosen</label>
-                                @Html.ValidationMessageFor(model => model.Pictures, "", new { @class = "text-danger" })
-                            </div>
-                            <div id="fileList"></div>
-                        </div>
-                    </div>
-                    -->
-                    <!--
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                            <div class="custom-file">
-                                @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
-                                <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-                                <label class="custom-file-label" for="customFile">No file choosen</label>
-                                @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
-                            </div>
-                            <div id="fileList"></div>
-                        </div>
-                    </div>
-                    -->
-                    <div class="row" style="display:none;">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pictures, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pictures, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Pictures, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row" style="display:none;">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                            @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.RequireLogin, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
@@ -224,6 +184,27 @@
                                 @Html.Label("no", "No")
                                 @Html.ValidationMessageFor(model => model.RequireLogin, "", new { @class = "text-danger" })
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.CoverPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_CoverPicture", Model.CoverPictures)
+                            @Html.ValidationMessageFor(model => model.CoverPictures, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.AuthorPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_AuthorPicture", Model.AuthorPictures)
+                            @Html.ValidationMessageFor(model => model.AuthorPictures, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            @Html.Partial("_ProofOfApproval", Model.ProofOfApproval)
+                            @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
@@ -261,12 +242,32 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            function sortDates(dateType, dateStr) {
+                var date1 = $('#StartDate').val();
+                var date2 = $('#EndDate').val();
+                var revdate1 = date1.substr(6, 4) + date1.substr(3, 2) + date1.substr(0, 2);
+                var revdate2 = date2.substr(6, 4) + date2.substr(3, 2) + date2.substr(0, 2);
+                if (dateType == 1) {
+                    if (revdate2 < revdate1) {
+                        $('#EndDate').val(date1);
+                        $("#date_end").val(date1);
+                    }
+                }
+                else if (dateType == 2) {
+                    if (revdate2 < revdate1) {
+                        $('#StartDate').val(date2);
+                        $("#date_start").val(date2);
+                    }
+                }
+            }
+
             $("#date_start").flatpickr({
                 dateFormat: "d/m/Y",
                 minDate: "today",
                 maxDate: "31/01/2200",
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#StartDate").val(dateStr);
+                    sortDates(1, dateStr);
                 },
             });
 
@@ -276,6 +277,7 @@
                 maxDate: "31/01/2200",
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#EndDate").val(dateStr);
+                    sortDates(2, dateStr);
                 },
             });
 
@@ -283,11 +285,16 @@
                 var selectedValues = [];
                 var selectedText = "";
                 $("#survey_group :selected").each(function () {
-                    selectedValues.push($(this).val());
+                    //selectedValues.push($(this).val());
+                    selectedValues.push($(this).text());
                 });
                 selectedText = selectedValues.join();
                 $("#TargetGroup").val(selectedText);
             });
+
+            RefreshFile1();
+            RefreshFile2();
+            RefreshFile3();
         });
     </script>
 }

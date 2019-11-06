@@ -190,7 +190,8 @@ namespace FEP.Intranet
 
         private static string GetWebApiUrl()
         {
-            return WebConfigurationManager.AppSettings["WebApiURL"] != null ? WebConfigurationManager.AppSettings["WebApiURL"].ToString() : "";
+            string theURL = WebConfigurationManager.AppSettings["WebApiURL"] != null ? WebConfigurationManager.AppSettings["WebApiURL"].ToString() : "";
+            return theURL;
         }
         private static string GetEmailSMSApiUrl()
         {
@@ -220,6 +221,15 @@ namespace FEP.Intranet
 
             return null;
         }
+
+        public static async Task<HttpResponseMessage> DownloadFile(int id)
+        {
+            var responseFile = await WepApiMethod.SendApiAsync<HttpResponseMessage>(HttpVerbs.Get, $"System/File?id={id}");
+
+            return responseFile.Data;
+
+        }
+
 
     }
 

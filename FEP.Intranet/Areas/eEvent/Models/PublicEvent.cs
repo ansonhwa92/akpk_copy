@@ -21,19 +21,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Objective")]
 		public string EventObjective { get; set; }
 
-		[Required(ErrorMessage = "Please Insert Start Date")]
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
-		//[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
-		[Display(Name = "Start Date")]
-		public DateTime? StartDate { get; set; }
-
-		[Required(ErrorMessage = "Please Insert End Date")]
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
-		//[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
-		[Display(Name = "End Date")]
-		public DateTime? EndDate { get; set; }
+		
 
 		[Required(ErrorMessage = "Please Insert Event Venue")]
 		[Display(Name = "Event Venue")]
@@ -113,7 +101,15 @@ namespace FEP.Intranet.Areas.eEvent.Models
         public IEnumerable<Attachment> Attachments { get; set; }
 
         public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
-    }
+
+		[Required(ErrorMessage = "Please Insert Start Date")]
+		[Display(Name = "Start Date")]
+		public DateTime? StartDate { get; set; }
+
+		[Required(ErrorMessage = "Please Insert End Date")]
+		[Display(Name = "End Date")]
+		public DateTime? EndDate { get; set; }
+	}
 
 	public class EditPublicEventModel : PublicEventModel
 	{
@@ -126,14 +122,20 @@ namespace FEP.Intranet.Areas.eEvent.Models
         [Required]
 		public int Id { get; set; }
 
-		public string origin { get; set; }
-
         [Required]
         [Display(Name = "Proof of Approval")]
         public IEnumerable<Attachment> Attachments { get; set; }
 
         public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
-    }
+
+		[Required(ErrorMessage = "Please Insert Start Date")]
+		[Display(Name = "Start Date")]
+		public DateTime? StartDate { get; set; }
+
+		[Required(ErrorMessage = "Please Insert End Date")]
+		[Display(Name = "End Date")]
+		public DateTime? EndDate { get; set; }
+	}
 
 	public class DetailsPublicEventModel : PublicEventModel
 	{
@@ -144,14 +146,22 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		public bool Display { get; set; }
 		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "Created Date")]
-		public DateTime CreatedDate { get; set; }
+		public DateTime? CreatedDate { get; set; }
 
         [Display(Name = "Proof of Approval")]
         public IEnumerable<Attachment> Attachments { get; set; }
-    }
+
+		[Display(Name = "Start Date")]
+		[DataType(DataType.Date)]
+		public DateTime? StartDate { get; set; }
+
+		[Display(Name = "End Date")]
+		[DataType(DataType.Date)]
+		public DateTime? EndDate { get; set; }
+	}
 
 	public class DeletePublicEventModel : DetailsPublicEventModel
 	{
@@ -179,12 +189,12 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string RefNo { get; set; }
 
 
-		[DataType(DataType.Date)]
 		[Display(Name = "Start Date")]
+		[DataType(DataType.Date)]
 		public DateTime StartDate { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "End Date")]
+		[DataType(DataType.Date)]
 		public DateTime EndDate { get; set; }
 
 		[Display(Name = "Event Venue")]

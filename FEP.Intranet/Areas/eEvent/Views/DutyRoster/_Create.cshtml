@@ -1,0 +1,31 @@
+﻿@model CreateDutyRosterModel
+
+@{
+	Layout = null;
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formAdd" }))
+{
+	@Html.AntiForgeryToken()
+	<div class="row divTd">
+		<div class="col-1 text-center"></div>
+		<div class="col px-0">
+			@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.DutyRoster.PlaceholderDate } })
+			@Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+		</div>
+		<div class="col px-0">
+			@Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = Language.DutyRoster.PlaceholderStartTime } })
+			@Html.ValidationMessageFor(model => model.StartTime)
+		</div>
+		<div class="col px-0">
+			@Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = Language.DutyRoster.PlaceholderEndTime } })
+			@Html.ValidationMessageFor(model => model.EndTime)
+		</div>
+		<div class="col-3 pl-0 text-right">
+			<div class="icon-action">
+				<button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">@Language.General.ButtonAdd</button>
+				<button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">@Language.General.ButtonCancel</button>
+			</div>
+		</div>
+	</div>
+}

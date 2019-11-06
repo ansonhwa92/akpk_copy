@@ -26,39 +26,39 @@ namespace FEP.Model.Migrations
             foreach (var item in elearnTemplates)
             {
                 // seed template
-                db.TemplateParameters.Add(new TemplateParameters
+                db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType }, new TemplateParameters
                 {
                     NotificationType = item,
                     TemplateParameterType = "Link",
                 });
 
-                db.TemplateParameters.Add(new TemplateParameters
+                db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType }, new TemplateParameters
                 {
                     NotificationType = item,
                     TemplateParameterType = "UserFullName",
                 });
 
-                db.TemplateParameters.Add(new TemplateParameters
+                db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType }, new TemplateParameters
                 {
                     NotificationType = item,
                     TemplateParameterType = "CourseTitle",
                 });
-                db.TemplateParameters.Add(new TemplateParameters
+                db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType }, new TemplateParameters
                 {
                     NotificationType = item,
                     TemplateParameterType = "CourseCode",
                 });
-                db.TemplateParameters.Add(new TemplateParameters
+                db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType }, new TemplateParameters
                 {
                     NotificationType = item,
                     TemplateParameterType = "EnrollmentCode",
                 });
-                db.TemplateParameters.Add(new TemplateParameters
+                db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType }, new TemplateParameters
                 {
                     NotificationType = item,
                     TemplateParameterType = "CourseAuthor",
                 });
-                db.TemplateParameters.Add(new TemplateParameters
+                db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType }, new TemplateParameters
                 {
                     NotificationType = item,
                     TemplateParameterType = "CourseApproval",

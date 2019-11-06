@@ -1,0 +1,38 @@
+﻿@model FEP.WebApiModel.RnP.ReturnSurveyModel
+
+@{
+    ViewBag.Title = "Survey Expired";
+    Layout = "~/Views/Shared/_LayoutPublicSurvey.cshtml";
+}
+
+@section Nav{
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/Home/BrowseSurveys">Research & Publication</a></li>
+                <li class="breadcrumb-item"><a href="#">Survey Expired</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+            </ol>
+        </nav>
+    </div>
+    <h1 class="page-title text-white">Survey Title: @Model.Title</h1>
+    <div class="header-text">Ref No: @Model.RefNo</div>
+    <div class="header-text">Description: @Model.Description</div>
+}
+
+<section id="search-result" class="publications">
+    <div class="container">
+        <div class="row">
+            <p style="font-size:24px;font-weight:bold;"><br /><br />We're sorry, but the survey you are trying to take has expired!</p>
+        </div>
+    </div>
+</section>
+<hr />
+<section id="search-result" class="publications">
+    <div class="container">
+        <div class="row">
+            <a class="btn btn-secondary block font-weight-normal mr-2" href="@Url.Action("BrowseSurveys", "Home", new { area = "RnP" })">Back to List of Surveys</a>
+        </div>
+    </div>
+</section>

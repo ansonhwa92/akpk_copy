@@ -54,12 +54,12 @@
             <div class="form-container form-container-w100">
                 <div class="mb-4 mt-2">
                     <h4 class="color-darkblue mb-0">Details : Activity Points</h4>
-                    <h6 class="font-weight-normal">@Model.ActivityName</h6>
+                    <h6 class="font-weight-normal">@Model.CourseName</h6>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.ActivityName)
-                        @Html.EditorFor(m => m.ActivityName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.FEPLabelFor(m => m.CourseName)
+                        @Html.EditorFor(m => m.CourseName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     </div>
                 </div>
                 <div class="row">

@@ -1,16 +1,20 @@
-﻿using System;
+﻿using FEP.Helper;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Net;
 using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
-using FEP.Helper;
 using Newtonsoft.Json;
 //using FEP.WebApiModel;
 using FEP.Model;
 using FEP.WebApiModel.RnP;
+using FEP.WebApiModel.Integration;
 using FEP.WebApiModel.SLAReminder;
-using System.Net;
+
 
 namespace FEP.Intranet.Areas.RnP.Controllers
 {
@@ -43,6 +47,13 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View();
         }
 
+        //menu
+        [ChildActionOnly]
+        public ActionResult _Menu()
+        {
+            return PartialView();
+        }
+
         // Show select survey type form
         // After type selection, user automatically redirected to creation page
         // GET: RnP/Survey/SelectCategory
@@ -59,7 +70,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         [HasAccess(UserAccess.RnPSurveyEdit)]
         public async Task<ActionResult> Create(int? typeid)
         {
-            var model = new UpdateSurveyModel();
+            var model = new CreateSurveyModel();
             if (typeid != null)
             {
                 //ViewBag.TypeId = typeid;
@@ -85,6 +96,17 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 model.Type = SurveyType.Public;
             }
 
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+
+            if (groups.isSuccess)
+            {
+                ViewBag.Groups = groups.Data;
+            }
+            else
+            {
+                ViewBag.Groups = null;
+            }
+
             var response = await WepApiMethod.SendApiAsync<List<UpdateSurveyTemplateModel>>(HttpVerbs.Get, $"RnP/Survey/GetTemplates");
 
             if (response.isSuccess)
@@ -107,8 +129,17 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(UpdateSurveyModel model, int TemplateSelection)
+        public async Task<ActionResult> Create(CreateSurveyModel model, int TemplateSelection)
         {
+            if (model.StartDate > model.EndDate)
+            {
+                ModelState.AddModelError("EndDate", "End Date must be greater than or equal to Start Date");
+            }
+            if (model.ProofOfApproval.Count() == 0 && model.ProofOfApprovalFiles.Count() == 0)
+            {
+                ModelState.AddModelError("ProofOfApproval", "Please upload at least one (1) Proof Of Approval");
+            }
+
             /*
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Survey/TitleExists?id={null}&title={model.Title}");
 
@@ -120,7 +151,53 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             if (ModelState.IsValid)
             {
-                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/Create", model);
+                var apimodel = new CreateSurveyModelNoFile
+                {
+                    Type = model.Type,
+                    Category = model.Category,
+                    Title = model.Title,
+                    Description = model.Description,
+                    TargetGroup = model.TargetGroup,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    RequireLogin = model.RequireLogin,
+                    CreatorId = model.CreatorId,
+                    CoverPictures = model.CoverPictures,
+                    AuthorPictures = model.AuthorPictures,
+                    ProofOfApproval = model.ProofOfApproval                    
+                };
+
+                //attachment 1: cover pics
+                if (model.CoverPictureFiles.Count() > 0)
+                {
+                    var files = await FileMethod.UploadFile(model.CoverPictureFiles.ToList(), CurrentUser.UserId, "research");
+                    if (files != null)
+                    {
+                        apimodel.CoverFilesId = files.Select(f => f.Id).ToList();
+                    }
+                }
+
+                //attachment 2: author pics
+                if (model.AuthorPictureFiles.Count() > 0)
+                {
+                    var files = await FileMethod.UploadFile(model.AuthorPictureFiles.ToList(), CurrentUser.UserId, "research");
+                    if (files != null)
+                    {
+                        apimodel.AuthorFilesId = files.Select(f => f.Id).ToList();
+                    }
+                }
+
+                //attachment 3: proof pics
+                if (model.ProofOfApprovalFiles.Count() > 0)
+                {
+                    var files = await FileMethod.UploadFile(model.ProofOfApprovalFiles.ToList(), CurrentUser.UserId, "research");
+                    if (files != null)
+                    {
+                        apimodel.ProofFilesId = files.Select(f => f.Id).ToList();
+                    }
+                }
+
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/Create", apimodel);
 
                 if (response.isSuccess)
                 {
@@ -128,18 +205,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     string newid = resparray[0];
                     string title = resparray[1];
 
-                    // log trail/system success notification/dashboard notification/email/sms upon submission
-                    // log trail/system success/dashboard notification upon saving as draft
-
                     await LogActivity(Modules.RnP, "Create New Survey: " + title);
 
                     TempData["SuccessMessage"] = "New Survey titled " + title + " created successfully and saved as draft.";
-
-                    // dashboard
-
-                    //SendEmail("New Survey Created", "A new Survey has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
-
-                    // sms
 
                     return RedirectToAction("Build", "Survey", new { area = "RnP", @id = newid, @templateid = TemplateSelection });
                 }
@@ -177,8 +245,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 return HttpNotFound();
             }
 
-            var vmsurvey = new UpdateSurveyModel
-            {                
+            var vmsurvey = new EditSurveyModel
+            {
                 ID = survey.ID,
                 Type = survey.Type,
                 Category = survey.Category,
@@ -188,9 +256,12 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 StartDate = survey.StartDate,
                 EndDate = survey.EndDate,
                 RequireLogin = survey.RequireLogin,
-                Pictures = survey.Pictures,
-                ProofOfApproval = survey.ProofOfApproval,
-                CreatorId = survey.CreatorId
+                //Pictures = survey.Pictures,
+                //ProofOfApproval = survey.ProofOfApproval,
+                CreatorId = survey.CreatorId,
+                CoverPictures = survey.CoverPictures,
+                AuthorPictures = survey.AuthorPictures,
+                ProofOfApproval = survey.ProofOfApproval
             };
 
             if (survey.Type == 0)
@@ -202,6 +273,17 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.TypeName = "Targeted Groups";
             }
 
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+
+            if (groups.isSuccess)
+            {
+                ViewBag.Groups = groups.Data;
+            }
+            else
+            {
+                ViewBag.Groups = null;
+            }
+
             return View(vmsurvey);
         }
 
@@ -210,8 +292,17 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // POST: Survey/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(UpdateSurveyModel model)
+        public async Task<ActionResult> Edit(EditSurveyModel model)
         {
+            if (model.StartDate > model.EndDate)
+            {
+                ModelState.AddModelError("EndDate", "End Date must be greater than or equal to Start Date");
+            }
+            if (model.ProofOfApproval.Count() == 0 && model.ProofOfApprovalFiles.Count() == 0)
+            {
+                ModelState.AddModelError("ProofOfApproval", "Please upload at least one (1) Proof Of Approval");
+            }
+
             /*
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Survey/TitleExists?id={model.ID}&title={model.Title}");
 
@@ -223,22 +314,60 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             if (ModelState.IsValid)
             {
-                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/Edit", model);
+                var apimodel = new EditSurveyModelNoFile
+                {
+                    ID = model.ID,
+                    Type = model.Type,
+                    Category = model.Category,
+                    Title = model.Title,
+                    Description = model.Description,
+                    TargetGroup = model.TargetGroup,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    RequireLogin = model.RequireLogin,
+                    CreatorId = model.CreatorId,
+                    CoverPictures = model.CoverPictures,
+                    AuthorPictures = model.AuthorPictures,
+                    ProofOfApproval = model.ProofOfApproval                    
+                };
+
+                //attachment 1: cover pics
+                if (model.CoverPictureFiles.Count() > 0)
+                {
+                    var files = await FileMethod.UploadFile(model.CoverPictureFiles.ToList(), CurrentUser.UserId, "research");
+                    if (files != null)
+                    {
+                        apimodel.CoverFilesId = files.Select(f => f.Id).ToList();
+                    }
+                }
+
+                //attachment 2: author pics
+                if (model.AuthorPictureFiles.Count() > 0)
+                {
+                    var files = await FileMethod.UploadFile(model.AuthorPictureFiles.ToList(), CurrentUser.UserId, "research");
+                    if (files != null)
+                    {
+                        apimodel.AuthorFilesId = files.Select(f => f.Id).ToList();
+                    }
+                }
+
+                //attachment 3: proof pics
+                if (model.ProofOfApprovalFiles.Count() > 0)
+                {
+                    var files = await FileMethod.UploadFile(model.ProofOfApprovalFiles.ToList(), CurrentUser.UserId, "research");
+                    if (files != null)
+                    {
+                        apimodel.ProofFilesId = files.Select(f => f.Id).ToList();
+                    }
+                }
+
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/Edit", apimodel);
 
                 if (response.isSuccess)
                 {
-                    // log trail/system success notification/dashboard notification/email/sms upon submission
-                    // log trail/system success/dashboard notification upon saving as draft
-
                     await LogActivity(Modules.RnP, "Edit Survey: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Survey titled " + response.Data + " updated successfully and saved as draft.";
-
-                    // dashboard
-
-                    //SendEmail("New Survey Created", "A new Survey has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
-
-                    // sms
 
                     // NOTE: when editing, user never gets the select template option anymore (TBD more)
 
@@ -300,7 +429,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 {
                     actualcontents = survey.Contents;
                 }
-            } else
+            }
+            else
             {
                 actualcontents = survey.Contents;
             }
@@ -329,18 +459,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
-                    // log trail/system success notification/dashboard notification/email/sms upon submission
-                    // log trail/system success/dashboard notification upon saving as draft
-
                     await LogActivity(Modules.RnP, "Build Survey: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Survey titled " + response.Data + " built successfully and saved as draft.";
-
-                    // dashboard
-
-                    //SendEmail("New Survey Created", "A new Survey has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
-
-                    // sms
 
                     return RedirectToAction("Review", "Survey", new { area = "RnP", @id = model.ID });
                 }
@@ -369,14 +490,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
-                    // log trail/system success notification/dashboard notification/email/sms upon submission
-                    // log trail/system success/dashboard notification upon saving as draft
-
                     await LogActivity(Modules.RnP, "Survey design saved as Template named: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Survey design saved successfully as a Template named: " + response.Data + ".";
-
-                    // dashboard
                 }
                 else
                 {
@@ -412,7 +528,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 return HttpNotFound();
             }
 
-            var vmsurvey = new UpdateSurveyModel
+            var vmsurvey = new DetailsSurveyModel
             {
                 ID = survey.ID,
                 Type = survey.Type,
@@ -423,9 +539,12 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 StartDate = survey.StartDate,
                 EndDate = survey.EndDate,
                 RequireLogin = survey.RequireLogin,
-                Pictures = survey.Pictures,
-                ProofOfApproval = survey.ProofOfApproval,
-                CreatorId = survey.CreatorId
+                //Pictures = survey.Pictures,
+                //ProofOfApproval = survey.ProofOfApproval,
+                CreatorId = survey.CreatorId,
+                CoverPictures = survey.CoverPictures,
+                AuthorPictures = survey.AuthorPictures,
+                ProofOfApproval = survey.ProofOfApproval
             };
 
             var vmcontents = new UpdateSurveyContentsModel
@@ -445,6 +564,26 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             if (resHis.isSuccess)
             {
                 ViewBag.History = resHis.Data;
+            }
+
+            if (survey.Type == 0)
+            {
+                ViewBag.TypeName = "Public Mass";
+            }
+            else
+            {
+                ViewBag.TypeName = "Targeted Groups";
+            }
+
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+
+            if (groups.isSuccess)
+            {
+                ViewBag.Groups = groups.Data;
+            }
+            else
+            {
+                ViewBag.Groups = null;
             }
 
             return View(vmreview);
@@ -468,16 +607,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     string type = resparray[1];
                     string refno = resparray[2];
 
-                    // log trail/system success notification/dashboard notification/email/sms upon submission
-                    // log trail/system success/dashboard notification upon saving as draft
-
                     await LogActivity(Modules.RnP, "Submit Survey: " + title, model);
 
                     TempData["SuccessMessage"] = "Survey titled " + title + " submitted successfully for verification.";
 
                     await SendNotification(model.Survey.ID, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Creation, title, type, refno, "Survey Submitted", SurveyApprovalStatus.None, false);
-
-                    // dashboard
 
                     return RedirectToAction("Index", "Survey", new { area = "RnP" });
                 }
@@ -512,16 +646,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 string type = resparray[1];
                 string refno = resparray[2];
 
-                // log trail/system success notification/dashboard notification/email/sms upon submission
-                // log trail/system success/dashboard notification upon saving as draft
-
                 await LogActivity(Modules.RnP, "Submit Survey: " + title);
 
                 TempData["SuccessMessage"] = "Survey titled " + title + " submitted successfully for verification.";
 
                 await SendNotification(id.Value, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Creation, title, type, refno, "Survey Submitted", SurveyApprovalStatus.None, false);
-
-                // dashboard
 
                 return RedirectToAction("Index", "Survey", new { area = "RnP" });
             }
@@ -544,7 +673,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 return HttpNotFound();
             }
 
-            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/PublishByID?id={id}");
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/PublishByID?id={id}&BaseURL={BaseURL}");
 
             if (response.isSuccess)
             {
@@ -553,16 +682,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 string type = resparray[1];
                 string refno = resparray[2];
 
-                // log trail/system success notification/dashboard notification/email/sms upon submission
-                // log trail/system success/dashboard notification upon saving as draft
-
                 await LogActivity(Modules.RnP, "Publish Survey: " + title);
 
                 TempData["SuccessMessage"] = "Survey titled " + title + " published successfully.";
 
                 await SendNotification(id.Value, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Publication, title, type, refno, "Survey Published", SurveyApprovalStatus.None, false);
-
-                // dashboard
 
                 return RedirectToAction("Index", "Survey", new { area = "RnP" });
             }
@@ -580,6 +704,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         [HasAccess(UserAccess.RnPSurveyPublish)]
         public async Task<string> Extend(UpdateSurveyExtensionModel model)
         {
+            if (model.NewStartDate > model.NewEndDate)
+            {
+                ModelState.AddModelError("NewEndDate", "End Date must be greater than or equal to Start Date");
+            }
+
             if (ModelState.IsValid)
             {
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/Extend", model);
@@ -591,16 +720,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     string type = resparray[1];
                     string refno = resparray[2];
 
-                    // log trail/system success notification/dashboard notification/email/sms upon submission
-                    // log trail/system success/dashboard notification upon saving as draft
-
                     await LogActivity(Modules.RnP, "Extend Survey: " + title, model);
 
                     TempData["SuccessMessage"] = "Survey titled " + title + " successfully extended.";
 
                     //await SendNotification(model.ID, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Cancellation, title, type, refno, "Survey Cancelled", SurveyApprovalStatus.None, false);
-
-                    // dashboard
 
                     //return RedirectToAction("Index", "Survey", new { area = "RnP" });
                     return "success";
@@ -639,16 +763,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 string type = resparray[1];
                 string refno = resparray[2];
 
-                // log trail/system success notification/dashboard notification/email/sms upon submission
-                // log trail/system success/dashboard notification upon saving as draft
-
                 await LogActivity(Modules.RnP, "Unpublish Survey: " + title);
 
                 TempData["SuccessMessage"] = "Survey titled " + title + " unpublished successfully.";
 
                 //await SendNotification(id.Value, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Publication, title, type, refno, "Survey Published", SurveyApprovalStatus.None, false);
-
-                // dashboard
 
                 //return RedirectToAction("Index", "Survey", new { area = "RnP" });
                 return "success";
@@ -718,7 +837,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             }
 
-            var vmsurvey = new UpdateSurveyModel
+            var vmsurvey = new DetailsSurveyModel
             {
                 ID = survey.ID,
                 Type = survey.Type,
@@ -729,10 +848,13 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 StartDate = survey.StartDate,
                 EndDate = survey.EndDate,
                 RequireLogin = survey.RequireLogin,
-                Pictures = survey.Pictures,
-                ProofOfApproval = survey.ProofOfApproval,
+                //Pictures = survey.Pictures,
+                //ProofOfApproval = survey.ProofOfApproval,
                 CreatorId = survey.CreatorId,
-                CreatorName = survey.CreatorName
+                CreatorName = survey.CreatorName,
+                CoverPictures = survey.CoverPictures,
+                AuthorPictures = survey.AuthorPictures,
+                ProofOfApproval = survey.ProofOfApproval
             };
 
             var vmcontents = new UpdateSurveyContentsModel
@@ -783,6 +905,49 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.History = resHis.Data;
             }
 
+            ViewBag.ApprovalStage = "";
+
+            var resNext = await WepApiMethod.SendApiAsync<SurveyApprovalHistoryModel>(HttpVerbs.Get, $"RnP/Survey/GetNextApproval?id={id}");
+
+            if (resNext.isSuccess)
+            {
+                if (resNext.Data != null)
+                {
+                    if (resNext.Data.Level == SurveyApprovalLevels.Approver1)
+                    {
+                        ViewBag.ApprovalStage = "1";
+                    }
+                    else if (resNext.Data.Level == SurveyApprovalLevels.Approver2)
+                    {
+                        ViewBag.ApprovalStage = "2";
+                    }
+                    else if (resNext.Data.Level == SurveyApprovalLevels.Approver3)
+                    {
+                        ViewBag.ApprovalStage = "3";
+                    }
+                }
+            }
+
+            if (survey.Type == 0)
+            {
+                ViewBag.TypeName = "Public Mass";
+            }
+            else
+            {
+                ViewBag.TypeName = "Targeted Groups";
+            }
+
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+
+            if (groups.isSuccess)
+            {
+                ViewBag.Groups = groups.Data;
+            }
+            else
+            {
+                ViewBag.Groups = null;
+            }
+
             return View(vmview);
         }
 
@@ -810,6 +975,26 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 return HttpNotFound();
             }
 
+            if (survey.Type == 0)
+            {
+                ViewBag.TypeName = "Public Mass";
+            }
+            else
+            {
+                ViewBag.TypeName = "Targeted Groups";
+            }
+
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+
+            if (groups.isSuccess)
+            {
+                ViewBag.Groups = groups.Data;
+            }
+            else
+            {
+                ViewBag.Groups = null;
+            }
+
             return View(survey);
         }
 
@@ -827,18 +1012,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             if (response.isSuccess)
             {
-                // log trail/system success notification/dashboard notification/email/sms upon submission
-                // log trail/system success/dashboard notification upon saving as draft
-
                 await LogActivity(Modules.RnP, "Delete Survey: " + response.Data);
 
                 TempData["SuccessMessage"] = "Survey titled " + response.Data + " successfully deleted.";
-
-                // dashboard
-
-                //SendEmail("New Survey Created", "A new Survey has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
-
-                // sms
 
                 return RedirectToAction("Index", "Survey", new { area = "RnP" });
             }
@@ -864,18 +1040,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             if (response.isSuccess)
             {
-                // log trail/system success notification/dashboard notification/email/sms upon submission
-                // log trail/system success/dashboard notification upon saving as draft
-
                 await LogActivity(Modules.RnP, "Delete Survey: " + response.Data);
 
                 TempData["SuccessMessage"] = "Survey titled " + response.Data + " successfully deleted.";
-
-                // dashboard
-
-                //SendEmail("New Survey Created", "A new Survey has been created." + "\n" + "Please etc.", new EmailAddress() { Address = model.Email, DisplayName = model.Name });
-
-                // sms
 
                 return RedirectToAction("Index", "Survey", new { area = "RnP" });
             }
@@ -904,16 +1071,11 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     string type = resparray[1];
                     string refno = resparray[2];
 
-                    // log trail/system success notification/dashboard notification/email/sms upon submission
-                    // log trail/system success/dashboard notification upon saving as draft
-
                     await LogActivity(Modules.RnP, "Cancel Survey: " + title, model);
 
                     TempData["SuccessMessage"] = "Survey titled " + title + " successfully cancelled.";
 
                     await SendNotification(model.ID, NotificationCategory.ResearchAndPublication, NotificationType.Submit_Survey_Cancellation, title, type, refno, "Survey Cancelled", SurveyApprovalStatus.None, false);
-
-                    // dashboard
 
                     return RedirectToAction("Index", "Survey", new { area = "RnP" });
                 }
@@ -957,7 +1119,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             var survey = new ReturnSurveyModel
             {
-                ID = surveyapproval.Survey.ID,                
+                ID = surveyapproval.Survey.ID,
                 Type = surveyapproval.Survey.Type,
                 Category = surveyapproval.Survey.Category,
                 Title = surveyapproval.Survey.Title,
@@ -967,14 +1129,17 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 EndDate = surveyapproval.Survey.EndDate,
                 RequireLogin = surveyapproval.Survey.RequireLogin,
                 Contents = surveyapproval.Survey.Contents,
-                Pictures = surveyapproval.Survey.Pictures,
-                ProofOfApproval = surveyapproval.Survey.ProofOfApproval,
+                //Pictures = surveyapproval.Survey.Pictures,
+                //ProofOfApproval = surveyapproval.Survey.ProofOfApproval,
                 DateAdded = surveyapproval.Survey.DateAdded,
                 CreatorId = surveyapproval.Survey.CreatorId,
                 RefNo = surveyapproval.Survey.RefNo,
                 Status = surveyapproval.Survey.Status,
                 DmsPath = surveyapproval.Survey.DmsPath,
-                CreatorName = surveyapproval.Survey.CreatorName
+                CreatorName = surveyapproval.Survey.CreatorName,
+                CoverPictures = surveyapproval.Survey.CoverPictures,
+                AuthorPictures = surveyapproval.Survey.AuthorPictures,
+                ProofOfApproval = surveyapproval.Survey.ProofOfApproval
             };
 
             var sapproval = new ReturnUpdateSurveyApprovalModel
@@ -1001,6 +1166,46 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.History = resHis.Data;
             }
 
+            ViewBag.ApprovalStage = "";
+
+            var resNext = await WepApiMethod.SendApiAsync<SurveyApprovalHistoryModel>(HttpVerbs.Get, $"RnP/Survey/GetNextApproval?id={id}");
+
+            if (resNext.isSuccess)
+            {
+                if (resNext.Data.Level == SurveyApprovalLevels.Approver1)
+                {
+                    ViewBag.ApprovalStage = "1";
+                }
+                else if (resNext.Data.Level == SurveyApprovalLevels.Approver2)
+                {
+                    ViewBag.ApprovalStage = "2";
+                }
+                else if (resNext.Data.Level == SurveyApprovalLevels.Approver3)
+                {
+                    ViewBag.ApprovalStage = "3";
+                }
+            }
+
+            if (survey.Type == 0)
+            {
+                ViewBag.TypeName = "Public Mass";
+            }
+            else
+            {
+                ViewBag.TypeName = "Targeted Groups";
+            }
+
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+
+            if (groups.isSuccess)
+            {
+                ViewBag.Groups = groups.Data;
+            }
+            else
+            {
+                ViewBag.Groups = null;
+            }
+
             return View(sevaluation);
         }
 
@@ -1022,32 +1227,30 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     string title = resparray[1];
                     string type = resparray[2];
                     string refno = resparray[3];
-                    // log trail/system success notification/dashboard notification/email/sms upon submission
-                    // log trail/system success/dashboard notification upon saving as draft
 
                     if (model.Approval.Status == SurveyApprovalStatus.Approved)
                     {
                         if (model.Approval.Level == SurveyApprovalLevels.Verifier)
                         {
                             await LogActivity(Modules.RnP, "Verify Survey: " + title, model);
-                            TempData["SuccessMessage"] = "Survey titled " + title + " updated as Verified.";
+                            TempData["SuccessMessage"] = "Survey titled " + title + " updated as Pending Approval 1.";
 
                             await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Verify_Survey_Creation, title, type, refno, "Verified and Pending Approval", model.Approval.Status, model.Approval.RequireNext);
-                            // dashboard
                         }
                         else
                         {
                             await LogActivity(Modules.RnP, "Approve Survey: " + title, model);
-                            TempData["SuccessMessage"] = "Survey titled " + title + " updated as Approved.";
 
                             if (model.Approval.Level == SurveyApprovalLevels.Approver1)
                             {
                                 if (model.Approval.RequireNext)
                                 {
+                                    TempData["SuccessMessage"] = "Survey titled " + title + " updated as Pending Approval 2.";
                                     await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, title, type, refno, "Approved by 1st-Level Approver and Pending 2nd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
                                 }
                                 else
                                 {
+                                    TempData["SuccessMessage"] = "Survey titled " + title + " updated as Approved.";
                                     await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_1, title, type, refno, "Approved by 1st-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                                 }
                             }
@@ -1055,18 +1258,20 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                             {
                                 if (model.Approval.RequireNext)
                                 {
+                                    TempData["SuccessMessage"] = "Survey titled " + title + " updated as Pending Approval 3.";
                                     await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, title, type, refno, "Approved by 2nd-Level Approver and Pending 3rd-Level Approval", model.Approval.Status, model.Approval.RequireNext);
                                 }
                                 else
                                 {
+                                    TempData["SuccessMessage"] = "Survey titled " + title + " updated as Approved.";
                                     await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_2, title, type, refno, "Approved by 2nd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                                 }
                             }
                             else if (model.Approval.Level == SurveyApprovalLevels.Approver3)
                             {
+                                TempData["SuccessMessage"] = "Survey titled " + title + " updated as Approved.";
                                 await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_3, title, type, refno, "Approved by 3rd-Level Approver", model.Approval.Status, model.Approval.RequireNext);
                             }
-                            // dashboard
                         }
                     }
                     else
@@ -1090,7 +1295,6 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                         {
                             await SendNotification(sid, NotificationCategory.ResearchAndPublication, NotificationType.Approve_Survey_Creation_3, title, type, refno, "Amendment Requested by 3rd-Level Approver", model.Approval.Status, false);
                         }
-                        // dashboard
                     }
 
                     return RedirectToAction("Index", "Survey", new { area = "RnP" });
@@ -1176,9 +1380,6 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
-                    // log trail/system success notification/dashboard notification/email/sms upon submission
-                    // log trail/system success/dashboard notification upon saving as draft
-
                     await LogActivity(Modules.RnP, "Test answers submitted", model);    // for Survey titled: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Test answers submitted successfully"; // for Survey titled: " + response.Data + ".";
@@ -1238,7 +1439,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             var vmresp = new UpdateSurveyResponseModel
-            {                
+            {
                 SurveyID = surveyinfo.ID,
                 Type = SurveyResponseTypes.Actual,
                 UserId = uid,
@@ -1268,9 +1469,6 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
-                    // log trail/system success notification/dashboard notification/email/sms upon submission
-                    // log trail/system success/dashboard notification upon saving as draft
-
                     await LogActivity(Modules.RnP, "Answers submitted for Survey", model);      // titled: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Answers submitted successfully for Survey";   // titled: " + response.Data + ".";
@@ -1291,6 +1489,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         }
 
         // Private functions
+
+        // General SLA reminder
 
         // get notification receiver IDs
         // called by SendNotification
@@ -1361,6 +1561,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                             int saveThisID = response.Data.SLAReminderStatusId;
                             //save saveThisID back into survey table
                             var ressave = await SaveNotificationID(id, saveThisID);
+
+                            await LogActivity(Modules.RnP, "Email notification sent for Survey " + code + " - " + approvalmessage);
+
                             return true;
                         }
                         else

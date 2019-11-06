@@ -34,8 +34,6 @@ namespace FEP.WebApiModel.Notification
         [Display(Name = "FieldDateTo", ResourceType = typeof(Language.General))]
         public DateTime? DateTo { get; set; }
 
-        
-               
     }
 
     public class NotificationModel

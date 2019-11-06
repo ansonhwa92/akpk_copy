@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FEP.Model;
+using FEP.WebApiModel.FileDocuments;
+using System.Web;
+
 
 namespace FEP.WebApiModel.RnP
 {
@@ -55,11 +58,11 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "SurveyActive", ResourceType = typeof(Language.RnPForm))]
         public bool Active { get; set; }
 
-        [Display(Name = "SurveyPictures", ResourceType = typeof(Language.RnPForm))]
-        public string Pictures { get; set; }
+        //[Display(Name = "SurveyPictures", ResourceType = typeof(Language.RnPForm))]
+        //public string Pictures { get; set; }
 
-        [Display(Name = "SurveyProofOfApproval", ResourceType = typeof(Language.RnPForm))]
-        public string ProofOfApproval { get; set; }
+        //[Display(Name = "SurveyProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        //public string ProofOfApproval { get; set; }
 
         [Display(Name = "SurveyCancelRemark", ResourceType = typeof(Language.RnPForm))]
         public string CancelRemark { get; set; }
@@ -92,6 +95,29 @@ namespace FEP.WebApiModel.RnP
         public string DmsPath { get; set; }
 
         //public List<SurveyApproval> Approvals { get; set; }
+
+        [Display(Name = "SurveyPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+
+        [Display(Name = "SurveyAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+
+        [Display(Name = "SurveyProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+    }
+
+    // Class for returning surveys for user browsing
+    public class BrowseSurveyModel
+    {
+        public string Keyword { get; set; }
+
+        public string Sorting { get; set; }
+
+        public int LastIndex { get; set; }
+
+        public int ItemCount { get; set; }
+
+        public List<ReturnSurveyModel> Surveys { get; set; }
     }
 
     // class for returning just the survey design contents to client app
@@ -274,10 +300,8 @@ namespace FEP.WebApiModel.RnP
 
     // class for updating of survey information by client app
     // used to create and edit survey information
-    public class UpdateSurveyModel
+    public class SurveyModel
     {
-        public int ID { get; set; }
-
         [Required(ErrorMessageResourceName = "ValidRequiredSurveyType", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "SurveyType", ResourceType = typeof(Language.RnPForm))]
         public SurveyType? Type { get; set; }
@@ -314,18 +338,193 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "SurveyRequireLogin", ResourceType = typeof(Language.RnPForm))]
         public bool RequireLogin { get; set; }
 
-        //[Required(ErrorMessageResourceName = "ValidRequiredSurveyPictures", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [Display(Name = "SurveyPictures", ResourceType = typeof(Language.RnPForm))]
-        public string Pictures { get; set; }
+        ////[Required(ErrorMessageResourceName = "ValidRequiredSurveyPictures", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        //[Display(Name = "SurveyPictures", ResourceType = typeof(Language.RnPForm))]
+        //public string Pictures { get; set; }
 
-        //[Required(ErrorMessageResourceName = "ValidRequiredSurveyProofOfApproval", ErrorMessageResourceType = typeof(Language.RnPForm))]
-        [Display(Name = "SurveyProofOfApproval", ResourceType = typeof(Language.RnPForm))]
-        public string ProofOfApproval { get; set; }
+        ////[Required(ErrorMessageResourceName = "ValidRequiredSurveyProofOfApproval", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        //[Display(Name = "SurveyProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        //public string ProofOfApproval { get; set; }
 
         [Required]
         public int CreatorId { get; set; }
 
         public string CreatorName { get; set; }
+    }
+
+    // for creating
+    public class CreateSurveyModel : SurveyModel
+    {
+        public CreateSurveyModel()
+        {
+            CoverPictures = new List<Attachment>();
+            AuthorPictures = new List<Attachment>();
+            ProofOfApproval = new List<Attachment>();
+            CoverPictureFiles = new List<HttpPostedFileBase>();
+            AuthorPictureFiles = new List<HttpPostedFileBase>();
+            ProofOfApprovalFiles = new List<HttpPostedFileBase>();
+            CoverFilesId = new List<int>();
+            AuthorFilesId = new List<int>();
+            ProofFilesId = new List<int>();
+        }
+
+        [Display(Name = "SurveyPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> CoverPictureFiles { get; set; }
+
+        [Display(Name = "SurveyAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> AuthorPictureFiles { get; set; }
+
+        [Required]
+        [Display(Name = "SurveyProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+        public IEnumerable<HttpPostedFileBase> ProofOfApprovalFiles { get; set; }
+
+        public List<int> CoverFilesId { get; set; }
+        public List<int> AuthorFilesId { get; set; }
+        public List<int> ProofFilesId { get; set; }
+    }
+
+    // for editing
+    public class EditSurveyModel : SurveyModel
+    {
+        public EditSurveyModel()
+        {
+            CoverPictures = new List<Attachment>();
+            AuthorPictures = new List<Attachment>();
+            ProofOfApproval = new List<Attachment>();
+            CoverPictureFiles = new List<HttpPostedFileBase>();
+            AuthorPictureFiles = new List<HttpPostedFileBase>();
+            ProofOfApprovalFiles = new List<HttpPostedFileBase>();
+            CoverFilesId = new List<int>();
+            AuthorFilesId = new List<int>();
+            ProofFilesId = new List<int>();
+        }
+
+        [Required]
+        public int ID { get; set; }
+
+        [Display(Name = "SurveyPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> CoverPictureFiles { get; set; }
+
+        [Display(Name = "SurveyAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> AuthorPictureFiles { get; set; }
+
+        [Required]
+        [Display(Name = "SurveyProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+        public IEnumerable<HttpPostedFileBase> ProofOfApprovalFiles { get; set; }
+
+        public List<int> CoverFilesId { get; set; }
+        public List<int> AuthorFilesId { get; set; }
+        public List<int> ProofFilesId { get; set; }
+    }
+
+    // for details
+    public class DetailsSurveyModel : SurveyModel
+    {
+        public DetailsSurveyModel() { }
+
+        [Required]
+        public int ID { get; set; }
+
+        [Display(Name = "SurveyPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+
+        [Display(Name = "SurveyAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+
+        [Display(Name = "SurveyProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+    }
+
+    // class for updating of survey information by client app
+    // used to create and edit survey information
+    public class SurveyModelNoFile
+    {
+        [Required(ErrorMessageResourceName = "ValidRequiredSurveyType", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public SurveyType? Type { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredSurveyCategory", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public SurveyCategory Category { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredSurveyTitle", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public string Title { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredSurveyDescription", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public string Description { get; set; }
+
+        public string TargetGroup { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredSurveyStartDate", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public DateTime StartDate { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredSurveyEndDate", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public DateTime EndDate { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredSurveyRequireLogin", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public bool RequireLogin { get; set; }
+
+        [Required]
+        public int CreatorId { get; set; }
+
+        public string CreatorName { get; set; }
+    }
+
+    // for creating
+    public class CreateSurveyModelNoFile : SurveyModelNoFile
+    {
+        public CreateSurveyModelNoFile()
+        {
+            CoverPictures = new List<Attachment>();
+            AuthorPictures = new List<Attachment>();
+            ProofOfApproval = new List<Attachment>();
+            CoverFilesId = new List<int>();
+            AuthorFilesId = new List<int>();
+            ProofFilesId = new List<int>();
+        }
+
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+
+        [Required]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+
+        public List<int> CoverFilesId { get; set; }
+        public List<int> AuthorFilesId { get; set; }
+        public List<int> ProofFilesId { get; set; }
+    }
+
+    // for editing
+    public class EditSurveyModelNoFile : SurveyModelNoFile
+    {
+        public EditSurveyModelNoFile()
+        {
+            CoverPictures = new List<Attachment>();
+            AuthorPictures = new List<Attachment>();
+            ProofOfApproval = new List<Attachment>();
+            CoverFilesId = new List<int>();
+            AuthorFilesId = new List<int>();
+            ProofFilesId = new List<int>();
+        }
+
+        [Required]
+        public int ID { get; set; }
+
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+
+        [Required]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+
+        public List<int> CoverFilesId { get; set; }
+        public List<int> AuthorFilesId { get; set; }
+        public List<int> ProofFilesId { get; set; }
     }
 
     // class for updating of survey questions by client app
@@ -344,7 +543,7 @@ namespace FEP.WebApiModel.RnP
     // used to create form for reviewing survey before submission (admin only)
     public class UpdateSurveyReviewModel
     {
-        public UpdateSurveyModel Survey { get; set; }
+        public DetailsSurveyModel Survey { get; set; }
         public UpdateSurveyContentsModel Contents { get; set; }
     }
 
@@ -400,7 +599,7 @@ namespace FEP.WebApiModel.RnP
     // used to create form for viewing survey (admin only)
     public class UpdateSurveyViewModel
     {
-        public UpdateSurveyModel Survey { get; set; }
+        public DetailsSurveyModel Survey { get; set; }
         public UpdateSurveyContentsModel Contents { get; set; }
         public ReturnSurveyAutofieldsModel Auto { get; set; }
         public UpdateSurveyCancellationModel Cancellation { get; set; }
@@ -469,6 +668,9 @@ namespace FEP.WebApiModel.RnP
         // can have the value 0 for public surveys
         [Required]
         public int UserId { get; set; }
+
+        // has value if UserId = 0
+        public string Email { get; set; }
 
         [Required(ErrorMessageResourceName = "ValidRequiredSurveyResponseContents", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "SurveyResponseContents", ResourceType = typeof(Language.RnPForm))]

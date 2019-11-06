@@ -1,159 +1,137 @@
 ﻿@model FEP.WebApiModel.eEvent.DetailsEventSpeakerModel
 
 @{
-	ViewBag.Title = "Event Speaker";
-	Layout = "~/Views/Shared/_Layout1.cshtml";
+    ViewBag.Title = "Event Speaker";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
 @section Nav {
 
-	<div class="title_header">
-		<div class="title-header-container">
-			<div class="container">
-				<!-- if have button -->
-				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "EventSpeaker", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
-				<div class="header-col-left">
-					<div id="breadcrumb">
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
-								<li class="breadcrumb-item"><a href="#">Manage Event Speaker</a></li>
-								<li class="breadcrumb-item"><a href="#">Event Speaker List</a></li>
-								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
-							</ol>
-						</nav>
-					</div>
-					<h1 class="page-title text-white">Event Speaker Details</h1>
-					@*<div class="header-text">List of created media interview</div>*@
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "EventSpeaker", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Event Management</a></li>
+                                <li class="breadcrumb-item"><a href="#">Manage Event Speaker</a></li>
+                                <li class="breadcrumb-item"><a href="#">Event Speaker List</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Event Speaker Details</h1>
+                    @*<div class="header-text">List of created media interview</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
 
 }
 
 <div class="row">
-	<div class="col-xl-3 col-md-3 col-sm-4 my-2">
-		<div class="sidebar-left">
-			<!-- Steps -->
-			<div class="sidebar-inner sticky">
-				<ul class="steps steps-vertical">
-					<li class="step-item complete">
-						<a href="" class="step-link">
-							<span class="step-number">1</span>
-							<span class="step-title">Event Speaker List</span>
-						</a>
-					</li>
-					<li class="step-item active">
-						<a href="" class="step-link">
-							<span class="step-number">2</span>
-							<span class="step-title">Event Speaker Details</span>
-						</a>
-					</li>
-					<!-- rejected -->
-					<!-- <li class="step-item rejected">
-						<a href="" class="step-link">
-							<span class="step-number">2</span>
-							<span class="step-title">Fill Up Event Details</span>
-						</a>
-					</li> -->
-					@*<li class="step-item disabled">
-							<a href="" class="step-link">
-								<span class="step-number">3</span>
-								<span class="step-title">Event Verification Approval</span>
-							</a>
-						</li>*@
-				</ul>
-				<!-- End Steps -->
-			</div>
-		</div>
-	</div>
-	<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-		<!-- Start Form -->
-		<div class="border-form rounded-top">
-			<div class="form-container tab-content">
-				<div class="tab-pane active" id="">
-					<div class="tab-pane" id="">
-						<div class="d-flex align-items-center mb-4 mt-2">
-							<h4 class="color-darkblue mr-auto mb-0">Event Speaker Details<br><span class="small">View Event Speaker details below.</span></h4>
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div class="sidebar-left">
+            <!-- Steps -->
+            <div class="sidebar-inner sticky">
+                <ul class="steps steps-vertical">
+                    <li class="step-item complete">
+                        <a href="" class="step-link">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Event Speaker List</span>
+                        </a>
+                    </li>
+                    <li class="step-item active">
+                        <a href="" class="step-link">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Event Speaker Details</span>
+                        </a>
+                    </li>
+                    <!-- rejected -->
+                    <!-- <li class="step-item rejected">
+                        <a href="" class="step-link">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Fill Up Event Details</span>
+                        </a>
+                    </li> -->
+                    @*<li class="step-item disabled">
+                            <a href="" class="step-link">
+                                <span class="step-number">3</span>
+                                <span class="step-title">Event Verification Approval</span>
+                            </a>
+                        </li>*@
+                </ul>
+                <!-- End Steps -->
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
+            <div class="form-container tab-content">
+                <div class="tab-pane active" id="">
+                    <div class="tab-pane" id="">
+                        <div class="d-flex align-items-center mb-4 mt-2">
+                            <h4 class="color-darkblue mr-auto mb-0">Event Speaker Details<br><span class="small">View Event Speaker details below.</span></h4>
 
-							<a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Edit", "EventSpeaker", new { area = "eEvent", id = Model.Id  })"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
+                            <a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Edit", "EventSpeaker", new { area = "eEvent", id = Model.Id  })"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
 
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.SpeakerType)
-							@Html.EnumDropDownListFor(model => model.SpeakerType, "-Select Speaker Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
-						</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.SpeakerType)
+                            @Html.EnumDropDownListFor(model => model.SpeakerType, "-Select Speaker Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
+                        </div>
 
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.SpeakerStatus)
-							@Html.EnumDropDownListFor(model => model.SpeakerStatus, "-Select Speaker Status-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
-						</div>
-					</div>
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.SpeakerStatus)
+                            @Html.EnumDropDownListFor(model => model.SpeakerStatus, "-Select Speaker Status-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
+                        </div>
+                    </div>
 
-					@if (Model.SpeakerType == FEP.Model.SpeakerType.Internal)
-					{
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.UserId)
-								@Html.DropDownListFor(model => model.UserId, Model.UserIds, "-Select User Name-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%", @disabled = "disabled" })
-							</div>
-						</div>
-					}
-					else if (Model.SpeakerType == FEP.Model.SpeakerType.External)
-					{
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.ExternalUserName)
-								@Html.EditorFor(model => model.ExternalUserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Speaker Name", @readonly = "readonly" } })
-							</div>
-						</div>
 
-						<div class="row">
-							<div class="form-group col-lg-6">
-								@Html.LabelFor(model => model.Email)
-								@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
-							</div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.UserName)
+                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Name", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Email)
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
+                        </div>
 
-							<div class="form-group col-lg-6">
-								@Html.LabelFor(model => model.PhoneNo)
-								@Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
-							</div>
-						</div>
-					}
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.PhoneNo)
+                            @Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
+                        </div>
+                    </div>
 
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.InternalEmail)
-							@Html.EditorFor(model => model.InternalEmail, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
-						</div>
 
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.InternalPhoneNo)
-							@Html.EditorFor(model => model.InternalPhoneNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email Address", @readonly = "readonly" } })
-						</div>
-					</div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Experience)
+                            @Html.TextAreaFor(model => model.Experience, new { @class = "form-control", rows = 6, @readonly = "readonly" })
+                        </div>
+                    </div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Experience)
-							@Html.TextAreaFor(model => model.Experience, new { @class = "form-control", rows = 6, @readonly = "readonly" })
-						</div>
-					</div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Attachments)
+                            @Html.Partial("_AttachmentDetails", Model.Attachments)
+                        </div>
+                    </div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Attachments)
-							@Html.Partial("_AttachmentDetails", Model.Attachments)
-						</div>
-					</div>
+                </div>
+            </div>
 
-				</div>
-			</div>
-
-		</div>
-	</div>
+        </div>
+    </div>
 </div>

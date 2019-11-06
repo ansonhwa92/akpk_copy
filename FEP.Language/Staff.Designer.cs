@@ -248,5 +248,14 @@ namespace Language {
                 return ResourceManager.GetString("PlaceholderName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select at least one Role.
+        /// </summary>
+        public static string ValidRequiredRole {
+            get {
+                return ResourceManager.GetString("ValidRequiredRole", resourceCulture);
+            }
+        }
     }
 }

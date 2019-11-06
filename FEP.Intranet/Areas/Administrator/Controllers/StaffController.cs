@@ -43,6 +43,74 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> Edit(int? id)
+        {
+
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<DetailsStaffModel>(HttpVerbs.Get, $"Administration/Staff?id={id}");
+
+            if (!response.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var model = new EditStaffModel
+            {
+                Id = response.Data.Id,               
+                Name = response.Data.Name,
+                ICNo = response.Data.ICNo,               
+                Email = response.Data.Email,
+                MobileNo = response.Data.MobileNo,
+                Branch = response.Data.Branch,
+                Department = response.Data.Department,
+                Designation = response.Data.Designation,
+                StaffId = response.Data.StaffId,                
+                CountryCode = response.Data.CountryCode,              
+                RoleIds = response.Data.Roles.Select(s => s.Id).ToArray(),
+                Status = response.Data.Status
+            };
+                        
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(EditStaffModel model)
+        {
+                       
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Administration/Staff?id={model.Id}", model);
+
+                if (response.isSuccess)
+                {
+                    await LogActivity(Modules.Admin, "Update Staff", model);
+
+                    TempData["SuccessMessage"] = Language.Individual.AlertEditSuccess;
+
+                    return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = model.Id });
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = Language.Individual.AlertEditFail;
+
+                    return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = model.Id });
+                }
+
+            }
+                      
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
+
+        }
+
+        [HttpGet]
         public async Task<ActionResult> Activate(int? id)
         {
             if (id == null)
@@ -148,6 +216,17 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> _Select()
+        {
+            var filter = new FilterStaffModel();
+
+            filter.Branchs = new SelectList(await GetBranches(), "Id", "Name", 0);
+            filter.Departments = new SelectList(await GetDepartments(), "Id", "Name", 0);
+
+            return View(new ListStaffModel { Filter = filter });
+        }
+
+        [HttpGet]
         public async Task<ActionResult> _Details(int? id)
         {
             if (id == null)
@@ -201,6 +280,22 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             }
 
             return departments;
+
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<RoleModel>> GetRoles()
+        {
+            var roles = Enumerable.Empty<RoleModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<RoleModel>>(HttpVerbs.Get, $"Administration/Role");
+
+            if (response.isSuccess)
+            {
+                roles = response.Data.OrderBy(o => o.Name);
+            }
+
+            return roles;
 
         }
     }

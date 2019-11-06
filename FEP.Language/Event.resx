@@ -133,7 +133,7 @@
     <value>Location</value>
   </data>
   <data name="ExRoadOrganiser" xml:space="preserve">
-    <value>Organizer</value>
+    <value>Organiser Name</value>
   </data>
   <data name="ExRoadParticipantRequirement" xml:space="preserve">
     <value>Participant Requirement</value>
@@ -208,10 +208,10 @@
     <value>Remark</value>
   </data>
   <data name="ExRoadNomineeId" xml:space="preserve">
-    <value>Nominee</value>
+    <value>Select Nominees</value>
   </data>
   <data name="ExRoadNomineeName" xml:space="preserve">
-    <value>Nominee</value>
+    <value>Select Nominees</value>
   </data>
   <data name="PubEventCategoryId" xml:space="preserve">
     <value>Category</value>
@@ -299,5 +299,11 @@
   </data>
   <data name="ExRoadRefNo" xml:space="preserve">
     <value>Reference No</value>
+  </data>
+  <data name="ExRoadExhibitionSupDoc" xml:space="preserve">
+    <value>Supporting Document</value>
+  </data>
+  <data name="ExRoadOrganiserEmail" xml:space="preserve">
+    <value>Organiser Email</value>
   </data>
 </root>

@@ -20,7 +20,7 @@
                     "data": function (filter) {
                         filter.CompanyName = $('#Filter_CompanyName').val();
                         filter.CompanyRegNo = $('#Filter_CompanyRegNo').val();
-                        filter.SectorId = $('#Filter_SectorId').val();
+                        filter.Type = $('#Filter_Type').val();
                         filter.Email = $('#Filter_Email').val();
                     }
                 },
@@ -145,13 +145,14 @@
         <div class="title-header-container">
             <div class="container">
                 <!-- if have button -->
-                @*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+                <div class="header-col-right float-right mt-5"><a href="@Url.Action("Index", "User", new { area = "Administrator"})" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Administration</a></li>                                
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Setting</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "Company", new { area = "Administrator" })">User Management</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
@@ -171,16 +172,16 @@
         <div class="dropdown-menu">
             <div class="filter-head">Filters</div>
             <div class="filter-body">
+                <div>@Html.DisplayNameFor(m => m.Filter.Type)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EnumDropDownListFor(m => m.Filter.Type, "Select All", htmlAttributes: new { @class = "select2 form-control small" })
+                    </div>
+                </div>
                 <div>@Html.DisplayNameFor(m => m.Filter.CompanyName)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
                         @Html.EditorFor(m => m.Filter.CompanyName, new { htmlAttributes = new { @class = "form-control small" } })
-                    </div>
-                </div>
-                <div>@Html.DisplayNameFor(m => m.Filter.CompanyRegNo)</div>
-                <div class="sorting-wrap">
-                    <div class="sorting-dropdown">
-                        @Html.EditorFor(m => m.Filter.CompanyRegNo, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
                 <div>@Html.DisplayNameFor(m => m.Filter.Email)</div>
@@ -189,12 +190,7 @@
                         @Html.EditorFor(m => m.Filter.Email, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
-                <div>@Html.DisplayNameFor(m => m.Filter.SectorId)</div>
-                <div class="sorting-wrap">
-                    <div class="sorting-dropdown">
-                        @Html.DropDownListFor(m => m.Filter.SectorId, Model.Filter.Sectors, "Select All", htmlAttributes: new { @class = "select2 form-control small" })
-                    </div>
-                </div>               
+
                 <div>
                     <button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
                 </div>

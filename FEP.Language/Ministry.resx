@@ -151,7 +151,7 @@
     <value />
   </data>
   <data name="TitleList" xml:space="preserve">
-    <value>Ministry Parameter</value>
+    <value>Government Ministry Parameter</value>
   </data>
   <data name="ValidExistName" xml:space="preserve">
     <value>Ministry Name already registered in the system</value>

@@ -165,7 +165,12 @@
     <Compile Include="Api\eLearning\CourseEnrollmentsApiController.cs" />
     <Compile Include="Api\eLearning\FileResult.cs" />
     <Compile Include="Api\eLearning\NotificationApiController.cs" />
+    <Compile Include="Api\Integration\GroupController.cs" />
     <Compile Include="Api\Notification\EmailController.cs" />
+    <Compile Include="Api\eEvent\DutyRosterController.cs" />
+    <Compile Include="Api\eEvent\EventRefundController.cs" />
+    <Compile Include="Api\eLearning\TOTReportController.cs" />
+    <Compile Include="Api\Logs\ReportLogController.cs" />
     <Compile Include="Api\System\FileDocumentController.cs" />
     <Compile Include="Api\Administration\IndividualController.cs" />
     <Compile Include="Api\Administration\MinistryController.cs" />
@@ -245,7 +250,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Method\FEPMethod.cs" />
     <Compile Include="Models\Auth.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Publication.cs" />
@@ -347,10 +351,12 @@
   <ItemGroup>
     <Folder Include="App_Data\Temp_Upload\" />
     <Folder Include="bin\roslyn\" />
+    <Folder Include="Method\" />
     <Folder Include="Views\Auth\" />
     <Folder Include="Views\Cart\" />
     <Folder Include="Views\Client\" />
     <Folder Include="Views\EventCategory\" />
+    <Folder Include="Views\Group\" />
     <Folder Include="Views\MediaInterviewRequest\" />
     <Folder Include="Views\Notification\" />
     <Folder Include="Views\Publication\" />

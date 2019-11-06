@@ -40,31 +40,51 @@
 			<!-- Steps -->
 			<div class="sidebar-inner sticky">
 				<ul class="steps steps-vertical">
+
 					<li class="step-item complete">
 						<a href="" class="step-link">
 							<span class="step-number">1</span>
 							<span class="step-title">Exhibition/Roadshow Request List</span>
 						</a>
 					</li>
-					<li class="step-item active">
+
+
+					<li class="step-item complete">
 						<a href="" class="step-link">
 							<span class="step-number">2</span>
-							<span class="step-title">Exhibition/Roadshow Request Details</span>
+							<span class="step-title">View Exhibition Details</span>
 						</a>
 					</li>
-					<!-- rejected -->
-					<!-- <li class="step-item rejected">
-				<a href="" class="step-link">
-					<span class="step-number">2</span>
-					<span class="step-title">Fill Up Event Details</span>
-				</a>
-			</li> -->
-					@*<li class="step-item disabled">
-					<a href="" class="step-link">
-						<span class="step-number">3</span>
-						<span class="step-title">Event Verification Approval</span>
-					</a>
-				</li>*@
+
+
+					<li class="step-item complete">
+						<a href="" class="step-link">
+							<span class="step-number">3</span>
+							<span class="step-title">View Event Details</span>
+						</a>
+					</li>
+
+
+					<li class="step-item active">
+						<a href="" class="step-link">
+							<span class="step-number">4</span>
+							<span class="step-title">Review & Submission</span>
+						</a>
+					</li>
+
+					<li class="step-item disabled">
+						<a href="" class="step-link">
+							<span class="step-number">5</span>
+							<span class="step-title">Duty Roster</span>
+						</a>
+					</li>
+
+					<li class="step-item disabled">
+						<a href="" class="step-link">
+							<span class="step-number">6</span>
+							<span class="step-title">Amendment History</span>
+						</a>
+					</li>
 				</ul>
 				<!-- End Steps -->
 			</div>
@@ -73,138 +93,341 @@
 			<br />
 			<div>
 				<div>
-					@{if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.New || Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.NotVerified)
-						{
-							<a href='@Url.Action("SubmitToVerify", "ExhibitionRoadshowRequest", new { id = Model.Id })'
-							   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
-						}
-						else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified)
-						{
-							<a href='@Url.Action("Verified", "ExhibitionRoadshowRequest", new { id = Model.Id })'
-							   class="btn btn-secondary btn-block mb-2" id="btnApprove23">Submit for Approval</a>
-							<br />
-							<a href='@Url.Action("Reject", "ExhibitionRoadshowRequest", new { id = Model.Id })'
-							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
-						}
-						else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.Verified)
-						{
-							<a href='@Url.Action("FirstApproved", "ExhibitionRoadshowRequest", new { id = Model.Id })'
-							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
-						}
-						else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover1)
-						{
-							<a href='@Url.Action("SecondApproved", "ExhibitionRoadshowRequest", new { id = Model.Id })'
-							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
-						}
-						else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover2)
-						{
-							<a href='@Url.Action("FinalApproved", "ExhibitionRoadshowRequest", new { id = Model.Id })'
-							   class="btn btn-success btn-block mb-2">Approved</a>
-						}
+					@if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.New || Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.NotVerified)
+					{
+						<a href='@Url.Action("SubmitToVerify", "ExhibitionRoadshowRequest", new { id = Model.Id })'
+						   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
+					}
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified)
+					{
+						<a href='@Url.Action("Verified", "ExhibitionRoadshowRequest", new { id = Model.Id })'
+						   class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</a>
+						<br />
+						<a href='@Url.Action("Reject", "ExhibitionRoadshowRequest", new { id = Model.Id })'
+						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
+					}
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.Verified)
+					{
+						<a href='@Url.Action("FirstApproved", "ExhibitionRoadshowRequest", new { id = Model.Id })'
+						   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+					}
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover1)
+					{
+						<a href='@Url.Action("SecondApproved", "ExhibitionRoadshowRequest", new { id = Model.Id })'
+						   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+					}
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover2)
+					{
+						<a href='@Url.Action("FinalApproved", "ExhibitionRoadshowRequest", new { id = Model.Id })'
+						   class="btn btn-success btn-block mb-2">Approved</a>
+					}
+
+
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover3)
+					{
+						<a href='@Url.Action("", "", new { id = Model.Id })'
+						   class="btn btn-outline-secondary btn-block mb-2">Submit for Verification</a>
+					}
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.SubmitVerifyDutyRoster)
+					{
+						<a href='@Url.Action("", "", new { id = Model.Id })'
+						   class="btn btn-outline-secondary btn-block mb-2">Submit for Approval</a>
+					}
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.SubmitVerifyDutyRoster)
+					{
+						<a href='@Url.Action("", "", new { id = Model.Id })'
+						   class="btn btn-outline-warning btn-block mb-2">Require Amendment</a>
+					}
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.VerifiedDutyRoster)
+					{
+						<a href='@Url.Action("", "", new { id = Model.Id })'
+						   class="btn btn-outline-success btn-block mb-2">Approved</a>
+					}
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApproveDutyRoster)
+					{
+						<a href='@Url.Action("", "", new { id = Model.Id })'
+						   class="btn btn-outline-primary btn-block mb-2">Accept Participant</a>
+					}
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApproveDutyRoster)
+					{
+						<a href='@Url.Action("", "", new { id = Model.Id })'
+						   class="btn btn-outline-danger btn-block mb-2">Decline Participant</a>
+					}
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.AcceptParticipation)
+					{
+						<a href='@Url.Action("", "", new { id = Model.Id })'
+						   class="btn btn-outline-default btn-block mb-2">Send Invitation to Nominees</a>
 					}
 				</div>
 			</div>
-
-
-
-
 		</div>
 	</div>
+
+
+
 	<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 		<!-- Start Form -->
 		<div class="border-form rounded-top">
-			<form>
-				<div class="form-container">
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.EventName)
-							@Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Organiser)
-							@Html.EditorFor(model => model.Organiser, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Location)
-							@Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.StartDate)
-							@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start", @disabled = "disabled" } })
-						</div>
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.EndDate)
-							@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End", @disabled = "disabled" } })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.StartTime)
-							@Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Time Start", @disabled = "disabled" } })
-						</div>
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.EndTime)
-							@Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Time End", @disabled = "disabled" } })
-							@*@Html.Raw(Model.EndTime.ToString("hh:mm "))*@
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.ParticipationRequirement)
-							@Html.EditorFor(model => model.ParticipationRequirement, new { htmlAttributes = new { @class = "form-control", @placeholder = "No. of Participant", @readonly = "readonly" } })
-						</div>
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.ExhibitionStatus)
-							@Html.EditorFor(model => model.ExhibitionStatus, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.FEPLabelFor(m => m.NomineeId)
-							@Html.ListBoxFor(m => m.NomineeId, Model.Nominees, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled", })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.ReceivedById)
-							@Html.EditorFor(model => model.ReceivedByName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.ReceivedDate)
-							@Html.EditorFor(model => model.ReceivedDate, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Receive_Via)
-							@Html.EditorFor(model => model.Receive_Via, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
+			<div class="form-container">
+				<div class="mt-2 mb-4 px-3 pt-4">
+					<h4 class="color-darkblue mb-0">Exhibition/Roadshow Request Details</h4>
+					<h6 class="font-weight-normal">Review your request details before delete</h6>
 				</div>
-			</form>
-		</div>
-		<div class="border-left border-right border-bottom p-3 rounded-bottom">
-			<div class="col-xs-12">
-				<a href='@Url.Action("List")' class="btn btn-warning">Back</a>
-				<a href='@Url.Action("Edit",new { id = Model.Id })' class="btn btn-primary">Edit</a>
+				<!-- Start Tabbing Review Step for submission -->
+				<div class="custom-tab px-3">
+					<ul class="nav nav-line">
+						<li class="nav-item">
+							<a class="nav-link active" href="#exhibitiondetails" data-toggle="tab">Exhibition Details</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#eventdetails" data-toggle="tab">Event Details</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#dutyroster" data-toggle="tab">Duty Roster</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#amendmenthistory" data-toggle="tab">Amendment History</a>
+						</li>
+					</ul>
+				</div>
+				<div class="tab-content">
+					<div class="tab-pane active" id="exhibitiondetails">
+						<form>
+							<div class="form-container">
+								
+								<div class="sub-Title my-4 d-flex align-items-center mb-4 mt-2">
+									<h4 class="color-darkblue mr-auto mb-0">Exhibition Details<br><span class="small">Review exhibition details below.</span></h4>
+									@if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.New || Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.NotVerified)
+									{
+										<a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Edit", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = Model.Id })"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
+									}
+								</div>
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.ReceivedById)
+										@Html.EditorFor(model => model.ReceivedByName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-6">
+										@Html.LabelFor(model => model.ReceivedDate)
+										@Html.EditorFor(model => model.ReceivedDate, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.Receive_Via)
+										@Html.EditorFor(model => model.Receive_Via, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.Attachments)
+										@Html.Partial("_AttachmentDetails", Model.Attachments)
+									</div>
+								</div>
+
+								@* ===Supporting Document=== *@
+
+							</div>
+							<!-- End Form -->
+						</form>
+					</div>
+
+					<div class="tab-pane" id="eventdetails">
+						<form>
+							<div class="form-container">
+								<div class="sub-Title my-4">
+									Event Details
+								</div>
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.EventName)
+										@Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.Organiser)
+										@Html.EditorFor(model => model.Organiser, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.OrganiserEmail)
+										@Html.EditorFor(model => model.OrganiserEmail, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.FEPLabelFor(model => model.AddressStreet1)
+										@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" , @readonly = "readonly"} })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" , @readonly = "readonly"} })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-6">
+										@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode" , @readonly = "readonly"} })
+									</div>
+									<div class="form-group col-lg-6">
+										@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City", @readonly = "readonly" } })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.FEPLabelFor(model => model.State)
+										@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" , @disabled = "disabled"})
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-6">
+										@Html.LabelFor(model => model.StartDate)
+										@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start", @disabled = "disabled" } })
+									</div>
+									<div class="form-group col-lg-6">
+										@Html.LabelFor(model => model.EndDate)
+										@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End", @disabled = "disabled" } })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-6">
+										@Html.LabelFor(model => model.StartTime)
+										@Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Time Start", @disabled = "disabled" } })
+									</div>
+									<div class="form-group col-lg-6">
+										@Html.LabelFor(model => model.EndTime)
+										@Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Time End", @disabled = "disabled" } })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-6">
+										@Html.LabelFor(model => model.ParticipationRequirement)
+										@Html.EditorFor(model => model.ParticipationRequirement, new { htmlAttributes = new { @class = "form-control", @placeholder = "No. of Participant", @readonly = "readonly" } })
+									</div>
+									<div class="form-group col-lg-6">
+										@Html.LabelFor(model => model.ExhibitionStatus)
+										@*@Html.EditorFor(model => model.ExhibitionStatus, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })*@
+										@if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.New)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Draft">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Verification">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.Verified)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 1">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.NotVerified)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Require Amendment">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover1)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 2">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover2)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 3">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover3)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Approved">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.AcceptParticipation)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Accept Participation">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.DeclineParticipation)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Decline Participation">
+										}
+
+
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.SubmitVerifyDutyRoster)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Decline Participation">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.VerifiedDutyRoster)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Decline Participation">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.NotVerifiedDutyRoster)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Decline Participation">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApproveDutyRoster)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Decline Participation">
+										}
+
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.FEPLabelFor(m => m.NomineeId)
+										@Html.ListBoxFor(m => m.NomineeId, Model.Nominees, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled", })
+									</div>
+								</div>
+							</div>
+							<!-- End Form -->
+						</form>
+					</div>
+
+
+					<div class="tab-pane" id="dutyroster">
+						<form>
+							<div class="form-container">
+								<div class="sub-Title my-4">
+									Duty Roster
+								</div>
+
+
+							</div>
+							<!-- End Form -->
+						</form>
+					</div>
+
+					<div class="tab-pane" id="amendmenthistory">
+						<form>
+							<div class="form-container">
+								<div class="sub-Title my-4">
+									Amendment History
+								</div>
+
+
+							</div>
+						</form>
+					</div>
+
+
+				</div>
 			</div>
 		</div>
+
+		<!-- Action Button -->
+		<div class="border-left border-right border-bottom p-3 rounded-bottom">
+			<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("List")'>Back</a>
+		</div>
+		<!-- End Action Button -->
+
 	</div>
 </div>

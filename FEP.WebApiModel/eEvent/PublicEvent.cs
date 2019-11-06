@@ -35,14 +35,12 @@ namespace FEP.WebApiModel.PublicEvent
 		[Display(Name = "PubEventTargetedGroup", ResourceType = typeof(Language.Event))]
 		public EventTargetGroup? TargetedGroup { get; set; }
 
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "PubEventStartDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? StartDate { get; set; }
 
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "PubEventEndDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? EndDate { get; set; }
 
 		[Display(Name = "PubEventStatus", ResourceType = typeof(Language.Event))]
@@ -60,14 +58,12 @@ namespace FEP.WebApiModel.PublicEvent
 		[Display(Name = "PubEventObjective", ResourceType = typeof(Language.Event))]
 		public string EventObjective { get; set; }
 
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "PubEventStartDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? StartDate { get; set; }
 
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
 		[Display(Name = "PubEventEndDate", ResourceType = typeof(Language.Event))]
+		[DataType(DataType.Date)]
 		public DateTime? EndDate { get; set; }
 
 		[Display(Name = "PubEventVenue", ResourceType = typeof(Language.Event))]
@@ -113,8 +109,9 @@ namespace FEP.WebApiModel.PublicEvent
 		public string RefNo { get; set; }
 		public int? SLAReminderStatusId { get; set; }
 
-
-
+		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
+		public DateTime? CreatedDate { get; set; }
 
 
 		public IEnumerable<SelectListItem> CategoryList { get; set; }
@@ -122,16 +119,15 @@ namespace FEP.WebApiModel.PublicEvent
 		public IEnumerable<SelectListItem> ExternalExhibitorList { get; set; }
 
 
-
+		public IEnumerable<Attachment> Attachments { get; set; }
 	}
 
 
 	public class DetailsPublicEventModel : PublicEventModel
 	{
 		public DetailsPublicEventModel() { }
-
-        public IEnumerable<Attachment> Attachments { get; set; }
-    }
+		//public PublicEventApprovalModel approval { get; set; }
+	}
 
 
 	public class CreatePublicEventModel : PublicEventModel
@@ -142,7 +138,8 @@ namespace FEP.WebApiModel.PublicEvent
         }
 
         public List<int> FilesId { get; set; }
-    }
+
+	}
 
 
 	public class EditPublicEventModel : CreatePublicEventModel
@@ -151,15 +148,61 @@ namespace FEP.WebApiModel.PublicEvent
         {
             FilesId = new List<int>();
         }
-        
-        public IEnumerable<Attachment> Attachments { get; set; }
-
     }
 
 
 	public class DeletePublicEventModel : DetailsPublicEventModel
 	{
 		public DeletePublicEventModel() { }
+	}
 
+	//public class GlobalPublicEventApprovalModel
+	//{
+	//	public PublicEventModel publicevent { get; set; }
+	//	public PublicEventApprovalModel approval { get; set; }
+	//}
+
+	public class PublicEventApprovalModel
+	{
+		[Required]
+		public int? Id { get; set; }
+
+		[Required]
+		public int? EventId { get; set; }
+
+		[Required]
+		[Display(Name = "Level")]
+		public EventApprovalLevel Level { get; set; }
+
+		[Required]
+		public int? ApproverId { get; set; }
+
+		[Required]
+		[Range((int)(EventApprovalStatus.Approved), (int)(EventApprovalStatus.Rejected), ErrorMessage = "Please Select")]
+		[Display(Name = "PubApprovalStatus")]
+		public EventApprovalStatus Status { get; set; }
+
+		[Required]
+		[Display(Name = "Remarks")]
+		public string Remarks { get; set; }
+
+		[Display(Name = "Require Next")]
+		public bool RequireNext { get; set; }
+	}
+
+
+	public class PublicEventApprovalHistoryModel
+	{
+		public EventApprovalLevel Level { get; set; }
+
+		public int? ApproverId { get; set; }
+
+		public string UserName { get; set; }
+
+		public EventApprovalStatus Status { get; set; }
+
+		public DateTime? ApprovalDate { get; set; }
+
+		public string Remarks { get; set; }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using FEP.Helper;
 using FEP.Model;
+using FEP.WebApiModel.eLearning;
 using FEP.WebApiModel.Reward;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,7 @@ namespace FEP.Intranet.Areas.Reward.Controllers
         public async Task<ActionResult> Create()
         {
             CreateRewardActivityPointModel model = new CreateRewardActivityPointModel();
-            var response = await WepApiMethod.SendApiAsync<List<ActivityDummyModel>>(HttpVerbs.Get, $"Reward/RewardActivityPoint/GetActivityList");
+            var response = await WepApiMethod.SendApiAsync<List<ReturnBriefCourseModel>>(HttpVerbs.Get, $"Reward/RewardActivityPoint/GetActivityList");
             if (!response.isSuccess)
             {
                 return HttpNotFound();
@@ -60,7 +61,7 @@ namespace FEP.Intranet.Areas.Reward.Controllers
             model.CreatedBy = CurrentUser.UserId;
             model.ActivityDummyList = response.Data.Select(a => new SelectListItem()
             {
-                Text = a.Name,
+                Text = a.Title,
                 Value = a.Id.ToString()
             }).ToList();
 
@@ -76,7 +77,7 @@ namespace FEP.Intranet.Areas.Reward.Controllers
             {
                 CreateRewardActivityPointModel obj = new CreateRewardActivityPointModel
                 {
-                    ActivityId = model.ActivityId,
+                    CourseId = model.CourseId,
                     Value = model.Value,
                     CreatedBy = (int)CurrentUser.UserId,
                     CreatedDate = DateTime.Now
@@ -119,22 +120,22 @@ namespace FEP.Intranet.Areas.Reward.Controllers
             EditRewardActivityPointModel model = new EditRewardActivityPointModel
             {
                 Id = response.Data.Id,
-                ActivityId = response.Data.ActivityId,
-                ActivityName = response.Data.ActivityName,
+                CourseId = response.Data.CourseId,
+                CourseName = response.Data.CourseName,
                 Value = response.Data.Value,
                 CreatedBy = response.Data.CreatedBy,
                 CreatedByName = response.Data.CreatedByName,
                 CreatedDate = response.Data.CreatedDate
             };
 
-            var response2 = await WepApiMethod.SendApiAsync<List<ActivityDummyModel>>(HttpVerbs.Get, $"Reward/RewardActivityPoint/GetActivityList");
+            var response2 = await WepApiMethod.SendApiAsync<List<ReturnBriefCourseModel>>(HttpVerbs.Get, $"Reward/RewardActivityPoint/GetActivityList");
             if (!response.isSuccess)
             {
                 return HttpNotFound();
             }
             model.ActivityDummyList = response2.Data.Select(a => new SelectListItem()
             {
-                Text = a.Name,
+                Text = a.Title,
                 Value = a.Id.ToString()
             }).ToList();
 

@@ -51,10 +51,10 @@ namespace FEP.WebApi.Api.eEvent
 
 			//advance search
 			query = query.Where(s => (request.EventTitle == null || s.EventTitle.Contains(request.EventTitle))
-               && (request.RefNo == null || s.RefNo.Contains(request.RefNo))
-               //&& (request.TargetedGroup == null || s.TargetedGroup == request.TargetedGroup)
-               //&& (request.EventStatus.GetDisplayName() == null || s.EventStatus.GetDisplayName() == request.EventStatus.GetDisplayName())
-               );
+			   && (request.RefNo == null || s.RefNo.Contains(request.RefNo))
+			   //&& (request.TargetedGroup == null || s.TargetedGroup == request.TargetedGroup)
+			   //&& (request.EventStatus.GetDisplayName() == null || s.EventStatus.GetDisplayName() == request.EventStatus.GetDisplayName())
+			   );
 
 			//quick search 
 			if (!string.IsNullOrEmpty(request.search.value))
@@ -192,7 +192,7 @@ namespace FEP.WebApi.Api.eEvent
 			{
 				query = query.OrderByDescending(o => o.EventTitle);
 			}
-			
+
 			var data = query.Skip(request.start).Take(request.length)
 				.Select(s => new PublicEventModel
 				{
@@ -208,7 +208,7 @@ namespace FEP.WebApi.Api.eEvent
 					EventObjective = s.EventObjective,
 					Venue = s.Venue,
 					Fee = s.Fee,
-                    RefNo = s.RefNo
+					RefNo = s.RefNo
 				}).ToList();
 
 			data.ForEach(s => s.EventStatusDesc = s.EventStatus.GetDisplayName());
@@ -223,26 +223,46 @@ namespace FEP.WebApi.Api.eEvent
 		}
 
 		public IHttpActionResult Get(int id)
+		//public GlobalPublicEventApprovalModel Get(int id)
 		{
 			var model = db.PublicEvent.Where(i => i.Display && i.Id == id)
 				.Select(i => new DetailsPublicEventModel
-			{
-				Id = i.Id,
-				EventTitle = i.EventTitle,
-				EventObjective = i.EventObjective,
-				StartDate = i.StartDate,
-				EndDate = i.EndDate,
-				Venue = i.Venue,
-				Fee = i.Fee,
-				EventStatus = i.EventStatus,
-				EventCategoryId = i.EventCategoryId,
-				EventCategoryName = i.EventCategory.CategoryName,
-				TargetedGroup = i.TargetedGroup,
-				ParticipantAllowed = i.ParticipantAllowed,
-				Remarks = i.Remarks,
-				RefNo = i.RefNo,
-				
+				{
+					Id = i.Id,
+					EventTitle = i.EventTitle,
+					EventObjective = i.EventObjective,
+					StartDate = i.StartDate,
+					EndDate = i.EndDate,
+					Venue = i.Venue,
+					Fee = i.Fee,
+					EventStatus = i.EventStatus,
+					EventCategoryId = i.EventCategoryId,
+					EventCategoryName = i.EventCategory.CategoryName,
+					TargetedGroup = i.TargetedGroup,
+					ParticipantAllowed = i.ParticipantAllowed,
+					Remarks = i.Remarks,
+					RefNo = i.RefNo,
+					CreatedDate = i.CreatedDate,
+					CreatedByName = i.CreatedByUser.Name,
+					
 				}).FirstOrDefault();
+
+			//var approval = db.PublicEventApproval.Where(pa => pa.EventId == id && pa.Status == EventApprovalStatus.None).Select(s => new PublicEventApprovalModel
+			//{
+			//	Id = s.Id,
+			//	EventId = s.EventId,
+			//	Level = s.ApprovalLevel,
+			//	ApproverId = 0,
+			//	Status = EventApprovalStatus.None,
+			//	Remarks = "",
+			//	RequireNext = s.RequireNext
+			//}).FirstOrDefault();
+
+			//var evaluation = new DetailsPublicEventModel
+			//{
+			//	//publicevent = model,
+			//	approval = approval
+			//};
 
 			if (model == null)
 			{
@@ -251,7 +271,7 @@ namespace FEP.WebApi.Api.eEvent
 
 			model.SpeakerId = db.AssignedSpeaker.Where(u => u.PublicEventId == id).Select(s => s.EventSpeakerId).ToArray();
 			model.ExternalExhibitorId = db.AssignedExternalExhibitor.Where(u => u.PublicEventId == id).Select(s => s.ExternalExhibitorId).ToArray();
-            model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.PublicEvent && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+			model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.PublicEvent && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
 			return Ok(model);
 		}
@@ -273,7 +293,7 @@ namespace FEP.WebApi.Api.eEvent
 				TargetedGroup = model.TargetedGroup,
 				ParticipantAllowed = model.ParticipantAllowed,
 				Remarks = model.Remarks,
-				CreatedBy = null,
+				CreatedBy = model.CreatedBy,
 				Display = true,
 				CreatedDate = DateTime.Now,
 			};
@@ -302,29 +322,46 @@ namespace FEP.WebApi.Api.eEvent
 				db.AssignedExternalExhibitor.Add(assignedex);
 			}
 
-            db.PublicEvent.Add(publicevent);
-            db.SaveChanges();
+			db.PublicEvent.Add(publicevent);
 
-            //files
-            foreach (var fileid in model.FilesId)
-            {
-                var eventfile = new EventFile
-                {
-                    FileCategory = EventFileCategory.PublicEvent,
-                    FileId = fileid,
-                    ParentId = publicevent.Id
-                };
+			//files
+			foreach (var fileid in model.FilesId)
+			{
+				var eventfile = new EventFile
+				{
+					FileCategory = EventFileCategory.PublicEvent,
+					FileId = fileid,
+					ParentId = publicevent.Id
+				};
 
-                db.EventFile.Add(eventfile);
-            }
+				db.EventFile.Add(eventfile);
+			}
 
-            //---running number----//
-            var refno = "EVP/" + DateTime.Now.ToString("yyMM");
-            refno += "/" + publicevent.Id.ToString("D4");
-            publicevent.RefNo = refno;
-            db.Entry(publicevent).State = EntityState.Modified;
-            
-            db.SaveChanges();
+			db.SaveChanges();
+
+			//if (publicevent != null )
+			//{
+			//	var approval = new PublicEventApproval
+			//	{
+			//		EventId = publicevent.Id,
+			//		ApprovalLevel = EventApprovalLevel.Verifier,
+			//		ApproverId = 0,
+			//		Status = EventApprovalStatus.None,
+			//		ApprovedDate = DateTime.Now,
+			//		Remark = "",
+			//		RequireNext = false
+			//	};
+
+			//	db.PublicEventApproval.Add(approval);
+			//}
+
+			//---running number----//
+			var refno = "EVP/" + DateTime.Now.ToString("yyMM");
+			refno += "/" + publicevent.Id.ToString("D4");
+			publicevent.RefNo = refno;
+			db.Entry(publicevent).State = EntityState.Modified;
+
+			db.SaveChanges();
 
 			return Ok(publicevent.Id);
 		}
@@ -353,9 +390,9 @@ namespace FEP.WebApi.Api.eEvent
 			publicevent.Remarks = model.Remarks;
 			publicevent.RefNo = model.RefNo;
 
-            db.Entry(publicevent).State = EntityState.Modified;
-          
-			db.Entry(publicevent).Property(x => x.Display).IsModified = false;			
+			db.Entry(publicevent).State = EntityState.Modified;
+
+			db.Entry(publicevent).Property(x => x.Display).IsModified = false;
 			db.Entry(publicevent).Property(x => x.RefNo).IsModified = false;
 
 			db.AssignedSpeaker.RemoveRange(db.AssignedSpeaker.Where(u => u.PublicEventId == id));//remove all
@@ -382,54 +419,54 @@ namespace FEP.WebApi.Api.eEvent
 				db.AssignedExternalExhibitor.Add(assignedsp);
 			}
 
-            //remove file 
-            var attachments = db.EventFile.Where(s => s.FileCategory == EventFileCategory.PublicEvent && s.ParentId == model.Id).ToList();
+			//remove file 
+			var attachments = db.EventFile.Where(s => s.FileCategory == EventFileCategory.PublicEvent && s.ParentId == model.Id).ToList();
 
-            if (attachments != null) 
-            {
-                //delete all
-                if (model.Attachments == null)
-                {
-                    foreach (var attachment in attachments)
-                    {
-                        attachment.FileDocument.Display = false;
-                        db.FileDocument.Attach(attachment.FileDocument);
-                        db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+			if (attachments != null)
+			{
+				//delete all
+				if (model.Attachments == null)
+				{
+					foreach (var attachment in attachments)
+					{
+						attachment.FileDocument.Display = false;
+						db.FileDocument.Attach(attachment.FileDocument);
+						db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
 
-                        db.EventFile.Remove(attachment);                        
-                    }
-                }
-                else
-                {
-                    foreach (var attachment in attachments)
-                    {
-                        if (!model.Attachments.Any(u => u.Id == attachment.FileDocument.Id))//delete if not exist anymore
-                        {
-                            attachment.FileDocument.Display = false;
-                            db.FileDocument.Attach(attachment.FileDocument);
-                            db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+						db.EventFile.Remove(attachment);
+					}
+				}
+				else
+				{
+					foreach (var attachment in attachments)
+					{
+						if (!model.Attachments.Any(u => u.Id == attachment.FileDocument.Id))//delete if not exist anymore
+						{
+							attachment.FileDocument.Display = false;
+							db.FileDocument.Attach(attachment.FileDocument);
+							db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
 
-                            db.EventFile.Remove(attachment);                            
-                        }
-                    }
-                }
-            }
+							db.EventFile.Remove(attachment);
+						}
+					}
+				}
+			}
 
-            //add new file
-            //files
-            foreach (var fileid in model.FilesId)
-            {
-                var eventfile = new EventFile
-                {
-                    FileCategory = EventFileCategory.PublicEvent,
-                    FileId = fileid,
-                    ParentId = publicevent.Id
-                };
+			//add new file
+			//files
+			foreach (var fileid in model.FilesId)
+			{
+				var eventfile = new EventFile
+				{
+					FileCategory = EventFileCategory.PublicEvent,
+					FileId = fileid,
+					ParentId = publicevent.Id
+				};
 
-                db.EventFile.Add(eventfile);
-            }
-            
-            db.Configuration.ValidateOnSaveEnabled = true;
+				db.EventFile.Add(eventfile);
+			}
+
+			db.Configuration.ValidateOnSaveEnabled = true;
 			db.SaveChanges();
 
 			return Ok(true);
@@ -452,7 +489,7 @@ namespace FEP.WebApi.Api.eEvent
 		}
 
 		//Submit Public Event for Verification
-		[Route("api/eEvent/PublicEvent/SubmitToVerify")] 
+		[Route("api/eEvent/PublicEvent/SubmitToVerify")]
 		public IHttpActionResult SubmitToVerify(int id)
 		{
 
@@ -464,6 +501,20 @@ namespace FEP.WebApi.Api.eEvent
 				db.PublicEvent.Attach(publicevent);
 				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
 				db.Configuration.ValidateOnSaveEnabled = false;
+
+				// create first approval record (using existing ID)
+				//var approval = new PublicEventApproval
+				//{
+				//	EventId = publicevent.Id,
+				//	ApprovalLevel = EventApprovalLevel.Verifier,
+				//	ApproverId = null,
+				//	Status = EventApprovalStatus.None,
+				//	ApprovedDate = DateTime.Now,
+				//	Remark = "",
+				//	RequireNext = false
+				//};
+
+				//db.PublicEventApproval.Add(approval);
 				db.SaveChanges();
 
 				PublicEventModel model = new PublicEventModel
@@ -482,9 +533,7 @@ namespace FEP.WebApi.Api.eEvent
 		[Route("api/eEvent/PublicEvent/Verified")]
 		public IHttpActionResult Verified(int id)
 		{
-
 			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
-
 			if (publicevent != null)
 			{
 				publicevent.EventStatus = EventStatus.Verified;
@@ -697,6 +746,125 @@ namespace FEP.WebApi.Api.eEvent
 
 			return Ok(publicevent);
 		}
+
+
+		[Route("api/eEvent/PublicEvent/GetHistory")]
+		public List<PublicEventApprovalHistoryModel> GetHistory(int id)
+		{
+			var phistory = db.PublicEventApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { pa.EventId, pa.ApprovalLevel, pa.ApproverId, pa.ApprovedDate, pa.Status, pa.Remark, UserName = u.Name }).Where(pa => pa.EventId == id && pa.Status != EventApprovalStatus.None).OrderByDescending(pa => pa.ApprovedDate).Select(s => new PublicEventApprovalHistoryModel
+			{
+				Level = s.ApprovalLevel,
+				ApproverId = s.ApproverId,
+				ApprovalDate = s.ApprovedDate,
+				UserName = s.UserName,
+				Status = s.Status,
+				Remarks = s.Remark
+			}).ToList();
+
+			return phistory;
+		}
+
+		//[Route("api/eEvent/PublicEvent/Evaluate")]
+		//[HttpPost]
+		//[ValidationActionFilter]
+		//public string Evaluate([FromBody] GlobalPublicEventApprovalModel model)
+		//{
+
+		//	if (ModelState.IsValid)
+		//	{
+		//		var papproval = db.PublicEventApproval.Where(pa => pa.Id == model.approval.Id).FirstOrDefault();
+
+		//		if (papproval != null)
+		//		{
+		//			papproval.ApproverId = model.approval.ApproverId;
+		//			papproval.Status = model.approval.Status;
+		//			papproval.ApprovedDate = DateTime.Now;
+		//			papproval.Remark = model.approval.Remarks;
+		//			papproval.RequireNext = model.approval.RequireNext;
+		//			// requirenext is always set to true when coming from verifier approval, and always false from approver3
+
+		//			db.Entry(papproval).State = EntityState.Modified;
+		//			// HERE
+		//			db.SaveChanges();
+
+		//			var publicevent = db.PublicEvent.Where(p => p.Id == papproval.EventId).FirstOrDefault();
+		//			if (publicevent != null)
+		//			{
+		//				// proceed depending on status (assuming user can only pick approve and reject)
+		//				if (model.approval.Status == EventApprovalStatus.Rejected)
+		//				{
+		//					if (publicevent.EventStatus == EventStatus.PendingforVerification)
+		//					{
+		//						publicevent.EventStatus = EventStatus.RejectNeedToEdit;
+		//						db.Entry(publicevent).State = EntityState.Modified;
+		//						db.SaveChanges();
+		//					}
+		//					else if (publicevent.EventStatus == EventStatus.Verified)
+		//					{
+		//						publicevent.EventStatus = EventStatus.RejectNeedToEdit;
+		//						db.Entry(publicevent).State = EntityState.Modified;
+		//						db.SaveChanges();
+		//					}
+		//				}
+		//				else
+		//				{
+		//					// proceed depending on requirenext
+		//					if (model.approval.RequireNext == false)
+		//					{
+		//						// no more approvals necessary (assumes verifier will never get here)
+		//						publicevent.EventStatus = EventStatus.Approved;
+		//						db.Entry(publicevent).State = EntityState.Modified;
+		//						db.SaveChanges();
+		//					}
+		//					else
+		//					{
+		//						EventApprovalLevel nextlevel;
+		//						switch (papproval.ApprovalLevel)
+		//						{
+		//							case EventApprovalLevel.Verifier:
+		//								nextlevel = EventApprovalLevel.Approver1;
+		//								publicevent.EventStatus = EventStatus.Verified;
+		//								db.Entry(publicevent).State = EntityState.Modified;
+		//								break;
+		//							case EventApprovalLevel.Approver1:
+		//								nextlevel = EventApprovalLevel.Approver2;
+		//								break;
+		//							case EventApprovalLevel.Approver2:
+		//								nextlevel = EventApprovalLevel.Approver3;
+		//								break;
+		//							default:
+		//								nextlevel = EventApprovalLevel.Approver1;
+		//								break;
+		//						}
+
+		//						// create next approval record
+		//						var pnewapproval = new PublicEventApproval
+		//						{
+		//							EventId = papproval.EventId,
+		//							ApprovalLevel = nextlevel,
+		//							ApproverId = 0,
+		//							Status = EventApprovalStatus.None,
+		//							ApprovedDate = DateTime.Now,
+		//							Remark = "",
+		//							RequireNext = false
+		//						};
+
+		//						db.PublicEventApproval.Add(pnewapproval);
+		//						// HERE
+		//						db.SaveChanges();
+		//					}
+
+		//				}
+
+		//				//return publication.Title;
+		//				return publicevent.Id + "|" + publicevent.EventTitle + "|" + publicevent.RefNo + "|" + publicevent.Venue + "|" + publicevent.EventStatus;
+		//			}
+		//		}
+		//	}
+
+		//	return "";
+		//}
+
 
 	}
 }

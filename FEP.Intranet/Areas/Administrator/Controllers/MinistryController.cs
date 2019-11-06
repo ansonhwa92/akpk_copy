@@ -47,7 +47,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 if (response.isSuccess)
                 {
-                    TempData["SuccessMessage"] = Language.Sector.AlertSuccessCreate;
+                    TempData["SuccessMessage"] = Language.Ministry.AlertSuccessCreate;
 
                     await LogActivity(Modules.Setting, "Create Parameter Ministry", model);
 

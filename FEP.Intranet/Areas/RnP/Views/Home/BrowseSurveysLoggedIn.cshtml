@@ -1,0 +1,298 @@
+﻿@model FEP.WebApiModel.RnP.BrowseSurveyModel
+
+@{
+    ViewBag.Title = "Browse Surveys";
+    Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
+}
+
+@section Nav{
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+            </ol>
+        </nav>
+    </div>
+    <h1 class="page-title text-white">Browse Surveys</h1>
+    <div class="header-text">Browse and respond to surveys</div>
+}
+
+<main id="landing-inner" class="rellax" data-rellax-speed="0">
+    <!-- =====================
+        Landing Content
+    ========================-->
+    <section id="main-content">
+        <!-- =====================
+            Search Dropdown
+        ========================-->
+        <div id="search-dropdown">
+            <div class="container">
+                <div id="search-dropdown">
+                    <div class="container">
+                        <div class="search-dropdown-wrapper">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <select class="select2" name="module">
+                                        <option value="e-Learning">e-Learning</option>
+                                        <option value="e-Events">e-Events</option>
+                                        <option value="Research">Research</option>
+                                        <option value="Publications">Publications</option>
+                                    </select>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Search for online courses, instructor name, etc.." name="search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="empty_6"></div>
+    </section>
+    <!-- =====================
+        Our Publications
+    ========================-->
+    <!--
+    <section id="ourpublications">
+        <div class="container">
+            <a href="#" class="btn btn-outline-secondary btn-rounded pull-right">VIEW ALL</a>
+            <h1 class="color-darkblue">Featured Publications</h1>
+            <div class="empty_3"></div>
+            <div class="row">
+                <div class="col-lg-6 col-sm-12">
+                    <div class="publications__wrapper wow fadeInUp">
+                        <div class="publications_col_left card__top">
+                            <div class="card__top__wapper">
+                                <img class="card__top__image" src="@BaseURL/img/cover-buku-1.jpg" alt="image">
+                                <div class="share-wrap">
+                                    <div class="share-button sharer">
+                                        <span class="share-icon">
+                                            <ion-icon name="share"></ion-icon>
+                                        </span>
+                                        <div class="social top center"></div>
+                                    </div>
+                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="publications_col_right">
+                            <div class="card__body">
+                                <a class="card__title" href="#">The Tower & The Cloud:<br /> Higher Education in the Age of Cloud Computing</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Richard N.Kartz</span></span></a>
+                                </div>
+                                <div class="card__text">The emergence of the networked information economy is unleashing tow powerful forces.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Books</span></span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                    </div>
+                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    <div class="publications__wrapper wow fadeInUp" data-wow-delay=".5s">
+                        <div class="publications_col_left card__top">
+                            <div class="card__top__wapper">
+                                <img class="card__top__image" src="@BaseURL/img/cover-buku-2.jpg" alt="image">
+                                <div class="share-wrap">
+                                    <div class="share-button sharer">
+                                        <span class="share-icon">
+                                            <ion-icon name="share"></ion-icon>
+                                        </span>
+                                        <div class="social top center"></div>
+                                    </div>
+                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="publications_col_right">
+                            <div class="card__body">
+                                <a class="card__title" href="#">Cultivating Careers: <br /> Professional Development for Campus IT</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Cynthia Golden</span></span></a>
+                                </div>
+                                <div class="card__text">This research provides an overview of current principles and practices for mentoring and developing IT professionals in higher education.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
+                                    </div>
+                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr>
+    -->
+    <!-- =====================
+       Searching Result
+    ========================-->
+    <section id="search-result" class="publications">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="search-col-left">
+                        <div class="input-keyword mb-5">
+                            <input type="text" class="form-control form-control-rounded" placeholder="Type keyword here..." value="@Model.Keyword" name="keyword" id="textKeyword">
+                            <div class="input-group-append">
+                                <button class="btn btn-circle" type="button" id="buttonSearch"><i class="fas fa-search text-white"></i></button>
+                            </div>
+                        </div>
+                        <!-- Listing Filter -->
+                        <div class="listing_filter dropdown dd-side">
+                            <div class="dropdown-menu">
+                                <div class="listing-filter-inner">
+                                    <div class="filter-type">
+                                        <h4 class="color-darkblue">Survey Audience</h4>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="customRadio1">Registered Users</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio2">Anonymous Users</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary btn-rounded" id="buttonReset">Clear Filter</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="search-col-right">
+                        <div class="top-filter-wrap">
+                            <div class="showing-result">Showing 1 - @Model.LastIndex of @Model.ItemCount surveys</div>
+                            <div class="sorting-wrap">
+                                <div class="sorting-dropdown">
+                                    <select class="select2 form-control" name="sorting" id="selectSorting">
+                                        <option value="default" @ViewBag.DefaultSorting>Default Sorting</option>
+                                        <option value="expiry" @ViewBag.ExpirySorting>Expiry Date</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="empty_3"></div>
+                        <!-- Filter result -->
+                        <div class="some-list">
+                            <div class="row">
+                                @{
+                                    var icount = 0;
+                                    var coverpic1 = "";
+                                    var coverpic2 = "";
+                                    var authorpic = "";
+                                }
+                                @foreach (var item in Model.Surveys)
+                                {
+                                    icount++;
+                                    //if (item.Pictures != "")
+                                    //{
+                                    //    coverpic1 = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                    //    coverpic2 = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                    //    authorpic = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                    //    coverpic1 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
+                                    //    coverpic2 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
+                                    //    authorpic = BaseURL + "/" + "img" + "/47.jpg";
+                                    //}
+                                    //else
+                                    //{
+                                        coverpic1 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
+                                        coverpic2 = BaseURL + "/" + "img" + "/cover-buku-2.jpg";
+                                        authorpic = BaseURL + "/" + "img" + "/47.jpg";
+                                    //}
+
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card__wrapper">
+                                            <div class="card__top">
+                                                <div class="card__top__wapper"><img class="card__top__image" src="@coverpic1" alt="image"></div>
+                                            </div>
+                                            <div class="card__body">
+                                                @if (item.Type == SurveyType.Public)
+                                                {
+                                                    <a class="card__title" href="@Url.Action("PublicSurvey", "Home", new { area = "RnP", @id = item.ID })">@item.Title</a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="card__title" href="@Url.Action("PrivateSurvey", "Home", new { area = "RnP", @id = item.ID })">@item.Title</a>
+                                                }
+                                                <div class="card__author">
+                                                    <a class="card__col-left" href="#">
+                                                        <span class="card__avatar"><img class="card__avatar__image" src="@authorpic"></span><span class="card__name-wrap">
+                                                            <span class="card__instructby">Survey category</span><span class="card__author-name">
+                                                                @if (item.Type == SurveyType.Public)
+                                                                {<text>Public Mass</text> }
+                                                            else
+                                                            { <text>Targeted Users</text>}
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="card__info">
+                                                    <div class="card__col-left">
+                                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Survey Category"><span class="d-inline-block">@item.Category</span></span></div>
+                                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Expires On"><span class="d-inline-block">@item.EndDate.ToString("dd/MM/yyyy")</span></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr />
+    <section id="search-result" class="publications">
+        <div class="container">
+            <div class="row">
+                <a class="btn btn-secondary block font-weight-normal mr-2" href="@Url.Action("BrowsePublications", "Home", new { area = "RnP" })">Browse Publications</a>
+            </div>
+        </div>
+    </section>
+    <hr />
+    @Html.Partial("_NewsArticle")
+</main>
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#buttonSearch').click(function (event) {
+                var keyword = $('#textKeyword').val();
+                var sorting = $('#selectSorting').val();
+                var myurl = '@Url.Action("BrowseSurveys", "Home", new { area = "RnP" })' + '?keyword=' + keyword + '&sorting=' + sorting;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#selectSorting').change(function (event) {
+                var keyword = $('#textKeyword').val();
+                var sorting = $('#selectSorting').val();
+                var myurl = '@Url.Action("BrowseSurveys", "Home", new { area = "RnP" })' + '?keyword=' + keyword + '&sorting=' + sorting;
+                window.location = myurl;
+            });
+
+            $('#buttonReset').click(function (event) {
+                var myurl = '@Url.Action("BrowseSurveys", "Home", new { area = "RnP" })';
+                window.location = myurl;
+                return false;
+            });
+
+        });
+    </script>
+}

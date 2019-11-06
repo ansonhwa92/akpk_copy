@@ -149,7 +149,7 @@ namespace FEP.WebApi.Api.Administration
 
         public IHttpActionResult Get(int id)
         {
-            var user = db.User.Where(u => u.Id == id)
+            var user = db.User.Where(u => u.Id == id && u.UserType == UserType.Staff && u.Display)
                 .Select(s => new DetailsStaffModel
                 {
                     Id = s.Id,
@@ -173,6 +173,43 @@ namespace FEP.WebApi.Api.Administration
             user.Roles = db.UserRole.Where(u => u.UserId == id).Select(s => new RoleModel { Id = s.RoleId, Name = s.Role.Name, Description = s.Role.Description }).ToList();
 
             return Ok(user);
+        }
+
+        public IHttpActionResult Put(int id, [FromBody] EditStaffModel model)
+        {
+            var user = db.User.Where(u => u.Id == id && u.Display && u.UserType == UserType.Staff).FirstOrDefault();
+            var staff = db.StaffProfile.Where(i => i.UserId == id).FirstOrDefault();
+            //var useraccount = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
+
+            if (user == null || staff == null)
+            {
+                return NotFound();
+            }
+                       
+            if (ModelState.IsValid)
+            {
+                
+                db.UserRole.RemoveRange(db.UserRole.Where(u => u.UserId == id));//remove all
+                foreach (var roleid in model.RoleIds)
+                {
+                    var userrole = new UserRole
+                    {
+                        RoleId = roleid,
+                        UserId = id,
+                    };
+
+                    db.UserRole.Add(userrole);
+                }
+
+                db.Configuration.ValidateOnSaveEnabled = true;
+                db.SaveChanges();
+
+                return Ok(true);
+
+            }
+
+            return BadRequest(ModelState);
+
         }
 
 

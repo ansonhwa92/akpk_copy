@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Administration\FileDocument.cs" />
+    <Compile Include="Administration\Branch.cs" />
     <Compile Include="Administration\Role.cs" />
     <Compile Include="Administration\Ministry.cs" />
     <Compile Include="Administration\Sector.cs" />
@@ -76,8 +77,10 @@
     <Compile Include="Administration\User.cs" />
     <Compile Include="Auth\Registration.cs" />
     <Compile Include="Commerce\Cart.cs" />
+    <Compile Include="eEvent\DutyRoster.cs" />
     <Compile Include="eEvent\EventAgenda.cs" />
     <Compile Include="eEvent\EventExternalExhibitor.cs" />
+    <Compile Include="eEvent\EventRefund.cs" />
     <Compile Include="eEvent\EventSpeaker.cs" />
     <Compile Include="eEvent\ExhibitionRoadshowRequest.cs" />
     <Compile Include="eLearning\ApiResponseModel.cs" />
@@ -96,11 +99,14 @@
     <Compile Include="eLearning\CourseModels.cs" />
     <Compile Include="eLearning\CourseCategory.cs" />
     <Compile Include="eLearning\CourseModuleModels.cs" />
+    <Compile Include="eLearning\TOT.cs" />
     <Compile Include="Home\ProfileModel.cs" />
     <Compile Include="eEvent\EventCategory.cs" />
     <Compile Include="eEvent\MediaInterviewRequest.cs" />
     <Compile Include="eEvent\PublicEvent.cs" />
+    <Compile Include="Integration\Groups.cs" />
     <Compile Include="Logs\ErrorLog.cs" />
+    <Compile Include="Logs\ReportLog.cs" />
     <Compile Include="Logs\UserLog.cs" />
     <Compile Include="Notification\Notification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,12 +125,6 @@
     <Compile Include="Template\EmailTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="User\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\FEP.Language\FEP.Language.csproj">
       <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
       <Name>FEP.Language</Name>
@@ -133,6 +133,9 @@
       <Project>{2a1a9157-1c94-4b4a-96a4-52648bd8076a}</Project>
       <Name>FEP.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

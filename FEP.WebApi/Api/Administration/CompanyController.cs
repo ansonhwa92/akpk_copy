@@ -1,6 +1,5 @@
 ﻿using FEP.Helper;
 using FEP.Model;
-using FEP.WebApi.Method;
 using FEP.WebApiModel.Administration;
 using System;
 using System.Collections.Generic;
@@ -36,10 +35,9 @@ namespace FEP.WebApi.Api.Administration
             var totalCount = query.Count();
 
             //advance search
-            query = query.Where(s => (request.CompanyName == null || s.CompanyName.Contains(request.CompanyName))
-               && (request.CompanyRegNo == null || s.CompanyRegNo.Contains(request.CompanyRegNo))
+            query = query.Where(s => (request.CompanyName == null || s.CompanyName.Contains(request.CompanyName))               
                && (request.Email == null || s.User.Email.Contains(request.Email))
-               && (request.SectorId == null || s.SectorId == request.SectorId)
+               && (request.Type == null || s.Type == request.Type)
                );
 
             //quick search 
@@ -234,7 +232,7 @@ namespace FEP.WebApi.Api.Administration
 
                 var password = "abc123";
 
-                if (FEPMethod.CurrentSystemMode() != SystemMode.Development)
+                if (FEPHelperMethod.CurrentSystemMode() != SystemMode.Development)
                 {
                     password = Authentication.RandomString(10, true);
                 }

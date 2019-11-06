@@ -153,7 +153,10 @@
                     <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> User Reward Redemptions</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="#" data-toggle="tab" class="nav-link active">List</a>
+                            <a href="#" class="nav-link active">List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("ListToRedeem", "RewardRedemptions", new { area = "Reward" })" class="nav-link">Claim Reward</a>
                         </li>
                     </ul>
                 </div>
@@ -166,7 +169,7 @@
         <div class="border-form rounded">
             <div class="form-container form-container-w100">
                 <div class="d-flex align-items-center mb-4 mt-2">
-                    <h4 class="color-darkblue mr-auto mb-0">My Redeemed Reward</h4>
+                    <h4 class="color-darkblue mr-auto mb-0">My Redeemed Rewards</h4>
 
                 </div>
                 <div class="d-flex align-items-center">

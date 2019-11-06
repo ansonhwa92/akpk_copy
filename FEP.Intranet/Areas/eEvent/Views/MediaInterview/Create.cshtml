@@ -10,6 +10,11 @@
 
 	<script type="text/javascript">
 
+		$(document).ready(function () {
+
+			RefreshFile();
+
+		});
 
 		$("#DateStart").flatpickr({
 			dateFormat: "d/m/Y",
@@ -63,7 +68,7 @@
 }
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data"}))
 {
 	@Html.AntiForgeryToken()
 	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -75,6 +80,7 @@
 				<div data-perfect-scrollbar>
 					<div class="sidebar-inner">
 						<ul class="steps steps-vertical nav">
+							
 							<li class="step-item complete">
 								<a href="#step1" class="step-link" data-toggle="tab">
 									<span class="step-number">1</span>
@@ -99,12 +105,12 @@
 									<span class="step-title">Fill Up Recommended Rep. Details</span>
 								</a>
 							</li>
-							@*<li class="step-item disabled">
-									<a href="#step5" class="step-link" data-toggle="tab">
-										<span class="step-number">5</span>
-										<span class="step-title">Review & Submission</span>
-									</a>
-								</li>*@
+							<li class="step-item disabled">
+								<a href="#step5" class="step-link" data-toggle="tab">
+									<span class="step-number">5</span>
+									<span class="step-title">Review & Submission</span>
+								</a>
+							</li>
 						</ul>
 						<!-- End Steps -->
 					</div>
@@ -115,10 +121,10 @@
 		<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 			<!-- Start Form -->
 			<div class="border-form rounded-top">
-				<form>
-					<div class="form-container">
+				<div class="form-container tab-content">
+					<div class="tab-pane active" id="step2">
 						<div class="mt-2 mb-4 pb-1">
-							<h4 class="color-darkblue mb-0">Invitation Details</h4>
+							<h4 class="color-darkblue mb-0">Fill up Invitation Details</h4>
 							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
 						</div>
 						<div class="row">
@@ -197,15 +203,23 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.LabelFor(model => model.DocumentMedia)
-								@Html.TextBoxFor(model => model.DocumentMedia, "", new { type = "file", @class = "form-control" })
-								@Html.ValidationMessageFor(model => model.DocumentMedia, "", new { @class = "text-danger" })
+								@Html.FEPLabelFor(model => model.Attachments)
+								@Html.Partial("_Attachment", Model.Attachments)
+								@Html.ValidationMessageFor(model => model.Attachments, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
-						<hr />
-						<h4 class="color-darkblue mb-0">Interview Details</h4>
-						<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						<div class="border-top p-3 rounded-bottom">
+							<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("List")'>Back</a>
+							<a class="btn btn-secondary" href="#step3" data-toggle="tab">Next</a>
+						</div>
+					</div>
+
+					<div class="tab-pane" id="step3">
+						<div class="mb-4 mt-2 mr-auto">
+							<h4 class="color-darkblue mb-0">Fill up Interview Details</h4>
+							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						</div>
 
 						<div class="row">
 							<div class="form-group col-lg-6">
@@ -223,7 +237,7 @@
 						<div class="row">
 							<div class="form-group col-lg-6">
 								@Html.FEPLabelFor(model => model.Time)
-								@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control " } })
+								@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect" } })
 								@Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
 							</div>
 
@@ -242,9 +256,15 @@
 							</div>
 						</div>
 
-						<hr />
+						<div class="border-top p-3 rounded-bottom">
+							<a class="btn btn-default font-weight-normal mr-2" href="#step2">Back</a>
+							<a class="btn btn-secondary" href="#step4" data-toggle="tab">Next</a>
+						</div>
+					</div>
+
+					<div class="tab-pane" id="step4">
 						<div class="mt-2 mb-4 pb-1">
-							<h4 class="color-darkblue mb-0">Recommended Rep. Details</h4>
+							<h4 class="color-darkblue mb-0">Fill up Recommended Rep. Details</h4>
 							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
 						</div>
 
@@ -256,13 +276,16 @@
 							</div>
 						</div>
 
+						<hr/>
+						<div>
+							<input class="form-control" type="hidden" name="CreatorId" id="CreatorId" value="@CurrentUser.UserId">
+							<a class="btn btn-default font-weight-normal mr-2" href="#step3">Back</a>
+							<button type="submit" class="btn btn-default" id="btnSave" name="Submittype" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save as Draft</button>
+							<button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Review for Submission</button>
+						</div>
+
 					</div>
-				</form>
-				<!-- End Form -->
-			</div>
-			<div class="border-left border-right border-bottom p-3 rounded-bottom">
-				<a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
-				<button class="btn btn-secondary" type="submit">Save</button>
+				</div>
 			</div>
 		</div>
 

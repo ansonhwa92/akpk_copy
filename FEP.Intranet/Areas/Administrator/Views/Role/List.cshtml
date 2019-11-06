@@ -53,13 +53,13 @@
             parent.prev('div.details').removeClass('d-none').addClass('d-block');
         }
 
-        function showEdit(obj, id, no, name) {
+        function showEdit(obj, id, no, name, description) {
 
             clearForm();
 
             $.ajax({
                 type: 'get',
-                url: '@Url.Action("_Edit", "Role", new { area = "Administrator" })?id=' + id + '&Name=' + name + '&No=' + no,
+                url: '@Url.Action("_Edit", "Role", new { area = "Administrator" })?id=' + id + '&Name=' + name + '&Description=' + description + '&No=' + no,
                 success: function (data) {
 
                     var parent = $(obj).closest('div.details');
@@ -77,13 +77,13 @@
 
         }
 
-        function showDelete(obj, id, no, name) {
+        function showDelete(obj, id, no, name, description) {
 
             clearForm();
 
             $.ajax({
                 type: 'get',
-                url: '@Url.Action("_Delete", "Role", new { area = "Administrator" })?id=' + id + '&Name=' + name + '&No=' + no,
+                url: '@Url.Action("_Delete", "Role", new { area = "Administrator" })?id=' + id + '&Name=' + name + '&Description=' + description + '&No=' + no,
                 success: function (data) {
 
                     var parent = $(obj).closest('div.details');
@@ -114,8 +114,8 @@
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Administration</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Settings</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
@@ -164,6 +164,7 @@
                                     <div class="row">
                                         <div class="col-1 text-center">No</div>
                                         <div class="col px-0">Role Name</div>
+                                        <div class="col px-0">Description</div>
                                         <div class="col-3 pl-0">&nbsp;</div>
                                     </div>
                                 </div>
@@ -179,12 +180,13 @@
                                             <div class="row divTd">
                                                 <div class="col-1 text-center">@i</div>
                                                 <div class="col px-0">@Html.DisplayFor(m => item.Name)</div>
+                                                <div class="col pl-1">@Html.DisplayFor(m => item.Description)</div>
                                                 <div class="col-3 pl-0 text-right">
                                                     <div class="icon-action">
-                                                        <a href="@Url.Action("Access", new { id = item.Id })"><i class="la la-list-alt text-muted"></i></a>
-                                                        <a href="@Url.Action("UserRole", new { id = item.Id })"><i class="la la-user text-muted"></i></a>
-                                                        <a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')"><i class="la la-edit text-muted"></i></a>
-                                                        <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')"><i class="la la-trash-o text-muted"></i></a>
+                                                        <a href="@Url.Action("Access", new { id = item.Id })" data-toggle="tooltip" title="Role Access"><i class="la la-list-alt text-muted"></i></a>
+                                                        <a href="@Url.Action("UserRole", new { id = item.Id })" data-toggle="tooltip" title="User Role"><i class="la la-user text-muted"></i></a>
+                                                        <a href="javascript:void(0);" onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)', '@HttpUtility.JavaScriptStringEncode(item.Description)')" data-toggle="tooltip" title="Edit"><i class="la la-edit text-muted"></i></a>
+                                                        <a href="javascript:void(0);" onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)','@HttpUtility.JavaScriptStringEncode(item.Description)')" data-toggle="tooltip" title="Delete"><i class="la la-trash-o text-muted"></i></a>
                                                     </div>
                                                 </div>
                                             </div>

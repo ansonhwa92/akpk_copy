@@ -44,6 +44,28 @@ namespace FEP.Intranet.Areas.SLAReminder.Controllers
                     Value = ((int)e).ToString()
                 })).ToList();
 
+            model.SLAEventTypeList = (Enum.GetValues(typeof(SLAEventType)).Cast<int>()
+                .Select(e => new SelectListItem()
+                {
+                    Text = ((DisplayAttribute)
+                    typeof(SLAEventType)
+                    .GetMember(Enum.GetName(typeof(SLAEventType), e).ToString())
+                    .First()
+                    .GetCustomAttributes(typeof(DisplayAttribute), false)[0]).Name,
+                    Value = ((int)e).ToString()
+                })).ToList();
+
+            model.NotificationTypeList = (Enum.GetValues(typeof(NotificationType)).Cast<int>()
+                .Select(e => new SelectListItem()
+                {
+                    Text = ((DisplayAttribute)
+                    typeof(NotificationType)
+                    .GetMember(Enum.GetName(typeof(NotificationType), e).ToString())
+                    .First()
+                    .GetCustomAttributes(typeof(DisplayAttribute), false)[0]).Name,
+                    Value = ((int)e).ToString()
+                })).ToList();
+
             ViewBag.pin = pin;
             return View(model);
         }

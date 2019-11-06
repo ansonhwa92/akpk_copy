@@ -31,6 +31,7 @@
                     },
                     { sortable: true, data: 'RewardCode' },
                     { sortable: true, data: 'Description' },
+                    { sortable: true, data: 'DiscountValue' },
                     { sortable: true, data: 'PointsToRedeem' },
                     { sortable: true, data: 'ValidDuration' },
                     {
@@ -219,10 +220,11 @@
                                 <th></th>
                                 <th>@Html.DisplayNameFor(model => model.filter.RewardCode)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.Description)</th>
+                                <th>@Html.DisplayNameFor(model => model.filter.DiscountValue)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.PointsToRedeem)</th>
                                 <th>@Html.DisplayNameFor(model => model.filter.ValidDuration)</th>
                                 @*<th>@Html.DisplayNameFor(model => model.filter.CreatedByName)</th>
-                                    <th>@Html.DisplayNameFor(model => model.filter.CreatedDate)</th>*@
+        <th>@Html.DisplayNameFor(model => model.filter.CreatedDate)</th>*@
                                 <th></th>
                             </tr>
                         </thead>

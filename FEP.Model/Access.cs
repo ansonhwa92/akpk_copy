@@ -35,8 +35,10 @@ namespace FEP.Model
 		Setting = 5,
 		[Display(Name = "Report")]
 		Report = 6,
+        [Display(Name = "Payment")]
+        Payment = 7
 
-	}
+    }
 
 
 	public enum UserAccess
@@ -78,52 +80,54 @@ namespace FEP.Model
 
 
 		//----------------------Exhibition RoadShow Button--------------------//
-		[Display(Name = "Exhibition RoadShow - Recipient Email After Submit Exhibition RoadShow")]
+		[Display(Name = "Exhibition RoadShow - Submit")]
 		Recipient_Submit_ExhibitionRoadShow = 1017,
 
-		[Display(Name = "Exhibition RoadShow - Recipient Email After Verify Exhibition RoadShow")]
+		[Display(Name = "Exhibition RoadShow - Verify")]
 		Recipient_Verify_ExhibitionRoadShow = 1018,
 
-		[Display(Name = "Exhibition RoadShow - Recipient Email After Approval 1")]
+		[Display(Name = "Exhibition RoadShow - Approve (Level 1)")]
 		Recipient_Approver1_ExhibitionRoadShow = 1019,
 
-		[Display(Name = "Exhibition RoadShow - Recipient Email After Approval 2")]
+		[Display(Name = "Exhibition RoadShow - Approve (Level 2)")]
 		Recipient_Approver2_ExhibitionRoadShow = 1020,
 
-		[Display(Name = "Exhibition RoadShow - Recipient Email After Approval 3")]
+		[Display(Name = "Exhibition RoadShow - Approve (Level 3)")]
 		Recipient_Approver3_ExhibitionRoadShow = 1021,
 
-		[Display(Name = "Exhibition RoadShow - Recipient Email After Reject")]
+		[Display(Name = "Exhibition RoadShow - Reject")]
 		Recipient_Reject_ExhibitionRoadShow = 1022,
+
+
 
 		//-----------------------------------------------------------//
 
-		[Display(Name = "Public Event - Recipient Email After Submit Public Event")]
+		[Display(Name = "Public Event - Submit")]
 		Recipient_Submit_PublicEvent = 1029,
 
-		[Display(Name = "Public Event - Recipient Email After Verify Public Event")]
+		[Display(Name = "Public Event - Verify")]
 		Recipient_Verify_PublicEvent = 1030,
 
-		[Display(Name = "Public Event - Recipient Email After Approval 1")]
+		[Display(Name = "Public Event - Approve (Level 1)")]
 		Recipient_Approver1_PublicEvent = 1031,
 
-		[Display(Name = "Public Event - Recipient Email After Approval 2")]
+		[Display(Name = "Public Event - Approve (Level 2)")]
 		Recipient_Approver2_PublicEvent = 1032,
 
-		[Display(Name = "Public Event - Recipient Email After Approval 3")]
+		[Display(Name = "Public Event - Approve (Level 3)")]
 		Recipient_Approver3_PublicEvent = 1033,
 
-		[Display(Name = "Public Event - Recipient Email After Published")]
+		[Display(Name = "Public Event - Published")]
 		Recipient_Published_PublicEvent = 1034,
 
-		[Display(Name = "Public Event - Recipient Email After Reject")]
+		[Display(Name = "Public Event - Require Amendment")]
 		Recipient_Reject_PublicEvent = 1035,
 
-		[Display(Name = "Public Event - Recipient Email After Cancel")]
+		[Display(Name = "Public Event - Cancel")]
 		Recipient_Cancel_PublicEvent = 1036,
 
 
-		//research 2001 - 3000
+		//research & publication 2001 - 3000
 		[Display(Name = "R&P Management Menu")]
 		RnPMenu = 2001,
 		[Display(Name = "Publication Menu")]
@@ -245,6 +249,13 @@ namespace FEP.Model
 
 
 
+        //payment 7001 - 8000
+        [Display(Name = "Offline Payment")]
+        OfflinePayment = 7001,
+        [Display(Name = "Refunds")]
+        Refunds = 7002
 
-	}
+
+
+    }
 }

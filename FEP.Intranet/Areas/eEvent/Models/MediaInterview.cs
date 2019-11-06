@@ -1,4 +1,5 @@
 ﻿using FEP.Model;
+using FEP.WebApiModel.FileDocuments;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,6 +12,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 {
 	public class MediaInterviewModel
 	{
+		public int Id { get; set; }
+
 		[Required(ErrorMessage = "Please Insert Media Name")]
 		[Display(Name = "Media Name")]
 		public string MediaName { get; set; }
@@ -47,20 +50,11 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Email")]
 		public string Email { get; set; }
 
-		[Required(ErrorMessage = "Please Insert Start Date")]
-		[DataType(DataType.Date)]
-		[Display(Name = "Start Date")]
-		public DateTime? DateStart { get; set; }
-
-		[Required(ErrorMessage = "Please Insert End Date")]
-		[DataType(DataType.Date)]
-		[Display(Name = "End Date")]
-		public DateTime? DateEnd { get; set; }
+		
 
 		[Required(ErrorMessage = "Please Insert Time")]
-		[DataType(DataType.Time)]
-		[UIHint("Time")]
 		[Display(Name = "Time")]
+		[DataType(DataType.Time)]
 		public DateTime? Time { get; set; }
 
 		[Required(ErrorMessage = "Please Select Language")]
@@ -96,53 +90,72 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		public IEnumerable<SelectListItem> RepresentativeList { get; set; }
 
-		[Display(Name = "Supporting Document")]
-		public string GetFileName { get; set; }
-
-
-
-		//File
-		[Display(Name = "Supporting Document")]
-		public HttpPostedFileBase DocumentMedia { get; set; } 
-		[Display(Name = "File Name")]
-		public string FileName { get; set; }
-		[Display(Name = "File Description")]
-		public string FileDescription { get; set; }
-		[Display(Name = "Uploaded Date")]
-		public DateTime UploadedDate { get; set; }
+		public bool Display { get; set; }
+		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
+		public DateTime? CreatedDate { get; set; }
 	}
 
 	public class CreateMediaInterviewModel : MediaInterviewModel
 	{
-		public CreateMediaInterviewModel() { }
+		public CreateMediaInterviewModel()
+		{
+			Attachments = new List<Attachment>();
+			AttachmentFiles = new List<HttpPostedFileBase>();
+		}
+
+		[Required]
+		[Display(Name = "Proof of Approval")]
+		public IEnumerable<Attachment> Attachments { get; set; }
+
+		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
+
+		[Required(ErrorMessage = "Please Insert Start Date")]
+		[Display(Name = "Start Date")]
+		public DateTime? DateStart { get; set; }
+
+		[Required(ErrorMessage = "Please Insert End Date")]
+		[Display(Name = "End Date")]
+		public DateTime? DateEnd { get; set; }
 	}
 
 	public class EditMediaInterviewModel : MediaInterviewModel
 	{
-		public EditMediaInterviewModel() { }
+		public EditMediaInterviewModel()
+		{
+			Attachments = new List<Attachment>();
+			AttachmentFiles = new List<HttpPostedFileBase>();
+		}
 
 		[Required]
-		public int Id { get; set; }
+		[Display(Name = "Proof of Approval")]
+		public IEnumerable<Attachment> Attachments { get; set; }
 
-		public string origin { get; set; }
+		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
+
+		[Required(ErrorMessage = "Please Insert Start Date")]
+		[Display(Name = "Start Date")]
+		public DateTime? DateStart { get; set; }
+
+		[Required(ErrorMessage = "Please Insert End Date")]
+		[Display(Name = "End Date")]
+		public DateTime? DateEnd { get; set; }
 	}
 
 	public class DetailsMediaInterviewModel : MediaInterviewModel
 	{
 		public DetailsMediaInterviewModel() { }
 
-		public MediaInterviewApprovalModel Approval { get; set; }
+		[Display(Name = "Proof of Approval")]
+		public IEnumerable<Attachment> Attachments { get; set; }
 
-		[Required]
-		public int Id { get; set; }
-
-		public bool Display { get; set; }
-		public int? CreatedBy { get; set; }
-		public string CreatedByName { get; set; }
-
+		[Display(Name = "Start Date")]
 		[DataType(DataType.Date)]
-		[Display(Name = "Created Date")]
-		public DateTime? CreatedDate { get; set; }
+		public DateTime? DateStart { get; set; }
+
+		[Display(Name = "End Date")]
+		[DataType(DataType.Date)]
+		public DateTime? DateEnd { get; set; }
 	}
 
 	public class DeleteMediaInterviewModel : DetailsMediaInterviewModel
@@ -161,12 +174,12 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Contact Person")]
 		public string ContactPerson { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "Start Date")]
+		[DataType(DataType.Date)]
 		public DateTime? DateStart { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "End Date")]
+		[DataType(DataType.Date)]
 		public DateTime? DateEnd { get; set; }
 
 		[Display(Name = "Status")]
@@ -184,33 +197,5 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		{
 			this.MediaInterviewList = ListMediaInterview;
 		}
-	}
-
-	public class MediaInterviewApprovalModel
-	{
-		[Required]
-		public int Id { get; set; }
-
-		[Required]
-		public int MediaId { get; set; }
-
-		[Required]
-		[Display(Name = "Level")]
-		public EventApprovalLevel Level { get; set; }
-
-		[Required]
-		public int ApproverId { get; set; }
-
-		[Required]
-		[Range((int)(EventApprovalStatus.Approved), (int)(EventApprovalStatus.Rejected), ErrorMessage = "Please Select")]
-		[Display(Name = "PubApprovalStatus")]
-		public EventApprovalStatus Status { get; set; }
-
-		[Required]
-		[Display(Name = "Remarks")]
-		public string Remarks { get; set; }
-
-		[Display(Name = "Require Next")]
-		public bool RequireNext { get; set; }
 	}
 }

@@ -90,7 +90,7 @@ namespace FEP.WebApi.Api.Reward
 
             //advance search
             query = query.Where(s =>
-            (request.ActivityName == null || s.Activity.Name.Contains(request.ActivityName))
+            (request.CourseName == null || s.Course.Title.Contains(request.CourseName))
             && (request.RewardType == null || s.RewardType == request.RewardType)
             && (request.UserName == null || s.User.Name.Contains(request.UserName))
             && (request.PointsReceived == null || s.PointsReceived == request.PointsReceived)
@@ -101,7 +101,7 @@ namespace FEP.WebApi.Api.Reward
             {
                 var value = request.search.value.Trim();
                 query = query.Where(a =>
-                a.Activity.Name.Contains(value) ||
+                a.Course.Title.Contains(value) ||
                 /*a.RewardType.GetType()
                             .GetMember(a.RewardType.ToString())
                             .First()
@@ -123,9 +123,9 @@ namespace FEP.WebApi.Api.Reward
                 {
                     case "ActivityName":
                         if (sortAscending)
-                            query = query.OrderBy(o => o.Activity.Name);
+                            query = query.OrderBy(o => o.Course.Title);
                         else
-                            query = query.OrderByDescending(o => o.Activity.Name);
+                            query = query.OrderByDescending(o => o.Course.Title);
                         break;
                     case "PointsReceived":
                         if (sortAscending)
@@ -162,8 +162,8 @@ namespace FEP.WebApi.Api.Reward
                 .Select(s => new DetailUserRewardPointsModel
                 {
                     Id = s.Id,
-                    ActivityId = s.ActivityId.Value,
-                    ActivityName = (s.ActivityId.HasValue) ? s.Activity.Name : null,
+                    CourseId = s.CourseId.Value,
+                    CourseName = (s.CourseId.HasValue) ? s.Course.Title : null,
                     PointsReceived = s.PointsReceived,
                     UserId = s.UserId,
                     UserName = s.User.Name,
@@ -195,8 +195,8 @@ namespace FEP.WebApi.Api.Reward
                 .Select(s => new DetailUserRewardPointsModel
                 {
                     Id = s.Id,
-                    ActivityId = s.ActivityId ?? null,
-                    ActivityName = (s.ActivityId.HasValue)?s.Activity.Name:null,
+                    CourseId = s.CourseId ?? null,
+                    CourseName = (s.CourseId.HasValue)?s.Course.Title:null,
                     PointsReceived = s.PointsReceived,
                     UserId = s.UserId,
                     UserName = s.User.Name,
@@ -222,7 +222,7 @@ namespace FEP.WebApi.Api.Reward
 
             var userRewardPoints = new UserRewardPoints
             {
-                ActivityId = model.ActivityId.Value,
+                CourseId = model.CourseId.Value,
                 PointsReceived = model.PointsReceived,
                 UserId = model.UserId,
                 RewardType = RewardType.ActivityReward,

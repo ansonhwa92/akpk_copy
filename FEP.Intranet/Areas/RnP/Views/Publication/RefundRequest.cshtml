@@ -155,9 +155,10 @@
                 </div>
                 <div class="m-4 text-right">
                     <input type="hidden" class="form-control" name="ID" id="ID" value="" />
+                    <input type="hidden" class="form-control" name="Status" id="Status" value="" />
                     <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
-                    <button class="btn btn-default font-weight-normal mr-2" data-toggle="modal" data-dismiss="modal" data-target="#refundsent" id="btnRefundReject">Reject Refund</button>
-                    <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#refundsent" id="btnRefundApprove">Approve Refund</button>
+                    <button class="btn btn-default font-weight-normal mr-2" data-toggle="modal" data-target="#refundsent" id="btnRefundIncomplete">Refund Incomplete</button>
+                    <button class="btn btn-secondary" data-toggle="modal" data-target="#refundsent" id="btnRefundComplete">Refund Complete</button>
                 </div>
             </div>
         </div>
@@ -173,8 +174,8 @@
             </div>
             <div class="modal-body text-center">
                 <img src="~/img/icon-noti-email.svg" alt="image" id="iconResult">
-                <h4 class="color-darkblue mt-4" id="titleResult">Refund Request Processed</h4>
-                <p class="small" id="textResult">The refund request has been processed successfully.</p>
+                <h4 class="color-darkblue mt-4" id="titleResult">Refund Status Updated</h4>
+                <p class="small" id="textResult">The status of the refund request has been updated successfully.</p>
             </div>
             <!-- Bila xde modal footer -->
             <div class="modal-footer py-0">&nbsp;</div>
@@ -186,6 +187,10 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+
+            //var incomplete = @*RefundStatus.Incomplete*@;
+            //var complete = @*RefundStatus.Complete*@;
+
             var table = $('.tabledata').DataTable({
                 serverSide: true,
                 processing: true,
@@ -262,7 +267,7 @@
                                 return "<span class='color-yellow font-weight-bold'>Requested</span>";
                             }
                             else if (row.RefundStatus == 1) {
-                                return "<span class='color-red font-weight-bold'>Not Approved</span>";
+                                return "<span class='color-red font-weight-bold'>Not Refunded</span>";
                             }
                             else if (row.RefundStatus == 2) {
                                 return "<span class='color-green font-weight-bold'>Refunded</span>";
@@ -364,25 +369,16 @@
                 return true;
             }
 
-            $('#btnRefundReject').click(function (event) {
+            $('#btnRefundIncomplete').click(function (event) {
                 if (!ValidRefund()) {
                     return false;
                 }
+                $('#Status').val('1');
+                $("#modalRefund").modal('hide');
                 var form = $('#formrefund');
-                alert('Refund Rejected');
                 //alert(form.serialize());
-                return true;
-            });
-
-            $('#btnRefundApprove').click(function (event) {
-                if (!ValidRefund()) {
-                    return false;
-                }
-                var form = $('#formrefund');
-                alert('Refund Approved');
-                //alert(form.serialize());
-                return true;
-                var myurl = '@Url.Action("RequestRefund", "Cart", new { area = "Commerce" })';
+                //return false;
+                var myurl = '@Url.Action("UpdateRefundStatus", "Cart", new { area = "Commerce" })';
                 $.ajax({
                     url: myurl,
                     type: "POST",
@@ -391,30 +387,66 @@
                         if (data == "success") {
                             //$("#iconResult").show();
                             $("#iconResult").attr('src','~/img/icon-noti-email.svg');
-                            $("#titleResult").text('Refund Request Sent');
-                            $("#textResult").text('Your request for refund has been submitted successfully.');
+                            $("#titleResult").text('Refund Status Updated');
+                            $("#textResult").text('The status of the refund request has been updated successfully.');
                             $("#modalResult").modal();
                         }
                         else {
                             //$("#iconResult").hide();
                             $("#iconResult").attr('src', '~/img/icon-cancellation.svg');
-                            $("#titleResult").text('Refund Request Failed');
-                            $("#textResult").text('Your request for refund is unsuccessful. Please try again later.');
+                            $("#titleResult").text('Refund Status Updated Failed');
+                            $("#textResult").text('Your update of the refund status is unsuccessful. Please try again later.');
                             $("#modalResult").modal();
                         }
                     }
                 });
+                return false;
+            });
+
+            $('#btnRefundComplete').click(function (event) {
+                if (!ValidRefund()) {
+                    return false;
+                }
+                $('#Status').val('2');
+                $("#modalRefund").modal('hide');
+                var form = $('#formrefund');
+                //alert(form.serialize());
+                //return false;
+                var myurl = '@Url.Action("UpdateRefundStatus", "Cart", new { area = "Commerce" })';
+                $.ajax({
+                    url: myurl,
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        //alert(data);
+                        if (data == "success") {
+                            //$("#iconResult").show();
+                            $("#iconResult").attr('src','~/img/icon-noti-email.svg');
+                            $("#titleResult").text('Refund Status Updated');
+                            $("#textResult").text('The status of the refund request has been updated successfully.');
+                            $("#modalResult").modal();
+                        }
+                        else {
+                            //$("#iconResult").hide();
+                            $("#iconResult").attr('src', '~/img/icon-cancellation.svg');
+                            $("#titleResult").text('Refund Status Updated Failed');
+                            $("#textResult").text('Your update of the refund status is unsuccessful. Please try again later.');
+                            $("#modalResult").modal();
+                        }
+                    }
+                });
+                return false;
             });
 
             // redirection after send
 
             $('#btnCloseSent').click(function (event) {
-                var url = '@Url.Action("ListRefund", "Cart", new { area = "Commerce" })';
+                var url = '@Url.Action("RefundRequest", "Publication", new { area = "RnP" })';
                 window.location = url;
             });
 
             $('#modalResult').on( "hidden.bs.modal", function () {
-                var url = '@Url.Action("ListRefund", "Cart", new { area = "Commerce" })';
+                var url = '@Url.Action("RefundRequest", "Publication", new { area = "RnP" })';
                 window.location = url;
             });
 

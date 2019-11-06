@@ -100,6 +100,7 @@ namespace FEP.WebApi.Api.Reward
                 {
                     Id = s.Id,
                     RewardCode = s.RewardCode,
+                    DiscountValue = s.DiscountValue,
                     PointsToRedeem = s.PointsToRedeem,
                     ValidDuration = s.ValidDuration,
                     CreatedBy = s.CreatedBy,
@@ -126,6 +127,7 @@ namespace FEP.WebApi.Api.Reward
                 {
                     Id = s.Id,
                     RewardCode = s.RewardCode,
+                    DiscountValue = s.DiscountValue,
                     Description = s.Description,
                     PointsToRedeem = s.PointsToRedeem,
                     ValidDuration = s.ValidDuration,
@@ -145,10 +147,15 @@ namespace FEP.WebApi.Api.Reward
         {
             if (!ModelState.IsValid) { return BadRequest(); }
 
+            //check if code already exist
+            var rwd = db.RewardRedemption.Where(r => r.RewardCode == model.RewardCode).FirstOrDefault();
+            if(rwd != null) { return BadRequest("Reward Code already exist. Please use another code"); }
+
             var rewardRedemption = new RewardRedemption
             {
                 RewardCode = model.RewardCode,
                 Description = model.Description,
+                DiscountValue = model.DiscountValue,
                 PointsToRedeem = model.PointsToRedeem,
                 ValidDuration = model.ValidDuration,
                 CreatedBy = model.CreatedBy.Value,
@@ -170,6 +177,7 @@ namespace FEP.WebApi.Api.Reward
 
             RewardRedemption obj = db.RewardRedemption.Where(r => r.Id == id).FirstOrDefault();
             obj.Description = model.Description;
+            obj.DiscountValue = model.DiscountValue;
             obj.RewardCode = model.RewardCode;
             obj.PointsToRedeem = model.PointsToRedeem;
             obj.ValidDuration = model.ValidDuration;
@@ -179,6 +187,7 @@ namespace FEP.WebApi.Api.Reward
             db.Entry(obj).State = EntityState.Modified;
             db.Entry(obj).Property(x => x.Description).IsModified = true;
             db.Entry(obj).Property(x => x.RewardCode).IsModified = true;
+            db.Entry(obj).Property(x => x.DiscountValue).IsModified = true;
             db.Entry(obj).Property(x => x.PointsToRedeem).IsModified = true;
             db.Entry(obj).Property(x => x.ValidDuration).IsModified = true;
             db.Entry(obj).Property(x => x.CreatedBy).IsModified = true;

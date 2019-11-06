@@ -24,17 +24,6 @@ namespace FEP.Model.Migrations
 
         public static void Seed(DbEntities db)
         {
-            //notification
-            //if (!db.NotificationSetting.Any())
-            //{
-            //	foreach (NotificationType type in (NotificationType[])Enum.GetValues(typeof(NotificationType)))
-            //	{
-            //		db.NotificationSetting.AddOrUpdate(
-            //			t => new { t.NotificationType },
-            //			new NotificationSetting { NotificationType = type }
-            //		);
-            //	}
-            //}
 
             //default setting
             if (!db.SystemSetting.Any(m => m.Id == 0))
@@ -113,35 +102,6 @@ namespace FEP.Model.Migrations
 
 
             }
-            /*else
-            {
-                var role = db.Role.Local.Where(r => r.Name.Contains("All Access")).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains("All Access")).FirstOrDefault();
-
-                List<UserRole> userroles = new List<UserRole>();
-
-                userroles.Add(new UserRole { Role = role });
-                db.User.Add(
-                    new User
-                    {
-                        Name = "Tajul Admin",
-                        Email = "tajulzaid@gmail.com",
-                        UserType = UserType.Individual,
-                        CreatedDate = DateTime.Now,
-                        Display = true,
-                        UserAccount = new UserAccount
-                        {
-                            LoginId = "tajulzaid@gmail.com",
-                            HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==", //default abc123
-                            Salt = "/ZCqmg==",
-                            IsEnable = true,
-                            LoginAttempt = 0,
-                            LastPasswordChange = DateTime.Now,
-                            LastLogin = DateTime.Now,
-                            UserRoles = userroles
-                        },
-                    }
-                );
-            }*/
 
             AddRole(db, "Individual", "Default Individual");
             AddRole(db, "Individual with paper", "Individual with paper");
@@ -161,14 +121,14 @@ namespace FEP.Model.Migrations
             AddRole(db, "Admin Event", "Admin Event");
             AddRole(db, "Admin R&P", "Admin R&P");
             //AddRole(db, "Admin eLearning", "Admin eLearning");
-            
+
             AddRole(db, "Event Reception", "Event Reception");
             AddRole(db, "Event Moderator", "Event Moderator");
 
             AddRole(db, "Verifier Event", "Verifier Event");
             AddRole(db, "Verifier R&P", "Verifier R&P");
             //AddRole(db, "Verifier eLearning", "Verifier eLearning");
-           
+
             AddRole(db, "Approver Event 1", "Approver Event 1");
             AddRole(db, "Approver R&P 1", "Approver R&P 1");
             //AddRole(db, "Approver eLearning 1", "Approver eLearning 1");
@@ -181,194 +141,234 @@ namespace FEP.Model.Migrations
             AddRole(db, "Approver R&P 3", "Approver R&P 3");
             //AddRole(db, "Approver eLearning 3", "Approver eLearning 3");
 
-            AddRole(db, "Testing1", "Testing 1", new List<RoleAccess>
+            AddRole(db, "Admin Finance", "Admin Finance");
+
+            if (!db.Department.Any())
             {
-                new RoleAccess { UserAccess = UserAccess.AdminCompanyMenu },
-                new RoleAccess { UserAccess = UserAccess.AdminStaffMenu } }
-            );
+                db.Department.AddOrUpdate(s => s.Name,
+                    new Department { Name = "CEO Office", Display = true },
+                    new Department { Name = "Channel Management", Display = true },
+                    new Department { Name = "Compliance & Risk Management", Display = true },
+                    new Department { Name = "Corporate Communications", Display = true },
+                    new Department { Name = "Corporate Services", Display = true },
+                    new Department { Name = "DMP Management", Display = true },
+                    new Department { Name = "Finance", Display = true },
+                    new Department { Name = "Financial Education", Display = true },
+                    new Department { Name = "Human Capital", Display = true },
+                    new Department { Name = "IT", Display = true },
+                    new Department { Name = "Operations", Display = true }
+                    );
 
-            //staff
-            AddStaff(db, "fep_user3", "HAROLDEAN LIM @ LIM JIN LOK", "690315065097", "", "0106598960");
-            AddStaff(db, "", "AZMAN BIN HASIM", "690629715005", "", "0192333703");
-            AddStaff(db, "", "NOR FAZILLAH BINTI MOHD ZIN", "730201145172", "", "012-3844738");
-            AddStaff(db, "", "MOHD JUSRIZAL BIN ARIS", "800906085115", "", "0129986169");
-            AddStaff(db, "", "NORMAZATULAKMAR BINTI RAZALI", "840417145056", "", "0132666146");
-            AddStaff(db, "", "AHMAD FIRDAUS BIN MOHAMAD ARIFF", "820521085833", "", "0192685275");
-            AddStaff(db, "", "NUR HAYATI BINTI MAT SALLEH", "811204086360", "", "0192938100");
-            AddStaff(db, "", "ALIAS MAT ALI", "690120115613", "", "0199657462");
-            AddStaff(db, "", "CHEONG PUCK KIN", "710730075247", "", "0125557843");
-            AddStaff(db, "", "SAIDI YAACOB", "720718115479", "", "0126313058");
-            AddStaff(db, "", "GUNASEGARAN MUNUSAMY", "690704105777", "", "0163913722");
-            AddStaff(db, "", "MOHD RIZAUDDIN NOOR", "770315036149", "", "0122888804");
-            AddStaff(db, "", "YEO WEE KIAK", "780831135169", "", "0168697380");
-            AddStaff(db, "", "IDRIS BIN KASIM", "620115125629", "", "0198928440");
-            AddStaff(db, "", "EZREEN EZAIRY BIN HUSSIN", "770406055417", "", "0134283991");
-            AddStaff(db, "", "TAN GUAT YOU", "641108085342", "", "");
-            AddStaff(db, "", "NORASHIKIN ALI", "670109055500", "", "0122672512");
-            AddStaff(db, "", "NOR FAZLEEN BINTI  ZAKARIA", "681105035100", "", "019 3578803");
-            AddStaff(db, "", "RUS LINA BINTI RUS DIN", "790727055328", "", "0129045947");
-            AddStaff(db, "", "SUZAIDI MD SHAUKAT", "651123065293", "", "60193175584");
-            AddStaff(db, "", "MANSOR KESOT @ ALI", "670317016039", "", "0193226959");
-            AddStaff(db, "", "S NABINARAJ A/L SHANMUGANATHAN", "830430105623", "", "0122428166");
-            AddStaff(db, "", "JUNAINAH BINTI AHMAD ESA", "740112016562", "", "60162333341");
-            AddStaff(db, "", "MUZAINI BIN MURSHID", "791114145923", "", "0126141042");
-            AddStaff(db, "", "FARAIK HARIM BIN ABDUL RAZAK", "780920076009", "", "0125726342");
-            AddStaff(db, "", "FARIZA BINTI FADZIL", "770303026242", "", "0193033581");
-            AddStaff(db, "", "VIJAYA A/P SUNDRAMOORTHY", "751125145340", "", "0122233957");
-            AddStaff(db, "", "RENUKA A/P THIAGARAJAH", "750909086516", "", "0123553094");
-            AddStaff(db, "", "MOHD ZURAIDI ZAKARIA", "770711075801", "", "60133316659");
-            AddStaff(db, "", "AZWANI ZAM ABDUL RANI", "760201085517", "", "012-326 1691");
-            AddStaff(db, "", "NOORHALIZA BINTI ABU BAKAR", "740218086518", "", "0192797217");
-            AddStaff(db, "", "NOR HALIZA BT SUDIN", "841217145718", "", "60123447896");
-            AddStaff(db, "", "TAJUDIN BIN D.A GAFFOR", "670911106459", "", "60122763928");
-            AddStaff(db, "", "LOGESWARI A/P LECHIMUNAN", "841108086050", "", "6017-3143730");
-            AddStaff(db, "", "HADI ISMA BIN CHE WIL", "770101038245", "", "017-2454588");
-            AddStaff(db, "", "AMBIGAI RATCHAGI A/P MATHAVARAYAN", "740122145114", "", "60162341004");
-            AddStaff(db, "", "FADZELINA BINTI MOHAMED ROZELAN", "810926015180", "", "0197174348");
-            AddStaff(db, "", "FADILAH WATI BINTI KAMIS", "760727055048", "", "0177502238");
-            AddStaff(db, "", "ROMZI BIN ABU BAKAR", "681110085815", "", "0123607094");
-            AddStaff(db, "", "FIRDAUSA ROSEFATIMAH BINTI MOHD YUSOF", "810731145030", "", "60126714978");
-            AddStaff(db, "", "ZURINA BT HARMAINI", "820320065094", "", "60179782762");
-            AddStaff(db, "", "THIRU SELVI A/P MURUGAN", "720208055306", "", "");
-            AddStaff(db, "", "NOR AKMAR YAAKUB", "600203045508", "", "0193138277");
-            AddStaff(db, "", "MOHAMAD KHALIL BIN JAMALDIN", "560929085185", "", "60122192344");
-            AddStaff(db, "", "SHEIRLY @ SANDRA ALFRED", "780927125248", "", "0167985200");
-            AddStaff(db, "", "VERONICA KOW LI LIAN", "640429075984", "", "60122916632");
-            AddStaff(db, "", "HABIBAH BINTI ABDULLAH", "540305055318", "", "60172801952");
-            AddStaff(db, "", "TUNG KA YIN", "811021145620", "", "0173675619");
-            AddStaff(db, "", "NIRMALA A/P M.SUPRAMANIAM", "760507145252", "", "0162480765");
-            AddStaff(db, "", "CHONG SOON LAN", "710802055174", "", "");
-            AddStaff(db, "", "TAN CHEE HONG", "671018075033", "", "60124686382");
-            AddStaff(db, "", "MOHAMAD YUSRI BIN MOHD YUSOFF", "870824025403", "", "60194146508");
-            AddStaff(db, "", "MOHD NORDIN BIN ABD RAHMAN", "721030086053", "", "60126176154");
-            AddStaff(db, "", "SUZLINA BINTI OMAR", "641003105802", "", "60193785247");
-            AddStaff(db, "", "IZHAR BIN ISWAN", "870601145133", "", "60176555100");
-            AddStaff(db, "", "NOORSHAKILA BINTI MOHAMAD DAROS", "850330016656", "", "60137193222");
-            AddStaff(db, "", "SITI AISHAH BINTI MD DIN", "850310145514", "", "01137626684");
-            AddStaff(db, "", "CHONG KOK FEI", "730319085857", "", "60126214444");
-            AddStaff(db, "", "SITI NAZIRAH BINTI MOHD NOOR", "881015075084", "", "60195119684");
-            AddStaff(db, "", "YONG CITY", "750718055688", "", "60127672388");
-            AddStaff(db, "", "ALIF FAIZUDIN BIN JAMALUDIN", "891125146751", "", "60193450623");
-            AddStaff(db, "", "MOHD ZAIMI BIN AB RAZAK", "790705145947", "", "0166668245");
-            AddStaff(db, "", "SITI SUHAILA BINTI AB HAMID", "740705035558", "", "60183513537");
-            AddStaff(db, "", "SYAIFUL ANUAR BIN BOKHARI", "751108105611", "", "60129209784");
-            AddStaff(db, "", "MOHAMMAD AL-RASHID BIN ABU BAKAR", "900804145963", "", "60107008300");
-            AddStaff(db, "", "VICKNESWARAN A/L MUNIANDY", "881226565331", "", "60102485168");
-            AddStaff(db, "", "NORFAUZIAHANIM BT JAAFAR", "840707025618", "", "60122833746");
-            AddStaff(db, "", "NOOR AZIERA EZURIEN BINTI A.AZIZ", "890518015336", "", "60133633527");
-            AddStaff(db, "", "NOOR HAMIZA BINTI MOHD MUSWAN", "811020085048", "", "60123342645");
-            AddStaff(db, "", "SITI AZREENA AIDA BT HAMAT", "880824565046", "", "01110402408");
-            AddStaff(db, "", "AZHARUL ADHA BIN DZULKARNAIN", "850906086025", "", "0176214467");
-            AddStaff(db, "", "NORLIYANA BINTI MOHD REDZUAN", "890203085356", "", "60172937796");
-            AddStaff(db, "", "ROSNATASHA BINTI ABU BAKAR", "781127146264", "", "0183211260");
-            AddStaff(db, "", "MOHD KHAIRIL ASHRAF BIN MOHAMAD KARID", "830819035133", "", "0122689759");
-            AddStaff(db, "", "SHEETALJIT KAUR BAINS", "810608095082", "", "0162260484");
-            AddStaff(db, "", "AMILA NORJIHAH BINTI MUSA", "850710115306", "", "0192224895");
-            AddStaff(db, "", "VARATHARAJAN A/L RAMAN", "770518145695", "", "0126144786");
-            AddStaff(db, "", "MONARITA BINTI JUNAIDI", "791105715066", "", "0122655455");
-            AddStaff(db, "", "VICTOR SABIN", "820326125369", "", "016-8049472");
-            AddStaff(db, "", "TAN SZE CHUN", "790706105031", "", "0178788166");
-            AddStaff(db, "", "LAI KAM BENG", "530725015647", "", "0192103188");
-            AddStaff(db, "", "NUR HASLIZAWATY BINTI AHMAD", "820801035056", "", "60111193156");
-            AddStaff(db, "", "FATIMAH BINTI MOHD ALI", "680208025760", "", "60174222452");
-            AddStaff(db, "", "NAVAKUMAR A/L BALAKRISHNAN", "820217025801", "", "60164849479");
-            AddStaff(db, "", "MOHD HANIS BIN HUSSIN", "870918065297", "", "6017-9636463");
-            AddStaff(db, "", "ROSNANI BINTI ALI", "700526015408", "", "90136115125");
-            AddStaff(db, "", "HAFIZAH BINTI ABDUL KARIM", "840426065090", "", "0192407065");
-            AddStaff(db, "", "PREMA A/P VALAISHAN", "720229015688", "", "60177893986");
-            AddStaff(db, "", "NOR MAZLI BIN AWANG", "740507115557", "", "60199397574");
-            AddStaff(db, "", "LEE CHAN LI", "741008105770", "", "60126745445");
-            AddStaff(db, "", "WONG KEET SEONG", "841109065235", "", "60179731127");
-            AddStaff(db, "", "MARLENE MARGARET NICHOL", "570903135016", "", "60198189531");
-            AddStaff(db, "", "NURAINI BINTI MAT JUDIN", "870409125132", "", "60138535812");
-            AddStaff(db, "", "MUHAMMAD MU'AZ BIN AZAM", "900503025597", "", "0192274707");
-            AddStaff(db, "", "AZADDIN BIN NGAH TASIR", "610425085539", "", "0123920200");
-            AddStaff(db, "", "OSMAN BIN YUSOP", "810228015159", "", "60197778457");
-            AddStaff(db, "", "GRACY NEALDA A.DUKIM", "860626496272", "", "60168111149");
-            AddStaff(db, "", "SITI HASLEEZA BINTI MOHD HASNAN", "840224146028", "", "60123930280");
-            AddStaff(db, "", "RAJA MOHAMMAD HISHAM BIN RAJA MUZAFAR SHAH", "791010105599", "", "60166397882");
-            AddStaff(db, "", "NOOR SYAFINI BINTI MOHAMED NOOR", "880427035770", "", "60132549380");
-            AddStaff(db, "", "NURHAZAR BINTI MD. ARIS", "751022035640", "", "60107840854");
-            AddStaff(db, "", "MOHD AZMI BIN MOHD SUPIAN", "681005106055", "", "60123851752");
-            AddStaff(db, "", "MUHAMMAD MU'ADZ BIN ZULKIFLI", "900817086667", "", "601126262218");
-            AddStaff(db, "", "HARTINI BINTI HUSSIN", "781018025500", "", "60134939330");
-            AddStaff(db, "", "SOLEHAH BINTI AHMAD BAIJURI", "850301085644", "", "60125035588");
-            AddStaff(db, "", "MOHD AZIZUDDIN BIN ABDULLAH", "841231115179", "", "60123010969");
-            AddStaff(db, "", "HAFAZIL BIN MOHD ADAM", "710527085095", "", "60129832416");
-            AddStaff(db, "", "ZAIDI BIN MOHAMMAD", "740928055505", "", "60196420327");
-            AddStaff(db, "", "NURSAKINA BINTI ZAKARIA", "910815146442", "", "60173171964");
-            AddStaff(db, "", "NOORNADIA BINTI ABD JALIL", "860921405038", "", "60122795471");
-            AddStaff(db, "", "NURSHUHAIDA BINTI AB. RAZAK", "900818145104", "", "01152211428");
-            AddStaff(db, "", "SITI ZAHARAH BINTI ABD. HALIM", "860830025822", "", "601347332291");
-            AddStaff(db, "", "ZAMRI BIN ZAINAL", "670104055085", "", "60123228554");
-            AddStaff(db, "", "MOHD FAIZAL BIN MOHD SALLEH", "691124015251", "", "60195555241");
-            AddStaff(db, "", "CHAN MIEW LING", "571001105840", "", "0129136330");
-            AddStaff(db, "", "NORANI BINTI MD MAKHTAR", "940524036152", "", "0148226154");
-            AddStaff(db, "", "MOHD SYAHRUL AZMI BIN ESHA", "810316085819", "", "60194567234");
-            AddStaff(db, "", "MOHAMMAD FARID BIN FADZIL", "741014017881", "", "0175335744");
-            AddStaff(db, "", "ABDUL RAHMAN BIN ABDUL", "670627095027", "", "60133480804");
-            AddStaff(db, "", "SABARIAH BINTI KARIM", "901112055048", "", "60176783665");
-            AddStaff(db, "", "IDA FARIDAH BINTI MOHD ROSDI", "810318065096", "", "60102187894");
-            AddStaff(db, "", "TANG YOW HUA", "671003086303", "", "60124776350");
-            AddStaff(db, "", "MOHD HAFFIZ BIN TALIB", "860920566251", "", "0197176283");
-            AddStaff(db, "", "SAZLIN BT ZAINAL ABIDIN", "790205015548", "", "60123430502");
-            AddStaff(db, "", "MUHAMMAD HAZIQ BIN MOHMAD ZAINI", "950802145535", "", "60169354723");
-            AddStaff(db, "", "SITI AZLINA BINTI K ABDUL RAHMAN", "950509075208", "", "60162488582");
-            AddStaff(db, "", "MOHD SHAIRAZI BIN NOOR ZAKRI", "871002565245", "", "60149594281");
-            AddStaff(db, "", "FARHANNA BINTI UMAR @ OMAR", "861003525908", "", "60138323242");
-            AddStaff(db, "", "MUHAMAD HIZAM BIN JAMALUDIN", "790624105097", "", "60166368406");
-            AddStaff(db, "", "WAN MOHD KAMARUL BIN WAN MOHAMAD", "771207145123", "", "60176043368");
-            AddStaff(db, "", "AZURIN BINTI LANI", "860125145298", "", "60197786159");
-            AddStaff(db, "", "MUHAMMAD SUFRI REDZUAN BIN RAZALI", "880201115225", "", "60179336649");
-            AddStaff(db, "", "HALIM BIN SALEH", "720301065445", "", "60192343709");
-            AddStaff(db, "", "ROHANIZAM BINTI TALIB", "720614016468", "", "60192335353");
-            AddStaff(db, "", "AZHAR BIN HAMZAH", "760206025935", "", "60193770266");
-            AddStaff(db, "", "MOHD ADNAN ANAN BIN ABDULLAH", "600811105973", "", "60162773529");
-            AddStaff(db, "", "NIK MOHD FATTAH BIN NIK HAMDAN", "820226145207", "", "60123637174");
-            AddStaff(db, "", "MOHAMMAD MAFRUKHIN BIN MOKHTAR", "810919015895", "", "60193495125");
-            AddStaff(db, "", "FARAH AZIEYATUL NABILAH BINTI MOHAMED NAZAM", "930618146476", "", "60193747485");
-            AddStaff(db, "", "RAMANADASS A/L SATHIASEELAN", "931209146437", "", "60192717373");
-            AddStaff(db, "", "MOHD AZRIL BIN KHAIRUL ANUAR", "931009105091", "", "");
-            AddStaff(db, "", "NORFAIZAH BINTI MOHAMED NOR", "891216146220", "", "60126431469");
-            AddStaff(db, "", "MUHAMMAD FARIHIIN BIN ABDUL LATIF", "890515146103", "", "60176473873");
-            AddStaff(db, "", "NUR HANIZA BINTI ZAHARAN", "820614115608", "", "0182814066");
-            AddStaff(db, "", "NUR ZAIHAN BINTI MOHD HATA", "850107145674", "", "0123540175");
-            AddStaff(db, "", "MOHD ZAMANI BIN MOHD YUSOFF", "740216025607", "", "0133603471");
-            AddStaff(db, "", "NOR AMALINA BINTI ABDUL RAHMAN", "921109035482", "", "0179702482");
-            AddStaff(db, "", "MUHAMAD HAMIZAN BIN JAAFAR", "930318146909", "", "0172092501");
-            AddStaff(db, "", "FATIN SHAKIRAH BINTI AB AZIZ", "900826035554", "", "01139970300");
-            AddStaff(db, "", "NHANTHINE A/P SELLAMUTHAIYA", "890403015598", "", "0175321711");
-            AddStaff(db, "", "NURUL ILLYANA BINTI AHMAD SAFIAN", "910114145842", "", "0123468370");
-            AddStaff(db, "", "MOHARAM ALI", "930611065665", "", "01117952526");
-            AddStaff(db, "", "IRWAN ISKANDAR BIN AZHARUDDIN", "750602145593", "", "0186600702");
-            AddStaff(db, "", "AKMALHAKIMI BIN ABDULLAH", "851113035185", "", "0176796935");
-            AddStaff(db, "", "MUHAMMAD ISHAM SAFUAN BIN ISMAIL", "961211146003", "", "0102864418");
-            AddStaff(db, "", "MUHAMMAD AMIR ALFAN BIN ZAINUDIN", "921211145581", "", "0187714092");
-            AddStaff(db, "", "FATIN AMIRAH BINTI MOHAMAD", "931023115042", "", "01137247973");
-            AddStaff(db, "", "SITI NAJIHAH BINTI MOHAMED AZLAN", "940223106196", "", "0138211082");
-            AddStaff(db, "", "IZZATUL NABILAH BINTI MOHD ARIFF", "940219106046", "", "0193302064");
-            AddStaff(db, "", "FARAHANA BINTI ZULKEFLI", "940414055248", "", "0132171867");
-            AddStaff(db, "", "JELITA SONIAWATI BINTI FIRDAUS", "920825017504", "", "01137303882");
-            AddStaff(db, "", "NUR SYAMIMIE BINTI ZAMRI", "921121025244", "", "0174663193");
-            AddStaff(db, "", "KHOIRUNNISA BINTI MOHD NAZARI", "940104065512", "", "0139130294");
-            AddStaff(db, "", "VICTORIA ANAK SANEL", "930227135104", "", "0198758345");
-            AddStaff(db, "", "NURRUL WAN NADIAH BINTI AHMAD LATFFI", "900212085856", "", "0104482212");
-            AddStaff(db, "", "SITI WAN SITA BINTI HAKIM", "911220126498", "", "0165885429");
-            AddStaff(db, "", "KHAIRUL FAIZI BIN AB AZIZ", "690920105739", "", "0122685080");
-            AddStaff(db, "", "AMEZA AFIFAH BINTI FAIZAL", "931019136430", "", "0146832143");
-            AddStaff(db, "", "MOHD YUSUF BIN RAMLY", "880808355081", "", "0134475684");
-            AddStaff(db, "", "AHMAD MUSLIHUDDIN BIN ROZLAN", "940215035295", "", "0145085400");
-            AddStaff(db, "", "MUHAMMAD NADZRI BIN AHMAD ZAKI", "940806086289", "", "0175325530");
-            AddStaff(db, "", "MUHAMMAD HAFIZUL AZWAN BIN MOHD SHAMZAN", "930826145005", "", "0172266046");
-            AddStaff(db, "", "IKHWAN HAZIQ BIN AMINUDIN", "921112146079", "", "0182269759");
-            AddStaff(db, "", "AIDA SALWA BINTI JUSOH @ SHAFIE", "940414035060", "", "0172990604");
-            AddStaff(db, "", "RAUDHA NABILA BINTI MOHD YUSOFF", "940814105320", "", "0193841408");
-            AddStaff(db, "", "ISMALISA BINTI ISMAIL", "820508086188", "", "0193502367");
-            AddStaff(db, "", "IZZAT FIRDAUS BIN AHMAD", "900118105371", "", "0193713077");
-            AddStaff(db, "", "SITI NOR ZALIKA BINTI JAWAHIR", "881103015874", "", "0128839341");
-            AddStaff(db, "", "NIRMALL A/L GUNASEKARAN", "930922105695", "", "0173221973");
+            }
 
+            if (!db.Designation.Any())
+            {
+                db.Designation.AddOrUpdate(s => s.Name,
+                    new Designation { Name = "CALL CENTRE AGENT -H & I", Display = true },
+                    new Designation { Name = "CEO", Display = true },
+                    new Designation { Name = "CLERICAL ", Display = true },
+                    new Designation { Name = "CLERICAL OFFICER-I1", Display = true },
+                    new Designation { Name = "CLERICAL OFFICER-I2", Display = true },
+                    new Designation { Name = "DEPUTY MANAGER-F2", Display = true },
+                    new Designation { Name = "EXECUTIVE", Display = true },
+                    new Designation { Name = "EXECUTIVE OFFICER-H1", Display = true },
+                    new Designation { Name = "EXECUTIVE OFFICER-H2", Display = true },
+                    new Designation { Name = "GENERAL MANAGER-C1", Display = true },
+                    new Designation { Name = "MANAGER", Display = true },
+                    new Designation { Name = "MANAGER-E1", Display = true },
+                    new Designation { Name = "MANAGER-E2", Display = true },
+                    new Designation { Name = "SENIOR EXECUTIVE", Display = true },
+                    new Designation { Name = "SENIOR EXECUTIVE-G1", Display = true },
+                    new Designation { Name = "SENIOR EXECUTIVE-G2", Display = true },
+                    new Designation { Name = "SENIOR MANAGER", Display = true },
+                    new Designation { Name = "SENIOR MANAGER-D1", Display = true },
+                    new Designation { Name = "SENIOR MANAGER-D2", Display = true }
+                    );
 
+            }
+
+            #region add staff
+            AddStaff(db, "haroldean.l", "HAROLDEAN LIM @ LIM JIN LOK", "690315065097", "haroldean@akpk.org.my", "60106598960", "Human Capital", "MANAGER-E1", "0002");
+            AddStaff(db, "azman.h", "AZMAN BIN HASIM", "690629715005", "azman@akpk.org.my", "60192333703", "Corporate Services", "GENERAL MANAGER-C1", "0003");
+            AddStaff(db, "norfazillah.mz", "NOR FAZILLAH BINTI MOHD ZIN", "730201145172", "dilla@akpk.org.my", "60123844738", "Human Capital", "EXECUTIVE OFFICER-H1", "0006");
+            AddStaff(db, "mohdjusrizal.a", "MOHD JUSRIZAL BIN ARIS", "800906085115", "jusrizal@akpk.org.my", "60129986169", "Channel Management", "SENIOR EXECUTIVE-G2", "0007");
+            AddStaff(db, "nmazatulakmar.r", "NORMAZATULAKMAR BINTI RAZALI", "840417145056", "akmar@akpk.org.my", "60132666146", "Channel Management", "SENIOR EXECUTIVE-G2", "0008");
+            AddStaff(db, "firdaus", "AHMAD FIRDAUS BIN MOHAMAD ARIFF", "820521085833", "firdaus@akpk.org.my", "60192685275", "Human Capital", "SENIOR EXECUTIVE-G2", "0009");
+            AddStaff(db, "hayati", "NUR HAYATI BINTI MAT SALLEH", "811204086360", "hayati@akpk.org.my", "60192938100", "Finance", "SENIOR EXECUTIVE-G2", "0010");
+            AddStaff(db, "alias.ma", "ALIAS BIN MAT ALI", "690120115613", "alias@akpk.org.my", "60199657462", "Channel Management", "MANAGER-E1", "0013");
+            AddStaff(db, "puckkin.c", "CHEONG PUCK KIN", "710730075247", "pkcheong@akpk.org.my", "60125557843", "Channel Management", "MANAGER-E2", "0015");
+            AddStaff(db, "saidi.y", "SAIDI BIN YAACOB", "720718115479", "saidi@akpk.org.my", "60126313058", "Channel Management", "DEPUTY MANAGER-F2", "0017");
+            AddStaff(db, "gunasegaran.m", "GUNASEGARAN A/L MUNUSAMY", "690704105777", "segaran@akpk.org.my", "60163913722", "Channel Management", "MANAGER-E1", "0018");
+            AddStaff(db, "mohdrizauddin.n", "MOHD RIZAUDDIN BIN NOOR", "770315036149", "rizauddin@akpk.org.my", "60122888804", "Channel Management", "MANAGER-E2", "0019");
+            AddStaff(db, "weekiak.y", "YEO WEE KIAK", "780831135169", "wkyeo@akpk.org.my", "60168697380", "Channel Management", "DEPUTY MANAGER-F2", "0020");
+            AddStaff(db, "idris.k", "IDRIS BIN KASIM", "620115125629", "idris@akpk.org.my", "60198928440", "Channel Management", "MANAGER-E1", "0025");
+            AddStaff(db, "ezreenezairy.h", "EZREEN EZAIRY BIN HUSSIN", "770406055417", "ezreen@akpk.org.my", "60134283991", "Finance", "MANAGER-E2", "0026");
+            AddStaff(db, "guatyou.t", "TAN GUAT YOU", "641108085342", "tgy@akpk.org.my", "60167726985", "DMP Management", "MANAGER", "0030351");
+            AddStaff(db, "norashikin.a", "NORASHIKIN ALI", "670109055500", "shikinali@akpk.org.my", "60122672512", "Channel Management", "EXECUTIVE OFFICER-H1", "0031123");
+            AddStaff(db, "norfazleen.z", "NOR FAZLEEN BINTI  ZAKARIA", "681105035100", "fazleen@akpk.org.my", "6019 3578803", "Operations", "GENERAL MANAGER-C1", "0034");
+            AddStaff(db, "ruslina.rd", "RUS LINA BINTI RUS DIN", "790727055328", "ruslina@akpk.org.my", "60129045947", "DMP Management", "EXECUTIVE OFFICER-H1", "0036");
+            AddStaff(db, "suzaidi.ms", "SUZAIDI BIN MD. SHAUKAT", "651123065293", "suzaidi@akpk.org.my", "60193175584", "Finance", "MANAGER", "0036159");
+            AddStaff(db, "mansor.k", "MANSOR BIN KESOT @ ALI", "670317016039", "mansor@akpk.org.my", "60193226959", "Channel Management", "SENIOR MANAGER", "0036531");
+            AddStaff(db, "nabinaraj.s", "S.NABINARAJ A/L K.SHANMUGANATHAN", "830430105623", "raj@akpk.org.my", "60122428166", "Channel Management", "SENIOR EXECUTIVE-G1", "0038");
+            AddStaff(db, "junainah.a", "JUNAINAH BINTI AHMAD ESA", "740112016562", "junainah@akpk.org.my", "60162333341", "Channel Management", "MANAGER", "0046156");
+            AddStaff(db, "muzaini.m", "MUZAINI BIN MURSHID", "791114145923", "muzaini@akpk.org.my", "60126141042", "DMP Management", "DEPUTY MANAGER-F2", "0047");
+            AddStaff(db, "faraikharim.ar", "FARAIK HARIM BIN ABDUL RAZAK", "780920076009", "faraik@akpk.org.my", "60125726342", "Channel Management", "SENIOR EXECUTIVE-G1", "0048");
+            AddStaff(db, "fariza.f", "FARIZA BINTI FADZIL", "770303026242", "fariza@akpk.org.my", "60193033581", "Channel Management", "EXECUTIVE OFFICER-H1", "0049");
+            AddStaff(db, "vijaya", "VIJAYA A/P SUNDRAMOORTHY", "751125145340", "vijaya@akpk.org.my", "60122233957", "Human Capital", "MANAGER-E2", "0050");
+            AddStaff(db, "renuka.t", "RENUKA A/P THIAGARAJAH", "750909086516", "renuka@akpk.org.my", "60123553094", "Channel Management", "MANAGER", "005163A");
+            AddStaff(db, "mohdzuraidi.z", "MOHD ZURAIDI BIN ZAKARIA", "770711075801", "zuraidi@akpk.org.my", "60133316659", "Human Capital", "MANAGER", "0053374");
+            AddStaff(db, "Azwan", "AZWANI ZAM ABDUL RANI", "760201085517", "azwan@akpk.org.my", "60123261691", "Financial Education", "MANAGER", "0055783");
+            AddStaff(db, "noorhaliza.ab", "NOORHALIZA BINTI ABU BAKAR", "740218086518", "liz@akpk.org.my", "60192797217", "Financial Education", "DEPUTY MANAGER-F2", "0056");
+            AddStaff(db, "norhaliza.s", "NOR HALIZA BINTI SUDIN", "841217145718", "haliza@akpk.org.my", "60123447896", "DMP Management", "EXECUTIVE OFFICER-H1", "0060");
+            AddStaff(db, "tajudin", "TAJUDIN BIN D A GAFFOR", "670911106459", "tajudin@akpk.org.my", "60122763928", "Human Capital", "CLERICAL OFFICER-I1", "0065");
+            AddStaff(db, "logeswari.l", "LOGESWARI A/P LECHIMUNAN", "841108086050", "loges@akpk.org.my", "60173143730", "Finance", "SENIOR EXECUTIVE-G2", "0067");
+            AddStaff(db, "hadiisma.cw", "HADI ISMA BIN CHE WIL", "770101038245", "hadi@akpk.org.my", "60172454588", "Finance", "CLERICAL OFFICER-I1", "0068");
+            AddStaff(db, "aratchagi.m", "AMBIGAI RATCHAGI A/P MATHAVARAYAN", "740122145114", "amy@akpk.org.my", "60162341004", "Channel Management", "CLERICAL OFFICER-I1", "0069");
+            AddStaff(db, "fadzelina.mr", "FADZELINA BINTI MOHAMED ROZELAN", "810926015180", "lina@akpk.org.my", "60197174348", "Channel Management", "EXECUTIVE OFFICER-H2", "0071");
+            AddStaff(db, "fadilahwati.k", "FADILAH WATI BINTI KAMIS", "760727055048", "wati@akpk.org.my", "60177502238", "Channel Management", "EXECUTIVE OFFICER-H1", "0072");
+            AddStaff(db, "romzi.ab", "ROMZI BIN ABU BAKAR", "681110085815", "romzi@akpk.org.my", "60123607094", "Channel Management", "MANAGER-E2", "0075");
+            AddStaff(db, "frosefatimah.my", "FIRDAUSA ROSEFATIMAH BINTI MOHD YUSOF", "810731145030", "rosefatimah@akpk.org.my", "60126714978", "Channel Management", "EXECUTIVE OFFICER-H1", "0076");
+            AddStaff(db, "zurina.h", "ZURINA BINTI HARMAINI", "820320065094", "rina@akpk.org.my", "60179782762", "Channel Management", "EXECUTIVE OFFICER-H1", "0077");
+            AddStaff(db, "thiruselvi.m", "THIRU SELVI A/P MURUGAN", "720208055306", "selvi@akpk.org.my", "60122267710", "DMP Management", "SENIOR EXECUTIVE-G1", "0081");
+            AddStaff(db, "norakmar.y", "NOR AKMAR BINTI YAAKUB", "600203045508", "norakmar@akpk.org.my", "60193138277", "Financial Education", "SENIOR MANAGER-D2", "0083");
+            AddStaff(db, "mohamadkhalil.j", "MOHAMAD KHALIL BIN JAMALDIN", "560929085185", "khalil@akpk.org.my", "60122192344", "Corporate Communications", "MANAGER", "0084");
+            AddStaff(db, "sheirly.a", "SHEIRLY @ SANDRA ALFRED", "780927125248", "sheirly@akpk.org.my", "60167985200", "Channel Management", "SENIOR EXECUTIVE-G1", "0086");
+            AddStaff(db, "veronica.kll", "VERONICA KOW LI LIAN", "640429075984", "veronica@akpk.org.my", "60122916632", "Channel Management", "DEPUTY MANAGER-F2", "0088");
+            AddStaff(db, "habibah.a", "HABIBAH BINTI ABDULLAH", "540305055318", "habibah@akpk.org.my", "60172801952", "Channel Management", "MANAGER", "0091");
+            AddStaff(db, "kayin.t", "TUNG KA YIN", "811021145620", "tkayin@akpk.org.my", "60173675619", "Channel Management", "SENIOR EXECUTIVE-G1", "0092");
+            AddStaff(db, "nirmala", "NIRMALA A/P M SUPRAMANIAM", "760507145252", "nirmala@akpk.org.my", "60162480765", "Financial Education", "MANAGER-E1", "0094");
+            AddStaff(db, "soonlan.c", "CHONG SOON LAN", "710802055174", "slchong@akpk.org.my", "60129867288", "Channel Management", "SENIOR EXECUTIVE-G1", "0096");
+            AddStaff(db, "cheehong.t", "TAN CHEE HONG", "671018075033", "chtan@akpk.org.my", "60124686382", "Channel Management", "MANAGER-E2", "0098");
+            AddStaff(db, "mohamadyusri.my", "MOHAMAD YUSRI BIN MOHD YUSOFF", "870824025403", "yusri@akpk.org.my", "60194146508", "Channel Management", "CLERICAL OFFICER-I1", "0099");
+            AddStaff(db, "mohdnordin.ar", "MOHD NORDIN BIN ABD RAHMAN", "721030086053", "nordin@akpk.org.my", "60126176154", "Channel Management", "MANAGER-E2", "0103");
+            AddStaff(db, "suzlina.o", "SUZLINA BINTI OMAR", "641003105802", "suzlina@akpk.org.my", "60193785247", "IT", "SENIOR EXECUTIVE-G1", "0104");
+            AddStaff(db, "izhar.i", "IZHAR BIN ISWAN", "870601145133", "izhar@akpk.org.my", "60176555100", "CEO Office", "SENIOR EXECUTIVE-G2", "0105");
+            AddStaff(db, "noorshakila.md", "NOORSHAKILA BINTI MOHAMAD DAROS", "850330016656", "noorshakila@akpk.org.my", "60137193222", "Channel Management", "CLERICAL OFFICER-I1", "0109");
+            AddStaff(db, "sitiaishah.md", "SITI AISHAH BINTI MD DIN", "850310145514", "aishah@akpk.org.my", "60132930283", "Human Capital", "CLERICAL OFFICER-I1", "0110");
+            AddStaff(db, "KFChong", "CHONG KOK FEI", "730319085857", "desmond@akpk.org.my", "60126214444", "Financial Education", "MANAGER-E2", "0115");
+            AddStaff(db, "sitinazirah.mn", "SITI NAZIRAH BINTI MOHD NOOR", "881015075084", "nazirah@akpk.org.my", "60195119684", "Channel Management", "CLERICAL OFFICER-I1", "0116");
+            AddStaff(db, "city.y", "YONG CITY", "750718055688", "elaine@akpk.org.my", "60127672388", "Channel Management", "SENIOR EXECUTIVE-G1", "0122");
+            AddStaff(db, "aliffaizudin.j", "ALIF FAIZUDIN BIN JAMALUDIN", "891125146751", "alif.f@akpk.org.my", "60193450623", "Corporate Communications", "CLERICAL OFFICER-I1", "0123");
+            AddStaff(db, "mohdzaimi.ar", "MOHD ZAIMI BIN AB RAZAK", "790705145947", "mohdzaimi.ar@akpk.org.my", "60166668245", "IT", "SENIOR EXECUTIVE", "0296");
+            AddStaff(db, "sitisuhaila.ah", "SITI SUHAILA BINTI AB HAMID", "740705035558", "suhaila@akpk.org.my", "60183513537", "Channel Management", "SENIOR EXECUTIVE-G1", "0125");
+            AddStaff(db, "syaifulanuar.b", "SYAIFUL ANUAR BIN BOKHARI", "751108105611", "syaiful@akpk.org.my", "60129209784", "Channel Management", "DEPUTY MANAGER-F2", "0126");
+            AddStaff(db, "rashid", "MOHAMMAD AL-RASHID BIN ABU BAKAR", "900804145963", "rashid@akpk.org.my", "60107008300", "Human Capital", "CLERICAL OFFICER-I1", "0127");
+            AddStaff(db, "vickneswaran.m", "VICKNESWARAN A/L MUNIANDY", "881226565331", "vicknes@akpk.org.my", "60102485168", "Channel Management", "SENIOR EXECUTIVE-G2", "0128");
+            AddStaff(db, "norfauziahanim.j", "NORFAUZIAHANIM BINTI JAAFAR", "840707025618", "hanim@akpk.org.my", "60122833746", "Channel Management", "SENIOR EXECUTIVE-G2", "0131");
+            AddStaff(db, "azie", "NOOR AZIERA EZURIEN BINTI A. AZIZ", "890518015336", "azie@akpk.org.my", "60133633527", "Financial Education", "SENIOR EXECUTIVE-G1", "0132");
+            AddStaff(db, "noorhamiza.mm", "NOOR HAMIZA BINTI MOHD MUSWAN", "811020085048", "eja@akpk.org.my", "60123342645", "Operations", "EXECUTIVE OFFICER-H1", "0133");
+            AddStaff(db, "sitiazreena.h", "SITI AZREENA AIDA BINTI HAMAT", "880824565046", "aida@akpk.org.my", "601110402408", "Channel Management", "SENIOR EXECUTIVE-G2", "0134");
+            AddStaff(db, "azharuladha.d", "AZHARUL ADHA BIN DZULKARNAIN", "850906086025", "azharul@akpk.org.my", "60176214467", "DMP Management", "EXECUTIVE OFFICER-H1", "0135");
+            AddStaff(db, "Norliyana", "NORLIYANA BINTI MOHD REDZUAN", "890203085356", "norliyana@akpk.org.my", "60172937796", "Finance", "EXECUTIVE OFFICER-H2", "0138");
+            AddStaff(db, "rosnatasha.ab", "ROSNATASHA BINTI ABU BAKAR", "781127146264", "natasha@akpk.org.my", "60183211260", "DMP Management", "EXECUTIVE OFFICER-H1", "0139");
+            AddStaff(db, "khairilashraf.mk", "MOHD KHAIRIL ASHRAF BIN MOHAMAD KARID", "830819035133", "ashraf@akpk.org.my", "60122689759", "Financial Education", "SENIOR EXECUTIVE-G2", "0140");
+            AddStaff(db, "sheetal", "SHEETALJIT KAUR BAINS", "810608095082", "sheetal@akpk.org.my", "60162260484", "CEO Office", "DEPUTY MANAGER-F2", "0149");
+            AddStaff(db, "amila", "AMILA NORJIHAH BINTI MUSA", "850710115306", "amila@akpk.org.my", "60192224895", "Financial Education", "SENIOR EXECUTIVE-G1", "0151");
+            AddStaff(db, "varatharajan.r", "VARATHARAJAN A/L RAMAN", "770518145695", "rajan@akpk.org.my", "60126144786", "Channel Management", "SENIOR EXECUTIVE-G1", "0154");
+            AddStaff(db, "monarita.j", "MONARITA BINTI JUNAIDI", "791105715066", "monarita@akpk.org.my", "60122655455", "Financial Education", "DEPUTY MANAGER-F2", "0156");
+            AddStaff(db, "victor.s", "VICTOR SABIN", "820326125369", "victor@akpk.org.my", "60168049472", "Channel Management", "CLERICAL OFFICER-I1", "0157");
+            AddStaff(db, "szechun.t", "TAN SZE CHUN", "790706105031", "chun@akpk.org.my", "60178788166", "IT", "MANAGER-E1", "0158");
+            AddStaff(db, "lai.kb", "LAI KAM BENG", "530725015647", "laikb@akpk.org.my", "60192103188", "Channel Management", "SENIOR EXECUTIVE", "0162");
+            AddStaff(db, "nurhaslizawaty.a", "NUR HASLIZAWATY BINTI AHMAD", "820801035056", "haslizawaty@akpk.org.my", "60111193156", "Finance", "SENIOR EXECUTIVE-G2", "0165");
+            AddStaff(db, "fatimah.ma", "FATIMAH BINTI MOHD ALI", "680208025760", "fatimah@akpk.org.my", "60174222452", "Channel Management", "SENIOR EXECUTIVE-G1", "0166");
+            AddStaff(db, "navakumar.b", "NAVAKUMAR A/L BALAKRISHNAN", "820217025801", "navakumar@akpk.org.my", "60164849479", "Channel Management", "SENIOR EXECUTIVE-G1", "0168");
+            AddStaff(db, "mohdhanis.h", "MOHD HANIS BIN HUSSIN", "870918065297", "hanis@akpk.org.my", "60179636463", "Channel Management", "SENIOR EXECUTIVE-G1", "0169");
+            AddStaff(db, "rosnani.a", "ROSNANI BINTI ALI", "700526015408", "rosnani@akpk.org.my", "60183211260", "Channel Management", "SENIOR EXECUTIVE-G1", "0170");
+            AddStaff(db, "hafizah.ak", "HAFIZAH BINTI ABDUL KARIM", "840426065090", "hafizah@akpk.org.my", "60192407065", "DMP Management", "SENIOR EXECUTIVE-G2", "0172");
+            AddStaff(db, "prema.v", "PREMA A/P VALAISHAN", "720229015688", "prema@akpk.org.my", "60177893986", "Channel Management", "SENIOR EXECUTIVE-G1", "0173");
+            AddStaff(db, "normazli.a", "NOR MAZLI BIN AWANG", "740507115557", "mazli@akpk.org.my", "60199397574", "Channel Management", "SENIOR EXECUTIVE-G1", "0174");
+            AddStaff(db, "chanli.l", "LEE CHAN LI", "741008105770", "chanli@akpk.org.my", "60126745445", "Channel Management", "MANAGER-E2", "0175");
+            AddStaff(db, "keetseong.w", "WONG KEET SEONG", "841109065235", "kseong@akpk.org.my", "60179731127", "Financial Education", "SENIOR EXECUTIVE-G2", "0179");
+            AddStaff(db, "mmargaret.n", "MARLENE MARGARET ANAK JOHN NICHOL", "570903135016", "margaret@akpk.org.my", "60198189531", "Channel Management", "MANAGER", "0180");
+            AddStaff(db, "nuraini.mj", "NURAINI BINTI MAT JUDIN", "870409125132", "nuraini@akpk.org.my", "60138535812", "Channel Management", "EXECUTIVE OFFICER-H1", "0182");
+            AddStaff(db, "muhammadmuaz.a", "MUHAMMAD MU'AZ BIN AZAM", "900503025597", "muaz@akpk.org.my", "60192274707", "IT", "EXECUTIVE OFFICER-H2", "0186");
+            AddStaff(db, "azaddin.nt", "AZADDIN BIN NGAH TASIR", "610425085539", "azaddin@akpk.org.my", "60123920200", "CEO Office", "CEO", "0188");
+            AddStaff(db, "osman.y", "OSMAN BIN YUSOP", "810228015159", "osman@akpk.org.my", "60197778457", "Channel Management", "SENIOR EXECUTIVE-G2", "0189");
+            AddStaff(db, "gracynealda.d", "GRACY NEALDA A. DUKIM", "860626496272", "gracy@akpk.org.my", "60168111149", "Channel Management", "SENIOR EXECUTIVE-G1", "0190");
+            AddStaff(db, "sitihasleeza.mh", "SITI HASLEEZA BINTI MOHD HASNAN", "840224146028", "hasleeza@akpk.org.my", "60123930280", "Channel Management", "CLERICAL OFFICER-I2", "0191");
+            AddStaff(db, "rajahisham.rms", "RAJA MOHAMMAD HISHAM BIN RAJA MUZAFAR SHAH", "791010105599", "hisham@akpk.org.my", "60166397882", "IT", "SENIOR EXECUTIVE-G1", "0193");
+            AddStaff(db, "noorsyafini.mn", "NOOR SYAFINI BINTI MOHAMED NOOR", "880427035770", "syafini@akpk.org.my", "60132549380", "Corporate Services", "CLERICAL OFFICER-I2", "0194");
+            AddStaff(db, "nurhazar.ma", "NURHAZAR BINTI MD.ARIS", "751022035640", "nurhazar@akpk.org.my", "60107840854", "Human Capital", "SENIOR EXECUTIVE-G1", "0195");
+            AddStaff(db, "mohdazmi.ms", "MOHD AZMI BIN MOHD SUPIAN", "681005106055", "azmi@akpk.org.my", "60123851752", "IT", "SENIOR MANAGER-D1", "0198");
+            AddStaff(db, "muhammadmuadz.z", "MUHAMMAD MU'ADZ BIN ZULKIFLI", "900817086667", "muadz@akpk.org.my", "601126262218", "Financial Education", "EXECUTIVE OFFICER-H2", "0201");
+            AddStaff(db, "hartini.h", "HARTINI BINTI HUSSIN", "781018025500", "hartini@akpk.org.my", "60134939330", "Channel Management", "SENIOR EXECUTIVE-G1", "0202");
+            AddStaff(db, "solehah.ab", "SOLEHAH BINTI AHMAD BAIJURI", "850301085644", "solehah@akpk.org.my", "60125035588", "Channel Management", "SENIOR EXECUTIVE-G1", "0203");
+            AddStaff(db, "mohdazizuddin.a", "MOHD AZIZUDDIN BIN ABDULLAH", "841231115179", "azizuddin@akpk.org.my", "60123010969", "Channel Management", "SENIOR EXECUTIVE-G2", "0208");
+            AddStaff(db, "hafazil.ma", "HAFAZIL BIN MOHD ADAM", "710527085095", "hafazil@akpk.org.my", "60129832416", "DMP Management", "SENIOR MANAGER-D2", "0210");
+            AddStaff(db, "zaidi.m", "ZAIDI BIN MOHAMMAD", "740928055505", "zaidi@akpk.org.my", "60196420327", "Channel Management", "SENIOR EXECUTIVE-G1", "0212");
+            AddStaff(db, "noornadia.aj", "NOORNADIA BINTI ABD JALIL", "860921405038", "nadia@akpk.org.my", "60122795471", "DMP Management", "CLERICAL OFFICER-I2", "0219");
+            AddStaff(db, "shuhaida", "NURSHUHAIDA BINTI AB.RAZAK", "900818145104", "shuhaida@akpk.org.my", "601152211428", "Finance", "EXECUTIVE OFFICER-H1", "0220");
+            AddStaff(db, "sitizaharah.ah", "SITI ZAHARAH BINTI ABD. HALIM", "860830025822", "zaharah@akpk.org.my", "601347332291", "Channel Management", "CLERICAL ", "0221");
+            AddStaff(db, "zamri.z", "ZAMRI BIN ZAINAL", "670104055085", "zamri@akpk.org.my", "60123228554", "Channel Management", "MANAGER-E2", "0222");
+            AddStaff(db, "mohdfaizal.ms", "MOHD FAIZAL BIN MOHD SALLEH", "691124015251", "mohd.faizal@akpk.org.my", "60195555241", "Channel Management", "SENIOR EXECUTIVE-G1", "0225");
+            AddStaff(db, "miewling.c", "CHAN MIEW LING", "571001105840", "miewling.c@akpk.org.my", "60129136330", "Channel Management", "SENIOR EXECUTIVE", "0274");
+            AddStaff(db, "norani.mm", "NORANI BINTI MD MAKHTAR", "940524036152", "norani.mm@akpk.org.my", "60148226154", "Channel Management", "CALL CENTRE AGENT -H & I", "0271");
+            AddStaff(db, "msyahrulazmi.e", "MOHD SYAHRUL AZMI BIN ESHA", "810316085819", "syahrul.azmi@akpk.org.my", "60194567234", "Channel Management", "SENIOR EXECUTIVE-G2", "0226");
+            AddStaff(db, "mohammadfarid.f", "MOHAMMAD FARID BIN FADZIL", "741014017881", "mohammad.farid@akpk.org.my", "60175335744", "Channel Management", "SENIOR EXECUTIVE-G1", "0227");
+            AddStaff(db, "rahman", "ABDUL RAHMAN BIN ABDUL", "670627095027", "abdul.rahman@akpk.org.my", "60133480804", "Compliance & Risk Management", "MANAGER-E2", "0228");
+            AddStaff(db, "idafaridah.mr", "IDA FARIDAH BINTI MOHD ROSDI", "810318065096", "ida.faridah@akpk.org.my", "60102187894", "Channel Management", "SENIOR EXECUTIVE-G1", "0230");
+            AddStaff(db, "yowhua.t", "TANG YOW HUA", "671003086303", "yowhua.tang@akpk.org.my", "60124776350", "DMP Management", "EXECUTIVE OFFICER-H1", "0231");
+            AddStaff(db, "mohdhaffiz.t", "MOHD HAFFIZ BIN TALIB", "860920566251", "mohdhaffiz.t@akpk.org.my", "60197176283", "Human Capital", "EXECUTIVE OFFICER-H1", "0234");
+            AddStaff(db, "sazlin.za", "SAZLIN BT ZAINAL ABIDIN", "790205015548", "sazlin.za@akpk.org.my", "60123430502", "Corporate Communications", "MANAGER-E2", "0235");
+            AddStaff(db, "muhammadhaziq.m", "MUHAMMAD HAZIQ BIN MOHMAD ZAINI", "950802145535", "muhammadhaziq.m@akpk.org.my", "60169354723", "Channel Management", "CLERICAL OFFICER-I2", "0236");
+            AddStaff(db, "sitiazlina.abd", "SITI AZLINA BINTI K ABDUL RAHMAN", "950509075208", "sitiazlina.abd@akpk.org.my", "60162488582", "Channel Management", "CALL CENTRE AGENT -H & I", "0237");
+            AddStaff(db, "mohdshairazi.nz", "MOHD SHAIRAZI BIN NOOR ZAKRI", "871002565245", "mohdshairazi.nz@akpk.org.my", "60149594281", "Compliance & Risk Management", "SENIOR EXECUTIVE-G1", "0239");
+            AddStaff(db, "farhanna.u", "FARHANNA BINTI UMAR @ OMAR", "861003525908", "farhanna.u@akpk.org.my", "60138323242", "Channel Management", "SENIOR EXECUTIVE-G2", "0240");
+            AddStaff(db, "muhamadhizam.j", "MUHAMAD HIZAM BIN JAMALUDIN", "790624105097", "muhamadhizam.j@akpk.org.my", "60166368406", "Channel Management", "SENIOR EXECUTIVE-G1", "0241");
+            AddStaff(db, "wankamarul.wm", "WAN MOHD KAMARUL BIN WAN MOHAMAD", "771207145123", "wankamarul.wm@akpk.org.my", "60176043368", "IT", "EXECUTIVE OFFICER-H1", "0242");
+            AddStaff(db, "azurin.l", "AZURIN BINTI LANI", "860125145298", "azurin.l@akpk.org.my", "60197786159", "Channel Management", "CLERICAL ", "0243");
+            AddStaff(db, "muhammadsufri.r", "MUHAMMAD SUFRI REDZUAN BIN RAZALI", "880201115225", "muhammadsufri.r@akpk.org.my", "60179336649", "Channel Management", "CLERICAL ", "0244");
+            AddStaff(db, "halim.s", "HALIM BIN SALEH", "720301065445", "halim.s@akpk.org.my", "60192343709", "IT", "MANAGER-E2", "0246");
+            AddStaff(db, "rohanizam.t", "ROHANIZAM BINTI TALIB", "720614016468", "rohanizam.t@akpk.org.my", "60192335353", "Channel Management", "SENIOR EXECUTIVE-G1", "0247");
+            AddStaff(db, "azhar.hamzah", "AZHAR BIN HAMZAH", "760206025935", "azhar.hamzah@akpk.org.my", "60193770266", "Channel Management", "SENIOR EXECUTIVE-G1", "0248");
+            AddStaff(db, "mohdadnan.a", "MOHD ADNAN ANAN BIN ABDULLAH", "600811105973", "mohdadnan@akpk.org.my", "60162773529", "Compliance & Risk Management", "MANAGER", "0249");
+            AddStaff(db, "nikfattah.nh", "NIK MOHD FATTAH BIN NIK HAMDAN", "820226145207", "nikfattah.nh@akpk.org.my", "60123637174", "DMP Management", "EXECUTIVE OFFICER-H1", "0250");
+            AddStaff(db, "mafrukhin.m", "MOHAMMAD MAFRUKHIN BIN MOKHTAR", "810919015895", "mafrukhin.m@akpk.org.my", "60193495125", "Financial Education", "MANAGER-E2", "0251");
+            AddStaff(db, "fazieyatulnabila.ms", "FARAH AZIEYATUL NABILAH BINTI MOHAMED NAZAM", "930618146476", "fazieyatulnabila.ms@akpk.org.my", "60193747485", "Channel Management", "CLERICAL ", "0252");
+            AddStaff(db, "ramanadass.s", "RAMANADASS A/L SATHIASEELAN", "931209146437", "ramanadass.s@akpk.org.my", "60192717373", "Channel Management", "CLERICAL ", "0253");
+            AddStaff(db, "norfaizah.mn", "NORFAIZAH BINTI MOHAMED NOR", "891216146220", "norfaizah.mn@akpk.org.my", "60126431469", "Finance", "CLERICAL OFFICER-I2", "0258");
+            AddStaff(db, "mfarihiin.al", "MUHAMMAD FARIHIIN BIN ABDUL LATIF", "890515146103", "mfarihiin.al@akpk.org.my", "60176473873", "Corporate Communications", "SENIOR EXECUTIVE-G2", "0259");
+            AddStaff(db, "nurhaniza.z", "NUR HANIZA BINTI ZAHARAN", "820614115608", "nurhaniza.z@akpk.org.my", "60182814066", "Channel Management", "SENIOR EXECUTIVE", "0261");
+            AddStaff(db, "mohdzamani.my", "MOHD ZAMANI BIN MOHD YUSOFF", "740216025607", "mohdzamani.my@akpk.org.my", "60133603471", "Channel Management", "SENIOR EXECUTIVE-G1", "0265");
+            AddStaff(db, "noramalina.ar", "NOR AMALINA BINTI ABDUL RAHMAN", "921109035482", "noramalina.ar@akpk.org.my", "60179702482", "Channel Management", "CLERICAL ", "0268");
+            AddStaff(db, "muhammadhamizan.j", "MUHAMAD HAMIZAN BIN JAAFAR", "930318146909", "muhammadhamizan.j@akpk.org.my", "60172092501", "Corporate Communications", "SENIOR EXECUTIVE-G2", "0267");
+            AddStaff(db, "fatinshakirah.aa", "FATIN SHAKIRAH BINTI AB AZIZ", "900826035554", "fatinshakirah.a@akpk.org.my", "601139970300", "Channel Management", "CLERICAL ", "0269");
+            AddStaff(db, "nhanthine.s", "NHANTHINE A/P SELLAMUTHAIYA", "890403015598", "nhanthine.s@akpk.org.my", "60175321711", "Human Capital", "SENIOR EXECUTIVE", "0270");
+            AddStaff(db, "nurulillyana.as", "NURUL ILLYANA BINTI AHMAD SAFIAN", "910114145842", "nurulillyana.as@akpk.org.my", "60123468370", "Channel Management", "CLERICAL ", "0272");
+            AddStaff(db, "moharam.a", "MOHARAM ALI", "930611065665", "moharam.a@akpk.org.my", "601117952526", "Channel Management", "CLERICAL ", "0273");
+            AddStaff(db, "irwaniskandar.a", "IRWAN ISKANDAR BIN AZHARUDDIN", "750602145593", "irwaniskandar.a@akpk.org.my", "60186600702", "Corporate Communications", "SENIOR EXECUTIVE-G2", "0275");
+            AddStaff(db, "akmalhakimi.a", "AKMALHAKIMI BIN ABDULLAH", "851113035185", "akmalhakimi.a@akpk.org.my", "60176796935", "Compliance & Risk Management", "SENIOR EXECUTIVE-G1", "0276");
+            AddStaff(db, "muhammadisham.i", "MUHAMMAD ISHAM SAFUAN BIN ISMAIL", "961211146003", "muhammadisham.i@akpk.org.my", "60102864418", "IT", "CLERICAL OFFICER-I2", "0277");
+            AddStaff(db, "wannadiah.al", "NURRUL WAN NADIAH BINTI AHMAD LATFFI", "900212085856", "wannadiah.al@akpk.org.my", "60104482212", "Financial Education", "EXECUTIVE OFFICER-H2", "0279");
+            AddStaff(db, "sitiwan.sh", "SITI WAN SITA BINTI HAKIM", "911220126498", "sitiwan.sh@akpk.org.my", "60165885429", "Channel Management", "CLERICAL ", "0281");
+            AddStaff(db, "khairulfaizi.aa", "KHAIRUL FAIZI BIN AB AZIZ", "690920105739", "khairulfaizi.aa@akpk.org.my", "60122685080", "IT", "MANAGER", "0284");
+            AddStaff(db, "amezaafifah.f", "AMEZA AFIFAH BINTI FAIZAL", "931019136430", "amezaafifah.f@akpk.org.my", "60146832143", "Channel Management", "CLERICAL OFFICER-I2", "0285");
+            AddStaff(db, "mohdyusuf.r", "MOHD YUSUF BIN RAMLY", "880808355081", "mohdyusuf.r@akpk.org.my", "60134475684", "IT", "SENIOR EXECUTIVE", "0286");
+            AddStaff(db, "ahmadmuslihuddin.r", "AHMAD MUSLIHUDDIN BIN ROZLAN", "940215035295", "ahmadmuslihuddin.r@akpk.org.my", "60145085400", "Channel Management", "SENIOR EXECUTIVE", "0287");
+            AddStaff(db, "muhammadnadzri", "MUHAMMAD NADZRI BIN AHMAD ZAKI", "940806086289", "muhammadnadzri@akpk.org.my", "60175325530", "Channel Management", "SENIOR EXECUTIVE", "0288");
+            AddStaff(db, "mhafizulazwan.ms", "MUHAMMAD HAFIZUL AZWAN BIN MOHD SHAMZAN", "930826145005", "mhafizulazwan.ms@akpk.org.my", "60172266046", "Channel Management", "SENIOR EXECUTIVE", "0289");
+            AddStaff(db, "ikhwanhaziq.a", "IKHWAN HAZIQ BIN AMINUDIN", "921112146079", "ikhwanhaziq.a@akpk.org.my", "60182269759", "Financial Education", "SENIOR EXECUTIVE", "0290");
+            AddStaff(db, "aidasalwa.j", "AIDA SALWA BINTI JUSOH @ SHAFIE", "940414035060", "aidasalwa.j@akpk.org.my", "60172990604", "Channel Management", "SENIOR EXECUTIVE", "0291");
+            AddStaff(db, "raudhanabila.my", "RAUDHA NABILA BINTI MOHD YUSOFF", "940814105320", "raudhanabila.my@akpk.org.my", "60193841408", "Human Capital", "SENIOR EXECUTIVE", "0292");
+            AddStaff(db, "ismalisa.i", "ISMALISA BINTI ISMAIL", "820508086188", "ismalisa.i@akpk.org.my", "60193502367", "Channel Management", "SENIOR EXECUTIVE", "0293");
+            AddStaff(db, "izzatfirdaus.a", "IZZAT FIRDAUS BIN AHMAD", "900118105371", "izzatfirdaus.a@akpk.org.my", "60193713077", "Human Capital", "SENIOR EXECUTIVE", "0294");
+            AddStaff(db, "sitinorzalika.j", "SITI NOR ZALIKA BINTI JAWAHIR", "881103015874", "sitinorzalika.j@akpk.org.my", "60128839341", "CEO Office", "CLERICAL ", "0297");
+            AddStaff(db, "nirmall.g", "NIRMALL A/L GUNASEKARAN", "930922105695", "nirmall.g@akpk.org.my", "60173221973", "Financial Education", "SENIOR EXECUTIVE", "G021");
+            AddStaff(db, "nurulshamimi.r", "NURUL SYAMIMI BINTI RAMLI", "911113036112", "nurulshamimi.r@akpk.org.my", "60136731685", "Corporate Communications", "SENIOR EXECUTIVE", "0298");
+            AddStaff(db, "farahana.z", "FARAHANA BINTI ZULKEFLI", "940414055248", "farahana.z@akpk.org.my", "60132171867", "Financial Education", "SENIOR EXECUTIVE", "0299");
+            AddStaff(db, "fatinamirah.m", "FATIN AMIRAH BINTI MOHAMAD", "931023115042", "fatinamirah.m@akpk.org.my", "601137247973", "IT", "SENIOR EXECUTIVE", "0300");
+            AddStaff(db, "jelitasoniawati.f", "JELITA SONIAWATI BINTI FIRDAUS", "920825017504", "jelitasoniawati.f@akpk.org.my", "60113730388", "IT", "SENIOR EXECUTIVE", "0301");
+            AddStaff(db, "sitinajihah.ma", "SITI NAJIHAH BINTI MOHAMED AZLAN", "940223106196", "sitinajihah.ma@akpk.org.my", "60138211082", "Financial Education", "SENIOR EXECUTIVE", "0302");
+            AddStaff(db, "nuramalina.y", "NUR AMALINA NADIA BINTI YAHYA", "910313145044", "nuramalina.y@akpk.org.my", "60148008272", "Channel Management", "SENIOR EXECUTIVE", "0303");
+            AddStaff(db, "ainhusna.an", "AIN HUSNA BINTI AMIM NORDIN", "910403146438", "ainhusna.an@akpk.org.my", "60137934152", "Channel Management", "EXECUTIVE", "0304");
+            AddStaff(db, "muhammadsyahmie.ah", "MUHAMMAD SYAHMIE BIN ABDUL HALIM", "920801145499", "muhammadsyahmie.ah@akpk.org.my", "60123300454", "Compliance & Risk Management", "SENIOR EXECUTIVE", "0306");
+            AddStaff(db, "syedmohdfauzi.sh", "SYED MOHD FAUZI BIN SAID HUSSIN", "810509085313", "syedmohdfauzi.sh@akpk.org.my", "60192765313", "Financial Education", "SENIOR EXECUTIVE", "0307");
+            AddStaff(db, "nursafwanah.i", "NUR SAFWANAH BINTI ISMAIL", "901021145072", "nursafwanah.i@akpk.org.my", "60136261594", "Finance", "SENIOR EXECUTIVE", "0311");
+            AddStaff(db, "nursyahirah.r", "NUR SYAHIRAH BINTI RAHMAT", "961010146146", "nursyahirah.r@akpk.org.my", "60132038300", "Channel Management", "CLERICAL ", "0308");
+            AddStaff(db, "intannoorsyakira.z", "INTAN NOOR SYAKIRA BINTI ZAINUDDIN", "900730065548", "intannoorsyakira.z@akpk.org.my", "60145280966", "Channel Management", "CLERICAL ", "0309");
+            AddStaff(db, "wannuradibah.cm", "WAN NURADIBAH BINTI CHE MOHD LUDIN", "920212105798", "wannuradibah.cm@akpk.org.my", "60133138516", "Channel Management", "CLERICAL ", "0310");
+
+            #endregion
 
 
             if (!db.State.Any())
@@ -697,6 +697,10 @@ namespace FEP.Model.Migrations
                 );
             }
 
+            DefaultSLAReminder(db);
+            DefaultParameterGroup(db);
+            DefaultTemplate(db);
+
         }
 
 
@@ -764,9 +768,52 @@ namespace FEP.Model.Migrations
 
         }
 
-        public static void AddStaff(DbEntities db, string Username, string Name, string ICNo, string Email, string MobileNo)
+        public static Department AddDepartment(DbEntities db, string Name)
         {
-            var user = db.User.Local.Where(r => r.ICNo == ICNo).FirstOrDefault() ?? db.User.Where(r => r.ICNo == ICNo).FirstOrDefault();
+            var department = db.Department.Local.Where(r => r.Name == Name).FirstOrDefault() ?? db.Department.Where(r => r.Name == Name).FirstOrDefault();
+
+            if (department == null)
+            {
+                department = new Department
+                {
+                    Name = Name,
+                    Display = true
+                };
+
+                db.Department.Add(department);
+            }
+
+            return department;
+
+        }
+
+        public static Designation AddDesignation(DbEntities db, string Name)
+        {
+            var designation = db.Designation.Local.Where(r => r.Name == Name).FirstOrDefault() ?? db.Designation.Where(r => r.Name == Name).FirstOrDefault();
+
+            if (designation == null)
+            {
+                designation = new Designation
+                {
+                    Name = Name,
+                    Display = true
+                };
+
+                db.Designation.Add(designation);
+            }
+
+            return designation;
+
+        }
+
+        public static void AddStaff(DbEntities db, string Username, string Name, string ICNo, string Email, string MobileNo, string Department, string Designation, string StaffId)
+        {
+            var user = db.User.Local.Where(r => r.ICNo == ICNo && r.UserType == UserType.Staff).FirstOrDefault() ?? db.User.Where(r => r.ICNo == ICNo && r.UserType == UserType.Staff).FirstOrDefault();
+
+            var department = AddDepartment(db, Department);
+
+            var designation = AddDesignation(db, Designation);
+
 
             if (user == null)
             {
@@ -776,16 +823,16 @@ namespace FEP.Model.Migrations
                     LoginId = Username,
                     IsEnable = true,
                     LoginAttempt = 0,
-                    HashPassword = "02N3k+8BBkCL+kZx+ZG/bfmKG4YGafIrkWW0D1Va7osvWkNxbWc9PQ==",
-                    Salt = "/ZCqmg=="
+                    HashPassword = "",
+                    Salt = ""
                 };
 
                 var staff = new StaffProfile
                 {
-                    StaffId = "",
+                    StaffId = StaffId,
                     BranchId = null,
-                    DepartmentId = null,
-                    DesignationId = null
+                    Department = department,
+                    Designation = designation
                 };
 
                 db.User.Add(
@@ -799,10 +846,137 @@ namespace FEP.Model.Migrations
                         Display = true,
                         CreatedDate = DateTime.Now,
                         UserAccount = useraccount,
-                        StaffProfile = staff
+                        StaffProfile = staff,
+                        CountryCode = "60"
                     });
+            }
+            else
+            {
+                user.Name = Name;
+                user.Email = Email;
+                user.MobileNo = MobileNo;
+
+                db.User.Attach(user);
+                db.Entry(user).Property(x => x.Name).IsModified = true;
+                db.Entry(user).Property(x => x.Email).IsModified = true;
+                db.Entry(user).Property(x => x.MobileNo).IsModified = true;
+
+                var account = user.UserAccount;
+                var staff = user.StaffProfile;
+
+                account.LoginId = Username;
+
+                db.UserAccount.Attach(account);
+                db.Entry(account).Property(x => x.LoginId).IsModified = true;
+
+                staff.Department = department;
+                staff.Designation = designation;
+                staff.StaffId = StaffId;
+
+                db.StaffProfile.Attach(staff);
+                db.Entry(staff).Property(x => x.DepartmentId).IsModified = true;
+                db.Entry(staff).Property(x => x.DesignationId).IsModified = true;
+                db.Entry(staff).Property(x => x.StaffId).IsModified = true;
+
             }
         }
 
+        public static void DefaultSLAReminder(DbEntities db)
+        {
+
+            db.SLAReminder.AddOrUpdate(s => s.NotificationType,
+                new SLAReminder { NotificationCategory = NotificationCategory.System, SLAEventType = SLAEventType.ActivateAccount, NotificationType = NotificationType.ActivateAccount, ETCode = "ET001SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.System, SLAEventType = SLAEventType.ResetPassword, NotificationType = NotificationType.ResetPassword, ETCode = "ET002SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.System, SLAEventType = SLAEventType.SystemError, NotificationType = NotificationType.SystemError, ETCode = "ET003SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days }
+            );
+        }
+
+        public static void DefaultParameterGroup(DbEntities db)
+        {
+            db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+            new ParameterGroup { SLAEventType = SLAEventType.System, TemplateParameterType = TemplateParameterType.UserFullName });
+
+            db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+            new ParameterGroup { SLAEventType = SLAEventType.ActivateAccount, TemplateParameterType = TemplateParameterType.UserFullName });
+
+            db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+            new ParameterGroup { SLAEventType = SLAEventType.ResetPassword, TemplateParameterType = TemplateParameterType.UserFullName });
+
+            db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+            new ParameterGroup { SLAEventType = SLAEventType.System, TemplateParameterType = TemplateParameterType.Link });
+
+            db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+            new ParameterGroup { SLAEventType = SLAEventType.ActivateAccount, TemplateParameterType = TemplateParameterType.Link });
+
+            db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+            new ParameterGroup { SLAEventType = SLAEventType.ResetPassword, TemplateParameterType = TemplateParameterType.Link });
+
+            db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+            new ParameterGroup { SLAEventType = SLAEventType.ActivateAccount, TemplateParameterType = TemplateParameterType.LoginDetail });
+
+        }
+
+        public static void DefaultTemplate(DbEntities db)
+        {
+
+            var user = db.User.Local.Where(r => r.Name.Contains("System Admin")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("System Admin")).FirstOrDefault();
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.ActivateAccount,
+                    NotificationCategory = NotificationCategory.System,
+                    TemplateName = NotificationType.ActivateAccount.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.ActivateAccount).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "New FE Portal Account Created",
+                    TemplateMessage = "&lt;p&gt;Dear&amp;nbsp;&lt;span style=&quot;font-size: 1rem;&quot;&gt;[#UserFullName],&lt;/span&gt;&lt;/p&gt;&lt;p&gt;You can activate your account [#Link].&amp;nbsp;&lt;/p&gt;&lt;p&gt;Your login details:&lt;/p&gt;&lt;p&gt;[#LoginDetail]&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(255, 255, 255); font-size: 12px; text-align: center; white-space: nowrap; background-color: rgb(41, 182, 246);&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/p&gt;",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    WebNotifyLink = "",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType },
+                new TemplateParameters { NotificationType = NotificationType.ActivateAccount, TemplateParameterType = "[#UserFullName]" },
+                new TemplateParameters { NotificationType = NotificationType.ActivateAccount, TemplateParameterType = "[#Link]" },
+                new TemplateParameters { NotificationType = NotificationType.ActivateAccount, TemplateParameterType = "[#LoginDetail]" }
+                );
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.ResetPassword,
+                    NotificationCategory = NotificationCategory.System,
+                    TemplateName = NotificationType.ResetPassword.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.ResetPassword).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "FE Portal Password Reset",
+                    TemplateMessage = "&lt;p style=&quot;font-size: 16px;&quot;&gt;Dear&amp;nbsp;&lt;span style=&quot;font-size: 1rem;&quot;&gt;[#UserFullName],&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;font-size: 16px;&quot;&gt;You can reset your password [#Link].&amp;nbsp;&lt;/p&gt;&lt;p style=&quot;font-size: 16px;&quot;&gt;&lt;br&gt;&lt;/p&gt;",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    WebNotifyLink = "",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType },
+                new TemplateParameters { NotificationType = NotificationType.ResetPassword, TemplateParameterType = "[#UserFullName]" },
+                new TemplateParameters { NotificationType = NotificationType.ResetPassword, TemplateParameterType = "[#Link]" }
+                );
+
+
+        }
+
     }
+
 }

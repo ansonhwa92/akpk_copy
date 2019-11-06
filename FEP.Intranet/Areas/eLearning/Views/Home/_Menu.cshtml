@@ -1,20 +1,51 @@
-﻿
-@if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate))
-{
-    <a class="dropdown-item" href="@Url.Action("Index", "Courses", new { area = "eLearning" })"><i class="la la-search color-secondary font-icon"></i>Manage Courses</a>
-    <a class="dropdown-item" href="@Url.Action("List", "CourseCategory", new { area = "eLearning" })"><i class="la la-suitcase color-secondary font-icon"></i>Manage Course Category</a>
-    <a class="dropdown-item" href="@Url.Action("Index", "Certificates", new { area = "eLearning" })"><i class="la la-certificate color-secondary font-icon"></i>Manage Certificate</a>
+﻿@*@if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate))
+    {
+        <a class="dropdown-item" href="@Url.Action("Index", "Courses", new { area = "eLearning" })"><i class="la la-search color-secondary font-icon"></i>Manage Courses</a>
+        <a class="dropdown-item" href="@Url.Action("List", "CourseCategory", new { area = "eLearning" })"><i class="la la-suitcase color-secondary font-icon"></i>Manage Course Category</a>
+        <a class="dropdown-item" href="@Url.Action("Index", "Certificates", new { area = "eLearning" })"><i class="la la-certificate color-secondary font-icon"></i>Manage Certificate</a>
 
-}
+    }
 
 
-@if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseView))
-{
+    @if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseView))
+    {
 
-    <a class="dropdown-item" href="@Url.Action("Index", "Courses", new { area = "eLearning" })"><i class="la la-search color-secondary font-icon"></i>View Courses</a>
-}
+        <a class="dropdown-item" href="@Url.Action("Index", "Courses", new { area = "eLearning" })"><i class="la la-search color-secondary font-icon"></i>View Courses</a>
+    }
 
-<a class="dropdown-item" href="#"><i class="la la-user color-secondary font-icon"></i>Instructors</a>
-<a class="dropdown-item" href="@Url.Action("List", "CourseGroup", new { area = "eLearning" })"><i class="la la-comments-o color-secondary font-icon"></i>Groups</a>
-<a class="dropdown-item" href="@Url.Action("List", "CourseDiscussion", new { area = "eLearning" })"><i class="la la-comments-o color-secondary font-icon"></i>Discussions</a>
-<a class="dropdown-item" href="#"><i class="la la-calendar color-secondary font-icon"></i>Calendar</a>
+    <a class="dropdown-item" href="#"><i class="la la-user color-secondary font-icon"></i>Instructors</a>
+    <a class="dropdown-item" href="@Url.Action("List", "CourseGroup", new { area = "eLearning" })"><i class="la la-comments-o color-secondary font-icon"></i>Groups</a>
+    <a class="dropdown-item" href="@Url.Action("List", "CourseDiscussion", new { area = "eLearning" })"><i class="la la-comments-o color-secondary font-icon"></i>Discussions</a>
+    <a class="dropdown-item" href="#"><i class="la la-calendar color-secondary font-icon"></i>Calendar</a>*@
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="menu-list">
+            <h6 class="color-darkblue">Menu</h6>
+            <a class="dropdown-item" href="@Url.Action("Index", "Courses", new { area = "eLearning" })">Manage Courses</a>
+            <a class="dropdown-item" href="@Url.Action("Index", "Certificates", new { area = "eLearning" })">Manage Certificates</a>
+            <a class="dropdown-item" href="@Url.Action("List", "CourseDiscussion", new { area = "eLearning" })">Discussions</a>
+            <a class="dropdown-item" href="#">Calendar</a>
+            <a class="dropdown-item" href="@Url.Action("List", "TOTReport", new { area = "eLearning" })">Train of Trainer</a>
+            <a class="dropdown-item" href="@Url.Action("List", "UserRewardPoints", new { area = "Reward" })">My Points</a>
+            <a class="dropdown-item" href="@Url.Action("List", "UserRewardRedemptions", new { area = "Reward" })">My Rewards</a>
+            <a class="dropdown-item" href="@Url.Action("ListToRedeem", "RewardRedemptions", new { area = "Reward" })">Claim Reward</a>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="menu-list">
+            <h6 class="color-darkblue">Setting</h6>
+            <a class="dropdown-item" href="@Url.Action("List", "CourseCategory", new { area = "eLearning" })">Course Category</a>
+            <a class="dropdown-item" href="#">Instructors</a>
+            <a class="dropdown-item" href="@Url.Action("List", "CourseGroup", new { area = "eLearning" })">Groups</a>
+            <a class="dropdown-item" href="@Url.Action("List", "RewardActivityPoints", new { area = "Reward" })">Activity Points Management</a>
+            <a class="dropdown-item" href="@Url.Action("List", "RewardRedemptions", new { area = "Reward" })">Reward Redemption Management</a>
+            <a class="dropdown-item" href="@Url.Action("ListAll", "UserRewardPoints", new { area = "Reward" })">User Reward Points</a>
+            <a class="dropdown-item" href="@Url.Action("ListAll", "UserRewardRedemptions", new { area = "Reward" })">User Reward Redemptions</a>
+            <a class="dropdown-item" href="#">Leaderboard</a>
+            <a class="dropdown-item" href="#">Badges</a>
+            <a class="dropdown-item" href="#">Ranks</a>
+        </div>
+    </div>
+</div>

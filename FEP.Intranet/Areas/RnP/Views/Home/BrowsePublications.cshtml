@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FEP.WebApiModel.RnP.ReturnPublicationModel>
+﻿@model FEP.WebApiModel.RnP.BrowsePublicationModel
 
 @{
     ViewBag.Title = "Browse Publications";
@@ -145,9 +145,9 @@
                 <div class="col-lg-3">
                     <div class="search-col-left">
                         <div class="input-keyword mb-5">
-                            <input type="text" class="form-control form-control-rounded" placeholder="Type keyword here..." name="keyword">
+                            <input type="text" class="form-control form-control-rounded" placeholder="Type keyword here..." value="@Model.Keyword" name="keyword" id="textKeyword">
                             <div class="input-group-append">
-                                <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+                                <button class="btn btn-circle" type="button" id="buttonSearch"><i class="fas fa-search text-white"></i></button>
                             </div>
                         </div>
                         <!-- Listing Filter -->
@@ -155,107 +155,82 @@
                             <div class="dropdown-menu">
                                 <div class="listing-filter-inner">
                                     <div class="filter-type">
-                                        <h4 class="color-darkblue">Published Type</h4>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" checked>
-                                            <label class="custom-control-label" for="customRadio1">All Type</label>
-                                        </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio2">Books</label>
-                                        </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio3">Fact Sheet</label>
-                                        </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="customRadio4" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio4">Journal</label>
-                                        </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="customRadio5" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio5">Literature Reviews</label>
-                                        </div>
-                                    </div>
-                                    <div class="filter-type">
-                                        <h4 class="color-darkblue">Published Year</h4>
+                                        <h4 class="color-darkblue">Publication Type</h4>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                            <label class="custom-control-label" for="customCheck1">2019</label>
-                                            <span class="filter-counter">(100)</span>
+                                            <input type="checkbox" class="custom-control-input" id="checkAll" @ViewBag.TypeAll>
+                                            <label class="custom-control-label" for="checkAll" id="labelAll">All</label>
+                                            <!--<span class="filter-counter">(100)</span>-->
                                         </div>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck2">
-                                            <label class="custom-control-label" for="customCheck2">2018</label>
-                                            <span class="filter-counter">(430)</span>
+                                            <input type="checkbox" class="custom-control-input" id="checkArticles" @ViewBag.TypeArticles>
+                                            <label class="custom-control-label" for="checkArticles" id="labelArticles">Articles</label>
                                         </div>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck3">
-                                            <label class="custom-control-label" for="customCheck3">2017</label>
-                                            <span class="filter-counter">(29)</span>
+                                            <input type="checkbox" class="custom-control-input" id="checkBooks" @ViewBag.TypeBooks>
+                                            <label class="custom-control-label" for="checkBooks" id="labelBooks">Books</label>
                                         </div>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck4">
-                                            <label class="custom-control-label" for="customCheck4">2016</label>
-                                            <span class="filter-counter">(560)</span>
+                                            <input type="checkbox" class="custom-control-input" id="checkFactsSheet" @ViewBag.TypeFactsSheet>
+                                            <label class="custom-control-label" for="checkFactsSheet" id="labelFactsSheet">Facts Sheet</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkJournals" @ViewBag.TypeJournals>
+                                            <label class="custom-control-label" for="checkJournals" id="labelJournals">Journals</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkReviews" @ViewBag.TypeReviews>
+                                            <label class="custom-control-label" for="checkReviews" id="labelReviews">Literature Reviews</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkReports" @ViewBag.TypeReports>
+                                            <label class="custom-control-label" for="checkReports" id="labelReports">Reports</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkResearchPapers" @ViewBag.TypeResearchPapers>
+                                            <label class="custom-control-label" for="checkResearchPapers" id="labelResearchPapers">Research Papers</label>
                                         </div>
                                     </div>
                                     <div class="filter-type">
                                         <h4 class="color-darkblue">Format</h4>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck5">
-                                            <label class="custom-control-label" for="customCheck5">Digital</label>
-                                            <span class="filter-counter">(13)</span>
+                                            <input type="checkbox" class="custom-control-input" id="checkDigital" @ViewBag.FormatDigital>
+                                            <label class="custom-control-label" for="checkDigital" id="labelDigital">Digital</label>
+                                            <!--<span class="filter-counter">(13)</span>-->
                                         </div>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                            <label class="custom-control-label" for="customCheck6">Hard Copy</label>
-                                            <span class="filter-counter">(30)</span>
+                                            <input type="checkbox" class="custom-control-input" id="checkHardcopy" @ViewBag.FormatHardcopy>
+                                            <label class="custom-control-label" for="checkHardcopy" id="labelHardcopy">Hard Copy</label>
                                         </div>
                                     </div>
                                     <div class="filter-type">
                                         <h4 class="color-darkblue">Language</h4>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck9">
-                                            <label class="custom-control-label" for="customCheck9">English</label>
-                                            <span class="filter-counter">(3666)</span>
+                                            <input type="checkbox" class="custom-control-input" id="checkBahasaMalaysia" @ViewBag.LanguageBahasaMalaysia>
+                                            <label class="custom-control-label" for="checkBahasaMalaysia" id="labelBahasaMalaysia">Bahasa Malaysia</label>
+                                            <!--<span class="filter-counter">(3666)</span>-->
                                         </div>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck10">
-                                            <label class="custom-control-label" for="customCheck10">Bahasa</label>
-                                            <span class="filter-counter">(100)</span>
-                                        </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                            <label class="custom-control-label" for="customCheck11">Chinese</label>
-                                            <span class="filter-counter">(63)</span>
-                                        </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                            <label class="custom-control-label" for="customCheck12">Tamil</label>
-                                            <span class="filter-counter">(54)</span>
-                                        </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck13">
-                                            <label class="custom-control-label" for="customCheck13">Multi-language</label>
-                                            <span class="filter-counter">(20)</span>
+                                            <input type="checkbox" class="custom-control-input" id="checkEnglish" @ViewBag.LanguageEnglish>
+                                            <label class="custom-control-label" for="checkEnglish" id="labelEnglish">English</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-secondary btn-rounded">Clear Filter</button>
+                            <button class="btn btn-secondary btn-rounded" id="buttonReset">Clear Filter</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-9">
                     <div class="search-col-right">
                         <div class="top-filter-wrap">
-                            <div class="showing-result">Showing 1 - 6 of 2000 results</div>
+                            <div class="showing-result">Showing 1 - @Model.LastIndex of @Model.ItemCount publications</div>
                             <div class="sorting-wrap">
                                 <div class="sorting-dropdown">
-                                    <select class="select2 form-control" name="sorting">
-                                        <option value="Default Sorting">Default Sorting</option>
-                                        <option value="Other Sorting">Other Sorting</option>
+                                    <select class="select2 form-control" name="sorting" id="selectSorting">
+                                        <option value="default" @ViewBag.DefaultSorting>Default Sorting</option>
+                                        <option value="title" @ViewBag.TitleSorting>Publication Title</option>
+                                        <option value="year" @ViewBag.YearSorting>Publication Year</option>
+                                        <option value="added" @ViewBag.AddedSorting>Date Added</option>
                                     </select>
                                 </div>
                             </div>
@@ -270,24 +245,24 @@
                                     var coverpic2 = "";
                                     var authorpic = "";
                                 }
-                                @foreach (var item in Model)
+                                @foreach (var item in Model.Publications)
                                 {
                                     icount++;
-                                    if (item.Pictures != "")
-                                    {
-                                        coverpic1 = BaseURL + "/" + "img" + "/" + item.Pictures;
-                                        coverpic2 = BaseURL + "/" + "img" + "/" + item.Pictures;
-                                        authorpic = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                    //if (item.Pictures != "")
+                                    //{
+                                    //    coverpic1 = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                    //    coverpic2 = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                    //    authorpic = BaseURL + "/" + "img" + "/" + item.Pictures;
+                                    //    coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                                    //    coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                                    //    authorpic = BaseURL + "/" + "img" + "/8.jpg";
+                                    //}
+                                    //else
+                                    //{
                                         coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
                                         coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
                                         authorpic = BaseURL + "/" + "img" + "/8.jpg";
-                                    }
-                                    else
-                                    {
-                                        coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
-                                        coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
-                                        authorpic = BaseURL + "/" + "img" + "/8.jpg";
-                                    }
+                                    //}
 
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="card__wrapper">
@@ -329,3 +304,174 @@
     @Html.Partial("_NewsArticle")
 </main>
 
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            if ($('#checkArticles').prop('checked') &&
+                $('#checkBooks').prop('checked') &&
+                $('#checkFactsSheet').prop('checked') &&
+                $('#checkJournals').prop('checked') &&
+                $('#checkReviews').prop('checked') &&
+                $('#checkReports').prop('checked') &&
+                $('#checkResearchPapers').prop('checked')) {
+                $('#checkAll').prop('checked', true)
+            }
+            else
+            {
+                $('#checkAll').prop('checked', false)
+            }
+
+            function compileOptions() {
+                var keyword = $('#textKeyword').val();
+                var sorting = $('#selectSorting').val();
+                var typearticles = $('#checkArticles').prop('checked');
+                var typebooks = $('#checkBooks').prop('checked');
+                var typefactssheet = $('#checkFactsSheet').prop('checked');
+                var typejournals = $('#checkJournals').prop('checked');
+                var typereviews = $('#checkReviews').prop('checked');
+                var typereports = $('#checkReports').prop('checked');
+                var typeresearchpapers = $('#checkResearchPapers').prop('checked');
+                var formatdigital = $('#checkDigital').prop('checked');
+                var formathardcopy = $('#checkHardcopy').prop('checked');
+                var languagebahasamalaysia = $('#checkBahasaMalaysia').prop('checked');
+                var languageenglish = $('#checkEnglish').prop('checked');
+                var options = "&articles=" + typearticles;
+                options += "&books=" + typebooks;
+                options += "&factssheet=" + typefactssheet;
+                options += "&journals=" + typejournals;
+                options += "&reviews=" + typereviews;
+                options += "&reports=" + typereports;
+                options += "&researchpapers=" + typeresearchpapers;
+                options += "&digital=" + formatdigital;
+                options += "&hardcopy=" + formathardcopy;
+                options += "&bahasamalaysia=" + languagebahasamalaysia;
+                options += "&english=" + languageenglish;
+                var params = "?keyword=" + keyword + "&sorting=" + sorting + "&options=" + options;
+                return params;
+            }
+
+            $('#buttonSearch').click(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#selectSorting').change(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#checkAll').change(function (event) {
+                if ($('#checkAll').prop('checked') == true) {
+                    $('#checkArticles').prop('checked', true);
+                    $('#checkBooks').prop('checked', true);
+                    $('#checkFactsSheet').prop('checked', true);
+                    $('#checkJournals').prop('checked', true);
+                    $('#checkReviews').prop('checked', true);
+                    $('#checkReports').prop('checked', true);
+                    $('#checkResearchPapers').prop('checked', true);
+                } else {
+                    $('#checkArticles').prop('checked', false);
+                    $('#checkBooks').prop('checked', false);
+                    $('#checkFactsSheet').prop('checked', false);
+                    $('#checkJournals').prop('checked', false);
+                    $('#checkReviews').prop('checked', false);
+                    $('#checkReports').prop('checked', false);
+                    $('#checkResearchPapers').prop('checked', false);
+                }
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#checkArticles').change(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#checkBooks').change(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#checkFactsSheet').change(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#checkJournals').change(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#checkReviews').change(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#checkReports').change(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#checkResearchPapers').change(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#checkDigital').change(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#checkHardcopy').change(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#checkBahasaMalaysia').change(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#checkEnglish').change(function (event) {
+                var params = compileOptions();
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })' + params;
+                window.location = myurl;
+                return false;
+            });
+
+            $('#buttonReset').click(function (event) {
+                var myurl = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })';
+                window.location = myurl;
+                return false;
+            });
+
+        });
+    </script>
+}

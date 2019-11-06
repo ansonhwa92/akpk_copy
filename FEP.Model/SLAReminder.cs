@@ -19,6 +19,8 @@ namespace FEP.Model
         public int SLAResolutionTime { get; set; }
         public int IntervalDuration { get; set; }
         public SLADurationType? SLADurationType { get; set; }
+
+        public NotificationCategory NotificationCategory { get; set; }
     }
 
     [Table("SLAReminderStatus")]
@@ -55,7 +57,9 @@ namespace FEP.Model
         [Display(Name = "Research And Publication")]
         ResearchAndPublication = 3,
         [Display(Name = "System")]
-        System = 4
+        System = 4,
+        [Display(Name = "Payment")]
+        Payment = 5
     }
     public enum NotificationMedium
     {
@@ -113,6 +117,15 @@ namespace FEP.Model
 		ApproveExhibitionRoadshow,
 		[Display(Name = "Reject Exhibition Roadshow")]
 		RejectExhibitionRoadshow,
+
+		[Display(Name = "Submit Exhibition Roadshow - Duty Roster")]
+		SubmitExhibitionRoadshowDutyRoster,
+		[Display(Name = "Verify Exhibition Roadshow - Duty Roster")]
+		VerifyExhibitionRoadshowDutyRoster,
+		[Display(Name = "Approve Exhibition Roadshow - Duty Roster")]
+		ApproveExhibitionRoadshowDutyRoster,
+		[Display(Name = "Reject Exhibition Roadshow - Duty Roster")]
+		RejectExhibitionRoadshowDutyRoster,
 
 		[Display(Name = "Submit Media Interview")]
 		SubmitMediaInterview,
@@ -187,6 +200,10 @@ namespace FEP.Model
         [Display(Name = "Approve Publication Modification")]
         ApprovePublicationModification,
         [Display(Name = "Approve Publication Withdrawal")]
-        ApprovePublicationWithdrawal
+        ApprovePublicationWithdrawal,
+
+        [Display(Name = "Refund Publication")]
+        RefundPublication
+        // other refunds can add here (in case wanna use different params)
     }
 }

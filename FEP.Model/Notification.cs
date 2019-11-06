@@ -70,11 +70,25 @@ namespace FEP.Model
 		Approve_Exhibition_RoadShow_ByApprover_2,
 		[Display(Name = "Exhibition Roadshow - Approve Exhibition Roadshow By Approver 3")]
 		Approve_Exhibition_RoadShow_ByApprover_3,
-
 		[Display(Name = "Exhibition RoadShow - Rejected")]
 		Reject_Exhibition_RoadShow,
 
-		//Payment
+		[Display(Name = "Exhibition RoadShow - Submit Duty Roster")]
+		Submit_DutyRoster_For_Verification,
+		[Display(Name = "Exhibition RoadShow - Verify Duty Roster")]
+		Verify_DutyRoster,
+		[Display(Name = "Exhibition RoadShow - Reject Duty Roster")]
+		NotVerify_DutyRoster,
+		[Display(Name = "Exhibition RoadShow - Approve Duty Roster")]
+		Approve_DutyRoster,
+
+
+		[Display(Name = "Exhibition RoadShow - Accept Participation")]
+		AcceptParticipation_Exhibition_RoadShow,
+		[Display(Name = "Exhibition RoadShow - Decline Participation")]
+		DeclineParticipation_Exhibition_RoadShow,
+
+		//Payment 
 		[Display(Name = "Payment Pending GL")]
 		Payment_Pending_GL,
 		[Display(Name = "Payment Pending Payment")]
@@ -91,18 +105,16 @@ namespace FEP.Model
 		Payment_Pending_Refund,
 
 		//Verify External Request
+		//[Display(Name = "Verify External RequestExhibition ESS")]
+		//Verify_External_Request_Exhibition_ESS,
+		//[Display(Name = "Verify External RequestDuty Roster")]
+		//Verify_External_Request_Duty_Roster,
 
-		[Display(Name = "Verify External RequestExhibition ESS")]
-		Verify_External_Request_Exhibition_ESS,
-		[Display(Name = "Verify External RequestDuty Roster")]
-		Verify_External_Request_Duty_Roster,
-
-		//Approve External Request
-
-		[Display(Name = "Approve External Request Exhibition Participation")]
-		Approve_External_Request_Exhibition_Participation,
-		[Display(Name = "Approve External Request Duty Roster")]
-		Approve_External_Request_Duty_Roster,
+		////Approve External Request
+		//[Display(Name = "Approve External Request Exhibition Participation")]
+		//Approve_External_Request_Exhibition_Participation,
+		//[Display(Name = "Approve External Request Duty Roster")]
+		//Approve_External_Request_Duty_Roster,
 
 		//Verify Courses
 		[Display(Name = "Verify Courses Creation")]
@@ -117,110 +129,117 @@ namespace FEP.Model
 		//Approve Courses
 		[Display(Name = "Approve Courses Creation By First Approver")]
 		Approve_Courses_Creation_Approver1,
-        [Display(Name = "Approve Courses Creation By Second Approver")]
-        Approve_Courses_Creation_Approver2,
-        [Display(Name = "Approve Courses Creation By Third Approver")]
-        Approve_Courses_Creation_Approver3,
-        [Display(Name = "Approve Courses Published Change")]
+		[Display(Name = "Approve Courses Creation By Second Approver")]
+		Approve_Courses_Creation_Approver2,
+		[Display(Name = "Approve Courses Creation By Third Approver")]
+		Approve_Courses_Creation_Approver3,
+		[Display(Name = "Approve Courses Published Change")]
 		Approve_Courses_Published_Change,
 		[Display(Name = "Approve Courses Published Withdraw")]
 		Approve_Courses_Published_Withdraw,
 		[Display(Name = "Approve Courses Participant Withdraw")]
 		Approve_Courses_Participant_Withdraw,
 
-        //Other Courses Action
-        [Display(Name = "Course Is Approved")]
-        Course_Approved,
-        [Display(Name = "Course Requires Amendment")]
-        Course_Amendment,
-        [Display(Name = "Invitation To Enroll To Course")]
-        Course_Invitation,
+		//Other Courses Action
+		[Display(Name = "Course Is Approved")]
+		Course_Approved,
+		[Display(Name = "Course Requires Amendment")]
+		Course_Amendment,
+		[Display(Name = "Invitation To Enroll To Course")]
+		Course_Invitation,
 
+		//Survey
+		[Display(Name = "Survey Created and Submitted for Verification")]
+        Submit_Survey_Creation,
+        [Display(Name = "Survey Cancelled")]
+        Submit_Survey_Cancellation,
+        [Display(Name = "Survey Published on FEP")]
+        Submit_Survey_Publication,
 
-        //Survey
-        [Display(Name = "Submit Survey Creation")]
-		Submit_Survey_Creation,
-		[Display(Name = "Submit Survey Cancellation")]
-		Submit_Survey_Cancellation,
-		[Display(Name = "Submit Survey Publication")]
-		Submit_Survey_Publication,
+        //Verify Survey
+        [Display(Name = "Survey Verified and Submitted for Approval")]
+        Verify_Survey_Creation,
 
-		//Verify Survey
-		[Display(Name = "Verify Survey Creation")]
-		Verify_Survey_Creation,
-
-		//Approve Survey
-		[Display(Name = "Approve Survey Creation 1")]
-		Approve_Survey_Creation_1,
-		[Display(Name = "Approve Survey Creation 2")]
-		Approve_Survey_Creation_2,
-		[Display(Name = "Approve Survey Creation 3")]
-		Approve_Survey_Creation_3,
-		[Display(Name = "Approve Survey Creation Final")]
-		Approve_Survey_Creation_Final,
+        //Approve Survey
+        [Display(Name = "Survey Approved by 1st-Level Approver")]
+        Approve_Survey_Creation_1,
+        [Display(Name = "Survey Approved by 2nd-Level Approver")]
+        Approve_Survey_Creation_2,
+        [Display(Name = "Survey Approved by 3rd-Level Approver")]
+        Approve_Survey_Creation_3,
+        [Display(Name = "Approve Survey Creation Final")]
+        Approve_Survey_Creation_Final,
 
         //Survey Response
-        [Display(Name = "Submit Survey Distribution")]
+        [Display(Name = "Survey Invitation")]
         Submit_Survey_Distribution,
-        [Display(Name = "Submit Survey Response")]
+        [Display(Name = "Survey Response")]
         Submit_Survey_Response,
 
         //Publication
-        [Display(Name = "Submit Publication Creation")]
+        [Display(Name = "Publication Created and Submitted for Verification")]
         Submit_Publication_Creation,
-        [Display(Name = "Submit Publication Cancellation")]
+        [Display(Name = "Publication Cancelled")]
         Submit_Publication_Cancellation,
-        [Display(Name = "Submit Publication Publication")]
+        [Display(Name = "Publication Published on FEP")]
         Submit_Publication_Publication,
-        [Display(Name = "Submit Publication Modification")]
+        [Display(Name = "Publication Modified and Submitted for Verification")]
         Submit_Publication_Modification,
-        [Display(Name = "Submit Publication Withdrawal")]
+        [Display(Name = "Publication Withdrawal Submitted for Verification")]
         Submit_Publication_Withdrawal,
-        [Display(Name = "Submit Publication Modification Cancellation")]
+        [Display(Name = "Publication Modification Cancelled")]
         Submit_Publication_Modification_Cancellation,
-        [Display(Name = "Submit Publication Withdrawal Cancellation")]
+        [Display(Name = "Publication Withdrawal Cancelled")]
         Submit_Publication_Withdrawal_Cancellation,
 
-		//VerifyPublication
-		[Display(Name = "Verify Publication Creation")]
-		Verify_Publication_Creation,
-		[Display(Name = "Verify Publication Modification")]
-		Verify_Publication_Modification,
-		[Display(Name = "Verify Publication Withdrawal")]
-		Verify_Publication_Withdrawal,
+        //VerifyPublication
+        [Display(Name = "Publication Verified and Submitted for Approval")]
+        Verify_Publication_Creation,
+        [Display(Name = "Publication Modification Verified and Submitted for Approval")]
+        Verify_Publication_Modification,
+        [Display(Name = "Publication Withdrawal Verified and Submitted for Approval")]
+        Verify_Publication_Withdrawal,
 
-		//Approve Publication
-		[Display(Name = "Approve Publication Creation 1")]
-		Approve_Publication_Creation_1,
-		[Display(Name = "Approve Publication Creation 2")]
-		Approve_Publication_Creation_2,
-		[Display(Name = "Approve Publication Creation 3")]
-		Approve_Publication_Creation_3,
-		[Display(Name = "Approve Publication Creation Final")]
-		Approve_Publication_Creation_Final,
-		[Display(Name = "Approve Publication Modification 1")]
-		Approve_Publication_Modification_1,
-		[Display(Name = "Approve Publication Modification 2")]
-		Approve_Publication_Modification_2,
-		[Display(Name = "Approve Publication Modification 3")]
-		Approve_Publication_Modification_3,
-		[Display(Name = "Approve Publication Modification Final")]
-		Approve_Publication_Modification_Final,
-		[Display(Name = "Approve Publication Withdrawal 1")]
-		Approve_Publication_Withdrawal_1,
-		[Display(Name = "Approve Publication Withdrawal 2")]
-		Approve_Publication_Withdrawal_2,
-		[Display(Name = "Approve Publication Withdrawal 3")]
-		Approve_Publication_Withdrawal_3,
-		[Display(Name = "Approve Publication Withdrawal Final")]
-		Approve_Publication_Withdrawal_Final,
+        //Approve Publication
+        [Display(Name = "Publication Approved by 1st-Level Approver")]
+        Approve_Publication_Creation_1,
+        [Display(Name = "Publication Approved by 2nd-Level Approver")]
+        Approve_Publication_Creation_2,
+        [Display(Name = "Publication Approved by 3rd-Level Approver")]
+        Approve_Publication_Creation_3,
+        [Display(Name = "Approve Publication Creation Final")]
+        Approve_Publication_Creation_Final,
+        [Display(Name = "Publication Modification Approved by 1st-Level Approver")]
+        Approve_Publication_Modification_1,
+        [Display(Name = "Publication Modification Approved by 2nd-Level Approver")]
+        Approve_Publication_Modification_2,
+        [Display(Name = "Publication Modification Approved by 3rd-Level Approver")]
+        Approve_Publication_Modification_3,
+        [Display(Name = "Approve Publication Modification Final")]
+        Approve_Publication_Modification_Final,
+        [Display(Name = "Publication Withdrawal Approved by 1st-Level Approver")]
+        Approve_Publication_Withdrawal_1,
+        [Display(Name = "Publication Withdrawal Approved by 2nd-Level Approver")]
+        Approve_Publication_Withdrawal_2,
+        [Display(Name = "Publication Withdrawal Approved by 3rd-Level Approver")]
+        Approve_Publication_Withdrawal_3,
+        [Display(Name = "Publication Withdrawal Notice")]
+        Approve_Publication_Withdrawal_Final,
+
+        //Refund publication
+        [Display(Name = "Publication Refund Requested")]
+        Submit_Publication_Refund,
+        [Display(Name = "Publication Refund Incomplete")]
+        Approve_Publication_Refund_Incomplete,
+        [Display(Name = "Publication Refund Complete")]
+        Approve_Publication_Refund_Complete,
 
 
-		//---------------------------------------------------
-	}
+        //---------------------------------------------------
+    }
 
 
-	[Table("Notification")]
+    [Table("Notification")]
 	public class Notification
 	{
 		[Key]

@@ -50,6 +50,11 @@ namespace FEP.Model
 
         public DbSet<AccountSetting> AccountSetting { get; set; }
 
+        //tot
+        public DbSet<TOTReport> TOTReport { get; set; }
+
+        public DbSet<TOTReportFile> TOTReportFile { get; set; }
+        
         //file
         public DbSet<FileDocument> FileDocument { get; set; }
 
@@ -77,8 +82,11 @@ namespace FEP.Model
 
         public DbSet<ErrorLog> ErrorLog { get; set; }
 
+        public DbSet<ShareLog> ShareLog { get; set; }
+        public DbSet<PageLog> PageLog { get; set; }
+
         //elearning
-        //      public DbSet<LearningCourse> LearningCourse { get; set; }
+        //public DbSet<LearningCourse> LearningCourse { get; set; }
         //public DbSet<LearningCourseCertificate> LearningCourseCertificate { get; set; }
         //public DbSet<LearningCourseCategory> LearningCourseCategory { get; set; }
         //public DbSet<Learner> Learner { get; set; }
@@ -107,6 +115,7 @@ namespace FEP.Model
         //publication
         public DbSet<Publication> Publication { get; set; }
 
+        public DbSet<PublicationFile> PublicationFile { get; set; }
         public DbSet<PublicationCategory> PublicationCategory { get; set; }
         public DbSet<PublicationApproval> PublicationApproval { get; set; }
         public DbSet<PublicationWithdrawal> PublicationWithdrawal { get; set; }
@@ -119,11 +128,16 @@ namespace FEP.Model
         //research
         public DbSet<Survey> Survey { get; set; }
 
+        public DbSet<SurveyFile> SurveyFile { get; set; }
         public DbSet<SurveyApproval> SurveyApproval { get; set; }
         public DbSet<SurveyResponse> SurveyResponse { get; set; }
 
-		//eEvent
-		public DbSet<PublicEvent> PublicEvent { get; set; } 
+        //targeted groups
+        public DbSet<TargetedGroups> TargetedGroups { get; set; }
+        public DbSet<TargetedGroupMembers> TargetedGroupMembers { get; set; }
+
+        //eEvent
+        public DbSet<PublicEvent> PublicEvent { get; set; } 
 		public DbSet<EventCalendar> EventCalendar { get; set; }
 		public DbSet<EventAgenda> EventAgenda { get; set; }
 		public DbSet<EventSpeaker> EventSpeaker { get; set; }
@@ -138,16 +152,17 @@ namespace FEP.Model
 		public DbSet<EventExhibitionRequest> EventExhibitionRequest { get; set; }
 		public DbSet<EventFile> EventFile { get; set; }
 		public DbSet<EventExternalExhibitor> EventExternalExhibitor { get; set; }
-		public DbSet<MediaFile> MediaFile { get; set; }
 		public DbSet<EventCategory> EventCategory { get; set; }
-		public DbSet<SpeakerFile> SpeakerFile { get; set; }
 		public DbSet<ExhibitionNominee> ExhibitionNominee { get; set; }
 
 		public DbSet<AssignedSpeaker> AssignedSpeaker { get; set; }
 		public DbSet<AssignedExternalExhibitor> AssignedExternalExhibitor { get; set; }
+		public DbSet<DutyRoster> DutyRoster { get; set; }
+		public DbSet<DutyRosterOfficer> DutyRosterOfficer { get; set; }
+		
 
-        // Elearning
-        public DbSet<Course> Courses { get; set; }
+		// Elearning
+		public DbSet<Course> Courses { get; set; }
 
         public DbSet<ContentFile> ContentFiles { get; set; }
 
@@ -199,7 +214,7 @@ namespace FEP.Model
         public DbSet<BulkNotification> BulkNotification { get; set; }
         public DbSet<ParameterGroup> ParameterGroup { get; set; }
 
-        public DbSet<ActivityDummy> ActivityDummy { get; set; }
+     
         public DbSet<RewardActivityPoint> RewardActivityPoint { get; set; }
         public DbSet<RewardRedemption> RewardRedemption { get; set; }
         public DbSet<UserRewardPoints> UserRewardPoints { get; set; }

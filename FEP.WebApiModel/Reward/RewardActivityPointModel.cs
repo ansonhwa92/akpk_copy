@@ -11,10 +11,10 @@ namespace FEP.WebApiModel.Reward
 {
     public class RewardActivityPointModel
     {
-        [Display(Name = "Activity")]
-        public int ActivityId { get; set; }
-        [Display(Name = "Activity")]
-        public string ActivityName { get; set; }
+        [Display(Name = "Course")]
+        public int CourseId { get; set; }
+        [Display(Name = "Course")]
+        public string CourseName { get; set; }
         [Display(Name = "Value")]
         public int Value { get; set; }
         
@@ -28,14 +28,10 @@ namespace FEP.WebApiModel.Reward
         public string CreatedByName { get; set; }
     }
 
-    public class ActivityDummyModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
 
     public class CreateRewardActivityPointModel : RewardActivityPointModel
     {
+        [Display(Name = "Course Name")]
         public IEnumerable<SelectListItem> ActivityDummyList { get; set; }
         public CreateRewardActivityPointModel() { }
     }
@@ -75,8 +71,8 @@ namespace FEP.WebApiModel.Reward
 
     public class FilterRewardActivityPointModel : DataTableModel
     {
-        [Display(Name = "Activity")]
-        public string ActivityName { get; set; }
+        [Display(Name = "Course")]
+        public string CourseName { get; set; }
         [Display(Name = "Value")]
         public int Value { get; set; }
         [Display(Name = "Created Date")]

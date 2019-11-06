@@ -238,8 +238,12 @@
 				<div class="tab-pane active" id="invitation-details">
 					<form>
 						<div class="form-container">
-							<div class="sub-Title my-4">
-								Invitation Details
+							<div class="sub-Title my-4 d-flex align-items-center mb-4 mt-2">
+								<h4 class="color-darkblue mr-auto mb-0">Invitation Details<br><span class="small">Review invitation details below.</span></h4>
+								@if (Model.MediaStatus == FEP.Model.MediaStatus.New || Model.MediaStatus == FEP.Model.MediaStatus.NotVerified)
+								{
+									<a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Edit", "MediaInterview", new { area = "eEvent", @id = Model.Id })"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
+								}
 							</div>
 							<div class="row">
 								<div class="form-group col-lg-6">

@@ -164,7 +164,7 @@
 						<a href='@Url.Action("Verified", "PublicEvent", new { area = "eEvent", id = Model.Id })'
 						   class="btn btn-primary btn-block mb-2 ">Submit for Approval</a>
 						@*<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
-			<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>*@
+							<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>*@
 					}
 					else if (Model.EventStatus == FEP.Model.EventStatus.Verified)
 					{
@@ -212,9 +212,12 @@
 		<div class="border-form rounded-top">
 			<div class="form-container tab-content">
 				<div class="tab-pane active" id="publicevent-details">
-					<div class="mb-4 mt-2 mr-auto">
-						<h4 class="color-darkblue mb-0">Public Event Details</h4>
-						<h6 class="font-weight-normal">Review public event details below.</h6>
+					<div class="d-flex align-items-center mb-4 mt-2">
+						<h4 class="color-darkblue mr-auto mb-0">Public Event Details<br><span class="small">Review public event details below.</span></h4>
+						@if (Model.EventStatus == FEP.Model.EventStatus.New || Model.EventStatus == FEP.Model.EventStatus.RejectNeedToEdit)
+						{
+							<a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent", @id = Model.Id })"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
+						}
 					</div>
 					<div class="row">
 						<div class="form-group col-lg-6">
@@ -306,7 +309,7 @@
 							@Html.LabelFor(model => model.TargetedGroup)
 							@Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
 						</div>
-					
+
 						<div class="form-group col-lg-6">
 							@Html.LabelFor(model => model.EventCategoryId)
 							@Html.EditorFor(model => model.EventCategoryName, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @readonly = "readonly" } })
@@ -350,177 +353,177 @@
 						<h6 class="font-weight-normal">Check amendment list here.</h6>
 					</div>
 					@*<div class="row">
-						<div class="form-group col-lg-12">
-							<ul class="list-group list-group-fit">
-								@if (Model.EventStatus != FEP.Model.EventStatus.New)
-								{
-									if (ViewBag.ApprovalHistory.Count != 0)
+							<div class="form-group col-lg-12">
+								<ul class="list-group list-group-fit">
+									@if (Model.EventStatus != FEP.Model.EventStatus.New)
 									{
-										var icount = 0;
-										foreach (var item in ViewBag.History)
+										if (ViewBag.ApprovalHistory.Count != 0)
 										{
-											if (item.EventStatus == FEP.Model.EventStatus.RejectNeedToEdit)
+											var icount = 0;
+											foreach (var item in ViewBag.History)
 											{
-												icount++;
-												<li class="list-group-item pt-4">
-													<div class="media align-items-top">
-														<div class="media-left">
-															<div class="card__avatar">
-																<img src="assets/images/people/50/guy-6.jpg" alt="Avatar" class="card__avatar__image">
+												if (item.EventStatus == FEP.Model.EventStatus.RejectNeedToEdit)
+												{
+													icount++;
+													<li class="list-group-item pt-4">
+														<div class="media align-items-top">
+															<div class="media-left">
+																<div class="card__avatar">
+																	<img src="assets/images/people/50/guy-6.jpg" alt="Avatar" class="card__avatar__image">
+																</div>
+															</div>
+															<div class="media-body">
+																<div class="card__name-wrap ml-0">
+																	<div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
+																	<div class="card__author-name">@item.UserName</div>
+																	<div class="card__text pb-3">@item.Remarks</div>
+																</div>
 															</div>
 														</div>
-														<div class="media-body">
-															<div class="card__name-wrap ml-0">
-																<div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
-																<div class="card__author-name">@item.UserName</div>
-																<div class="card__text pb-3">@item.Remarks</div>
-															</div>
-														</div>
-													</div>
-												</li>
+													</li>
+												}
 											}
-										}
 
+										}
 									}
-								}
-							</ul>
-						</div>
-					</div>*@
+								</ul>
+							</div>
+						</div>*@
 				</div>
 				<!-- Popups -->
 				<!-- Start Form -->
 				@*@using (Html.BeginForm("Details", "PublicEvent", FormMethod.Post, new { id = "myform" }))
-				{
-					@Html.AntiForgeryToken()
+					{
+						@Html.AntiForgeryToken()
 
-						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+							@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-					@Html.HiddenFor(model => model.approval.Id)
-					@Html.HiddenFor(model => model.approval.EventId)
-					@Html.HiddenFor(model => model.approval.Level)
-					@Html.HiddenFor(model => model.approval.ApproverId)
-					@Html.HiddenFor(model => model.approval.Status)
+						@Html.HiddenFor(model => model.approval.Id)
+						@Html.HiddenFor(model => model.approval.EventId)
+						@Html.HiddenFor(model => model.approval.Level)
+						@Html.HiddenFor(model => model.approval.ApproverId)
+						@Html.HiddenFor(model => model.approval.Status)
 
-						<div class="modal fade" id="modalApprove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog modal-sm" role="document">
-								<div class="modal-content">
-									<div class="modal-body">
-										@if (Model.publicevent.EventStatus == FEP.Model.EventStatus.PendingforVerification)
-										{
-											if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Verify_PublicEvent))
+							<div class="modal fade" id="modalApprove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-sm" role="document">
+									<div class="modal-content">
+										<div class="modal-body">
+											@if (Model.publicevent.EventStatus == FEP.Model.EventStatus.PendingforVerification)
 											{
-												<h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
-												@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+												if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Verify_PublicEvent))
+												{
+													<h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
+													@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+												}
 											}
-										}
-										else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.Verified)
-										{
-											if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver1_PublicEvent) || CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver2_PublicEvent))
+											else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.Verified)
 											{
-												<h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
-												<h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
-												<div class="form-group">
-													<div class="ml-4">
-														<div class="custom-control custom-radio">
-															@Html.RadioButtonFor(model => model.approval.RequireNext, true, new { @id = "option1" })
-															<label for="option1">Yes, submit to next level approval</label>
-														</div>
-														<div class="custom-control custom-radio">
-															@Html.RadioButtonFor(model => model.approval.RequireNext, false, new { @id = "option2" })
-															<label for="option2">No, skip and approve this Public Event</label>
+												if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver1_PublicEvent) || CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver2_PublicEvent))
+												{
+													<h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
+													<h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
+													<div class="form-group">
+														<div class="ml-4">
+															<div class="custom-control custom-radio">
+																@Html.RadioButtonFor(model => model.approval.RequireNext, true, new { @id = "option1" })
+																<label for="option1">Yes, submit to next level approval</label>
+															</div>
+															<div class="custom-control custom-radio">
+																@Html.RadioButtonFor(model => model.approval.RequireNext, false, new { @id = "option2" })
+																<label for="option2">No, skip and approve this Public Event</label>
+															</div>
 														</div>
 													</div>
-												</div>
+												}
+												else if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver3_PublicEvent))
+												{
+													@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+												}
 											}
-											else if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver3_PublicEvent))
-											{
-												@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
-											}
-										}
-										<div class="form-group">
-											@Html.LabelFor(model => model.approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-											<textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
-											<span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
+											<div class="form-group">
+												@Html.LabelFor(model => model.approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+												<textarea class="form-control" name="Approval.Remarks" id="Approval_Remarks" rows="4" placeholder=""></textarea>
+												<span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
+											</div>
+										</div>
+										<div class="divider-border"></div>
+										<div class="m-4 text-center">
+											<button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+											<button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#approvalsent" id="btnApproveConfirm">Send</button>
 										</div>
 									</div>
-									<div class="divider-border"></div>
-									<div class="m-4 text-center">
-										<button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
-										<button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#approvalsent" id="btnApproveConfirm">Send</button>
+								</div>
+							</div>
+							<div class="modal fade" id="modalApproveSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-sm" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+										</div>
+										<div class="modal-body text-center">
+											@if (Model.EventStatus == FEP.Model.EventStatus.PendingforVerification)
+											{
+												<!-- verification (always forwarded) -->
+												<img src="~/img/icon-noti-email.svg" alt="image">
+												<h4 class="color-darkblue mt-4">Approval Request Sent</h4>
+												<p class="small">Your public event approval request has been sent to HOD.</p>
+											}
+											else if (Model.EventStatus == FEP.Model.EventStatus.Verified)
+											{
+												<!-- approval -->
+												<!-- forwarding -->
+												<img src="~/img/icon-approval.svg" alt="image">
+												<h4 class="color-darkblue mt-4">Approval Request Sent</h4>
+												<p class="small">Your public event approval request has been sent to the next Approver.</p>
+												<!-- not forwarding -->
+												<img src="~/img/icon-approval.svg" alt="image">
+												<h4 class="color-darkblue mt-4">Public Event Approved</h4>
+												<p class="small">Your public event approval has been notified to CCD.</p>
+											}
+										</div>
+										<!-- Bila xde modal footer -->
+										<div class="modal-footer py-0">&nbsp;</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="modal fade" id="modalApproveSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog modal-sm" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">×</span>
-										</button>
-									</div>
-									<div class="modal-body text-center">
-										@if (Model.EventStatus == FEP.Model.EventStatus.PendingforVerification)
-										{
-											<!-- verification (always forwarded) -->
-											<img src="~/img/icon-noti-email.svg" alt="image">
-											<h4 class="color-darkblue mt-4">Approval Request Sent</h4>
-											<p class="small">Your public event approval request has been sent to HOD.</p>
-										}
-										else if (Model.EventStatus == FEP.Model.EventStatus.Verified)
-										{
-											<!-- approval -->
-											<!-- forwarding -->
-											<img src="~/img/icon-approval.svg" alt="image">
-											<h4 class="color-darkblue mt-4">Approval Request Sent</h4>
-											<p class="small">Your public event approval request has been sent to the next Approver.</p>
-											<!-- not forwarding -->
-											<img src="~/img/icon-approval.svg" alt="image">
-											<h4 class="color-darkblue mt-4">Public Event Approved</h4>
-											<p class="small">Your public event approval has been notified to CCD.</p>
-										}
-									</div>
-									<!-- Bila xde modal footer -->
-									<div class="modal-footer py-0">&nbsp;</div>
-								</div>
-							</div>
-						</div>
-						<div class="modal fade" id="modalReject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog modal-sm" role="document">
-								<div class="modal-content">
-									<div class="modal-body">
-										<h4 class="color-darkblue mt-4">Require Amendment</h4>
-										<label>Remarks</label> <span class="text-danger">*</span>
-										<textarea class="form-control" name="Reject.Remarks" id="Reject_Remarks" rows="4" placeholder=""></textarea>
-										<span class="text-danger field-validation-error" id="span_rejectremarkserror" style="display:none;">Please enter Remarks</span>
-									</div>
-									<div class="divider-border"></div>
-									<div class="m-4 text-center">
-										<button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
-										<button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#amendmentsent" id="btnRejectConfirm">Send</button>
+							<div class="modal fade" id="modalReject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-sm" role="document">
+									<div class="modal-content">
+										<div class="modal-body">
+											<h4 class="color-darkblue mt-4">Require Amendment</h4>
+											<label>Remarks</label> <span class="text-danger">*</span>
+											<textarea class="form-control" name="Reject.Remarks" id="Reject_Remarks" rows="4" placeholder=""></textarea>
+											<span class="text-danger field-validation-error" id="span_rejectremarkserror" style="display:none;">Please enter Remarks</span>
+										</div>
+										<div class="divider-border"></div>
+										<div class="m-4 text-center">
+											<button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+											<button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#amendmentsent" id="btnRejectConfirm">Send</button>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="modal fade" id="modalRejectSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog modal-sm" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">×</span>
-										</button>
+							<div class="modal fade" id="modalRejectSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-sm" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+										</div>
+										<div class="modal-body text-center">
+											<img src="../img/icon-noti-email.svg" alt="image">
+											<h4 class="color-darkblue mt-4">Ammendment Sent</h4>
+											<p class="small">Your ammendment request has been sent to CCD.</p>
+										</div>
+										<!-- Bila xde modal footer -->
+										<div class="modal-footer py-0">&nbsp;</div>
 									</div>
-									<div class="modal-body text-center">
-										<img src="../img/icon-noti-email.svg" alt="image">
-										<h4 class="color-darkblue mt-4">Ammendment Sent</h4>
-										<p class="small">Your ammendment request has been sent to CCD.</p>
-									</div>
-									<!-- Bila xde modal footer -->
-									<div class="modal-footer py-0">&nbsp;</div>
 								</div>
 							</div>
-						</div>
-					}*@
+						}*@
 				<!-- popups end -->
 			</div>
 			<!--  Start Action Log -->

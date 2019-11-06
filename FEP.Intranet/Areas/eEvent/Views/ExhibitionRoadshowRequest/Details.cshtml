@@ -194,10 +194,14 @@
 					<div class="tab-pane active" id="exhibitiondetails">
 						<form>
 							<div class="form-container">
-								<div class="sub-Title my-4">
-									Exhibition Details
+								
+								<div class="sub-Title my-4 d-flex align-items-center mb-4 mt-2">
+									<h4 class="color-darkblue mr-auto mb-0">Exhibition Details<br><span class="small">Review exhibition details below.</span></h4>
+									@if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.New || Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.NotVerified)
+									{
+										<a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Edit", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = Model.Id })"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
+									}
 								</div>
-
 								<div class="row">
 									<div class="form-group col-lg-12">
 										@Html.LabelFor(model => model.ReceivedById)

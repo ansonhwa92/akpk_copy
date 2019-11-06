@@ -170,6 +170,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				ReceivedDate = response.Data.ReceivedDate,
 				Receive_Via = response.Data.Receive_Via,
 				Attachments = response.Data.Attachments,
+				NomineeId = response.Data.NomineeId,
 			};
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
@@ -215,6 +216,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ReceivedDate = model.ReceivedDate,
 					Receive_Via = model.Receive_Via,
 					Attachments = model.Attachments,
+					NomineeId = model.NomineeId,
 				};
 
 				//attachment

@@ -24,24 +24,34 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = CurrentUser.Name;
-
                 var response = await WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Post, ContentCompletionsApiUrl.Post, model);
 
                 if (response.isSuccess)
                 {
                     //TempData["SuccessMessage"] = "Content Completed";
 
-                    await LogActivity(Modules.Learning, "User : " + user + " complete this content : " + model.Title);
+                    await LogActivity(Modules.Learning, $"User : {CurrentUser?.Name} complete this content : {model.Title}");
 
-                    //int nextContent = int.Parse(response.Data.ToString());
-                    var nextContent = response.Data;
+                    var nextContent = response.Data.nextContentId;
+                    var nextModule = response.Data.nextModuleId;
+                    var courseId = response.Data.CourseId;
 
                     //if (nextContent < 0) // go to index, no more content this module
                     if (nextContent == null)
-                        return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
-                    else
-                        return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = nextContent.Id });
+                    {
+                        if (nextModule == null) // No more module and content, lets go to the course page
+                        {
+                            TempData["SuccessMessage"] = "Congratulations, you have completed this course.";
+
+                            return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = courseId });
+                        }
+                        else  // go to next module
+                        {
+                            return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = nextModule.Value });
+                        }
+                    }
+                    else // go to next content
+                        return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = nextContent.Value });
                 }
             }
             TempData["ErrorMessage"] = "Cannot complete content.";
@@ -53,9 +63,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         public ActionResult Get(int contentId)
         {
+            int currentUserId = -1;
+            if (CurrentUser.UserId != null)
+                currentUserId = CurrentUser.UserId.Value;
 
             var response = AsyncHelpers.RunSync<WebApiResponse<ContentCompletionModel>>(() => WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Get,
                 ContentCompletionsApiUrl.Get + $"?contentId={contentId}"));
+
+            response.Data.UserId = currentUserId;
 
             //var response = Task.Run(() => WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Get, ContentCompletionsApiUrl.Get + $"?contentId={contentId}").GetAwaiter().GetResult());
 

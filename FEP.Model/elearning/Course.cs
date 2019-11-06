@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace FEP.Model.eLearning
 {
@@ -29,7 +30,8 @@ namespace FEP.Model.eLearning
         public CourseScheduleType ScheduleType { get; set; }
 
         // Total duration of the course, 10 days? 10 weeeks. Used with DurationType
-        public int? Duration { get; set; }
+        [Range(0.5, 1000, ErrorMessage = "Invalid Value")]
+        public decimal? Duration { get; set; } 
 
         public DurationType DurationType { get; set; }
 
@@ -89,7 +91,7 @@ namespace FEP.Model.eLearning
         /// This value is required for Paid Course and will need to be copied to
         /// CourseEvent when CourseEvent is created
         /// </summary>
-        public decimal DefaultAllowablePercentageBeforeWithdraw { get; set; } = 50.0m;
+        public decimal DefaultAllowablePercentageBeforeWithdraw { get; set; } = 0.0m;
 
         public ViewCategory ViewCategory { get; set; }
 
@@ -127,6 +129,14 @@ namespace FEP.Model.eLearning
         public SkillLevel SkillLevel { get; set; }
 
         public int SLAReminderId { get; set; }
+
+        public int TotalContents { get; set; }
+
+        public void UpdateCourseStat()
+        {
+            TotalModules = this.Modules.Count();            
+            TotalContents = this.Modules.Sum(x => x.TotalContent);
+        }
     }
 
     public enum SkillLevel
@@ -152,7 +162,7 @@ namespace FEP.Model.eLearning
         Submitted, // 2
 
         [Display(Name = "CourseStatusVerified", ResourceType = typeof(Language.eLearning.Enum))]
-        Verify, // 3
+        Verified, // 3
 
         [Display(Name = "CourseStatusApproved", ResourceType = typeof(Language.eLearning.Enum))]
         Approved, // Ready to publish 4
@@ -174,6 +184,7 @@ namespace FEP.Model.eLearning
 
         Hidden, //The course is hidden froom search and view, however the point given is still valid
         Deleted,
+
     }
 
     /// <summary>

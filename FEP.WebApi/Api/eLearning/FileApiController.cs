@@ -1,6 +1,7 @@
 ﻿using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
+using Mammoth;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -41,7 +42,6 @@ namespace FEP.WebApi.Api.eLearning
             if (!string.IsNullOrEmpty(fileName))
             {
                 string fullPath = Path.Combine(storageDir, fileName);
-
 
                 if (File.Exists(fullPath))
                 {
@@ -135,13 +135,13 @@ namespace FEP.WebApi.Api.eLearning
                 var fileDocument = new FileDocument
                 {
                     CreatedBy = request.CreatedBy,
-                    CreatedDate = request.CreatedDate,
+                    CreatedDate = DateTime.Now,
                     FileName = request.FileName,
                     FileNameOnStorage = request.FileNameOnStorage,
                     FilePath = request.FilePath,
                     FileSize = request.FileSize,
                     FileTag = request.FileTag,
-                    FileType = request.FileType,    
+                    FileType = request.FileType,
                     User = request.User
                 };
 
@@ -164,14 +164,13 @@ namespace FEP.WebApi.Api.eLearning
 
                 db.ContentFiles.Add(contentFile);
 
-                await db.SaveChangesAsync();                
+                await db.SaveChangesAsync();
 
                 var content = await db.CourseContents.FirstOrDefaultAsync(x => x.Id == request.ContentId);
 
                 content.ContentFileId = contentFile.Id;
 
                 await db.SaveChangesAsync();
-
 
                 return Ok(contentFile.Id);
             }
@@ -181,16 +180,13 @@ namespace FEP.WebApi.Api.eLearning
             }
         }
 
-
         [Route("api/eLearning/File/GetFileNameOnStorage")]
         [HttpGet]
         public async Task<IHttpActionResult> GetFileNameOnStorage(int contentId)
         {
-
             var content = await db.ContentFiles
                             .Include(x => x.FileDocument)
                             .FirstOrDefaultAsync(x => x.Id == contentId);
-
 
             if (content == null || content.FileDocument == null)
                 return BadRequest();
@@ -199,7 +195,50 @@ namespace FEP.WebApi.Api.eLearning
                 return BadRequest();
 
             return Ok(content.FileDocument.FileNameOnStorage);
+        }
 
+        [Route("api/eLearning/File/GetImg")]
+        [HttpGet]
+        public IHttpActionResult GetImg(string fileName)
+        {
+            var path = Path.Combine(storageDir, fileName);
+
+            var fileInfo = new FileInfo(path);
+
+            return !fileInfo.Exists
+                ? (IHttpActionResult)NotFound()
+                : new FileResult(fileInfo.FullName);
+        }
+
+        [Route("api/eLearning/File/GetHTML")]
+        [HttpGet]
+        public async Task<string> DocToHTML(int contentId)
+        {
+            var content = await db.ContentFiles
+                           .Include(x => x.FileDocument)
+                           .FirstOrDefaultAsync(x => x.Id == contentId);
+
+            if (content == null)
+                return "<bold>Error</strong>";
+
+            var fileFullPath = Path.Combine(storageDir, content.FileDocument.FileNameOnStorage);
+
+            try
+            {
+                var converter = new DocumentConverter();
+                var result = converter.ConvertToHtml(fileFullPath);
+                var html = result.Value; // The generated HTML
+                var warnings = result.Warnings;
+
+                if (String.IsNullOrEmpty(html))
+                    return "Error reading the document.";
+
+                return html;
+            }
+            catch (Exception e)
+            {
+                return "Error reading the document.";
+            }
         }
     }
 

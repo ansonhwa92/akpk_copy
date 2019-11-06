@@ -186,7 +186,7 @@
                                 case @Json.Encode(CourseStatus.Submitted) :
                                     return "<span class='color-yellow font-weight-bold'>Pending Verification</span>";
 
-                                case @Json.Encode(CourseStatus.Verify) :
+                                case @Json.Encode(CourseStatus.Verified) :
                                 case @Json.Encode(CourseStatus.FirstApproval) :
                                 case @Json.Encode(CourseStatus.SecondApproval) :
                                 case @Json.Encode(CourseStatus.ThirdApproval) :
@@ -222,7 +222,6 @@
                             var canwithdraw = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseEnroll));
 
                             action = '<div class="icon-action">';
-
                             // everyone with access course edit/create/verify/aprove can view
                             // learner access is using courseView
                             action += '<a href="@Url.Action("View", "Courses", new { area = "eLearning" })/' + row.Id +
@@ -250,7 +249,7 @@
                             }
 
                             if (canpublish) {
-                                if (row.Status == 4 || row.Status == 6) { // approved or published
+                                if (row.Status == 4) { // approved or published
                                     action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id +
                                         '" data-toggle="tooltip" data-placement="top" title="Publish"><i class="la la-book"></i></a>&nbsp;';
                                 }

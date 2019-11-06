@@ -138,6 +138,9 @@
   <data name="Document" xml:space="preserve">
     <value>Upload a file</value>
   </data>
+  <data name="Height" xml:space="preserve">
+    <value>Video Height</value>
+  </data>
   <data name="IFrame" xml:space="preserve">
     <value>IFrame Url</value>
   </data>
@@ -182,5 +185,8 @@
   </data>
   <data name="UseYouTube" xml:space="preserve">
     <value>Use YouTube</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>Video Width</value>
   </data>
 </root>

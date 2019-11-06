@@ -33,44 +33,52 @@ namespace FEP.WebApi.Api.eLearning
         public async Task<IHttpActionResult> SendNotification(NotificationModel model)
         {
             var receivers = new List<int>();
-            object entity;
 
-            // find receivers
-            if (model.ReceiverId == null || model.ReceiverId.Count() > 0)
+            if (model.ReceiverType == ReceiverType.UserIds || model.ReceiverType == ReceiverType.Both)
             {
-                switch (model.NotificationType)
+                // find receivers
+                if (model.ReceiverId == null || model.ReceiverId.Count() > 0)
                 {
-                    case NotificationType.Verify_Courses_Creation:
+                    switch (model.NotificationType)
+                    {
+                        case NotificationType.Verify_Courses_Creation:
 
-                        receivers = await GetUserIds(UserAccess.CourseVerify);
+                            receivers = await GetUserIds(UserAccess.CourseVerify);
 
+                            break;
 
-                        break;
+                        case NotificationType.Approve_Courses_Creation_Approver1:
 
-                    case NotificationType.Approve_Courses_Creation_Approver1:
+                            receivers = await GetUserIds(UserAccess.CourseApproval1);
+                            break;
 
-                        receivers = await GetUserIds(UserAccess.CourseApproval1);
-                        break;
+                        case NotificationType.Approve_Courses_Creation_Approver2:
 
-                    case NotificationType.Approve_Courses_Creation_Approver2:
+                            receivers = await GetUserIds(UserAccess.CourseApproval2);
+                            break;
 
-                        receivers = await GetUserIds(UserAccess.CourseApproval2);
-                        break;
+                        case NotificationType.Approve_Courses_Creation_Approver3:
 
-                    case NotificationType.Approve_Courses_Creation_Approver3:
+                            receivers = await GetUserIds(UserAccess.CourseApproval3);
+                            break;
 
-                        receivers = await GetUserIds(UserAccess.CourseApproval3);
-                        break;
+                        case NotificationType.Course_Amendment:
 
-                    default:
-                        break;
+                            receivers = await GetUserIds(UserAccess.CourseCreate);
+                            break;
+
+                        case NotificationType.Course_Approved:
+
+                            receivers = await GetUserIds(UserAccess.CourseCreate);
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    model.ReceiverId = receivers;
                 }
-
-                model.ReceiverId = receivers;
             }
-
-            if (model.ReceiverId.Count() <= 0)
-                return BadRequest();
 
             if (model.Type == typeof(Course))
             {
@@ -82,7 +90,6 @@ namespace FEP.WebApi.Api.eLearning
                 }
             }
 
-
             CreateAutoReminder createdAutoReminder = new CreateAutoReminder
             {
                 NotificationCategory = model.NotificationCategory,
@@ -92,54 +99,90 @@ namespace FEP.WebApi.Api.eLearning
                 StartNotificationDate = DateTime.Now
             };
 
+            //var emailToSend = new CourseEmailQueue
+            //{
+            //    NotificationCategory = model.NotificationCategory.ToString(),
+            //    NotificationType = model.NotificationType.ToString(),
+            //    CourseId = model.Id,
+            //    Parameters = JsonConvert.SerializeObject(model.ParameterListToSend),
+            //    Receivers = model.ReceiverId.ToString(),
+            //};
+
+            //db.CourseEmailQueue.Add(emailQueue);
+
+            await db.SaveChangesAsync();
+
+            //return Ok();
+
+            // TEMPORARILY DISABLE BELOW BECAUSE IT REQUIRES CONNECTION TO THE EMAIL SERVER WHICH WILL
+            // SLOW DOWN THE TESTING.. SO..., TO ENABLE comment Return Ok above
 
             var controller = new SLAReminderController();
 
-            //var newUrl = "/Reminder/SLA/GenerateAutoNotificationReminder";
-
-            //var controller = new SLAReminderController
-            //{
-            //    Request = new HttpRequestMessage(HttpMethod.Post, Request.RequestUri.AbsoluteUri.Replace("/eLearning/Notification/SendNotification", newUrl))
-            //};
-
             try
             {
-                var result = await controller.GenerateAutoNotificationReminder(createdAutoReminder);
-
-                var response = result as OkNegotiatedContentResult<ReminderResponse>;
-
-                if (response != null)
+                if (model.IsNeedRemainder)
                 {
-                    if (model.Type == typeof(Course))
+                    var result = await controller.GenerateAutoNotificationReminder(createdAutoReminder);
+
+                    var response = result as OkNegotiatedContentResult<ReminderResponse>;
+
+                    if (response != null)
                     {
-                        var course = await db.Courses.FindAsync(model.Id);
-
-                        if (course != null)
+                        if (model.Type == typeof(Course))
                         {
-                            course.SLAReminderId = response.Content.SLAReminderStatusId;
+                            var course = await db.Courses.FindAsync(model.Id);
 
-                            db.SetModified(course);
-                            await db.SaveChangesAsync();
+                            if (course != null)
+                            {
+                                course.SLAReminderId = response.Content.SLAReminderStatusId;
 
-                            return Ok();
+                                db.SetModified(course);
+                                await db.SaveChangesAsync();
+
+                                return Ok();
+                            }
                         }
+                    }
+                    else
+                    {
+                        var log = new ErrorLog
+                        {
+                            CreatedDate = DateTime.Now,
+                            UserId = null,
+                            Module = null,
+                            Source = " Controller: eLearning/NotificationApi Action: SendNotification",
+                            ErrorDescription = "Error sending email",
+                            ErrorDetails = "Null response",
+                            IPAddress = "",
+                        };
+
+                        db.ErrorLog.Add(log);
+                        db.SaveChanges();
                     }
                 }
                 else
                 {
-                    var log = new ErrorLog
-                    {
-                        CreatedDate = DateTime.Now,
-                        UserId = null,
-                        Module = null,
-                        Source = " Controller: eLearning/NotificationApi Action: SendNotification",
-                        ErrorDescription = "Error sending email",
-                        ErrorDetails = "Null response",
-                        IPAddress = "",
-                    };
+                    var result = await controller.GenerateAndSendEmails(model);
 
-                    db.ErrorLog.Add(log);
-                    db.SaveChanges();
+                    var response = result as OkNegotiatedContentResult<ReminderResponse>;
+
+                    if(response == null)
+                    {
+                        var log = new ErrorLog
+                        {
+                            CreatedDate = DateTime.Now,
+                            UserId = null,
+                            Module = null,
+                            Source = " Controller: eLearning/NotificationApi Action: SendNotification",
+                            ErrorDescription = "Error sending email",
+                            ErrorDetails = "Null response",
+                            IPAddress = "",
+                        };
+
+                        db.ErrorLog.Add(log);
+                        db.SaveChanges();
+                    }
                 }
             }
             catch (Exception e)

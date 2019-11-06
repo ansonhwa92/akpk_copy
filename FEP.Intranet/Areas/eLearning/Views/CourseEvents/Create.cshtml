@@ -1,0 +1,122 @@
+﻿@model FEP.WebApiModel.eLearning.CourseEventModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/eLearning/Courses" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Course</a></li>
+                                <li class="breadcrumb-item"><a href="#">Create Session</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Create Session</h1>
+                    <div class="header-text">Create new session for this course.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+    @Html.HiddenFor(m => m.CourseId)
+
+    <div class="row">
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div id="page-nav" class="sidebar-left page-nav">
+                <div data-perfect-scrollbar class="ps">
+                    <div class="page-section">
+                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                        <ul class="nav page-nav__menu">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Create Session</a>
+                            </li>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top col-sm-12">
+                <div class="form-container form-container-w100">
+                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                        <div class="">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "e.g. Agensi ABC Batch 01" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                        <div class="">
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "e.g. This is for batch 1, Agensi A", rows = 3 })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EnrollmentCode, htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
+                        <div class="">
+                            @Html.EditorFor(model => model.EnrollmentCode, new { htmlAttributes = new { @class = "form-control", placeholder = "ENR0922X" } })
+                            @Html.ValidationMessageFor(model => model.EnrollmentCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AllowablePercentageBeforeWithdraw, htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
+                        <div class="">
+                            @Html.EditorFor(model => model.AllowablePercentageBeforeWithdraw, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.AllowablePercentageBeforeWithdraw, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group pl-4">
+                        @Html.CheckBox("HasGroup", false, htmlAttributes: new { @class = "custom-control-input" })
+                        @*<input type="checkbox" class="custom-control-input"
+                            id="HasGroup"
+                            name="HasGroup">*@
+                        <label class="custom-control-label" for="HasGroup">@Language.eLearning.CourseEvent.IsGroupCreated</label>
+                        <span class="x-small font-italic">The group will be identified with the enrollment code.</span>*
+                    </div>
+                </div>
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a class="btn btn-default" href="@Url.Action("Content", "Courses", new { area = "eLearning", @id=Model.CourseId })"
+                   data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
+                <button type="submit" class="btn btn-default pull-right" id="btnSave" name="Submittype" value="Save">
+                    <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .form-container {
+        max-width: none !important;
+    }
+</style>
+
+@section ContentScript {
+
+}

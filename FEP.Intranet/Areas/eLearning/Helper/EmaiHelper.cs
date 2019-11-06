@@ -27,7 +27,6 @@ namespace FEP.Intranet.Areas.eLearning.Helper
                 var response = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, EmailHelperApiUrl.SendNotification, model);
                 if (response.isSuccess)
                 {
-                  
                     return response.Data;
                 }
 

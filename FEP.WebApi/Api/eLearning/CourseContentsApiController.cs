@@ -20,7 +20,7 @@ namespace FEP.WebApi.Api.eLearning
 
         public CourseContentsApiController()
         {
-            var config = new MapperConfiguration(cfg =>
+            MapperConfiguration config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<CreateOrEditContentModel, CourseContent>();
 
@@ -45,10 +45,7 @@ namespace FEP.WebApi.Api.eLearning
         /// <returns></returns>
         [Route("api/eLearning/CourseContents/Upload")]
         [HttpPost]
-        public IHttpActionResult Upload(FilterCourseModel request)
-        {
-            return Ok();
-        }
+        public IHttpActionResult Upload(FilterCourseModel request) => Ok();
 
         /// <summary>
         /// For use in index page, to list all the courses but with some fields only
@@ -56,10 +53,7 @@ namespace FEP.WebApi.Api.eLearning
         /// <returns></returns>
         [Route("api/eLearning/CourseContents/GetAll")]
         [HttpPost]
-        public IHttpActionResult Post(FilterCourseModel request)
-        {
-            return Ok();
-        }
+        public IHttpActionResult Post(FilterCourseModel request) => Ok();
 
         /// <summary>
         /// To create a content for a course. Require courseId
@@ -195,7 +189,6 @@ namespace FEP.WebApi.Api.eLearning
             if (course == null)
                 return NotFound();
 
-
             var model = _mapper.Map<CreateOrEditContentModel>(entity);
 
             model.ModuleName = module.Title;
@@ -248,6 +241,8 @@ namespace FEP.WebApi.Api.eLearning
                 content.VideoType = request.VideoType;
                 content.AudioType = request.AudioType;
                 content.DocumentType = request.DocumentType;
+                content.Height = request.Height;
+                content.Width = request.Width;
 
                 if (request.ContentFileId != null)
                     content.ContentFileId = request.ContentFileId;
@@ -333,7 +328,7 @@ namespace FEP.WebApi.Api.eLearning
 
         [Route("api/eLearning/CourseContents/GetAllAudio")]
         [HttpGet]
-        public async Task<IHttpActionResult> GetAllAudio(int? courseId)
+        public IHttpActionResult GetAllAudio(int? courseId)
         {
             if (courseId == null)
                 return BadRequest();
@@ -360,7 +355,7 @@ namespace FEP.WebApi.Api.eLearning
 
         [Route("api/eLearning/CourseContents/GetAllDocument")]
         [HttpGet]
-        public async Task<IHttpActionResult> GetAllDocument(int? courseId)
+        public IHttpActionResult GetAllDocument(int? courseId)
         {
             if (courseId == null)
                 return BadRequest();

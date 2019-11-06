@@ -84,6 +84,11 @@ namespace FEP.WebApi.Api.eLearning
 
                 await db.SaveChangesAsync();
 
+                course.UpdateCourseStat();
+                db.SetModified(course);
+
+                await db.SaveChangesAsync();
+
                 return Ok(module.Id);
             }
             else

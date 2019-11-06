@@ -82,7 +82,8 @@ namespace FEP.WebApiModel.eLearning
         public CourseLanguage Language { get; set; }
 
         [Display(Name = "Duration", ResourceType = typeof(Language.eLearning.Course))]
-        public int Duration { get; set; }
+        [Range(0.5, 1000, ErrorMessage = "Invalid Value")]
+        public decimal Duration { get; set; }
 
         [Display(Name = "DurationType", ResourceType = typeof(Language.eLearning.Course))]
         public DurationType DurationType { get; set; }
@@ -148,6 +149,12 @@ namespace FEP.WebApiModel.eLearning
         public string UpdatedByName { get; set; }
 
         public CourseApprovalLogModel CourseApprovalLogModel { get; set; }
+
+        // enrollmentcode, used when the user received a link with enrollmentcode
+        public string EnrollmentCode { get; set; }
+
+        // check for if user is enrolled
+        public bool IsUserEnrolled { get; set; }
     }
 
     public class CourseListModel

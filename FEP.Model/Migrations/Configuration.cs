@@ -20,12 +20,9 @@
 
             // Seed Elearning Default data and Test users and sample data
             SeedElearning.Seed(context);
-            tajulSeed.Seed(context);
-
-
+            SeedElearningEmail.SeedTemplateParameter(context);
 
             tajulSeed.Seed(context);
-
 
         }
     }

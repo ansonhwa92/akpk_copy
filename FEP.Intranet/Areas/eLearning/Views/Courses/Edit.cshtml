@@ -95,14 +95,6 @@
                         </div>
                     </div>
 
-                    @*<div class="form-group">
-                        @Html.LabelFor(model => model.Medium, htmlAttributes: new { @class = "control-label " })
-                        <div class="">
-                            @Html.EnumDropDownListFor(model => model.Medium, htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Medium, "", new { @class = "text-danger" })
-                        </div>
-                    </div>*@
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label " })
                         <div class="row">
@@ -135,39 +127,93 @@
 
                     <div class="form-group">
                         <label>@Language.eLearning.Course.IsFree</label>
-                        <div class="col-sm-12">
 
-                            <!-- Default inline 1-->
-                            <div class="free-radio row pl-4 pb-2">
-                                <div class="col-sm-2">
-                                    <input type="radio" class="custom-control-input free  form-control " checked="checked" value="@Model.IsFree"
-                                           id="free" name="IsFree">
-                                    <label class="custom-control-label control-label" for="free">@Language.eLearning.Course.Free</label>
+                        @if (Model.Status == FEP.Model.eLearning.CourseStatus.Draft
+                            || Model.Status == FEP.Model.eLearning.CourseStatus.Amendment)
+                        {
+                            <div class="col-sm-12">
+
+                                <!-- Default inline 1-->
+                                <div class="free-radio row pl-4 pb-2">
+                                    <div class="col-sm-2">
+                                        <input type="radio" class="custom-control-input free  form-control " checked="checked" value="@Model.IsFree"
+                                               id="free" name="IsFree">
+                                        <label class="custom-control-label control-label" for="free">@Language.eLearning.Course.Free</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <!-- Default inline 2-->
-                            <div class="free-radio row pl-4 ">
-                                <div class="col-sm-2">
-                                    <input type="radio" class="custom-control-input paid form-control" value="@Model.IsFree"
-                                           id="paid" name="IsFree">
-                                    <label class="custom-control-label control-label" for="paid">@Language.eLearning.Course.Paid</label>
+
+                            <div class="col-sm-12">
+                                <!-- Default inline 2-->
+                                <div class="free-radio row pl-4 ">
+                                    <div class="col-sm-2">
+                                        <input type="radio" class="custom-control-input paid form-control" value="@Model.IsFree"
+                                               id="paid" name="IsFree">
+                                        <label class="custom-control-label control-label" for="paid">@Language.eLearning.Course.Paid</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            if (Model.IsFree)
+                            {
+
+                                <div class="free-radio row pl-4 pb-2">
+                                    <div class="col-sm-2">
+                                        <input type="radio" class="custom-control-input form-control" checked="checked">
+                                        <label class="custom-control-label control-label">@Language.eLearning.Course.Free</label>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="free-radio row pl-4 ">
+                                    <div class="col-sm-2">
+                                        <input type="radio" class="custom-control-input  form-control" checked="checked">
+                                        <label class="custom-control-label control-label">@Language.eLearning.Course.Paid</label>
+                                    </div>
+                                </div>
+                            }
+
+                        }
                     </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label " })
-                        <div class="">
-                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control",
-                           @onkeypress = "return isNumberKey(event)",
-                           @type = "text"
-                       } })
-                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label " })
+                    @if (Model.Status == FEP.Model.eLearning.CourseStatus.Draft
+                            || Model.Status == FEP.Model.eLearning.CourseStatus.Amendment)
+                    {
+                        <div class="form-group">
+                            <div class="">
+                                @Html.EditorFor(model => model.Price, new
+                                {
+                                    htmlAttributes = new
+                                    {
+                                        @class = "form-control",
+                               @onkeypress = "return isNumberKey(event)",
+                               @type = "text"
+                           }
+                                })
+                                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <div class="">
+                                @Html.EditorFor(model => model.Price, new
+                                {
+                                    htmlAttributes = new
+                                    {
+                                        @class = "form-control",
+                                        @readonly = "readonly"
+                                    }
+                                })
+                                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    }
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.ViewCategory, htmlAttributes: new { @class = "control-label " })

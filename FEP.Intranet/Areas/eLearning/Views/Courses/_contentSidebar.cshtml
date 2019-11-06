@@ -4,78 +4,85 @@
 <div class="col-xl-3 col-md-3 col-sm-4 my-2">
     <div id="page-nav" class="sidebar-left page-nav">
 
+        @if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+        {
+            <div data-perfect-scrollbar class="ps">
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Content", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Content</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("EditRules", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Rules And Path </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Trainers", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Instructors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Users", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Users And Progress</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("AssignCertificate", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Certificate</a>
+                        </li>
+
+                        @if (Model.Status == CourseStatus.Published)
+                        {
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "CourseEvents", new { area = "eLearning", @courseId = @Model.Id })" class="nav-link">Sessions</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
         @{
             switch (Model.Status)
             {
                 case CourseStatus.Amendment:
                 case CourseStatus.Draft:
-                    <div data-perfect-scrollbar class="ps">
-                        <div class="page-section">
-                            <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
-                            <ul class="nav page-nav__menu">
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Content", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Content</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("EditRules", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Rules And Path </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Trainers", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Instructors</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Users", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Users And Progress</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("AssignCertificate", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Certificate</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
 
-                    <div data-perfect-scrollbar class="ps">
-                        <div class="page-section">
-                            <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Add content</h6>
-                            <ul class="nav page-nav__menu">
-                                <li class="nav-item">
-                                    <a class="dropdown-item" href="@Url.Action("Create", "CourseModules", new { area = "eLearning", id = @Model.Id, courseTitle = Model.Title })">Module</a>
-                                </li>
+                    if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+                    {
+                        <div data-perfect-scrollbar class="ps">
+                            <div class="page-section">
+                                <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Add content</h6>
+                                <ul class="nav page-nav__menu">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="@Url.Action("Create", "CourseModules",
+                                                                new { area = "eLearning", id = @Model.Id,
+                                                                    courseTitle = Model.Title })">
+                                            Module
+                                        </a>
+                                    </li>
 
-                                @foreach (int val in Enum.GetValues(typeof(CourseContentType)))
-                                {
-                                    switch ((CourseContentType)val)
+                                    @foreach (int val in Enum.GetValues(typeof(CourseContentType)))
                                     {
+                                        if (val == (int)CourseContentType.Powerpoint ||
+                                               val == (int)CourseContentType.Assignment ||
+                                               val == (int)CourseContentType.Instructor)
+                                        {
+                                            continue;
+                                        }
 
-                                        case CourseContentType.Audio:
-                                        case CourseContentType.Document:
-                                        case CourseContentType.Flash:
-                                        case CourseContentType.IFrame:
-                                        case CourseContentType.Pdf:
-                                        case CourseContentType.RichText:
-                                        case CourseContentType.Video:
-                                            <li class="nav-item">
-                                                <a href="@Url.Action("Create", "CourseContents",
-                                            new
-                                            {
-                                                area = "eLearning",
-                                                courseId = Model.Id,
-                                                courseTitle = Model.Title,
-                                                courseContentType = val,
-                                                createContentFrom = (int)CreateContentFrom.CourseFrontPage
-                                            })" class="nav-link">
-                                                    @Enum.GetName(typeof(CourseContentType), val)
-                                                </a>
-                                            </li>
-                                            break;
-
-                                        default:
-                                            break;
-
+                                        <li class="nav-item">
+                                            <a href="@Url.Action("Create", "CourseContents",
+                                                new
+                                                {
+                                                    area = "eLearning",
+                                                    courseId = Model.Id,
+                                                    courseTitle = Model.Title,
+                                                    courseContentType = val,
+                                                    createContentFrom = (int)CreateContentFrom.CourseFrontPage
+                                                })" class="nav-link">
+                                                @Enum.GetName(typeof(CourseContentType), val)
+                                            </a>
+                                        </li>
                                     }
-
-                                }
-                            </ul>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+                    }
 
                     if (CurrentUser.HasAccess(UserAccess.CourseCreate))
                     {
@@ -89,11 +96,11 @@
                                 Submit For Approval
                             </a>
                         </p>
-                        <p>
+                        @*<p>
                             <a href="@Url.Action("View", "Course", new { area = "eLearning", id = @Model.Id })" class="btn btn-default btn-block mb-2">
                                 View
                             </a>
-                        </p>
+                        </p>*@
 
                     }
 
@@ -125,75 +132,32 @@
                     }
                     break;
 
-                case CourseStatus.Submitted:
-                case CourseStatus.Verify:
-                case CourseStatus.FirstApproval:
-                case CourseStatus.SecondApproval:
-                case CourseStatus.ThirdApproval:
-
-                    <div class="page-section">
-                        <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Course</h6>
-                        <ul class="nav page-nav__menu">
-                            <li class="nav-item">
-                                <a id="tab_details" href="#course-trial" data-toggle="tab" class="nav-link active">Approvals</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    if (CurrentUser.HasAccess(UserAccess.CourseVerify) || CurrentUser.HasAccess(UserAccess.CourseApproval1) ||
-                         CurrentUser.HasAccess(UserAccess.CourseApproval2) || CurrentUser.HasAccess(UserAccess.CourseApproval3))
-                    {
-                        <p>
-                            <a href="@Url.Action("SubmitForApproval", "CourseApprovals", new { area = "eLearning", id = @Model.Id })" class="btn btn-default btn-block mb-2">
-                                Submit For Approval
-                            </a>
-                        </p>
-
-                        <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
-                    }
-
-                    break;
-
                 case CourseStatus.Approved:
-
-                    <div class="page-section">
-                        <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Course</h6>
-                        <ul class="nav page-nav__menu">
-                            <li class="nav-item">
-                                <a id="tab_details" href="#course-trial" data-toggle="tab" class="nav-link active">Publish</a>
-                            </li>
-                        </ul>
-                    </div>
 
                     if (CurrentUser.HasAccess(UserAccess.CoursePublish))
                     {
-                        <p>
-                            <a href="@Url.Action("Publish", "Courses", new { area = "eLearning", id = @Model.Id })" class="btn btn-default btn-block mb-2">
-                                Publish
-                            </a>
-                        </p>
+                        <form method="post" id="formPublish">
+                            <p><button class="btn btn-primary btn-block" id="btnPublish" type="button" onclick="publish()">Publish</button></p>
+                        </form>
                     }
 
                     break;
 
                 case CourseStatus.Published:
 
-                    <div class="page-section">
-                        <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Course</h6>
-                        <ul class="nav page-nav__menu">
-                            <li class="nav-item">
-                                <a id="tab_details" href="#course-trial" data-toggle="tab" class="nav-link active">Published</a>
-                            </li>
-                        </ul>
-                    </div>
-
                     if (CurrentUser.HasAccess(UserAccess.CoursePublish))
                     {
-                        <p>
-                            <a href="@Url.Action("Unpublish", "Courses", new { area = "eLearning", id = @Model.Id })" class="btn btn-default btn-block mb-2">
-                                Submit For Approval
-                            </a>
-                        </p>
+
+                        if (Model.ViewCategory == ViewCategory.Private)
+                        {
+                            @*<p><button class="btn btn-default btn-block" id="btnInviteStudent" onclick="createGroup">Invite Group of Students</button></p>
+                            *@
+                            <p>
+                                <a href="@Url.Action("Create", "CourseEvents", new { area = "eLearning", id = @Model.Id, title = Model.Title })" class="btn btn-primary btn-block mb-2">
+                                    <i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Session
+                                </a>
+                            </p>
+                        }
                     }
 
                     break;

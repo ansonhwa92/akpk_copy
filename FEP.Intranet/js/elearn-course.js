@@ -226,7 +226,6 @@ function validateForm() {
 
             return false;
         }
-
     }
 
     if (contentType == 'Video') {
@@ -253,7 +252,10 @@ function validateForm() {
 
         if ($('#VideoType').val() == "UploadVideo") {
 
-            if ($.trim($('#File').val()) == "") {
+            var UploadFileName = $('#UploadFileName').val();
+            console.log('filename -', UploadFileName);
+
+            if ($.trim($('#File').val()) == "" && $.trim(UploadFileName) == "" ) {
                 setError("File", "Please browse for the file to upload.");
 
                 return false;

@@ -155,13 +155,28 @@ namespace FEP.Model.Migrations
                 if (pType >= 21 && pType <= 40) //Verify & Approval
                 {
                     db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
-                    new ParameterGroup { SLAEventType = SLAEventType.SubmitPublicEvent, TemplateParameterType = paramType });
+                        new ParameterGroup { SLAEventType = SLAEventType.SubmitPublicEvent, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicEvent, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicEvent, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.CancelPublicEvent, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.RejectPublicEvent, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.PublishPublicEvent, TemplateParameterType = paramType },
 
-                    db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
-                    new ParameterGroup { SLAEventType = SLAEventType.VerifyPublicEvent, TemplateParameterType = paramType });
+                        new ParameterGroup { SLAEventType = SLAEventType.SubmitMediaInterview, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.VerifyMediaInterview, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.ApproveMediaInterview, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.RejectMediaInterview, TemplateParameterType = paramType },
 
-                    db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
-                    new ParameterGroup { SLAEventType = SLAEventType.ApprovePublicEvent, TemplateParameterType = paramType });
+                        new ParameterGroup { SLAEventType = SLAEventType.SubmitExhibitionRoadshow, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.VerifyExhibitionRoadshow, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.ApproveExhibitionRoadshow, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.RejectExhibitionRoadshow, TemplateParameterType = paramType },
+
+                        new ParameterGroup { SLAEventType = SLAEventType.SubmitExhibitionRoadshowDutyRoster, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.VerifyExhibitionRoadshowDutyRoster, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.ApproveExhibitionRoadshowDutyRoster, TemplateParameterType = paramType },
+                        new ParameterGroup { SLAEventType = SLAEventType.RejectExhibitionRoadshowDutyRoster, TemplateParameterType = paramType }
+                    );
 
                     continue;
 

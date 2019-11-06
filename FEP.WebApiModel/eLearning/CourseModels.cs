@@ -224,4 +224,42 @@ namespace FEP.WebApiModel.eLearning
         public string CreatedBy { get; set; }
         public List<string> Order { get; set; }
     }
+
+    public class DashboardCourseModel : BaseModel
+    {
+        [Display(Name = "Title", ResourceType = typeof(Language.eLearning.Course))]
+        public string Title { get; set; }
+
+        [Display(Name = "Description", ResourceType = typeof(Language.eLearning.Course))]
+        public string Description { get; set; }
+
+        [Display(Name = "Code", ResourceType = typeof(Language.eLearning.Course))]
+        public string Code { get; set; }
+
+        [Display(Name = "Category", ResourceType = typeof(Language.eLearning.Course))]
+        public int CategoryId { get; set; }
+
+        [Display(Name = "Price", ResourceType = typeof(Language.eLearning.Course))]
+        public string Price { get; set; }
+
+        [Display(Name = "Status", ResourceType = typeof(Language.eLearning.Course))]
+        public CourseStatus Status { get; set; }
+
+        public int TotalModules { get; set; }
+
+        public int TotalStudent { get; set; }
+
+        public string IntroImageFileName { get; set; }
+
+        public string InstructorBy { get; set; }
+
+    }
+
+    public class ReturnDashboardCourseModel
+    {
+        public List<DashboardCourseModel> Courses { get; set; }
+        public List<RefCourseCategory> CourseCategory { get; set;}
+        public SkillLevel SkillLevel { get; set; }
+        public CourseLanguage Language { get; set; }
+    }
 }

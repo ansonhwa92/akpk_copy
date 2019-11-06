@@ -1,4 +1,13 @@
-﻿
+﻿@using FEP.Model
+@using FEP.Model.eLearning
+
+@model FEP.WebApiModel.eLearning.ReturnDashboardCourseModel
+@{
+    var Category = Model.CourseCategory;
+    var Skill = Model.SkillLevel;
+    var Language = Model.Language;
+}
+
 @{
     ViewBag.Title = "eLearning";
     Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
@@ -16,6 +25,8 @@
     </div>
 
 }
+
+
 
 <main id="landing-inner" class="rellax" data-rellax-speed="0">
     <!-- =====================
@@ -51,161 +62,7 @@
         </div>
         <div class="empty_6"></div>
     </section>
-    <!-- =====================
-        Our Course
-    ========================-->
-    <section id="ourcourse">
-        <div class="container">
-            <a href="#" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
-            <h1 class="color-darkblue">Featured Courses</h1>
-            <div class="empty_3"></div>
-            <div class="row">
-                <div class="card-slider owl-carousel">
-                    <div class="wow fadeInUp">
-                        <div class="card__wrapper">
-                            <div class="card__top">
-                                <div class="card__top__wapper">
-                                    <img class="card__top__image" src="@BaseURL/img/cover-1.jpg" alt="image">
-                                    <div class="share-wrap">
-                                        <div class="share-button sharer">
-                                            <span class="share-icon">
-                                                <ion-icon name="share"></ion-icon>
-                                            </span>
-                                            <div class="social top center"></div>
-                                        </div>
-                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                    </div>
-                                    <div class="badge"><span>RM128.90</span></div>
-                                </div>
-                            </div>
-                            <div class="card__body">
-                                <a class="card__title" href="#">Uruskan Aliran Tunai Anda: Simpan, Simpan, Simpan</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
-                                </div>
-                                <div class="card__text">Menabung satu jumlah setiap hari, contohnya RM 1 setiap hari.</div>
-                                <div class="card__info">
-                                    <div class="card__col-left">
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">5</span></div>
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">100</span></div>
-                                    </div>
-                                    <div class="card__col-right">
-                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wow fadeInUp" data-wow-delay=".5s">
-                        <div class="card__wrapper">
-                            <div class="card__top">
-                                <div class="card__top__wapper">
-                                    <img class="card__top__image" src="@BaseURL/img/cover-2.jpg" alt="image">
-                                    <div class="share-wrap">
-                                        <div class="share-button sharer">
-                                            <span class="share-icon">
-                                                <ion-icon name="share"></ion-icon>
-                                            </span>
-                                            <div class="social top center"></div>
-                                        </div>
-                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                    </div>
-                                    <div class="badge"><span>RM40.90</span></div>
-                                </div>
-                            </div>
-                            <div class="card__body">
-                                <a class="card__title" href="#">The Complete Foundation Stock Trading</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Mu'adz Zulkifli</span></span></a>
-                                </div>
-                                <div class="card__text">Learn to trade the stock market by a trading firm CEO.</div>
-                                <div class="card__info">
-                                    <div class="card__col-left">
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">3</span></div>
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">1266</span></div>
-                                    </div>
-                                    <div class="card__col-right">
-                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wow fadeInUp" data-wow-delay=".7s">
-                        <div class="card__wrapper">
-                            <div class="card__top">
-                                <div class="card__top__wapper">
-                                    <img class="card__top__image" src="@BaseURL/img/cover-3.jpg" alt="image">
-                                    <div class="share-wrap">
-                                        <div class="share-button sharer">
-                                            <span class="share-icon">
-                                                <ion-icon name="share"></ion-icon>
-                                            </span>
-                                            <div class="social top center"></div>
-                                        </div>
-                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                    </div>
-                                    <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
-                                </div>
-                            </div>
-                            <div class="card__body">
-                                <a class="card__title" href="#">The Complete Financial Analyst Training & Investing</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/68.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Noorhaliza Abu Bakar</span></span></a>
-                                </div>
-                                <div class="card__text">Succeed as a Financial Analyst & Investor by Award Winning MBA.</div>
-                                <div class="card__info">
-                                    <div class="card__col-left">
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">6</span></div>
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">3641</span></div>
-                                    </div>
-                                    <div class="card__col-right">
-                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wow fadeInUp" data-wow-delay=".9s">
-                        <div class="card__wrapper">
-                            <div class="card__top">
-                                <div class="courses__top__wapper">
-                                    <img class="card__top__image" src="@BaseURL/img/cover-4.jpg" alt="image">
-                                    <div class="share-wrap">
-                                        <div class="share-button sharer">
-                                            <span class="share-icon">
-                                                <ion-icon name="share"></ion-icon>
-                                            </span>
-                                            <div class="social top center"></div>
-                                        </div>
-                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                    </div>
-                                    <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
-                                </div>
-                            </div>
-                            <div class="card__body">
-                                <a class="card__title" href="#">Uruskan Aliran Tunai Anda: Simpan, Simpan, Simpan</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
-                                </div>
-                                <div class="card__text">Menabung satu jumlah setiap hari, contohnya RM 1 setiap hari.</div>
-                                <div class="card__info">
-                                    <div class="card__col-left">
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">5</span></div>
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">100</span></div>
-                                    </div>
-                                    <div class="card__col-right">
-                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <hr>
+
     <!-- =====================
        Searching Result
     ========================-->
@@ -230,23 +87,20 @@
                                             <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" checked>
                                             <label class="custom-control-label" for="customRadio1">All Categories</label>
                                         </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio2">Cash Flow</label>
-                                        </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio3">Car</label>
-                                        </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="customRadio4" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio4">Investment</label>
-                                        </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="customRadio5" name="customRadio" class="custom-control-input">
-                                            <label class="custom-control-label" for="customRadio5">Protection</label>
-                                        </div>
+                                        @Html.HiddenFor(m => m.CourseCategory)
+                                        @if (@Category != null)
+                                        {
+                                            for (int i = 0; i < @Category.Count(); i++)
+                                            {
+                                                <div class="custom-control custom-radio" id="courseCategory">
+                                                    <input type="radio" id="@Model.CourseCategory[i].Name" name="@Model.CourseCategory[i].Name" class="custom-control-input">
+                                                    <label class="custom-control-label" for="@Model.CourseCategory[i].Name">@Category[i].Name</label>
+                                                </div>
+                                            }
+                                        }
                                     </div>
+
+                                    @*SKILL LEVEL TAK SIAP LAGI
                                     <div class="filter-type">
                                         <h4 class="color-darkblue">Skill Level</h4>
                                         <div class="custom-control custom-checkbox">
@@ -269,8 +123,9 @@
                                             <label class="custom-control-label" for="customCheck4">Appropiate for All</label>
                                             <span class="filter-counter">(560)</span>
                                         </div>
-                                    </div>
-                                    <div class="filter-type">
+                                    </div>*@
+
+                                    @*<div class="filter-type">
                                         <h4 class="color-darkblue">Duration</h4>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck5">
@@ -292,32 +147,33 @@
                                             <label class="custom-control-label" for="customCheck8">Longer than 16 Hours</label>
                                             <span class="filter-counter">(1099)</span>
                                         </div>
-                                    </div>
+                                    </div>*@
+
                                     <div class="filter-type">
                                         <h4 class="color-darkblue">Language</h4>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck9">
-                                            <label class="custom-control-label" for="customCheck9">English</label>
+                                            <label class="custom-control-label" for="customCheck9">@CourseLanguage.English</label>
                                             <span class="filter-counter">(3666)</span>
                                         </div>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck10">
-                                            <label class="custom-control-label" for="customCheck10">Bahasa</label>
+                                            <label class="custom-control-label" for="customCheck10">@CourseLanguage.Malay</label>
                                             <span class="filter-counter">(100)</span>
                                         </div>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                            <label class="custom-control-label" for="customCheck11">Chinese</label>
+                                            <label class="custom-control-label" for="customCheck11">@CourseLanguage.Chinese</label>
                                             <span class="filter-counter">(63)</span>
                                         </div>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                            <label class="custom-control-label" for="customCheck12">Tamil</label>
+                                            <label class="custom-control-label" for="customCheck12">@CourseLanguage.Tamil</label>
                                             <span class="filter-counter">(54)</span>
                                         </div>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck13">
-                                            <label class="custom-control-label" for="customCheck13">Multi-language</label>
+                                            <label class="custom-control-label" for="customCheck13">@CourseLanguage.MultiLanguage</label>
                                             <span class="filter-counter">(20)</span>
                                         </div>
                                     </div>
@@ -353,287 +209,8 @@
                         <div class="empty_3"></div>
                         <!-- Filter result -->
                         <div class="some-list">
-                            <div class="row">
-                                <div class="col-lg-4 col-sm-6">
-                                    <div class="card__wrapper">
-                                        <div class="card__top">
-                                            <div class="card__top__wapper">
-                                                <img class="card__top__image" src="@BaseURL/img/cover-1.jpg" alt="image">
-                                                <div class="share-wrap">
-                                                    <div class="share-button sharer">
-                                                        <span class="share-icon">
-                                                            <ion-icon name="share"></ion-icon>
-                                                        </span>
-                                                        <div class="social top center"></div>
-                                                    </div>
-                                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                                </div>
-                                                <div class="badge"><span>RM128.90</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="card__body">
-                                            <a class="card__title" href="#">Uruskan Aliran Tunai Anda: Simpan, Simpan, Simpan</a>
-                                            <div class="card__author">
-                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
-                                            </div>
-                                            <div class="card__text">Menabung satu jumlah setiap hari, contohnya RM 1 setiap hari.</div>
-                                            <div class="card__info">
-                                                <div class="card__col-left">
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">5</span></div>
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">100</span></div>
-                                                </div>
-                                                <div class="card__col-right">
-                                                    <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-6">
-                                    <div class="card__wrapper">
-                                        <div class="card__top">
-                                            <div class="card__top__wapper">
-                                                <img class="card__top__image" src="@BaseURL/img/cover-2.jpg" alt="image">
-                                                <div class="share-wrap">
-                                                    <div class="share-button sharer">
-                                                        <span class="share-icon">
-                                                            <ion-icon name="share"></ion-icon>
-                                                        </span>
-                                                        <div class="social top center"></div>
-                                                    </div>
-                                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                                </div>
-                                                <div class="badge"><span>RM40.90</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="card__body">
-                                            <a class="card__title" href="#">The Complete Foundation Stock Trading</a>
-                                            <div class="card__author">
-                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Mu'adz Zulkifli</span></span></a>
-                                            </div>
-                                            <div class="card__text">Learn to trade the stock market by a trading firm CEO.</div>
-                                            <div class="card__info">
-                                                <div class="card__col-left">
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">3</span></div>
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">1266</span></div>
-                                                </div>
-                                                <div class="card__col-right">
-                                                    <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-6">
-                                    <div class="card__wrapper">
-                                        <div class="card__top">
-                                            <div class="card__top__wapper">
-                                                <img class="card__top__image" src="@BaseURL/img/cover-3.jpg" alt="image">
-                                                <div class="share-wrap">
-                                                    <div class="share-button sharer">
-                                                        <span class="share-icon">
-                                                            <ion-icon name="share"></ion-icon>
-                                                        </span>
-                                                        <div class="social top center"></div>
-                                                    </div>
-                                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                                </div>
-                                                <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="card__body">
-                                            <a class="card__title" href="#">The Complete Financial Analyst Training & Investing</a>
-                                            <div class="card__author">
-                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/68.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Noorhaliza Abu Bakar</span></span></a>
-                                            </div>
-                                            <div class="card__text">Succeed as a Financial Analyst & Investor by Award Winning MBA.</div>
-                                            <div class="card__info">
-                                                <div class="card__col-left">
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">6</span></div>
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">3641</span></div>
-                                                </div>
-                                                <div class="card__col-right">
-                                                    <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-6">
-                                    <div class="card__wrapper">
-                                        <div class="card__top">
-                                            <div class="courses__top__wapper">
-                                                <img class="card__top__image" src="@BaseURL/img/cover-4.jpg" alt="image">
-                                                <div class="share-wrap">
-                                                    <div class="share-button sharer">
-                                                        <span class="share-icon">
-                                                            <ion-icon name="share"></ion-icon>
-                                                        </span>
-                                                        <div class="social top center"></div>
-                                                    </div>
-                                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                                </div>
-                                                <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="card__body">
-                                            <a class="card__title" href="#">Uruskan Aliran Tunai Anda: Simpan, Simpan, Simpan</a>
-                                            <div class="card__author">
-                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
-                                            </div>
-                                            <div class="card__text">Menabung satu jumlah setiap hari, contohnya RM 1 setiap hari.</div>
-                                            <div class="card__info">
-                                                <div class="card__col-left">
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">5</span></div>
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">100</span></div>
-                                                </div>
-                                                <div class="card__col-right">
-                                                    <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-6">
-                                    <div class="card__wrapper">
-                                        <div class="card__top">
-                                            <div class="card__top__wapper">
-                                                <img class="card__top__image" src="@BaseURL/img/cover-2.jpg" alt="image">
-                                                <div class="share-wrap">
-                                                    <div class="share-button sharer">
-                                                        <span class="share-icon">
-                                                            <ion-icon name="share"></ion-icon>
-                                                        </span>
-                                                        <div class="social top center"></div>
-                                                    </div>
-                                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                                </div>
-                                                <div class="badge"><span>RM40.90</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="card__body">
-                                            <a class="card__title" href="#">The Complete Foundation Stock Trading</a>
-                                            <div class="card__author">
-                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Mu'adz Zulkifli</span></span></a>
-                                            </div>
-                                            <div class="card__text">Learn to trade the stock market by a trading firm CEO.</div>
-                                            <div class="card__info">
-                                                <div class="card__col-left">
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">3</span></div>
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">1266</span></div>
-                                                </div>
-                                                <div class="card__col-right">
-                                                    <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-6">
-                                    <div class="card__wrapper">
-                                        <div class="card__top">
-                                            <div class="card__top__wapper">
-                                                <img class="card__top__image" src="@BaseURL/img/cover-3.jpg" alt="image">
-                                                <div class="share-wrap">
-                                                    <div class="share-button sharer">
-                                                        <span class="share-icon">
-                                                            <ion-icon name="share"></ion-icon>
-                                                        </span>
-                                                        <div class="social top center"></div>
-                                                    </div>
-                                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                                </div>
-                                                <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="card__body">
-                                            <a class="card__title" href="#">The Complete Financial Analyst Training & Investing</a>
-                                            <div class="card__author">
-                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/68.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Noorhaliza Abu Bakar</span></span></a>
-                                            </div>
-                                            <div class="card__text">Succeed as a Financial Analyst & Investor by Award Winning MBA.</div>
-                                            <div class="card__info">
-                                                <div class="card__col-left">
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">6</span></div>
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">3641</span></div>
-                                                </div>
-                                                <div class="card__col-right">
-                                                    <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-6">
-                                    <div class="card__wrapper">
-                                        <div class="card__top">
-                                            <div class="card__top__wapper">
-                                                <img class="card__top__image" src="@BaseURL/img/cover-3.jpg" alt="image">
-                                                <div class="share-wrap">
-                                                    <div class="share-button sharer">
-                                                        <span class="share-icon">
-                                                            <ion-icon name="share"></ion-icon>
-                                                        </span>
-                                                        <div class="social top center"></div>
-                                                    </div>
-                                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                                </div>
-                                                <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="card__body">
-                                            <a class="card__title" href="#">The Complete Financial Analyst Training & Investing</a>
-                                            <div class="card__author">
-                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/68.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Noorhaliza Abu Bakar</span></span></a>
-                                            </div>
-                                            <div class="card__text">Succeed as a Financial Analyst & Investor by Award Winning MBA.</div>
-                                            <div class="card__info">
-                                                <div class="card__col-left">
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">6</span></div>
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">3641</span></div>
-                                                </div>
-                                                <div class="card__col-right">
-                                                    <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-6">
-                                    <div class="card__wrapper">
-                                        <div class="card__top">
-                                            <div class="card__top__wapper">
-                                                <img class="card__top__image" src="@BaseURL/img/cover-3.jpg" alt="image">
-                                                <div class="share-wrap">
-                                                    <div class="share-button sharer">
-                                                        <span class="share-icon">
-                                                            <ion-icon name="share"></ion-icon>
-                                                        </span>
-                                                        <div class="social top center"></div>
-                                                    </div>
-                                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                                </div>
-                                                <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="card__body">
-                                            <a class="card__title" href="#">The Complete Financial Analyst Training & Investing</a>
-                                            <div class="card__author">
-                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/68.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Noorhaliza Abu Bakar</span></span></a>
-                                            </div>
-                                            <div class="card__text">Succeed as a Financial Analyst & Investor by Award Winning MBA.</div>
-                                            <div class="card__info">
-                                                <div class="card__col-left">
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">6</span></div>
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">3641</span></div>
-                                                </div>
-                                                <div class="card__col-right">
-                                                    <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <!--Start Partial _Course here-->
+                            <div id="divDisplay" class="row">
                             </div>
                         </div>
                     </div>
@@ -647,3 +224,39 @@
 
 </main>
 
+@section ContentScript{
+
+    <link href="~/css/elearn.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = '@(BaseURL)/eLearning/Home/GetPublicCourses';
+
+            var html = '';
+            $.ajax({
+                url: url,
+                dataType: "html",
+                type: 'GET',
+                success: function (result) {
+                    console.log('result - ', result);
+                    $('#divDisplay').html(result);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('error - ' + textStatus + " " + errorThrown);
+                }
+            });
+
+            //FIX HERE FILTERING
+            $("#courseCategory").click(function () {
+                console.log("courseCategory")
+
+                var cat = $(this).children.val;
+                console.log("CAT", cat)
+
+
+                //$(this).load('@Url.Action("Details")');
+            });
+        });
+    </script>
+
+}

@@ -15,7 +15,7 @@ namespace FEP.WebApi.Api.eLearning
     /// API Controller for streaming video files.
     public class VideoController : ApiController
     {
-        private const string videoFilePath = "D://FEPDoc";
+        private const string videoFilePath = "C://FEPDoc";
 
         /// Gets the live video.
         [HttpGet]

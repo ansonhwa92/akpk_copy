@@ -91,6 +91,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return File(fileFullPath, MimeMapping.GetMimeMapping(fileNameFromDb), fileNameFromDb);
         }
 
+        [AllowAnonymous]
         public ActionResult GetImg(string fileName)
         {
             var path = Path.Combine(storageDir, fileName);

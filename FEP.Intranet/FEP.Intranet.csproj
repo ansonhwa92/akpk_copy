@@ -909,9 +909,12 @@
     <Content Include="Areas\Reward\Views\UserRewardPoints\ListAll.cshtml" />
     <Content Include="Areas\Reward\Views\UserRewardRedemptions\ListAll.cshtml" />
     <Content Include="Areas\eLearning\Views\Shared\_approvals.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\EditRules - Copy.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseApprovals\Approve.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseApprovals\_sidebar.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_detailsSidebar.cshtml" />
+    <Content Include="Areas\eLearning\Views\Home\Index-old.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_Course.cshtml" />
+    <Content Include="Areas\eLearning\Views\Home\_Course.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

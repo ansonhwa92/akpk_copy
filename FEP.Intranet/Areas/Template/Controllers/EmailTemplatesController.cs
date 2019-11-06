@@ -328,7 +328,7 @@ namespace FEP.Intranet.Areas.Template.Controllers
                 }
                 if (model.enableWebMessage)
                 {
-                    if (model.WebMessage != null)
+                    if (model.WebMessage != null && model.WebNotifyLink != null)
                     {
                         ParamList = ParamList.Union(ParameterListing(model.WebMessage)).ToList();
                         ParamList = ParamList.Union(ParameterListing(model.WebNotifyLink)).ToList();

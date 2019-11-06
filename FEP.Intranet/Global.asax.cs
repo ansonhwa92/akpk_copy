@@ -59,7 +59,7 @@ namespace FEP.Intranet
             httpContext.ClearError();
             httpContext.Response.Clear();
                        
-            //Response.Redirect("~/Home/Error");
+            Response.Redirect("~/Home/Error");
         }
     }
 

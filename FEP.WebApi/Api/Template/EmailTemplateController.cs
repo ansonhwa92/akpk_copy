@@ -225,6 +225,7 @@ namespace FEP.WebApi.Api.Template
             {
                 Id = s.Id,
                 NotificationType = s.NotificationType,
+                NotificationCategory = s.NotificationCategory,
                 TemplateName = s.TemplateName,
                 TemplateSubject = s.TemplateSubject,
                 TemplateRefNo = s.TemplateRefNo,
@@ -366,7 +367,7 @@ namespace FEP.WebApi.Api.Template
 
             db.Entry(template).State = EntityState.Modified;
             db.Entry(template).Property(x => x.NotificationType).IsModified = true;
-            db.Entry(template).Property(x => x.NotificationCategory).IsModified = true;
+            db.Entry(template).Property(x => x.NotificationCategory).IsModified = false;
             db.Entry(template).Property(x => x.TemplateName).IsModified = true;
             db.Entry(template).Property(x => x.TemplateMessage).IsModified = true;
             db.Entry(template).Property(x => x.TemplateSubject).IsModified = true;

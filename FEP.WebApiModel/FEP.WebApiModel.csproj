@@ -120,6 +120,7 @@
     <Compile Include="Administration\Individual.cs" />
     <Compile Include="Administration\Staff.cs" />
     <Compile Include="Setting\Account.cs" />
+    <Compile Include="Setting\Groups.cs" />
     <Compile Include="SLAReminder\SLAReminder.cs" />
     <Compile Include="Template\EmailTemplate.cs" />
   </ItemGroup>

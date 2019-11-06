@@ -216,6 +216,7 @@
     <Compile Include="Areas\RnP\Controllers\SurveyController.cs" />
     <Compile Include="Areas\RnP\Models\Research.cs" />
     <Compile Include="Areas\RnP\RnPAreaRegistration.cs" />
+    <Compile Include="Areas\Setting\Controllers\GroupController.cs" />
     <Compile Include="Areas\Setting\Controllers\HomeController.cs" />
     <Compile Include="Areas\SLAReminder\Controllers\SLARemindersController.cs" />
     <Compile Include="Areas\SLAReminder\SLAReminderAreaRegistration.cs" />
@@ -969,6 +970,11 @@
     <Content Include="Areas\RnP\Views\Survey\_ProofOfApprovalDetails.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\_ProofOfWithdrawal.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\_ProofOfWithdrawalDetails.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Index.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Create.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Delete.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Details.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

@@ -1,7 +1,7 @@
 ﻿using FEP.Helper;
 using FEP.Model;
 using FEP.WebApiModel.RnP;
-using FEP.WebApiModel.Integration;
+using FEP.WebApiModel.Setting;
 using System;
 using System.Collections.Generic;
 using System.Linq;

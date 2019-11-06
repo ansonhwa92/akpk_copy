@@ -21,10 +21,10 @@ namespace FEP.Model
         public MemberGender Gender { get; set; }
         public int? MinSalary { get; set; }
         public int? MaxSalary { get; set; }
-        public int? Status { get; set; }
-        public int? PaymentStatus { get; set; }
-        public int? Delinquent { get; set; }
-        public int? EmploymentType { get; set; }
+        public MemberStatus? Status { get; set; }
+        public MemberPaymentStatus? PaymentStatus { get; set; }
+        public MemberDelinquent? Delinquent { get; set; }
+        public MemberEmploymentType? EmploymentType { get; set; }
         public int? State { get; set; }
         public string City { get; set; }
         // auto-filled in data...............................................................................................
@@ -56,6 +56,50 @@ namespace FEP.Model
         Male,
         [Display(Name = "Female")]
         Female
+    }
+
+    public enum MemberStatus
+    {
+        [Display(Name = "Any")]
+        Any,
+        [Display(Name = "Active")]
+        Active,
+        [Display(Name = "Inactive")]
+        Inactive
+    }
+
+    public enum MemberPaymentStatus
+    {
+        [Display(Name = "Any")]
+        Any,
+        [Display(Name = "Pending")]
+        Pending,
+        [Display(Name = "Incomplete")]
+        Incomplete,
+        [Display(Name = "Complete")]
+        Complete
+    }
+
+    public enum MemberDelinquent
+    {
+        [Display(Name = "Any")]
+        Any,
+        [Display(Name = "Yes")]
+        Yes,
+        [Display(Name = "No")]
+        No
+    }
+
+    public enum MemberEmploymentType
+    {
+        [Display(Name = "Any")]
+        Any,
+        [Display(Name = "Unemployed")]
+        Unemployed,
+        [Display(Name = "Employed")]
+        Employed,
+        [Display(Name = "Self Employed")]
+        SelfEmployed,
     }
 
     public enum SourceSystem

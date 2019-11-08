@@ -51,6 +51,91 @@ namespace FEP.WebApi.Api.eLearning
             base.Dispose(disposing);
         }
 
+        // GET: api/eLearning/Courses/GetCourses (list) - CURRENTLY USED FOR ANONYMOUS BROWSING
+        [Route("api/eLearning/Courses/GetCourses")]
+        [HttpGet]
+        public BrowseElearningModel GetCourses(string keyword, string sorting, bool cashflow, bool car, bool house, bool investment, bool protection, /*bool beginner, bool intermediate, bool advanced,*/ bool english, bool malay, bool chinese, bool tamil, bool multiLanguage)
+        {
+            // active (for now = elearning) only
+
+            var query = db.Courses.Where(p => p.Status == CourseStatus.Published);
+
+            var totalCount = query.Count();
+
+            query = query.Where(p => (keyword == null || keyword == ""
+                || p.Title.Contains(keyword)
+                || p.Description.Contains(keyword) || p.Objectives.Contains(keyword)
+                || p.Code.Contains(keyword)));
+
+            //Course Category
+            if (!cashflow) { query = query.Where(p => p.CategoryId != 1); }
+            if (!car) { query = query.Where(p => p.CategoryId != 2); }
+            if (!house) { query = query.Where(p => p.CategoryId != 3); }
+            if (!investment) { query = query.Where(p => p.CategoryId != 4); }
+            if (!protection) { query = query.Where(p => p.CategoryId != 5); }
+
+            //Skill Level
+            //if (beginner) { query = query.Where(p => p.SkillLevel == SkillLevel.Beginner); }
+            //if (intermediate) { query = query.Where(p => p.SkillLevel == SkillLevel.Intermediate); }
+            //if (advanced) { query = query.Where(p => p.SkillLevel == SkillLevel.Advanced); }
+
+            if (english) { query = query.Where(p => p.Language == CourseLanguage.English); }
+            if (malay) { query = query.Where(p => p.Language == CourseLanguage.Malay); }
+            if (chinese) { query = query.Where(p => p.Language == CourseLanguage.Chinese); }
+            if (tamil) { query = query.Where(p => p.Language == CourseLanguage.Tamil); }
+            if (multiLanguage) { query = query.Where(p => p.Language == CourseLanguage.MultiLanguage); }
+
+
+            var filteredCount = query.Count();
+
+            if (sorting == "title")
+            {
+                query = query.OrderBy(o => o.Title).OrderByDescending(o => o.CreatedDate);
+            }
+            //else if (sorting == "year")
+            //{
+            //    query = query.OrderByDescending(o => o.Year).OrderBy(o => o.Title);
+            //}
+            else if (sorting == "added")
+            {
+                query = query.OrderByDescending(o => o.CreatedDate).OrderBy(o => o.Title);
+            }
+            else
+            {
+                query = query.OrderBy(o => o.Title).OrderByDescending(o => o.CreatedDate);
+            }
+
+
+            //var trainer = GetInstructor();
+
+            var data = query.Skip(0).Take(filteredCount).Select(s => new ReturnElearningModel
+            {
+                Id = s.Id,
+                CategoryId = s.CategoryId,
+                Title = s.Title,
+                Description = s.Description,
+                Language = s.Language,
+                Price = s.Price.Value,
+                //Instructor = GetInstructor(s.Id).ToString(),
+                //Instructor = db.TrainerCourses.Where(x => x.CourseId == s.Id).Include(x => x.Trainer).FirstOrDefault().Trainer.User.Name,
+                TotalModules = s.Modules.Count(),
+                TotalStudent = db.Enrollments.Where(x => x.CourseId == s.Id).Count(),
+                Status = s.Status,
+                IntroImageFileName = s.IntroImageFileName
+            }).ToList();
+
+            var browser = new BrowseElearningModel
+            {
+                Keyword = keyword,
+                Sorting = sorting,
+                LastIndex = filteredCount,
+                ItemCount = totalCount,
+                Courses = data
+            };
+
+            return browser;
+        }
+
         /// <summary>
         /// For use in index page, to list all the courses but with some fields only
         /// </summary>
@@ -225,6 +310,14 @@ namespace FEP.WebApi.Api.eLearning
             model.Objectives = HttpUtility.HtmlDecode(model.Objectives);
 
             return Ok(model);
+        }
+
+        [HttpGet]
+        public string GetInstructor(int? courseId)
+        {
+            var instructor = db.TrainerCourses.Where(x => x.CourseId == courseId).Include(x => x.Trainer).FirstOrDefault().Trainer.User.Name;
+
+            return instructor;
         }
 
         [Route("api/eLearning/Courses/GetTrainerCourse")]

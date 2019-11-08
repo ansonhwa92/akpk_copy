@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FEP.WebApiModel.PublicEvent
@@ -108,6 +109,7 @@ namespace FEP.WebApiModel.PublicEvent
 		[Display(Name = "PubEventRefNo", ResourceType = typeof(Language.Event))]
 		public string RefNo { get; set; }
 		public int? SLAReminderStatusId { get; set; }
+		public bool? IsRequested { get; set; }
 
 		public int? CreatedBy { get; set; }
 		public string CreatedByName { get; set; }
@@ -204,5 +206,49 @@ namespace FEP.WebApiModel.PublicEvent
 		public DateTime? ApprovalDate { get; set; }
 
 		public string Remarks { get; set; }
+	}
+
+	public class EventRequestModel
+	{
+		public EventRequestModel() 
+		{
+			FilesId = new List<int>();
+		}
+
+		public List<int> FilesId { get; set; }
+		public IEnumerable<Attachment> Attachments { get; set; }
+
+
+		//Request information to display
+		public int? Id { get; set; }
+
+		[Display(Name = "ReqReason", ResourceType = typeof(Language.Event))]
+		public string Reason { get; set; }
+
+		[Display(Name = "ReqType", ResourceType = typeof(Language.Event))]
+		public RequestType? RequestType { get; set; }
+
+		[Display(Name = "ReqStatus", ResourceType = typeof(Language.Event))]
+		public RequestStatus? RequestStatus { get; set; }
+
+		//Event information to display
+		public int? EventId { get; set; }
+
+		[Display(Name = "ReqEventTitle", ResourceType = typeof(Language.Event))]
+		public string EventTitle { get; set; }
+
+		[Display(Name = "ReqEventRefNo", ResourceType = typeof(Language.Event))]
+		public string EventRefNo { get; set; }
+
+		[Display(Name = "ReqEventCategory", ResourceType = typeof(Language.Event))]
+		public string EventCategory { get; set; }
+
+		[Display(Name = "ReqEventObjective", ResourceType = typeof(Language.Event))]
+		public string EventObjective { get; set; }
+		public int? SLAReminderStatusId { get; set; }
+		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
 	}
 }

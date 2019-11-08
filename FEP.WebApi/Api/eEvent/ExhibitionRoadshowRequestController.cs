@@ -198,7 +198,7 @@ namespace FEP.WebApi.Api.eEvent
 					ReceivedByName = s.ReceivedBy.Name,
 					ReceivedDate = s.ReceivedDate,
 					Receive_Via = s.Receive_Via,
-
+					RefNo = s.RefNo,
 				}).FirstOrDefault();
 
 			if (exhibition == null)

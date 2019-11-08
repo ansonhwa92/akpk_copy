@@ -511,6 +511,69 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Event Category.
+        /// </summary>
+        public static string ReqEventCategory {
+            get {
+                return ResourceManager.GetString("ReqEventCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Objective.
+        /// </summary>
+        public static string ReqEventObjective {
+            get {
+                return ResourceManager.GetString("ReqEventObjective", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reference No..
+        /// </summary>
+        public static string ReqEventRefNo {
+            get {
+                return ResourceManager.GetString("ReqEventRefNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Title.
+        /// </summary>
+        public static string ReqEventTitle {
+            get {
+                return ResourceManager.GetString("ReqEventTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modification/Cancellation Reasons.
+        /// </summary>
+        public static string ReqReason {
+            get {
+                return ResourceManager.GetString("ReqReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request Status.
+        /// </summary>
+        public static string ReqStatus {
+            get {
+                return ResourceManager.GetString("ReqStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request Type.
+        /// </summary>
+        public static string ReqType {
+            get {
+                return ResourceManager.GetString("ReqType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Support Document.
         /// </summary>
         public static string SpAttachment {

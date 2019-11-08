@@ -35,10 +35,10 @@ namespace FEP.Model
 		Setting = 5,
 		[Display(Name = "Report")]
 		Report = 6,
-        [Display(Name = "Payment")]
-        Payment = 7
+		[Display(Name = "Payment")]
+		Payment = 7
 
-    }
+	}
 
 
 	public enum UserAccess
@@ -56,26 +56,29 @@ namespace FEP.Model
 		EventMenu = 1001,
 		[Display(Name = "Internal Event Menu")]
 		EventIntenalEventMenu = 1002,
-		[Display(Name = "Event Administrator")]
-		EventAdministrator = 1003,
+		[Display(Name = "Event Admin - FED")]
+		EventAdministratorFED = 1003,
+
+		[Display(Name = "Event Admin - CCD")]
+		EventAdministratorCCD = 1004,
 
 		//----------------------Media Interview Button--------------------//
-		[Display(Name = "Media Interview - Recipient Email After Submit Media Interview")]
+		[Display(Name = "Media Interview - Submit")]
 		Recipient_Submit_MediaInterview = 1011,
 
-		[Display(Name = "Media Interview - Recipient Email After Verify Media Interview")]
+		[Display(Name = "Media Interview - Verify")]
 		Recipient_Verify_MediaInterview = 1012,
 
-		[Display(Name = "Media Interview - Recipient Email After Approval 1")] 
+		[Display(Name = "Media Interview -  Approve (Level 1)")]
 		Recipient_Approver1_MediaInterview = 1013,
 
-		[Display(Name = "Media Interview - Recipient Email After Approval 2")]
+		[Display(Name = "Media Interview -  Approve (Level 2)")]
 		Recipient_Approver2_MediaInterview = 1014,
 
-		[Display(Name = "Media Interview - Recipient Email After Approval 3")]
+		[Display(Name = "Media Interview -  Approve (Level 3)")]
 		Recipient_Approver3_MediaInterview = 1015,
 
-		[Display(Name = "Media Interview - Recipient Email After Reject")]
+		[Display(Name = "Media Interview - Reject")]
 		Recipient_Reject_MediaInterview = 1016,
 
 
@@ -103,10 +106,10 @@ namespace FEP.Model
 		//-----------------------------------------------------------//
 
 		[Display(Name = "Public Event - Submit")]
-		Recipient_Submit_PublicEvent = 1029,
+		Recipient_Submit_PublicEvent = 1029,                        //verifier
 
 		[Display(Name = "Public Event - Verify")]
-		Recipient_Verify_PublicEvent = 1030,
+		Recipient_Verify_PublicEvent = 1030,                        //
 
 		[Display(Name = "Public Event - Approve (Level 1)")]
 		Recipient_Approver1_PublicEvent = 1031,
@@ -125,6 +128,21 @@ namespace FEP.Model
 
 		[Display(Name = "Public Event - Cancel")]
 		Recipient_Cancel_PublicEvent = 1036,
+
+
+		[Display(Name = "Cancellation/Modification Public Event - Submit")]
+		Submit_CancellationModificationRequest = 1037,
+		[Display(Name = "Cancellation/Modification Public Event - Verify")]
+		Verifier_CancellationModificationRequest = 1038,
+		[Display(Name = "Cancellation/Modification Public Event - Approve (Level 1)")]
+		Approver1_CancellationModificationRequest = 1039,
+		[Display(Name = "Cancellation/Modification Public Event - Approve (Level 2)")]
+		Approver2_CancellationModificationRequest = 1040,
+		[Display(Name = "Cancellation/Modification Public Event - Approve (Level 3)")]
+		Approver3_CancellationModificationRequest = 1041,
+		[Display(Name = "Cancellation/Modification Public Event - Require Amendment")]
+		Amendment_CancellationModificationRequest = 1042,
+
 
 
 		//research & publication 2001 - 3000
@@ -173,46 +191,46 @@ namespace FEP.Model
 
 
 
-        //elearning 3001 - 4000
-        [Display(Name = "Learning Management Menu")]
-        LearningMenu = 3001,
-        
-        //elearnig Admin
-        [Display(Name = "Course - Create")]
-        CourseCreate,
-        [Display(Name = "Course - View")]
-        CourseView,
-        [Display(Name = "Course - Edit")]
-        CourseEdit,
-        [Display(Name = "Course - Publish")]
-        CoursePublish,
-        [Display(Name = "Course - Assign Trainer")]
-        CourseAssignTrainer,
+		//elearning 3001 - 4000
+		[Display(Name = "Learning Management Menu")]
+		LearningMenu = 3001,
 
-        // elearning Verifier
-        [Display(Name = "Course - Verify")]
-        CourseVerify,
+		//elearnig Admin
+		[Display(Name = "Course - Create")]
+		CourseCreate,
+		[Display(Name = "Course - View")]
+		CourseView,
+		[Display(Name = "Course - Edit")]
+		CourseEdit,
+		[Display(Name = "Course - Publish")]
+		CoursePublish,
+		[Display(Name = "Course - Assign Trainer")]
+		CourseAssignTrainer,
 
-        // elearning Approvers
-        [Display(Name = "Course - Approve (Level 1)")]
-        CourseApproval1,
-        [Display(Name = "Course - Approve (Level 2)")]
-        CourseApproval2,
-        [Display(Name = "Course - Approve (Level 3)")]
-        CourseApproval3,
-        [Display(Name = "Course - Enroll/Withdraw")]
+		// elearning Verifier
+		[Display(Name = "Course - Verify")]
+		CourseVerify,
 
-        // elearning Learner
-        CourseEnroll,
+		// elearning Approvers
+		[Display(Name = "Course - Approve (Level 1)")]
+		CourseApproval1,
+		[Display(Name = "Course - Approve (Level 2)")]
+		CourseApproval2,
+		[Display(Name = "Course - Approve (Level 3)")]
+		CourseApproval3,
+		[Display(Name = "Course - Enroll/Withdraw")]
 
-        // elearning Trainer
-        CourseGroupCreate,
-        CourseDiscussionCreate,
-        CourseDiscussionGroupCreate,        
-        CourseAddDocument,
-        
- 
-        
+		// elearning Learner
+		CourseEnroll,
+
+		// elearning Trainer
+		CourseGroupCreate,
+		CourseDiscussionCreate,
+		CourseDiscussionGroupCreate,
+		CourseAddDocument,
+
+
+
 
 		//administration 4001 - 5000
 		[Display(Name = "User & Role Management Menu")]
@@ -249,13 +267,13 @@ namespace FEP.Model
 
 
 
-        //payment 7001 - 8000
-        [Display(Name = "Offline Payment")]
-        OfflinePayment = 7001,
-        [Display(Name = "Refunds")]
-        Refunds = 7002
+		//payment 7001 - 8000
+		[Display(Name = "Offline Payment")]
+		OfflinePayment = 7001,
+		[Display(Name = "Refunds")]
+		Refunds = 7002
 
 
 
-    }
+	}
 }

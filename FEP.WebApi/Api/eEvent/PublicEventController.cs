@@ -2,6 +2,7 @@
 using FEP.Model;
 using FEP.WebApiModel;
 using FEP.WebApiModel.FileDocuments;
+using FEP.WebApiModel.LandingPage;
 using FEP.WebApiModel.PublicEvent;
 using System;
 using System.Collections.Generic;
@@ -208,7 +209,8 @@ namespace FEP.WebApi.Api.eEvent
 					EventObjective = s.EventObjective,
 					Venue = s.Venue,
 					Fee = s.Fee,
-					RefNo = s.RefNo
+					RefNo = s.RefNo,
+					IsRequested = s.IsRequested
 				}).ToList();
 
 			data.ForEach(s => s.EventStatusDesc = s.EventStatus.GetDisplayName());
@@ -244,7 +246,6 @@ namespace FEP.WebApi.Api.eEvent
 					RefNo = i.RefNo,
 					CreatedDate = i.CreatedDate,
 					CreatedByName = i.CreatedByUser.Name,
-					
 				}).FirstOrDefault();
 
 			//var approval = db.PublicEventApproval.Where(pa => pa.EventId == id && pa.Status == EventApprovalStatus.None).Select(s => new PublicEventApprovalModel
@@ -864,6 +865,430 @@ namespace FEP.WebApi.Api.eEvent
 
 		//	return "";
 		//}
+
+
+
+		//[Route("api/eEvent/PublicEvent/GetPublishedPublicEvent")]
+		//[HttpGet]
+		//public BrowseEventModel GetPublishedPublicEvent()
+		//{
+		//	var publicevent = 
+		//	return 0();
+		//}
+
+
+
+		[Route("api/eEvent/PublicEvent/Create")]
+		[HttpPost]
+		public IHttpActionResult Create([FromBody] EventRequestModel model)
+		{
+
+			var publicevent = db.PublicEvent.Where(u => u.Id == model.EventId).FirstOrDefault();
+
+			if (publicevent == null)
+			{
+				return NotFound();
+			}
+
+			var eventrequest = new EventRequest
+			{
+				Reason = model.Reason,
+				RequestStatus = model.RequestStatus,
+				EventId = model.EventId,
+				CreatedBy = model.CreatedBy,
+				Display = model.Display,
+				CreatedDate = model.CreatedDate,
+				RequestType = model.RequestType,
+			};
+
+			db.EventRequest.Add(eventrequest);
+			db.SaveChanges();
+
+			//files
+			foreach (var fileid in model.FilesId)
+			{
+				var eventfile = new EventFile
+				{
+					FileCategory = EventFileCategory.EventRequest,
+					FileId = fileid,
+					ParentId = eventrequest.Id
+				};
+
+				db.EventFile.Add(eventfile);
+			}
+
+			//Update column
+			publicevent.IsRequested = true;
+
+			db.PublicEvent.Attach(publicevent);
+			db.Entry(publicevent).Property(x => x.IsRequested).IsModified = true;
+			db.SaveChanges();
+
+			return Ok(eventrequest.Id);
+		}
+
+		[Route("api/eEvent/PublicEvent/Details")]
+		[HttpGet]
+		public IHttpActionResult Details(int id)
+		{
+			var publicevent = db.PublicEvent.Where(u => u.Id == id).FirstOrDefault();
+			if (publicevent == null)
+			{
+				return NotFound();
+			}
+
+			var model = db.EventRequest.Where(i => i.Display && i.EventId == publicevent.Id)
+				.Select(i => new EventRequestModel
+				{
+					Id = i.Id,
+					EventTitle = publicevent.EventTitle,
+					EventObjective = publicevent.EventObjective,
+					Reason = i.Reason,
+					EventRefNo = publicevent.RefNo,
+					RequestStatus = i.RequestStatus,
+					RequestType = i.RequestType,
+					EventId = publicevent.Id,
+					EventCategory = publicevent.EventCategory.CategoryName,
+					CreatedDate = i.CreatedDate,
+					CreatedBy = i.CreatedBy,
+					CreatedByName = publicevent.CreatedByUser.Name,
+				}).FirstOrDefault();
+
+
+			if (model == null)
+			{
+				return NotFound();
+			}
+
+			model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.EventRequest && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+
+			return Ok(model);
+		}
+
+		[Route("api/eEvent/PublicEvent/Edit")]
+		[HttpPut]
+		public IHttpActionResult Edit(int id, [FromBody] EventRequestModel model)
+		{
+			var publicevent = db.PublicEvent.Where(u => u.Id == id).FirstOrDefault();
+			if (publicevent == null)
+			{
+				return NotFound();
+			}
+
+			publicevent.IsRequested = true;
+			db.PublicEvent.Attach(publicevent);
+			db.Entry(publicevent).Property(x => x.IsRequested).IsModified = true;
+			db.SaveChanges();
+
+			//---------------------------------------------------------------------//
+			var request = db.EventRequest.Where(i => i.EventId == publicevent.Id).FirstOrDefault();
+			request.Reason = model.Reason;
+			request.RequestType = model.RequestType;
+
+			db.Entry(request).State = EntityState.Modified;
+			db.Entry(request).Property(x => x.Display).IsModified = false;
+			db.Entry(request).Property(x => x.RequestStatus).IsModified = false;
+			db.Entry(request).Property(x => x.EventId).IsModified = false;
+			db.Entry(request).Property(x => x.CreatedBy).IsModified = false;
+			db.Entry(request).Property(x => x.CreatedDate).IsModified = false;
+
+			//remove file 
+			var attachments = db.EventFile.Where(s => s.FileCategory == EventFileCategory.EventRequest && s.ParentId == model.Id).ToList();
+
+			if (attachments != null)
+			{
+				//delete all
+				if (model.Attachments == null)
+				{
+					foreach (var attachment in attachments)
+					{
+						attachment.FileDocument.Display = false;
+						db.FileDocument.Attach(attachment.FileDocument);
+						db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+
+						db.EventFile.Remove(attachment);
+					}
+				}
+				else
+				{
+					foreach (var attachment in attachments)
+					{
+						if (!model.Attachments.Any(u => u.Id == attachment.FileDocument.Id))//delete if not exist anymore
+						{
+							attachment.FileDocument.Display = false;
+							db.FileDocument.Attach(attachment.FileDocument);
+							db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+
+							db.EventFile.Remove(attachment);
+						}
+					}
+				}
+			}
+
+			//add new file
+			//files
+			foreach (var fileid in model.FilesId)
+			{
+				var eventfile = new EventFile
+				{
+					FileCategory = EventFileCategory.PublicEvent,
+					FileId = fileid,
+					ParentId = publicevent.Id
+				};
+
+				db.EventFile.Add(eventfile);
+			}
+
+			db.Configuration.ValidateOnSaveEnabled = true;
+			db.SaveChanges();
+
+			return Ok(true);
+		}
+
+
+
+
+
+
+
+
+		[Route("api/eEvent/PublicEvent/SubmitToVerifyRequest")]
+		public IHttpActionResult SubmitToVerifyRequest(int id)
+		{
+			var eventrequest = db.EventRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (eventrequest != null)
+			{
+				eventrequest.RequestStatus = RequestStatus.PendingVerified;
+				db.EventRequest.Attach(eventrequest);
+				db.Entry(eventrequest).Property(m => m.RequestStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+
+				db.SaveChanges();
+
+				EventRequestModel model = new EventRequestModel
+				{
+					Id = eventrequest.Id,
+					RequestType = eventrequest.RequestType,
+					RequestStatus = eventrequest.RequestStatus,
+					Reason = eventrequest.Reason,
+					EventRefNo = eventrequest.Event.RefNo,
+					EventTitle = eventrequest.Event.EventTitle,
+				};
+				return Ok(model);
+			}
+			return Ok();
+		}
+
+		[Route("api/eEvent/PublicEvent/VerifiedRequest")]
+		public IHttpActionResult VerifiedRequest(int id)
+		{
+			var eventrequest = db.EventRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (eventrequest != null)
+			{
+				eventrequest.RequestStatus = RequestStatus.Verified;
+				db.EventRequest.Attach(eventrequest);
+				db.Entry(eventrequest).Property(m => m.RequestStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+
+				db.SaveChanges();
+
+				EventRequestModel model = new EventRequestModel
+				{
+					Id = eventrequest.Id,
+					RequestType = eventrequest.RequestType,
+					RequestStatus = eventrequest.RequestStatus,
+					Reason = eventrequest.Reason,
+					EventRefNo = eventrequest.Event.RefNo,
+					EventTitle = eventrequest.Event.EventTitle,
+				};
+				return Ok(model);
+			}
+			return Ok();
+		}
+
+		//First Approved Public Event 
+		[Route("api/eEvent/PublicEvent/FirstApprovedRequest")]
+		public IHttpActionResult FirstApprovedRequest(int id)
+		{
+			var eventrequest = db.EventRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (eventrequest != null)
+			{
+				eventrequest.RequestStatus = RequestStatus.ApprovedByApprover1;
+				db.EventRequest.Attach(eventrequest);
+				db.Entry(eventrequest).Property(m => m.RequestStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+
+				db.SaveChanges();
+
+				EventRequestModel model = new EventRequestModel
+				{
+					Id = eventrequest.Id,
+					RequestType = eventrequest.RequestType,
+					RequestStatus = eventrequest.RequestStatus,
+					Reason = eventrequest.Reason,
+					EventRefNo = eventrequest.Event.RefNo,
+					EventTitle = eventrequest.Event.EventTitle,
+				};
+				return Ok(model);
+			}
+			return Ok();
+		}
+
+		//Second Approved Public Event 
+		[Route("api/eEvent/PublicEvent/SecondApprovedRequest")]
+		public IHttpActionResult SecondApprovedRequest(int id)
+		{
+			var eventrequest = db.EventRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (eventrequest != null)
+			{
+				eventrequest.RequestStatus = RequestStatus.ApprovedByApprover2;
+				db.EventRequest.Attach(eventrequest);
+				db.Entry(eventrequest).Property(m => m.RequestStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+
+				db.SaveChanges();
+
+				EventRequestModel model = new EventRequestModel
+				{
+					Id = eventrequest.Id,
+					RequestType = eventrequest.RequestType,
+					RequestStatus = eventrequest.RequestStatus,
+					Reason = eventrequest.Reason,
+					EventRefNo = eventrequest.Event.RefNo,
+					EventTitle = eventrequest.Event.EventTitle,
+				};
+				return Ok(model);
+			}
+			return Ok();
+		}
+
+		//Final Approved Public Event 
+		[Route("api/eEvent/PublicEvent/FinalApprovedRequest")]
+		public IHttpActionResult FinalApprovedRequest(int id, string RequestType)
+		{
+			var eventrequest = db.EventRequest.Where(p => p.Id == id).FirstOrDefault();
+			var publicevent = db.PublicEvent.Where(i => i.Id == eventrequest.EventId).FirstOrDefault();
+
+			if (eventrequest != null)
+			{
+				eventrequest.RequestStatus = RequestStatus.ApprovedByApprover3;
+				db.EventRequest.Attach(eventrequest);
+				db.Entry(eventrequest).Property(m => m.RequestStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+
+				db.SaveChanges();
+
+				if (RequestType == "CancelRequired")
+				{
+					publicevent.EventStatus = EventStatus.Cancelled;
+					db.PublicEvent.Attach(publicevent);
+					db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+					db.Configuration.ValidateOnSaveEnabled = false;
+					db.SaveChanges();
+
+				}
+				else if (RequestType == "ModifyRequired")
+				{
+					publicevent.EventStatus = EventStatus.RejectNeedToEdit;
+					db.PublicEvent.Attach(publicevent);
+					db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
+					db.Configuration.ValidateOnSaveEnabled = false;
+					db.SaveChanges();
+				}
+
+				EventRequestModel model = new EventRequestModel
+				{
+					Id = eventrequest.Id,
+					RequestType = eventrequest.RequestType,
+					RequestStatus = eventrequest.RequestStatus,
+					Reason = eventrequest.Reason,
+					EventRefNo = eventrequest.Event.RefNo,
+					EventTitle = eventrequest.Event.EventTitle,
+				};
+				return Ok(model);
+			}
+			return Ok();
+		}
+
+		//Reject Approved Public Event 
+		[Route("api/eEvent/PublicEvent/RequireAmendmentRequest")]
+		public IHttpActionResult RequireAmendmentRequest(int id)
+		{
+			var eventrequest = db.EventRequest.Where(p => p.Id == id).FirstOrDefault();
+			var publicevent = db.PublicEvent.Where(e => e.Id == eventrequest.EventId).FirstOrDefault();
+
+			if (eventrequest != null)
+			{
+				eventrequest.RequestStatus = RequestStatus.AmendmentRequired;
+				db.EventRequest.Attach(eventrequest);
+				db.Entry(eventrequest).Property(m => m.RequestStatus).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//Update column
+				publicevent.IsRequested = false;
+				db.PublicEvent.Attach(publicevent);
+				db.Entry(publicevent).Property(x => x.IsRequested).IsModified = true;
+				db.SaveChanges();
+
+				EventRequestModel model = new EventRequestModel
+				{
+					Id = eventrequest.Id,
+					RequestType = eventrequest.RequestType,
+					RequestStatus = eventrequest.RequestStatus,
+					Reason = eventrequest.Reason,
+					EventRefNo = publicevent.RefNo,
+					EventTitle = publicevent.EventTitle,
+				};
+				return Ok(model);
+			}
+			return Ok();
+		}
+
+		[Route("api/eEvent/PublicEvent/SaveSLAStatusIdRequest")]
+		public string SaveSLAStatusIdRequest(int id, int SaveThisID)
+		{
+			var publicevent = db.PublicEvent.Where(e => e.Id == id).FirstOrDefault();
+			var eventrequest = db.EventRequest.Where(p => p.Id == publicevent.Id).FirstOrDefault();
+
+			if (eventrequest != null)
+			{
+				eventrequest.SLAReminderStatusId = SaveThisID;
+				db.EventRequest.Attach(eventrequest);
+				db.Entry(eventrequest).Property(m => m.SLAReminderStatusId).IsModified = true;
+				db.Configuration.ValidateOnSaveEnabled = false;
+				db.SaveChanges();
+
+				//return model.Title;
+				return "";
+			}
+			return "";
+		}
+
+
+		[Route("api/eEvent/PublicEvent/GetSLAIdRequest")]
+		public IHttpActionResult GetSLAIdRequest(int id)
+		{
+			var eventrequest = db.EventRequest.Where(p => p.Id == id).Select(i => i.SLAReminderStatusId).FirstOrDefault();
+
+			return Ok(eventrequest);
+		}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	}

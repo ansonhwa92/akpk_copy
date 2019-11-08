@@ -171,6 +171,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				Receive_Via = response.Data.Receive_Via,
 				Attachments = response.Data.Attachments,
 				NomineeId = response.Data.NomineeId,
+				RefNo = response.Data.RefNo,
 			};
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);

@@ -37,9 +37,23 @@ namespace FEP.Model
 		[Display(Name = "Public Event - Cancelled")]
 		Cancel_Public_Event,
 		[Display(Name = "Public Event - Rejected")]
-		Reject_Public_Event,
+		Reject_Public_Event, 
 		[Display(Name = "Public Event - Published")]
 		Publish_Public_Event,
+
+		//Public Event Cancellation/Modification Request
+		[Display(Name = "Cancellation/Modification Request - Submit For Verification")]
+		Submit_CancellationModification_For_Verification,
+		[Display(Name = "Cancellation/Modification Request - Verify")]
+		Verify_CancellationModification,
+		[Display(Name = "Cancellation/Modification Request - Approve By Approver 1")]
+		Approve_CancellationModification_ByApprover_1,
+		[Display(Name = "Cancellation/Modification Request - ApproveBy Approver 2")]
+		Approve_CancellationModification_ByApprover_2,
+		[Display(Name = "Cancellation/Modification Request - Approve By Approver 3")]
+		Approve_CancellationModification_ByApprover_3,
+		[Display(Name = "Cancellation/Modification Request - Require Amendment")]
+		RequireAmendment_CancellationModification,
 
 		//Media Interview
 		[Display(Name = "Media Interview - Submit Media Interview For Verification")]
@@ -103,12 +117,6 @@ namespace FEP.Model
 		Payment_Approve_Refund_Request,
 		[Display(Name = "Payment Pending Refund")]
 		Payment_Pending_Refund,
-
-		//Verify External Request
-		//[Display(Name = "Verify External RequestExhibition ESS")]
-		//Verify_External_Request_Exhibition_ESS,
-		//[Display(Name = "Verify External RequestDuty Roster")]
-		//Verify_External_Request_Duty_Roster,
 
 		////Approve External Request
 		//[Display(Name = "Approve External Request Exhibition Participation")]

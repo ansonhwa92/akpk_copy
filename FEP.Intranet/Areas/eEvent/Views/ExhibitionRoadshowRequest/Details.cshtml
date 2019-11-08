@@ -110,16 +110,25 @@
 					{
 						<a href='@Url.Action("FirstApproved", "ExhibitionRoadshowRequest", new { id = Model.Id })'
 						   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+						<br />
+						<a href='@Url.Action("Reject", "ExhibitionRoadshowRequest", new { id = Model.Id })'
+						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 					}
 					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover1)
 					{
 						<a href='@Url.Action("SecondApproved", "ExhibitionRoadshowRequest", new { id = Model.Id })'
 						   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+						<br />
+						<a href='@Url.Action("Reject", "ExhibitionRoadshowRequest", new { id = Model.Id })'
+						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 					}
 					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover2)
 					{
 						<a href='@Url.Action("FinalApproved", "ExhibitionRoadshowRequest", new { id = Model.Id })'
 						   class="btn btn-success btn-block mb-2">Approved</a>
+						<br />
+						<a href='@Url.Action("Reject", "ExhibitionRoadshowRequest", new { id = Model.Id })'
+						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 					}
 
 
@@ -190,6 +199,7 @@
 						</li>
 					</ul>
 				</div>
+
 				<div class="tab-content">
 					<div class="tab-pane active" id="exhibitiondetails">
 						<form>
@@ -240,8 +250,8 @@
 					<div class="tab-pane" id="eventdetails">
 						<form>
 							<div class="form-container">
-								<div class="sub-Title my-4">
-									Event Details
+								<div class="sub-Title my-4 d-flex align-items-center mb-4 mt-2">
+									<h4 class="color-darkblue mr-auto mb-0">Event Details<br><span class="small">Review event details below.</span></h4>
 								</div>
 								<div class="row">
 									<div class="form-group col-lg-12">

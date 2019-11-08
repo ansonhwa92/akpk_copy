@@ -138,6 +138,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Required(ErrorMessage = "Please insert Participant Requirement")]
 		[Display(Name = "ExRoadParticipantRequirement", ResourceType = typeof(Language.Event))]
+		[RegularExpression("([1-9][0-9]*)")]
 		public int? ParticipationRequirement { get; set; }
 
 		[Display(Name = "ExRoadExhibitionStatus", ResourceType = typeof(Language.Event))]
@@ -180,6 +181,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 	{
 		public EditExhibitionRoadshowRequestModel() { }
 		public int Id { get; set; }
+		public string RefNo { get; set; }
 	}
 
 	public class DetailsExhibitionRoadshowRequestModel : ExhibitionRoadshowRequestModel

@@ -188,6 +188,10 @@ namespace FEP.WebApiModel.SLAReminder
         public string EventCode { get; set; }
         public string EventApproval { get; set; }
 
+		public string RequestStatus { get; set; }
+		public string RequestType { get; set; }
+		public string Reason { get; set; }
+
         //41-60 for Payment
         public string GLHolderName { get; set; }
         public string PaymentRefNo { get; set; }

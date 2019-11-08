@@ -30,7 +30,8 @@ namespace FEP.Model
         MediaInterview,
         ExhibitionRoadshow,
         EventSpeaker,
-		EventAgenda
+		EventAgenda,
+		EventRequest
 	}
 
 }

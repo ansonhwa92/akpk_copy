@@ -160,10 +160,35 @@ namespace FEP.Model.Migrations
 
             AddRole(db, "Admin Finance", "Admin Finance");
 
+            //state
+            if (!db.State.Any())
+            {
+                db.State.AddOrUpdate(s => s.Name,
+                    new State { Name = "Johor", Display = true },
+                    new State { Name = "Kedah", Display = true },
+                    new State { Name = "Kelantan", Display = true },
+                    new State { Name = "Melaka", Display = true },
+                    new State { Name = "Negeri Sembilan", Display = true },
+                    new State { Name = "Pahang", Display = true },
+                    new State { Name = "Pulau Pinang", Display = true },
+                    new State { Name = "Perak", Display = true },
+                    new State { Name = "Perlis", Display = true },
+                    new State { Name = "Selangor", Display = true },
+                    new State { Name = "Terengganu", Display = true },
+                    new State { Name = "Sabah", Display = true },
+                    new State { Name = "Sarawak", Display = true },
+                    new State { Name = "Wilayah Persekutuan Kuala Lumpur", Display = true },
+                    new State { Name = "Wilayah Persekutuan Labuan", Display = true },
+                    new State { Name = "Wilayah Persekutuan Putrajaya", Display = true }
+                );
+            }
+
             if (!db.Branch.Any())
             {
+                var state = db.State.Local.Where(r => r.Name == "Wilayah Persekutuan Kuala Lumpur").FirstOrDefault() ?? db.State.Where(r => r.Name == "Wilayah Persekutuan Kuala Lumpur").FirstOrDefault();
+
                 db.Branch.AddOrUpdate(s => s.Name,
-                    new Branch { StateId = 14, Name = "HQ", Display = true }                   
+                    new Branch { State = state, Name = "HQ", Display = true }
                     );
 
             }
@@ -400,27 +425,7 @@ namespace FEP.Model.Migrations
             #endregion
 
 
-            if (!db.State.Any())
-            {
-                db.State.AddOrUpdate(s => s.Name,
-                    new State { Name = "Johor", Display = true },
-                    new State { Name = "Kedah", Display = true },
-                    new State { Name = "Kelantan", Display = true },
-                    new State { Name = "Melaka", Display = true },
-                    new State { Name = "Negeri Sembilan", Display = true },
-                    new State { Name = "Pahang", Display = true },
-                    new State { Name = "Pulau Pinang", Display = true },
-                    new State { Name = "Perak", Display = true },
-                    new State { Name = "Perlis", Display = true },
-                    new State { Name = "Selangor", Display = true },
-                    new State { Name = "Terengganu", Display = true },
-                    new State { Name = "Sabah", Display = true },
-                    new State { Name = "Sarawak", Display = true },
-                    new State { Name = "Wilayah Persekutuan Kuala Lumpur", Display = true },
-                    new State { Name = "Wilayah Persekutuan Labuan", Display = true },
-                    new State { Name = "Wilayah Persekutuan Putrajaya", Display = true }
-                );
-            }
+            
 
             if (!db.Ministry.Any())
             {

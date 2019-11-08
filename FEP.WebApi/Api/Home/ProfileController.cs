@@ -256,5 +256,28 @@ namespace FEP.WebApi.Api.Home
 
         }
 
+        [Route("api/Home/Profile/UpdateAvatar")]
+        [HttpPut]
+        [ValidationActionFilter]
+        public IHttpActionResult UpdateAvatar(int id, Image64Model model)
+        {           
+
+            var account = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
+
+            if (account == null)
+                return BadRequest();
+
+            account.Avatar = model.image64;
+
+            db.UserAccount.Attach(account);
+            db.Entry(account).Property(e => e.Avatar).IsModified = true;
+
+            db.Configuration.ValidateOnSaveEnabled = false;
+            db.SaveChanges();
+
+            return Ok();
+
+        }
+
     }
 }

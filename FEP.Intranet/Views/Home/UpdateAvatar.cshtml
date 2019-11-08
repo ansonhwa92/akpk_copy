@@ -1,0 +1,179 @@
+﻿@model ProfileAvatarModel
+
+@{
+    ViewBag.Title = "Profile Avatar";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+
+@section ContentStyle {
+
+    <style>
+        .photo {
+            border: 1px solid #ddd; /* Gray border */
+            border-radius: 4px; /* Rounded border */
+            padding: 5px; /* Some padding */
+            width: 90px; /* Set a small width */
+        }
+
+            .photo:hover {
+                box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+            }
+    </style>
+}
+
+@section ContentScript {
+
+    <script type="text/javascript">
+
+        document.querySelector('#AvatarFile').addEventListener('change', function (e) {
+
+            if (this.files.length > 0) {
+
+                debugger;
+
+                var file = this.files[0];
+                var fd = new FormData();
+                fd.append("AvatarFile", file);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('POST', '@Url.Action("LoadAvatar", "Home", new { area = "" })', true);
+
+                //xhr.upload.onprogress = function (e) {
+                //    if (e.lengthComputable) {
+                //        var percentComplete = (e.loaded / e.total) * 100;
+                //        console.log(percentComplete + '% uploaded');
+                //    }
+                //};
+
+                xhr.onload = function () {
+
+                    if (this.status == 200) {
+                        var resp = JSON.parse(this.response);
+                        $('#profile_avatar').attr("src", resp.image64);
+                    }
+                };
+
+                xhr.send(fd);
+
+            }
+            else {
+                $('#profile_avatar').attr("src", '@BaseURL/img/no-photo.jpg');
+            }
+
+        }, false);
+
+
+    </script>
+
+
+}
+
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="@Url.Action("MyProfile", "Home", new { area = ""})" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("MyProfile", "Home", new { area = ""})">My Profile</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Change Profile Avatar</h1>
+                    <div class="header-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue">My Profile</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("MyProfile", "Home", new { area = "" })" class="nav-link">View</a>
+                        </li>
+                        @if (CurrentUser.UserType != UserType.Staff)
+                        {
+                            <li class="nav-item">
+                                <a href="@Url.Action("EditProfile", "Home", new { area = "" })" class="nav-link">Update Profile</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a href="@Url.Action("UpdateAvatar", "Home", new { area = "" })" class="active nav-link">Update Avatar Photo</a>
+                        </li>
+                        @if (CurrentUser.UserType != UserType.Staff)
+                        {
+                            <li class="nav-item">
+                                <a href="@Url.Action("ChangeEmail", "Home", new { area = "" })" class="nav-link">Change Email</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("ChangePassword", "Home", new { area = "" })" class="nav-link">Change Password</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+
+        @using (Html.BeginForm("UpdateAvatar", "Home", new { area = "" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.AvatarImageBase64)
+
+            <div class="border-form rounded-top">
+
+                <div class="form-container">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.AvatarFile)
+                            <div class="media align-items-center">
+                                <div class="d-flex mr-3 align-self-center">
+                                    @if (Model.AvatarImageBase64 != null)
+                                    {
+                                        <img id="profile_avatar" src="@Model.AvatarImageBase64" class="photo" />
+                                    }
+                                    else
+                                    {
+                                        <img id="profile_avatar" src="@BaseURL/img/no-photo.jpg" class="photo" />
+                                    }
+                                </div>
+                                <div class="media-body">
+                                    <div class="custom-file b-form-file">
+                                        @Html.TextBoxFor(m => m.AvatarFile, htmlAttributes: new { type = "file" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.AvatarFile)
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a class="btn btn-default mr-2" href="@Url.Action("MyProfile", "Home", new { area = "" })">Cancel</a>
+                <button class="btn btn-secondary" type="submit">Save</button>
+            </div>
+
+        }
+    </div>
+</div>
+
+

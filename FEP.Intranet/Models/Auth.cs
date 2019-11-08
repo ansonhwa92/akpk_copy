@@ -52,6 +52,7 @@ namespace FEP.Intranet.Models
         public bool isenable { get; set; }
         public DateTime? validfrom { get; set; }
         public DateTime? validto { get; set; }
+        public string avatar { get; set; }
         public List<string> access { get; set; }
         
     }

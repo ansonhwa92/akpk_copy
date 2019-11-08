@@ -233,6 +233,9 @@ namespace FEP.WebApiModel.Administration
     {
         public int Id { get; set; }
 
+        [Display(Name = "FieldAvatar", ResourceType = typeof(Language.Profile))]
+        public string AvatarImageBase64 { get; set; }
+
         [Display(Name = "FieldName", ResourceType = typeof(Language.Individual))]
         public string Name { get; set; }
 

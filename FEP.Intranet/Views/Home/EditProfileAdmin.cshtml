@@ -5,12 +5,6 @@
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-@section ContentScript{
-
-    
-
-}
-
 @section Nav {
 
     <div class="title_header">
@@ -52,6 +46,9 @@
                             <a href="@Url.Action("EditProfile", "Home", new { area = "" })" class="active nav-link">Update Profile</a>
                         </li>
                         <li class="nav-item">
+                            <a href="@Url.Action("UpdateAvatar", "Home", new { area = "" })" class="nav-link">Update Avatar Photo</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="@Url.Action("ChangeEmail", "Home", new { area = "" })" class="nav-link">Change Email</a>
                         </li>
                         <li class="nav-item">
@@ -71,14 +68,14 @@
                 @Html.AntiForgeryToken()
 
                 <div class="form-container">
-
+                    
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.Name, htmlAttributes: new { @class = "form-label" })
                             @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Profile.PlaceholderName } })
                             @Html.ValidationMessageFor(m => m.Name)
                         </div>
-                    </div>                   
+                    </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.MobileNo, htmlAttributes: new { @class = "form-label" })

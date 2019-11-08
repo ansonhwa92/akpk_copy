@@ -79,6 +79,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fail to change avatar photo.
+        /// </summary>
+        public static string AlertFailUpdateAvatar {
+            get {
+                return ResourceManager.GetString("AlertFailUpdateAvatar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fail to update profile.
         /// </summary>
         public static string AlertFailUpdateProfile {
@@ -106,6 +115,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Avatar photo successfully updated. You need to sign in again to see the change..
+        /// </summary>
+        public static string AlertSuccessUpdateAvatar {
+            get {
+                return ResourceManager.GetString("AlertSuccessUpdateAvatar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile successfully updated.
         /// </summary>
         public static string AlertSuccessUpdateProfile {
@@ -129,6 +147,15 @@ namespace Language {
         public static string FieldAgencyName {
             get {
                 return ResourceManager.GetString("FieldAgencyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avatar Photo.
+        /// </summary>
+        public static string FieldAvatar {
+            get {
+                return ResourceManager.GetString("FieldAvatar", resourceCulture);
             }
         }
         
@@ -768,6 +795,15 @@ namespace Language {
         public static string ValidRequiredAgencyName {
             get {
                 return ResourceManager.GetString("ValidRequiredAgencyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select image file.
+        /// </summary>
+        public static string ValidRequiredAvatar {
+            get {
+                return ResourceManager.GetString("ValidRequiredAvatar", resourceCulture);
             }
         }
         

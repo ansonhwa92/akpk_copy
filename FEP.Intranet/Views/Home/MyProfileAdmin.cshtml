@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
+
 @section Nav {
 
     <div class="title_header">
@@ -42,6 +43,9 @@
                         </li>
                         <li class="nav-item">
                             <a href="@Url.Action("EditProfile", "Home", new { area = "" })" class="nav-link">Update Profile</a>
+                        </li>          
+                        <li class="nav-item">
+                            <a href="@Url.Action("UpdateAvatar", "Home", new { area = "" })" class="nav-link">Update Avatar Photo</a>
                         </li>
                         <li class="nav-item">
                             <a href="@Url.Action("ChangeEmail", "Home", new { area = "" })" class="nav-link">Change Email</a>
@@ -59,7 +63,6 @@
         <div class="border-form rounded-top">
             <form>
                 <div class="form-container">
-
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.Name)

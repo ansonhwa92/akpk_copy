@@ -144,6 +144,9 @@
   <data name="FieldCourse" xml:space="preserve">
     <value>Course</value>
   </data>
+  <data name="FieldCreatedBy" xml:space="preserve">
+    <value>Created By</value>
+  </data>
   <data name="FieldDate" xml:space="preserve">
     <value>Date</value>
   </data>
@@ -187,7 +190,7 @@
     <value>Enter End Date</value>
   </data>
   <data name="PlaceholderModule" xml:space="preserve">
-    <value>Select Module</value>
+    <value>Enter Module Name</value>
   </data>
   <data name="PlaceholderSalaryRange" xml:space="preserve">
     <value>Select Salary Range</value>
@@ -217,7 +220,7 @@
     <value>Please enter End Time</value>
   </data>
   <data name="ValidRequiredModule" xml:space="preserve">
-    <value>Please select Module</value>
+    <value>Please enter Module</value>
   </data>
   <data name="ValidRequiredNoOfFemale" xml:space="preserve">
     <value>Please enter No of Female Participant</value>

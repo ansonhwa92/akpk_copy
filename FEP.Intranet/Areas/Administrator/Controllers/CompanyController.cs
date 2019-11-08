@@ -144,7 +144,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                     var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
 
-                    await LogActivity(Modules.Admin, "Create Agency User", model);
+                    await LogActivity(Modules.Setting, "Create Agency User", model);
 
                     TempData["SuccessMessage"] = Language.Company.AlertCreateSuccess;
 
@@ -288,7 +288,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 if (response.Data)
                 {
-                    await LogActivity(Modules.Admin, "Update Agency User", model);
+                    await LogActivity(Modules.Setting, "Update Agency User", model);
 
                     TempData["SuccessMessage"] = Language.Company.AlertEditSuccess;
 
@@ -350,7 +350,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.Data)
             {
-                await LogActivity(Modules.Admin, "Activate Agency User Account", new { id = id });
+                await LogActivity(Modules.Setting, "Activate Agency User Account", new { id = id });
 
                 TempData["SuccessMessage"] = Language.Company.AlertActivateSuccess;
 
@@ -399,7 +399,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                await LogActivity(Modules.Admin, "Disable Agency User Account", new { id = id });
+                await LogActivity(Modules.Setting, "Disable Agency User Account", new { id = id });
 
                 TempData["SuccessMessage"] = Language.Company.AlertDeactivateSuccess;
 
@@ -468,7 +468,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                     ReceiverId = new List<int> { (int)response.Data.UserId }
                 };
 
-                await LogActivity(Modules.Admin, "Reset Agency User Account Password", new { id = id });
+                await LogActivity(Modules.Setting, "Reset Agency User Account Password", new { id = id });
 
                 TempData["SuccessMessage"] = Language.Company.AlertResetSuccess;
 
@@ -519,7 +519,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                await LogActivity(Modules.Admin, "Delete Agency User", new { id = id });
+                await LogActivity(Modules.Setting, "Delete Agency User", new { id = id });
 
                 TempData["SuccessMessage"] = Language.Company.AlertDeleteSuccess;
 

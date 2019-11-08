@@ -24,6 +24,23 @@ namespace FEP.Model.Migrations
 
         public static void Seed(DbEntities db)
         {
+            //cte
+
+            db.Months.AddOrUpdate(s => s.Month,
+                new Months { Month = 1, Name = "Jan" },
+                new Months { Month = 2, Name = "Feb" },
+                new Months { Month = 3, Name = "Mar" },
+                new Months { Month = 4, Name = "Apr" },
+                new Months { Month = 5, Name = "May" },
+                new Months { Month = 6, Name = "Jun" },
+                new Months { Month = 7, Name = "Jul" },
+                new Months { Month = 8, Name = "Aug" },
+                new Months { Month = 9, Name = "Sep" },
+                new Months { Month = 10, Name = "Oct" },
+                new Months { Month = 11, Name = "Nov" },
+                new Months { Month = 12, Name = "Dec" }
+            );
+
 
             //default setting
             if (!db.SystemSetting.Any(m => m.Id == 0))
@@ -142,6 +159,15 @@ namespace FEP.Model.Migrations
             //AddRole(db, "Approver eLearning 3", "Approver eLearning 3");
 
             AddRole(db, "Admin Finance", "Admin Finance");
+
+            if (!db.Branch.Any())
+            {
+                db.Branch.AddOrUpdate(s => s.Name,
+                    new Branch { StateId = 14, Name = "HQ", Display = true }                   
+                    );
+
+            }
+
 
             if (!db.Department.Any())
             {
@@ -367,7 +393,10 @@ namespace FEP.Model.Migrations
             AddStaff(db, "nursyahirah.r", "NUR SYAHIRAH BINTI RAHMAT", "961010146146", "nursyahirah.r@akpk.org.my", "60132038300", "Channel Management", "CLERICAL ", "0308");
             AddStaff(db, "intannoorsyakira.z", "INTAN NOOR SYAKIRA BINTI ZAINUDDIN", "900730065548", "intannoorsyakira.z@akpk.org.my", "60145280966", "Channel Management", "CLERICAL ", "0309");
             AddStaff(db, "wannuradibah.cm", "WAN NURADIBAH BINTI CHE MOHD LUDIN", "920212105798", "wannuradibah.cm@akpk.org.my", "60133138516", "Channel Management", "CLERICAL ", "0310");
-
+            AddStaff(db, "fep_user1", "FEP USER 1", "123456789012", "fepuser1@fep.com", "012345678", "IT", "SENIOR EXECUTIVE", "xxxx");
+            AddStaff(db, "fep_user2", "FEP USER 2", "123456789013", "fepuser2@fep.com", "012345678", "IT", "SENIOR EXECUTIVE", "xxxy");
+            AddStaff(db, "fep_user3", "FEP USER 3", "123456789014", "fepuser3@fep.com", "012345678", "IT", "SENIOR EXECUTIVE", "xxxz");
+            AddStaff(db, "fep_user4", "FEP USER 4", "123456789015", "fepuser4@fep.com", "012345678", "IT", "SENIOR EXECUTIVE", "xxxf");
             #endregion
 
 
@@ -732,12 +761,8 @@ namespace FEP.Model.Migrations
                 }
                 else if (access >= 4001 && access <= 5000)
                 {
-                    module = Modules.Admin;
-                }
-                else if (access >= 5001 && access <= 6000)
-                {
                     module = Modules.Setting;
-                }
+                }               
                 else //if (access >= 6001 && access <= 7000)
                 {
                     module = Modules.Report;

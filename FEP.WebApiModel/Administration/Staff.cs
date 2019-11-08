@@ -60,7 +60,7 @@ namespace FEP.WebApiModel.Administration
     public class DetailsStaffModel
     {
         public int Id { get; set; }
-
+               
         [Display(Name = "FieldStaffId", ResourceType = typeof(Language.Staff))]
         public string StaffId { get; set; }
 
@@ -96,6 +96,7 @@ namespace FEP.WebApiModel.Administration
 
     public class EditStaffModel
     {
+
         public int Id { get; set; }
 
         [Display(Name = "FieldStaffId", ResourceType = typeof(Language.Staff))]
@@ -108,7 +109,7 @@ namespace FEP.WebApiModel.Administration
         public DepartmentModel Department { get; set; }
 
         [Display(Name = "FieldBranch", ResourceType = typeof(Language.Staff))]
-        public BranchModel Branch { get; set; }
+        public int? BranchId { get; set; }
 
         [Display(Name = "FieldDesignation", ResourceType = typeof(Language.Staff))]
         public DesignationModel Designation { get; set; }
@@ -131,6 +132,7 @@ namespace FEP.WebApiModel.Administration
         public int[] RoleIds { get; set; }
 
         public IEnumerable<SelectListItem> Roles { get; set; }
+        public IEnumerable<SelectListItem> Branches { get; set; }
 
     }
 

@@ -223,6 +223,9 @@ namespace FEP.Model
         // Email?
         public DbSet<TabBulkEmail> TabBulkEmail { get; set; }
         public DbSet<TabBulkSMS> TabBulkSMS { get; set; }
+        
+        //CTE
+        public DbSet<Months> Months { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

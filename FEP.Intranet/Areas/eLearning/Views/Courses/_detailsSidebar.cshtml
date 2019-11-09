@@ -1,0 +1,49 @@
+﻿@model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
+
+<div class="col-xl-3 col-md-3 col-sm-4 my-2">
+    <div id="page-nav" class="sidebar-left page-nav">
+        <div data-perfect-scrollbar class="ps">
+            <div class="page-section">
+                <div class="subtitle color-darkblue"><i class="font-icon color-secondary align-bottom"></i>Course Details</div>
+                <ul style="padding-left: 20px;">
+                    <li class="nav-item">
+                        <p class="x-small" style="margin-bottom: 0px;">
+                            <i class="la la-globe font-icon color-secondary"></i>@Model.Category.Name</p >
+                    </li>
+                    <li class="nav-item">
+                        <p class="x-small" style="margin-bottom: 0px;">
+                            <i class="la la-clock-o font-icon color-secondary"></i>@Model.ScheduleType.ToString()
+                        </p>
+                    </li>
+                    <li class="nav-item">
+                        <p class="x-small" style="margin-bottom: 0px;">
+                            <i class="la la-folder-open font-icon color-secondary"></i>@Model.Modules.Count() Modules
+                        </p>
+                    </li>
+                    @*<li class="nav-item">
+                        <p class="x-small" style="margin-bottom: 0px;">
+                            <i class="la la-shield font-icon color-secondary"></i>Beginner Level
+                        </p>
+                    </li>*@
+                    <li class="nav-item">
+                        <p class="x-small" style="margin-bottom: 0px;">
+                            <i class="la la-calendar-check-o font-icon color-secondary"></i>@Model.Duration @Model.DurationType's
+                        </p>
+                    </li>
+                    <li class="nav-item">
+                        <p class="x-small" style="margin-bottom: 0px;">
+                            <i class="la la-volume-up font-icon color-secondary"></i>@Model.Language
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-form rounded mb-2" style="padding-top: 15px;padding-right: 15px;padding-bottom: 15px;padding-left: 15px;">
+            <div class="text-center">@Model.Price</div>
+            <p><a href="@Url.Action("StartTrial", "CourseEvents", new { area = "eLearning", id = @Model.Id })" class="btn btn-secondary btn-block mb-2">Take This Course</a></p>
+        </div>
+
+    </div>
+</div>
+

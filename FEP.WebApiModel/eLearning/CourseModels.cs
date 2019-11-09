@@ -155,6 +155,8 @@ namespace FEP.WebApiModel.eLearning
 
         // check for if user is enrolled
         public bool IsUserEnrolled { get; set; }
+
+        public TrainerCourse Instructor { get; set; }
     }
 
     public class CourseListModel
@@ -230,5 +232,66 @@ namespace FEP.WebApiModel.eLearning
         public string Id { get; set; }
         public string CreatedBy { get; set; }
         public List<string> Order { get; set; }
+    }
+
+    public class DashboardCourseModel : BaseModel
+    {
+        [Display(Name = "Title", ResourceType = typeof(Language.eLearning.Course))]
+        public string Title { get; set; }
+
+        [Display(Name = "Description", ResourceType = typeof(Language.eLearning.Course))]
+        public string Description { get; set; }
+
+        [Display(Name = "Code", ResourceType = typeof(Language.eLearning.Course))]
+        public string Code { get; set; }
+
+        [Display(Name = "Category", ResourceType = typeof(Language.eLearning.Course))]
+        public int CategoryId { get; set; }
+
+        [Display(Name = "Price", ResourceType = typeof(Language.eLearning.Course))]
+        public string Price { get; set; }
+
+        [Display(Name = "Status", ResourceType = typeof(Language.eLearning.Course))]
+        public CourseStatus Status { get; set; }
+
+        public int TotalModules { get; set; }
+
+        public int TotalStudent { get; set; }
+
+        public string IntroImageFileName { get; set; }
+
+        public string InstructorBy { get; set; }
+
+    }
+
+    // FOR ELEARNING HOME PAGE
+    // Class for returning elearning for user browsing
+    public class BrowseElearningModel
+    {
+        public string Keyword { get; set; }
+
+        public string Sorting { get; set; }
+
+        public int LastIndex { get; set; }
+
+        public int ItemCount { get; set; }
+
+        public List<ReturnElearningModel> Courses { get; set; }
+    }
+
+    public class ReturnElearningModel
+    {
+        public int Id { get; set; }
+        public int CategoryId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public CourseLanguage Language { get; set; }
+        public decimal Price { get; set; }
+        public string Instructor { get; set; }
+        public int TotalModules { get; set; }
+        public int TotalStudent { get; set; }
+        public CourseStatus Status { get; set; }
+        public string IntroImageFileName { get; set; }
+
     }
 }

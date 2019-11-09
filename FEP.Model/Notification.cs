@@ -105,18 +105,24 @@ namespace FEP.Model
 		//Payment 
 		[Display(Name = "Payment Pending GL")]
 		Payment_Pending_GL,
-		[Display(Name = "Payment Pending Payment")]
+        [Display(Name = "Payment Verify GL")]
+        Payment_Verify_GL,
+        [Display(Name = "Payment Pending Payment")]
 		Payment_Pending_Payment,
-		[Display(Name = "Payment Verify GL")]
-		Payment_Verify_GL,
 		[Display(Name = "Payment Verify Payment")]
 		Payment_Verify_Payment,
-		[Display(Name = "Payment Verify Refund Request")]
+        [Display(Name = "Payment Submit Refund Request")]
+        Payment_Submit_Refund_Request,
+        [Display(Name = "Payment Verify Refund Request")]
 		Payment_Verify_Refund_Request,
 		[Display(Name = "Payment Approve Refund Request")]
 		Payment_Approve_Refund_Request,
 		[Display(Name = "Payment Pending Refund")]
 		Payment_Pending_Refund,
+        [Display(Name = "Payment Refund Incomplete")]
+        Payment_Refund_Incomplete,
+        [Display(Name = "Payment Refund Complete")]
+        Payment_Refund_Complete,
 
 		////Approve External Request
 		//[Display(Name = "Approve External Request Exhibition Participation")]

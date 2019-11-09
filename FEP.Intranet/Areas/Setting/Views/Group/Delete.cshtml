@@ -1,0 +1,244 @@
+﻿@model FEP.WebApiModel.RnP.ReturnPublicationModel
+
+@{
+    ViewBag.Title = "Delete Publication";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/RnP/Publication" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
+                                <li class="breadcrumb-item"><a href="~/RnP/Publication">Publication</a></li>
+                                <li class="breadcrumb-item"><a href="#">Delete Publication</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Delete Publication</h1>
+                    <div class="header-text">Delete publication.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Publication Information</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a id="tab_details" href="#publication-details" data-toggle="tab" class="nav-link active">Publication Details</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
+            <div class="form-container tab-content">
+                <div class="tab-pane active" id="publication-details">
+                    <div class="tab-pane" id="setting1">
+                        <div class="d-flex align-items-center mb-4 mt-2">
+                            <h4 class="color-darkblue mr-auto mb-0">Are you sure you want to delete this Publication?<br><span class="small">View publication details below.</span></h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Coauthor, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Coauthor, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                            @*Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly", cols = 48, @rows = 5 })*@
+                            <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Description)</textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" })
+                            <select class="js-example-basic-multiple" id="pub_lang" name="pub_langs[]" multiple="multiple" style="width: 100%;" disabled="disabled">
+                                <option value="Bahasa Malaysia">Bahasa Malaysia</option>
+                                <option value="English">English</option>
+                            </select>
+                            @Html.HiddenFor(model => model.Language, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ISBN, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.ISBN, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            Format
+                        </div>
+                        <div class="form-group col-lg-4">
+                            Free?
+                        </div>
+                        <div class="form-group col-lg-4">
+                            Price (RM)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.Hardcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.Hardcopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.FreeHCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.FreeHCopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @Html.EditorFor(model => model.HPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.Digitalcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.Digitalcopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.FreeDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.FreeDCopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @Html.EditorFor(model => model.DPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.HDcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.HDcopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                @Html.EditorFor(model => model.FreeHDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.FreeHDCopy, htmlAttributes: new { @class = "custom-control-label" })
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @Html.EditorFor(model => model.HDPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.StockBalance, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.StockBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.CoverPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_CoverPictureDetails", Model.CoverPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.AuthorPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_AuthorPictureDetails", Model.AuthorPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_ProofOfApprovalDetails", Model.ProofOfApproval)
+                        </div>
+                    </div>
+                </div>
+                <!-- End Form -->
+            </div>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                    <a class="btn btn-default" href="@Url.Action("Index", "Publication", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
+                    <button type="submit" class="btn btn-secondary" value="Delete">Delete</button>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var selectedLang = $('#Language').val();
+            if (selectedLang.indexOf("English") >= 0) {
+                $('#pub_lang option').each(function () {
+                    if ($(this).text() == "English") {
+                        $(this).prop("selected", true);
+                    }
+                });
+            }
+            if (selectedLang.indexOf("Bahasa Malaysia") >= 0) {
+                $('#pub_lang option').each(function () {
+                    if ($(this).text() == "Bahasa Malaysia") {
+                        $(this).prop("selected", true);
+                    }
+                });
+            }
+            $('#pub_lang').trigger('change');
+        });
+    </script>
+}
+

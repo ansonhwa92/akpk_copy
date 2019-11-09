@@ -322,6 +322,9 @@ namespace FEP.WebApiModel.RnP
     // class for setting and returning filters for the datatable list of refund requests
     public class FilterRefundRequestModel : DataTableModel
     {
+        [Required]
+        public PurchaseType ItemType { get; set; }
+
         [Display(Name = "FilterUserName", ResourceType = typeof(Language.Cart))]
         public string BuyerName { get; set; }
 

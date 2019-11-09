@@ -45,7 +45,32 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
 
             if (mycart == null)
             {
-                return RedirectToAction("BrowsePublications", "Home", new { area = "RnP" });    // TODO
+                var order = new PurchaseOrderModel
+                {
+                    UserId = CurrentUser.UserId.Value,
+                    DiscountCode = "",
+                    ProformaInvoiceNo = "",
+                    PaymentMode = PaymentModes.Online,
+                    CreatedDate = DateTime.Now,
+                    TotalPrice = 0,
+                    Status = CheckoutStatus.Shopping
+                };
+
+                var response_cart = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"Commerce/Cart/Create", order);
+
+                if (!response_cart.isSuccess)
+                {
+                    return HttpNotFound();
+                }
+
+                var resCart2 = await WepApiMethod.SendApiAsync<PurchaseOrderFullModel>(HttpVerbs.Get, $"Commerce/Cart/Retrieve?userid={CurrentUser.UserId.Value}");
+
+                if (!resCart2.isSuccess)
+                {
+                    return HttpNotFound();
+                }
+
+                mycart = resCart2.Data;
             }
 
             return View(mycart);

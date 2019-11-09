@@ -153,13 +153,13 @@
 
 				<br />
 				<div>
-					@if (Model.EventStatus == FEP.Model.EventStatus.New)
+					@if (Model.EventStatus == FEP.Model.EventStatus.New && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorFED)))
 					{
 						<a href='@Url.Action("SubmitToVerify", "PublicEvent", new { area = "eEvent", id = Model.Id })'
 						   class="btn btn-primary btn-block mb-2">Submit for Verification</a>
 						@*<p><button class="btn btn-secondary btn-block mb-2" id="btnSubmit" data-pubid="@Model.Id">Submit for Verification</button></p>*@
 					}
-					else if (Model.EventStatus == FEP.Model.EventStatus.PendingforVerification)
+					else if (Model.EventStatus == FEP.Model.EventStatus.PendingforVerification && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Submit_PublicEvent)))
 					{
 						<a href='@Url.Action("Verified", "PublicEvent", new { area = "eEvent", id = Model.Id })'
 						   class="btn btn-primary btn-block mb-2 ">Submit for Approval</a>
@@ -167,7 +167,7 @@
 						<a href='@Url.Action("RejectPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })'
 						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 					}
-					else if (Model.EventStatus == FEP.Model.EventStatus.Verified)
+					else if (Model.EventStatus == FEP.Model.EventStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver1_PublicEvent)))
 					{
 						<a href='@Url.Action("FirstApproved", "PublicEvent", new { area = "eEvent", id = Model.Id })'
 						   class="btn btn-primary btn-block mb-2 ">Submit for Approval</a>
@@ -175,7 +175,7 @@
 						<a href='@Url.Action("RejectPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })'
 						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 					}
-					else if (Model.EventStatus == FEP.Model.EventStatus.VerifiedbyFirstApprover)
+					else if (Model.EventStatus == FEP.Model.EventStatus.VerifiedbyFirstApprover && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver2_PublicEvent)))
 					{
 						<a href='@Url.Action("SecondApproved", "PublicEvent", new { area = "eEvent", id = Model.Id })'
 						   class="btn btn-primary  btn-block mb-2">Submit for Approval</a>
@@ -183,7 +183,7 @@
 						<a href='@Url.Action("RejectPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })'
 						   class="btn btn-warning  btn-block mb-2">Require Amendment</a>
 					}
-					else if (Model.EventStatus == FEP.Model.EventStatus.VerifiedbySecondApprover)
+					else if (Model.EventStatus == FEP.Model.EventStatus.VerifiedbySecondApprover && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver3_PublicEvent)))
 					{
 						<a href='@Url.Action("FinalApproved", "PublicEvent", new { id = Model.Id })'
 						   class="btn btn-success btn-block mb-2">Approve</a>
@@ -191,17 +191,16 @@
 						<a href='@Url.Action("RejectPublicEvent", "PublicEvent", new { area = "eEvent", id = Model.Id })'
 						   class="btn btn-warning  btn-block mb-2">Require Amendment</a>
 					}
-					else if (Model.EventStatus == FEP.Model.EventStatus.RejectNeedToEdit)
+					else if (Model.EventStatus == FEP.Model.EventStatus.RejectNeedToEdit && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorFED)))
 					{
 						<a href='@Url.Action("SubmitToVerify", "PublicEvent", new { area = "eEvent", id = Model.Id })'
 						   class="btn btn-primary  btn-block mb-2">Submit for Verification</a>
 					}
-					else if (Model.EventStatus == FEP.Model.EventStatus.Approved)
+					else if (Model.EventStatus == FEP.Model.EventStatus.Approved && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorFED)))
 					{
 						<a href='@Url.Action("PublishedPublicEvent", "PublicEvent", new { id = Model.Id })'
 						   class="btn btn-success btn-block mb-2">Publish</a>
 					}
-
 				</div>
 
 			</div>

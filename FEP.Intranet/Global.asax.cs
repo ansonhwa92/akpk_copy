@@ -52,9 +52,16 @@ namespace FEP.Intranet
 
             var ex = Server.GetLastError();
 
-            string details = ex.InnerException + " | " + ex.StackTrace;
+            string details = "";
+            string description = "";
 
-            FEPHelperMethod.LogError(Model.Modules.Setting, null, currentAction, currentController, "", ipAddress, ex.Message, details);
+            if (ex != null)
+            {
+                details = ex.StackTrace;
+                description = ex.Message;
+            }
+                        
+            FEPHelperMethod.LogError(Model.Modules.Setting, null, currentAction, currentController, "", ipAddress, description, details);
 
             httpContext.ClearError();
             httpContext.Response.Clear();

@@ -124,7 +124,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                     var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
 
-                    await LogActivity(Modules.Admin, "Create Individual User", model);
+                    await LogActivity(Modules.Setting, "Create Individual User", model);
 
                     TempData["SuccessMessage"] = Language.Individual.AlertCreateSuccess;
 
@@ -246,7 +246,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 if (response.isSuccess)
                 {
-                    await LogActivity(Modules.Admin, "Update Individual User", model);
+                    await LogActivity(Modules.Setting, "Update Individual User", model);
 
                     TempData["SuccessMessage"] = Language.Individual.AlertEditSuccess;
 
@@ -308,7 +308,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                await LogActivity(Modules.Admin, "Activate Individual User Account");
+                await LogActivity(Modules.Setting, "Activate Individual User Account");
 
                 TempData["SuccessMessage"] = Language.Individual.AlertActivateSuccess;
 
@@ -359,7 +359,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                await LogActivity(Modules.Admin, "Disable Individual User Account", new { id = id });
+                await LogActivity(Modules.Setting, "Disable Individual User Account", new { id = id });
 
                 TempData["SuccessMessage"] = Language.Individual.AlertDeactivateSuccess;
 
@@ -425,7 +425,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
 
-                await LogActivity(Modules.Admin, "Reset Individual User Account Password", new { id = id });
+                await LogActivity(Modules.Setting, "Reset Individual User Account Password", new { id = id });
 
                 TempData["SuccessMessage"] = Language.Individual.AlertResetSuccess;
 
@@ -476,7 +476,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                await LogActivity(Modules.Admin, "Delete Individual User", new { id = id });
+                await LogActivity(Modules.Setting, "Delete Individual User", new { id = id });
 
                 TempData["SuccessMessage"] = Language.Individual.AlertDeleteSuccess;
 

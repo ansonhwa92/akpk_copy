@@ -32,12 +32,7 @@ namespace FEP.WebApiModel.eLearning
 
     public class FilterTOTReportModel : DataTableModel
     {
-        public FilterTOTReportModel()
-        {
-            Courses = Enumerable.Empty<System.Web.Mvc.SelectListItem>();
-            Modules = Enumerable.Empty<System.Web.Mvc.SelectListItem>();
-        }
-
+       
         [UIHint("Date")]
         [Display(Name = "FieldDate", ResourceType = typeof(Language.TOT))]
         public DateTime? Date { get; set; }
@@ -45,29 +40,18 @@ namespace FEP.WebApiModel.eLearning
         [Display(Name = "FieldVenue", ResourceType = typeof(Language.TOT))]
         public string Venue { get; set; }
 
-        [Display(Name = "FieldCourse", ResourceType = typeof(Language.TOT))]
-        public int? CourseId { get; set; }
-
         [Display(Name = "FieldModule", ResourceType = typeof(Language.TOT))]
-        public int? ModuleId { get; set; }
+        public string Module { get; set; }
 
-        [Display(Name = "FieldAgeRange", ResourceType = typeof(Language.TOT))]
-        public TOTAgeRange? AgeRange { get; set; }
+        [Display(Name = "FieldCreatedBy", ResourceType = typeof(Language.TOT))]
+        public string CreatedBy { get; set; }
 
-        [Display(Name = "FieldSalaryRange", ResourceType = typeof(Language.TOT))]
-        public TOTSalaryRange? SalaryRange { get; set; }
-
-        public IEnumerable<System.Web.Mvc.SelectListItem> Courses { get; set; }
-        public IEnumerable<System.Web.Mvc.SelectListItem> Modules { get; set; }
     }
 
     public class TOTReportModel
     {
         public int Id { get; set; }
-
-        [Display(Name = "FieldCourse", ResourceType = typeof(Language.TOT))]
-        public string Course { get; set; }
-
+               
         [Display(Name = "FieldModule", ResourceType = typeof(Language.TOT))]
         public string Module { get; set; }
                 
@@ -89,12 +73,9 @@ namespace FEP.WebApiModel.eLearning
         {
             FilesId = new List<int>();
         }
-
-        [Required(ErrorMessageResourceName = "ValidRequiredCourse", ErrorMessageResourceType = typeof(Language.TOT))]       
-        public int CourseId { get; set; }
-
+        
         [Required(ErrorMessageResourceName = "ValidRequiredModule", ErrorMessageResourceType = typeof(Language.TOT))]       
-        public int ModuleId { get; set; }
+        public string Module { get; set; }
               
         [Required(ErrorMessageResourceName = "ValidRequiredStartDate", ErrorMessageResourceType = typeof(Language.TOT))]       
         public DateTime? StartDate { get; set; }
@@ -133,12 +114,9 @@ namespace FEP.WebApiModel.eLearning
         }
 
         public int Id { get; set; }
-        
-        [Required(ErrorMessageResourceName = "ValidRequiredCourse", ErrorMessageResourceType = typeof(Language.TOT))]
-        public int CourseId { get; set; }
-
+     
         [Required(ErrorMessageResourceName = "ValidRequiredModule", ErrorMessageResourceType = typeof(Language.TOT))]        
-        public int ModuleId { get; set; }
+        public string Module { get; set; }
 
         [Required(ErrorMessageResourceName = "ValidRequiredStartDate", ErrorMessageResourceType = typeof(Language.TOT))]
         public DateTime StartDate { get; set; }
@@ -169,13 +147,7 @@ namespace FEP.WebApiModel.eLearning
     public class DetailsTOTReportModel
     {
         public int Id { get; set; }
-                
-        public int CourseId { get; set; }
-
-        [Display(Name = "FieldCourse", ResourceType = typeof(Language.TOT))]
-        public string Course { get; set; }
-               
-        public int ModuleId { get; set; }
+  
 
         [Display(Name = "FieldModule", ResourceType = typeof(Language.TOT))]
         public string Module { get; set; }
@@ -211,6 +183,11 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "FieldAttachment", ResourceType = typeof(Language.TOT))]
         public IEnumerable<Attachment> Attachments { get; set; }
+
+        [Display(Name = "FieldCreatedBy", ResourceType = typeof(Language.TOT))]
+        public string CreatedBy { get; set; }
+        
+        public DateTime CreatedDate { get; set; }
 
     }
 }

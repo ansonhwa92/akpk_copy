@@ -88,6 +88,12 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
+                        @Html.LabelFor(m => m.Description)
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 6, @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
                         @Html.LabelFor(m => m.Details)
                         @Html.TextAreaFor(m => m.Details, new { @class = "form-control", rows = 6, @readonly = "readonly" })
                     </div>

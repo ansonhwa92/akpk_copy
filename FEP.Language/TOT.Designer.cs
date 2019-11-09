@@ -142,6 +142,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created By.
+        /// </summary>
+        public static string FieldCreatedBy {
+            get {
+                return ResourceManager.GetString("FieldCreatedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string FieldDate {
@@ -268,7 +277,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Module.
+        ///   Looks up a localized string similar to Enter Module Name.
         /// </summary>
         public static string PlaceholderModule {
             get {
@@ -358,7 +367,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select Module.
+        ///   Looks up a localized string similar to Please enter Module.
         /// </summary>
         public static string ValidRequiredModule {
             get {

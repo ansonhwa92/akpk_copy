@@ -518,6 +518,7 @@
     <Content Include="img\lect-02.jpg" />
     <Content Include="img\logo-akpk-normal.svg" />
     <Content Include="img\logo-akpk.svg" />
+    <Content Include="img\no-photo.jpg" />
     <Content Include="img\services\icon-dmp.svg" />
     <Content Include="img\services\icon-fc.svg" />
     <Content Include="img\services\icon-fe.svg" />
@@ -1599,6 +1600,7 @@
     <Content Include="Scripts\tinymce\plugins\mathSymbols\LICENSE" />
     <Content Include="Scripts\tinymce\plugins\mathSymbols\package.json" />
     <Content Include="Scripts\tinymce\plugins\mathSymbols\README.md" />
+    <Content Include="Views\Home\UpdateAvatar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

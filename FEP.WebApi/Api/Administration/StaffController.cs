@@ -188,14 +188,20 @@ namespace FEP.WebApi.Api.Administration
                        
             if (ModelState.IsValid)
             {
+
+                staff.BranchId = model.BranchId;
+
+                db.StaffProfile.Attach(staff);
+                db.Entry(staff).Property(m => m.BranchId).IsModified = true;
                 
+
                 db.UserRole.RemoveRange(db.UserRole.Where(u => u.UserId == id));//remove all
                 foreach (var roleid in model.RoleIds)
                 {
                     var userrole = new UserRole
                     {
                         RoleId = roleid,
-                        UserId = id,
+                        UserId = id
                     };
 
                     db.UserRole.Add(userrole);

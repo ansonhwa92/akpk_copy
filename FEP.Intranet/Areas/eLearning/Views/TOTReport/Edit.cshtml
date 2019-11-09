@@ -39,33 +39,7 @@
 
         });
 
-        function getCourseModules(courseId) {
-
-            $.ajax({
-                type: "GET",
-                url: "@Url.Action("GetCourseModules", "TOTReport", new { area = "eLearning" })?id=" + courseId,
-                contentType: "text/plain",
-                dataType: "json",
-                success: function (result) {
-
-                    $("#ModuleId").html('');
-                    $('#ModuleId').append($('<option></option>').val('').html('@Language.TOT.PlaceholderModule'))
-
-                    if (result != '[]')
-                    {
-                        $.each($.parseJSON(result), function (i, module) {
-                            $('#ModuleId').append($('<option></option>').val(module.Id).html(module.Name))
-                        });
-                    }
-                },
-                error: function (response) {
-                    $("#ModuleId").html('');
-                    $('#ModuleId').append($('<option></option>').val('').html('@Language.TOT.PlaceholderModule'))
-                }
-            });
-
-
-        }
+        
 
     </script>
 }
@@ -130,27 +104,20 @@
                 <div class="form-container">
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(model => model.CourseId)
-                            @Html.DropDownListFor(model => model.CourseId, Model.Courses, Language.TOT.PlaceholderCourse, htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
-                            @Html.ValidationMessageFor(model => model.CourseId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(model => model.ModuleId)
-                            @Html.DropDownListFor(model => model.ModuleId, Model.Modules, Language.TOT.PlaceholderModule, htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
-                            @Html.ValidationMessageFor(model => model.ModuleId, "", new { @class = "text-danger" })
+                            @Html.FEPLabelFor(model => model.Module)
+                            @Html.EditorFor(model => model.Module, new { htmlAttributes = new { @class = "form-control", placeholder = Language.TOT.PlaceholderModule } })
+                            @Html.ValidationMessageFor(model => model.Module, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-6">
                             @Html.FEPLabelFor(model => model.StartDate)
-                            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", placeholder = Language.TOT.PlaceholderStartDate } })
                             @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-lg-6">
                             @Html.FEPLabelFor(model => model.EndDate)
-                            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", placeholder = Language.TOT.PlaceholderEndDate } })
                             @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -169,7 +136,7 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(model => model.Venue)
-                            @Html.EditorFor(model => model.Venue, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Venue, new { htmlAttributes = new { @class = "form-control", placeholder = Language.TOT.PlaceholderVenue } })
                             @Html.ValidationMessageFor(model => model.Venue, "", new { @class = "text-danger" })
                         </div>
                     </div>

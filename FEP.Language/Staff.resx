@@ -160,7 +160,7 @@
     <value>Status</value>
   </data>
   <data name="PlaceholderBranch" xml:space="preserve">
-    <value>Branch</value>
+    <value>Select Branch</value>
   </data>
   <data name="PlaceholderDepartment" xml:space="preserve">
     <value>Department</value>

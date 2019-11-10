@@ -519,4 +519,10 @@
   <data name="ValidRequiredYear" xml:space="preserve">
     <value>Please specify Published Year</value>
   </data>
+  <data name="PubDigitalPublication" xml:space="preserve">
+    <value>Digital Publication File</value>
+  </data>
+  <data name="PubDownloadCount" xml:space="preserve">
+    <value>Downloads</value>
+  </data>
 </root>

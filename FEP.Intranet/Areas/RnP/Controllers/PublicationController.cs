@@ -19,25 +19,6 @@ namespace FEP.Intranet.Areas.RnP.Controllers
     {
         private DbEntities db = new DbEntities();
 
-        /*
-        // GET: RnP/Publication
-        public async Task<ActionResult> Index()
-        {
-            var resPubs = await WepApiMethod.SendApiAsync<IEnumerable<ReturnPublicationModel>>(HttpVerbs.Get, $"RnP/Publication");
-
-            if (resPubs.isSuccess)
-            {
-                var publications = resPubs.Data;
-                if (publications == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(publications);
-            }
-            return View();
-        }
-        */
-
         // GET: RnP/Publication
         [HasAccess(UserAccess.RnPPublicationView)]
         public ActionResult Index()
@@ -56,26 +37,44 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // After category selection, user automatically redirected to creation page
         // GET: RnP/Publication/SelectCategory
         [HasAccess(UserAccess.RnPPublicationEdit)]
-        public ActionResult SelectCategory()
+        public async Task<ActionResult> SelectCategory()
         {
-            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name");
-            ViewBag.Categories = new List<PublicationCategory>(db.PublicationCategory);
+            var resCat = await WepApiMethod.SendApiAsync<List<ReturnPublicationCategory>>(HttpVerbs.Get, $"RnP/Publication/GetCategories");
+
+            if (!resCat.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var categories = resCat.Data;
+
+            ViewBag.Categories = categories;
             return View();
         }
 
         // Show create form (blank form so no api call needed)
         // GET: RnP/Publication/Create
         [HasAccess(UserAccess.RnPPublicationEdit)]
-        public ActionResult Create(int? catid)
+        public async Task<ActionResult> Create(int? catid)
         {
+            var resCat = await WepApiMethod.SendApiAsync<List<ReturnPublicationCategory>>(HttpVerbs.Get, $"RnP/Publication/GetCategories");
+
+            if (!resCat.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var categories = resCat.Data;
+
             if (catid != null)
             {
-                ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", catid);
+                ViewBag.CategoryId = new SelectList(categories, "Id", "Name", catid);
             }
             else
             {
-                ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name");
+                ViewBag.CategoryId = new SelectList(categories, "Id", "Name");
             }
+
             var model = new CreatePublicationModel();
             return View(model);
         }
@@ -94,21 +93,24 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ModelState.AddModelError("ProofOfApproval", "Please upload at least one (1) Proof Of Approval");
             }
 
-            /*
+            if (model.DigitalPublications.Count() == 0 && model.DigitalPublicationFiles.Count() == 0 && (model.Digitalcopy == true || model.HDcopy == true))
+            {
+                ModelState.AddModelError("DigitalPublications", "Please upload the Digital copy of the Publication");
+            }
+
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/TitleExists?id={null}&title={model.Title}&author={model.Author}");
 
             if (dupTitleResponse.Data)
             {
-                ModelState.AddModelError("Title/Author", "A Publication with the same Title and Author already exists in the system");
+                ModelState.AddModelError("Title", "A Publication with the same Title and Author already exists in the system");
             }
 
             var dupISBNResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/ISBNExists?id={null}&isbn={model.ISBN}");
 
             if (dupISBNResponse.Data)
             {
-                ModelState.AddModelError("ISBN/ISS/DOI", "A Publication with the same ISBN/ISS/DOI already exists in the system");
+                ModelState.AddModelError("ISBN", "A Publication with the same ISBN/ISSN/DOI already exists in the system");
             }
-            */
 
             if (ModelState.IsValid)
             {
@@ -135,7 +137,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     CreatorId = model.CreatorId,
                     CoverPictures = model.CoverPictures,
                     AuthorPictures = model.AuthorPictures,
-                    ProofOfApproval = model.ProofOfApproval
+                    ProofOfApproval = model.ProofOfApproval,
+                    DigitalPublications = model.DigitalPublications
                 };
 
                 //attachment 1: cover pics
@@ -168,6 +171,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     }
                 }
 
+                //attachment 4: digital publication
+                if (model.DigitalPublicationFiles.Count() > 0)
+                {
+                    var files = await FileMethod.UploadFile(model.DigitalPublicationFiles.ToList(), CurrentUser.UserId, "publication");
+                    if (files != null)
+                    {
+                        apimodel.DigitalFilesId = files.Select(f => f.Id).ToList();
+                    }
+                }
+
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Publication/Create", apimodel);
 
                 if (response.isSuccess)
@@ -197,7 +210,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 }
             }
 
-            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
+            var resCat = await WepApiMethod.SendApiAsync<List<ReturnPublicationCategory>>(HttpVerbs.Get, $"RnP/Publication/GetCategories");
+
+            if (!resCat.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var categories = resCat.Data;
+
+            ViewBag.CategoryId = new SelectList(categories, "Id", "Name", model.CategoryID);
             return View(model);
         }
 
@@ -244,16 +266,24 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 HPrice = publication.HPrice,
                 DPrice = publication.DPrice,
                 HDPrice = publication.HDPrice,
-                //Pictures = publication.Pictures,
-                //ProofOfApproval = publication.ProofOfApproval,
                 StockBalance = publication.StockBalance,
                 CreatorId = publication.CreatorId,
                 CoverPictures = publication.CoverPictures,
                 AuthorPictures = publication.AuthorPictures,
-                ProofOfApproval = publication.ProofOfApproval                
+                ProofOfApproval = publication.ProofOfApproval,
+                DigitalPublications = publication.DigitalPublications
             };
 
-            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", vmpublication.CategoryID);
+            var resCat = await WepApiMethod.SendApiAsync<List<ReturnPublicationCategory>>(HttpVerbs.Get, $"RnP/Publication/GetCategories");
+
+            if (!resCat.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var categories = resCat.Data;
+
+            ViewBag.CategoryId = new SelectList(categories, "Id", "Name", vmpublication.CategoryID);
 
             return View(vmpublication);
         }
@@ -270,21 +300,24 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ModelState.AddModelError("ProofOfApproval", "Please upload at least one (1) Proof Of Approval");
             }
 
-            /*
+            if (model.DigitalPublications.Count() == 0 && model.DigitalPublicationFiles.Count() == 0 && (model.Digitalcopy == true || model.HDcopy == true))
+            {
+                ModelState.AddModelError("DigitalPublications", "Please upload the Digital copy of the Publication");
+            }
+
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/TitleExists?id={model.ID}&title={model.Title}&author={model.Author}");
 
             if (dupTitleResponse.Data)
             {
-                ModelState.AddModelError("Title/Author", "A Publication with the same Title and Author already exists in the system");
+                ModelState.AddModelError("Title", "A Publication with the same Title and Author already exists in the system");
             }
 
             var dupISBNResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/ISBNExists?id={model.ID}&isbn={model.ISBN}");
 
             if (dupISBNResponse.Data)
             {
-                ModelState.AddModelError("ISBN/ISS/DOI", "A Publication with the same ISBN/ISS/DOI already exists in the system");
+                ModelState.AddModelError("ISBN", "A Publication with the same ISBN/ISSN/DOI already exists in the system");
             }
-            */
 
             if (ModelState.IsValid)
             {
@@ -312,7 +345,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     CreatorId = model.CreatorId,
                     CoverPictures = model.CoverPictures,
                     AuthorPictures = model.AuthorPictures,
-                    ProofOfApproval = model.ProofOfApproval
+                    ProofOfApproval = model.ProofOfApproval,
+                    DigitalPublications = model.DigitalPublications
                 };
 
                 //attachment 1: cover pics
@@ -345,6 +379,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     }
                 }
 
+                //attachment 4: digital publication
+                if (model.DigitalPublicationFiles.Count() > 0)
+                {
+                    var files = await FileMethod.UploadFile(model.DigitalPublicationFiles.ToList(), CurrentUser.UserId, "publication");
+                    if (files != null)
+                    {
+                        apimodel.DigitalFilesId = files.Select(f => f.Id).ToList();
+                    }
+                }
+
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Publication/Edit", apimodel);
 
                 if (response.isSuccess)
@@ -370,7 +414,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 }
             }
 
-            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
+            var resCat = await WepApiMethod.SendApiAsync<List<ReturnPublicationCategory>>(HttpVerbs.Get, $"RnP/Publication/GetCategories");
+
+            if (!resCat.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var categories = resCat.Data;
+
+            ViewBag.CategoryId = new SelectList(categories, "Id", "Name", model.CategoryID);
             return View(model);
         }
 
@@ -419,13 +472,12 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 HPrice = publication.HPrice,
                 DPrice = publication.DPrice,
                 HDPrice = publication.HDPrice,
-                //Pictures = publication.Pictures,
-                //ProofOfApproval = publication.ProofOfApproval,
                 StockBalance = publication.StockBalance,
                 CreatorId = publication.CreatorId,
                 CoverPictures = publication.CoverPictures,
                 AuthorPictures = publication.AuthorPictures,
-                ProofOfApproval = publication.ProofOfApproval
+                ProofOfApproval = publication.ProofOfApproval,
+                DigitalPublications = publication.DigitalPublications
             };
 
             var resHis = await WepApiMethod.SendApiAsync<IEnumerable<PublicationApprovalHistoryModel>>(HttpVerbs.Get, $"RnP/Publication/GetHistory?id={id}");
@@ -435,7 +487,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.History = resHis.Data;
             }
 
-            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", vmpublication.CategoryID);
+            var resCat = await WepApiMethod.SendApiAsync<List<ReturnPublicationCategory>>(HttpVerbs.Get, $"RnP/Publication/GetCategories");
+
+            if (!resCat.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var categories = resCat.Data;
+
+            ViewBag.CategoryId = new SelectList(categories, "Id", "Name", vmpublication.CategoryID);
             return View(vmpublication);
         }
 
@@ -785,14 +846,13 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 HPrice = publication.HPrice,
                 DPrice = publication.DPrice,
                 HDPrice = publication.HDPrice,
-                //Pictures = publication.Pictures,
-                //ProofOfApproval = publication.ProofOfApproval,
                 StockBalance = publication.StockBalance,
                 CreatorId = publication.CreatorId,
                 CreatorName = publication.CreatorName,
                 CoverPictures = publication.CoverPictures,
                 AuthorPictures = publication.AuthorPictures,
-                ProofOfApproval = publication.ProofOfApproval
+                ProofOfApproval = publication.ProofOfApproval,
+                DigitalPublications = publication.DigitalPublications
             };
 
             var vmautofields = new ReturnPublicationAutofieldsModel
@@ -806,6 +866,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 DateCancelled = publication.DateCancelled,
                 ViewCount = publication.ViewCount,
                 PurchaseCount = publication.PurchaseCount,
+                DownloadCount = publication.DownloadCount,
                 DmsPath = publication.DmsPath
             };
 
@@ -890,7 +951,17 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 }
             }
 
-            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", vmpublication.CategoryID);
+            var resCat = await WepApiMethod.SendApiAsync<List<ReturnPublicationCategory>>(HttpVerbs.Get, $"RnP/Publication/GetCategories");
+
+            if (!resCat.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var categories = resCat.Data;
+
+            //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", vmpublication.CategoryID);
+            ViewBag.CategoryId = new SelectList(categories, "Id", "Name", vmpublication.CategoryID);
             return View(vmview);
         }
 
@@ -1026,8 +1097,6 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 HPrice = pubapproval.Pub.HPrice,
                 DPrice = pubapproval.Pub.DPrice,
                 HDPrice = pubapproval.Pub.HDPrice,
-                //Pictures = pubapproval.Pub.Pictures,
-                //ProofOfApproval = pubapproval.Pub.ProofOfApproval,
                 StockBalance = pubapproval.Pub.StockBalance,
                 DateAdded = pubapproval.Pub.DateAdded,
                 CreatorId = pubapproval.Pub.CreatorId,
@@ -1037,7 +1106,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 CreatorName = pubapproval.Pub.CreatorName,
                 CoverPictures = pubapproval.Pub.CoverPictures,
                 AuthorPictures = pubapproval.Pub.AuthorPictures,
-                ProofOfApproval = pubapproval.Pub.ProofOfApproval
+                ProofOfApproval = pubapproval.Pub.ProofOfApproval,
+                DigitalPublications = pubapproval.Pub.DigitalPublications
             };
 
             var papproval = new ReturnUpdatePublicationApprovalModel
@@ -1091,7 +1161,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 }
             }
 
-            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", publication.CategoryID);
+            var resCat = await WepApiMethod.SendApiAsync<List<ReturnPublicationCategory>>(HttpVerbs.Get, $"RnP/Publication/GetCategories");
+
+            if (!resCat.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var categories = resCat.Data;
+
+            ViewBag.CategoryId = new SelectList(categories, "Id", "Name", publication.CategoryID);
             return View(pevaluation);
         }
 
@@ -1193,7 +1272,6 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 }
             }
 
-            //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
             return View(model);
         }
 
@@ -1245,8 +1323,6 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 HPrice = pubapproval.Pub.HPrice,
                 DPrice = pubapproval.Pub.DPrice,
                 HDPrice = pubapproval.Pub.HDPrice,
-                //Pictures = pubapproval.Pub.Pictures,
-                //ProofOfApproval = pubapproval.Pub.ProofOfApproval,
                 StockBalance = pubapproval.Pub.StockBalance,
                 WithdrawalDate = pubapproval.Pub.WithdrawalDate,
                 DateAdded = pubapproval.Pub.DateAdded,
@@ -1257,7 +1333,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 CoverPictures = pubapproval.Pub.CoverPictures,
                 AuthorPictures = pubapproval.Pub.AuthorPictures,
                 ProofOfApproval = pubapproval.Pub.ProofOfApproval,
-                ProofOfWithdrawal = pubapproval.Pub.ProofOfWithdrawal
+                ProofOfWithdrawal = pubapproval.Pub.ProofOfWithdrawal,
+                DigitalPublications = pubapproval.Pub.DigitalPublications
             };
 
             var pwithdrawal = new UpdatePublicationWithdrawalModel
@@ -1321,10 +1398,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 }
             }
 
-            //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", publication.CategoryID);
-            //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", vmpublication.CategoryID);
-            //ViewBag.TestItem = pubapproval.Pub.Category;
-            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", publication.CategoryID);
+            var resCat = await WepApiMethod.SendApiAsync<List<ReturnPublicationCategory>>(HttpVerbs.Get, $"RnP/Publication/GetCategories");
+
+            if (!resCat.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var categories = resCat.Data;
+
+            ViewBag.CategoryId = new SelectList(categories, "Id", "Name", publication.CategoryID);
             return View(pevaluation);
         }
 
@@ -1426,7 +1509,6 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 }
             }
 
-            //ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
             return View(model);
         }
 

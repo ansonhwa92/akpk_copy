@@ -144,6 +144,57 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.ViewIncremented = true;
+
+            var resIncrement = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/IncrementView?id={id}");
+
+            if (!resIncrement.isSuccess)
+            {
+                ViewBag.ViewIncremented = false;
+            }
+
+            // check purchase
+
+            ViewBag.DigitalPurchased = false;
+
+            if (CurrentUser.IsAuthenticated())
+            {
+                var resPurchase = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Commerce/Cart/DigitalPublicationPurchased?id={id}&userid={CurrentUser.UserId}");
+
+                if (resPurchase.isSuccess)
+                {
+                    ViewBag.DigitalPurchased = resPurchase.Data;
+                }
+            }
+
+            return View(publication);
+        }
+
+        // Publication preview (used during evaluation for approval)
+        // TODO: include ratings and reviews info
+        // GET: RnP/Home/PublicationPreview
+        [AllowAnonymous]
+        public async Task<ActionResult> PublicationPreview(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resPub = await WepApiMethod.SendApiAsync<ReturnPublicationModel>(HttpVerbs.Get, $"RnP/Publication?id={id}");
+
+            if (!resPub.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var publication = resPub.Data;
+
+            if (publication == null)
+            {
+                return HttpNotFound();
+            }
+
             return View(publication);
         }
 

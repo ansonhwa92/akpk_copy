@@ -77,12 +77,6 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "PubHDPrice", ResourceType = typeof(Language.RnPForm))]
         public float HDPrice { get; set; }
 
-        //[Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
-        //public string Pictures { get; set; }
-
-        //[Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
-        //public string ProofOfApproval { get; set; }
-
         [Display(Name = "PubStockBalance", ResourceType = typeof(Language.RnPForm))]
         public int? StockBalance { get; set; }
 
@@ -122,6 +116,9 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "PubPurchaseCount", ResourceType = typeof(Language.RnPForm))]
         public int PurchaseCount { get; set; }
 
+        [Display(Name = "PubDownloadCount", ResourceType = typeof(Language.RnPForm))]
+        public int DownloadCount { get; set; }
+
         [Display(Name = "PubDmsPath", ResourceType = typeof(Language.RnPForm))]
         public string DmsPath { get; set; }
 
@@ -142,6 +139,9 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
         public IEnumerable<Attachment> ProofOfWithdrawal { get; set; }
+
+        [Display(Name = "PubDigitalPublication", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> DigitalPublications { get; set; }
     }
 
     // Class for returning publications for user browsing
@@ -187,6 +187,9 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "PubPurchaseCount", ResourceType = typeof(Language.RnPForm))]
         public int PurchaseCount { get; set; }
+
+        [Display(Name = "PubDownloadCount", ResourceType = typeof(Language.RnPForm))]
+        public int DownloadCount { get; set; }
 
         [Display(Name = "PubDmsPath", ResourceType = typeof(Language.RnPForm))]
         public string DmsPath { get; set; }
@@ -401,21 +404,6 @@ namespace FEP.WebApiModel.RnP
         [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public float HDPrice { get; set; }
 
-        /*
-        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
-        public IEnumerable<Attachment> CoverPictures { get; set; }
-        public IEnumerable<HttpPostedFileBase> CoverPictureFiles { get; set; }
-
-        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
-        public IEnumerable<Attachment> AuthorPictures { get; set; }
-        public IEnumerable<HttpPostedFileBase> AuthorPictureFiles { get; set; }
-
-        [Required]
-        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
-        public IEnumerable<Attachment> ProofOfApproval { get; set; }
-        public IEnumerable<HttpPostedFileBase> ProofOfApprovalFiles { get; set; }
-        */
-
         [Required(ErrorMessageResourceName = "ValidRequiredStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubStockBalance", ResourceType = typeof(Language.RnPForm))]
         //[RegularExpression("([1-9][0-9]*)", ErrorMessageResourceName = "ValidInvalidStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
@@ -436,12 +424,15 @@ namespace FEP.WebApiModel.RnP
             CoverPictures = new List<Attachment>();
             AuthorPictures = new List<Attachment>();
             ProofOfApproval = new List<Attachment>();
+            DigitalPublications = new List<Attachment>();
             CoverPictureFiles = new List<HttpPostedFileBase>();
             AuthorPictureFiles = new List<HttpPostedFileBase>();
             ProofOfApprovalFiles = new List<HttpPostedFileBase>();
+            DigitalPublicationFiles = new List<HttpPostedFileBase>();
             CoverFilesId = new List<int>();
             AuthorFilesId = new List<int>();
             ProofFilesId = new List<int>();
+            DigitalFilesId = new List<int>();
         }
 
         [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
@@ -457,9 +448,14 @@ namespace FEP.WebApiModel.RnP
         public IEnumerable<Attachment> ProofOfApproval { get; set; }
         public IEnumerable<HttpPostedFileBase> ProofOfApprovalFiles { get; set; }
 
+        [Display(Name = "PubDigitalPublication", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> DigitalPublications { get; set; }
+        public IEnumerable<HttpPostedFileBase> DigitalPublicationFiles { get; set; }
+
         public List<int> CoverFilesId { get; set; }
         public List<int> AuthorFilesId { get; set; }
         public List<int> ProofFilesId { get; set; }
+        public List<int> DigitalFilesId { get; set; }
     }
 
     // for editing
@@ -470,12 +466,15 @@ namespace FEP.WebApiModel.RnP
             CoverPictures = new List<Attachment>();
             AuthorPictures = new List<Attachment>();
             ProofOfApproval = new List<Attachment>();
+            DigitalPublications = new List<Attachment>();
             CoverPictureFiles = new List<HttpPostedFileBase>();
             AuthorPictureFiles = new List<HttpPostedFileBase>();
             ProofOfApprovalFiles = new List<HttpPostedFileBase>();
+            DigitalPublicationFiles = new List<HttpPostedFileBase>();
             CoverFilesId = new List<int>();
             AuthorFilesId = new List<int>();
             ProofFilesId = new List<int>();
+            DigitalFilesId = new List<int>();
         }
 
         [Required]
@@ -494,9 +493,14 @@ namespace FEP.WebApiModel.RnP
         public IEnumerable<Attachment> ProofOfApproval { get; set; }
         public IEnumerable<HttpPostedFileBase> ProofOfApprovalFiles { get; set; }
 
+        [Display(Name = "PubDigitalPublication", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> DigitalPublications { get; set; }
+        public IEnumerable<HttpPostedFileBase> DigitalPublicationFiles { get; set; }
+
         public List<int> CoverFilesId { get; set; }
         public List<int> AuthorFilesId { get; set; }
         public List<int> ProofFilesId { get; set; }
+        public List<int> DigitalFilesId { get; set; }
     }
 
     // for details
@@ -518,6 +522,9 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
         public IEnumerable<Attachment> ProofOfWithdrawal { get; set; }
+
+        [Display(Name = "PubDigitalPublication", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> DigitalPublications { get; set; }
     }
 
     // class for updating of publication information by client app
@@ -582,9 +589,11 @@ namespace FEP.WebApiModel.RnP
             CoverPictures = new List<Attachment>();
             AuthorPictures = new List<Attachment>();
             ProofOfApproval = new List<Attachment>();
+            DigitalPublications = new List<Attachment>();
             CoverFilesId = new List<int>();
             AuthorFilesId = new List<int>();
             ProofFilesId = new List<int>();
+            DigitalFilesId = new List<int>();
         }
 
         public IEnumerable<Attachment> CoverPictures { get; set; }
@@ -594,9 +603,12 @@ namespace FEP.WebApiModel.RnP
         [Required]
         public IEnumerable<Attachment> ProofOfApproval { get; set; }
 
+        public IEnumerable<Attachment> DigitalPublications { get; set; }
+
         public List<int> CoverFilesId { get; set; }
         public List<int> AuthorFilesId { get; set; }
         public List<int> ProofFilesId { get; set; }
+        public List<int> DigitalFilesId { get; set; }
     }
 
     // for editing
@@ -607,9 +619,11 @@ namespace FEP.WebApiModel.RnP
             CoverPictures = new List<Attachment>();
             AuthorPictures = new List<Attachment>();
             ProofOfApproval = new List<Attachment>();
+            DigitalPublications = new List<Attachment>();
             CoverFilesId = new List<int>();
             AuthorFilesId = new List<int>();
             ProofFilesId = new List<int>();
+            DigitalFilesId = new List<int>();
         }
 
         [Required]
@@ -622,9 +636,12 @@ namespace FEP.WebApiModel.RnP
         [Required]
         public IEnumerable<Attachment> ProofOfApproval { get; set; }
 
+        public IEnumerable<Attachment> DigitalPublications { get; set; }
+
         public List<int> CoverFilesId { get; set; }
         public List<int> AuthorFilesId { get; set; }
         public List<int> ProofFilesId { get; set; }
+        public List<int> DigitalFilesId { get; set; }
     }
 
     // class for updating of publication cancellation information by client app

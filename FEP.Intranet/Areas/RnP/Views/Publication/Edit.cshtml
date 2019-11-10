@@ -218,6 +218,13 @@
                             &nbsp;
                         </div>
                     </div>
+                    <div class="row" id="rowDigital" style="display:none;">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.DigitalPublications, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            @Html.Partial("_DigitalPublication", Model.DigitalPublications)
+                            @Html.ValidationMessageFor(model => model.DigitalPublications, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.CoverPictures, htmlAttributes: new { @class = "control-label" })
@@ -286,6 +293,12 @@
                 else {
                     $('#StockBalance').val('0');
                     $('#StockBalance').prop('readonly', true);
+                }
+                if (hasDc || hasPc) {
+                    $('#rowDigital').show();
+                }
+                else {
+                    $('#rowDigital').hide();
                 }
             }
 
@@ -421,6 +434,8 @@
             RefreshFile1();
             RefreshFile2();
             RefreshFile3();
+            RefreshFileDigital();
+
         });
     </script>
 }

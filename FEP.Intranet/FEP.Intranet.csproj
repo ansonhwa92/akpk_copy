@@ -975,6 +975,9 @@
     <Content Include="Areas\Setting\Views\Group\Delete.cshtml" />
     <Content Include="Areas\Setting\Views\Group\Details.cshtml" />
     <Content Include="Areas\Setting\Views\Group\Edit.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_DigitalPublication.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_DigitalPublicationDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\PublicationPreview.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

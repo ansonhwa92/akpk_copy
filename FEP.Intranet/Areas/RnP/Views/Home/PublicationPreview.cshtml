@@ -306,70 +306,21 @@
                             }
                         </ul>
                     </div>
-                    <!-- Purchased before -->
-                    @if (ViewBag.DigitalPurchased)
-                    {
-                        <div class="card text-left mb-5">
-                            <div class="card__body">
-                                @foreach (var digitalfile in Model.DigitalPublications)
-                                {
-                                    <span style="font-size:17px;font-weight:bold;color:green;">Already Purchased</span><br /><span style="font-size:17px;font-weight:bold;"><a href="@Html.Raw(WebApiURL)System/File/Download?id=@digitalfile.Id" id="downloadFile" data-toggle="tooltip" title="Download File"><i class="fa fa-file-download"></i> Download Publication</a></span>
-                                }
-                            </div>
-                        </div>
-                    }
                     <!-- Buy Courses -->
                     <div class="card text-left mb-5">
                         <div class="card__body">
                             @if (Model.Hardcopy)
                             {
-                                if (Model.FreeHCopy)
-                                {
-                                    <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-hard-cover.svg" alt="image" data-toggle="tooltip" title="Hard copy" style="width:24px;height:24px;"><span style="color:green;"> Free!</span></h2>
-                                }
-                                else
-                                {
-                                    <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-hard-cover.svg" alt="image" data-toggle="tooltip" title="Hard copy" style="width:24px;height:24px;"> RM @Model.HPrice.ToString("0.00")</h2>
-                                }
+                                <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-hard-cover.svg" alt="image" title="Hard copy" style="width:24px;height:24px;"> RM @Model.HPrice.ToString("0.00")</h2>
                             }
                             @if (Model.Digitalcopy)
                             {
-                                if (Model.FreeDCopy)
-                                {
-                                    foreach (var digitalfile in Model.DigitalPublications)
-                                    {
-                                        <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-digital.svg" alt="image" data-toggle="tooltip" title="Digital copy" style="width:24px;height:24px;"><span style="color:green;"> Free!</span></h2><span style="font-size:17px;font-weight:bold;"><a href="@Html.Raw(WebApiURL)System/File/Download?id=@digitalfile.Id" data-toggle="tooltip" title="Download File"><i class="fa fa-file-download"></i> Download Now</a></span>
-                                    }
-                                }
-                                else
-                                {
-                                    <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-digital.svg" alt="image" data-toggle="tooltip" title="Digital copy" style="width:24px;height:24px;"> RM @Model.DPrice.ToString("0.00")</h2>
-                                }
+                                <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-digital.svg" alt="image" title="Digital copy" style="width:24px;height:24px;"> RM @Model.DPrice.ToString("0.00")</h2>
                             }
                             @if (Model.HDcopy)
                             {
-                                if (Model.FreeHDCopy)
-                                {
-                                    foreach (var digitalfile in Model.DigitalPublications)
-                                    {
-                                        <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-1-plus-1-promo.svg" alt="image" data-toggle="tooltip" title="Promotion (1 Hard copy + 1 Digital copy)" style="width:24px;height:24px;"><span style="color:green;"> Free!</span></h2><span style="font-size:17px;font-weight:bold;"><a href="@Html.Raw(WebApiURL)System/File/Download?id=@digitalfile.Id" data-toggle="tooltip" title="Download File"><i class="fa fa-file-download"></i> Download Now</a></span>
-                                    }
-                                }
-                                else
-                                {
-                                    <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-1-plus-1-promo.svg" alt="image" data-toggle="tooltip" title="Promotion (1 Hard copy + 1 Digital copy)" style="width:24px;height:24px;"> RM @Model.HDPrice.ToString("0.00")</h2>
-                                }
+                                <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-1-plus-1-promo.svg" alt="image" title="Promotion (1 Hard copy + 1 Digital copy)" style="width:24px;height:24px;"> RM @Model.HDPrice.ToString("0.00")</h2>
                             }
-                            <div class="mt-3">
-                                @if (CurrentUser.IsAuthenticated())
-                                {
-                                    <a href="@Url.Action("SelectFormat", "Home", new { area = "RnP", @id = Model.ID })" class="btn btn-default color-secondary d-block mb-2">Add to Cart</a>
-                                }
-                                else
-                                {
-                                    <a href="@Url.Action("LoginAndReturn", "Auth", new { area = "", @returnurl = "~/RnP/Home/SelectFormat/" + Model.ID })" class="btn btn-default color-secondary d-block mb-2">Add to Cart</a>
-                                }
-                            </div>
                         </div>
                     </div>
                     <!-- Share with friends -->
@@ -393,19 +344,6 @@
                 item: '.review-comment',
                 count: 5,
                 btnHTML: '<div class="col-lg-8 float-right"><a href="#" class="load-more__btn btn btn-outline-secondary">See more reviews</a></div>'
-            });
-
-            $('#downloadFile').click(function () {
-                @*var myurl = '@Url.Action("IncrementDownload", "Home", new { area = "RnP" })' + '?id=' + @Model.ID;*@
-                var myurl = '@(WebApiURL)RnP/Publication/IncrementDownload?id=' + @Model.ID;
-                $.ajax({
-                    url: myurl,
-                    type: "GET",
-                    success: function (data) {
-                        // do nothing
-                        alert('Incremented!');
-                    }
-                });
             });
 
         });

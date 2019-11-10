@@ -74,7 +74,7 @@
                             }
                         }
                     }
-                    <p><a class="btn btn-default btn-block" id="btnTest" href="@Url.Action("PublicationDetails", "Home", new { area = "RnP", @id = Model.Pub.ID })" target="_blank">Preview Publication</a></p>
+                    <p><a class="btn btn-default btn-block" id="btnTest" href="@Url.Action("PublicationPreview", "Home", new { area = "RnP", @id = Model.Pub.ID })" target="_blank">Preview Publication</a></p>
                 </div>
             </div>
         </div>
@@ -293,6 +293,12 @@
                         </div>
                         <div class="form-group col-lg-6">
                             &nbsp;
+                        </div>
+                    </div>
+                    <div class="row" id="rowDigital" style="display:none;">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.DigitalPublications, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_DigitalPublicationDetails", Model.Pub.DigitalPublications)
                         </div>
                     </div>
                     <div class="row">
@@ -541,6 +547,18 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            function toggleDigital() {
+                var hasHc = $('#Pub_Hardcopy').is(':checked');
+                var hasDc = $('#Pub_Digitalcopy').is(':checked');
+                var hasPc = $('#Pub_HDcopy').is(':checked');
+                if (hasDc || hasPc) {
+                    $('#rowDigital').show();
+                }
+                else {
+                    $('#rowDigital').hide();
+                }
+            }
+
             var selectedLang = $('#Pub_Language').val();
             if (selectedLang.indexOf("English") >= 0) {
                 $('#pub_lang option').each(function () {
@@ -634,6 +652,9 @@
                 $('#myform').submit();
 
             });
+
+            toggleDigital();
+
         });
     </script>
 }

@@ -740,6 +740,35 @@ namespace FEP.WebApi.Api.Commerce
             return null;
         }
 
+        // Check if publication was purchased by user
+        // GET: api/Commerce/Cart/DigitalPublicationPurchased/1
+        [HttpGet]
+        [Route("api/Commerce/Cart/DigitalPublicationPurchased")]
+        public bool DigitalPublicationPurchased(int id, int userid)
+        {
+            var carts = db.PurchaseOrder.Where(po => po.UserId == userid && po.Status == CheckoutStatus.Paid).Select(s => new PurchaseHistoryModel
+            {
+                Id = s.Id,
+                UserId = s.UserId,
+                ReceiptNo = s.ReceiptNo,
+                PaymentDate = s.PaymentDate,
+                ItemCount = 0,
+                Status = s.Status,
+                DeliveryStatus = s.DeliveryStatus
+            }).ToList();
+
+            foreach (PurchaseHistoryModel cart in carts)
+            {
+                var item = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cart.Id && i.PurchaseType == PurchaseType.Publication && i.ItemId == id).FirstOrDefault();
+                if (item != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         // Add refund request
         // POST: api/Commerce/Cart/RequestRefund
         [Route("api/Commerce/Cart/RequestRefund")]

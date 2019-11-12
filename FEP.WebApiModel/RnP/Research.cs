@@ -684,4 +684,182 @@ namespace FEP.WebApiModel.RnP
         public ReturnSurveyModel Survey { get; set; }
         public UpdateSurveyResponseModel Response { get; set; }
     }
+
+    // class for returning survey response to client app
+    public class SurveyResponseModel
+    {
+        public int ID { get; set; }
+
+        public int SurveyID { get; set; }
+
+        public SurveyResponseTypes Type { get; set; }
+
+        public int UserId { get; set; }
+
+        public string Email { get; set; }
+
+        public string Contents { get; set; }
+    }
+
+    // class for survey questions
+    public class SurveyQuestion
+    {
+        public string Question;
+    }
+
+    public class SurveyQuestions
+    {
+        public List<SurveyQuestions> Questions { get; set; }
+    }
+
+    // class for survey answers
+
+    // classes for eLearning
+
+    // class for updating of quiz/assessment information by client app
+    // used to create and edit quiz/assessment information
+    public class AssessmentSurveyModel
+    {
+        [Required]
+        public int AssessmentID { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredSurveyContents", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "AssessmentContents", ResourceType = typeof(Language.RnPForm))]
+        public string Contents { get; set; }
+    }
+
+    // for creating
+    public class CreateAssessmentSurveyModel : AssessmentSurveyModel
+    {
+        public CreateAssessmentSurveyModel() { }
+    }
+
+    // for editing
+    public class EditAssessmentSurveyModel : AssessmentSurveyModel
+    {
+        public EditAssessmentSurveyModel() { }
+
+        [Required]
+        public int ID { get; set; }
+    }
+
+    // for details
+    public class DetailsAssessmentSurveyModel : AssessmentSurveyModel
+    {
+        public DetailsAssessmentSurveyModel() { }
+
+        public int ID { get; set; }
+    }
+
+    // responses
+    public class AssessmentResponseModel
+    {
+        [Required]
+        public int SurveyID { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
+
+        [Required]
+        [Display(Name = "AssessmentResponseContents", ResourceType = typeof(Language.RnPForm))]
+        public string Contents { get; set; }
+    }
+
+    // for creating
+    public class CreateAssessmentResponseModel : AssessmentResponseModel
+    {
+        public CreateAssessmentResponseModel() { }
+    }
+
+    // for view
+    public class ViewAssessmentResponseModel : AssessmentResponseModel
+    {
+        public ViewAssessmentResponseModel() { }
+
+        public int ID { get; set; }
+    }
+
+    // classes for eLearning/eEvent feedbacks
+
+    // class for updating of feedback information by client app
+    // used to create and edit feedback information
+    public class FeedbackSurveyModel
+    {
+        [Required]
+        public int FeedbackID { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredSurveyContents", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "FeedbackContents", ResourceType = typeof(Language.RnPForm))]
+        public string Contents { get; set; }
+    }
+
+    // for creating
+    public class CreateFeedbackSurveyModel : FeedbackSurveyModel
+    {
+        public CreateFeedbackSurveyModel() { }
+    }
+
+    // for editing
+    public class EditFeedbackSurveyModel : FeedbackSurveyModel
+    {
+        public EditFeedbackSurveyModel() { }
+
+        [Required]
+        public int ID { get; set; }
+    }
+
+    // for details
+    public class DetailsFeedbackSurveyModel : FeedbackSurveyModel
+    {
+        public DetailsFeedbackSurveyModel() { }
+
+        [Required]
+        public int ID { get; set; }
+    }
+
+    // responses
+    public class FeedbackResponseModel
+    {
+        [Required]
+        public int SurveyID { get; set; }
+
+        public int UserId { get; set; }
+
+        public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "FeedbackResponseContents", ResourceType = typeof(Language.RnPForm))]
+        public string Contents { get; set; }
+    }
+
+    // for creating
+    public class CreateFeedbackResponseModel : FeedbackResponseModel
+    {
+        public CreateFeedbackResponseModel() { }
+    }
+
+    // for view
+    public class ViewFeedbackResponseModel : FeedbackResponseModel
+    {
+        public ViewFeedbackResponseModel() { }
+
+        public int ID { get; set; }
+    }
+
+    // Class for processing/viewing survey results
+    public class SurveyResultsModel : ReturnSurveyModel
+    {
+        public int SurveyID { get; set; }
+
+        public int ParticipantCount { get; set; }
+
+        public string Results { get; set; }
+
+        public string CSVOutput { get; set; }
+
+        public string XLSOutput { get; set; }
+
+        public string PDFOutput { get; set; }
+    }
+
 }

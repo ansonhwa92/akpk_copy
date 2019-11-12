@@ -90,6 +90,53 @@ namespace FEP.Model
         public virtual Survey Survey { get; set; }
     }
 
+    [Table("AssessmentSurvey")]
+    public class AssessmentSurvey
+    {
+        [Key]
+        public int ID { get; set; }
+        public int AssessmentID { get; set; }               // foreign key from eLearning
+        public string Contents { get; set; }
+    }
+
+    [Table("AssessmentResponse")]
+    public class AssessmentResponse
+    {
+        [Key]
+        public int ID { get; set; }
+        public int SurveyID { get; set; }
+        public int UserId { get; set; }
+        public DateTime ResponseDate { get; set; }
+        public string Contents { get; set; }
+        // foreign keys......................................................................................................
+        [ForeignKey("SurveyID")]
+        public virtual AssessmentSurvey Assessment { get; set; }
+    }
+
+    [Table("FeedbackSurvey")]
+    public class FeedbackSurvey
+    {
+        [Key]
+        public int ID { get; set; }
+        public int FeedbackID { get; set; }                 // foreign key from eLearning/eEvent
+        public string Contents { get; set; }
+    }
+
+    [Table("FeedbackResponse")]
+    public class FeedbackResponse
+    {
+        [Key]
+        public int ID { get; set; }
+        public int SurveyID { get; set; }
+        public int UserId { get; set; }                     // if 0/Null = anonymous/public respondent
+        public string Email { get; set; }
+        public DateTime ResponseDate { get; set; }
+        public string Contents { get; set; }
+        // foreign keys......................................................................................................
+        [ForeignKey("SurveyID")]
+        public virtual FeedbackSurvey Feedback { get; set; }
+    }
+
     public enum SurveyType
     {
         [Display(Name = "SurveyTypePublic", ResourceType = typeof(Language.RnPEnum))]

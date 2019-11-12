@@ -343,6 +343,20 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
                 return HttpNotFound();
             }
 
+            // update purchase count (+1 per purchase or +1 per unit??)
+
+            var resItems = await WepApiMethod.SendApiAsync<List<PurchaseOrderItemModel>>(HttpVerbs.Get, $"Commerce/Cart/GetPublications?id={id}");
+
+            if (resItems.isSuccess)
+            {
+                var items = resItems.Data;
+
+                foreach (PurchaseOrderItemModel item in items)
+                {
+                    var resIncrement = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/IncrementPurchase?id={id}&incrementvalue={item.Quantity}");
+                }
+            }
+
             return RedirectToAction("Items", "Cart", new { area = "Commerce" });
         }
 

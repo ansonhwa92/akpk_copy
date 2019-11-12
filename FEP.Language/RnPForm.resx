@@ -525,4 +525,16 @@
   <data name="PubDownloadCount" xml:space="preserve">
     <value>Downloads</value>
   </data>
+  <data name="AssessmentContents" xml:space="preserve">
+    <value>Assessment Questions</value>
+  </data>
+  <data name="AssessmentResponseContents" xml:space="preserve">
+    <value>Assessment Answers</value>
+  </data>
+  <data name="FeedbackContents" xml:space="preserve">
+    <value>Feedback Questions</value>
+  </data>
+  <data name="FeedbackResponseContents" xml:space="preserve">
+    <value>Feedback Responses</value>
+  </data>
 </root>

@@ -132,6 +132,11 @@ namespace FEP.Model
         public DbSet<SurveyApproval> SurveyApproval { get; set; }
         public DbSet<SurveyResponse> SurveyResponse { get; set; }
 
+        public DbSet<AssessmentSurvey> AssessmentSurvey { get; set; }
+        public DbSet<AssessmentResponse> AssessmentResponse { get; set; }
+        public DbSet<FeedbackSurvey> FeedbackSurvey { get; set; }
+        public DbSet<FeedbackResponse> FeedbackResponse { get; set; }
+
         //targeted groups
         public DbSet<TargetedGroups> TargetedGroups { get; set; }
         public DbSet<TargetedGroupMembers> TargetedGroupMembers { get; set; }

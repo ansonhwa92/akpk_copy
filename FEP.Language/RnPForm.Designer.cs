@@ -61,6 +61,42 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assessment Questions.
+        /// </summary>
+        public static string AssessmentContents {
+            get {
+                return ResourceManager.GetString("AssessmentContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assessment Answers.
+        /// </summary>
+        public static string AssessmentResponseContents {
+            get {
+                return ResourceManager.GetString("AssessmentResponseContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback Questions.
+        /// </summary>
+        public static string FeedbackContents {
+            get {
+                return ResourceManager.GetString("FeedbackContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback Responses.
+        /// </summary>
+        public static string FeedbackResponseContents {
+            get {
+                return ResourceManager.GetString("FeedbackResponseContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approval Date.
         /// </summary>
         public static string PubApprovalApprovalDate {

@@ -1786,7 +1786,7 @@ namespace FEP.WebApi.Api.RnP
         // GET: api/RnP/Publication/IncrementPurchase
         [Route("api/RnP/Publication/IncrementPurchase")]
         [HttpGet]
-        public bool IncrementPurchase(int? id)
+        public bool IncrementPurchase(int? id, int incrementvalue = 1)
         {
             if (id == null)
             {
@@ -1797,7 +1797,7 @@ namespace FEP.WebApi.Api.RnP
 
             if (publication != null)
             {
-                publication.PurchaseCount = publication.PurchaseCount + 1;
+                publication.PurchaseCount = publication.PurchaseCount + incrementvalue;
 
                 db.Entry(publication).State = EntityState.Modified;
 

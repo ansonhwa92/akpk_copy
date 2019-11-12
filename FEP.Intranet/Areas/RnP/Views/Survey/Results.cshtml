@@ -1,0 +1,51 @@
+﻿@model FEP.WebApiModel.RnP.SurveyResultsModel
+
+@{
+    ViewBag.Title = "Survey Results";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/Home" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Home</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
+                                <li class="breadcrumb-item"><a href="#">Survey Results</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Results for Survey: @Model.Title</h1>
+                    <div class="header-text">Ref No: @Model.RefNo</div>
+                    <div class="header-text">Description: @Model.Description</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+        <div class="border-form rounded-top">
+            <textarea id="Questions" name="Questions" class="form-control" rows="5">@Model.Contents</textarea>
+            <textarea id="Results" name="Results" class="form-control" rows="5">@Model.Results</textarea>
+            <textarea id="CSVOutput" name="CSVOutput" class="form-control" rows="5">@Model.CSVOutput</textarea>
+            <textarea id="XLSOutput" name="XLSOutput" class="form-control" rows="5">@Model.XLSOutput</textarea>
+            <textarea id="PDFOutput" name="PDFOutput" class="form-control" rows="5">@Model.PDFOutput</textarea>
+        </div>
+    </div>
+</div>
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+        });
+    </script>
+}

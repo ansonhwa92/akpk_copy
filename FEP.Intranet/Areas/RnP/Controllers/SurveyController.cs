@@ -140,14 +140,12 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ModelState.AddModelError("ProofOfApproval", "Please upload at least one (1) Proof Of Approval");
             }
 
-            /*
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Survey/TitleExists?id={null}&title={model.Title}");
 
             if (dupTitleResponse.Data)
             {
                 ModelState.AddModelError("Title", "A Survey with the same Title already exists in the system");
             }
-            */
 
             if (ModelState.IsValid)
             {
@@ -303,14 +301,12 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ModelState.AddModelError("ProofOfApproval", "Please upload at least one (1) Proof Of Approval");
             }
 
-            /*
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Survey/TitleExists?id={model.ID}&title={model.Title}");
 
             if (dupTitleResponse.Data)
             {
                 ModelState.AddModelError("Title", "A Survey with the same Title already exists in the system");
             }
-            */
 
             if (ModelState.IsValid)
             {
@@ -1486,6 +1482,43 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             return View(model);
+        }
+
+        // Survey results
+        // GET: RnP/Survey/Results/5
+        [HasAccess(UserAccess.RnPSurveyView)]
+        [HttpGet]
+        public async Task<ActionResult> Results(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resSurvey = await WepApiMethod.SendApiAsync<ReturnSurveyModel>(HttpVerbs.Get, $"RnP/Survey/GetForView?id={id}");
+
+            if (!resSurvey.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var survey = resSurvey.Data;
+
+            if (survey == null)
+            {
+                return HttpNotFound();
+            }
+
+            var resResults = await WepApiMethod.SendApiAsync<SurveyResultsModel>(HttpVerbs.Get, $"RnP/Survey/CompileAnswers?id={id}");
+
+            if (!resResults.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var results = resResults.Data;
+
+            return View(results);
         }
 
         // Private functions

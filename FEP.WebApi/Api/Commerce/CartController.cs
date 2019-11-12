@@ -336,6 +336,46 @@ namespace FEP.WebApi.Api.Commerce
             return null;
         }
 
+        // Get items list only (no cart info)
+        // GET: api/Commerce/Cart/GetItems/1
+        [HttpGet]
+        [Route("api/Commerce/Cart/GetItems")]
+        public List<PurchaseOrderItemModel> GetItems(int cartid)
+        {
+            var items = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cartid).Select(s => new PurchaseOrderItemModel
+            {
+                Id = s.Id,
+                PurchaseOrderId = s.PurchaseOrderId,
+                ItemId = s.ItemId,
+                Description = s.Description,
+                PurchaseType = s.PurchaseType,
+                Price = s.Price,
+                Quantity = s.Quantity
+            }).ToList();
+
+            return items;
+        }
+
+        // Get publication items list only (no cart info)
+        // GET: api/Commerce/Cart/GetPublications/1
+        [HttpGet]
+        [Route("api/Commerce/Cart/GetPublications")]
+        public List<PurchaseOrderItemModel> GetPublications(int cartid)
+        {
+            var items = db.PurchaseOrderItem.Where(i => i.PurchaseOrderId == cartid && i.PurchaseType == PurchaseType.Publication).Select(s => new PurchaseOrderItemModel
+            {
+                Id = s.Id,
+                PurchaseOrderId = s.PurchaseOrderId,
+                ItemId = s.ItemId,
+                Description = s.Description,
+                PurchaseType = s.PurchaseType,
+                Price = s.Price,
+                Quantity = s.Quantity
+            }).ToList();
+
+            return items;
+        }
+
         // Retrieve discount code value
         // GET: api/Commerce/Cart/GetPromotion/xxx
         [HttpGet]

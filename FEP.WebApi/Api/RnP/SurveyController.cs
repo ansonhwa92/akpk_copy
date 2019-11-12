@@ -773,6 +773,26 @@ namespace FEP.WebApi.Api.RnP
             return shistory;
         }
 
+        // Function to check if survey title exists
+        [Route("api/RnP/Survey/TitleExists")]
+        [HttpGet]
+        public IHttpActionResult TitleExists(int? id, string title)
+        {
+
+            if (id == null)
+            {
+                if (db.Survey.Any(p => p.Title.Equals(title, StringComparison.CurrentCultureIgnoreCase) && p.Status != SurveyStatus.Trashed))
+                    return Ok(true);
+            }
+            else
+            {
+                if (db.Survey.Any(p => p.Title.Equals(title, StringComparison.CurrentCultureIgnoreCase) && p.ID != id && p.Status != SurveyStatus.Trashed))
+                    return Ok(true);
+            }
+
+            return NotFound();
+        }
+
         /*
          * The following API calls are for Survey record modification operations, including:
          * 1. Admin clicks next (autosaves survey as draft) after creating
@@ -1766,6 +1786,46 @@ namespace FEP.WebApi.Api.RnP
                 return false;
             }
         }
+
+        // Survey analysis functions
+
+        // Function to compile survey answers.
+        // GET: api/RnP/Survey/CompileAnswers/5
+        [Route("api/RnP/Survey/CompileAnswers")]
+        [HttpGet]
+        public SurveyResultsModel CompileAnswers(int id)
+        {
+            var results = new SurveyResultsModel();
+
+            var survey = db.Survey.Where(p => p.ID == id).Select(s => new ReturnSurveyContentsModel
+            {
+                ID = s.ID,
+                Contents = s.Contents,
+            }).FirstOrDefault();
+
+            if (survey != null)
+            {
+                // break up questions
+
+                var responses = db.SurveyResponse.Where(p => p.SurveyID == id).Select(s => new SurveyResponseModel
+                {
+                    ID = s.ID,
+                    SurveyID = s.SurveyID,
+                    Type = s.Type,
+                    UserId = s.UserId,
+                    Email = s.Email,
+                    Contents = s.Contents
+                }).ToList();
+
+                //foreach (SurveyResponseModel response in responses)
+                //{
+                //
+                //}
+            }
+
+            return null;
+        }
+
 
         // Private functions
 

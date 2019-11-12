@@ -62,6 +62,10 @@
     <Compile Include="Migrations\201911051558224_0511_2.designer.cs">
       <DependentUpon>201911051558224_0511_2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911101245273_1011.cs" />
+    <Compile Include="Migrations\201911101245273_1011.designer.cs">
+      <DependentUpon>201911101245273_1011.cs</DependentUpon>
+    </Compile>
     <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="DbEntities.cs" />
@@ -129,6 +133,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911051558224_0511_2.resx">
       <DependentUpon>201911051558224_0511_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911101245273_1011.resx">
+      <DependentUpon>201911101245273_1011.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

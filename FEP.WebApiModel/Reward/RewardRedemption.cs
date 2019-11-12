@@ -35,6 +35,7 @@ namespace FEP.WebApiModel.Reward
     public class DetailRewardRedemptionModel : RewardRedemptionModel
     {
         public DetailRewardRedemptionModel() { }
+        public bool IsClaimed { get; set; }
 
         [Required]
         public int Id { get; set; }

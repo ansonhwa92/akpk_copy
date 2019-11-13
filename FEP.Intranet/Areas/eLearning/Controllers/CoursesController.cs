@@ -56,6 +56,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View();
         }
 
+        //[HasAccess(UserAccess.RnPPublicationEdit)]
+        public ActionResult SelectCategory()
+        {
+            ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name");
+            ViewBag.Categories = new List<RefCourseCategory>(db.RefCourseCategories);
+            return View();
+        }
+
+
         // GET: eLearning/Courses/Details/5
         public ActionResult Details(int? id)
         {
@@ -71,14 +80,29 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(course);
         }
 
+        //[HasAccess(UserAccess.CourseCreate)]
+        //// GET: eLearning/Courses/Create
+        //public async Task<ActionResult> Create()
+        //{
+        //    CreateOrEditCourseModel model = new CreateOrEditCourseModel();
+
+        //    await GetCategories();
+
+        //    return View(model);
+        //}
+
         [HasAccess(UserAccess.CourseCreate)]
-        // GET: eLearning/Courses/Create
-        public async Task<ActionResult> Create()
+        public ActionResult Create(int? catid)
         {
-            CreateOrEditCourseModel model = new CreateOrEditCourseModel();
-
-            await GetCategories();
-
+            if (catid != null)
+            {
+                ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name", catid);
+            }
+            else
+            {
+                ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name");
+            }
+            var model = new CreateOrEditCourseModel();
             return View(model);
         }
 
@@ -105,7 +129,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CreateOrEditCourseModel model)
+        public async Task<ActionResult> Create(CreateOrEditCourseModel model, string Submittype)
         {
             if (ModelState.IsValid)
             {
@@ -116,25 +140,90 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 if (response.isSuccess)
                 {
-                    TempData["SuccessMessage"] = "Course successfully created. Now you can add contents.";
+                    string[] resparray = response.Data.Split('|');
+                    string newid = resparray[0];
+                    //string title = resparray[1];
+
+                    //TempData["SuccessMessage"] = "Course successfully created. Now you can add contents.";
 
                     await LogActivity(Modules.Learning, "Create Course : " + model.Title);
 
                     var id = response.Data;
 
-                    if (!String.IsNullOrEmpty(id))
+                    if (Submittype == "Save")
+                    {
+                        TempData["SuccessMessage"] = "New Course titled " + model.Title + " created successfully and saved as draft.";
 
-                        return RedirectToAction("Content", "Courses", new { id = id });
+                        return RedirectToAction("Index", "Courses", new { area = "eLearning" });
+                    }
                     else
-                        return RedirectToAction("Index", "Courses");
+                    {
+                        return RedirectToAction("Review", "Courses", new { area = "eLearning", @id = newid });
+                    }
+
+                    //if (!String.IsNullOrEmpty(id))
+
+                    //    return RedirectToAction("Content", "Courses", new { id = id });
+                    //else
+                    //    return RedirectToAction("Index", "Courses");
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Failed to create new Course.";
+
+                    return RedirectToAction("Index", "Courses", new { area = "eLearning" });
                 }
             }
 
-            TempData["ErrorMessage"] = "Cannot add course. Please ensure all required fields are filled in correctly.";
+            //TempData["ErrorMessage"] = "Cannot add course. Please ensure all required fields are filled in correctly.";
 
-            await GetCategories();
+            //await GetCategories();
+            ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name", model.CategoryId);
+
 
             return View(model);
+        }
+
+        [HasAccess(UserAccess.CourseCreate)]
+        public async Task<ActionResult> Review(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+            var resPub = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Get, $"eLearning/Courses/GetForReview?id={id}");
+
+            if (!resPub.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var course = resPub.Data;
+
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+
+            var model = _mapper.Map<CreateOrEditCourseModel>(course);
+
+            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", course.CategoryId);
+
+            return View(course);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Review(CreateOrEditCourseModel model)
+        {
+            if (model != null)
+            {
+                return RedirectToAction("Content", "Courses", new { id = model.Id });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Courses");
+            }
         }
 
         [HttpGet]

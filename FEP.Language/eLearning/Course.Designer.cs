@@ -295,7 +295,7 @@ namespace Language.eLearning {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Course Name.
+        ///   Looks up a localized string similar to Title.
         /// </summary>
         public static string Title {
             get {

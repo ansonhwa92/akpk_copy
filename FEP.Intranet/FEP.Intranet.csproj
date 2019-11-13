@@ -976,6 +976,8 @@
     <Content Include="Areas\Administrator\Views\Branch\_Edit.cshtml" />
     <Content Include="Areas\Administrator\Views\Branch\List.cshtml" />
     <Content Include="Areas\eLearning\Views\Home\BrowseElearnings.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\SelectCategory.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\Review.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

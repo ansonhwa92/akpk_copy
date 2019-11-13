@@ -3,8 +3,6 @@ using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System;
-using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -13,7 +11,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     public static class CourseEnrollmentApiUrl
     {
         public const string EnrollAsync = "eLearning/CourseEnrollments/EnrollAsync";
-        public const string GetEnrollmentHistoryByCourse = "eLearning/CourseEnrollments/GetEnrollmentHistoryByCourse";
     }
 
     public class CourseEnrollmentsController : FEPController
@@ -104,40 +101,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             return RedirectToAction("View", "Courses", new { area = "eLearning", id = courseId, enrollmentCode = enrollmentCode });
         }
-
-
-
-        [HasAccess(UserAccess.CourseEdit)]
-        public async Task<ActionResult> EnrollmentHistoryByCourse(int userId, int courseId)
-        {
-            var currentUserId = CurrentUser.UserId.Value;
-
-            if (userId <= 0 && courseId <= 0)
-            {
-                TempData["ErrorMessage"] = "Invalid user and course.";
-                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
-            }
-
-            var response = await WepApiMethod.SendApiAsync<EnrollmentHistory>(HttpVerbs.Get, 
-                CourseEnrollmentApiUrl.GetEnrollmentHistoryByCourse + $"?userId={userId}&courseId={courseId}");
-
-
-            // WIP
-            return RedirectToAction("View", "CourseModules", new { area = "eLearning", @id = response.Data.Id });
-
-            //if (response.isSuccess)
-            //{
-            //    return RedirectToAction("View", "CourseModules", new { area = "eLearning", @id = response.Data.Id });
-            //}
-            //else
-            //{
-            //    TempData["ErrorMessage"] = "Could not start the course.";
-
-            //    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
-            //}
-        }
-
-
 
         protected override void Dispose(bool disposing)
         {

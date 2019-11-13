@@ -46,4 +46,43 @@ namespace FEP.WebApiModel.eLearning
         public ReturnBriefCourseEnrollmentModel CourseEnrollment { get; set; }
     }
 
+
+    // class for setting and returning filters for the datatable list of publications
+    public class FilterCourseEnrollmentHistoryModel : DataTableModel
+    {
+        [Display(Name = "Session", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public int CourseEventId { get; set; }
+
+        [Display(Name = "StudentName", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string StudentName { get; set; }
+
+        public int CourseId { get; set; }
+
+
+        [Display(Name = "Status", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public EnrollmentStatus EnrollmentStatus { get; set; }
+    }
+
+    public class ReturnBriefCourseEnrollmentHistoryModel : BaseModel
+    {
+        [Display(Name = "CourseName", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string CourseTitle { get; set; }
+
+        [Display(Name = "Name", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string Name { get; set; }
+
+        [Display(Name = "Status", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public EnrollmentStatus Status { get; set; }
+
+        public string StatusDate { get; set; }
+
+        [Display(Name = "Session", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public int CourseEventId { get; set; }
+    }
+
+    public class ReturnListCourseEnrollmentHistoryModel
+    {
+        public FilterCourseEnrollmentHistoryModel Filters { get; set; }
+        public ReturnBriefCourseEnrollmentHistoryModel CourseEnrollment { get; set; }
+    }
 }

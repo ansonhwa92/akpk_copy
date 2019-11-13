@@ -21,9 +21,12 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44360</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -972,6 +975,7 @@
     <Content Include="Areas\Administrator\Views\Branch\_Delete.cshtml" />
     <Content Include="Areas\Administrator\Views\Branch\_Edit.cshtml" />
     <Content Include="Areas\Administrator\Views\Branch\List.cshtml" />
+    <Content Include="Areas\eLearning\Views\Home\BrowseElearnings.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1535,7 +1539,6 @@
     <Content Include="src\sass\_variables.scss" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_LayoutLandingPage.cshtml" />
-    <Content Include="Areas\eLearning\Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_NewsArticle.cshtml" />
     <Content Include="Views\Shared\_LayoutAuth.cshtml" />
     <Content Include="Views\Auth\Register.cshtml" />

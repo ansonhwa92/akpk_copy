@@ -6,15 +6,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FEP.WebApiModel.Home
 {
     public class AdminProfileModel
     {
+        [Display(Name = "FieldAvatar", ResourceType = typeof(Language.Profile))]
+        public string AvatarImageBase64 { get; set; }
+
         [Display(Name = "FieldName", ResourceType = typeof(Language.Profile))]
         public string Name { get; set; }
-        
+
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Profile))]
         public string MobileNo { get; set; }
         public string CountryCode { get; set; }
@@ -23,24 +27,99 @@ namespace FEP.WebApiModel.Home
         public string Email { get; set; }
     }
 
-    public class EditAdminProfileModel
+
+    public class StaffProfileModel
     {
+
+        [Display(Name = "FieldAvatar", ResourceType = typeof(Language.Profile))]
+        public string AvatarImageBase64 { get; set; }
+
+        [Display(Name = "FieldStaffId", ResourceType = typeof(Language.Staff))]
+        public string StaffId { get; set; }
+
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Staff))]
+        public string Name { get; set; }
+
+        [Display(Name = "FieldDepartment", ResourceType = typeof(Language.Staff))]
+        public DepartmentModel Department { get; set; }
+
+        [Display(Name = "FieldBranch", ResourceType = typeof(Language.Staff))]
+        public BranchModel Branch { get; set; }
+
+        [Display(Name = "FieldDesignation", ResourceType = typeof(Language.Staff))]
+        public DesignationModel Designation { get; set; }
+
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Staff))]
+        public string Email { get; set; }
+
+        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Staff))]
+        public string ICNo { get; set; }
+
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Staff))]
+        public string MobileNo { get; set; }
+        public string CountryCode { get; set; }
+
+        [Display(Name = "FieldStatus", ResourceType = typeof(Language.Staff))]
+        public bool Status { get; set; }
+
+        [Display(Name = "FieldRole", ResourceType = typeof(Language.Individual))]
+        public List<RoleModel> Roles { get; set; }
+    }
+
+    public class IndividualProfileModel
+    {
+        [Display(Name = "FieldAvatar", ResourceType = typeof(Language.Profile))]
+        public string AvatarImageBase64 { get; set; }
+
         [Display(Name = "FieldName", ResourceType = typeof(Language.Profile))]
         public string Name { get; set; }
-              
+
+        public bool IsMalaysian { get; set; }
+
+        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Profile))]
+        public string ICNo { get; set; }
+
+        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Profile))]
+        public string PassportNo { get; set; }
+
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Profile))]
         public string MobileNo { get; set; }
+
         public string CountryCode { get; set; }
 
         [Display(Name = "FieldEmail", ResourceType = typeof(Language.Profile))]
         public string Email { get; set; }
+
+        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Profile))]
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Profile))]
+        public string PostCodeMalaysian { get; set; }
+
+        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Profile))]
+        public string PostCodeNonMalaysian { get; set; }
+
+        [Display(Name = "FieldCity", ResourceType = typeof(Language.Profile))]
+        public string City { get; set; }
+
+        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Profile))]
+        public StateModel State { get; set; }
+
+        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Profile))]
+        public CountryModel Country { get; set; }
+
+        public int MalaysiaCountryId { get; set; }
+
+        [Display(Name = "FieldCitizenship", ResourceType = typeof(Language.Profile))]
+        public CountryModel Citizenship { get; set; }
+
     }
 
     public class CompanyProfileModel
     {
-
-        [Display(Name = "FieldCompanyName", ResourceType = typeof(Language.Profile))]
-        public string CompanyName { get; set; }
+        [Display(Name = "FieldAvatar", ResourceType = typeof(Language.Profile))]
+        public string AvatarImageBase64 { get; set; }
 
         [Display(Name = "FieldAgencyName", ResourceType = typeof(Language.Profile))]
         public string AgencyName { get; set; }
@@ -97,56 +176,26 @@ namespace FEP.WebApiModel.Home
         public string Email { get; set; }
     }
 
-    public class IndividualProfileModel
+    public class EditAdminProfileModel
     {
 
+        [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.Profile))]
         [Display(Name = "FieldName", ResourceType = typeof(Language.Profile))]
         public string Name { get; set; }
 
-        public bool IsMalaysian { get; set; }
-
-        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Profile))]
-        public string ICNo { get; set; }
-
-        [Display(Name = "FieldPassportNo", ResourceType = typeof(Language.Profile))]
-        public string PassportNo { get; set; }
-
+        [Required(ErrorMessageResourceName = "ValidRequiredMobileNo", ErrorMessageResourceType = typeof(Language.Profile))]
+        [RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericMobileNo", ErrorMessageResourceType = typeof(Language.Profile))]
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Profile))]
         public string MobileNo { get; set; }
-
         public string CountryCode { get; set; }
 
         [Display(Name = "FieldEmail", ResourceType = typeof(Language.Profile))]
         public string Email { get; set; }
-
-        [Display(Name = "FieldAddress", ResourceType = typeof(Language.Profile))]
-        public string Address1 { get; set; }
-        public string Address2 { get; set; }
-
-        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Profile))]
-        public string PostCodeMalaysian { get; set; }
-
-        [Display(Name = "FieldPostCode", ResourceType = typeof(Language.Profile))]
-        public string PostCodeNonMalaysian { get; set; }
-
-        [Display(Name = "FieldCity", ResourceType = typeof(Language.Profile))]
-        public string City { get; set; }
-
-        [Display(Name = "FieldStateId", ResourceType = typeof(Language.Profile))]
-        public StateModel State { get; set; }
-
-        [Display(Name = "FieldCountryId", ResourceType = typeof(Language.Profile))]
-        public CountryModel Country { get; set; }
-
-        public int MalaysiaCountryId { get; set; }
-
-        [Display(Name = "FieldCitizenship", ResourceType = typeof(Language.Profile))]
-        public CountryModel Citizenship { get; set; }
-
     }
 
     public class EditIndividualProfileModel
     {
+
         [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.Profile))]
         [Display(Name = "FieldName", ResourceType = typeof(Language.Profile))]
         public string Name { get; set; }
@@ -167,11 +216,6 @@ namespace FEP.WebApiModel.Home
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Profile))]
         public string MobileNo { get; set; }
         public string CountryCode { get; set; }
-
-        //[Required(ErrorMessageResourceName = "ValidRequiredEmail", ErrorMessageResourceType = typeof(Language.Individual))]
-        //[Display(Name = "FieldEmail", ResourceType = typeof(Language.Individual))]
-        //[EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Individual))]
-        //public string Email { get; set; }
 
         [Required(ErrorMessageResourceName = "ValidRequiredAddress", ErrorMessageResourceType = typeof(Language.Profile))]
         [Display(Name = "FieldAddress", ResourceType = typeof(Language.Profile))]
@@ -209,7 +253,7 @@ namespace FEP.WebApiModel.Home
         [Required(ErrorMessageResourceName = "ValidRequiredCitizenshipId", ErrorMessageResourceType = typeof(Language.Profile))]
         [Display(Name = "FieldCitizenship", ResourceType = typeof(Language.Profile))]
         public int? CitizenshipId { get; set; }
-        
+
         public IEnumerable<SelectListItem> Citizenships { get; set; }
         public IEnumerable<SelectListItem> States { get; set; }
         public IEnumerable<SelectListItem> Countries { get; set; }
@@ -218,6 +262,7 @@ namespace FEP.WebApiModel.Home
 
     public class EditCompanyProfileModel
     {
+
         [Required(ErrorMessageResourceName = "ValidRequiredCompanyName", ErrorMessageResourceType = typeof(Language.Profile))]
         [Display(Name = "FieldCompanyName", ResourceType = typeof(Language.Profile))]
         public string CompanyName { get; set; }
@@ -297,16 +342,11 @@ namespace FEP.WebApiModel.Home
         public string MobileNo { get; set; }
         public string CountryCode { get; set; }
 
-        //[Required(ErrorMessageResourceName = "ValidRequiredEmail", ErrorMessageResourceType = typeof(Language.Company))]
-        //[EmailAddress(ErrorMessageResourceName = "ValidTypeEmail", ErrorMessageResourceType = typeof(Language.Company))]
-        //[Display(Name = "FieldEmail", ResourceType = typeof(Language.Company))]
-        //public string Email { get; set; }
-
         public IEnumerable<SelectListItem> Ministries { get; set; }
         public IEnumerable<SelectListItem> States { get; set; }
         public IEnumerable<SelectListItem> Sectors { get; set; }
         public IEnumerable<SelectListItem> Countries { get; set; }
-       
+
     }
 
     public class ChangePasswordModel
@@ -320,7 +360,7 @@ namespace FEP.WebApiModel.Home
 
         [Required(ErrorMessageResourceName = "ValidRequiredNewPassword", ErrorMessageResourceType = typeof(Language.Profile))]
         [Display(Name = "FieldNewPassword", ResourceType = typeof(Language.Profile))]
-        [DataType(DataType.Password)]        
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Required(ErrorMessageResourceName = "ValidRequiredRetypePassword", ErrorMessageResourceType = typeof(Language.Profile))]
@@ -347,4 +387,19 @@ namespace FEP.WebApiModel.Home
 
     }
 
+    public class ProfileAvatarModel
+    {
+        public string AvatarImageBase64 { get; set; }
+
+        //[Required(ErrorMessageResourceName = "ValidRequiredAvatar", ErrorMessageResourceType = typeof(Language.Profile))]
+        [Display(Name = "FieldAvatar", ResourceType = typeof(Language.Profile))]
+        public HttpPostedFileBase AvatarFile { get; set; }
+    }
+
+    public class Image64Model
+    {
+        public string image64 { get; set; }
+    }
 }
+
+

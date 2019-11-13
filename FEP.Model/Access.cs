@@ -28,17 +28,19 @@ namespace FEP.Model
 		[Display(Name = "Research & Publication")]
 		RnP = 2,
 		[Display(Name = "Learning")]
-		Learning = 3,
-		[Display(Name = "User & Role")]
-		Admin = 4,
-		[Display(Name = "System Setting")]
-		Setting = 5,
+		Learning = 3,	
+		[Display(Name = "Setting")]
+		Setting = 4,
 		[Display(Name = "Report")]
-		Report = 6,
+		Report = 5,
         [Display(Name = "Payment")]
-        Payment = 7
+        Payment = 6,
+        [Display(Name = "KMC")]
+        KMC = 7,
+        [Display(Name = "System")]
+        System = 8
 
-    }
+	}
 
 
 	public enum UserAccess
@@ -56,26 +58,29 @@ namespace FEP.Model
 		EventMenu = 1001,
 		[Display(Name = "Internal Event Menu")]
 		EventIntenalEventMenu = 1002,
-		[Display(Name = "Event Administrator")]
-		EventAdministrator = 1003,
+		[Display(Name = "Event Admin - FED")]
+		EventAdministratorFED = 1003,
+
+		[Display(Name = "Event Admin - CCD")]
+		EventAdministratorCCD = 1004,
 
 		//----------------------Media Interview Button--------------------//
-		[Display(Name = "Media Interview - Recipient Email After Submit Media Interview")]
+		[Display(Name = "Media Interview - Submit")]
 		Recipient_Submit_MediaInterview = 1011,
 
-		[Display(Name = "Media Interview - Recipient Email After Verify Media Interview")]
+		[Display(Name = "Media Interview - Verify")]
 		Recipient_Verify_MediaInterview = 1012,
 
-		[Display(Name = "Media Interview - Recipient Email After Approval 1")] 
+		[Display(Name = "Media Interview -  Approve (Level 1)")]
 		Recipient_Approver1_MediaInterview = 1013,
 
-		[Display(Name = "Media Interview - Recipient Email After Approval 2")]
+		[Display(Name = "Media Interview -  Approve (Level 2)")]
 		Recipient_Approver2_MediaInterview = 1014,
 
-		[Display(Name = "Media Interview - Recipient Email After Approval 3")]
+		[Display(Name = "Media Interview -  Approve (Level 3)")]
 		Recipient_Approver3_MediaInterview = 1015,
 
-		[Display(Name = "Media Interview - Recipient Email After Reject")]
+		[Display(Name = "Media Interview - Reject")]
 		Recipient_Reject_MediaInterview = 1016,
 
 
@@ -103,10 +108,10 @@ namespace FEP.Model
 		//-----------------------------------------------------------//
 
 		[Display(Name = "Public Event - Submit")]
-		Recipient_Submit_PublicEvent = 1029,
+		Recipient_Submit_PublicEvent = 1029,                        //verifier
 
 		[Display(Name = "Public Event - Verify")]
-		Recipient_Verify_PublicEvent = 1030,
+		Recipient_Verify_PublicEvent = 1030,                        //
 
 		[Display(Name = "Public Event - Approve (Level 1)")]
 		Recipient_Approver1_PublicEvent = 1031,
@@ -125,6 +130,21 @@ namespace FEP.Model
 
 		[Display(Name = "Public Event - Cancel")]
 		Recipient_Cancel_PublicEvent = 1036,
+
+
+		[Display(Name = "Cancellation/Modification Public Event - Submit")]
+		Submit_CancellationModificationRequest = 1037,
+		[Display(Name = "Cancellation/Modification Public Event - Verify")]
+		Verifier_CancellationModificationRequest = 1038,
+		[Display(Name = "Cancellation/Modification Public Event - Approve (Level 1)")]
+		Approver1_CancellationModificationRequest = 1039,
+		[Display(Name = "Cancellation/Modification Public Event - Approve (Level 2)")]
+		Approver2_CancellationModificationRequest = 1040,
+		[Display(Name = "Cancellation/Modification Public Event - Approve (Level 3)")]
+		Approver3_CancellationModificationRequest = 1041,
+		[Display(Name = "Cancellation/Modification Public Event - Require Amendment")]
+		Amendment_CancellationModificationRequest = 1042,
+
 
 
 		//research & publication 2001 - 3000
@@ -173,37 +193,37 @@ namespace FEP.Model
 
 
 
-        //elearning 3001 - 4000
-        [Display(Name = "Learning Management Menu")]
-        LearningMenu = 3001,
-        
-        //elearnig Admin
-        [Display(Name = "Course - Create")]
-        CourseCreate,
-        [Display(Name = "Course - View")]
-        CourseView,
-        [Display(Name = "Course - Edit")]
-        CourseEdit,
-        [Display(Name = "Course - Publish")]
-        CoursePublish,
-        [Display(Name = "Course - Assign Trainer")]
-        CourseAssignTrainer,
+		//elearning 3001 - 4000
+		[Display(Name = "Learning Management Menu")]
+		LearningMenu = 3001,
 
-        // elearning Verifier
-        [Display(Name = "Course - Verify")]
-        CourseVerify,
+		//elearnig Admin
+		[Display(Name = "Course - Create")]
+		CourseCreate,
+		[Display(Name = "Course - View")]
+		CourseView,
+		[Display(Name = "Course - Edit")]
+		CourseEdit,
+		[Display(Name = "Course - Publish")]
+		CoursePublish,
+		[Display(Name = "Course - Assign Trainer")]
+		CourseAssignTrainer,
 
-        // elearning Approvers
-        [Display(Name = "Course - Approve (Level 1)")]
-        CourseApproval1,
-        [Display(Name = "Course - Approve (Level 2)")]
-        CourseApproval2,
-        [Display(Name = "Course - Approve (Level 3)")]
-        CourseApproval3,
-        [Display(Name = "Course - Enroll/Withdraw")]
+		// elearning Verifier
+		[Display(Name = "Course - Verify")]
+		CourseVerify,
 
-        // elearning Learner
-        CourseEnroll,
+		// elearning Approvers
+		[Display(Name = "Course - Approve (Level 1)")]
+		CourseApproval1,
+		[Display(Name = "Course - Approve (Level 2)")]
+		CourseApproval2,
+		[Display(Name = "Course - Approve (Level 3)")]
+		CourseApproval3,
+		[Display(Name = "Course - Enroll/Withdraw")]
+
+		// elearning Learner
+		CourseEnroll,
 
         // elearning Trainer
         CourseGroupCreate,
@@ -212,50 +232,109 @@ namespace FEP.Model
         CourseAddDocument,
         
  
-        
-
-		//administration 4001 - 5000
-		[Display(Name = "User & Role Management Menu")]
-		AdminMenu = 4001,
-		[Display(Name = "Individual Menu")]
-		AdminIndividualMenu = 4002,
-		[Display(Name = "Agency Menu")]
-		AdminCompanyMenu = 4003,
-		[Display(Name = "Staff Menu")]
-		AdminStaffMenu = 4004,
-		[Display(Name = "Individual List")]
-		AdminIndividualList = 4005,
-		[Display(Name = "Individual Edit")]
-		AdminIndividualEdit = 4006,
-
-
 
 		//setting 5001 - 6000
-		[Display(Name = "System Settings Menu")]
-		SettingMenu = 5001,
+		[Display(Name = "Settings Menu")]
+		SettingMenu = 4001,
+        [Display(Name = "Settings - User Management")]
+        User = 4002,
+        [Display(Name = "Settings - User Management - Individual")]
+        UserIndividual = 4003,
+        [Display(Name = "Settings - User Management - Individual - Create")]
+        UserIndividualAdd = 4004,
+        [Display(Name = "Settings - User Management - Individual - Edit")]
+        UserIndividualEdit = 4005,
+        [Display(Name = "Settings - User Management - Individual - Delete")]
+        UserIndividualDelete = 4006,
+        [Display(Name = "Settings - User Management - Individual - Enable/Disable Account")]
+        UserIndividualAccount = 4007,
+        [Display(Name = "Settings - User Management - Individual - Reset Password")]
+        UserIndividualPassword = 4008,
+        [Display(Name = "Settings - User Management - Company")]
+        UserCompany = 4009,
+        [Display(Name = "Settings - User Management - Company - Create")]
+        UserCompanyAdd = 4010,
+        [Display(Name = "Settings - User Management - Company - Edit")]
+        UserCompanyEdit = 4011,
+        [Display(Name = "Settings - User Management - Company - Delete")]
+        UserCompanyDelete = 4012,
+        [Display(Name = "Settings - User Management - Company - Enable/Disable Account")]
+        UserCompanyAccount = 4013,
+        [Display(Name = "Settings - User Management - Company - Reset Password")]
+        UserCompanyPassword = 4014,       
+        [Display(Name = "Settings - User Management - Staff")]
+        UserStaff = 4015,
+        [Display(Name = "Settings - User Management - Staff - Edit")]
+        UserStaffEdit = 4016,
+        [Display(Name = "Settings - User Management - Staff - Enable/Disable Account")]
+        UserStaffAccount = 4017,
+        [Display(Name = "Settings - Role Management")]
+        Role = 4018,
+        [Display(Name = "Settings - Role Management - Create")]
+        RoleAdd = 4019,
+        [Display(Name = "Settings - Role Management - Update Access")]
+        RoleAccess = 4020,
+        [Display(Name = "Settings - Role Management - Update User")]
+        RoleUser = 4021,
+        [Display(Name = "Settings - Role Management - Edit")]
+        RoleEdit = 4022,
+        [Display(Name = "Settings - Role Management - Delete")]
+        RoleDelete = 4023,
+        [Display(Name = "Settings - Notification Template")]
+        NotificationSetting = 4024,
+        [Display(Name = "Settings - Notification Template - Edit")]
+        NotificationSettingEdit = 4025,
+        [Display(Name = "Settings - SLA Reminder")]
+        SLA = 4026,
+        [Display(Name = "Settings - Agency Sector")]
+        SectorSetting = 4027,
+        [Display(Name = "Settings - Agency Sector - Create")]
+        SectorSettingCreate = 4028,
+        [Display(Name = "Settings - Agency Sector - Edit")]
+        SectorSettingEdit = 4029,
+        [Display(Name = "Settings - Agency Sector - Delete")]
+        SectorSettingDelete = 4030,          
+        [Display(Name = "Settings - Government Ministry")]
+        MinistrySetting = 4031,
+        [Display(Name = "Settings - Government Ministry - Create")]
+        MinistrySettingCreate = 4032,
+        [Display(Name = "Settings - Government Ministry - Edit")]
+        MinistrySettingEdit = 4033,
+        [Display(Name = "Settings - Government Ministry - Delete")]
+        MinistrySettingDelete = 4034,
+        [Display(Name = "Settings - Staff Branch")]
+        BranchSetting = 4035,
+        [Display(Name = "Settings - Staff Branch - Create")]
+        BranchSettingAdd = 4036,
+        [Display(Name = "Settings - Staff Branch - Edit")]
+        BranchSettingEdit = 4037,
+        [Display(Name = "Settings - Staff Branch - Delete")]
+        BranchSettingDelete = 4038,
+        [Display(Name = "Settings - User Logs")]
+        UserLog = 4039,
+        [Display(Name = "Settings - User Logs - Delete")]
+        UserLogDelete = 4040,
+        [Display(Name = "Settings - Error Logs")]
+        ErrorLog = 4041,
+        [Display(Name = "Settings - Error Logs - Delete")]
+        ErrorLogDelete = 4042,
 
-
-
-
-
-
-
-		//report 6001 - 7000
-		[Display(Name = "Reports Menu")]
+        //report 6001 - 7000
+        [Display(Name = "Reports Menu")]
 		ReportMenu = 6001,
-
-
-
-
-
 
         //payment 7001 - 8000
         [Display(Name = "Offline Payment")]
         OfflinePayment = 7001,
         [Display(Name = "Refunds")]
-        Refunds = 7002
+        Refunds = 7002,
+
+
+        //KMC 8001 - 8100
+        [Display(Name = "KMC")]
+        KMCMenu = 8001,
 
 
 
-    }
+	}
 }

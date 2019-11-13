@@ -218,6 +218,7 @@
     <Compile Include="Areas\RnP\Controllers\SurveyController.cs" />
     <Compile Include="Areas\RnP\Models\Research.cs" />
     <Compile Include="Areas\RnP\RnPAreaRegistration.cs" />
+    <Compile Include="Areas\Setting\Controllers\GroupController.cs" />
     <Compile Include="Areas\Setting\Controllers\HomeController.cs" />
     <Compile Include="Areas\SLAReminder\Controllers\SLARemindersController.cs" />
     <Compile Include="Areas\SLAReminder\SLAReminderAreaRegistration.cs" />
@@ -518,6 +519,7 @@
     <Content Include="img\lect-02.jpg" />
     <Content Include="img\logo-akpk-normal.svg" />
     <Content Include="img\logo-akpk.svg" />
+    <Content Include="img\no-photo.jpg" />
     <Content Include="img\services\icon-dmp.svg" />
     <Content Include="img\services\icon-fc.svg" />
     <Content Include="img\services\icon-fe.svg" />
@@ -971,10 +973,19 @@
     <Content Include="Areas\RnP\Views\Survey\_ProofOfApprovalDetails.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\_ProofOfWithdrawal.cshtml" />
     <Content Include="Areas\RnP\Views\Publication\_ProofOfWithdrawalDetails.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Index.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Create.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Delete.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Details.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Edit.cshtml" />
     <Content Include="Areas\Administrator\Views\Branch\_Create.cshtml" />
     <Content Include="Areas\Administrator\Views\Branch\_Delete.cshtml" />
     <Content Include="Areas\Administrator\Views\Branch\_Edit.cshtml" />
     <Content Include="Areas\Administrator\Views\Branch\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\Home\BrowseEvent.cshtml" />
+    <Content Include="Areas\eEvent\Views\PublicEvent\Create_RequestCancelModify.cshtml" />
+    <Content Include="Areas\eEvent\Views\PublicEvent\Details_RequestCancelModify.cshtml" />
+    <Content Include="Areas\eEvent\Views\PublicEvent\Edit_RequestCancelModify.cshtml" />
     <Content Include="Areas\eLearning\Views\Home\BrowseElearnings.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
@@ -1595,6 +1606,7 @@
     <Content Include="Scripts\tinymce\plugins\mathSymbols\LICENSE" />
     <Content Include="Scripts\tinymce\plugins\mathSymbols\package.json" />
     <Content Include="Scripts\tinymce\plugins\mathSymbols\README.md" />
+    <Content Include="Views\Home\UpdateAvatar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -60,7 +60,8 @@ namespace FEP.WebApi.Api.Administration
                 LoginAttempt = s.UserAccount.LoginAttempt,
                 LastPasswordChange = s.UserAccount.LastPasswordChange,
                 CreatedBy = s.CreatedBy,
-                CreatedDate = s.CreatedDate
+                CreatedDate = s.CreatedDate,
+                AvatarImageBase64 = s.UserAccount.Avatar
             }).FirstOrDefault();
 
             if (user == null)
@@ -96,7 +97,8 @@ namespace FEP.WebApi.Api.Administration
                 LoginAttempt = s.UserAccount.LoginAttempt,
                 LastPasswordChange = s.UserAccount.LastPasswordChange,
                 CreatedBy = s.CreatedBy,
-                CreatedDate = s.CreatedDate
+                CreatedDate = s.CreatedDate,
+                AvatarImageBase64 = s.UserAccount.Avatar
             }).FirstOrDefault();
 
             if (user == null)
@@ -117,7 +119,9 @@ namespace FEP.WebApi.Api.Administration
         public IHttpActionResult Put(int id, [FromBody] EditUserModel model)
         {
             var user = db.User.Where(u => u.Id == id && u.Display).FirstOrDefault();
-            
+
+            var account = user.UserAccount;
+
             if (user == null)
             {
                 return NotFound();
@@ -127,10 +131,14 @@ namespace FEP.WebApi.Api.Administration
             {
                 user.Name = model.Name; 
                 user.MobileNo = model.MobileNo;
+                account.Avatar = model.Avatar;
 
-                db.User.Attach(user);
+                db.User.Attach(user);               
                 db.Entry(user).Property(x => x.Name).IsModified = true;     
                 db.Entry(user).Property(x => x.MobileNo).IsModified = true;
+
+                db.UserAccount.Attach(account);
+                db.Entry(account).Property(x => x.Avatar).IsModified = true;
 
                 db.Configuration.ValidateOnSaveEnabled = true;
                 db.SaveChanges();

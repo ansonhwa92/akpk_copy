@@ -24,6 +24,23 @@ namespace FEP.Model.Migrations
 
         public static void Seed(DbEntities db)
         {
+            //cte
+
+            db.Months.AddOrUpdate(s => s.Month,
+                new Months { Month = 1, Name = "Jan" },
+                new Months { Month = 2, Name = "Feb" },
+                new Months { Month = 3, Name = "Mar" },
+                new Months { Month = 4, Name = "Apr" },
+                new Months { Month = 5, Name = "May" },
+                new Months { Month = 6, Name = "Jun" },
+                new Months { Month = 7, Name = "Jul" },
+                new Months { Month = 8, Name = "Aug" },
+                new Months { Month = 9, Name = "Sep" },
+                new Months { Month = 10, Name = "Oct" },
+                new Months { Month = 11, Name = "Nov" },
+                new Months { Month = 12, Name = "Dec" }
+            );
+
 
             //default setting
             if (!db.SystemSetting.Any(m => m.Id == 0))
@@ -118,30 +135,64 @@ namespace FEP.Model.Migrations
 
             AddRole(db, "Staff", "Staff");
 
-            AddRole(db, "Admin Event", "Admin Event");
-            AddRole(db, "Admin R&P", "Admin R&P");
+			//AddRole(db, "Admin Event", "Admin Event");
+			AddRole(db, "Admin R&P", "Admin R&P");
             //AddRole(db, "Admin eLearning", "Admin eLearning");
 
             AddRole(db, "Event Reception", "Event Reception");
             AddRole(db, "Event Moderator", "Event Moderator");
 
-            AddRole(db, "Verifier Event", "Verifier Event");
+            //AddRole(db, "Verifier Event", "Verifier Event");
             AddRole(db, "Verifier R&P", "Verifier R&P");
             //AddRole(db, "Verifier eLearning", "Verifier eLearning");
 
-            AddRole(db, "Approver Event 1", "Approver Event 1");
+            //AddRole(db, "Approver Event 1", "Approver Event 1");
             AddRole(db, "Approver R&P 1", "Approver R&P 1");
             //AddRole(db, "Approver eLearning 1", "Approver eLearning 1");
 
-            AddRole(db, "Approver Event 2", "Approver Event 2");
+            //AddRole(db, "Approver Event 2", "Approver Event 2");
             AddRole(db, "Approver R&P 2", "Approver R&P 2");
             //AddRole(db, "Approver eLearning 2", "Approver eLearning 2");
 
-            AddRole(db, "Approver Event 3", "Approver Event 3");
+            //AddRole(db, "Approver Event 3", "Approver Event 3");
             AddRole(db, "Approver R&P 3", "Approver R&P 3");
             //AddRole(db, "Approver eLearning 3", "Approver eLearning 3");
 
             AddRole(db, "Admin Finance", "Admin Finance");
+
+            //state
+            if (!db.State.Any())
+            {
+                db.State.AddOrUpdate(s => s.Name,
+                    new State { Name = "Johor", Display = true },
+                    new State { Name = "Kedah", Display = true },
+                    new State { Name = "Kelantan", Display = true },
+                    new State { Name = "Melaka", Display = true },
+                    new State { Name = "Negeri Sembilan", Display = true },
+                    new State { Name = "Pahang", Display = true },
+                    new State { Name = "Pulau Pinang", Display = true },
+                    new State { Name = "Perak", Display = true },
+                    new State { Name = "Perlis", Display = true },
+                    new State { Name = "Selangor", Display = true },
+                    new State { Name = "Terengganu", Display = true },
+                    new State { Name = "Sabah", Display = true },
+                    new State { Name = "Sarawak", Display = true },
+                    new State { Name = "Wilayah Persekutuan Kuala Lumpur", Display = true },
+                    new State { Name = "Wilayah Persekutuan Labuan", Display = true },
+                    new State { Name = "Wilayah Persekutuan Putrajaya", Display = true }
+                );
+            }
+
+            if (!db.Branch.Any())
+            {
+                var state = db.State.Local.Where(r => r.Name == "Wilayah Persekutuan Kuala Lumpur").FirstOrDefault() ?? db.State.Where(r => r.Name == "Wilayah Persekutuan Kuala Lumpur").FirstOrDefault();
+
+                db.Branch.AddOrUpdate(s => s.Name,
+                    new Branch { State = state, Name = "HQ", Display = true }
+                    );
+
+            }
+
 
             if (!db.Department.Any())
             {
@@ -367,31 +418,14 @@ namespace FEP.Model.Migrations
             AddStaff(db, "nursyahirah.r", "NUR SYAHIRAH BINTI RAHMAT", "961010146146", "nursyahirah.r@akpk.org.my", "60132038300", "Channel Management", "CLERICAL ", "0308");
             AddStaff(db, "intannoorsyakira.z", "INTAN NOOR SYAKIRA BINTI ZAINUDDIN", "900730065548", "intannoorsyakira.z@akpk.org.my", "60145280966", "Channel Management", "CLERICAL ", "0309");
             AddStaff(db, "wannuradibah.cm", "WAN NURADIBAH BINTI CHE MOHD LUDIN", "920212105798", "wannuradibah.cm@akpk.org.my", "60133138516", "Channel Management", "CLERICAL ", "0310");
-
+            AddStaff(db, "fep_user1", "FEP USER 1", "123456789012", "fepuser1@fep.com", "012345678", "IT", "SENIOR EXECUTIVE", "xxxx");
+            AddStaff(db, "fep_user2", "FEP USER 2", "123456789013", "fepuser2@fep.com", "012345678", "IT", "SENIOR EXECUTIVE", "xxxy");
+            AddStaff(db, "fep_user3", "FEP USER 3", "123456789014", "fepuser3@fep.com", "012345678", "IT", "SENIOR EXECUTIVE", "xxxz");
+            AddStaff(db, "fep_user4", "FEP USER 4", "123456789015", "fepuser4@fep.com", "012345678", "IT", "SENIOR EXECUTIVE", "xxxf");
             #endregion
 
 
-            if (!db.State.Any())
-            {
-                db.State.AddOrUpdate(s => s.Name,
-                    new State { Name = "Johor", Display = true },
-                    new State { Name = "Kedah", Display = true },
-                    new State { Name = "Kelantan", Display = true },
-                    new State { Name = "Melaka", Display = true },
-                    new State { Name = "Negeri Sembilan", Display = true },
-                    new State { Name = "Pahang", Display = true },
-                    new State { Name = "Pulau Pinang", Display = true },
-                    new State { Name = "Perak", Display = true },
-                    new State { Name = "Perlis", Display = true },
-                    new State { Name = "Selangor", Display = true },
-                    new State { Name = "Terengganu", Display = true },
-                    new State { Name = "Sabah", Display = true },
-                    new State { Name = "Sarawak", Display = true },
-                    new State { Name = "Wilayah Persekutuan Kuala Lumpur", Display = true },
-                    new State { Name = "Wilayah Persekutuan Labuan", Display = true },
-                    new State { Name = "Wilayah Persekutuan Putrajaya", Display = true }
-                );
-            }
+            
 
             if (!db.Ministry.Any())
             {
@@ -732,12 +766,8 @@ namespace FEP.Model.Migrations
                 }
                 else if (access >= 4001 && access <= 5000)
                 {
-                    module = Modules.Admin;
-                }
-                else if (access >= 5001 && access <= 6000)
-                {
                     module = Modules.Setting;
-                }
+                }               
                 else //if (access >= 6001 && access <= 7000)
                 {
                     module = Modules.Report;

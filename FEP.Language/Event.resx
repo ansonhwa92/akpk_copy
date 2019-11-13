@@ -306,4 +306,25 @@
   <data name="ExRoadOrganiserEmail" xml:space="preserve">
     <value>Organiser Email</value>
   </data>
+  <data name="ReqEventCategory" xml:space="preserve">
+    <value>Event Category</value>
+  </data>
+  <data name="ReqEventObjective" xml:space="preserve">
+    <value>Event Objective</value>
+  </data>
+  <data name="ReqEventRefNo" xml:space="preserve">
+    <value>Reference No.</value>
+  </data>
+  <data name="ReqEventTitle" xml:space="preserve">
+    <value>Event Title</value>
+  </data>
+  <data name="ReqReason" xml:space="preserve">
+    <value>Modification/Cancellation Reasons</value>
+  </data>
+  <data name="ReqStatus" xml:space="preserve">
+    <value>Request Status</value>
+  </data>
+  <data name="ReqType" xml:space="preserve">
+    <value>Request Type</value>
+  </data>
 </root>

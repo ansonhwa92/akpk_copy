@@ -202,7 +202,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             if (response.isSuccess)
             {
                 TempData["SuccessMessage"] = "User successfully remove from role.";
-                await LogActivity(Modules.Admin, "Remove User From Role", model);
+                await LogActivity(Modules.Setting, "Remove User From Role", model);
             }
             else
             {

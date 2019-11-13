@@ -65,6 +65,7 @@ namespace FEP.WebApiModel.Administration
         [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.User))]
         public string MobileNo { get; set; }
         public string CountryCode { get; set; }
+        public string Avatar { get; set; }
 
     }
 
@@ -88,6 +89,7 @@ namespace FEP.WebApiModel.Administration
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidTo { get; set; }
         public List<UserAccess> UserAccesses { get; set; }
+        public string AvatarImageBase64 { get; set; }
     }
 
    

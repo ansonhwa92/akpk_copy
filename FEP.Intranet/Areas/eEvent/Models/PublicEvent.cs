@@ -212,4 +212,53 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Status")]
 		public EventStatus? EventStatus { get; set; }
 	}
+
+	public class EventRequestModel
+	{
+		public EventRequestModel()
+		{
+			Attachments = new List<Attachment>();
+			AttachmentFiles = new List<HttpPostedFileBase>();
+		}
+
+		[Required]
+		[Display(Name = "Proof of Approval")]
+		public IEnumerable<Attachment> Attachments { get; set; } 
+
+		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
+
+
+
+		public int? Id { get; set; }
+
+		[Required]
+		[Display(Name = "ReqReason", ResourceType = typeof(Language.Event))]
+		public string Reason { get; set; }
+
+		[Required]
+		[Display(Name = "ReqType", ResourceType = typeof(Language.Event))]
+		public RequestType? RequestType { get; set; }
+
+		[Display(Name = "ReqStatus", ResourceType = typeof(Language.Event))]
+		public RequestStatus? RequestStatus { get; set; }
+
+		public int? EventId { get; set; }
+
+		[Display(Name = "ReqEventTitle", ResourceType = typeof(Language.Event))]
+		public string EventTitle { get; set; }
+
+		[Display(Name = "ReqEventRefNo", ResourceType = typeof(Language.Event))]
+		public string EventRefNo { get; set; }
+
+		[Display(Name = "ReqEventCategory", ResourceType = typeof(Language.Event))]
+		public string EventCategory { get; set; }
+
+		[Display(Name = "ReqEventObjective", ResourceType = typeof(Language.Event))]
+		public string EventObjective { get; set; }
+
+		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
+	}
 }

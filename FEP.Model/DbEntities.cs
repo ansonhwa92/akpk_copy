@@ -154,12 +154,13 @@ namespace FEP.Model
 		public DbSet<EventExternalExhibitor> EventExternalExhibitor { get; set; }
 		public DbSet<EventCategory> EventCategory { get; set; }
 		public DbSet<ExhibitionNominee> ExhibitionNominee { get; set; }
-
 		public DbSet<AssignedSpeaker> AssignedSpeaker { get; set; }
 		public DbSet<AssignedExternalExhibitor> AssignedExternalExhibitor { get; set; }
 		public DbSet<DutyRoster> DutyRoster { get; set; }
 		public DbSet<DutyRosterOfficer> DutyRosterOfficer { get; set; }
-		
+		public DbSet<EventRequest> EventRequest { get; set; }
+
+
 
 		// Elearning
 		public DbSet<Course> Courses { get; set; }
@@ -223,6 +224,9 @@ namespace FEP.Model
         // Email?
         public DbSet<TabBulkEmail> TabBulkEmail { get; set; }
         public DbSet<TabBulkSMS> TabBulkSMS { get; set; }
+        
+        //CTE
+        public DbSet<Months> Months { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

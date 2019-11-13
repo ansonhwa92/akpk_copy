@@ -212,4 +212,30 @@ namespace FEP.Model
 		Mandarin,
 		Cantonese,
 	}
+
+	public enum RequestType
+	{
+		[Display(Name = "Cancellation Required")]
+		CancelRequired,
+		[Display(Name = "Modification Required")]
+		ModifyRequired
+	}
+
+	public enum RequestStatus
+	{
+		[Display(Name = "Draft")]
+		New,
+		[Display(Name = "Pending Verification")]
+		PendingVerified,
+		[Display(Name = "Pending Approval 1")]
+		Verified,
+		[Display(Name = "Require Amendment")]
+		AmendmentRequired,
+		[Display(Name = "Pending Approval 2")]
+		ApprovedByApprover1,
+		[Display(Name = "Pending Approval 3")]
+		ApprovedByApprover2,
+		[Display(Name = "Approved")]
+		ApprovedByApprover3,
+	}
 }

@@ -123,6 +123,9 @@
   <data name="AlertFailChangePassword" xml:space="preserve">
     <value>Fail to change password</value>
   </data>
+  <data name="AlertFailUpdateAvatar" xml:space="preserve">
+    <value>Fail to change avatar photo</value>
+  </data>
   <data name="AlertFailUpdateProfile" xml:space="preserve">
     <value>Fail to update profile</value>
   </data>
@@ -132,6 +135,9 @@
   <data name="AlertSuccessChangePassword" xml:space="preserve">
     <value>Password successfully updated</value>
   </data>
+  <data name="AlertSuccessUpdateAvatar" xml:space="preserve">
+    <value>Avatar photo successfully updated. You need to sign in again to see the change.</value>
+  </data>
   <data name="AlertSuccessUpdateProfile" xml:space="preserve">
     <value>Profile successfully updated</value>
   </data>
@@ -140,6 +146,9 @@
   </data>
   <data name="FieldAgencyName" xml:space="preserve">
     <value>Agency Name</value>
+  </data>
+  <data name="FieldAvatar" xml:space="preserve">
+    <value>Avatar Photo</value>
   </data>
   <data name="FieldCitizenship" xml:space="preserve">
     <value>Citizenship</value>
@@ -353,6 +362,9 @@
   </data>
   <data name="ValidRequiredAgencyName" xml:space="preserve">
     <value>Please enter Agency Name</value>
+  </data>
+  <data name="ValidRequiredAvatar" xml:space="preserve">
+    <value>Please select image file</value>
   </data>
   <data name="ValidRequiredCitizenshipId" xml:space="preserve">
     <value>Please select Citizenship</value>

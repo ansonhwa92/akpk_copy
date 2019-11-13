@@ -23,7 +23,7 @@ using FEP.WebApiModel.Notification;
 namespace FEP.Intranet.Controllers
 {
 
-    [LogError(Modules.Admin)]
+    [LogError(Modules.Setting)]
     public class AuthController : FEPController
     {
         [NonAction]
@@ -417,7 +417,7 @@ namespace FEP.Intranet.Controllers
 
                         }
 
-                        await LogActivity(Modules.Admin, "User Sign In", new { UserId = user.Id, Name = user.Name }, user.Id);
+                        await LogActivity(Modules.Setting, "User Sign In", new { UserId = user.Id, Name = user.Name }, user.Id);
 
                         return Redirect(GetRedirectUrl(model.ReturnUrl));
 
@@ -469,13 +469,14 @@ namespace FEP.Intranet.Controllers
                                         isenable = user.IsEnable,
                                         validfrom = user.ValidFrom,
                                         validto = user.ValidTo,
+                                        avatar = user.AvatarImageBase64,
                                         access = user.UserAccesses.Select(s => ((int)s).ToString()).ToList()
                                     }
                                 );
 
                             }
 
-                            await LogActivity(Modules.Admin, "User Sign In", new { UserId = user.Id, Name = user.Name }, user.Id);
+                            await LogActivity(Modules.System, "User Sign In", new { UserId = user.Id, Name = user.Name }, user.Id);
 
                             return Redirect(GetRedirectUrl(model.ReturnUrl));
 
@@ -508,6 +509,7 @@ namespace FEP.Intranet.Controllers
                 new Claim("UserId", usermodel.userid.ToString()),
                 new Claim("Name", usermodel.name != null ? usermodel.name.ToString() : ""),
                 new Claim("Email", usermodel.email != null ? usermodel.email.ToString() : ""),
+                new Claim("Avatar", usermodel.avatar != null ? usermodel.avatar.ToString() : ""),
                 new Claim("UserType", usermodel.usertype != null ? usermodel.usertype.ToString() : ""),
             }, "FEPCookie");
 
@@ -532,7 +534,7 @@ namespace FEP.Intranet.Controllers
 
             authManager.SignOut("FEPCookie");
 
-            LogActivity(Modules.Admin, "User Sign Out");
+            LogActivity(Modules.System, "User Sign Out");
 
             return RedirectToAction("Index", "Home", routeValues: null);
 

@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 //using FEP.WebApiModel;
 using FEP.Model;
 using FEP.WebApiModel.RnP;
-using FEP.WebApiModel.Integration;
+using FEP.WebApiModel.Setting;
 using FEP.WebApiModel.SLAReminder;
 
 
@@ -96,7 +96,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 model.Type = SurveyType.Public;
             }
 
-            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Setting/Group/GetActiveDropdown");
 
             if (groups.isSuccess)
             {
@@ -273,7 +273,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.TypeName = "Targeted Groups";
             }
 
-            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Setting/Group/GetActiveDropdown");
 
             if (groups.isSuccess)
             {
@@ -575,7 +575,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.TypeName = "Targeted Groups";
             }
 
-            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Setting/Group/GetActiveDropdown");
 
             if (groups.isSuccess)
             {
@@ -937,7 +937,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.TypeName = "Targeted Groups";
             }
 
-            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Setting/Group/GetActiveDropdown");
 
             if (groups.isSuccess)
             {
@@ -984,7 +984,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.TypeName = "Targeted Groups";
             }
 
-            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Setting/Group/GetActiveDropdown");
 
             if (groups.isSuccess)
             {
@@ -1195,7 +1195,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.TypeName = "Targeted Groups";
             }
 
-            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Integration/Group/GetActiveDropdown");
+            var groups = await WepApiMethod.SendApiAsync<List<TargetedGroupDropdown>>(HttpVerbs.Get, $"Setting/Group/GetActiveDropdown");
 
             if (groups.isSuccess)
             {

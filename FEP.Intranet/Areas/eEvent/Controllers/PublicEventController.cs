@@ -871,6 +871,577 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 		}
 
+
+
+
+
+
+		[HttpGet]
+		public ActionResult Create_RequestCancelModify(int? id)
+		{
+			var model = new FEP.Intranet.Areas.eEvent.Models.EventRequestModel()
+			{
+				EventId = id
+			};
+
+			return View(model);
+		}
+
+
+		// POST: PublicEvent/Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Create_RequestCancelModify(FEP.Intranet.Areas.eEvent.Models.EventRequestModel model)
+		{
+			if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
+			{
+				ModelState.AddModelError("Attachments", "Please upload file");
+			}
+
+			if (ModelState.IsValid)
+			{
+				var modelapi = new EventRequestModel
+				{
+					RequestStatus = RequestStatus.New,
+					Reason = model.Reason,
+					EventTitle = model.EventTitle,
+					EventObjective = model.EventObjective,
+					EventId = model.EventId,
+					RequestType = model.RequestType,
+					Display = true,
+					CreatedBy = CurrentUser.UserId,
+					CreatedDate = DateTime.Now,
+				};
+
+				//attachment
+				if (model.AttachmentFiles.Count() > 0)
+				{
+					var files = await FileMethod.UploadFile(model.AttachmentFiles.ToList(), CurrentUser.UserId);
+
+					if (files != null)
+					{
+						modelapi.FilesId = files.Select(f => f.Id).ToList();
+					}
+				}
+
+				var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"eEvent/PublicEvent/Create", modelapi);
+
+				if (response.isSuccess)
+				{
+					await LogActivity(Modules.Event, "Create Cancellation/Modification Request", model);
+					TempData["SuccessMessage"] = "Cancellation/Modification Request successfully created and need to submit for verification";
+					return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+				}
+
+			}
+
+			return View(model);
+		}
+
+
+		[HttpGet]
+		public async Task<ActionResult> Details_RequestCancelModify(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+
+			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Get, $"eEvent/PublicEvent/Details?id={id}");
+
+			if (!response.isSuccess)
+			{
+				return HttpNotFound();
+			}
+
+			var model = new FEP.Intranet.Areas.eEvent.Models.EventRequestModel()
+			{
+				Id = response.Data.Id,
+				EventTitle = response.Data.EventTitle,
+				EventObjective = response.Data.EventObjective,
+				EventCategory = response.Data.EventCategory,
+				EventId = response.Data.EventId,
+				RequestStatus = response.Data.RequestStatus,
+				RequestType = response.Data.RequestType,
+				CreatedBy = response.Data.CreatedBy,
+				CreatedByName = response.Data.CreatedByName,
+				Display = response.Data.Display,
+				EventRefNo = response.Data.EventRefNo,
+				Reason = response.Data.Reason,
+				Attachments = response.Data.Attachments,
+				CreatedDate = response.Data.CreatedDate,
+			};
+
+			if (model == null)
+			{
+				return HttpNotFound();
+			}
+
+			return View(model);
+		}
+
+
+		public async Task<ActionResult> Edit_RequestCancelModify(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Get, $"eEvent/PublicEvent/Details?id={id}");
+
+			if (!response.isSuccess)
+			{
+				return HttpNotFound();
+			}
+
+			var model = new FEP.Intranet.Areas.eEvent.Models.EventRequestModel()
+			{
+				Id = response.Data.Id,
+				EventTitle = response.Data.EventTitle,
+				EventObjective = response.Data.EventObjective,
+				EventCategory = response.Data.EventCategory,
+				EventId = response.Data.EventId,
+				RequestStatus = response.Data.RequestStatus,
+				RequestType = response.Data.RequestType,
+				CreatedBy = response.Data.CreatedBy,
+				CreatedByName = response.Data.CreatedByName,
+				Display = response.Data.Display,
+				EventRefNo = response.Data.EventRefNo,
+				Reason = response.Data.Reason,
+				Attachments = response.Data.Attachments,
+				CreatedDate = response.Data.CreatedDate,
+			};
+
+			if (model == null)
+			{
+				return HttpNotFound();
+			}
+
+			return View(model);
+		}
+
+		// POST: PublicEvent/Edit/5
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Edit_RequestCancelModify(FEP.Intranet.Areas.eEvent.Models.EventRequestModel model)
+		{
+
+			if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
+			{
+				ModelState.AddModelError("Attachments", "Please upload file");
+			}
+
+			if (ModelState.IsValid)
+			{
+				var modelapi = new EventRequestModel
+				{
+					Id = model.Id,
+					RequestStatus = model.RequestStatus,
+					Reason = model.Reason,
+					EventTitle = model.EventTitle,
+					EventObjective = model.EventObjective,
+					EventId = model.EventId,
+					RequestType = model.RequestType,
+					Attachments = model.Attachments,
+				};
+
+				//attachment
+				if (model.AttachmentFiles.Count() > 0)
+				{
+					var files = await FileMethod.UploadFile(model.AttachmentFiles.ToList(), CurrentUser.UserId);
+
+					if (files != null)
+					{
+						modelapi.FilesId = files.Select(f => f.Id).ToList();
+					}
+
+				}
+
+				var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/PublicEvent/Edit?id={model.Id}", modelapi);
+
+				if (response.isSuccess)
+				{
+
+					await LogActivity(Modules.Event, "Update Cancellation/Modification Request", model);
+					TempData["SuccessMessage"] = "Cancellation/Modification Request successfully updated";
+
+					return RedirectToAction("Details_RequestCancelModify","PublicEvent", new { Id = model.Id});
+				}
+			}
+
+			return View(model);
+		}
+
+
+
+
+
+
+		public async Task<ActionResult> SubmitToVerifyRequest(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Post, $"eEvent/PublicEvent/SubmitToVerifyRequest?id={id}");
+			if (response.isSuccess)
+			{
+				ParameterListToSend paramToSend = new ParameterListToSend();
+				paramToSend.EventCode = response.Data.EventRefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.RequestType = response.Data.RequestType.GetDisplayName();
+				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
+				paramToSend.Reason = response.Data.Reason;
+
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verifier_CancellationModificationRequest}");
+				if (receiveresponse.isSuccess)
+				{
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Submit_CancellationModification_For_Verification,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
+
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
+
+					//save saveThisID dalam table
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusIdRequest?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+					await LogActivity(Modules.Event, "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + " is submit for verification.");
+					TempData["SuccessMessage"] = "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", successfully submitted for verification.";
+				}
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Fail to submit Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", for verification.";
+				return RedirectToAction("Details_RequestCancelModify", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+
+
+		public async Task<ActionResult> VerifiedRequest(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Post, $"eEvent/PublicEvent/VerifiedRequest?id={id}");
+			if (response.isSuccess)
+			{
+				//--------------------------------------------------Stop Previous Email---------------------------------------------//
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/PublicEvent/GetSLAIdRequest?id={id}");
+				if (responseGetSLAId.isSuccess)
+				{
+					int SLAReminderStatusId = responseGetSLAId.Data;
+					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+					List<BulkNotificationModel> myNotification = responseSLA.Data;
+				}
+
+				//--------------------------------------------------Send Email---------------------------------------------//
+				ParameterListToSend paramToSend = new ParameterListToSend();
+				paramToSend.EventCode = response.Data.EventRefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.RequestType = response.Data.RequestType.GetDisplayName();
+				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
+				paramToSend.Reason = response.Data.Reason;
+
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver1_CancellationModificationRequest}");
+				if (receiveresponse.isSuccess) 
+
+
+				{
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Verify_CancellationModification,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					if (response2.isSuccess) { }
+					int saveThisID = response2.Data.SLAReminderStatusId;
+
+					response.Data.SLAReminderStatusId = saveThisID;
+
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusIdRequest?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+					await LogActivity(Modules.Event, "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + " is verified.");
+					TempData["SuccessMessage"] = "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", successfully verified and submitted for approval.";
+				}
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Fail to approve Cancellation/Modification Request.";
+				return RedirectToAction("Details_RequestCancelModify", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+
+		public async Task<ActionResult> FirstApprovedRequest(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Post, $"eEvent/PublicEvent/FirstApprovedRequest?id={id}");
+			if (response.isSuccess)
+			{
+				//--------------------------------------------------Stop Previous Email---------------------------------------------//
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/PublicEvent/GetSLAIdRequest?id={id}");
+				if (responseGetSLAId.isSuccess)
+				{
+					int SLAReminderStatusId = responseGetSLAId.Data;
+					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+					List<BulkNotificationModel> myNotification = responseSLA.Data;
+				}
+
+				//--------------------------------------------------Send Email---------------------------------------------//
+				ParameterListToSend paramToSend = new ParameterListToSend();
+				paramToSend.EventCode = response.Data.EventRefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.RequestType = response.Data.RequestType.GetDisplayName();
+				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
+				paramToSend.Reason = response.Data.Reason;
+
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver2_CancellationModificationRequest}");
+				if (receiveresponse.isSuccess)
+				{
+
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Approve_CancellationModification_ByApprover_1,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
+
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusIdRequest?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+					await LogActivity(Modules.Event, "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + " is approved on first level.");
+					TempData["SuccessMessage"] = "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", successfully approved and submitted to next approval.";
+				}
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Fail to approve Cancellation/Modification Request.";
+				return RedirectToAction("Details_RequestCancelModify", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+
+		public async Task<ActionResult> SecondApprovedRequest(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Post, $"eEvent/PublicEvent/SecondApprovedRequest?id={id}");
+			if (response.isSuccess)
+			{
+				//--------------------------------------------------Stop Previous Email---------------------------------------------//
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/PublicEvent/GetSLAIdRequest?id={id}");
+				if (responseGetSLAId.isSuccess)
+				{
+					int SLAReminderStatusId = responseGetSLAId.Data;
+					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+					List<BulkNotificationModel> myNotification = responseSLA.Data;
+				}
+
+				//--------------------------------------------------Send Email---------------------------------------------//
+
+				ParameterListToSend paramToSend = new ParameterListToSend();
+				paramToSend.EventCode = response.Data.EventRefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.RequestType = response.Data.RequestType.GetDisplayName();
+				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
+				paramToSend.Reason = response.Data.Reason;
+
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver3_CancellationModificationRequest}");
+				if (receiveresponse.isSuccess)
+				{
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Approve_CancellationModification_ByApprover_2,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
+
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusIdRequest?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+					await LogActivity(Modules.Event, "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + " is approved on second level.");
+					TempData["SuccessMessage"] = "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", successfully approved and submitted to next approval.";
+				}
+
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to approve Cancellation/Modification Request.";
+				return RedirectToAction("Details_RequestCancelModify", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+
+		public async Task<ActionResult> FinalApprovedRequest(int? id, string RequestType)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Post, $"eEvent/PublicEvent/FinalApprovedRequest?id={id}&RequestType={RequestType}");
+			if (response.isSuccess)
+			{
+				//--------------------------------------------------Stop Previous Email---------------------------------------------//
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/PublicEvent/GetSLAIdRequest?id={id}");
+				if (responseGetSLAId.isSuccess)
+				{
+					int SLAReminderStatusId = responseGetSLAId.Data;
+					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+					List<BulkNotificationModel> myNotification = responseSLA.Data;
+				}
+
+				//--------------------------------------------------Send Email---------------------------------------------//
+
+				ParameterListToSend paramToSend = new ParameterListToSend();
+				paramToSend.EventCode = response.Data.EventRefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.RequestType = response.Data.RequestType.GetDisplayName();
+				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
+				paramToSend.Reason = response.Data.Reason;
+
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.EventAdministratorCCD}");
+				if (receiveresponse.isSuccess)
+				{
+
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.Approve_CancellationModification_ByApprover_3,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data,
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
+
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusIdRequest?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+					await LogActivity(Modules.Event, "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + " is approved");
+					TempData["SuccessMessage"] = "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", successfully approved.";
+				}
+
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to approve Cancellation/Modification Request.";
+				return RedirectToAction("Details_RequestCancelModify", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+		public async Task<ActionResult> RequireAmendmentRequest(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Post, $"eEvent/PublicEvent/RequireAmendmentRequest?id={id}");
+			if (response.isSuccess)
+			{
+				//--------------------------------------------------Stop Previous Email---------------------------------------------//
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/PublicEvent/GetSLAIdRequest?id={id}");
+				if (responseGetSLAId.isSuccess)
+				{
+					int SLAReminderStatusId = responseGetSLAId.Data;
+					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+					List<BulkNotificationModel> myNotification = responseSLA.Data;
+				}
+
+				//--------------------------------------------------Send Email---------------------------------------------//
+
+				ParameterListToSend paramToSend = new ParameterListToSend();
+				paramToSend.EventCode = response.Data.EventRefNo;
+				paramToSend.EventName = response.Data.EventTitle;
+				paramToSend.RequestType = response.Data.RequestType.GetDisplayName();
+				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
+				paramToSend.Reason = response.Data.Reason;
+
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Amendment_CancellationModificationRequest}");
+				if (receiveresponse.isSuccess)
+				{
+
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.RequireAmendment_CancellationModification,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data,
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					int saveThisID = response2.Data.SLAReminderStatusId;
+
+					//save saveThisID dalam table 
+					response.Data.SLAReminderStatusId = saveThisID;
+					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusIdRequest?id={response.Data.Id}&saveThisID={saveThisID}");
+					if (response3.isSuccess) { }
+
+					await LogActivity(Modules.Event, "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + " is required amendment.");
+					TempData["SuccessMessage"] = "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", successfully required amendment.";
+				}
+
+				return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to amendment Cancellation/Modification Request.";
+				return RedirectToAction("Details_RequestCancelModify", "PublicEvent", new { area = "eEvent", @id = id });
+			}
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		//[HttpPost]
 		//[ValidateAntiForgeryToken]
 		//public async Task<ActionResult> Details(GlobalPublicEventApprovalModel model)
@@ -1060,5 +1631,5 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		//		}
 		//	}
 
-		}
 	}
+}

@@ -67,7 +67,7 @@
 
 }
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", id = "target" }))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data"}))
 {
 	@Html.AntiForgeryToken()
 	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -142,7 +142,6 @@
 					</div>
 					<div class="tab-content">
 						<div class="tab-pane active" id="exhibitiondetails">
-							<form>
 								<div class="form-container">
 									<div class="sub-Title my-4">
 										Exhibition Details
@@ -184,11 +183,9 @@
 
 								</div>
 								<!-- End Form -->
-							</form>
 						</div>
 
 						<div class="tab-pane" id="eventdetails">
-							<form>
 								<div class="form-container">
 									<div class="sub-Title my-4">
 										Event Details
@@ -300,7 +297,6 @@
 								<!-- End Form -->
 								<!-- Action Button -->
 								<!-- End Action Button -->
-							</form>
 						</div>
 
 					</div>

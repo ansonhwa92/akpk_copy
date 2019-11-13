@@ -36,8 +36,7 @@ namespace FEP.WebApi.Api.eLearning
             var totalCount = query.Count();
 
             //advance search
-            query = query.Where(s => (request.CourseId == null || s.CourseId == request.CourseId)
-               && (request.ModuleId == null || s.ModuleId == request.ModuleId)
+            query = query.Where(s => (request.Module == null || s.Module.Contains(request.Module))
                && (request.Date == null || s.StartDate <= request.Date && s.EndDate >= request.Date)
                && (request.Venue == null || s.Venue.Contains(request.Venue))
                );
@@ -47,8 +46,7 @@ namespace FEP.WebApi.Api.eLearning
             {
                 var value = request.search.value.Trim();
 
-                query = query.Where(p => p.Course.Title.Contains(value)
-                || p.Module.Title.Contains(value)
+                query = query.Where(p => p.Module.Contains(value)
                 || p.Venue.Contains(value)
                 );
             }
@@ -62,29 +60,17 @@ namespace FEP.WebApi.Api.eLearning
                 bool sortAscending = request.order[0].dir.ToLower() == "asc";
 
                 switch (sortBy)
-                {
-                    case "Course":
-
-                        if (sortAscending)
-                        {
-                            query = query.OrderBy(o => o.Course.Title);
-                        }
-                        else
-                        {
-                            query = query.OrderByDescending(o => o.Course.Title);
-                        }
-
-                        break;
+                {                    
 
                     case "Module":
 
                         if (sortAscending)
                         {
-                            query = query.OrderBy(o => o.Module.Title);
+                            query = query.OrderBy(o => o.Module);
                         }
                         else
                         {
-                            query = query.OrderByDescending(o => o.Module.Title);
+                            query = query.OrderByDescending(o => o.Module);
                         }
 
                         break;
@@ -115,6 +101,19 @@ namespace FEP.WebApi.Api.eLearning
 
                         break;
 
+                    case "CreatedBy":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.User.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.User.Name);
+                        }
+
+                        break;
+
                     default:
                         query = query.OrderByDescending(o => o.CreatedDate);
                         break;
@@ -129,9 +128,8 @@ namespace FEP.WebApi.Api.eLearning
             var data = query.Skip(request.start).Take(request.length)
                 .Select(s => new TOTReportModel
                 {
-                    Id = s.Id,
-                    Course = s.Course.Title,
-                    Module = s.Module.Title,
+                    Id = s.Id,                  
+                    Module = s.Module,
                     Date = s.StartDate.ToString("dd/MM/yyyy"),
                     Venue = s.Venue,
                     CreatedBy = s.User.Name + " (" + s.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss") + ")"
@@ -153,11 +151,8 @@ namespace FEP.WebApi.Api.eLearning
             var report = db.TOTReport.Where(u => u.Id == id)
                 .Select(s => new DetailsTOTReportModel
                 {
-                    Id = s.Id,
-                    CourseId = s.CourseId,
-                    Course = s.Course.Title,
-                    ModuleId= s.ModuleId,
-                    Module = s.Module.Title,
+                    Id = s.Id, 
+                    Module = s.Module,
                     StartDate = s.StartDate,
                     EndDate = s.EndDate,
                     StartTime = s.StartDate,
@@ -166,7 +161,9 @@ namespace FEP.WebApi.Api.eLearning
                     NoOfMale = s.NoOfMale,
                     NoOfFemale = s.NoOfFemale,
                     AgeRange = s.AgeRange,
-                    SalaryRange = s.SalaryRange
+                    SalaryRange = s.SalaryRange,
+                    CreatedBy = s.User.Name,
+                    CreatedDate = s.CreatedDate
                 })
                 .FirstOrDefault();
 
@@ -188,9 +185,8 @@ namespace FEP.WebApi.Api.eLearning
             {
 
                 var report = new TOTReport
-                {
-                    CourseId = model.CourseId,
-                    ModuleId = model.ModuleId,
+                {                   
+                    Module = model.Module,
                     StartDate = model.StartDate.Value,
                     EndDate = model.EndDate.Value,
                     Venue = model.Venue,
@@ -236,9 +232,8 @@ namespace FEP.WebApi.Api.eLearning
                 {
                     return NotFound();
                 }
-                
-                report.CourseId = model.CourseId;
-                report.ModuleId = model.ModuleId;
+               
+                report.Module = model.Module;
                 report.StartDate = model.StartDate;
                 report.EndDate = model.EndDate;
                 report.Venue = model.Venue;
@@ -331,33 +326,6 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(true);
         }
 
-        [Route("api/eLearning/TOTReport/GetCourses")]
-        public IHttpActionResult GetCourses()
-        {
-            var courses = db.Courses.Where(c => !c.IsDeleted)
-                .Select(s => new TOTCourseModel
-                {
-                    Id = s.Id,
-                    Name = s.Title,                  
-                })
-                .ToList();
-
-            return Ok(courses);
-        }
-
-        [Route("api/eLearning/TOTReport/GetModules")]
-        public IHttpActionResult GetModules(int courseId)
-        {
-            var modules = db.CourseModules.Where(c => c.CourseId == courseId)
-                .Select(s => new TOTCourseModel
-                {
-                    Id = s.Id,
-                    Name = s.Title,
-                })
-                .ToList();
-
-            return Ok(modules);
-        }
-
+      
     }
 }

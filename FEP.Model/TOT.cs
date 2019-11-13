@@ -13,11 +13,8 @@ namespace FEP.Model
     public class TOTReport
     {
         [Key]
-        public int Id { get; set; }
-        public int CourseId { get; set; }
-
-        public int ModuleId { get; set; }
-
+        public int Id { get; set; }        
+        public string Module { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Venue { get; set; }
@@ -27,13 +24,7 @@ namespace FEP.Model
         public TOTAgeRange AgeRange { get; set; }
         public TOTSalaryRange SalaryRange { get; set; }                       
         public DateTime CreatedDate { get; set; }
-        public int? CreatedBy { get; set; }   
-        
-        [ForeignKey("CourseId")]
-        public virtual Course Course { get; set; } 
-
-        [ForeignKey("ModuleId")]
-        public virtual CourseModule Module { get; set; }
+        public int? CreatedBy { get; set; }  
 
         [ForeignKey("CreatedBy")]
         public virtual User User { get; set; }

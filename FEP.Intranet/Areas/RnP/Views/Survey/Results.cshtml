@@ -34,10 +34,17 @@
 <div class="row">
     <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
         <div class="border-form rounded-top">
+            <label>Questions</label>
             <textarea id="Questions" name="Questions" class="form-control" rows="5">@Model.Contents</textarea>
+            <label>No. of Participants</label>
+            <input type="text" id="ParticipantCount" name="ParticipantCount" class="form-control" value="@Model.ParticipantCount" />
+            <label>Responses (Raw)</label>
             <textarea id="Results" name="Results" class="form-control" rows="5">@Model.Results</textarea>
+            <label>CSV</label>
             <textarea id="CSVOutput" name="CSVOutput" class="form-control" rows="5">@Model.CSVOutput</textarea>
+            <label>XLS</label>
             <textarea id="XLSOutput" name="XLSOutput" class="form-control" rows="5">@Model.XLSOutput</textarea>
+            <label>PDF</label>
             <textarea id="PDFOutput" name="PDFOutput" class="form-control" rows="5">@Model.PDFOutput</textarea>
         </div>
     </div>

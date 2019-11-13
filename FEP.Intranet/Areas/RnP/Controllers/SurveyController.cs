@@ -1350,7 +1350,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 SurveyID = surveyinfo.ID,
                 Type = SurveyResponseTypes.Testing,
                 UserId = uid,
-                Contents = ""
+                Contents = "",
+                Answers = ""
             };
 
             var vmtest = new ReturnSurveyResponseModel
@@ -1439,7 +1440,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 SurveyID = surveyinfo.ID,
                 Type = SurveyResponseTypes.Actual,
                 UserId = uid,
-                Contents = ""
+                Contents = "",
+                Answers = ""
             };
 
             var vmtest = new ReturnSurveyResponseModel

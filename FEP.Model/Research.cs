@@ -85,6 +85,7 @@ namespace FEP.Model
         public string Email { get; set; }
         public DateTime ResponseDate { get; set; }
         public string Contents { get; set; }
+        public string Answers { get; set; }
         // foreign keys......................................................................................................
         [ForeignKey("SurveyID")]
         public virtual Survey Survey { get; set; }
@@ -108,6 +109,7 @@ namespace FEP.Model
         public int UserId { get; set; }
         public DateTime ResponseDate { get; set; }
         public string Contents { get; set; }
+        public string Answers { get; set; }
         // foreign keys......................................................................................................
         [ForeignKey("SurveyID")]
         public virtual AssessmentSurvey Assessment { get; set; }
@@ -132,6 +134,7 @@ namespace FEP.Model
         public string Email { get; set; }
         public DateTime ResponseDate { get; set; }
         public string Contents { get; set; }
+        public string Answers { get; set; }
         // foreign keys......................................................................................................
         [ForeignKey("SurveyID")]
         public virtual FeedbackSurvey Feedback { get; set; }

@@ -12,6 +12,10 @@ using System.Data.Entity;
 using System.Web;
 using FEP.WebApiModel.SLAReminder;
 using FEP.WebApiModel.FileDocuments;
+using Newtonsoft.Json;
+using System.IO;
+using System.Data;
+using CsvHelper;
 
 
 namespace FEP.WebApi.Api.RnP
@@ -1546,6 +1550,7 @@ namespace FEP.WebApi.Api.RnP
                     UserId = model.UserId,
                     Email = model.Email,
                     Contents = model.Contents,
+                    Answers = model.Answers,
                     ResponseDate = DateTime.Now
                 };
 
@@ -1574,6 +1579,7 @@ namespace FEP.WebApi.Api.RnP
                     UserId = model.UserId,
                     Email = model.Email,
                     Contents = model.Contents,
+                    Answers = model.Answers,
                     ResponseDate = DateTime.Now
                 };
 
@@ -1795,18 +1801,39 @@ namespace FEP.WebApi.Api.RnP
         [HttpGet]
         public SurveyResultsModel CompileAnswers(int id)
         {
-            var results = new SurveyResultsModel();
-
-            var survey = db.Survey.Where(p => p.ID == id).Select(s => new ReturnSurveyContentsModel
+            var results = db.Survey.Where(p => p.ID == id).Select(s => new SurveyResultsModel
             {
                 ID = s.ID,
+                Type = s.Type,
+                Category = s.Category,
+                RefNo = s.RefNo,
+                Title = s.Title,
+                Description = s.Description,
+                TargetGroup = s.TargetGroup,
+                StartDate = s.StartDate,
+                EndDate = s.EndDate,
+                RequireLogin = s.RequireLogin,
                 Contents = s.Contents,
+                Active = s.Active,
+                CreatorId = s.CreatorId,
+                CreatorName = "",
+                DateAdded = s.DateAdded,
+                Status = s.Status,
+                InviteCount = s.InviteCount,
+                SubmitCount = s.SubmitCount,
+                ParticipantCount = 0,
+                Results = "",
+                Answers = "",
+                CSVOutput = "",
+                XLSOutput = "",
+                PDFOutput = ""
             }).FirstOrDefault();
 
-            if (survey != null)
+            if (results != null)
             {
                 // break up questions
-
+                // temp just show json
+                
                 var responses = db.SurveyResponse.Where(p => p.SurveyID == id).Select(s => new SurveyResponseModel
                 {
                     ID = s.ID,
@@ -1814,13 +1841,31 @@ namespace FEP.WebApi.Api.RnP
                     Type = s.Type,
                     UserId = s.UserId,
                     Email = s.Email,
-                    Contents = s.Contents
+                    Contents = s.Contents,
+                    Answers = s.Answers
                 }).ToList();
 
-                //foreach (SurveyResponseModel response in responses)
-                //{
-                //
-                //}
+                results.ParticipantCount = responses.Count;
+
+                string csvstring = "";
+
+                foreach (SurveyResponseModel response in responses)
+                {
+                    results.Results = results.Results + response.Contents + "\r\n";
+                    var answers = JsonConvert.DeserializeObject<List<SurveyAnswersModel>>(response.Answers);
+                    foreach (var myanswer in answers)
+                    {
+                        results.CSVOutput = results.CSVOutput + myanswer.answer;
+                    }
+                    //results.CSVOutput = results.CSVOutput + answers.
+                }
+
+                //var jsonobj1 = JsonConvert.DeserializeObject(results.Results);
+
+                //csvstring = JsonToCSV(results.Results, ",");
+                //results.CSVOutput = csvstring;
+
+                return results;
             }
 
             return null;
@@ -1828,6 +1873,48 @@ namespace FEP.WebApi.Api.RnP
 
 
         // Private functions
+
+        // export conversion functions
+
+        // json -> datatable
+        [NonAction]
+        private static DataTable jsonStringToTable(string jsonContent)
+        {
+            DataTable dt = JsonConvert.DeserializeObject<DataTable>(jsonContent);
+            return dt;
+        }
+
+        // csv
+        [NonAction]
+        private string JsonToCSV(string jsonContent, string delimiter)
+        {
+            StringWriter csvString = new StringWriter();
+            using (var csv = new CsvWriter(csvString))
+            {
+                //csv.Configuration.SkipEmptyRecords = true;
+                //csv.Configuration.WillThrowOnMissingField = false;
+                csv.Configuration.Delimiter = delimiter;
+
+                using (var dt = jsonStringToTable(jsonContent))
+                {
+                    foreach (DataColumn column in dt.Columns)
+                    {
+                        csv.WriteField(column.ColumnName);
+                    }
+                    csv.NextRecord();
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        for (var i = 0; i < dt.Columns.Count; i++)
+                        {
+                            csv.WriteField(row[i]);
+                        }
+                        csv.NextRecord();
+                    }
+                }
+                return csvString.ToString();
+            }
+        }
 
         // Targeted Groups lookup
 

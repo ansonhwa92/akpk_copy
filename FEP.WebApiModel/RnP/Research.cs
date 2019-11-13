@@ -675,6 +675,8 @@ namespace FEP.WebApiModel.RnP
         [Required(ErrorMessageResourceName = "ValidRequiredSurveyResponseContents", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "SurveyResponseContents", ResourceType = typeof(Language.RnPForm))]
         public string Contents { get; set; }
+
+        public string Answers { get; set; }
     }
 
     // class for returning survey response preparation to client app
@@ -699,6 +701,8 @@ namespace FEP.WebApiModel.RnP
         public string Email { get; set; }
 
         public string Contents { get; set; }
+
+        public string Answers { get; set; }
     }
 
     // class for survey questions
@@ -763,6 +767,8 @@ namespace FEP.WebApiModel.RnP
         [Required]
         [Display(Name = "AssessmentResponseContents", ResourceType = typeof(Language.RnPForm))]
         public string Contents { get; set; }
+
+        public string Answers { get; set; }
     }
 
     // for creating
@@ -830,6 +836,8 @@ namespace FEP.WebApiModel.RnP
         [Required]
         [Display(Name = "FeedbackResponseContents", ResourceType = typeof(Language.RnPForm))]
         public string Contents { get; set; }
+
+        public string Answers { get; set; }
     }
 
     // for creating
@@ -846,14 +854,75 @@ namespace FEP.WebApiModel.RnP
         public int ID { get; set; }
     }
 
-    // Class for processing/viewing survey results
-    public class SurveyResultsModel : ReturnSurveyModel
+    // Class for returning selected survey info
+    public class ReturnSurveyModelNoFile
     {
-        public int SurveyID { get; set; }
+        public int ID { get; set; }
 
+        [Display(Name = "SurveyType", ResourceType = typeof(Language.RnPForm))]
+        public SurveyType? Type { get; set; }
+
+        [Display(Name = "SurveyCategory", ResourceType = typeof(Language.RnPForm))]
+        public SurveyCategory Category { get; set; }
+
+        [Display(Name = "SurveyTitle", ResourceType = typeof(Language.RnPForm))]
+        public string Title { get; set; }
+
+        [Display(Name = "SurveyDescription", ResourceType = typeof(Language.RnPForm))]
+        public string Description { get; set; }
+
+        [Display(Name = "SurveyTargetGroup", ResourceType = typeof(Language.RnPForm))]
+        public string TargetGroup { get; set; }
+
+        [Display(Name = "SurveyStartDate", ResourceType = typeof(Language.RnPForm))]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "SurveyEndDate", ResourceType = typeof(Language.RnPForm))]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
+        public DateTime EndDate { get; set; }
+
+        [Display(Name = "SurveyRequireLogin", ResourceType = typeof(Language.RnPForm))]
+        public bool RequireLogin { get; set; }
+
+        [Display(Name = "SurveyContents", ResourceType = typeof(Language.RnPForm))]
+        public string Contents { get; set; }
+
+        [Display(Name = "SurveyActive", ResourceType = typeof(Language.RnPForm))]
+        public bool Active { get; set; }
+
+        [Display(Name = "SurveyDateAdded", ResourceType = typeof(Language.RnPForm))]
+        public DateTime DateAdded { get; set; }
+
+        [Display(Name = "SurveyCreatorId", ResourceType = typeof(Language.RnPForm))]
+        public int CreatorId { get; set; }
+
+        [Display(Name = "SurveyCreatorId", ResourceType = typeof(Language.RnPForm))]
+        public string CreatorName { get; set; }
+
+        [Display(Name = "SurveyRefNo", ResourceType = typeof(Language.RnPForm))]
+        public string RefNo { get; set; }
+
+        [Display(Name = "SurveyStatus", ResourceType = typeof(Language.RnPForm))]
+        public SurveyStatus Status { get; set; }
+
+        [Display(Name = "SurveyInviteCount", ResourceType = typeof(Language.RnPForm))]
+        public int InviteCount { get; set; }
+
+        [Display(Name = "SurveySubmitCount", ResourceType = typeof(Language.RnPForm))]
+        public int SubmitCount { get; set; }
+    }
+
+    // Class for processing/viewing survey results
+    public class SurveyResultsModel : ReturnSurveyModelNoFile
+    {
         public int ParticipantCount { get; set; }
 
         public string Results { get; set; }
+
+        public string Answers { get; set; }
 
         public string CSVOutput { get; set; }
 
@@ -862,4 +931,42 @@ namespace FEP.WebApiModel.RnP
         public string PDFOutput { get; set; }
     }
 
+    // Class for survey questions
+    //public class Survey
+
+    // Class for survey response processing
+    //result: [
+    //{"surveyId":"1","question":"question1","answer":"Answer to first question","questionType":"text"},
+    //{"surveyId":"1","question":"question2","answer":["item1","item3"],"questionType":"checkbox"},
+    //{"surveyId":"1","question":"question3","answer":"item2","questionType":"radiogroup"},
+    //{"surveyId":"1","question":"question4","answer":"item2","questionType":"dropdown"},
+    //{"surveyId":"1","question":"question5","answer":"My comments","questionType":"comment"},
+    //{"surveyId":"1","question":"question6","answer":4,"questionType":"rating"},
+    //{"surveyId":"1","question":"question7","answer":true,"questionType":"boolean"},
+    //{"surveyId":"1","question":"question8row_Row 1","answer":"Column 1","questionType":"matrix"},
+    //{"surveyId":"1","question":"question8row_Row 2","answer":"Column 3","questionType":"matrix"},
+    //{"surveyId":"1","question":"question9","answer":{"Row 1":{"Column 1":1,"Column 2":2,"Column 3":3},"Row 2":{"Column 1":3,"Column 2":4,"Column 3":5}},"questionType":"matrixdropdown"},
+    //{"surveyId":"1","question":"question10.text1","answer":"Answer 9.1","questionType":"text"},
+    //{"surveyId":"1","question":"question10.text2","answer":"Answer 9.2","questionType":"text"},
+    //{"surveyId":"1","question":"question11","answer":"giraffe","questionType":"imagepicker"},
+    //{"surveyId":"1","question":"question12row_1.Column 1.Column 1","answer":1,"questionType":"dropdown"},
+    //{"surveyId":"1","question":"question12row_1.Column 2.Column 2","answer":2,"questionType":"dropdown"},
+    //{"surveyId":"1","question":"question12row_1.Column 3.Column 3","answer":3,"questionType":"dropdown"},
+    //{"surveyId":"1","question":"question12row_2.Column 1.Column 1","answer":2,"questionType":"dropdown"},
+    //{"surveyId":"1","question":"question12row_2.Column 2.Column 2","answer":3,"questionType":"dropdown"},
+    //{"surveyId":"1","question":"question12row_2.Column 3.Column 3","answer":4,"questionType":"dropdown"},
+    //{"surveyId":"1","question":"question12row_3.Column 1.Column 1","answer":3,"questionType":"dropdown"},
+    //{"surveyId":"1","question":"question12row_3.Column 2.Column 2","answer":4,"questionType":"dropdown"},
+    //{"surveyId":"1","question":"question12row_3.Column 3.Column 3","answer":5,"questionType":"dropdown"}
+    //]
+    public class SurveyAnswersModel
+    {
+        public string surveyId { get; set; }
+
+        public string question { get; set; }
+
+        public dynamic answer { get; set; }
+
+        public string questionType { get; set; }
+    }
 }

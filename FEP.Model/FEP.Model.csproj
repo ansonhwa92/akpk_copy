@@ -66,6 +66,14 @@
     <Compile Include="Migrations\201911101245273_1011.designer.cs">
       <DependentUpon>201911101245273_1011.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911121028411_1211.cs" />
+    <Compile Include="Migrations\201911121028411_1211.designer.cs">
+      <DependentUpon>201911121028411_1211.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911130622113_1311.cs" />
+    <Compile Include="Migrations\201911130622113_1311.designer.cs">
+      <DependentUpon>201911130622113_1311.cs</DependentUpon>
+    </Compile>
     <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="DbEntities.cs" />
@@ -136,6 +144,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911101245273_1011.resx">
       <DependentUpon>201911101245273_1011.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911121028411_1211.resx">
+      <DependentUpon>201911121028411_1211.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911130622113_1311.resx">
+      <DependentUpon>201911130622113_1311.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

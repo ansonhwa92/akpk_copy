@@ -21,12 +21,9 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44360</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>
-    </IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -205,6 +202,10 @@
     <Compile Include="Areas\eLearning\Helper\SlideshareHelper.cs" />
     <Compile Include="Areas\eLearning\Controllers\TOTReportController.cs" />
     <Compile Include="Areas\eLearning\Models\TOT.cs" />
+    <Compile Include="Areas\KMC\Controllers\CategoryController.cs" />
+    <Compile Include="Areas\KMC\Controllers\HomeController.cs" />
+    <Compile Include="Areas\KMC\Controllers\ManageController.cs" />
+    <Compile Include="Areas\KMC\KMCAreaRegistration.cs" />
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />
     <Compile Include="Areas\Logs\Controllers\UserLogController.cs" />
     <Compile Include="Areas\Logs\LogsAreaRegistration.cs" />
@@ -489,7 +490,32 @@
     <Content Include="img\akpk-news-02.jpg" />
     <Content Include="img\arrow-down.svg" />
     <Content Include="img\avatar-pic.jpg" />
+    <Content Include="img\banking\logo-affin.png" />
+    <Content Include="img\banking\logo-alliance.png" />
+    <Content Include="img\banking\logo-ambank.png" />
+    <Content Include="img\banking\logo-bank-islam.png" />
+    <Content Include="img\banking\logo-bsn.png" />
+    <Content Include="img\banking\logo-cimb-offline.png" />
+    <Content Include="img\banking\logo-cimb.png" />
+    <Content Include="img\banking\logo-hong-leong.png" />
+    <Content Include="img\banking\logo-hsbc.png" />
+    <Content Include="img\banking\logo-m2u.png" />
+    <Content Include="img\banking\logo-maybank-offline.png" />
+    <Content Include="img\banking\logo-muamalat.png" />
+    <Content Include="img\banking\logo-paypal.png" />
+    <Content Include="img\banking\logo-public-bank.png" />
+    <Content Include="img\banking\logo-rakyat.png" />
+    <Content Include="img\banking\logo-rhb.png" />
+    <Content Include="img\banking\logo-standard-chartered.png" />
+    <Content Include="img\banking\logo-uob.png" />
     <Content Include="img\banner\akpk-bnr-01.jpg" />
+    <Content Include="img\banner\akpk-bnr-03.png" />
+    <Content Include="img\banner\akpk-bnr-rumahku.jpg" />
+    <Content Include="img\calculator\icon-budgeting.svg" />
+    <Content Include="img\calculator\icon-credit-card.svg" />
+    <Content Include="img\calculator\icon-hire-purchase.svg" />
+    <Content Include="img\calculator\icon-housing.svg" />
+    <Content Include="img\calculator\icon-net-worth.svg" />
     <Content Include="img\cover-1.jpg" />
     <Content Include="img\cover-2.jpg" />
     <Content Include="img\cover-3.jpg" />
@@ -500,6 +526,9 @@
     <Content Include="img\cover-8.jpg" />
     <Content Include="img\cover-buku-1.jpg" />
     <Content Include="img\cover-buku-2.jpg" />
+    <Content Include="img\cover-publication-dummy-2.jpg" />
+    <Content Include="img\cover-publication-dummy.jpg" />
+    <Content Include="img\document-dummy.jpg" />
     <Content Include="img\favicon.png" />
     <Content Include="img\icon-01.png" />
     <Content Include="img\icon-02.png" />
@@ -520,6 +549,18 @@
     <Content Include="img\logo-akpk-normal.svg" />
     <Content Include="img\logo-akpk.svg" />
     <Content Include="img\no-photo.jpg" />
+    <Content Include="img\publications\icon-1-plus-1-promo.svg" />
+    <Content Include="img\publications\icon-cart.svg" />
+    <Content Include="img\publications\icon-digital.svg" />
+    <Content Include="img\publications\icon-hard-cover.svg" />
+    <Content Include="img\public\akpk-cover-afbes.jpg" />
+    <Content Include="img\public\akpk-cover-ar2018.jpg" />
+    <Content Include="img\public\akpk-cover-duittogether.jpg" />
+    <Content Include="img\public\akpk-cover-rumahku.jpg" />
+    <Content Include="img\public\akpk-cover-uruskan-aliran-tunai-anda.jpg" />
+    <Content Include="img\public\lizabubakar-avatar.jpg" />
+    <Content Include="img\public\mmuadzzulkifli-avatar.jpg" />
+    <Content Include="img\public\nirmalasupramaniam-avatar.jpg" />
     <Content Include="img\services\icon-dmp.svg" />
     <Content Include="img\services\icon-fc.svg" />
     <Content Include="img\services\icon-fe.svg" />
@@ -527,6 +568,10 @@
     <Content Include="img\stats\icon-stats-enrolled.svg" />
     <Content Include="img\stats\icon-stats-event.svg" />
     <Content Include="img\stats\icon-stats-rnp.svg" />
+    <Content Include="img\survey-cover-1.jpg" />
+    <Content Include="img\survey-cover-2.jpg" />
+    <Content Include="img\survey-cover-3.jpg" />
+    <Content Include="img\survey-cover-4.jpg" />
     <Content Include="js\elearn-course.js" />
     <Content Include="js\elearn.js" />
     <Content Include="js\index.js" />
@@ -987,6 +1032,13 @@
     <Content Include="Areas\eEvent\Views\PublicEvent\Details_RequestCancelModify.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Edit_RequestCancelModify.cshtml" />
     <Content Include="Areas\eLearning\Views\Home\BrowseElearnings.cshtml" />
+    <Content Include="img\23-The-power-of-Eliud-Kipchoge.pdf" />
+    <Content Include="Areas\KMC\Views\web.config" />
+    <Content Include="Areas\KMC\Views\Category\List.cshtml" />
+    <Content Include="Areas\KMC\Views\Category\_Create.cshtml" />
+    <Content Include="Areas\KMC\Views\Category\_Delete.cshtml" />
+    <Content Include="Areas\KMC\Views\Category\_Edit.cshtml" />
+    <Content Include="Areas\KMC\Views\Home\_Menu.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1616,6 +1668,9 @@
     <Folder Include="Areas\eEvent\Views\Default\" />
     <Folder Include="Areas\eEvent\Views\EventRefund\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
+    <Folder Include="Areas\KMC\Models\" />
+    <Folder Include="Areas\KMC\Views\Manage\" />
+    <Folder Include="Areas\KMC\Views\Shared\" />
     <Folder Include="Areas\Logs\Models\" />
     <Folder Include="Areas\Logs\Views\Shared\" />
     <Folder Include="Areas\Reward\Models\" />
@@ -1626,6 +1681,16 @@
     <Folder Include="Areas\SLAReminder\Views\Shared\" />
     <Folder Include="Areas\Template\Views\Shared\" />
     <Folder Include="bin\roslyn\" />
+    <Folder Include="img\avatar\" />
+    <Folder Include="img\banner\about-us\" />
+    <Folder Include="img\banner\banking\" />
+    <Folder Include="img\banner\banner\" />
+    <Folder Include="img\banner\calculator\" />
+    <Folder Include="img\banner\introduction\" />
+    <Folder Include="img\banner\publications\" />
+    <Folder Include="img\banner\public\" />
+    <Folder Include="img\banner\services\" />
+    <Folder Include="img\banner\stats\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>

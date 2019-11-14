@@ -362,3 +362,6 @@ healthchecksdb
 
 # App_Data
 /FEP.WebApi/App_Data/*
+
+# Avatar
+!/FEP.Intranet/img/avatar/*

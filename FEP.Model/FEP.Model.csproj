@@ -55,9 +55,18 @@
     <Compile Include="Access.cs" />
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
-    <Compile Include="Migrations\201911090524227_x.cs" />
-    <Compile Include="Migrations\201911090524227_x.designer.cs">
-      <DependentUpon>201911090524227_x.cs</DependentUpon>
+    <Compile Include="KMC.cs" />
+    <Compile Include="Migrations\201911120604366_x.cs" />
+    <Compile Include="Migrations\201911120604366_x.designer.cs">
+      <DependentUpon>201911120604366_x.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911121438177_x1.cs" />
+    <Compile Include="Migrations\201911121438177_x1.designer.cs">
+      <DependentUpon>201911121438177_x1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911121543451_x2.cs" />
+    <Compile Include="Migrations\201911121543451_x2.designer.cs">
+      <DependentUpon>201911121543451_x2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
@@ -122,8 +131,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911090524227_x.resx">
-      <DependentUpon>201911090524227_x.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911120604366_x.resx">
+      <DependentUpon>201911120604366_x.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911121438177_x1.resx">
+      <DependentUpon>201911121438177_x1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911121543451_x2.resx">
+      <DependentUpon>201911121543451_x2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -364,13 +364,13 @@ namespace FEP.Intranet.Controllers
         [HttpGet]
         public async Task<ActionResult> UpdateAvatar()
         {
-            var response = await WepApiMethod.SendApiAsync<AdminProfileModel>(HttpVerbs.Get, $"Administration/User?id={CurrentUser.UserId}");
+            var response = await WepApiMethod.SendApiAsync<DetailsUserModel>(HttpVerbs.Get, $"Administration/User?id={CurrentUser.UserId}");
 
             var model = new ProfileAvatarModel();
 
             if (response.isSuccess)
             {                
-                model.AvatarImageBase64 = response.Data.AvatarImageBase64;
+                model.AvatarImageUrl = response.Data.AvatarImageUrl;
             }
 
             return View(model);
@@ -402,9 +402,11 @@ namespace FEP.Intranet.Controllers
             if (ModelState.IsValid)
             {
 
-                var image64 = ConvertImageToBase64(model.AvatarFile);
+                var filename = CurrentUser.UserId.Value.ToString() + "_" + Path.GetFileName(model.AvatarFile.FileName);
 
-                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Home/Profile/UpdateAvatar?id={CurrentUser.UserId}", new Image64Model { image64 = image64 });
+                model.AvatarFile.SaveAs(Path.Combine(Server.MapPath("~/img/avatar"), filename));
+
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Home/Profile/UpdateAvatar?id={CurrentUser.UserId}&imageUrl={filename}");
 
                 if (response.isSuccess)
                 {

@@ -469,7 +469,7 @@ namespace FEP.Intranet.Controllers
                                         isenable = user.IsEnable,
                                         validfrom = user.ValidFrom,
                                         validto = user.ValidTo,
-                                        avatar = user.AvatarImageBase64,
+                                        avatar = user.AvatarImageUrl,
                                         access = user.UserAccesses.Select(s => ((int)s).ToString()).ToList()
                                     }
                                 );

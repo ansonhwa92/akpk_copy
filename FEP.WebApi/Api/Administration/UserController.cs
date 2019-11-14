@@ -61,7 +61,7 @@ namespace FEP.WebApi.Api.Administration
                 LastPasswordChange = s.UserAccount.LastPasswordChange,
                 CreatedBy = s.CreatedBy,
                 CreatedDate = s.CreatedDate,
-                AvatarImageBase64 = s.UserAccount.Avatar
+                AvatarImageUrl = s.UserAccount.Avatar
             }).FirstOrDefault();
 
             if (user == null)
@@ -98,7 +98,7 @@ namespace FEP.WebApi.Api.Administration
                 LastPasswordChange = s.UserAccount.LastPasswordChange,
                 CreatedBy = s.CreatedBy,
                 CreatedDate = s.CreatedDate,
-                AvatarImageBase64 = s.UserAccount.Avatar
+                AvatarImageUrl = s.UserAccount.Avatar
             }).FirstOrDefault();
 
             if (user == null)

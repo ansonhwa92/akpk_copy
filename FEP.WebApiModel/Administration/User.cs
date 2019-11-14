@@ -89,7 +89,7 @@ namespace FEP.WebApiModel.Administration
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidTo { get; set; }
         public List<UserAccess> UserAccesses { get; set; }
-        public string AvatarImageBase64 { get; set; }
+        public string AvatarImageUrl { get; set; }
     }
 
    

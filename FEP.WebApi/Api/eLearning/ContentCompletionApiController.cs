@@ -167,7 +167,7 @@ namespace FEP.WebApi.Api.eLearning
         }
 
         [Route("api/eLearning/ContentCompletions/")]
-        public async Task<ContentCompletionModel> Get(int contentId)
+        public async Task<ContentCompletionModel> Get(int contentId, int userId)
         {
             var entity = await db.CourseContents
                             .Include(x => x.Question.FreeTextAnswers)
@@ -209,6 +209,27 @@ namespace FEP.WebApi.Api.eLearning
                 model.Question = null;
                 model.Timer = 0;
             }
+
+
+            //// Get the user progress for this module.
+            var course = await db.Courses.FirstOrDefaultAsync(x => x.Id == contentId);
+
+            if (course.Status == CourseStatus.Published)
+            {
+
+                var learner = await db.Learners.FirstOrDefaultAsync(x => x.User.Id == userId);
+
+                if (learner != null)
+                {
+
+                    var progress = await db.CourseProgress.FirstOrDefaultAsync(x => x.ContentId == contentId &&
+                        x.LearnerId == learner.Id);
+
+                    if (progress?.IsCompleted == true)
+                        model.IsCompleted = true;
+                }
+            }
+
 
             return model;
         }

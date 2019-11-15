@@ -539,7 +539,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "Could not start the course.";
+                TempData["ErrorMessage"] = "Could not start the course. Are you enrolled?";
 
                 return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
             }

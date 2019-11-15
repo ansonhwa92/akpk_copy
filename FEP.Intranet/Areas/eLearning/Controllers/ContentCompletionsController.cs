@@ -68,11 +68,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 currentUserId = CurrentUser.UserId.Value;
 
             var response = AsyncHelpers.RunSync<WebApiResponse<ContentCompletionModel>>(() => WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Get,
-                ContentCompletionsApiUrl.Get + $"?contentId={contentId}"));
+                ContentCompletionsApiUrl.Get + $"?contentId={contentId}&userId={currentUserId}"));
 
             response.Data.UserId = currentUserId;
-
-            //var response = Task.Run(() => WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Get, ContentCompletionsApiUrl.Get + $"?contentId={contentId}").GetAwaiter().GetResult());
 
             if (response.isSuccess)
             {

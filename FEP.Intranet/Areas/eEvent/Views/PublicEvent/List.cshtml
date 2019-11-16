@@ -7,9 +7,7 @@
 
 @section Contentscript{
 	<script type="text/javascript">
-
 		 $(document).ready(function () {
-
             var table = $('.tabledata').DataTable({
                 serverSide: true,
                 processing: true,
@@ -24,7 +22,7 @@
                     }
                 },
 				columns: [
-					 {
+					{
                         sortable: false,
                         render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
@@ -39,11 +37,11 @@
                         sortable: true
                     },
 
-					 {
+					{
                         data: 'EventCategoryName',
                         sortable: true
 					},
-					  {
+					{
                         data: 'StartDate',
 						sortable: true,
 						  render: function (data, type, row, meta) {
@@ -166,6 +164,7 @@
 							if (row.EventStatus == 7) {
 								//Published
 								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+								action += '<a href="@Url.Action("List", "EventAttendent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View Attendance"><i class="la la-group text-muted"></i></a>'
 
 								if (row.IsRequested == true) {
 									action += '<a href="@Url.Action("Details_RequestCancelModify", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View Cancellation/Modification Request"><i class="la la-sliders text-muted"></i></a>'

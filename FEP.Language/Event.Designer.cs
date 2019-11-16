@@ -124,6 +124,87 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Booking Number.
+        /// </summary>
+        public static string AttBookingNumber {
+            get {
+                return ResourceManager.GetString("AttBookingNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check-in Status.
+        /// </summary>
+        public static string AttCheckInStatus {
+            get {
+                return ResourceManager.GetString("AttCheckInStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company Name.
+        /// </summary>
+        public static string AttCompanyName {
+            get {
+                return ResourceManager.GetString("AttCompanyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Reference No.
+        /// </summary>
+        public static string AttEventId {
+            get {
+                return ResourceManager.GetString("AttEventId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MyKad Number.
+        /// </summary>
+        public static string AttICNo {
+            get {
+                return ResourceManager.GetString("AttICNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attendee Name.
+        /// </summary>
+        public static string AttName {
+            get {
+                return ResourceManager.GetString("AttName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register Type.
+        /// </summary>
+        public static string AttType {
+            get {
+                return ResourceManager.GetString("AttType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attendee Name.
+        /// </summary>
+        public static string AttUserId {
+            get {
+                return ResourceManager.GetString("AttUserId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string AttUserType {
+            get {
+                return ResourceManager.GetString("AttUserType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company Name.
         /// </summary>
         public static string ExhibitorCompanyName {

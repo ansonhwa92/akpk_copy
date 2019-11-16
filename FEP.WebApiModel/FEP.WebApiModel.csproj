@@ -79,6 +79,7 @@
     <Compile Include="Commerce\Cart.cs" />
     <Compile Include="eEvent\DutyRoster.cs" />
     <Compile Include="eEvent\EventAgenda.cs" />
+    <Compile Include="eEvent\EventAttendent.cs" />
     <Compile Include="eEvent\EventExternalExhibitor.cs" />
     <Compile Include="eEvent\EventRefund.cs" />
     <Compile Include="eEvent\EventSpeaker.cs" />

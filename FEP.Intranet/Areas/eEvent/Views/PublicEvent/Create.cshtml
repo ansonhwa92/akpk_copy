@@ -85,14 +85,20 @@
 							</a>
 						</li>
 						<li class="step-item active">
-							<a href="" class="step-link">
+							<a href="#eventdetails" class="step-link">
 								<span class="step-number">2</span>
 								<span class="step-title">Fill Up Event Details</span>
 							</a>
 						</li>
+						<li class="step-item active">
+							<a href="eventagenda" class="step-link">
+								<span class="step-number">3</span>
+								<span class="step-title">Fill Up Event Agenda</span>
+							</a>
+						</li>
 						<li class="step-item disabled">
 							<a href="" class="step-link">
-								<span class="step-number">3</span>
+								<span class="step-number">4</span>
 								<span class="step-title">Review & Submission</span>
 							</a>
 						</li>
@@ -104,12 +110,15 @@
 		<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 			<!-- Start Form -->
 			<div class="border-form rounded-top">
-				<form>
-					<div class="form-container">
-						<div class="mt-2 mb-4 pb-1">
+				<div class="form-container tab-content">
+
+					<div class="tab-pane active" id="eventdetails">
+
+						<div class="mt-2 mb-4 pb-1 mr-auto">
 							<h4 class="color-darkblue mb-0">Event Details</h4>
 							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
 						</div>
+
 
 						<div class="row">
 							<div class="form-group col-lg-12">
@@ -175,7 +184,7 @@
 						<div class="row">
 							<div class="form-group col-lg-12">
 								@Html.FEPLabelFor(model => model.TargetedGroup)
-								@Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2-area", style = "width:100%"})
+								@Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2-area", style = "width:100%" })
 								@Html.ValidationMessageFor(model => model.TargetedGroup, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -203,16 +212,19 @@
 								@Html.ValidationMessageFor(model => model.Attachments, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 					</div>
-				</form>
+
+					<div>
+						<div class="mt-2 mb-4 pb-1 mr-auto">
+							<h4 class="color-darkblue mb-0">Event Agenda</h4>
+							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						</div>
+					</div>
+
+				</div>
 				<!-- End Form -->
 			</div>
 
-			@*<div class="border-left border-right border-bottom p-3 rounded-bottom">
-					<a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
-					<button class="btn btn-secondary" type="submit">Save</button>
-			</div>*@
 
 			<div class="border-left border-right border-bottom p-3 rounded-bottom">
 				<!--input type="submit" value="Create" class="btn btn-default" /-->

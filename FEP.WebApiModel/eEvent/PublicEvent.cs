@@ -158,13 +158,13 @@ namespace FEP.WebApiModel.PublicEvent
 		public DeletePublicEventModel() { }
 	}
 
-	//public class GlobalPublicEventApprovalModel
-	//{
-	//	public PublicEventModel publicevent { get; set; }
-	//	public PublicEventApprovalModel approval { get; set; }
-	//}
-
 	public class PublicEventApprovalModel
+	{
+		public PublicEventModel publicevent { get; set; }
+		public ApprovalModel approval { get; set; }
+	}
+
+	public class ApprovalModel
 	{
 		[Required]
 		public int? Id { get; set; }

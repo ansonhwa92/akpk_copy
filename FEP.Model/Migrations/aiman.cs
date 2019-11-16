@@ -244,8 +244,11 @@ namespace FEP.Model.Migrations
 			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver3_PublicEvent });
 			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.EventAdministratorFED });
 			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Amendment_CancellationModificationRequest });
+			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Submit_CancellationModificationRequest });
 
-			mhafeez.AddRole(db, "Admin - FED", "Admin - FED", AdminEventFED);
+
+			mhafeez.AddRole(db, "Admin - Internal Event", "Admin - FED", AdminEventFED);
 
 			//-------------------------------------------------------------------------------------------------//
 
@@ -262,9 +265,8 @@ namespace FEP.Model.Migrations
 			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver3_ExhibitionRoadShow });
 			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.EventAdministratorCCD });
 			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
-			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Amendment_CancellationModificationRequest });
 
-			mhafeez.AddRole(db, "Admin - CCD", "Admin - CCD", AdminEventCCD);
+			mhafeez.AddRole(db, "Admin - External Event", "Admin - CCD", AdminEventCCD);
 
 			//-------------------------------------------------------------------------------------------------//
 

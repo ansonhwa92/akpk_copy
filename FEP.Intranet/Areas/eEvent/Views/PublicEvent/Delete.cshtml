@@ -60,6 +60,7 @@
 }
 
 <h3>Are you sure you want to delete this Event?</h3>
+
 <div class="row">
 	<div class="col-xl-3 col-md-3 col-sm-4 my-2">
 		<div id="page-nav" class="sidebar-left page-nav">
@@ -85,149 +86,151 @@
 	<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 		<!-- Start Form -->
 		<div class="border-form rounded-top">
-			<div class="form-container tab-content">
-				<div class="tab-pane active" id="publicevent-details">
-					<div class="mb-4 mt-2 mr-auto">
-						<h4 class="color-darkblue mb-0">Public Event Details</h4>
-						<h6 class="font-weight-normal">View public event details below.</h6>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.EventTitle)
-							@Html.EditorFor(model => model.EventTitle, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+			<div class="form-container">
+
+				<div class="tab-content">
+					<div class="tab-pane active" id="publicevent-details">
+						<div class="d-flex align-items-center mb-4 mt-2">
+							<h4 class="color-darkblue mr-auto mb-0">Public Event Details<br><span class="small">Review public event details below.</span></h4>
 						</div>
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.EventStatus)
-							@{ if (Model.EventStatus == FEP.Model.EventStatus.New)
-								{
-									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Draft">
+						<div class="row">
+							<div class="form-group col-lg-6">
+								@Html.LabelFor(model => model.EventTitle)
+								@Html.EditorFor(model => model.EventTitle, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+							</div>
+							<div class="form-group col-lg-6">
+								@Html.LabelFor(model => model.EventStatus)
+								@{ if (Model.EventStatus == FEP.Model.EventStatus.New)
+									{
+										<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Draft">
+									}
+									else if (Model.EventStatus == FEP.Model.EventStatus.PendingforVerification)
+									{
+										<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Verification">
+									}
+									else if (Model.EventStatus == FEP.Model.EventStatus.Verified)
+									{
+										<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 1">
+									}
+									else if (Model.EventStatus == FEP.Model.EventStatus.RejectNeedToEdit)
+									{
+										<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Require Amendment">
+									}
+									else if (Model.EventStatus == FEP.Model.EventStatus.VerifiedbyFirstApprover)
+									{
+										<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 2">
+									}
+									else if (Model.EventStatus == FEP.Model.EventStatus.VerifiedbySecondApprover)
+									{
+										<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 3">
+									}
+									else if (Model.EventStatus == FEP.Model.EventStatus.Approved)
+									{
+										<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Approved">
+									}
+									else if (Model.EventStatus == FEP.Model.EventStatus.Cancelled)
+									{
+										<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Cancelled">
+									}
+									else if (Model.EventStatus == FEP.Model.EventStatus.Published)
+									{
+										<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Published">
+									}
+
 								}
-								else if (Model.EventStatus == FEP.Model.EventStatus.PendingforVerification)
-								{
-									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Verification">
-								}
-								else if (Model.EventStatus == FEP.Model.EventStatus.Verified)
-								{
-									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 1">
-								}
-								else if (Model.EventStatus == FEP.Model.EventStatus.RejectNeedToEdit)
-								{
-									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Require Amendment">
-								}
-								else if (Model.EventStatus == FEP.Model.EventStatus.VerifiedbyFirstApprover)
-								{
-									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 2">
-								}
-								else if (Model.EventStatus == FEP.Model.EventStatus.VerifiedbySecondApprover)
-								{
-									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 3">
-								}
-								else if (Model.EventStatus == FEP.Model.EventStatus.Approved)
-								{
-									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Approved">
-								}
-								else if (Model.EventStatus == FEP.Model.EventStatus.Cancelled)
-								{
-									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Cancelled">
-								}
-								else if (Model.EventStatus == FEP.Model.EventStatus.Published)
-								{
-									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Published">
-								}
+							</div>
+						</div>
 
-							}
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.EventObjective)
+								@Html.EditorFor(model => model.EventObjective, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-6">
+								@Html.LabelFor(model => model.StartDate)
+								@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start", @disabled = "disabled" } })
+							</div>
+							<div class="form-group col-lg-6">
+								@Html.LabelFor(model => model.EndDate)
+								@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End", @disabled = "disabled" } })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.Venue)
+								@Html.EditorFor(model => model.Venue, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-6">
+								@Html.LabelFor(model => model.Fee)
+								@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00", @readonly = "readonly" } })
+							</div>
+
+							<div class="form-group col-lg-6">
+								@Html.LabelFor(model => model.ParticipantAllowed)
+								@Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @readonly = "readonly" } })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-6">
+								@Html.LabelFor(model => model.TargetedGroup)
+								@Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
+							</div>
+
+							<div class="form-group col-lg-6">
+								@Html.LabelFor(model => model.EventCategoryId)
+								@Html.EditorFor(model => model.EventCategoryName, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @readonly = "readonly" } })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.SpeakerId)
+								@Html.ListBoxFor(m => m.SpeakerId, Model.SpeakerList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled" })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.ExternalExhibitorId)
+								@Html.ListBoxFor(m => m.ExternalExhibitorId, Model.ExternalExhibitorList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled" })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.LabelFor(model => model.Attachments)
+								@Html.Partial("_AttachmentDetails", Model.Attachments)
+							</div>
 						</div>
 					</div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.EventObjective)
-							@Html.EditorFor(model => model.EventObjective, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+					<div id="event-agenda" class="tab-pane">
+						<div class="mb-4 mt-2 mr-auto">
+							<h4 class="color-darkblue mb-0">Event Agenda</h4>
+							<h6 class="font-weight-normal">Check agenda list here.</h6>
 						</div>
 					</div>
 
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.StartDate)
-							@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start", @disabled = "disabled" } })
+					<div class="tab-pane" id="amendment-history">
+						<div class="mb-4 mt-2 mr-auto">
+							<h4 class="color-darkblue mb-0">Amendment History</h4>
+							<h6 class="font-weight-normal">Check amendment list here.</h6>
 						</div>
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.EndDate)
-							@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End", @disabled = "disabled" } })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Venue)
-							@Html.EditorFor(model => model.Venue, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.Fee)
-							@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00", @readonly = "readonly" } })
-						</div>
-
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.ParticipantAllowed)
-							@Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @readonly = "readonly" } })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.TargetedGroup)
-							@Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
-						</div>
-				
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.EventCategoryId)
-							@Html.EditorFor(model => model.EventCategoryName, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @readonly = "readonly" } })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.SpeakerId)
-							@Html.ListBoxFor(m => m.SpeakerId, Model.SpeakerList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled" })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.ExternalExhibitorId)
-							@Html.ListBoxFor(m => m.ExternalExhibitorId, Model.ExternalExhibitorList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled" })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Attachments)
-							@Html.Partial("_AttachmentDetails", Model.Attachments)
-						</div>
-					</div>
-				</div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								<ul class="list-group list-group-fit"></ul>
 
 
-				<div id="event-agenda" class="tab-pane">
-					<div class="mb-4 mt-2 mr-auto">
-						<h4 class="color-darkblue mb-0">Event Agenda</h4>
-						<h6 class="font-weight-normal">Check agenda list here.</h6>
-					</div>
-				</div>
-
-				<div class="tab-pane" id="amendment-history">
-					<div class="mb-4 mt-2 mr-auto">
-						<h4 class="color-darkblue mb-0">Amendment History</h4>
-						<h6 class="font-weight-normal">Check amendment list here.</h6>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-12">
-							<ul class="list-group list-group-fit">
-							
-							</ul>
+							</div>
 						</div>
 					</div>
 				</div>

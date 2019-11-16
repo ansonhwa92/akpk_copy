@@ -88,6 +88,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Reference No")]
 		public string RefNo { get; set; }
 
+		[Display(Name = "Branch")]
+		public int? BranchId { get; set; }
+
+		[Display(Name = "Branch")]
+		public string BranchName { get; set; }
+		public IEnumerable<SelectListItem> BranchList { get; set; }
+
+
 		public IEnumerable<SelectListItem> RepresentativeList { get; set; }
 
 		public bool Display { get; set; }
@@ -184,6 +192,12 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Display(Name = "Status")]
 		public MediaStatus? MediaStatus { get; set; }
+
+		[Display(Name = "Branch")]
+		public int? BranchId { get; set; }
+
+		[Display(Name = "Branch")]
+		public string BranchName { get; set; }
 	}
 
 	public class ListMediaInterviewModel 

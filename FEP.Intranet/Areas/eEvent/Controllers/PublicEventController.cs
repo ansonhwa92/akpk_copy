@@ -15,8 +15,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 {
 	public class PublicEventController : FEPController
 	{
-		private DbEntities db = new DbEntities();
-
 		// GET: eEvent/PublicEvent
 		public ActionResult Index()
 		{
@@ -53,48 +51,68 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			var response = await WepApiMethod.SendApiAsync<DetailsPublicEventModel>(HttpVerbs.Get, $"eEvent/PublicEvent?id={id}");
+			var response = await WepApiMethod.SendApiAsync<PublicEventApprovalModel>(HttpVerbs.Get, $"eEvent/PublicEvent?id={id}");
 
 			if (!response.isSuccess)
 			{
 				return HttpNotFound();
 			}
 
-			var model = new FEP.Intranet.Areas.eEvent.Models.DetailsPublicEventModel()
-			{
-				Id = response.Data.Id,
-				EventTitle = response.Data.EventTitle,
-				EventObjective = response.Data.EventObjective,
-				StartDate = response.Data.StartDate,
-				EndDate = response.Data.EndDate,
-				Venue = response.Data.Venue,
-				Fee = response.Data.Fee,
-				ParticipantAllowed = response.Data.ParticipantAllowed,
-				TargetedGroup = response.Data.TargetedGroup,
-				EventStatus = response.Data.EventStatus,
-				EventCategoryId = response.Data.EventCategoryId,
-				EventCategoryName = response.Data.EventCategoryName,
-				Remarks = response.Data.Remarks,
-				origin = response.Data.origin,
-				RefNo = response.Data.RefNo,
-				Attachments = response.Data.Attachments,
-				SpeakerId = response.Data.SpeakerId,
-				ExternalExhibitorId = response.Data.ExternalExhibitorId,
-				CreatedByName = response.Data.CreatedByName,
-				CreatedDate = response.Data.CreatedDate,
+			var pubapproval = response.Data;
 
+			var publicevent = new PublicEventModel()
+			{
+				Id = pubapproval.publicevent.Id,
+				EventTitle = pubapproval.publicevent.EventTitle,
+				EventObjective = pubapproval.publicevent.EventObjective,
+				StartDate = pubapproval.publicevent.StartDate,
+				EndDate = pubapproval.publicevent.EndDate,
+				Venue = pubapproval.publicevent.Venue,
+				Fee = pubapproval.publicevent.Fee,
+				ParticipantAllowed = pubapproval.publicevent.ParticipantAllowed,
+				TargetedGroup = pubapproval.publicevent.TargetedGroup,
+				EventStatus = pubapproval.publicevent.EventStatus,
+				EventCategoryId = pubapproval.publicevent.EventCategoryId,
+				EventCategoryName = pubapproval.publicevent.EventCategoryName,
+				Remarks = pubapproval.publicevent.Remarks,
+				origin = pubapproval.publicevent.origin,
+				RefNo = pubapproval.publicevent.RefNo,
+				Attachments = pubapproval.publicevent.Attachments,
+				SpeakerId = pubapproval.publicevent.SpeakerId,
+				ExternalExhibitorId = pubapproval.publicevent.ExternalExhibitorId,
+				CreatedByName = pubapproval.publicevent.CreatedByName,
+				CreatedDate = pubapproval.publicevent.CreatedDate,
 			};
 
-			if (model == null)
+			var approval = new ApprovalModel
 			{
-				return HttpNotFound();
+				Id = pubapproval.approval.Id,
+				EventId = pubapproval.approval.EventId,
+				Level = pubapproval.approval.Level,
+				ApproverId = pubapproval.approval.ApproverId,
+				Status = pubapproval.approval.Status,
+				Remarks = pubapproval.approval.Remarks,
+				RequireNext = pubapproval.approval.RequireNext
+			};
+
+			var pevaluation = new PublicEventApprovalModel
+			{
+				publicevent = publicevent,
+				approval = approval
+			};
+
+			var responseHistory = await WepApiMethod.SendApiAsync<IEnumerable<PublicEventApprovalHistoryModel>>(HttpVerbs.Get, $"eEvent/PublicEvent/GetHistory?id={id}");
+
+			if (responseHistory.isSuccess)
+			{
+				ViewBag.History = responseHistory.Data;
 			}
 
-			model.CategoryList = new SelectList(await GetCategory(), "Id", "Name", 0);
-			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
-			model.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name", 0);
+			pevaluation.publicevent.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
+			pevaluation.publicevent.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName");
+			pevaluation.publicevent.ExternalExhibitorList = new SelectList(await GetExternalExhibitor(), "Id", "Name");
 
-			return View(model);
+			return View(pevaluation);
 		}
 
 
@@ -196,7 +214,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var response = await WepApiMethod.SendApiAsync<EditPublicEventModel>(HttpVerbs.Get, $"eEvent/PublicEvent?id={id}");
+			var response = await WepApiMethod.SendApiAsync<EditPublicEventModel>(HttpVerbs.Get, $"eEvent/PublicEvent/GetDelete?id={id}");
 
 			if (!response.isSuccess)
 			{
@@ -310,7 +328,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			var response = await WepApiMethod.SendApiAsync<DetailsPublicEventModel>(HttpVerbs.Get, $"eEvent/PublicEvent?id={id}");
+			var response = await WepApiMethod.SendApiAsync<DetailsPublicEventModel>(HttpVerbs.Get, $"eEvent/PublicEvent/GetDelete?id={id}");
 
 			if (!response.isSuccess)
 			{
@@ -1065,7 +1083,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					await LogActivity(Modules.Event, "Update Cancellation/Modification Request", model);
 					TempData["SuccessMessage"] = "Cancellation/Modification Request successfully updated";
 
-					return RedirectToAction("Details_RequestCancelModify","PublicEvent", new { Id = model.Id});
+					return RedirectToAction("Details_RequestCancelModify", "PublicEvent", new { Id = model.Id });
 				}
 			}
 
@@ -1155,7 +1173,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.Reason = response.Data.Reason;
 
 				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver1_CancellationModificationRequest}");
-				if (receiveresponse.isSuccess) 
+				if (receiveresponse.isSuccess)
 
 
 				{
@@ -1430,206 +1448,102 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Details(PublicEventApprovalModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/UpdateApproval", model);
 
+				if (response.isSuccess)
+				{
+					if (model.approval.Status == EventApprovalStatus.Approved)
+					{
+						if (model.approval.Level == EventApprovalLevel.Verifier)
+						{
+							await Verified(model.approval.EventId);
+							await LogActivity(Modules.Event, "Verify Public Event: ", model);
+							TempData["SuccessMessage"] = "Public Event is successfully verified.";
+						}
+						else
+						{
+							if (model.approval.Level == EventApprovalLevel.Approver1)
+							{
+								if (model.approval.RequireNext)
+								{
+									TempData["SuccessMessage"] = "Public Event is successfully approved and require next approval.";
+									await FirstApproved(model.approval.EventId);
+									await LogActivity(Modules.Event, "Approve Public Event: ", model);
+								}
+								else
+								{
+									TempData["SuccessMessage"] = "Public Event is successfully approved.";
+									await FinalApproved(model.approval.EventId);
+									await LogActivity(Modules.Event, "Approve Public Event by Approver 1 ", model);
+								}
+							}
+							else if (model.approval.Level == EventApprovalLevel.Approver2)
+							{
+								if (model.approval.RequireNext)
+								{
+									TempData["SuccessMessage"] = "Public Event is successfully approved and require next approval.";
+									await SecondApproved(model.approval.EventId);
+									await LogActivity(Modules.Event, "Approve Public Event: ", model);
+								}
+								else
+								{
+									TempData["SuccessMessage"] = "Public Event is successfully approved.";
+									await FinalApproved(model.approval.EventId);
+									await LogActivity(Modules.Event, "Approve Public Event by Approver 2 ", model);
+								}
+							}
+							else if (model.approval.Level == EventApprovalLevel.Approver3)
+							{
+								TempData["SuccessMessage"] = "Public Event is successfully approved.";
+								await FinalApproved(model.approval.EventId);
+								await LogActivity(Modules.Event, "Approve Public by Approver 3  ", model);
+							}
+						}
+					}
+					else
+					{
+						if (model.approval.Level == EventApprovalLevel.Verifier)
+						{
+							await RejectPublicEvent(model.approval.EventId);
+							await LogActivity(Modules.Event, "Public Event requires amendment.", model);
+							TempData["SuccessMessage"] = "Public Event requires amendment.";
+						}
+						else if (model.approval.Level == EventApprovalLevel.Approver1)
+						{
+							await RejectPublicEvent(model.approval.EventId);
+							await LogActivity(Modules.Event, "Public Event requires amendment.", model);
+							TempData["SuccessMessage"] = "Public Event requires amendment.";
+						}
+						else if (model.approval.Level == EventApprovalLevel.Approver2)
+						{
+							await RejectPublicEvent(model.approval.EventId);
+							await LogActivity(Modules.Event, "Public Event requires amendment.", model);
+							TempData["SuccessMessage"] = "Public Event requires amendment.";
+						}
+						else if (model.approval.Level == EventApprovalLevel.Approver3)
+						{
+							await RejectPublicEvent(model.approval.EventId);
+							await LogActivity(Modules.Event, "Public Event requires amendment.", model);
+							TempData["SuccessMessage"] = "Public Event requires amendment.";
+						}
+					}
+					return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+				}
+				else
+				{
+					return RedirectToAction("List", "PublicEvent", new { area = "eEvent", @id = model.approval.EventId });
+				}
+			}
 
+			return View(model);
+		}
 
-
-
-
-
-
-
-
-
-
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public async Task<ActionResult> Details(GlobalPublicEventApprovalModel model)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
-		//		var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/Evaluate", model);
-
-		//		if (response.isSuccess)
-		//		{
-		//			string[] resparray = response.Data.Split('|');
-		//			int pid = int.Parse(resparray[0]);
-		//			string title = resparray[1];
-		//			string refno = resparray[2];
-		//			string venue = resparray[3];
-		//			// log trail/system success notification/dashboard notification/email/sms upon submission
-		//			// log trail/system success/dashboard notification upon saving as draft
-
-		//			if (model.approval.Status == EventApprovalStatus.Approved)
-		//			{
-		//				if (model.approval.Level == EventApprovalLevel.Verifier)
-		//				{
-		//					await LogActivity(Modules.Event, "Verify Public Event: " + title, model);
-		//					TempData["SuccessMessage"] = "Public Event titled " + title + " updated as Verified.";
-
-		//					await SendNotification(pid, NotificationCategory.Event, NotificationType.Verify_Public_Event_After_Submit_For_Verification, title, refno, venue, "Verified and Pending Approval", model.approval.Status, model.approval.RequireNext);
-		//					// dashboard
-		//				}
-		//				else
-		//				{
-		//					await LogActivity(Modules.Event, "Approve Public Event: " + title, model);
-		//					TempData["SuccessMessage"] = "Public Event titled " + title + " updated as Approved.";
-
-		//					if (model.approval.Level == EventApprovalLevel.Approver1)
-		//					{
-		//						if (model.approval.RequireNext)
-		//						{
-		//							await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Publication_Creation_1, title, refno, venue, "Approved by 1st-Level Approver and Pending 2nd-Level Approval", model.approval.Status, model.approval.RequireNext);
-		//						}
-		//						else
-		//						{
-		//							await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Publication_Creation_1, title, refno, venue, "Approved by 1st-Level Approver", model.approval.Status, model.approval.RequireNext);
-		//						}
-		//					}
-		//					else if (model.approval.Level == EventApprovalLevel.Approver2)
-		//					{
-		//						if (model.approval.RequireNext)
-		//						{
-		//							await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Publication_Creation_2, title, refno, venue, "Approved by 2nd-Level Approver and Pending 3rd-Level Approval", model.approval.Status, model.approval.RequireNext);
-		//						}
-		//						else
-		//						{
-		//							await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Publication_Creation_2, title, refno, venue, "Approved by 2nd-Level Approver", model.approval.Status, model.approval.RequireNext);
-		//						}
-		//					}
-		//					else if (model.approval.Level == EventApprovalLevel.Approver3)
-		//					{
-		//						await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Publication_Creation_3, title, refno, venue, "Approved by 3rd-Level Approver", model.approval.Status, model.approval.RequireNext);
-		//					}
-		//					// dashboard
-		//				}
-		//			}
-		//			else
-		//			{
-		//				await LogActivity(Modules.Event, "Public Event Requires Amendment: " + title, model);
-		//				TempData["SuccessMessage"] = "Public Event titled " + title + " updated as Requires Amendment.";
-
-
-		//				if (model.approval.Level == EventApprovalLevel.Verifier)
-		//				{
-		//					await SendNotification(pid, NotificationCategory.Event, NotificationType.Verify_Public_Event_After_Submit_For_Verification, title, refno, venue, "Amendment Requested by Verifier", model.approval.Status, false);
-		//				}
-		//				else if (model.approval.Level == EventApprovalLevel.Approver1)
-		//				{
-		//					await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Public_Event_ByApprover_1, title, refno, venue, "Amendment Requested by 1st-Level Approver", model.approval.Status, false);
-		//				}
-		//				else if (model.approval.Level == EventApprovalLevel.Approver2)
-		//				{
-		//					await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Public_Event_ByApprover_2, title, refno, venue, "Amendment Requested by 2nd-Level Approver", model.approval.Status, false);
-		//				}
-		//				else if (model.approval.Level == EventApprovalLevel.Approver3)
-		//				{
-		//					await SendNotification(pid, NotificationCategory.Event, NotificationType.Approve_Public_Event_ByApprover_3, title, refno, venue, "Amendment Requested by 3rd-Level Approver", model.approval.Status, false);
-		//				}
-		//				// dashboard
-		//			}
-
-		//			return RedirectToAction("Index", "PublicEvent", new { area = "RnP" });
-		//		}
-		//		else
-		//		{
-
-		//			return RedirectToAction("List", "PublicEvent", new { area = "eEvent", @id = model.approval.EventId });
-		//		}
-		//	}
-
-		//	//ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", model.CategoryID);
-		//	return View(model);
-		//}
-
-		//	private async Task<List<int>> GetNotificationReceivers(NotificationCategory ncat, NotificationType ntype, EventApprovalStatus status, bool forward)
-		//	{
-		//		List<int> result = new List<int> { };
-		//		var response = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"eEvent/PublicEvent/GetNotificationReceivers/?cat={ncat}&type={ntype}&status={status}&forward={forward}");
-		//		if (response.isSuccess)
-		//		{
-		//			result = response.Data;
-		//		}
-		//		else
-		//		{
-		//			await LogError(Modules.RnP, "Failed to get Auto Notification receivers");
-		//		}
-		//		return result;
-		//	}
-
-		//	private async Task<bool> SaveNotificationID(int id, int notification_id)
-		//	{
-		//		var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveNotificationID?id={id}&notificationid={notification_id}");
-		//		if (!response.isSuccess)
-		//		{
-		//			await LogError(Modules.Event, "Failed to save Auto Notification ID (API Error)");
-		//		}
-		//		else
-		//		{
-		//			if (response.Data == false)
-		//			{
-		//				await LogError(Modules.Event, "Failed to save Auto Notification ID (Publication Error)");
-		//			}
-		//		}
-		//		return response.isSuccess;
-		//	}
-
-		//	private async Task<bool> SendNotification(int id, NotificationCategory ncat, NotificationType ntype, string title, string code, string venue, string status, EventApprovalStatus appstatus, bool forward)
-		//	{
-		//		try
-		//		{
-		//			var receivers = await GetNotificationReceivers(ncat, ntype, appstatus, forward);
-		//			if (receivers.Count > 0)
-		//			{
-		//				ParameterListToSend paramToSend = new ParameterListToSend();
-		//				paramToSend.EventName = title;
-		//				paramToSend.EventCode = code;
-		//				paramToSend.EventLocation = venue;
-		//				paramToSend.EventApproval = status;
-
-		//				CreateAutoReminder reminder = new CreateAutoReminder
-		//				{
-		//					NotificationType = ntype,
-		//					NotificationCategory = ncat,
-		//					ParameterListToSend = paramToSend,
-		//					StartNotificationDate = DateTime.Now,
-		//					ReceiverId = receivers
-		//					// new List<int> { 2, 3, 4, 5 }
-		//				};
-		//				try
-		//				{
-		//					var response = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-		//					if (response.isSuccess)
-		//					{
-		//						int saveThisID = response.Data.SLAReminderStatusId;
-		//						//save saveThisID back into survey table
-		//						var ressave = await SaveNotificationID(id, saveThisID);
-		//						return true;
-		//					}
-		//					else
-		//					{
-		//						await LogError(Modules.Event, "Failed to generate Auto Notification (API Call Returned Failure)");
-		//						return false;
-		//					}
-		//				}
-		//				catch
-		//				{
-		//					await LogError(Modules.Event, "Failed to generate Auto Notification (API Call Failed)");
-		//					return false;
-		//				}
-		//			}
-		//			else
-		//			{
-		//				await LogError(Modules.Event, "Failed to generate Auto Notification (No Receivers Found)");
-		//				return false;
-		//			}
-		//		}
-		//		catch
-		//		{
-		//			await LogError(Modules.Event, "Failed to generate Auto Notification");
-		//			return false;
-		//		}
-		//	}
-
+		
 	}
 }

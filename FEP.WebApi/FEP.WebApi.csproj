@@ -160,6 +160,7 @@
     <Compile Include="Api\Administration\CompanyController.cs" />
     <Compile Include="Api\Administration\CountryController.cs" />
     <Compile Include="Api\Administration\DepartmentController.cs" />
+    <Compile Include="Api\eEvent\EventAttendentController.cs" />
     <Compile Include="Api\eLearning\AppSettings.cs" />
     <Compile Include="Api\eLearning\CourseApprovalsApiController.cs" />
     <Compile Include="Api\eLearning\CourseEnrollmentsApiController.cs" />
@@ -168,7 +169,6 @@
     <Compile Include="Api\Integration\GroupController.cs" />
     <Compile Include="Api\Notification\EmailController.cs" />
     <Compile Include="Api\eEvent\DutyRosterController.cs" />
-    <Compile Include="Api\eEvent\EventRefundController.cs" />
     <Compile Include="Api\eLearning\TOTReportController.cs" />
     <Compile Include="Api\Logs\ReportLogController.cs" />
     <Compile Include="Api\Setting\GroupController.cs" />

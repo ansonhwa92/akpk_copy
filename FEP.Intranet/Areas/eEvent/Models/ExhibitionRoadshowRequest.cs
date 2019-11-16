@@ -78,6 +78,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "ExRoadRefNo", ResourceType = typeof(Language.Event))]
 		public string RefNo { get; set; }
 		public int? SLAReminderStatusId { get; set; }
+
+
+		[Display(Name = "Branch")]
+		public int? BranchId { get; set; }
+
+		[Display(Name = "Branch")]
+		public string BranchName { get; set; }
+		public IEnumerable<SelectListItem> BranchList { get; set; }
 	}
 
 	public class CreateExhibitionRoadshowRequestModel
@@ -175,6 +183,13 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string NomineeName { get; set; }
 
 		public IEnumerable<SelectListItem> Nominees { get; set; }
+
+
+		[Display(Name = "Branch")]
+		public int? BranchId { get; set; }
+
+		[Display(Name = "Branch")]
+		public string BranchName { get; set; }
 	}
 
 	public class EditExhibitionRoadshowRequestModel : CreateExhibitionRoadshowRequestModel

@@ -150,6 +150,7 @@ namespace FEP.Model
 		public DbSet<PublicEventApproval> PublicEventApproval { get; set; }
 		public DbSet<EventMediaInterviewApproval> EventMediaInterviewApproval { get; set; }
 		public DbSet<EventExhibitionRequest> EventExhibitionRequest { get; set; }
+		public DbSet<EventExhibitionRequestApproval> EventExhibitionRequestApproval { get; set; }
 		public DbSet<EventFile> EventFile { get; set; }
 		public DbSet<EventExternalExhibitor> EventExternalExhibitor { get; set; }
 		public DbSet<EventCategory> EventCategory { get; set; }

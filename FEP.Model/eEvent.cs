@@ -227,6 +227,10 @@ namespace FEP.Model
 		//public string Designation { get; set; }
 		public MediaStatus? MediaStatus { get; set; }
 
+		public int? BranchId { get; set; }
+		[ForeignKey("BranchId")]
+		public virtual Branch Branch { get; set; }
+
 		public int? UserId { get; set; }
 		[ForeignKey("UserId")]
 		public virtual User User { get; set; }
@@ -245,7 +249,19 @@ namespace FEP.Model
 	{
 		[Key]
 		public int Id { get; set; }
-		public DateTime Date { get; set; }
+		public string AttendeeName { get; set; }
+		public ParticipantType? UserType { get; set; }
+		public string CompanyName { get; set; }
+		public string BookingNumber { get; set; }
+		public string ICNo { get; set; }
+		public CheckInStatus? CheckInStatus { get; set; }
+
+
+
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
+
+
 
 		public int? UserId { get; set; }
 		[ForeignKey("UserId")]
@@ -255,13 +271,10 @@ namespace FEP.Model
 		[ForeignKey("EventId")]
 		public virtual PublicEvent Event { get; set; }
 
-		public string Remark { get; set; }
 
 		[ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
 		public int? CreatedBy { get; set; }
-		public DateTime? CreatedDate { get; set; }
-		public bool Display { get; set; }
 	}
 
 	[Table("ManuscriptSubmission")]
@@ -321,8 +334,7 @@ namespace FEP.Model
 		public bool RequireNext { get; set; }
 		public EventApprovalStatus Status { get; set; }
 		public int? ApproverId { get; set; }
-		[ForeignKey("ApproverId")]
-		public virtual User User { get; set; }
+		
 
 		public int? EventId { get; set; }
 		[ForeignKey("EventId")]
@@ -339,14 +351,29 @@ namespace FEP.Model
 		public EventApprovalLevel Level { get; set; }
 		public EventApprovalStatus Status { get; set; }
 		public bool RequireNext { get; set; }
-
-		public int ApproverId { get; set; }
-		[ForeignKey("ApproverId")]
-		public virtual User User { get; set; }
-
+		public int? ApproverId { get; set; }
+	
 		public int? MediaId { get; set; }
 		[ForeignKey("MediaId")]
 		public virtual EventMediaInterviewRequest MediaInterview { get; set; }
+	}
+
+
+	[Table("EventExhibitionRequestApproval")]
+	public class EventExhibitionRequestApproval
+	{
+		[Key]
+		public int Id { get; set; }
+		public DateTime? ApprovedDate { get; set; }
+		public string Remark { get; set; }
+		public EventApprovalLevel Level { get; set; }
+		public EventApprovalStatus Status { get; set; }
+		public bool RequireNext { get; set; }
+		public int ApproverId { get; set; }
+
+		public int? ExhibitionId { get; set; }
+		[ForeignKey("ExhibitionId")]
+		public virtual EventExhibitionRequest EventExhibitionRequest { get; set; }
 	}
 
 
@@ -370,6 +397,10 @@ namespace FEP.Model
 		public DateTime? EndTime { get; set; }
 		public int? ParticipationRequirement { get; set; }
 		public ExhibitionStatus? ExhibitionStatus { get; set; }
+
+		public int? BranchId { get; set; }
+		[ForeignKey("BranchId")]
+		public virtual Branch Branch { get; set; }
 
 		public int? NomineeId { get; set; }
 		[ForeignKey("NomineeId")]

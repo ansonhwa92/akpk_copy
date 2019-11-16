@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace FEP.WebApiModel.MediaInterview
 {
@@ -70,7 +71,8 @@ namespace FEP.WebApiModel.MediaInterview
 		public string RepDesignation { get; set; }
 		public string RepEmail { get; set; }
 		public string RepMobileNumber { get; set; }
-
+		[Display(Name = "Name")]
+		public int? RepUserId { get; set; }
 
 		public int? EventId { get; set; }
 		public string EventTitle { get; set; }
@@ -79,6 +81,8 @@ namespace FEP.WebApiModel.MediaInterview
 		public string CreatedByName { get; set; }
 		public DateTime? CreatedDate { get; set; }
 		public int? SLAReminderStatusId { get; set; }
+		public IEnumerable<Attachment> Attachments { get; set; }
+		public IEnumerable<SelectListItem> RepresentativeList { get; set; }
 	}
 
 	public class FilterMediaInterviewRequestApiModel : DataTableModel
@@ -110,8 +114,6 @@ namespace FEP.WebApiModel.MediaInterview
 	public class DetailsMediaInterviewRequestApiModel : MediaInterviewRequestApiModel
 	{
 		public IEnumerable<Attachment> Attachments { get; set; }
-
-		public MediaInterviewApprovalModel approval { get; set; }
 	}
 
 	public class CreateMediaInterviewRequestApiModel : MediaInterviewRequestApiModel
@@ -142,6 +144,12 @@ namespace FEP.WebApiModel.MediaInterview
 
 	public class MediaInterviewApprovalModel
 	{
+		public MediaInterviewRequestApiModel mediainterview { get; set; }
+		public ApprovalModel approval { get; set; }
+	}
+
+	public class ApprovalModel
+	{
 		[Required]
 		public int? Id { get; set; }
 
@@ -166,5 +174,20 @@ namespace FEP.WebApiModel.MediaInterview
 
 		[Display(Name = "Require Next")]
 		public bool RequireNext { get; set; }
+	}
+
+	public class MediaInterviewApprovalHistoryModel
+	{
+		public EventApprovalLevel Level { get; set; }
+
+		public int? ApproverId { get; set; }
+
+		public string UserName { get; set; }
+
+		public EventApprovalStatus Status { get; set; }
+
+		public DateTime? ApprovalDate { get; set; }
+
+		public string Remarks { get; set; }
 	}
 }

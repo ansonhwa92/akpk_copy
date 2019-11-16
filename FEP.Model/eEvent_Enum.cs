@@ -57,7 +57,7 @@ namespace FEP.Model
 		[Display(Name = "Require Amendment")]
 		RejectNeedToEdit, //If Approver 3 Rejected
 
-		[Display(Name = "Rejected")]
+		[Display(Name = "Cancelled")]
 		Cancelled, //If Admin Cancel Public Event 
 
 		[Display(Name = "Published")]
@@ -237,5 +237,20 @@ namespace FEP.Model
 		ApprovedByApprover2,
 		[Display(Name = "Approved")]
 		ApprovedByApprover3,
+	}
+
+	public enum CheckInStatus
+	{
+		[Display(Name = "Not Yet")]
+		Not_Yet,
+		[Display(Name = "Checked-in")]
+		Check_In
+	}
+
+	public enum ParticipantType
+	{
+		Individual,
+		Group,
+		Agency,
 	}
 }

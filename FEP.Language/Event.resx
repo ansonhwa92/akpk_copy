@@ -327,4 +327,31 @@
   <data name="ReqType" xml:space="preserve">
     <value>Request Type</value>
   </data>
+  <data name="AttBookingNumber" xml:space="preserve">
+    <value>Booking Number</value>
+  </data>
+  <data name="AttCheckInStatus" xml:space="preserve">
+    <value>Check-in Status</value>
+  </data>
+  <data name="AttCompanyName" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="AttEventId" xml:space="preserve">
+    <value>Event Reference No</value>
+  </data>
+  <data name="AttICNo" xml:space="preserve">
+    <value>MyKad Number</value>
+  </data>
+  <data name="AttName" xml:space="preserve">
+    <value>Attendee Name</value>
+  </data>
+  <data name="AttType" xml:space="preserve">
+    <value>Register Type</value>
+  </data>
+  <data name="AttUserId" xml:space="preserve">
+    <value>Attendee Name</value>
+  </data>
+  <data name="AttUserType" xml:space="preserve">
+    <value>Type</value>
+  </data>
 </root>

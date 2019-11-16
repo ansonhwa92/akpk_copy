@@ -64,6 +64,9 @@ namespace FEP.Model
 		[Display(Name = "Event Admin - CCD")]
 		EventAdministratorCCD = 1004,
 
+		[Display(Name = "Event Reception")]
+		EventReception = 1005,
+
 		//----------------------Media Interview Button--------------------//
 		[Display(Name = "Media Interview - Submit")]
 		Recipient_Submit_MediaInterview = 1011,

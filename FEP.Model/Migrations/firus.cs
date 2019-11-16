@@ -110,7 +110,7 @@ namespace FEP.Model.Migrations
             }
 
             //publication
-            /*
+            
             if (!db.Publication.Any())
             {
                 db.Publication.Add(new Publication
@@ -132,13 +132,13 @@ namespace FEP.Model.Migrations
                     HPrice = 39.9F,
                     DPrice = 10,
                     HDPrice = 45.1F,
-                    Pictures = null,
-                    ProofOfApproval = null,
+                    //Pictures = null,
+                    //ProofOfApproval = null,
                     StockBalance = 100,
                     CancelRemark = "",
                     WithdrawalReason = "",
                     WithdrawalDate = null,
-                    ProofOfWithdrawal = "",
+                    //ProofOfWithdrawal = "",
                     DateAdded = DateTime.Parse("2019-10-13 12:53:17"),
                     CreatorId = 1,
                     RefNo = "PUB/1910/0001",
@@ -168,13 +168,13 @@ namespace FEP.Model.Migrations
                     HPrice = 12.8F,
                     DPrice = 0,
                     HDPrice = 0,
-                    Pictures = null,
-                    ProofOfApproval = null,
+                    //Pictures = null,
+                    //ProofOfApproval = null,
                     StockBalance = 50,
                     CancelRemark = "",
                     WithdrawalReason = "",
                     WithdrawalDate = null,
-                    ProofOfWithdrawal = "",
+                    //ProofOfWithdrawal = "",
                     DateAdded = DateTime.Parse("2019-10-13 14:12:58"),
                     CreatorId = 1,
                     RefNo = "PUB/1910/0002",
@@ -186,10 +186,10 @@ namespace FEP.Model.Migrations
                     NotificationID = 0
                 });
             }
-            */
+            
 
             //publication approval
-            /*
+            
             if (!db.PublicationApproval.Any())
             {
                 db.PublicationApproval.Add(new PublicationApproval
@@ -233,9 +233,7 @@ namespace FEP.Model.Migrations
                     RequireNext = false
                 });
             }
-            */
-
-            /*
+          
             //cart
             if (!db.PurchaseOrder.Any())
             {
@@ -294,13 +292,13 @@ namespace FEP.Model.Migrations
                     Quantity = 3
                 });
             }
-            */
+            
 
 
 
-            DefaultSLAReminder(db);
-            DefaultParameterGroup(db);
-            DefaultTemplate(db);
+            //DefaultSLAReminder(db);
+            //DefaultParameterGroup(db);
+            //DefaultTemplate(db);
         }
 
         public static void DefaultSLAReminder(DbEntities db)

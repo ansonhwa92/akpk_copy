@@ -642,32 +642,101 @@ namespace FEP.WebApi.Api.eEvent
 			return Ok(publicevent);
 		}
 
-		//[Route("api/eEvent/MediaInterviewRequest/Evaluate")]
-		//[HttpPost]
-		//[ValidationActionFilter]
-		//public string Evaluate([FromBody] MediaInterviewApprovalModel model, int id)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
-		//		var mediaapproval = db.EventMediaInterviewApproval.Where(x => x.Id == id).FirstOrDefault();
+		[Route("api/eEvent/MediaInterviewRequest/UpdateApproval")]
+		[HttpPost]
+		[ValidationActionFilter]
+		public string UpdateApproval([FromBody] MediaInterviewApprovalModel model)
+		{
 
-		//		if (mediaapproval != null)
-		//		{
-		//			mediaapproval.ApproverId = model.ApproverId;
-		//			mediaapproval.Status = model.Status;
-		//			mediaapproval.ApprovedDate = DateTime.Now;
-		//			mediaapproval.Remark = model.Remarks;
-		//			mediaapproval.RequireNext = model.RequireNext;
-		//			mediaapproval.MediaId = id;
-		//			mediaapproval.Level = model.Level;
+			if (ModelState.IsValid)
+			{
+				var papproval = db.EventMediaInterviewApproval.Where(pa => pa.Id == model.approval.Id).FirstOrDefault();
 
-		//			db.Entry(mediaapproval).State = EntityState.Modified;
-		//			db.SaveChanges();
+				if (papproval != null)
+				{
+					papproval.ApproverId = model.approval.ApproverId;
+					papproval.Status = model.approval.Status;
+					papproval.ApprovedDate = DateTime.Now;
+					papproval.Remark = model.approval.Remarks;
+					papproval.RequireNext = model.approval.RequireNext;
+					// requirenext is always set to true when coming from verifier approval, and always false from approver3
 
-		//		}
-		//	}
-		//	return "";
-		//}
+					db.Entry(papproval).State = EntityState.Modified;
+					// HERE
+					db.SaveChanges();
+
+					var mediainterview = db.EventMediaInterviewRequest.Where(p => p.Id == papproval.MediaId).FirstOrDefault();
+					if (mediainterview != null)
+					{
+
+						// proceed depending on requirenext
+						if (model.approval.RequireNext == true)
+						{
+
+							EventApprovalLevel nextlevel;
+							switch (papproval.Level)
+							{
+								case EventApprovalLevel.Verifier:
+									nextlevel = EventApprovalLevel.Approver1;
+
+									break;
+								case EventApprovalLevel.Approver1:
+									nextlevel = EventApprovalLevel.Approver2;
+									break;
+								case EventApprovalLevel.Approver2:
+									nextlevel = EventApprovalLevel.Approver3;
+									break;
+								default:
+									nextlevel = EventApprovalLevel.Approver1;
+									break;
+							}
+
+							// create next approval record
+							var pnewapproval = new EventMediaInterviewApproval
+							{
+								MediaId = papproval.MediaId,
+								Level = nextlevel,
+								ApproverId = 0,
+								Status = EventApprovalStatus.None,
+								ApprovedDate = DateTime.Now,
+								Remark = "",
+								RequireNext = false
+							};
+
+							db.EventMediaInterviewApproval.Add(pnewapproval);
+							// HERE
+							db.SaveChanges();
+						}
+
+
+
+						//return publication.Title;
+						return mediainterview.Id + "|" + mediainterview.MediaName + "|" + mediainterview.RefNo + "|" + mediainterview.Location + "|" + mediainterview.MediaStatus;
+					}
+				}
+			}
+
+			return "";
+		}
+
+
+		[Route("api/eEvent/MediaInterviewRequest/GetHistory")]
+		public List<MediaInterviewApprovalHistoryModel> GetHistory(int id)
+		{
+			var phistory = db.EventMediaInterviewApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { pa.MediaId, pa.Level, pa.ApproverId, pa.ApprovedDate, pa.Status, pa.Remark, UserName = u.Name }).Where(pa => pa.MediaId == id && pa.Status != EventApprovalStatus.None).OrderByDescending(pa => pa.ApprovedDate).Select(s => new MediaInterviewApprovalHistoryModel
+			{
+				Level = s.Level,
+				ApproverId = s.ApproverId,
+				ApprovalDate = s.ApprovedDate,
+				UserName = s.UserName,
+				Status = s.Status,
+				Remarks = s.Remark
+			}).ToList();
+
+			return phistory;
+		}
+
+
 	}
 }
 

@@ -1,0 +1,287 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.UserCourseEnrollmentModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Manage Course";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/eLearning/Courses" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="#">Courses</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">User Details </h1>
+                    @*<div class="header-text">Course details.</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="d-flex align-items-center">
+    <div class="title">
+        <span class="title">
+            Course: @Model.CourseTitle
+        </span>
+    </div>
+</div>
+<hr>
+
+<form id="form" method="post">
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="row">
+
+        @*@Html.Partial("_contentSidebar")*@
+
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <div class="form-container tab-content">
+
+                    <div class="tab-pane active" id="course-details">
+                        <div class="subtitle">
+                            Student Name
+                        </div>
+
+                        <div>
+                            <div class="descbox">
+                                @Model.StudentName
+                            </div>
+                        </div>
+
+                        <div class="subtitle">
+                            Date Enrolled
+                        </div>
+
+                        <div>
+                            <div class="objbox">
+                                @Model.DateEnrolled
+                            </div>
+                        </div>
+
+                        <div class="subtitle">
+                            Session Name
+                        </div>
+
+                        <div>
+                            <div class="objbox">
+                                @Model.SessionName
+                            </div>
+                        </div>
+                        <div class="subtitle">
+                            Percentage Of Completion
+                        </div>
+
+                        <div>
+                            <div class="objbox">
+                                @Model.CoursePercentageCompleted
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="subtitle">
+                            MODULES COMPLETED
+                        </div>
+
+                        <!----START MODULES -->
+                        <div id="draggable-module">
+                            @{
+
+                                var modules = Model.CourseProgress.ToList();
+
+                                for (int i = 0; i < modules.Count(); i++)
+                                {
+                                    var module = modules[i];
+
+                                    <div class="module-box">
+                                        <div class="row  mb-12">
+                                            <span class="moduleTitle">@module.ModuleName</span>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <span class="moduleTitle">Score : </span>
+                                            <span class="moduleTitle">@module.Score</span>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <span class="moduleTitle">Completed? : </span>
+                                            <span class="moduleTitle">@module.IsCompleted</span>
+                                        </div>
+                                        <div class="divider"></div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <!----END MODULES -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div id="page-nav" class="sidebar-left page-nav">
+                <div data-perfect-scrollbar class="ps">
+                    <h6 class="color-darkblue px-3"><i class="la la-comment color-secondary font-icon align-top"></i>Enrollment History</h6>
+                        <!-- Kalau banyak action log akan jd scroll ke bwh -->
+                        <div data-perfect-scrollbar class="position-relative">
+
+                            @if (Model.EnrollmentHistory.Count != 0)
+                            {
+
+                                foreach (var item in Model.EnrollmentHistory.OrderByDescending(x => x.CreatedDate))
+                                {
+
+                                    <div class="border-form rounded mb-2">
+                                        <div class="small text-muted">
+                                            @item.CreatedDate.ToString("dd/MM/yyyy")
+                                            <span class="float-right">@item.CreatedDate.ToString("hh:mm tt")</span>
+                                        </div>
+
+                                        @{
+                                            switch (item.Status)
+                                            {
+                                                case EnrollmentStatus.None:
+                                                    <div class="small">
+                                                        @*<span class="card__author-name color-darkblue">@item.ApprovedByName</span>*@
+                                                        @*<br><strong>Designation: Approval Result</strong>*@
+                                                        <br>Status — <span class="color-green">Not Enrolled</span>
+                                                    </div>
+                                                    break;
+                                                case EnrollmentStatus.Invited:
+                                                    <div class="small">
+                                                        @*<span class="card__author-name color-darkblue">@item.ApprovedByName</span>
+                                                        <br><strong>:Designation: Approval Result</strong>*@
+                                                        <br>Status — <span class="color-yellow">Invited but not enrolled</span>
+                                                    </div>
+                                                    break;
+                                                case EnrollmentStatus.Enrolled:
+                                                    <div class="small">
+                                                        @*<span class="card__author-name color-darkblue">@item.CreatedByName</span>*@
+                                                        @*<br><strong>:Submission For Approval</strong><br>— <span class="color-yellow"></span>*@
+                                                        <br>Status — <span class="color-yellow">Enrolled</span>
+                                                    </div>
+                                                    break;
+                                                       case EnrollmentStatus.Withdrawn:
+                                                    <div class="small">
+                                                        @*<span class="card__author-name color-darkblue">@item.CreatedByName</span>*@
+                                                        @*<br><strong>:Submission For Approval</strong><br>— <span class="color-yellow"></span>*@
+                                                        <br>Status — <span class="color-yellow">Withdrawn</span>
+                                                    </div>
+                                                    break;
+                                                    case EnrollmentStatus.Cancelled:
+                                                    <div class="small">
+                                                        @*<span class="card__author-name color-darkblue">@item.CreatedByName</span>*@
+                                                        @*<br><strong>:Submission For Approval</strong><br>— <span class="color-yellow"></span>*@
+                                                        <br>Status — <span class="color-yellow">Invitation cancelled after invited and enrolled</span>
+                                                    </div>
+                                                    break;
+                                                     case EnrollmentStatus.Removed:
+                                                    <div class="small">
+                                                        @*<span class="card__author-name color-darkblue">@item.CreatedByName</span>*@
+                                                        @*<br><strong>:Submission For Approval</strong><br>— <span class="color-yellow"></span>*@
+                                                        <br>Status — <span class="color-yellow">Removed from the course</span>
+                                                    </div>
+                                                    break;
+                                                    case EnrollmentStatus.Completed:
+                                                    <div class="small">
+                                                        @*<span class="card__author-name color-darkblue">@item.CreatedByName</span>*@
+                                                        @*<br><strong>:Submission For Approval</strong><br>— <span class="color-yellow"></span>*@
+                                                        <br>Status — <span class="color-yellow">Completed the course</span>
+                                                    </div>
+                                                    break;
+                                                default:
+                                                    <div class="small text-muted">
+                                                        @*<span class="card__author-name color-darkblue">@item.CreatedByName</span>
+                                                        <br><strong>:Activity</strong><br>— <span class="color-yellow"></span>*@
+                                                        <br>Status — <span class="color-yellow">Failed</span>
+
+                                                    </div>
+                                                    break;
+
+                                            }
+                                            if (item.Remark != "")
+                                            {
+                                                <div class="small mt-2"><strong>Remark:</strong> <em>@item.Remark</em></div>
+                                            }
+                                        }
+                                    </div>
+                                }
+
+                            }
+                    </div>
+                    @*<div class="page-section">
+            <div class="subtitle color-darkblue"><i class="font-icon color-secondary align-bottom"></i>Enrollment History</div>
+            <ul style="padding-left: 20px;">
+                <li class="nav-item">
+                    <p class="x-small" style="margin-bottom: 0px;">
+                        <i class="la la-globe font-icon color-secondary"></i>1
+                    </p>
+                </li>
+                <li class="nav-item">
+                    <p class="x-small" style="margin-bottom: 0px;">
+                        <i class="la la-clock-o font-icon color-secondary"></i>2
+                    </p>
+                </li>
+                <li class="nav-item">
+                    <p class="x-small" style="margin-bottom: 0px;">
+                        <i class="la la-folder-open font-icon color-secondary"></i>3
+                    </p>
+                </li>
+
+                <li class="nav-item">
+                    <p class="x-small" style="margin-bottom: 0px;">
+                        <i class="la la-calendar-check-o font-icon color-secondary"></i>4
+                    </p>
+                </li>
+                <li class="nav-item">
+                    <p class="x-small" style="margin-bottom: 0px;">
+                        <i class="la la-volume-up font-icon color-secondary"></i>5
+                    </p>
+                </li>
+            </ul>
+        </div>*@
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<style>
+    .form-container {
+        max-width: 100% !important
+    }
+</style>
+
+@section ContentScript {
+
+    <link href="~/css/elearn.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.truncate.js"></script>
+    <script src="~/js/elearn.js"></script>
+    <script>
+
+
+
+
+    
+    </script>
+}

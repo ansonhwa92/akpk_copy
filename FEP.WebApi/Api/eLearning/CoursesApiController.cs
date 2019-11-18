@@ -240,6 +240,39 @@ namespace FEP.WebApi.Api.eLearning
             });
         }
 
+        // Function to get publication details for review before submission. The details retrieved include action
+        // log history. This function is called for the third page of publication creation/editing.
+        // GET: api/RnP/Publication/GetForReview/5
+        [Route("api/eLearning/Courses/GetForReview")]
+        public CreateOrEditCourseModel GetForReview(int id)
+        {
+            var course = db.Courses.Where(p => p.Id == id).Select(model => new CreateOrEditCourseModel
+            {
+                CategoryId = model.CategoryId,
+                Title = model.Title,
+                Code = model.Code,
+                Description = model.Description,
+                Objectives = model.Objectives,
+                Medium = model.Medium,
+                Duration = model.Duration.Value,
+                DurationType = model.DurationType,
+                Language = model.Language,
+                IsFree = model.IsFree,
+                ViewCategory = model.ViewCategory,
+                Price = model.Price.Value,
+                UpdatedBy = model.UpdatedBy,
+                CreatedBy = model.CreatedBy
+            }).FirstOrDefault();
+
+            var puser = db.User.Where(u => u.Id == course.CreatedBy).FirstOrDefault();
+            if (puser != null)
+            {
+                course.CreatedByName = puser.Name;
+            }
+
+            return course;
+        }
+
         /// <summary>
         /// For use in index page, to list all the courses but with some fields only
         /// </summary>

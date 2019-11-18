@@ -11,6 +11,8 @@ namespace FEP.Model.eLearning
         [Required, Index]
         public int CourseEventId { get; set; }
 
+        public virtual CourseEvent CourseEvent { get; set; }
+
         [Index]
         public int CourseId { get; set; }
 

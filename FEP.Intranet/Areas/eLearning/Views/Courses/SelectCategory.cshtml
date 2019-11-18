@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "Create Course";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/RnP/Publication" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Course</a></li>
+                                <li class="breadcrumb-item"><a href="#">Create Course</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Create Course</h1>
+                    <div class="header-text">You can create a course in a few quick steps.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div class="sidebar-left">
+            <!-- Steps -->
+            <div class="sidebar-inner sticky">
+                <ul class="steps steps-vertical">
+                    <li class="step-item active">
+                        <a href="" class="step-link">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Select Course Category</span>
+                        </a>
+                    </li>
+                   <li class="step-item disabled">
+                        <a href="" class="step-link">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Fill In Course Details</span>
+                        </a>
+                    </li>
+                    @*<li class="step-item disabled">
+                        <a href="" class="step-link">
+                            <span class="step-number">3</span>
+                            <span class="step-title">Review & Submission</span>
+                        </a>
+                    </li>*@
+                </ul>
+                <!-- End Steps -->
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
+            <form>
+                <!--div class="form-container"-->
+                <div class="form-container form-container-w100">
+                    <div class="mt-2 mb-4 pb-1">
+                        <h4 class="color-darkblue mb-0">Select Course Category</h4>
+                        <h6 class="font-weight-normal">Pick your course category below</h6>
+                    </div>
+                    <div id="selecteventcategory">
+                        <div class="mxw-660">
+                            <div class="row">
+                                @foreach (var item in ViewBag.Categories)
+                                {
+                                    <div class="col-lg-4">
+                                        <div class="box-contain">
+                                            <div class="card text-center" id="@item.Name" name="@item.Id">
+                                                <span>@item.Name</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- End Form -->
+            <!-- Action Button -->
+            <div class="border-top p-3 rounded-bottom">
+                <input type="hidden" id="catid" name="catid" value="" />
+                <a class="btn btn-default" href="@Url.Action("Index", "Courses", new { area = "eLearning" })" data-toggle="tooltip" data-placement="top" title="Back">Back</a>
+                <button class="btn btn-secondary" id="btnNext" href="">Next</button>
+            </div>
+            <!-- End Action Button -->
+        </div>
+    </div>
+</div>
+
+@section ContentScript{
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('.card').click(function () {
+                var cid = $(this).attr("name");
+                $('#catid').val(cid);
+            });
+
+            $('#btnNext').click(function () {
+                var cid = $('#catid').val();
+                if (cid == "") {
+                    alert("Please select a Publication Type!");
+                }
+                else {
+                    var url = '@Url.Action("Create", "Courses", new { area = "eLearning" })?catid=' + cid;
+                    window.location = url;
+                }
+                return false;
+            });
+
+        });
+
+    </script>
+
+}

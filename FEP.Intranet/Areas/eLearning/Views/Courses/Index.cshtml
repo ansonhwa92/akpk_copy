@@ -94,7 +94,8 @@
 
         @if (CurrentUser.HasAccess(UserAccess.CourseCreate))
         {
-            <div><a href="@Url.Action("Create", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>
+            <div><a href="@Url.Action("SelectCategory", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>
+            @*<div><a href="@Url.Action("Create", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>*@
         }
     </div>
     <!-- Table -->

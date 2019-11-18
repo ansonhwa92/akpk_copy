@@ -20,6 +20,11 @@ namespace FEP.WebApiModel.eLearning
         public string StudentName { get; set; }
 
         public int CourseId { get; set; }
+
+        [Display(Name = "SessionName", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string SessionName { get; set; }
+
+        public string Status { get; set; }
     }
 
     public class ReturnBriefCourseEnrollmentModel : BaseModel
@@ -38,6 +43,13 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "Session", ResourceType = typeof(Language.eLearning.CourseEvent))]
         public int CourseEventId { get; set; }
+
+        [Display(Name = "SessionName", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string SessionName { get; set; }
+
+        [Display(Name = "CompletionDate", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string CompletionDate { get; set; }
+
     }
 
     public class ReturnListCourseEnrollmentModel
@@ -45,6 +57,48 @@ namespace FEP.WebApiModel.eLearning
         public FilterCourseEnrollmentModel Filters { get; set; }
         public ReturnBriefCourseEnrollmentModel CourseEnrollment { get; set; }
     }
+
+    //**Wawa update start**//
+    public class UserCourseEnrollmentModel : BaseModel
+    {
+        [Display(Name = "StudentName", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string StudentName { get; set; }
+
+        [Display(Name = "PercentageCompleted", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string CoursePercentageCompleted { get; set; }
+
+        [Display(Name = "Status", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public EnrollmentStatus Status { get; set; }
+
+        [Display(Name = "DateEnrolled", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string DateEnrolled { get; set; }
+
+        [Display(Name = "Session", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public int CourseEventId { get; set; }
+
+        public string CourseTitle { get; set; }
+
+        [Display(Name = "SessionName", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string SessionName { get; set; }
+
+        [Display(Name = "CompletionDate", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string CompletionDate { get; set; }
+
+        public ICollection<ReturnCourseProgressModel> CourseProgress { get; set; }
+        public ICollection<EnrollmentHistory> EnrollmentHistory { get; set; }
+
+    }
+    public class ReturnCourseProgressModel
+    {
+        public int EnrollmentId { get; set; }
+        public int Order { get; set; }
+        public string ModuleName { get; set; }
+        public bool IsCompleted { get; set; }
+        public decimal Score { get; set; } = 0.0m;
+        //public string ModuleCompletionDate { get; set; }
+
+    }
+    //**Wawa update end**//
 
 
     // class for setting and returning filters for the datatable list of publications

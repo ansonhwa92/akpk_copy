@@ -987,7 +987,11 @@
     <Content Include="Areas\eEvent\Views\PublicEvent\Details_RequestCancelModify.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Edit_RequestCancelModify.cshtml" />
     <Content Include="Areas\eLearning\Views\Home\BrowseElearnings.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\SelectCategory.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\_detailsSidebar.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\Review.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEnrollments\UsersProgress.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEnrollments\UserDetails.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

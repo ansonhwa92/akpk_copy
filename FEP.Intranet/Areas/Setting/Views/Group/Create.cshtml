@@ -1,0 +1,244 @@
+﻿@model FEP.WebApiModel.Setting.CreateTargetedGroup
+
+@{
+    ViewBag.Title = "Create Target Group";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/Setting/Group" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Group", new { area = "Setting" })">Target Group Management</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Create Target Group</h1>
+                    <div class="header-text">Create new target group with the desired criteria.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Target Group Management</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Group", new { area = "Setting" })" class="active nav-link">Create Group</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
+        {
+
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="border-form rounded-top">
+                <div class="form-container">
+                    <div class="mt-2 mb-4 pb-1">
+                        <h4 class="color-darkblue mb-0">Target Group Details</h4>
+                        <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Group Name" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            <textarea id="Description" name="Description" class="form-control" rows="3" placeholder="Group Description"></textarea>
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.MinAge, htmlAttributes: new { @class = "control-label" })
+                            <select name="MinAge" id="MinAge" class="form-control"></select>
+                            @Html.ValidationMessageFor(model => model.MinAge, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.MaxAge, htmlAttributes: new { @class = "control-label" })
+                            <select name="MaxAge" id="MaxAge" class="form-control"></select>
+                            @Html.ValidationMessageFor(model => model.MaxAge, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.Gender, "Select Gender", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.MinSalary, htmlAttributes: new { @class = "control-label" })
+                            <select name="MinSalary" id="MinSalary" class="form-control"></select>
+                            @Html.ValidationMessageFor(model => model.MinSalary, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.MaxSalary, htmlAttributes: new { @class = "control-label" })
+                            <select name="MaxSalary" id="MaxSalary" class="form-control"></select>
+                            @Html.ValidationMessageFor(model => model.MaxSalary, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.Status, "Select Status", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.PaymentStatus, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.PaymentStatus, "Select Payment Status", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.PaymentStatus, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.Delinquent, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.Delinquent, "Select Delinquent Status", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Delinquent, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-lg-6">
+                            @Html.LabelFor(model => model.EmploymentType, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.EmploymentType, "Select Employment Type", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.EmploymentType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <input class="form-control" type="hidden" name="CreatorId" id="CreatorId" value="@CurrentUser.UserId">
+                <a href="@Url.Action("Index", "Group", new { area = "Setting" })" class="btn btn-default mr-2">@Language.General.ButtonBack</a>
+                <button type="submit" class="btn btn-secondary" value="Create">Save</button>
+            </div>
+        }
+    </div>
+</div>
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //var curMinAge = '';
+            //var curMaxAge = '';
+            //var curMinSalary = '';
+            //var curMaxSalary = '';
+
+            //if (@Model.MinAge != null) curMinAge = @Model.MinAge;
+            //if (@Model.MaxAge != null) curMaxAge = @Model.MaxAge;
+            //if (@Model.MinSalary != null) curMinSalary = @Model.MinSalary;
+            //if (@Model.MaxSalary != null) curMaxSalary = @Model.MaxSalary;
+
+            function populateMinAge(curmin) {
+                $('#MinAge').append('<option value="18">500</option>');
+                $('#MinAge').append('<option value="19">19</option>');
+                $('#MinAge').append('<option value="20">20</option>');
+                $('#MinAge').append('<option value="21">21</option>');
+                $('#MinAge').append('<option value="25">25</option>');
+                $('#MinAge').append('<option value="30">30</option>');
+                $('#MinAge').append('<option value="35">35</option>');
+                $('#MinAge').append('<option value="40">40</option>');
+                $('#MinAge').append('<option value="45">45</option>');
+                $('#MinAge').append('<option value="50">50</option>');
+                $('#MinAge').append('<option value="55">55</option>');
+                $('#MinAge').append('<option value="60">60</option>');
+                $('#MinAge').append('<option value="65">65</option>');
+                $('#MinAge').append('<option value="70">70</option>');
+                $('#MinAge').append('<option value=">70">>70</option>');
+                //$('#MinAge select').val(curmin);
+            }
+
+            function populateMaxAge(curmin) {
+                $('#MaxAge').append('<option value="18">500</option>');
+                $('#MaxAge').append('<option value="19">19</option>');
+                $('#MaxAge').append('<option value="20">20</option>');
+                $('#MaxAge').append('<option value="21">21</option>');
+                $('#MaxAge').append('<option value="25">25</option>');
+                $('#MaxAge').append('<option value="30">30</option>');
+                $('#MaxAge').append('<option value="35">35</option>');
+                $('#MaxAge').append('<option value="40">40</option>');
+                $('#MaxAge').append('<option value="45">45</option>');
+                $('#MaxAge').append('<option value="50">50</option>');
+                $('#MaxAge').append('<option value="55">55</option>');
+                $('#MaxAge').append('<option value="60">60</option>');
+                $('#MaxAge').append('<option value="65">65</option>');
+                $('#MaxAge').append('<option value="70">70</option>');
+                $('#MaxAge').append('<option value=">70">>70</option>');
+                //$('#MaxAge select').val(curmin);
+            }
+
+            function populateMinSalary(curmin) {
+                $('#MinSalary').append('<option value="500">500</option>');
+                $('#MinSalary').append('<option value="800">800</option>');
+                $('#MinSalary').append('<option value="1000">1000</option>');
+                $('#MinSalary').append('<option value="1200">1200</option>');
+                $('#MinSalary').append('<option value="1500">1500</option>');
+                $('#MinSalary').append('<option value="1800">1800</option>');
+                $('#MinSalary').append('<option value="2000">2000</option>');
+                $('#MinSalary').append('<option value="2500">2500</option>');
+                $('#MinSalary').append('<option value="3000">3000</option>');
+                $('#MinSalary').append('<option value="3500">3500</option>');
+                $('#MinSalary').append('<option value="4000">4000</option>');
+                $('#MinSalary').append('<option value="4500">4500</option>');
+                $('#MinSalary').append('<option value="5000">5000</option>');
+                $('#MinSalary').append('<option value=">5000">>5000</option>');
+                //$('#MinSalary select').val(curmin);
+            }
+
+            function populateMaxSalary(curmax) {
+                $('#MaxSalary').append('<option value="500">500</option>');
+                $('#MaxSalary').append('<option value="800">800</option>');
+                $('#MaxSalary').append('<option value="1000">1000</option>');
+                $('#MaxSalary').append('<option value="1200">1200</option>');
+                $('#MaxSalary').append('<option value="1500">1500</option>');
+                $('#MaxSalary').append('<option value="1800">1800</option>');
+                $('#MaxSalary').append('<option value="2000">2000</option>');
+                $('#MaxSalary').append('<option value="2500">2500</option>');
+                $('#MaxSalary').append('<option value="3000">3000</option>');
+                $('#MaxSalary').append('<option value="3500">3500</option>');
+                $('#MaxSalary').append('<option value="4000">4000</option>');
+                $('#MaxSalary').append('<option value="4500">4500</option>');
+                $('#MaxSalary').append('<option value="5000">5000</option>');
+                $('#MaxSalary').append('<option value=">5000">>5000</option>');
+                //$('#MaxSalary select').val(curmax);
+            }
+
+            //populateMinAge(curMinAge);
+            //populateMaxAge(curMaxAge);
+            //populateMinSalary(curMinSalary);
+            //populateMaxSalary(curMaxSalary);
+
+            populateMinAge('');
+            populateMaxAge('');
+            populateMinSalary('');
+            populateMaxSalary('');
+
+        });
+    </script>
+}

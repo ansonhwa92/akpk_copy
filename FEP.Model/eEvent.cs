@@ -29,6 +29,7 @@ namespace FEP.Model
 		public DateTime? CreatedDate { get; set; }
 		public bool Display { get; set; }
 		public int? SLAReminderStatusId { get; set; }
+		public bool? IsRequested { get; set; }
 
 		//----ForeignKey----
 		[ForeignKey("EventCategoryId")]
@@ -448,5 +449,27 @@ namespace FEP.Model
 
 		[ForeignKey("UserId")]
 		public virtual User User { get; set; }
+	}
+
+
+	[Table("EventRequest")]
+	public class EventRequest
+	{
+		[Key]
+		public int Id { get; set; }
+
+		public string Reason { get; set; } 
+
+		public RequestStatus? RequestStatus { get; set; }
+		public RequestType? RequestType { get; set; }
+		public int? SLAReminderStatusId { get; set; }
+
+		public int? EventId { get; set; }
+		[ForeignKey("EventId")]
+		public virtual PublicEvent Event { get; set; }
+
+		public int? CreatedBy { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
 	}
 }

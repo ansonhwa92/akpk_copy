@@ -187,7 +187,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Branch.
+        ///   Looks up a localized string similar to Select Branch.
         /// </summary>
         public static string PlaceholderBranch {
             get {

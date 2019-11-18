@@ -136,6 +136,15 @@ namespace FEP.Model
 		[Display(Name = "Reject Media Interview")]
 		RejectMediaInterview,
 
+		[Display(Name = "Submit Cancellation?mofication Request")]
+		SubmitCancellationModificationRequest,
+		[Display(Name = "Verify Cancellation?mofication Request")]
+		VerifyCancellationModificationRequest,
+		[Display(Name = "Approve Cancellation?mofication Request")]
+		ApproveCancellationModificationRequest,
+		[Display(Name = "Amendment Cancellation?mofication Request")]
+		AmendmentCancellationModificationRequest,
+
 
 		[Display(Name = "Payment")]
         Payment,
@@ -202,8 +211,12 @@ namespace FEP.Model
         [Display(Name = "Approve Publication Withdrawal")]
         ApprovePublicationWithdrawal,
 
+        // temp only
         [Display(Name = "Refund Publication")]
-        RefundPublication
+        RefundPublication,
+
         // other refunds can add here (in case wanna use different params)
+        [Display(Name = "Refund")]
+        Refund
     }
 }

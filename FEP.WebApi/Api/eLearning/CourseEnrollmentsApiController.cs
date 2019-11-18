@@ -366,7 +366,7 @@ namespace FEP.WebApi.Api.eLearning
         [HttpGet]
         public async Task<IHttpActionResult> EnrollAsync(int id, int userId, string enrollmentCode = "")
         {
-            var learner = await db.Learners.FirstOrDefaultAsync(x => x.UserId ==userId);
+            var learner = await db.Learners.FirstOrDefaultAsync(x => x.UserId == userId);
 
             if (learner == null) // create new learner
             {
@@ -447,10 +447,13 @@ namespace FEP.WebApi.Api.eLearning
                     db.EnrollmentHistories.Add(new EnrollmentHistory
                     {
                         CreatedDate = DateTime.Now,
-                        EnrolmmentId = enrollment.Id,
+                        EnrollmentId = enrollment.Id,
                         LearnerId = learner.Id,
                         Remark = "User Enrolled",
                         Status = EnrollmentStatus.Enrolled,
+                        CourseEventId = courseEvent.Id,
+                        CourseId = courseEvent.CourseId,
+                        UserId = userId,
                     });
 
                     await db.SaveChangesAsync();
@@ -506,10 +509,13 @@ namespace FEP.WebApi.Api.eLearning
                     db.EnrollmentHistories.Add(new EnrollmentHistory
                     {
                         CreatedDate = DateTime.Now,
-                        EnrolmmentId = enrollment.Id,
+                        EnrollmentId = enrollment.Id,
                         LearnerId = learner.Id,
                         Remark = "User Enrolled",
                         Status = EnrollmentStatus.Enrolled,
+                        CourseEventId = courseEvent.Id,
+                        CourseId = courseEvent.CourseId,
+                        UserId = userId,
                     });
 
                     await db.SaveChangesAsync();
@@ -547,9 +553,6 @@ namespace FEP.WebApi.Api.eLearning
             });
         }
 
-
-
-
         [Route("api/eLearning/CourseEnrollments/GetEnrollment")]
         [HttpGet]
         public async Task<IHttpActionResult> GetEnrollment(int id, int userId, string enrollmentCode = "")
@@ -579,5 +582,25 @@ namespace FEP.WebApi.Api.eLearning
 
             return BadRequest();
         }
-    }
+
+        [Route("api/eLearning/CourseEnrollments/GetEnrollmentHistoryByCourse")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetEnrollmentHistoryByCourse(int userId, int courseId)
+        {
+            var learner = await db.Learners.FirstOrDefaultAsync(x => x.UserId == userId);
+
+            if (learner == null)
+                return BadRequest("User Not Found");
+
+
+            var history = db.EnrollmentHistories.Where(x => x.LearnerId == learner.Id &&
+                    x.CourseId == courseId);
+
+            if (history != null)
+                return Ok(history);
+
+            return BadRequest();
+
+        }
+    }             
 }

@@ -93,12 +93,13 @@
 			<br />
 			<div>
 				<div>
-					@if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.New || Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.NotVerified)
+					@if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.New || Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.NotVerified
+					   && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
 					{
 						<a href='@Url.Action("SubmitToVerify", "ExhibitionRoadshowRequest", new { id = Model.Id })'
 						   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
 					}
-					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified)
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Verify_ExhibitionRoadShow)))
 					{
 						<a href='@Url.Action("Verified", "ExhibitionRoadshowRequest", new { id = Model.Id })'
 						   class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</a>
@@ -106,24 +107,33 @@
 						<a href='@Url.Action("Reject", "ExhibitionRoadshowRequest", new { id = Model.Id })'
 						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 					}
-					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.Verified)
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver1_ExhibitionRoadShow)))
 					{
 						<a href='@Url.Action("FirstApproved", "ExhibitionRoadshowRequest", new { id = Model.Id })'
 						   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+						<br />
+						<a href='@Url.Action("Reject", "ExhibitionRoadshowRequest", new { id = Model.Id })'
+						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 					}
-					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover1)
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover1 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver3_ExhibitionRoadShow)))
 					{
 						<a href='@Url.Action("SecondApproved", "ExhibitionRoadshowRequest", new { id = Model.Id })'
 						   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+						<br />
+						<a href='@Url.Action("Reject", "ExhibitionRoadshowRequest", new { id = Model.Id })'
+						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 					}
-					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover2)
+					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover2 && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
 					{
 						<a href='@Url.Action("FinalApproved", "ExhibitionRoadshowRequest", new { id = Model.Id })'
 						   class="btn btn-success btn-block mb-2">Approved</a>
+						<br />
+						<a href='@Url.Action("Reject", "ExhibitionRoadshowRequest", new { id = Model.Id })'
+						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 					}
 
 
-					else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover3)
+					@*else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover3)
 					{
 						<a href='@Url.Action("", "", new { id = Model.Id })'
 						   class="btn btn-outline-secondary btn-block mb-2">Submit for Verification</a>
@@ -157,7 +167,7 @@
 					{
 						<a href='@Url.Action("", "", new { id = Model.Id })'
 						   class="btn btn-outline-default btn-block mb-2">Send Invitation to Nominees</a>
-					}
+					}*@
 				</div>
 			</div>
 		</div>
@@ -190,6 +200,7 @@
 						</li>
 					</ul>
 				</div>
+
 				<div class="tab-content">
 					<div class="tab-pane active" id="exhibitiondetails">
 						<form>
@@ -240,8 +251,8 @@
 					<div class="tab-pane" id="eventdetails">
 						<form>
 							<div class="form-container">
-								<div class="sub-Title my-4">
-									Event Details
+								<div class="sub-Title my-4 d-flex align-items-center mb-4 mt-2">
+									<h4 class="color-darkblue mr-auto mb-0">Event Details<br><span class="small">Review event details below.</span></h4>
 								</div>
 								<div class="row">
 									<div class="form-group col-lg-12">

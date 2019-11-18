@@ -83,6 +83,7 @@
     <Compile Include="eEvent\EventRefund.cs" />
     <Compile Include="eEvent\EventSpeaker.cs" />
     <Compile Include="eEvent\ExhibitionRoadshowRequest.cs" />
+    <Compile Include="eEvent\LandingPage.cs" />
     <Compile Include="eLearning\ApiResponseModel.cs" />
     <Compile Include="eLearning\BaseModel.cs" />
     <Compile Include="eLearning\CourseApprovalLog.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Administration\Individual.cs" />
     <Compile Include="Administration\Staff.cs" />
     <Compile Include="Setting\Account.cs" />
+    <Compile Include="Setting\Groups.cs" />
     <Compile Include="SLAReminder\SLAReminder.cs" />
     <Compile Include="Template\EmailTemplate.cs" />
   </ItemGroup>

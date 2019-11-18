@@ -7,9 +7,11 @@ using FEP.WebApiModel.SLAReminder;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FEP.Intranet.Controllers
@@ -33,7 +35,7 @@ namespace FEP.Intranet.Controllers
 
         [AllowAnonymous]
         public ActionResult Error()
-        {            
+        {
             return View("/Views/Shared/Error.cshtml");
         }
 
@@ -85,7 +87,7 @@ namespace FEP.Intranet.Controllers
             }
             else if (CurrentUser.UserType == UserType.Staff)
             {
-                var response = await WepApiMethod.SendApiAsync<DetailsStaffModel>(HttpVerbs.Get, $"Administration/Staff?id={userid}");
+                var response = await WepApiMethod.SendApiAsync<StaffProfileModel>(HttpVerbs.Get, $"Administration/Staff?id={userid}");
 
                 if (response.isSuccess)
                 {
@@ -105,7 +107,7 @@ namespace FEP.Intranet.Controllers
 
             if (CurrentUser.UserType == UserType.SystemAdmin)
             {
-                var response = await WepApiMethod.SendApiAsync<UserModel>(HttpVerbs.Get, $"Administration/User?id={userid}");
+                var response = await WepApiMethod.SendApiAsync<DetailsUserModel>(HttpVerbs.Get, $"Administration/User?id={userid}");
 
                 if (response.Data == null)
                 {
@@ -138,7 +140,7 @@ namespace FEP.Intranet.Controllers
                     CitizenshipId = response.Data.Citizenship != null ? response.Data.Citizenship.Id : (int?)null,
                     Name = response.Data.Name,
                     ICNo = response.Data.ICNo,
-                    PassportNo = response.Data.PassportNo,                    
+                    PassportNo = response.Data.PassportNo,
                     MobileNo = response.Data.MobileNo,
                     CountryCode = response.Data.CountryCode,
                     Address1 = response.Data.Address1,
@@ -148,7 +150,7 @@ namespace FEP.Intranet.Controllers
                     City = response.Data.City,
                     StateId = response.Data.State.Id,
                     State = response.Data.State.Name,
-                    CountryId = response.Data.Country.Id                 
+                    CountryId = response.Data.Country.Id
                 };
 
                 var countries = await GetCountries();
@@ -172,7 +174,7 @@ namespace FEP.Intranet.Controllers
                 }
 
                 var model = new EditCompanyProfileModel
-                {                   
+                {
                     Type = response.Data.Type,
                     CompanyName = response.Data.CompanyName,
                     AgencyName = response.Data.AgencyName,
@@ -190,7 +192,7 @@ namespace FEP.Intranet.Controllers
                     CompanyPhoneNo = response.Data.CompanyPhoneNo,
                     Name = response.Data.Name,
                     ICNo = response.Data.ICNo,
-                    PassportNo = response.Data.PassportNo,                    
+                    PassportNo = response.Data.PassportNo,
                     MobileNo = response.Data.MobileNo,
                     CountryCode = response.Data.CountryCode,
                 };
@@ -203,7 +205,7 @@ namespace FEP.Intranet.Controllers
                 model.States = new SelectList(await GetStates(), "Id", "Name", 0);
                 model.Ministries = new SelectList(await GetMinistry(), "Id", "Name", 0);
                 model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
-               
+
 
                 return View("EditProfileCompany", model);
             }
@@ -220,15 +222,21 @@ namespace FEP.Intranet.Controllers
 
             if (CurrentUser.UserType == UserType.SystemAdmin)
             {
-                var model = new EditUserModel();
+                var model = new EditAdminProfileModel();
 
                 if (TryUpdateModel(model))
                 {
-                    var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Administration/User?id={CurrentUser.UserId}", model);
+
+                    var modelapi = new EditUserModel();
+
+                    modelapi.Name = model.Name;
+                    modelapi.MobileNo = model.MobileNo;
+
+                    var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Administration/User?id={CurrentUser.UserId}", modelapi);
 
                     if (response.Data)
                     {
-                        await LogActivity(Modules.Admin, "Update Profile", model);
+                        await LogActivity(Modules.Setting, "Update Profile", model);
 
                         TempData["SuccessMessage"] = Language.Profile.AlertSuccessUpdateProfile;
 
@@ -240,7 +248,7 @@ namespace FEP.Intranet.Controllers
             else if (CurrentUser.UserType == UserType.Individual)
             {
                 var model = new EditIndividualProfileModel();
-                                
+
                 TryUpdateModel(model);
 
                 if (model.IsMalaysian)
@@ -260,21 +268,21 @@ namespace FEP.Intranet.Controllers
                     ModelState.Remove("StateId");
                     model.StateId = null;
                 }
-                
+
                 if (ModelState.IsValid)
-                {                    
+                {
                     var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Home/Profile/EditIndividualProfile?id={CurrentUser.UserId}", model);
 
                     if (response.Data)
                     {
-                        await LogActivity(Modules.Admin, "Update Profile", model);
+                        await LogActivity(Modules.Setting, "Update Profile", model);
 
                         TempData["SuccessMessage"] = Language.Profile.AlertSuccessUpdateProfile;
 
                         return RedirectToAction("MyProfile", "Home", new { area = "" });
                     }
                 }
-                
+
                 var countries = await GetCountries();
 
                 model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
@@ -334,7 +342,7 @@ namespace FEP.Intranet.Controllers
 
                     if (response.Data)
                     {
-                        await LogActivity(Modules.Admin, "Update Profile", model);
+                        await LogActivity(Modules.Setting, "Update Profile", model);
 
                         TempData["SuccessMessage"] = Language.Profile.AlertSuccessUpdateProfile;
 
@@ -354,11 +362,69 @@ namespace FEP.Intranet.Controllers
         }
 
         [HttpGet]
-        public ActionResult ChangePassword()
+        public async Task<ActionResult> UpdateAvatar()
+        {
+            var response = await WepApiMethod.SendApiAsync<AdminProfileModel>(HttpVerbs.Get, $"Administration/User?id={CurrentUser.UserId}");
+
+            var model = new ProfileAvatarModel();
+
+            if (response.isSuccess)
+            {                
+                model.AvatarImageBase64 = response.Data.AvatarImageBase64;
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult LoadAvatar()
+        {
+            foreach (string file in Request.Files)
+            {
+                var fileContent = Request.Files[file];
+
+                var image64 = ConvertImageToBase64(fileContent);
+
+                if (image64 != null)
+                {
+                    return Content(JsonConvert.SerializeObject(new { image64 = image64 }), "application/json");
+                }
+            }
+
+            return Content(JsonConvert.SerializeObject(new { image64 = "" }), "application/json");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UpdateAvatar(ProfileAvatarModel model)
         {
 
-            return View();
+            if (ModelState.IsValid)
+            {
 
+                var image64 = ConvertImageToBase64(model.AvatarFile);
+
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Home/Profile/UpdateAvatar?id={CurrentUser.UserId}", new Image64Model { image64 = image64 });
+
+                if (response.isSuccess)
+                {
+                    await LogActivity(Modules.Setting, "Change Avatar Photo");
+
+                    TempData["SuccessMessage"] = Language.Profile.AlertSuccessUpdateAvatar;
+
+                    return RedirectToAction("MyProfile", "Home", new { area = "" });
+                }
+            }
+
+            TempData["ErrorMessage"] = Language.Profile.AlertFailUpdateAvatar;
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -383,7 +449,7 @@ namespace FEP.Intranet.Controllers
 
                 if (response.Data)
                 {
-                    await LogActivity(Modules.Admin, "Change Password");
+                    await LogActivity(Modules.Setting, "Change Password");
 
                     TempData["SuccessMessage"] = Language.Profile.AlertSuccessChangePassword;
 
@@ -444,7 +510,7 @@ namespace FEP.Intranet.Controllers
 
                     var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
 
-                    await LogActivity(Modules.Admin, "Change Email");
+                    await LogActivity(Modules.Setting, "Change Email");
 
                     TempData["SuccessMessage"] = Language.Profile.AlertSuccessChangeEmail;
 
@@ -547,6 +613,31 @@ namespace FEP.Intranet.Controllers
             }
 
             return ministries;
+
+        }
+
+        [NonAction]
+        private string ConvertImageToBase64(HttpPostedFileBase image)
+        {
+
+            if (image != null && image.ContentLength > 0)
+            {
+
+                byte[] thePictureAsBytes = new byte[image.ContentLength];
+
+                using (BinaryReader theReader = new BinaryReader(image.InputStream))
+                {
+                    thePictureAsBytes = theReader.ReadBytes(image.ContentLength);
+                }
+
+                string photo = Convert.ToBase64String(thePictureAsBytes);
+
+                var dataUrl = string.Format("data:{0};base64,{1}", "image/(png|jpg|jpeg)", photo);
+
+                return dataUrl;
+            }
+
+            return null;
 
         }
 

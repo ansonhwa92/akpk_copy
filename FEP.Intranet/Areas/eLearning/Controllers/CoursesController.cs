@@ -295,7 +295,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             if (response.isSuccess)
             {
                 TempData["SuccessMessage"] = "User successfully remove from role.";
-                await LogActivity(Modules.Admin, "Remove User From Role", model);
+                await LogActivity(Modules.Setting, "Remove User From Role", model);
             }
             else
             {
@@ -632,7 +632,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "Could not start the course.";
+                TempData["ErrorMessage"] = "Could not start the course. Are you enrolled?";
 
                 return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
             }

@@ -210,7 +210,7 @@ namespace FEP.WebApiModel.eEvent
 		}
 
 		public int Id { get; set; }
-
+		public string RefNo { get; set; }
 		public IEnumerable<Attachment> Attachments { get; set; }
 	}
 

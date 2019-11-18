@@ -35,6 +35,7 @@
                 <div>@Html.DisplayNameFor(m => m.Filters.BuyerName)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
+                        <input type="hidden" id="Filters_ItemType" name="Filters.ItemType" value="Publication" />
                         @Html.EditorFor(m => m.Filters.BuyerName, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
@@ -198,6 +199,7 @@
                     "type": "post",
                     "url": '@(WebApiURL)Commerce/Cart/ListRefund',
                     "data": function (filter) {
+                        filter.ItemType = $('#Filters_ItemType').val();
                         filter.BuyerName = $('#Filters_BuyerName').val();
                         filter.Description = $('#Filters_Description').val();
                         filter.ReceiptNo = $('#Filters_ReceiptNo').val();

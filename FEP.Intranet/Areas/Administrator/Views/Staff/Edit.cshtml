@@ -44,7 +44,7 @@
                             <a href="@Url.Action("Details", "Staff", new { area = "Administrator", id = Model.Id })" class="nav-link">View</a>
                         </li>
                         <li class="nav-item">
-                            <a href="@Url.Action("Edit", "Staff", new { area = "Administrator", id = Model.Id })" class="active nav-link">Edit Role</a>
+                            <a href="@Url.Action("Edit", "Staff", new { area = "Administrator", id = Model.Id })" class="active nav-link">Edit</a>
                         </li>
                         @if (Model.Status)
                         {
@@ -95,8 +95,11 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(m => m.Branch)
-                        @Html.EditorFor(m => m.Branch.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.FEPLabelFor(m => m.BranchId)
+                        <span class="select-arrow">
+                            @Html.DropDownListFor(m => m.BranchId, Model.Branches, Language.Staff.PlaceholderBranch, htmlAttributes: new { @class = "custom-select" })
+                        </span>
+                        @Html.ValidationMessageFor(m => m.BranchId)
                     </div>
                 </div>
                 <div class="row">

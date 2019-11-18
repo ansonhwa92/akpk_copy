@@ -1,27 +1,64 @@
 ﻿
 <div class="row">
-    <div class="col-lg-4">
-        <div class="menu-list">
-            <h6 class="color-darkblue">General</h6>
-            <a class="dropdown-item" href="@Url.Action("Index", "User", new { area = "Administrator" })">User Management</a>
-            <a class="dropdown-item" href="@Url.Action("List", "Role", new { area = "Administrator" })">Role Management</a>
-            <a class="dropdown-item" href="@Url.Action("List", "EmailTemplates", new { area = "Template" })">Notification Template</a>
-            <a class="dropdown-item" href="@Url.Action("List", "SLAReminders", new { area = "SLAReminder" })">SLA Reminder</a>
+    @if (CurrentUser.HasAccess(UserAccess.User) || CurrentUser.HasAccess(UserAccess.Role) || CurrentUser.HasAccess(UserAccess.NotificationSetting) || CurrentUser.HasAccess(UserAccess.SLA))
+    {
+        <div class="col-lg-4">
+            <div class="menu-list">
+                <h6 class="color-darkblue">General</h6>
+                @if (CurrentUser.HasAccess(UserAccess.User))
+                {
+                    <a class="dropdown-item" href="@Url.Action("Index", "User", new { area = "Administrator" })">User Management</a>
+                }
+                @if (CurrentUser.HasAccess(UserAccess.Role))
+                {
+                    <a class="dropdown-item" href="@Url.Action("List", "Role", new { area = "Administrator" })">Role Management</a>
+                }
+                @if (CurrentUser.HasAccess(UserAccess.NotificationSetting))
+                {
+                    <a class="dropdown-item" href="@Url.Action("List", "EmailTemplates", new { area = "Template" })">Notification Template</a>
+                }
+                @if (CurrentUser.HasAccess(UserAccess.SLA))
+                {
+                    <a class="dropdown-item" href="@Url.Action("List", "SLAReminders", new { area = "SLAReminder" })">SLA Reminder</a>
+                }
+            </div>
         </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="menu-list">
-            <h6 class="color-darkblue">Registration</h6>
-            <a class="dropdown-item" href="@Url.Action("List", "Sector", new { area = "Administrator" })">Agency Sector</a>
-            <a class="dropdown-item" href="@Url.Action("List", "Ministry", new { area = "Administrator" })">Goverment Ministry</a>
-            <a class="dropdown-item" href="@Url.Action("List", "Branch", new { area = "Administrator" })">Branch</a>
+    }
+    @if (CurrentUser.HasAccess(UserAccess.SectorSetting) || CurrentUser.HasAccess(UserAccess.MinistrySetting) || CurrentUser.HasAccess(UserAccess.BranchSetting))
+    {
+        <div class="col-lg-4">
+            <div class="menu-list">
+                <h6 class="color-darkblue">Registration</h6>
+                @if (CurrentUser.HasAccess(UserAccess.SectorSetting))
+                {
+                    <a class="dropdown-item" href="@Url.Action("List", "Sector", new { area = "Administrator" })">Agency Sector</a>
+                }
+                @if (CurrentUser.HasAccess(UserAccess.MinistrySetting))
+                {
+                    <a class="dropdown-item" href="@Url.Action("List", "Ministry", new { area = "Administrator" })">Goverment Ministry</a>
+                }
+                @if (CurrentUser.HasAccess(UserAccess.BranchSetting))
+                {
+                    <a class="dropdown-item" href="@Url.Action("List", "Branch", new { area = "Administrator" })">Staff Branch</a>
+                }
+            </div>
         </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="menu-list">
-            <h6 class="color-darkblue">Logs</h6>
-            <a class="dropdown-item" href="@Url.Action("List", "UserLog", new { area = "Logs" })">User Logs</a>
-            <a class="dropdown-item" href="@Url.Action("List", "ErrorLog", new { area = "Logs" })">Error Logs</a>
+    }
+
+    @if (CurrentUser.HasAccess(UserAccess.UserLog) || CurrentUser.HasAccess(UserAccess.ErrorLog))
+    {
+        <div class="col-lg-4">
+            <div class="menu-list">
+                <h6 class="color-darkblue">Logs</h6>
+                @if (CurrentUser.HasAccess(UserAccess.UserLog))
+                {
+                    <a class="dropdown-item" href="@Url.Action("List", "UserLog", new { area = "Logs" })">User Logs</a>
+                }
+                @if (CurrentUser.HasAccess(UserAccess.ErrorLog))
+                {
+                    <a class="dropdown-item" href="@Url.Action("List", "ErrorLog", new { area = "Logs" })">Error Logs</a>
+                }
+            </div>
         </div>
-    </div>
+    }
 </div>

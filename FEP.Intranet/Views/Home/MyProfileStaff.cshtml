@@ -1,4 +1,4 @@
-﻿@model DetailsStaffModel
+﻿@model StaffProfileModel
 
 @{
     ViewBag.Title = "My Profile";
@@ -41,7 +41,10 @@
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
                             <a href="@Url.Action("MyProfile", "Home", new { area = "" })" class="active nav-link">View</a>
-                        </li> 
+                        </li>                      
+                        <li class="nav-item">
+                            <a href="@Url.Action("UpdateAvatar", "Home", new { area = "" })" class="nav-link">Update Avatar Photo</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -51,7 +54,7 @@
         <!-- Start Form -->
         <div class="border-form rounded-top">
             <form>
-                <div class="form-container">
+                <div class="form-container">                   
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.Name)

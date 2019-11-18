@@ -43,8 +43,8 @@ namespace FEP.Model
         public int LoginAttempt { get; set; }
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidTo { get; set; }
+        public string Avatar { get; set; }
         public virtual User User { get; set; }
-
         public virtual ICollection<UserRole> UserRoles { get; set; }
 
     }
@@ -258,4 +258,6 @@ namespace FEP.Model
         [Display(Name = "UserTypeStaff", ResourceType = typeof(Language.Enum))]
         Staff = 3
     }
+
+
 }

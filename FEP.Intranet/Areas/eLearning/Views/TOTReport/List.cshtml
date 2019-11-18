@@ -17,9 +17,8 @@
                 ajax: {
                     "type": "post",
                     "url": '@Url.Action("List", "TOTReport", new { area = "eLearning" })',
-                    "data": function (filter) {
-                        filter.CourseId = $('#Filter_CourseId').val();
-                        filter.ModuleId = $('#Filter_ModuleId').val();
+                    "data": function (filter) {                      
+                        filter.Module = $('#Filter_Module').val();
                         filter.Date = $('#Filter_Date').val();
                         filter.Venue = $('#Filter_Venue').val();
                         filter.AgeRange = $('#Filter_AgeRange').val();
@@ -32,11 +31,7 @@
                         render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
-                    },
-                    {
-                        data: 'Course',
-                        sortable: true
-                    },
+                    },                    
                     {
                         data: 'Module',
                         sortable: true
@@ -50,6 +45,10 @@
                         sortable: true
                     },
                     {
+                        data: 'CreatedBy',
+                        sortable: true
+                    },
+                    {
                         sortable: false,
                         render: function (data, type, row, meta) {
 
@@ -58,7 +57,7 @@
                             action = '<div class="icon-action">'
                                 + '<a href="@Url.Action("Details", "TOTReport", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
                                 + '<a href="@Url.Action("Edit", "TOTReport", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                                + '<a href="@Url.Action("Delete", "TOTReport", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+                                + '<a href="@Url.Action("Delete", "TOTReport", new { area = "eLearning" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></a>'
 
                             action = action + '</div>';
 
@@ -149,16 +148,10 @@
         <div class="dropdown-menu">
             <div class="filter-head">Filters</div>
             <div class="filter-body">
-                <div>@Html.DisplayNameFor(m => m.Filter.CourseId)</div>
+                <div>@Html.DisplayNameFor(m => m.Filter.Module)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        @Html.DropDownListFor(m => m.Filter.CourseId, Model.Filter.Courses, "Select All", htmlAttributes: new { @class = "select2 form-control small" })
-                    </div>
-                </div>
-                <div>@Html.DisplayNameFor(m => m.Filter.ModuleId)</div>
-                <div class="sorting-wrap">
-                    <div class="sorting-dropdown">
-                        @Html.DropDownListFor(m => m.Filter.ModuleId, Model.Filter.Modules, "Select All", htmlAttributes: new { @class = "select2 form-control small" })
+                        @Html.EditorFor(m => m.Filter.Module, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
                 <div>@Html.DisplayNameFor(m => m.Filter.Date)</div>
@@ -167,16 +160,10 @@
                         @Html.EditorFor(m => m.Filter.Date, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
-                <div>@Html.DisplayNameFor(m => m.Filter.AgeRange)</div>
+                <div>@Html.DisplayNameFor(m => m.Filter.CreatedBy)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        @Html.EnumDropDownListFor(m => m.Filter.AgeRange, "Select All", htmlAttributes: new { @class = "select2 form-control small" })
-                    </div>
-                </div>
-                <div>@Html.DisplayNameFor(m => m.Filter.SalaryRange)</div>
-                <div class="sorting-wrap">
-                    <div class="sorting-dropdown">
-                        @Html.EnumDropDownListFor(m => m.Filter.SalaryRange, "Select All", htmlAttributes: new { @class = "select2 form-control small" })
+                        @Html.EditorFor(m => m.Filter.CreatedBy, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
                 <div>
@@ -223,12 +210,12 @@
     <!-- Table -->
     <table class="table tableStyle1 tabledata">
         <thead>
-            <tr>               
+            <tr>
                 <th>#</th>
-                <th>@Html.DisplayNameFor(model => model.List.Course)</th>
                 <th>@Html.DisplayNameFor(model => model.List.Module)</th>
                 <th>@Html.DisplayNameFor(model => model.List.Date)</th>
-                <th>@Html.DisplayNameFor(model => model.List.Venue)</th>                
+                <th>@Html.DisplayNameFor(model => model.List.Venue)</th>
+                <th>@Html.DisplayNameFor(model => model.List.CreatedBy)</th>
                 <th>Action</th>
             </tr>
         </thead>

@@ -46,6 +46,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="RnPForm.Designer.cs">
+      <DependentUpon>RnPForm.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="EventRefund.Designer.cs">
       <DependentUpon>EventRefund.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -101,7 +106,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="RnPForm.Designer.cs" />
     <Compile Include="Staff.Designer.cs">
       <DependentUpon>Staff.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -167,11 +171,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Event.resx</DependentUpon>
     </Compile>
-    <Compile Include="RnPForm_old.Designer.cs">
-      <DependentUpon>RnPForm_old.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="RnPEnum.Designer.cs">
       <DependentUpon>RnPEnum.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -219,6 +218,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DutyRoster.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="RnPForm.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RnPForm.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="EventRefund.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EventRefund.Designer.cs</LastGenOutput>
@@ -247,7 +250,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Company.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="RnPForm.resx" />
     <EmbeddedResource Include="Staff.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Staff.Designer.cs</LastGenOutput>
@@ -315,10 +317,6 @@
     <EmbeddedResource Include="Event.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Event.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RnPForm_old.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>RnPForm_old.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RnPEnum.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

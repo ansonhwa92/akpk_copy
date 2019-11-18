@@ -65,7 +65,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 ICNo = response.Data.ICNo,               
                 Email = response.Data.Email,
                 MobileNo = response.Data.MobileNo,
-                Branch = response.Data.Branch,
+                BranchId = response.Data.Branch != null ? response.Data.Branch.Id : (int?) null,
                 Department = response.Data.Department,
                 Designation = response.Data.Designation,
                 StaffId = response.Data.StaffId,                
@@ -75,6 +75,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             };
                         
             model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+            model.Branches = new SelectList(await GetBranches(), "Id", "Name", 0);
 
             return View(model);
         }
@@ -89,7 +90,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 if (response.isSuccess)
                 {
-                    await LogActivity(Modules.Admin, "Update Staff", model);
+                    await LogActivity(Modules.Setting, "Update Staff", model);
 
                     TempData["SuccessMessage"] = Language.Individual.AlertEditSuccess;
 
@@ -141,7 +142,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                await LogActivity(Modules.Admin, "Activate Staff Account", new { id = id });
+                await LogActivity(Modules.Setting, "Activate Staff Account", new { id = id });
 
                 TempData["SuccessMessage"] = Language.Staff.AlertActivateSuccess;
 
@@ -188,7 +189,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                await LogActivity(Modules.Admin, "Disable Staff Account", new { id = id });
+                await LogActivity(Modules.Setting, "Disable Staff Account", new { id = id });
 
                 TempData["SuccessMessage"] = Language.Staff.AlertDeactivateSuccess;
 
@@ -298,5 +299,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             return roles;
 
         }
+
+        
     }
 }

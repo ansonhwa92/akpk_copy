@@ -107,6 +107,8 @@ namespace FEP.WebApiModel.eLearning
         public int? nextModuleId { get; set; }
         public int? nextContentId { get; set; }
 
+        public bool IsCompleted { get; set; }
+
 
     }
 

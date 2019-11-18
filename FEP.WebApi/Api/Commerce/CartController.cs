@@ -796,7 +796,7 @@ namespace FEP.WebApi.Api.Commerce
                     r.ReturnStatus,
                     r.RefundStatus
                 }).Where(
-                      rp => rp.RefundStatus >= RefundStatus.Requested).Join(
+                      rp => rp.RefundStatus >= RefundStatus.Requested && rp.PurchaseType == request.ItemType).Join(
                       db.PurchaseOrder, rp => rp.PurchaseOrderId, po => po.Id, (rp, po) =>
                       new {
                           rp.PurchaseOrderId,

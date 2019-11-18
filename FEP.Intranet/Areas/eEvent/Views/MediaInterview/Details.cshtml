@@ -174,12 +174,12 @@
 
 
 				<div>
-					@{if (Model.MediaStatus == FEP.Model.MediaStatus.New)
+					@{if (Model.MediaStatus == FEP.Model.MediaStatus.New && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
 						{
 							<a href='@Url.Action("SubmitToVerify", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
 						}
-						else if (Model.MediaStatus == FEP.Model.MediaStatus.PendingVerified)
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.PendingVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Verify_MediaInterview)))
 						{
 							<a href='@Url.Action("Verified", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
@@ -187,7 +187,7 @@
 							<a href='@Url.Action("Reject", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 						}
-						else if (Model.MediaStatus == FEP.Model.MediaStatus.Verified)
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver1_MediaInterview)))
 						{
 							<a href='@Url.Action("FirstApproved", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
@@ -195,7 +195,7 @@
 							<a href='@Url.Action("Reject", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 						}
-						else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1)
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver2_MediaInterview)))
 						{
 							<a href='@Url.Action("SecondApproved", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
@@ -203,7 +203,7 @@
 							<a href='@Url.Action("Reject", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 						}
-						else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover2)
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover2 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver3_MediaInterview)))
 						{
 							<a href='@Url.Action("FinalApproved", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-success btn-block mb-2">Approved</a>
@@ -211,12 +211,12 @@
 							<a href='@Url.Action("Reject", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
 						}
-						else if (Model.MediaStatus == FEP.Model.MediaStatus.NotVerified)
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.NotVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
 						{
 							<a href='@Url.Action("SubmitToVerify", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
 						}
-						else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover3)
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover3 && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
 						{
 							<a href='@Url.Action("RepAvailable", "MediaInterview", new { area = "eEvent", id = Model.Id })'
 							   class="btn btn-outline-secondary btn-block mb-2">Representative Available</a>

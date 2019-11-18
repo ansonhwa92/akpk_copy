@@ -38,7 +38,7 @@
                         data: 'EventTitle',
                         sortable: true
                     },
-                    
+
 					 {
                         data: 'EventCategoryName',
                         sortable: true
@@ -107,7 +107,7 @@
                                 return "<span class='color-yellow font-weight-bold'> Require Amendment </span>";
                             }
                             else if (row.EventStatus == 6) {
-                                return "<span class='color-red font-weight-bold'> Rejected </span>";
+                                return "<span class='color-red font-weight-bold'> Cancelled </span>";
 							}
 							else if (row.EventStatus == 7) {
                                 return "<span class='color-green font-weight-bold'> Published </span>";
@@ -130,8 +130,8 @@
 
 							if (row.EventStatus == 0) {
 
+		                    action +='<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
 						    action +='<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                            action +='<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
 							action += '<a href="@Url.Action("Delete", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
 
 							//Verify By Admin Event
@@ -165,8 +165,20 @@
 
 							if (row.EventStatus == 7) {
 								//Published
-                                action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-							}
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+
+								if (row.IsRequested == true) {
+									action += '<a href="@Url.Action("Details_RequestCancelModify", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View Cancellation/Modification Request"><i class="la la-sliders text-muted"></i></a>'
+								}
+								else if (row.IsRequested == false)
+								{
+									action += '<a href="@Url.Action("Edit_RequestCancelModify", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Update Cancellation/Modification Request"><i class="la la-sliders text-muted"></i></a>'
+								}
+								else
+								{
+									action += '<a href="@Url.Action("Create_RequestCancelModify", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Create Cancellation/Modification Request"><i class="la la-sliders text-muted"></i></a>'
+								}
+							} 
 
 							if (row.EventStatus == 5) {
 								//require amendment
@@ -259,44 +271,44 @@
 }
 <div class="d-flex align-items-center">
 	<div class="filter dropdown">
-		<button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+		<button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary "></i>Filters</button>
 		<div class="dropdown-menu">
 			<div class="filter-head">Filters</div>
-            <div class="filter-body">
-                <div>@Html.DisplayNameFor(m => m.Filter.EventTitle)</div>
-                <div class="sorting-wrap">
-                    <div class="sorting-dropdown">
-                        @Html.EditorFor(m => m.Filter.EventTitle, new { htmlAttributes = new { @class = "form-control small" } })
-                    </div>
-                </div>
-                <div>@Html.DisplayNameFor(m => m.Filter.RefNo)</div>
-                <div class="sorting-wrap">
-                    <div class="sorting-dropdown">
-                        @Html.EditorFor(m => m.Filter.RefNo, new { htmlAttributes = new { @class = "form-control small" } })
-                    </div>
-                </div>
-                @*<div>@Html.DisplayNameFor(m => m.Filter.EventCategoryId)</div>
-        <div class="sorting-wrap">
-            <div class="sorting-dropdown">
-                @Html.EditorFor(m => m.Filter.EventCategoryId, new { htmlAttributes = new { @class = "form-control small" } })
-            </div>
-        </div>
-        <div>@Html.DisplayNameFor(m => m.Filter.TargetedGroup)</div>
-        <div class="sorting-wrap">
-            <div class="sorting-dropdown">
-                @Html.EditorFor(m => m.Filter.TargetedGroup, new { htmlAttributes = new { @class = "form-control small" } })
-            </div>
-        </div>
-        <div>@Html.DisplayNameFor(m => m.Filter.EventStatus)</div>
-        <div class="sorting-wrap">
-            <div class="sorting-dropdown">
-                @Html.EditorFor(m => m.Filter.EventStatus, new { htmlAttributes = new { @class = "form-control small" } })
-            </div>
-        </div>*@
-                <div>
-                    <button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
-                </div>
-            </div>
+			<div class="filter-body">
+				<div>@Html.DisplayNameFor(m => m.Filter.EventTitle)</div>
+				<div class="sorting-wrap">
+					<div class="sorting-dropdown">
+						@Html.EditorFor(m => m.Filter.EventTitle, new { htmlAttributes = new { @class = "form-control small" } })
+					</div>
+				</div>
+				<div>@Html.DisplayNameFor(m => m.Filter.RefNo)</div>
+				<div class="sorting-wrap">
+					<div class="sorting-dropdown">
+						@Html.EditorFor(m => m.Filter.RefNo, new { htmlAttributes = new { @class = "form-control small" } })
+					</div>
+				</div>
+				@*<div>@Html.DisplayNameFor(m => m.Filter.EventCategoryId)</div>
+					<div class="sorting-wrap">
+						<div class="sorting-dropdown">
+							@Html.EditorFor(m => m.Filter.EventCategoryId, new { htmlAttributes = new { @class = "form-control small" } })
+						</div>
+					</div>
+					<div>@Html.DisplayNameFor(m => m.Filter.TargetedGroup)</div>
+					<div class="sorting-wrap">
+						<div class="sorting-dropdown">
+							@Html.EditorFor(m => m.Filter.TargetedGroup, new { htmlAttributes = new { @class = "form-control small" } })
+						</div>
+					</div>
+					<div>@Html.DisplayNameFor(m => m.Filter.EventStatus)</div>
+					<div class="sorting-wrap">
+						<div class="sorting-dropdown">
+							@Html.EditorFor(m => m.Filter.EventStatus, new { htmlAttributes = new { @class = "form-control small" } })
+						</div>
+					</div>*@
+				<div>
+					<button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="divider-vertical">&nbsp;</div>
@@ -307,7 +319,7 @@
 			<button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
 		</div>
 	</div>
-	
+
 </div>
 <hr>
 <div class="table-responsive" data-toggle="lists">
@@ -329,19 +341,19 @@
 	<!-- Table -->
 	<table class="table tableStyle1 tabledata">
 		<thead>
-            <tr>
-        
-                <th>#</th>
-                <th>@Html.DisplayNameFor(model => model.List.RefNo)</th>
-                <th>@Html.DisplayNameFor(model => model.List.EventTitle)</th>
-                <th>@Html.DisplayNameFor(model => model.List.EventCategoryName)</th>
-                <th>@Html.DisplayNameFor(model => model.List.StartDate)</th>
-                <th>@Html.DisplayNameFor(model => model.List.EndDate)</th>
-                <th>@Html.DisplayNameFor(model => model.List.Venue)</th>
-                <th>@Html.DisplayNameFor(model => model.List.Fee)</th>
-                <th>@Html.DisplayNameFor(model => model.List.EventStatusDesc)</th>
-                <th>Action</th>
-            </tr>
+			<tr>
+
+				<th>#</th>
+				<th>@Html.DisplayNameFor(model => model.List.RefNo)</th>
+				<th>@Html.DisplayNameFor(model => model.List.EventTitle)</th>
+				<th>@Html.DisplayNameFor(model => model.List.EventCategoryName)</th>
+				<th>@Html.DisplayNameFor(model => model.List.StartDate)</th>
+				<th>@Html.DisplayNameFor(model => model.List.EndDate)</th>
+				<th>@Html.DisplayNameFor(model => model.List.Venue)</th>
+				<th>@Html.DisplayNameFor(model => model.List.Fee)</th>
+				<th>@Html.DisplayNameFor(model => model.List.EventStatusDesc)</th>
+				<th>Action</th>
+			</tr>
 		</thead>
 	</table>
 </div>

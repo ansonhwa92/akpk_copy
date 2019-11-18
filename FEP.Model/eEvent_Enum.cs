@@ -55,7 +55,7 @@ namespace FEP.Model
 		Approved, //If Approver 3 Approved
 
 		[Display(Name = "Require Amendment")]
-		RejectNeedToEdit, //If Approver 3 Rejected
+		RequireAmendment, //If Approver 3 Rejected
 
 		[Display(Name = "Cancelled")]
 		Cancelled, //If Admin Cancel Public Event 
@@ -154,7 +154,7 @@ namespace FEP.Model
 		[Display(Name = "Pending Approval 1")]
 		Verified,
 		[Display(Name = "Require Amendment")]
-		NotVerified,
+		RequireAmendment,
 		[Display(Name = "Pending Approval 2")]
 		ApprovedByApprover1,
 		[Display(Name = "Pending Approval 3")]
@@ -172,7 +172,7 @@ namespace FEP.Model
 		[Display(Name = "Pending Approval 1")]
 		Verified,
 		[Display(Name = "Require Amendment")]
-		NotVerified,
+		RequireAmendment,
 		[Display(Name = "Pending Approval 2")]
 		ApprovedByApprover1,
 		[Display(Name = "Pending Approval 3")]
@@ -186,7 +186,7 @@ namespace FEP.Model
 		[Display(Name = "Pending Approval")]
 		VerifiedDutyRoster,
 		[Display(Name = "Require Amendment")]
-		NotVerifiedDutyRoster,
+		RequireAmendmentDutyRoster,
 		[Display(Name = "Approved")]
 		ApproveDutyRoster,
 		[Display(Name = "Participation Accepted")]

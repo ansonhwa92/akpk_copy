@@ -157,18 +157,18 @@ namespace FEP.WebApi.Api.eEvent
 
 						break;
 
-					case "Fee":
+					//case "Fee":
 
-						if (sortAscending)
-						{
-							query = query.OrderBy(o => o.Fee);
-						}
-						else
-						{
-							query = query.OrderByDescending(o => o.Fee);
-						}
+					//	if (sortAscending)
+					//	{
+					//		query = query.OrderBy(o => o.Fee);
+					//	}
+					//	else
+					//	{
+					//		query = query.OrderByDescending(o => o.Fee);
+					//	}
 
-						break;
+					//	break;
 
 					case "EventStatus":
 
@@ -208,7 +208,7 @@ namespace FEP.WebApi.Api.eEvent
 					EndDate = s.EndDate,
 					EventObjective = s.EventObjective,
 					Venue = s.Venue,
-					Fee = s.Fee,
+					//Fee = s.Fee,
 					RefNo = s.RefNo,
 					IsRequested = s.IsRequested
 				}).ToList();
@@ -236,7 +236,22 @@ namespace FEP.WebApi.Api.eEvent
 					StartDate = i.StartDate,
 					EndDate = i.EndDate,
 					Venue = i.Venue,
-					Fee = i.Fee,
+					FreeIndividual = i.FreeIndividual,
+					FreeIndividualPaper = i.FreeIndividualPaper,
+					FreeIndividualPresent = i.FreeIndividualPresent,
+					FreeAgency = i.FreeAgency,
+
+					IndividualFee = i.IndividualFee,
+					IndividualPaperFee = i.IndividualPaperFee,
+					IndividualPresentFee = i.IndividualPresentFee,
+					AgencyFee = i.AgencyFee,
+
+					IndividualEarlyBird = i.IndividualEarlyBird,
+					IndividualPaperEarlyBird = i.IndividualPaperEarlyBird,
+					IndividualPresentEarlyBird = i.IndividualPresentEarlyBird,
+					AgencyEarlyBird = i.AgencyEarlyBird,
+
+					//Fee = i.Fee,
 					EventStatus = i.EventStatus,
 					EventCategoryId = i.EventCategoryId,
 					EventCategoryName = i.EventCategory.CategoryName,
@@ -249,8 +264,7 @@ namespace FEP.WebApi.Api.eEvent
 				}).FirstOrDefault();
 
 
-
-			if (model.EventStatus != EventStatus.Approved && model.EventStatus != EventStatus.Published && model.EventStatus != EventStatus.Cancelled && model.EventStatus != EventStatus.RejectNeedToEdit || model.EventStatus == EventStatus.New)
+			if (model.EventStatus != EventStatus.Approved && model.EventStatus != EventStatus.Published && model.EventStatus != EventStatus.Cancelled && model.EventStatus != EventStatus.RequireAmendment)
 			{
 				var approval = db.PublicEventApproval.Where(pa => pa.EventId == id && pa.Status == EventApprovalStatus.None).Select(s => new ApprovalModel
 				{
@@ -277,13 +291,13 @@ namespace FEP.WebApi.Api.eEvent
 			}
 			else
 			{
-				var approval = db.PublicEventApproval.Where(pa => pa.EventId == id && pa.Status != EventApprovalStatus.None).Select(s => new ApprovalModel
+				var approval = db.PublicEventApproval.Where(pa => pa.EventId == id).Select(s => new ApprovalModel
 				{
 					Id = s.Id,
 					EventId = s.EventId,
 					Level = s.ApprovalLevel,
 					ApproverId = 0,
-					Status = EventApprovalStatus.None,
+					Status = s.Status,
 					Remarks = "",
 					RequireNext = s.RequireNext
 				}).FirstOrDefault();
@@ -315,7 +329,22 @@ namespace FEP.WebApi.Api.eEvent
 				StartDate = model.StartDate,
 				EndDate = model.EndDate,
 				Venue = model.Venue,
-				Fee = model.Fee,
+				FreeIndividual = model.FreeIndividual,
+				FreeIndividualPaper = model.FreeIndividualPaper,
+				FreeIndividualPresent = model.FreeIndividualPresent,
+				FreeAgency = model.FreeAgency,
+
+				IndividualFee = model.IndividualFee,
+				IndividualPaperFee = model.IndividualPaperFee,
+				IndividualPresentFee = model.IndividualPresentFee,
+				AgencyFee = model.AgencyFee,
+
+				IndividualEarlyBird = model.IndividualEarlyBird,
+				IndividualPaperEarlyBird = model.IndividualPaperEarlyBird,
+				IndividualPresentEarlyBird = model.IndividualPresentEarlyBird,
+				AgencyEarlyBird = model.AgencyEarlyBird,
+
+				//Fee = model.Fee,
 				EventStatus = model.EventStatus,
 				EventCategoryId = model.EventCategoryId,
 				TargetedGroup = model.TargetedGroup,
@@ -408,7 +437,20 @@ namespace FEP.WebApi.Api.eEvent
 			publicevent.StartDate = model.StartDate;
 			publicevent.EndDate = model.EndDate;
 			publicevent.Venue = model.Venue;
-			publicevent.Fee = model.Fee;
+			publicevent.FreeIndividual = model.FreeIndividual;
+			publicevent.FreeIndividualPaper = model.FreeIndividualPaper;
+			publicevent.FreeIndividualPresent = model.FreeIndividualPresent;
+			publicevent.FreeAgency = model.FreeAgency;
+			publicevent.IndividualFee = model.IndividualFee;
+			publicevent.IndividualPaperFee = model.IndividualPaperFee;
+			publicevent.IndividualPresentFee = model.IndividualPresentFee;
+			publicevent.AgencyFee = model.AgencyFee;
+			publicevent.IndividualEarlyBird = model.IndividualEarlyBird;
+			publicevent.IndividualPaperEarlyBird = model.IndividualPaperEarlyBird;
+			publicevent.IndividualPresentEarlyBird = model.IndividualPresentEarlyBird;
+			publicevent.AgencyEarlyBird = model.AgencyEarlyBird;
+
+			//publicevent.Fee = model.Fee;
 			publicevent.EventStatus = model.EventStatus;
 			publicevent.EventCategoryId = model.EventCategoryId;
 			publicevent.TargetedGroup = model.TargetedGroup;
@@ -521,26 +563,29 @@ namespace FEP.WebApi.Api.eEvent
 
 			var publicevent = db.PublicEvent.Where(p => p.Id == id).FirstOrDefault();
 
+			if (publicevent.EventStatus == EventStatus.RequireAmendment )
+			{
+				var approval = new PublicEventApproval
+				{
+					EventId = publicevent.Id,
+					ApprovalLevel = EventApprovalLevel.Verifier,
+					ApproverId = 0,
+					Status = EventApprovalStatus.None,
+					ApprovedDate = DateTime.Now,
+					Remark = "",
+					RequireNext = false
+				};
+
+				db.PublicEventApproval.Add(approval);
+			}
+			db.SaveChanges();
+
 			if (publicevent != null)
 			{
 				publicevent.EventStatus = EventStatus.PendingforVerification;
 				db.PublicEvent.Attach(publicevent);
 				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
 				db.Configuration.ValidateOnSaveEnabled = false;
-
-				// create first approval record (using existing ID)
-				//var approval = new PublicEventApproval
-				//{
-				//	EventId = publicevent.Id,
-				//	ApprovalLevel = EventApprovalLevel.Verifier,
-				//	ApproverId = null,
-				//	Status = EventApprovalStatus.None,
-				//	ApprovedDate = DateTime.Now,
-				//	Remark = "",
-				//	RequireNext = false
-				//};
-
-				//db.PublicEventApproval.Add(approval);
 				db.SaveChanges();
 
 				PublicEventModel model = new PublicEventModel
@@ -671,7 +716,7 @@ namespace FEP.WebApi.Api.eEvent
 
 			if (publicevent != null)
 			{
-				publicevent.EventStatus = EventStatus.RejectNeedToEdit;
+				publicevent.EventStatus = EventStatus.RequireAmendment;
 				db.PublicEvent.Attach(publicevent);
 				db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
 				db.Configuration.ValidateOnSaveEnabled = false;
@@ -838,22 +883,24 @@ namespace FEP.WebApi.Api.eEvent
 									nextlevel = EventApprovalLevel.Approver1;
 									break;
 							}
-
-							// create next approval record
-							var pnewapproval = new PublicEventApproval
+							if (papproval.Status != EventApprovalStatus.Rejected)
 							{
-								EventId = papproval.EventId,
-								ApprovalLevel = nextlevel,
-								ApproverId = 0,
-								Status = EventApprovalStatus.None,
-								ApprovedDate = DateTime.Now,
-								Remark = "",
-								RequireNext = false
-							};
+								// create next approval record
+								var pnewapproval = new PublicEventApproval
+								{
+									EventId = papproval.EventId,
+									ApprovalLevel = nextlevel,
+									ApproverId = 0,
+									Status = EventApprovalStatus.None,
+									ApprovedDate = DateTime.Now,
+									Remark = "",
+									RequireNext = false
+								};
 
-							db.PublicEventApproval.Add(pnewapproval);
-							// HERE
-							db.SaveChanges();
+								db.PublicEventApproval.Add(pnewapproval);
+								// HERE
+								db.SaveChanges();
+							}
 						}
 
 
@@ -866,17 +913,6 @@ namespace FEP.WebApi.Api.eEvent
 
 			return "";
 		}
-
-
-
-		//[Route("api/eEvent/PublicEvent/GetPublishedPublicEvent")]
-		//[HttpGet]
-		//public BrowseEventModel GetPublishedPublicEvent()
-		//{
-		//	var publicevent = 
-		//	return 0();
-		//}
-
 
 
 		[Route("api/eEvent/PublicEvent/Create")]
@@ -1194,7 +1230,7 @@ namespace FEP.WebApi.Api.eEvent
 				}
 				else if (RequestType == "ModifyRequired")
 				{
-					publicevent.EventStatus = EventStatus.RejectNeedToEdit;
+					publicevent.EventStatus = EventStatus.RequireAmendment;
 					db.PublicEvent.Attach(publicevent);
 					db.Entry(publicevent).Property(m => m.EventStatus).IsModified = true;
 					db.Configuration.ValidateOnSaveEnabled = false;
@@ -1293,7 +1329,7 @@ namespace FEP.WebApi.Api.eEvent
 			{
 				return NotFound();
 			}
-
+			 
 			return Ok(publicevent);
 		}
 
@@ -1310,7 +1346,21 @@ namespace FEP.WebApi.Api.eEvent
 				   StartDate = i.StartDate,
 				   EndDate = i.EndDate,
 				   Venue = i.Venue,
-				   Fee = i.Fee,
+				   FreeIndividual = i.FreeIndividual,
+				   FreeIndividualPaper = i.FreeIndividualPaper,
+				   FreeIndividualPresent = i.FreeIndividualPresent,
+				   FreeAgency = i.FreeAgency,
+
+				   IndividualFee = i.IndividualFee,
+				   IndividualPaperFee = i.IndividualPaperFee,
+				   IndividualPresentFee = i.IndividualPresentFee,
+				   AgencyFee = i.AgencyFee,
+
+				   IndividualEarlyBird = i.IndividualEarlyBird,
+				   IndividualPaperEarlyBird = i.IndividualPaperEarlyBird,
+				   IndividualPresentEarlyBird = i.IndividualPresentEarlyBird,
+				   AgencyEarlyBird = i.AgencyEarlyBird,
+				   //Fee = i.Fee,
 				   EventStatus = i.EventStatus,
 				   EventCategoryId = i.EventCategoryId,
 				   EventCategoryName = i.EventCategory.CategoryName,
@@ -1334,6 +1384,52 @@ namespace FEP.WebApi.Api.eEvent
 			return Ok(model);
 		}
 
+		[HttpGet]
+		[Route("api/eEvent/PublicEvent/GetEventName")]
+		public string GetEventName(int id)
+		{
+			var model = db.PublicEvent.Where(i => i.Display && i.Id == id)
+			   .Select(i => new DetailsPublicEventModel
+			   {
+				   Id = i.Id,
+				   EventTitle = i.EventTitle,
+				   EventObjective = i.EventObjective,
+				   StartDate = i.StartDate,
+				   EndDate = i.EndDate,
+				   Venue = i.Venue,
+				   FreeIndividual = i.FreeIndividual,
+				   FreeIndividualPaper = i.FreeIndividualPaper,
+				   FreeIndividualPresent = i.FreeIndividualPresent,
+				   FreeAgency = i.FreeAgency,
+
+				   IndividualFee = i.IndividualFee,
+				   IndividualPaperFee = i.IndividualPaperFee,
+				   IndividualPresentFee = i.IndividualPresentFee,
+				   AgencyFee = i.AgencyFee,
+
+				   IndividualEarlyBird = i.IndividualEarlyBird,
+				   IndividualPaperEarlyBird = i.IndividualPaperEarlyBird,
+				   IndividualPresentEarlyBird = i.IndividualPresentEarlyBird,
+				   AgencyEarlyBird = i.AgencyEarlyBird,
+				   //Fee = i.Fee,
+				   EventStatus = i.EventStatus,
+				   EventCategoryId = i.EventCategoryId,
+				   EventCategoryName = i.EventCategory.CategoryName,
+				   TargetedGroup = i.TargetedGroup,
+				   ParticipantAllowed = i.ParticipantAllowed,
+				   Remarks = i.Remarks,
+				   RefNo = i.RefNo,
+				   CreatedDate = i.CreatedDate,
+				   CreatedByName = i.CreatedByUser.Name,
+			   }).FirstOrDefault();
+
+			if (model == null)
+			{
+				return "";
+			}
+
+			return model.EventTitle;
+		}
 
 
 

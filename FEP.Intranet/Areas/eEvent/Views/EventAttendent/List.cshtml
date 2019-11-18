@@ -8,12 +8,21 @@
 @section Contentscript{
 	<script type="text/javascript">
 		$(document).ready(function () {
+			var eventid = @ViewBag.EventId;
+			$.ajax({
+				"type": "get",
+				"url": '@(WebApiURL)eEvent/PublicEvent/GetEventName?id=' + eventid,
+				success: function (res) {
+					alert(res);
+					$('#spanEventName').text(res);
+				}
+			});
             var table = $('.tabledata').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)eEvent/EventAttendent/GetAttendentList?id={id}',
+                    "url": '@(WebApiURL)eEvent/EventAttendent/GetAttendentList?id=' + eventid,
                     "data": function (filter) {
 						filter.AttendeeName = $('#Filter_AttendeeName').val();
 						filter.UserType = $('#Filter_UserType').val();
@@ -21,7 +30,8 @@
 						filter.BookingNumber = $('#Filter_BookingNumber').val();
 						filter.ICNo = $('#Filter_ICNo').val();
 						filter.CheckInStatus = $('#Filter_CheckInStatus').val();
-                    }
+						filter.EventName = $('#Filter_EventName').val();
+					}
                 },
 				columns: [
 					{
@@ -131,7 +141,7 @@
 							</ol>
 						</nav>
 					</div>
-					<h1 class="page-title text-white">Check-in: @*@Model.List.EventName*@ </h1>
+					<h1 class="page-title text-white">Check-in: <span id="spanEventName"></span> @*@Model.Filter.EventName*@ </h1>
 					<div class="header-text">Manage student's or group's attendance.</div>
 				</div>
 			</div>
@@ -176,6 +186,7 @@
 					</div>
 				</div>
 				<div>
+					@Html.HiddenFor(m => m.Filter.EventName, new { htmlAttributes = new { @class = "form-control small" } })
 					<button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
 				</div>
 			</div>

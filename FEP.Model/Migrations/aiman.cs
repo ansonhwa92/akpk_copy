@@ -39,9 +39,9 @@ namespace FEP.Model.Migrations
 			AddExternalExhibitor(db, "External Exhibitor 6", "0123456789", "ExternalExhibitor6@yahoo.com", "FoodPanda Sdn Bhd");
 
 			//public static void DefaultPublicEvent(DbEntities db, string EventTitle, string Category, string RefNo)
-			DefaultPublicEvent(db, "Financial Management Excellence Certificate", "Workshops", "EVP/0611/0001");
-			DefaultPublicEvent(db, "AKPK International Conference & Expo", "Dialogues", "EVP/0611/0002");
-			DefaultPublicEvent(db, "Sales Enablement Leadership & Learning", "Conferences", "EVP/0611/0003");
+			//DefaultPublicEvent(db, "Financial Management Excellence Certificate", "Workshops", "EVP/0611/0001");
+			//DefaultPublicEvent(db, "AKPK International Conference & Expo", "Dialogues", "EVP/0611/0002");
+			//DefaultPublicEvent(db, "Sales Enablement Leadership & Learning", "Conferences", "EVP/0611/0003");
 
 
 			DefaultSLAReminder(db);
@@ -235,13 +235,10 @@ namespace FEP.Model.Migrations
 		public static void DefaultRole(DbEntities db)
 		{
 			List<RoleAccess> AdminEventFED = new List<RoleAccess>();
-			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Verify_PublicEvent });
-			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Reject_PublicEvent });
-			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Published_PublicEvent });
-			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Cancel_PublicEvent });
-			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver1_PublicEvent });
-			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver2_PublicEvent });
-			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver3_PublicEvent });
+			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Submit_PublicEvent });
+			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.RequireAmendment_PublicEvent });
+			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Published_PublicEvent });
+			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Cancelled_PublicEvent });
 			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.EventAdministratorFED });
 			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
 			AdminEventFED.Add(new RoleAccess { UserAccess = UserAccess.Amendment_CancellationModificationRequest });
@@ -253,16 +250,10 @@ namespace FEP.Model.Migrations
 			//-------------------------------------------------------------------------------------------------//
 
 			List<RoleAccess> AdminEventCCD = new List<RoleAccess>();
-			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Verify_MediaInterview });
-			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Reject_MediaInterview });
-			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver1_MediaInterview });
-			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver2_MediaInterview });
-			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver3_MediaInterview });
-			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Verify_ExhibitionRoadShow });
-			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Reject_ExhibitionRoadShow });
-			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver1_ExhibitionRoadShow });
-			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver2_ExhibitionRoadShow });
-			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver3_ExhibitionRoadShow });
+			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Submit_MediaInterview });
+			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.RequireAmendment_MediaInterview });
+			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Submit_ExhibitionRoadShow });
+			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.RequireAmendment_ExhibitionRoadShow });
 			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.EventAdministratorCCD });
 			AdminEventCCD.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
 
@@ -271,9 +262,9 @@ namespace FEP.Model.Migrations
 			//-------------------------------------------------------------------------------------------------//
 
 			List<RoleAccess> VerifierEvent = new List<RoleAccess>();
-			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Submit_PublicEvent });
-			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Submit_MediaInterview });
-			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Submit_ExhibitionRoadShow });
+			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.Verify_PublicEvent });
+			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.Verify_MediaInterview });
+			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.Verify_ExhibitionRoadShow });
 			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
 			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.Verifier_CancellationModificationRequest });
 
@@ -282,9 +273,9 @@ namespace FEP.Model.Migrations
 			//-------------------------------------------------------------------------------------------------//
 
 			List<RoleAccess> EventApprover1 = new List<RoleAccess>();
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Verify_PublicEvent });
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Verify_MediaInterview });
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Verify_ExhibitionRoadShow });
+			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1_PublicEvent });
+			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1_MediaInterview });
+			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1_ExhibitionRoadShow });
 			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
 			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1_CancellationModificationRequest });
 
@@ -293,9 +284,9 @@ namespace FEP.Model.Migrations
 			//-------------------------------------------------------------------------------------------------//
 
 			List<RoleAccess> EventApprover2 = new List<RoleAccess>();
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver1_PublicEvent });
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver1_MediaInterview });
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver1_ExhibitionRoadShow });
+			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2_PublicEvent });
+			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2_MediaInterview });
+			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2_ExhibitionRoadShow });
 			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
 			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2_CancellationModificationRequest });
 
@@ -304,55 +295,66 @@ namespace FEP.Model.Migrations
 			//-------------------------------------------------------------------------------------------------//
 
 			List<RoleAccess> EventApprover3 = new List<RoleAccess>();
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver2_PublicEvent });
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver2_MediaInterview });
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Recipient_Approver2_ExhibitionRoadShow });
+			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3_PublicEvent });
+			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3_MediaInterview });
+			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3_ExhibitionRoadShow });
 			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
 			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3_CancellationModificationRequest });
 
 			mhafeez.AddRole(db, "Approver Event 3", "Approver Event 3", EventApprover3);
 
 			//-------------------------------------------------------------------------------------------------//
+			List<RoleAccess> EventReception = new List<RoleAccess>();
+			EventReception.Add(new RoleAccess { UserAccess = UserAccess.EventReception });
+			mhafeez.AddRole(db, "Event Reception", "Event Reception");
+
+			//-------------------------------------------------------------------------------------------------//
+
+			List<RoleAccess> EventModerator = new List<RoleAccess>();
+			EventModerator.Add(new RoleAccess { UserAccess = UserAccess.EventReception });
+			mhafeez.AddRole(db, "Event Moderator", "Event Moderator");
+			//-------------------------------------------------------------------------------------------------//
+
 		}
 
 
-		public static void DefaultPublicEvent(DbEntities db, string EventTitle, string Category, string RefNo)
-		{
-			var user = db.User.Local.Where(r => r.Name.Contains("System Admin")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("System Admin")).FirstOrDefault();
+		//public static void DefaultPublicEvent(DbEntities db, string EventTitle, string Category, string RefNo)
+		//{
+		//	var user = db.User.Local.Where(r => r.Name.Contains("System Admin")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("System Admin")).FirstOrDefault();
 
-			var getpublicevent = db.PublicEvent.Where(p => p.RefNo == RefNo).FirstOrDefault() ?? db.PublicEvent.Where(p => p.RefNo == RefNo).FirstOrDefault();
+		//	var getpublicevent = db.PublicEvent.Where(p => p.RefNo == RefNo).FirstOrDefault() ?? db.PublicEvent.Where(p => p.RefNo == RefNo).FirstOrDefault();
 
-			if (getpublicevent == null)
-			{
-				var category = new EventCategory
-				{
-					CategoryName = Category,
-					Display = true,
-					CreatedDate = DateTime.Now,
-					CreatedBy = user.Id
-				};
+		//	if (getpublicevent == null)
+		//	{
+		//		var category = new EventCategory
+		//		{
+		//			CategoryName = Category,
+		//			Display = true,
+		//			CreatedDate = DateTime.Now,
+		//			CreatedBy = user.Id
+		//		};
 
-				db.PublicEvent.Add(new PublicEvent
-				{
-					EventTitle = EventTitle,
-					EventCategoryId = category.Id,
-					EventCategory = category,
-					StartDate = DateTime.Now,
-					EndDate = DateTime.Now,
-					RefNo = RefNo,
-					EventStatus = EventStatus.Published,
-					Fee = 100,
-					EventObjective = "Event Objective",
-					TargetedGroup = EventTargetGroup.Goverment,
-					Venue = "AKPK Kuala Lumpur",
-					ParticipantAllowed = 200,
-					Display = true,
-					CreatedDate = DateTime.Now,
-					CreatedBy = user.Id,
-					CreatedByUser = user
-				});
-			}
-		}
+		//		db.PublicEvent.Add(new PublicEvent
+		//		{
+		//			EventTitle = EventTitle,
+		//			EventCategoryId = category.Id,
+		//			EventCategory = category,
+		//			StartDate = DateTime.Now,
+		//			EndDate = DateTime.Now,
+		//			RefNo = RefNo,
+		//			EventStatus = EventStatus.Published,
+		//			Fee = 100,
+		//			EventObjective = "Event Objective",
+		//			TargetedGroup = EventTargetGroup.Goverment,
+		//			Venue = "AKPK Kuala Lumpur",
+		//			ParticipantAllowed = 200,
+		//			Display = true,
+		//			CreatedDate = DateTime.Now,
+		//			CreatedBy = user.Id,
+		//			CreatedByUser = user
+		//		});
+		//	}
+		//}
 
 
 

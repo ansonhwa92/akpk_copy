@@ -67,72 +67,54 @@ namespace FEP.Model
 		[Display(Name = "Event Reception")]
 		EventReception = 1005,
 
-		//----------------------Media Interview Button--------------------//
+		[Display(Name = "Event Moderator")]
+		EventModerator = 1006,
+
+
 		[Display(Name = "Media Interview - Submit")]
-		Recipient_Submit_MediaInterview = 1011,
-
+		Submit_MediaInterview = 1011,
 		[Display(Name = "Media Interview - Verify")]
-		Recipient_Verify_MediaInterview = 1012,
-
+		Verify_MediaInterview = 1012,
 		[Display(Name = "Media Interview -  Approve (Level 1)")]
-		Recipient_Approver1_MediaInterview = 1013,
-
+		Approver1_MediaInterview = 1013,
 		[Display(Name = "Media Interview -  Approve (Level 2)")]
-		Recipient_Approver2_MediaInterview = 1014,
-
+		Approver2_MediaInterview = 1014,
 		[Display(Name = "Media Interview -  Approve (Level 3)")]
-		Recipient_Approver3_MediaInterview = 1015,
+		Approver3_MediaInterview = 1015,
+		[Display(Name = "Media Interview - Require Amendment")]
+		RequireAmendment_MediaInterview = 1016,
 
-		[Display(Name = "Media Interview - Reject")]
-		Recipient_Reject_MediaInterview = 1016,
 
-
-		//----------------------Exhibition RoadShow Button--------------------//
 		[Display(Name = "Exhibition RoadShow - Submit")]
-		Recipient_Submit_ExhibitionRoadShow = 1017,
-
+		Submit_ExhibitionRoadShow = 1017,
 		[Display(Name = "Exhibition RoadShow - Verify")]
-		Recipient_Verify_ExhibitionRoadShow = 1018,
-
+		Verify_ExhibitionRoadShow = 1018,
 		[Display(Name = "Exhibition RoadShow - Approve (Level 1)")]
-		Recipient_Approver1_ExhibitionRoadShow = 1019,
-
+		Approver1_ExhibitionRoadShow = 1019,
 		[Display(Name = "Exhibition RoadShow - Approve (Level 2)")]
-		Recipient_Approver2_ExhibitionRoadShow = 1020,
-
+		Approver2_ExhibitionRoadShow = 1020,
 		[Display(Name = "Exhibition RoadShow - Approve (Level 3)")]
-		Recipient_Approver3_ExhibitionRoadShow = 1021,
+		Approver3_ExhibitionRoadShow = 1021,
+		[Display(Name = "Exhibition RoadShow - Require Amendment")]
+		RequireAmendment_ExhibitionRoadShow = 1022,
 
-		[Display(Name = "Exhibition RoadShow - Reject")]
-		Recipient_Reject_ExhibitionRoadShow = 1022,
-
-
-
-		//-----------------------------------------------------------//
 
 		[Display(Name = "Public Event - Submit")]
-		Recipient_Submit_PublicEvent = 1029,                        //verifier
-
+		Submit_PublicEvent = 1029,
 		[Display(Name = "Public Event - Verify")]
-		Recipient_Verify_PublicEvent = 1030,                        //
-
+		Verify_PublicEvent = 1030,
 		[Display(Name = "Public Event - Approve (Level 1)")]
-		Recipient_Approver1_PublicEvent = 1031,
-
+		Approver1_PublicEvent = 1031,
 		[Display(Name = "Public Event - Approve (Level 2)")]
-		Recipient_Approver2_PublicEvent = 1032,
-
+		Approver2_PublicEvent = 1032,
 		[Display(Name = "Public Event - Approve (Level 3)")]
-		Recipient_Approver3_PublicEvent = 1033,
-
+		Approver3_PublicEvent = 1033,
 		[Display(Name = "Public Event - Published")]
-		Recipient_Published_PublicEvent = 1034,
-
+		Published_PublicEvent = 1034,
 		[Display(Name = "Public Event - Require Amendment")]
-		Recipient_Reject_PublicEvent = 1035,
-
-		[Display(Name = "Public Event - Cancel")]
-		Recipient_Cancel_PublicEvent = 1036,
+		RequireAmendment_PublicEvent = 1035,
+		[Display(Name = "Public Event - Cancelled")]
+		Cancelled_PublicEvent = 1036,
 
 
 		[Display(Name = "Cancellation/Modification Public Event - Submit")]

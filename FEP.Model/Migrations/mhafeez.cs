@@ -139,8 +139,8 @@ namespace FEP.Model.Migrations
 			AddRole(db, "Admin R&P", "Admin R&P");
             //AddRole(db, "Admin eLearning", "Admin eLearning");
 
-            AddRole(db, "Event Reception", "Event Reception");
-            AddRole(db, "Event Moderator", "Event Moderator");
+            //AddRole(db, "Event Reception", "Event Reception");
+            //AddRole(db, "Event Moderator", "Event Moderator");
 
             //AddRole(db, "Verifier Event", "Verifier Event");
             AddRole(db, "Verifier R&P", "Verifier R&P");

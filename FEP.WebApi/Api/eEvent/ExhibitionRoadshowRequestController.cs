@@ -473,7 +473,7 @@ namespace FEP.WebApi.Api.eEvent
 
 			if (exroad != null)
 			{
-				exroad.ExhibitionStatus = ExhibitionStatus.NotVerified;
+				exroad.ExhibitionStatus = ExhibitionStatus.RequireAmendment;
 				db.EventExhibitionRequest.Attach(exroad);
 				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
 				db.Configuration.ValidateOnSaveEnabled = false;
@@ -596,7 +596,7 @@ namespace FEP.WebApi.Api.eEvent
 
 			if (exroad != null)
 			{
-				exroad.ExhibitionStatus = ExhibitionStatus.NotVerifiedDutyRoster;
+				exroad.ExhibitionStatus = ExhibitionStatus.RequireAmendmentDutyRoster;
 				db.EventExhibitionRequest.Attach(exroad);
 				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
 				db.Configuration.ValidateOnSaveEnabled = false;

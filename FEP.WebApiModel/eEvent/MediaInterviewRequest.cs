@@ -67,9 +67,14 @@ namespace FEP.WebApiModel.MediaInterview
 		public string RefNo { get; set; }
 
 		public int? UserId { get; set; }
+
+		[Display(Name = "MediaRepUserName", ResourceType = typeof(Language.Event))]
 		public string RepUserName { get; set; }
+		[Display(Name = "MediaRepDesignation", ResourceType = typeof(Language.Event))]
 		public string RepDesignation { get; set; }
+		[Display(Name = "MediaRepEmail", ResourceType = typeof(Language.Event))]
 		public string RepEmail { get; set; }
+		[Display(Name = "MediaRepMobileNumber", ResourceType = typeof(Language.Event))]
 		public string RepMobileNumber { get; set; }
 		[Display(Name = "Name")]
 		public int? RepUserId { get; set; }

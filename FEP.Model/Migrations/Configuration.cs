@@ -17,12 +17,12 @@
             
             mhafeez.Seed(context);
             aiman.Seed(context);
-            firus.Seed(context);
+            //firus.Seed(context);
 
             // Seed Elearning Default data and Test users and sample data
-            SeedElearning.Seed(context);
-            SeedElearningEmail.SeedTemplateParameter(context);
-            tajulSeed.DefaultTemplate(context);
+            //SeedElearning.Seed(context);
+            //SeedElearningEmail.SeedTemplateParameter(context);
+            //tajulSeed.DefaultTemplate(context);
 
         }
     }

@@ -67,7 +67,7 @@
                 else if (applevel == "Approver3") {
                     $('#approval_RequireNext').val('False');
 				}
-				alert($('#approval_Status').val());
+				//alert($('#approval_Status').val());
                 $('#myform').submit();
             });
 
@@ -97,14 +97,14 @@
                 $('#approval_Status').val('2');
                 $('#approval_ApproverId').val('@CurrentUser.UserId');
 				var applevel = $('#approval_Level').val();
-				alert(applevel);
+				//alert(applevel);
                 if (applevel == "Verifier") {
                     $('#approval_RequireNext').val('True');
                 }
                 else if (applevel == "Approver3") {
                     $('#approval_RequireNext').val('False');
 				}
-				alert($('#approval_RequireNext').val());
+				//alert($('#approval_RequireNext').val());
                 $('#myform').submit();
 
             });
@@ -164,12 +164,12 @@
 
 
 				<div>
-					@{if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.New && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
+					@{if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.New && (CurrentUser.HasAccess(FEP.Model.UserAccess.Submit_MediaInterview)))
 						{
 							<a href='@Url.Action("SubmitToVerify", "MediaInterview", new { area = "eEvent", id = Model.mediainterview.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
 						}
-						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.PendingVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Verify_MediaInterview)))
+						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.PendingVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Verify_MediaInterview)))
 						{
 							@*<a href='@Url.Action("Verified", "MediaInterview", new { area = "eEvent", id = Model.mediainterview.Id })'
 								   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
@@ -180,7 +180,7 @@
 							<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 							<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 						}
-						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver1_MediaInterview)))
+						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver1_MediaInterview)))
 						{
 							@*<a href='@Url.Action("FirstApproved", "MediaInterview", new { area = "eEvent", id = Model.mediainterview.Id })'
 								   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
@@ -191,7 +191,7 @@
 							<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 							<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 						}
-						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver2_MediaInterview)))
+						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver2_MediaInterview)))
 						{
 							@*<a href='@Url.Action("SecondApproved", "MediaInterview", new { area = "eEvent", id = Model.mediainterview.Id })'
 								   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
@@ -202,7 +202,7 @@
 							<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 							<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 						}
-						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover2 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver3_MediaInterview)))
+						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover2 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver3_MediaInterview)))
 						{
 							@*<a href='@Url.Action("FinalApproved", "MediaInterview", new { area = "eEvent", id = Model.mediainterview.Id })'
 								   class="btn btn-success btn-block mb-2">Approved</a>
@@ -213,7 +213,7 @@
 							<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 							<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 						}
-						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.NotVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
+						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.RequireAmendment && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
 						{
 							<a href='@Url.Action("SubmitToVerify", "MediaInterview", new { area = "eEvent", id = Model.mediainterview.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
@@ -242,7 +242,7 @@
 						<div class="form-container">
 							<div class="sub-Title my-4 d-flex align-items-center mb-4 mt-2">
 								<h4 class="color-darkblue mr-auto mb-0">Invitation Details<br><span class="small">Review invitation details below.</span></h4>
-								@if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.New || Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.NotVerified)
+								@if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.New || Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.RequireAmendment)
 								{
 									<a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Edit", "MediaInterview", new { area = "eEvent", @id = Model.mediainterview.Id })"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
 								}
@@ -275,7 +275,7 @@
 										{
 											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 1">
 										}
-										else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.NotVerified)
+										else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.RequireAmendment)
 										{
 											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Require Amendment">
 										}
@@ -524,7 +524,7 @@
 								<div class="modal-body">
 									@if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.PendingVerified)
 									{
-										if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Verify_MediaInterview))
+										if (CurrentUser.HasAccess(FEP.Model.UserAccess.Verify_MediaInterview))
 										{
 											<h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
 											@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
@@ -532,7 +532,7 @@
 									}
 									else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.Verified || Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1)
 									{
-										if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver1_MediaInterview) || CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver2_MediaInterview))
+										if (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver1_MediaInterview) || CurrentUser.HasAccess(FEP.Model.UserAccess.Approver2_MediaInterview))
 										{
 											<h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
 											<h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
@@ -549,7 +549,7 @@
 												</div>
 											</div>
 										}
-										else if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver3_MediaInterview))
+										else if (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver3_MediaInterview))
 										{
 											@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
 										}
@@ -652,6 +652,30 @@
 			<div class="action-log pull-right">
 				<h5 class="color-darkblue mr-auto mb-0"><i class="la la-comment color-secondary"></i>&nbsp;&nbsp;Action Log</h5>
 				<div data-perfect-scrollbar class="position-relative">
+					@if (ViewBag.History.Count != 0)
+					{
+						var icount = 0;
+						foreach (var item in ViewBag.History)
+						{
+							icount++;
+							<div class="border-form rounded mb-2">
+								<div class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="float-right">@item.ApprovalDate.ToString("hh:mm tt")</span></div>
+								@if (item.Status == FEP.Model.EventApprovalStatus.Approved)
+								{
+									<div class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-green">Approved</span></div>
+								}
+								else
+								{
+									<div class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-yellow">Amendment Required</span></div>
+								}
+								@if (item.Remarks != "")
+								{
+									<div class="small mt-2"><strong>Remark:</strong> <em>@item.Remarks</em></div>
+								}
+							</div>
+						}
+
+					}
 					<div class="border-form rounded mg-b-10">
 						<p class="small text-muted">@Model.mediainterview.CreatedDate</p>
 						<p class="small"><span class="card__author-name color-darkblue">@Model.mediainterview.CreatedByName</span><br>Media Interview created.</p>

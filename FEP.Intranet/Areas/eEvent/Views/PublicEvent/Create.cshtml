@@ -35,6 +35,75 @@
 			minDate: "today",
 		});
 
+
+		$('#IndividualFee').prop('readonly', false);
+		$('#IndividualEarlyBird').prop('readonly', false);
+		$('#FreeIndividual').change(function () {
+			if ($('#FreeIndividual').is(':checked')) {
+				$('#IndividualFee').val('0.00');
+				$('#IndividualFee').prop('readonly', true);
+
+				$('#IndividualEarlyBird').val('0.00');
+				$('#IndividualEarlyBird').prop('readonly', true);
+			} else {
+				$('#IndividualFee').prop('readonly', false);
+
+				$('#IndividualEarlyBird').prop('readonly', false);
+			}
+		});
+
+
+		$('#IndividualPaperFee').prop('readonly', false);
+		$('#IndividualPaperEarlyBird').prop('readonly', false);
+		$('#FreeIndividualPaper').change(function () {
+			if ($('#FreeIndividualPaper').is(':checked')) {
+				$('#IndividualPaperFee').val('0.00');
+				$('#IndividualPaperFee').prop('readonly', true);
+
+				$('#IndividualPaperEarlyBird').val('0.00');
+				$('#IndividualPaperEarlyBird').prop('readonly', true);
+			} else {
+				$('#IndividualPaperFee').prop('readonly', false);
+
+				$('#IndividualPaperEarlyBird').prop('readonly', false);
+			}
+		});
+
+
+		$('#IndividualPresentFee').prop('readonly', false);
+		$('#IndividualPresentEarlyBird').prop('readonly', false);
+		$('#FreeIndividualPresent').change(function () {
+			if ($('#FreeIndividualPresent').is(':checked')) {
+				$('#IndividualPresentFee').val('0.00');
+				$('#IndividualPresentFee').prop('readonly', true);
+
+				$('#IndividualPresentEarlyBird').val('0.00');
+				$('#IndividualPresentEarlyBird').prop('readonly', true);
+			} else {
+				$('#IndividualPresentFee').prop('readonly', false);
+
+				$('#IndividualPresentEarlyBird').prop('readonly', false);
+			}
+		});
+
+
+		$('#AgencyFee').prop('readonly', false);
+		$('#AgencyEarlyBird').prop('readonly', false);
+		$('#FreeAgency').change(function () {
+			if ($('#FreeAgency').is(':checked')) {
+				$('#AgencyFee').val('0.00');
+				$('#AgencyFee').prop('readonly', true);
+
+				$('#AgencyEarlyBird').val('0.00');
+				$('#AgencyEarlyBird').prop('readonly', true);
+			} else {
+				$('#AgencyFee').prop('readonly', false);
+
+				$('#AgencyEarlyBird').prop('readonly', false);
+			}
+		});
+
+
 	</script>
 }
 
@@ -88,13 +157,13 @@
 								</a>
 							</li>
 							<li class="step-item active">
-								<a href="#eventdetails" class="step-link">
+								<a href="#eventdetails" class="step-link" data-toggle="tab">
 									<span class="step-number">2</span>
 									<span class="step-title">Fill Up Event Details</span>
 								</a>
 							</li>
 							<li class="step-item active">
-								<a href="#eventagenda" class="step-link">
+								<a href="#eventagenda" class="step-link" data-toggle="tab">
 									<span class="step-number">3</span>
 									<span class="step-title">Fill Up Event Agenda</span>
 								</a>
@@ -168,14 +237,115 @@
 								@Html.ValidationMessageFor(model => model.Venue, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.Fee)
-								@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00" } })
-								@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelParticipantType)
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelFree)
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelNormalFee)
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelEarlyBirdFee)
 							</div>
 						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelIndividual)
+							</div>
+							<div class="form-group col-lg-3">
+								<div class="custom-control custom-checkbox">
+									@Html.EditorFor(model => model.FreeIndividual, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+									@Html.LabelFor(model => model.FreeIndividual, htmlAttributes: new { @class = "custom-control-label" })
+								</div>
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualFee, new { htmlAttributes = new { @class = "form-control", @Value = "0.00", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.IndividualFee, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualEarlyBird, new { htmlAttributes = new { @class = "form-control", @Value = "0.00", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.IndividualEarlyBird, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelIndividualPaper)
+							</div>
+							<div class="form-group col-lg-3">
+								<div class="custom-control custom-checkbox">
+									@Html.EditorFor(model => model.FreeIndividualPaper, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+									@Html.LabelFor(model => model.FreeIndividualPaper, htmlAttributes: new { @class = "custom-control-label" })
+								</div>
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualPaperFee, new { htmlAttributes = new { @class = "form-control", @Value = "0.00", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.IndividualPaperFee, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualPaperEarlyBird, new { htmlAttributes = new { @class = "form-control", @Value = "0.00", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.IndividualPaperEarlyBird, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelIndividualPresent)
+							</div>
+							<div class="form-group col-lg-3">
+								<div class="custom-control custom-checkbox">
+									@Html.EditorFor(model => model.FreeIndividualPresent, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+									@Html.LabelFor(model => model.FreeIndividualPresent, htmlAttributes: new { @class = "custom-control-label" })
+								</div>
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualPresentFee, new { htmlAttributes = new { @class = "form-control", @Value = "0.00", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.IndividualPresentFee, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualPresentEarlyBird, new { htmlAttributes = new { @class = "form-control", @Value = "0.00", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.IndividualPresentEarlyBird, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelAgency)
+							</div>
+							<div class="form-group col-lg-3">
+								<div class="custom-control custom-checkbox">
+									@Html.EditorFor(model => model.FreeAgency, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+									@Html.LabelFor(model => model.FreeAgency, htmlAttributes: new { @class = "custom-control-label" })
+								</div>
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.AgencyFee, new { htmlAttributes = new { @class = "form-control", @Value = "0.00", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.AgencyFee, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.AgencyEarlyBird, new { htmlAttributes = new { @class = "form-control", @Value = "0.00", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.AgencyEarlyBird, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+
+
+
+
+
+
+
+						@*<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.FEPLabelFor(model => model.Fee)
+									@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00" } })
+									@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
+								</div>
+							</div>*@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
@@ -219,7 +389,7 @@
 
 						<div class="border-top p-3 rounded-bottom">
 							<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("List")'>Back</a>
-							<a class="btn btn-secondary" href="#event_agenda" data-toggle="tab">Next</a>
+							<a class="btn btn-secondary" href="#eventagenda" data-toggle="tab">Next</a>
 						</div>
 					</div>
 
@@ -230,7 +400,7 @@
 						</div>
 
 						<hr />
-						<div class="border-left border-right border-bottom p-3 rounded-bottom">
+						<div>
 							<!--input type="submit" value="Create" class="btn btn-default" /-->
 							<input class="form-control" type="hidden" name="CreatorId" id="CreatorId" value="@CurrentUser.UserId">
 							<a class="btn btn-default" href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>

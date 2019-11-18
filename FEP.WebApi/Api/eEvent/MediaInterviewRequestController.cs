@@ -220,10 +220,10 @@ namespace FEP.WebApi.Api.eEvent
 			return model;
 		}
 
-		public IHttpActionResult Get(int id)
+		public MediaInterviewApprovalModel Get(int id)
 		{
 			var media = db.EventMediaInterviewRequest.Where(u => u.Id == id)
-				.Select(i => new DetailsMediaInterviewRequestApiModel
+				.Select(i => new MediaInterviewRequestApiModel
 				{
 					Id = i.Id,
 					MediaName = i.MediaName,
@@ -254,14 +254,52 @@ namespace FEP.WebApi.Api.eEvent
 					CreatedByName = i.CreatedByUser.Name,
 				}).FirstOrDefault();
 
-			if (media == null)
+			if (media.MediaStatus != MediaStatus.ApprovedByApprover3 && media.MediaStatus != MediaStatus.RequireAmendment)
 			{
-				return NotFound();
+				var approval = db.EventMediaInterviewApproval.Where(pa => pa.MediaId == id && pa.Status == EventApprovalStatus.None).Select(s => new ApprovalModel
+				{
+					Id = s.Id,
+					MediaId = s.MediaId,
+					Level = s.Level,
+					ApproverId = 0,
+					Status = EventApprovalStatus.None,
+					Remarks = "",
+					RequireNext = s.RequireNext
+				}).FirstOrDefault();
+
+				var evaluation = new MediaInterviewApprovalModel
+				{
+					mediainterview = media,
+					approval = approval
+				};
+
+				evaluation.mediainterview.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.MediaInterview && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+
+				return evaluation;
 			}
+			else
+			{
+				var approval = db.EventMediaInterviewApproval.Where(pa => pa.MediaId == id).Select(s => new ApprovalModel
+				{
+					Id = s.Id,
+					MediaId = s.MediaId,
+					Level = s.Level,
+					ApproverId = 0,
+					Status = s.Status,
+					Remarks = "",
+					RequireNext = s.RequireNext
+				}).FirstOrDefault();
 
-			media.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.MediaInterview && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+				var evaluation = new MediaInterviewApprovalModel
+				{
+					mediainterview = media,
+					approval = approval
+				};
 
-			return Ok(media);
+				evaluation.mediainterview.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.MediaInterview && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+
+				return evaluation;
+			}
 		}
 
 
@@ -308,6 +346,22 @@ namespace FEP.WebApi.Api.eEvent
 				db.EventFile.Add(eventfile);
 			}
 			db.SaveChanges();
+
+			if (media != null)
+			{
+				var approval = new EventMediaInterviewApproval
+				{
+					MediaId = media.Id,
+					Level = EventApprovalLevel.Verifier,
+					ApproverId = 0,
+					Status = EventApprovalStatus.None,
+					ApprovedDate = DateTime.Now,
+					Remark = "",
+					RequireNext = false
+				};
+
+				db.EventMediaInterviewApproval.Add(approval);
+			}
 
 			var refno = "EVT/" + DateTime.Now.ToString("yyMM");
 			refno += "/" + media.Id.ToString("D4");
@@ -425,6 +479,24 @@ namespace FEP.WebApi.Api.eEvent
 		public IHttpActionResult SubmitToVerify(int id)
 		{
 			var media = db.EventMediaInterviewRequest.Where(p => p.Id == id).FirstOrDefault();
+
+			if (media.MediaStatus == MediaStatus.RequireAmendment)
+			{
+				var approval = new EventMediaInterviewApproval
+				{
+					MediaId = media.Id,
+					Level = EventApprovalLevel.Verifier,
+					ApproverId = 0,
+					Status = EventApprovalStatus.None,
+					ApprovedDate = DateTime.Now,
+					Remark = "",
+					RequireNext = false
+				};
+
+				db.EventMediaInterviewApproval.Add(approval);
+			}
+			db.SaveChanges();
+
 			if (media != null)
 			{
 				media.MediaStatus = MediaStatus.PendingVerified;
@@ -479,7 +551,7 @@ namespace FEP.WebApi.Api.eEvent
 
 			if (media != null)
 			{
-				media.MediaStatus = MediaStatus.NotVerified;
+				media.MediaStatus = MediaStatus.RequireAmendment;
 				db.EventMediaInterviewRequest.Attach(media);
 				db.Entry(media).Property(m => m.MediaStatus).IsModified = true;
 				db.Configuration.ValidateOnSaveEnabled = false;
@@ -735,6 +807,57 @@ namespace FEP.WebApi.Api.eEvent
 
 			return phistory;
 		}
+
+
+		[HttpGet]
+		[Route("api/eEvent/MediaInterviewRequest/GetEditDelete")]
+		public IHttpActionResult GetEditDelete(int id)
+		{
+			var model = db.EventMediaInterviewRequest.Where(i => i.Display && i.Id == id)
+			   .Select(i => new DetailsMediaInterviewRequestApiModel
+			   {
+				   Id = i.Id,
+				   MediaName = i.MediaName,
+				   MediaType = i.MediaType,
+				   ContactNo = i.ContactNo,
+				   AddressStreet1 = i.AddressStreet1,
+				   AddressStreet2 = i.AddressStreet2,
+				   AddressPoscode = i.AddressPoscode,
+				   AddressCity = i.AddressCity,
+				   State = i.State,
+				   Email = i.Email,
+				   DateStart = i.DateStart,
+				   DateEnd = i.DateEnd,
+				   Time = i.Time,
+				   Location = i.Location,
+				   Language = i.Language,
+				   Topic = i.Topic,
+				   UserId = i.UserId,
+				   RepUserName = i.User.Name,
+				   RepEmail = i.User.Email,
+				   RepMobileNumber = i.User.MobileNo,
+				   RepDesignation = i.User.StaffProfile.Designation.Name,
+				   ContactPerson = i.ContactPerson,
+				   CreatedBy = i.CreatedBy,
+				   CreatedDate = i.CreatedDate,
+				   RefNo = i.RefNo,
+				   MediaStatus = i.MediaStatus,
+				   CreatedByName = i.CreatedByUser.Name,
+			   }).FirstOrDefault();
+
+			if (model == null)
+			{
+				return NotFound();
+			}
+
+			model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.MediaInterview && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+
+			return Ok(model);
+		}
+
+
+
+
 
 
 	}

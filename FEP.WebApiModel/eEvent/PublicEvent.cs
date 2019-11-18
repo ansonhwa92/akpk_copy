@@ -70,8 +70,48 @@ namespace FEP.WebApiModel.PublicEvent
 		[Display(Name = "PubEventVenue", ResourceType = typeof(Language.Event))]
 		public string Venue { get; set; }
 
-		[Display(Name = "PubEventFee", ResourceType = typeof(Language.Event))]
-		public float? Fee { get; set; }
+		//-----------individual------------//
+		[Display(Name = "PubEventIndividualFree", ResourceType = typeof(Language.Event))]
+		public bool FreeIndividual { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? IndividualFee { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? IndividualEarlyBird { get; set; }
+
+		//-----individual w/ paper------------//
+		[Display(Name = "PubEventIndividualPaperFree", ResourceType = typeof(Language.Event))]
+		public bool FreeIndividualPaper { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? IndividualPaperFee { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? IndividualPaperEarlyBird { get; set; }
+
+		//----individual w/ paper to present----//
+		[Display(Name = "PubEventIndividualPresentFree", ResourceType = typeof(Language.Event))]
+		public bool FreeIndividualPresent { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? IndividualPresentFee { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? IndividualPresentEarlyBird { get; set; }
+
+		//--------------agency------------//
+		[Display(Name = "PubEventAgencyFree", ResourceType = typeof(Language.Event))]
+		public bool FreeAgency { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? AgencyFee { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? AgencyEarlyBird { get; set; }
+
+		//[Display(Name = "PubEventFee", ResourceType = typeof(Language.Event))]
+		//public float? Fee { get; set; }
 
 		[Display(Name = "PubEventParticipantAllowed", ResourceType = typeof(Language.Event))]
 		public int? ParticipantAllowed { get; set; }
@@ -119,9 +159,27 @@ namespace FEP.WebApiModel.PublicEvent
 		public IEnumerable<SelectListItem> CategoryList { get; set; }
 		public IEnumerable<SelectListItem> SpeakerList { get; set; }
 		public IEnumerable<SelectListItem> ExternalExhibitorList { get; set; }
-
-
 		public IEnumerable<Attachment> Attachments { get; set; }
+
+
+		[Display(Name = "PubEventLabelParticipantType", ResourceType = typeof(Language.Event))]
+		public string LabelParticipantType { get; set; }
+		[Display(Name = "PubEventLabelFree", ResourceType = typeof(Language.Event))]
+		public string LabelFree { get; set; }
+		[Display(Name = "PubEventLabelNormalFee", ResourceType = typeof(Language.Event))]
+		public string LabelNormalFee { get; set; }
+		[Display(Name = "PubEventLabelEarlyBirdFee", ResourceType = typeof(Language.Event))]
+		public string LabelEarlyBirdFee { get; set; }
+
+		[Display(Name = "PubEventLabelIndividual", ResourceType = typeof(Language.Event))]
+		public string LabelIndividual { get; set; }
+		[Display(Name = "PubEventLabelIndividualPaper", ResourceType = typeof(Language.Event))]
+		public string LabelIndividualPaper { get; set; }
+		[Display(Name = "PubEventLabelIndividualPresent", ResourceType = typeof(Language.Event))]
+		public string LabelIndividualPresent { get; set; }
+		[Display(Name = "PubEventLabelAgency", ResourceType = typeof(Language.Event))]
+		public string LabelAgency { get; set; }
+
 	}
 
 

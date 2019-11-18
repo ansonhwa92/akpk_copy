@@ -19,7 +19,26 @@ namespace FEP.Model
 		public DateTime? StartDate { get; set; }
 		public DateTime? EndDate { get; set; }
 		public string Venue { get; set; }
-		public float? Fee { get; set; }
+		//-----------individual------------//
+		public bool FreeIndividual { get; set; }
+		public float? IndividualFee { get; set; }
+		public float? IndividualEarlyBird { get; set; }
+		//-----individual w/ paper------------//
+		public bool FreeIndividualPaper { get; set; }
+		public float? IndividualPaperFee { get; set; }
+		public float? IndividualPaperEarlyBird { get; set; } 
+
+		//----individual w/ paper to present----//
+		public bool FreeIndividualPresent { get; set; }
+		public float? IndividualPresentFee { get; set; }
+		public float? IndividualPresentEarlyBird { get; set; }
+
+		//--------------agency------------//
+		public bool FreeAgency { get; set; }
+		public float? AgencyFee { get; set; }
+		public float? AgencyEarlyBird { get; set; } 
+
+
 		public int? ParticipantAllowed { get; set; }
 		public EventTargetGroup? TargetedGroup { get; set; }
 		public string Remarks { get; set; }

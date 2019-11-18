@@ -277,9 +277,6 @@
                             }
                             else if (row.Status == 6) {     // published (can unpublish/deactivate from view)
                                 action += '';
-                                if (canview) {
-                                    action += '<a href="@Url.Action("Results", "Survey", new { area = "RnP" })' + '?id=' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View Results"><i class="la la-folder text-muted"></i></a>';
-                                }
                             }
                             else if (row.Status == 7) {     // unpublished
                                 action += '';

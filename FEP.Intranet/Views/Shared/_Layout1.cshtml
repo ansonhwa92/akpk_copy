@@ -128,9 +128,6 @@
                                                 </span>
                                             </a>
                                         </div>
-                                        <a class="dropdown-item" href="@Url.Action(" PurchaseHistory", "Cart" , new { area="Commerce" })">
-                                            <i class="la la-shopping-cart color-secondary font-icon" style="font-size: 21px;"></i> My Purchase History
-                                        </a>
                                         <a class="dropdown-item" href="#">
                                             <i class="la la-book color-secondary font-icon"></i> My Courses
                                         </a>
@@ -159,10 +156,10 @@
                                             <i class="la la-money color-secondary font-icon"></i> My Refunds
                                         </a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="@Url.Action(" MyProfile", "Home" , new { area="" })">
+                                        <a class="dropdown-item" href="@Url.Action("MyProfile", "Home" , new { area="" })">
                                             <i class="la la-edit color-secondary font-icon"></i> My Profile
                                         </a>
-                                        <a class="dropdown-item" href="@Url.Action(" Logout", "Auth" , new { area="" })">
+                                        <a class="dropdown-item" href="@Url.Action("LogOut", "Auth" , new { area="" })">
                                             <i class="la la-sign-out color-secondary font-icon"></i> Log out
                                         </a>
                                     </div>

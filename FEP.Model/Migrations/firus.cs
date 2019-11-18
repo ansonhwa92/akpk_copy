@@ -70,10 +70,10 @@ namespace FEP.Model.Migrations
                 });
             }
 
-            //DefaultSLAReminder(db);
-            //DefaultParameterGroup(db);
-            //DefaultTemplate(db);
-        }
+			//DefaultSLAReminder(db);
+			//DefaultParameterGroup(db);
+			//DefaultTemplate(db);
+		}
 
         public static void DefaultSLAReminder(DbEntities db)
         {

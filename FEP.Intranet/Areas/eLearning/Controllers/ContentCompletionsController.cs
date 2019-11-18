@@ -60,7 +60,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
         [ChildActionOnly]
-
         public ActionResult Get(int contentId)
         {
             int currentUserId = -1;
@@ -70,7 +69,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             var response = AsyncHelpers.RunSync<WebApiResponse<ContentCompletionModel>>(() => WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Get,
                 ContentCompletionsApiUrl.Get + $"?contentId={contentId}&userId={currentUserId}"));
 
-            response.Data.UserId = currentUserId;
+            // response.Data.UserId = currentUserId;
 
             if (response.isSuccess)
             {

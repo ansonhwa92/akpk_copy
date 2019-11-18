@@ -79,14 +79,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         CourseAuthor = model.CreatedByName,
                         CourseTitle = title,
                         CourseApproval = "Course Verification",
-                        Link = this.Url.AbsoluteAction("Approve", "CourseApprovals", new { id = id}),
+                        Link = this.Url.AbsoluteAction("Approve", "CourseApprovals", new { id = id }),
                     },
                     ReceiverType = ReceiverType.UserIds,
                 };
 
                 var emailResponse = await EmaiHelper.SendNotification(notifyModel);
 
-                if (emailResponse == null || String.IsNullOrEmpty(emailResponse.Status) || 
+                if (emailResponse == null || String.IsNullOrEmpty(emailResponse.Status) ||
                     !emailResponse.Status.Equals("Success", System.StringComparison.OrdinalIgnoreCase))
                 {
                     await LogError(Modules.Learning, $"Error Sending Email For Course Verification. Course Title (Id) : {title} - {id}");
@@ -195,7 +195,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     {
                         await LogError(Modules.Learning, $"Error Sending Email For Course Approval. Course Title (Id) : {model.CourseTitle} - {model.CourseId}");
                     }
-                                       
+
                     return RedirectToAction("Index", "Courses", new { area = "eLearning" });
                 }
 
@@ -206,16 +206,16 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                     // notify next level
                     NotificationType notifyType = NotificationType.Approve_Courses_Creation_Approver1;
-                    if(model.Status == CourseStatus.FirstApproval) 
+                    if (model.Status == CourseStatus.FirstApproval)
                     {
                         notifyType = NotificationType.Approve_Courses_Creation_Approver2;
                     }
                     else
-                    if(model.Status == CourseStatus.SecondApproval)
+                    if (model.Status == CourseStatus.SecondApproval)
                     {
                         notifyType = NotificationType.Approve_Courses_Creation_Approver3;
                     }
-                    
+
                     var notifyModel = new NotificationModel
                     {
                         Id = model.CourseId,

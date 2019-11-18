@@ -33,7 +33,7 @@ namespace FEP.Model.Migrations
 
             DefaultSLAReminder(db);
             DefaultParameterGroup(db);
-            DefaultTemplate(db);
+            // DefaultTemplate(db);
         }
 
         private static void SeedDefaultData(DbEntities db)

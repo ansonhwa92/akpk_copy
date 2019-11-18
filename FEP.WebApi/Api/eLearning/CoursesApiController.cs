@@ -85,7 +85,6 @@ namespace FEP.WebApi.Api.eLearning
             if (tamil) { query = query.Where(p => p.Language == CourseLanguage.Tamil); }
             if (multiLanguage) { query = query.Where(p => p.Language == CourseLanguage.MultiLanguage); }
 
-
             var filteredCount = query.Count();
 
             if (sorting == "title")
@@ -104,7 +103,6 @@ namespace FEP.WebApi.Api.eLearning
             {
                 query = query.OrderBy(o => o.Title).OrderByDescending(o => o.CreatedDate);
             }
-
 
             //var trainer = GetInstructor();
 
@@ -437,7 +435,9 @@ namespace FEP.WebApi.Api.eLearning
         [HttpPost]
         public IHttpActionResult GetAllTrainers(FilterIndividualModel request)
         {
-            var users = db.UserRole.Where(u => u.UserAccount.User.Display && u.Role.Name == RoleNames.eLearningTrainer).Select(x => x.UserAccount.User);
+            var users = db.UserRole.Where(u => u.UserAccount.User.Display &&
+                (u.Role.Name == RoleNames.eLearningTrainer ||
+                u.Role.Name == RoleNames.eLearningFacilitator)).Select(x => x.UserAccount.User);
 
             if (users == null)
                 return NotFound();
@@ -555,6 +555,12 @@ namespace FEP.WebApi.Api.eLearning
             });
         }
 
+        /// <summary>
+        /// Misleading function Name. This is actually for adding trainer to the course.
+        /// </summary>
+        /// <param name="CourseId"></param>
+        /// <param name="Ids"></param>
+        /// <returns></returns>
         [Route("api/eLearning/Courses/AddUser")]
         [HttpPost]
         public IHttpActionResult AddUser(UpdateTrainerCourseModel model)

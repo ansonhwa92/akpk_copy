@@ -15,6 +15,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     {
         public const string EnrollAsync = "eLearning/CourseEnrollments/EnrollAsync";
         public const string UserDetails = "eLearning/CourseEnrollments/GetUserDetails";
+        public const string GetEnrollmentHistoryByCourse = "eLearning/CourseEnrollments/GetEnrollmentHistoryByCourse";
 
     }
 

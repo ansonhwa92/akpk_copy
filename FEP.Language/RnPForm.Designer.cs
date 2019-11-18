@@ -124,6 +124,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Author Images.
+        /// </summary>
+        public static string PubAuthorPictures {
+            get {
+                return ResourceManager.GetString("PubAuthorPictures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancellation Remarks.
         /// </summary>
         public static string PubCancelRemark {
@@ -322,6 +331,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Publication Images.
+        /// </summary>
+        public static string PubPictures {
+            get {
+                return ResourceManager.GetString("PubPictures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Proof Of Approval.
         /// </summary>
         public static string PubProofOfApproval {
@@ -358,11 +376,83 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ranking.
+        /// </summary>
+        public static string PubRankPosition {
+            get {
+                return ResourceManager.GetString("PubRankPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reference No.
         /// </summary>
         public static string PubRefNo {
             get {
                 return ResourceManager.GetString("PubRefNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is Helpful.
+        /// </summary>
+        public static string PubReviewHelpful {
+            get {
+                return ResourceManager.GetString("PubReviewHelpful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Likes.
+        /// </summary>
+        public static string PubReviewLikes {
+            get {
+                return ResourceManager.GetString("PubReviewLikes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rating.
+        /// </summary>
+        public static string PubReviewRating {
+            get {
+                return ResourceManager.GetString("PubReviewRating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Review.
+        /// </summary>
+        public static string PubReviewRemarks {
+            get {
+                return ResourceManager.GetString("PubReviewRemarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Review Date.
+        /// </summary>
+        public static string PubReviewReviewDate {
+            get {
+                return ResourceManager.GetString("PubReviewReviewDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reviewer Name.
+        /// </summary>
+        public static string PubReviewReviewerId {
+            get {
+                return ResourceManager.GetString("PubReviewReviewerId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reviewer Name.
+        /// </summary>
+        public static string PubReviewReviewerName {
+            get {
+                return ResourceManager.GetString("PubReviewReviewerName", resourceCulture);
             }
         }
         
@@ -520,6 +610,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Author Images.
+        /// </summary>
+        public static string SurveyAuthorPictures {
+            get {
+                return ResourceManager.GetString("SurveyAuthorPictures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancellation Remarks.
         /// </summary>
         public static string SurveyCancelRemark {
@@ -610,7 +709,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thumbnail.
+        ///   Looks up a localized string similar to Survey Pictures.
         /// </summary>
         public static string SurveyPictures {
             get {
@@ -741,6 +840,15 @@ namespace Language {
         public static string ValidInvalidApprovalStatus {
             get {
                 return ResourceManager.GetString("ValidInvalidApprovalStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Price is invalid.
+        /// </summary>
+        public static string ValidInvalidPrice {
+            get {
+                return ResourceManager.GetString("ValidInvalidPrice", resourceCulture);
             }
         }
         

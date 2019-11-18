@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -20,9 +21,12 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44360</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -51,13 +55,19 @@
       <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="FEP.Helper">
       <HintPath>..\..\FEP.Helper\FEP.Helper\bin\Debug\FEP.Helper.dll</HintPath>
+    </Reference>
+    <Reference Include="Mammoth, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mammoth.1.4.0.0\lib\net45\Mammoth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -144,46 +154,72 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
+    <Compile Include="Areas\Administrator\Controllers\BranchController.cs" />
     <Compile Include="Areas\Administrator\Controllers\CompanyController.cs" />
     <Compile Include="Areas\Administrator\Controllers\IndividualController.cs" />
+    <Compile Include="Areas\Administrator\Controllers\MinistryController.cs" />
     <Compile Include="Areas\Administrator\Controllers\RoleController.cs" />
     <Compile Include="Areas\Administrator\Controllers\SectorController.cs" />
     <Compile Include="Areas\Administrator\Controllers\StaffController.cs" />
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
+    <Compile Include="Areas\Commerce\CommerceAreaRegistration.cs" />
+    <Compile Include="Areas\Commerce\Controllers\CartController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\DutyRosterController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\EventAgendaController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventCategoryController.cs" />
+    <Compile Include="Areas\eEvent\Controllers\EventRefundController.cs" />
     <Compile Include="Areas\eEvent\Controllers\ExhibitionRoadshowRequestController.cs" />
     <Compile Include="Areas\eEvent\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\eEventAreaRegisteration.cs" />
+    <Compile Include="Areas\eEvent\Models\EventAgenda.cs" />
+    <Compile Include="Areas\eEvent\Models\EventRefund.cs" />
+    <Compile Include="Areas\eEvent\Models\ExhibitionRoadshowRequest.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseCategoryController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\ContentCompletionsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseContentsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseDiscussionController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\CourseEnrollmentsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseGroupController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseModulesController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\CourseApprovalsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CoursesController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\CourseEventsController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\FileUploadController.cs" />
     <Compile Include="Areas\eLearning\Controllers\FileController.cs" />
     <Compile Include="Areas\eLearning\Controllers\HomeController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventSpeakerController.cs" />
     <Compile Include="Areas\eEvent\Controllers\EventExternalExhibitorController.cs" />
     <Compile Include="Areas\eEvent\Models\EventSpeaker.cs" />
+    <Compile Include="Areas\eLearning\Controllers\CertificatesController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\MediaController.cs" />
     <Compile Include="Areas\eLearning\eLearningAreaRegistration.cs" />
+    <Compile Include="Areas\eLearning\Helper\AllowCrossSiteJsonAttribute.cs" />
+    <Compile Include="Areas\eLearning\Helper\EmaiHelper.cs" />
+    <Compile Include="Areas\eLearning\Helper\AsyncHelpers.cs" />
+    <Compile Include="Areas\eLearning\Helper\ExtensionMethods.cs" />
     <Compile Include="Areas\eLearning\Helper\YouTubeUrlHelper.cs" />
+    <Compile Include="Areas\eLearning\Helper\SlideshareHelper.cs" />
+    <Compile Include="Areas\eLearning\Controllers\TOTReportController.cs" />
+    <Compile Include="Areas\eLearning\Models\TOT.cs" />
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />
     <Compile Include="Areas\Logs\Controllers\UserLogController.cs" />
     <Compile Include="Areas\Logs\LogsAreaRegistration.cs" />
+    <Compile Include="Areas\Reward\Controllers\RewardActivityPointsController.cs" />
+    <Compile Include="Areas\Reward\Controllers\RewardRedemptionsController.cs" />
+    <Compile Include="Areas\Reward\Controllers\UserRewardPointsController.cs" />
+    <Compile Include="Areas\Reward\Controllers\UserRewardRedemptionsController.cs" />
+    <Compile Include="Areas\Reward\RewardAreaRegistration.cs" />
     <Compile Include="Areas\RnP\Controllers\HomeController.cs" />
     <Compile Include="Areas\RnP\Controllers\PublicationController.cs" />
     <Compile Include="Areas\RnP\Controllers\SurveyController.cs" />
     <Compile Include="Areas\RnP\Models\Research.cs" />
     <Compile Include="Areas\RnP\RnPAreaRegistration.cs" />
+    <Compile Include="Areas\Setting\Controllers\GroupController.cs" />
+    <Compile Include="Areas\Setting\Controllers\HomeController.cs" />
     <Compile Include="Areas\SLAReminder\Controllers\SLARemindersController.cs" />
     <Compile Include="Areas\SLAReminder\SLAReminderAreaRegistration.cs" />
     <Compile Include="Areas\Template\Controllers\EmailTemplatesController.cs" />
@@ -198,6 +234,7 @@
     <Compile Include="Areas\eEvent\Controllers\PublicEventController.cs" />
     <Compile Include="Areas\eEvent\Models\PublicEvent.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -205,6 +242,7 @@
     <Compile Include="Method.cs" />
     <Compile Include="Models\Auth.cs" />
     <Compile Include="Models\Home.cs" />
+    <Compile Include="Models\Notification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -216,8 +254,11 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\certificate_background.jpg" />
+    <Content Include="Content\logo-akpk.svg" />
     <Content Include="css\base.css" />
     <Content Include="css\custom-admin.css" />
+    <Content Include="css\elearn.css" />
     <Content Include="css\fonts\social-share-kit.svg" />
     <Content Include="css\jssocials.css" />
     <Content Include="css\login.css" />
@@ -478,6 +519,7 @@
     <Content Include="img\lect-02.jpg" />
     <Content Include="img\logo-akpk-normal.svg" />
     <Content Include="img\logo-akpk.svg" />
+    <Content Include="img\no-photo.jpg" />
     <Content Include="img\services\icon-dmp.svg" />
     <Content Include="img\services\icon-fc.svg" />
     <Content Include="img\services\icon-fe.svg" />
@@ -485,6 +527,7 @@
     <Content Include="img\stats\icon-stats-enrolled.svg" />
     <Content Include="img\stats\icon-stats-event.svg" />
     <Content Include="img\stats\icon-stats-rnp.svg" />
+    <Content Include="js\elearn-course.js" />
     <Content Include="js\elearn.js" />
     <Content Include="js\index.js" />
     <Content Include="js\jquery.countTo.js" />
@@ -748,53 +791,72 @@
     <Content Include="Areas\eLearning\Views\Courses\Edit.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\Details.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Content.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\EditRules.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseCategory\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\_contentSidebar.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\Create.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseModules\Delete.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseModules\Details.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\Edit.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseModules\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\Content.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Create.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Delete.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\Details.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Edit.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseModules\_contentSidebar.cshtml" />
     <Content Include="libman.json" />
-    <Content Include="Areas\eLearning\Views\Courses\_actionLog.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_actionLog.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\_amendmentHistory.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\CreateVideo.cshtml" />
-    <Content Include="Areas\eLearning\Views\Shared\_video.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewVideo.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\View.cshtml" />
-    <Content Include="Areas\eLearning\Views\Shared\_contentCompletion.cshtml" />
-    <Content Include="Areas\eLearning\Views\Shared\_contentCompletionView.cshtml" />
-    <Content Include="Areas\eLearning\Views\Shared\_richText.cshtml" />
-    <Content Include="Areas\eLearning\Views\Shared\_iframe.cshtml" />
-    <Content Include="Areas\eLearning\Views\Shared\_audio.cshtml" />
-    <Content Include="Areas\eLearning\Views\Shared\_document.cshtml" />
-    <Content Include="Areas\eLearning\Views\Shared\_weblink.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_contentCompletion.cshtml" />
+    <Content Include="Areas\eLearning\Views\ContentCompletions\_contentCompletionView.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewRichText.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewIframe.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewAudio.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewDocument.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_createRichText.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_createIFrame.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_createDocument.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\_createWebLink.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_createAudio.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_createTest.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_createAssignment.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewVideo.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\_viewNav.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\_viewBack.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewRichText.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewDocument.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewIFrame.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewWebLink.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewAudio.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewTest.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseContents\ViewAssignment.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\Trainers.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_defaultContent.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_Add.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewAssignment.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewTest.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailVideo.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_contentCompletionDetail.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editAssignment.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editAudio.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editDocument.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editIFrame.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editRichText.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editTest.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editVideo.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Index.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Create_Background.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailRichText.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailDocument.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Edit_Background.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailAudio.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailIFrame.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createFlash.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewFlash.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailFlash.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editFlash.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\_Background.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\_Template.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Edit_Template.cshtml" />
+    <Content Include="Areas\eLearning\Views\Certificates\Create_Template.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\View.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\AssignCertificate.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\_addLearner.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\Learners.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseModules\View.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseModules\Delete.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_createPdf.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_detailPdf.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_editPdf.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\_viewPdf.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseDiscussion\List.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseDiscussion\_Create.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseDiscussion\_Delete.cshtml" />
@@ -808,7 +870,128 @@
     <Content Include="Areas\eLearning\Views\CourseGroup\Detail.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseGroup\_Edit.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseGroup\_UserList.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseGroup\_CourseList.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\Index_ori.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\BrowsePublications.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\PublicationDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\SelectFormat.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\PurchasePublication.cshtml" />
+    <Content Include="Areas\eEvent\Views\PublicEvent\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\Administrator\Views\Ministry\_Create.cshtml" />
+    <Content Include="Areas\Administrator\Views\Ministry\_Delete.cshtml" />
+    <Content Include="Areas\Administrator\Views\Ministry\_Edit.cshtml" />
+    <Content Include="Areas\Administrator\Views\Ministry\List.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\BrowseSurveys.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\PublicSurvey.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\ThankYou.cshtml" />
+    <Content Include="Areas\Commerce\Views\web.config" />
+    <Content Include="Areas\Administrator\Views\Staff\_Add.cshtml" />
+    <Content Include="Areas\Administrator\Views\Staff\_Details.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\Details.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\Edit.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\Delete.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\_Attachment.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventAgenda\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventSpeaker\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\Items.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\Review.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\EditDelivery.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\PaymentMethod.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\PurchaseHistory.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\RefundRequest.cshtml" />
+    <Content Include="Areas\Reward\Views\web.config" />
+    <Content Include="Areas\Reward\Views\RewardActivityPoints\Create.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardActivityPoints\List.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardActivityPoints\Details.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardActivityPoints\Edit.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardActivityPoints\Delete.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardRedemptions\List.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardRedemptions\Create.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardRedemptions\Details.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardRedemptions\Edit.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardRedemptions\Delete.cshtml" />
+    <Content Include="Areas\Reward\Views\UserRewardPoints\List.cshtml" />
+    <Content Include="Areas\Reward\Views\UserRewardPoints\AwardUser.cshtml" />
+    <Content Include="Areas\Reward\Views\UserRewardPoints\Details.cshtml" />
+    <Content Include="Areas\Reward\Views\UserRewardRedemptions\List.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardRedemptions\ListToRedeem.cshtml" />
+    <Content Include="Areas\Reward\Views\RewardRedemptions\DetailsToRedeem.cshtml" />
+    <Content Include="Areas\Reward\Views\UserRewardPoints\ListAll.cshtml" />
+    <Content Include="Areas\Reward\Views\UserRewardRedemptions\ListAll.cshtml" />
+    <Content Include="Areas\eEvent\Views\DutyRoster\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\DutyRoster\_Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\DutyRoster\_Edit.cshtml" />
+    <Content Include="Areas\eEvent\Views\DutyRoster\_Delete.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_approvals.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseApprovals\Approve.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseApprovals\_sidebar.cshtml" />
+    <Content Include="Areas\eEvent\Views\EventSpeaker\_Attachment.cshtml" />
+    <Content Include="Areas\eEvent\Views\MediaInterview\_Attachment.cshtml" />
+    <Content Include="Areas\eEvent\Views\MediaInterview\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\_Attachment.cshtml" />
+    <Content Include="Areas\eEvent\Views\ExhibitionRoadshowRequest\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\_Select.cshtml" />
+    <Content Include="Areas\Administrator\Views\Staff\_Select.cshtml" />
+    <Content Include="Areas\Administrator\Views\Staff\Edit.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\List.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\Create.cshtml" />
+    <Content Include="Areas\eEvent\Views\Home\_Menu.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_Menu.cshtml" />
+    <Content Include="Areas\Setting\Views\Home\_Menu.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_Menu.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_approvals.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseApprovals\Approve.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseApprovals\_sidebar.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_courseStatus.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\Create.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\InviteLearners.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\Index.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEnrollments\Index.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\_Attachment.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\_AttachmentDetails.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\Edit.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\Details.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\Delete.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\PurchaseDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\BrowseSurveysLoggedIn.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\PrivateSurvey.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\SurveyExpired.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\SurveyNotStarted.cshtml" />
+    <Content Include="Areas\RnP\Views\Home\TakeSurvey.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_CoverPicture.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_CoverPictureDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_AuthorPicture.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_AuthorPictureDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_ProofOfApproval.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_ProofOfApprovalDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_AuthorPicture.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_AuthorPictureDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_CoverPicture.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_CoverPictureDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_ProofOfApproval.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\_ProofOfApprovalDetails.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_ProofOfWithdrawal.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\_ProofOfWithdrawalDetails.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Index.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Create.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Delete.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Details.cshtml" />
+    <Content Include="Areas\Setting\Views\Group\Edit.cshtml" />
+    <Content Include="Areas\Administrator\Views\Branch\_Create.cshtml" />
+    <Content Include="Areas\Administrator\Views\Branch\_Delete.cshtml" />
+    <Content Include="Areas\Administrator\Views\Branch\_Edit.cshtml" />
+    <Content Include="Areas\Administrator\Views\Branch\List.cshtml" />
+    <Content Include="Areas\eEvent\Views\Home\BrowseEvent.cshtml" />
+    <Content Include="Areas\eEvent\Views\PublicEvent\Create_RequestCancelModify.cshtml" />
+    <Content Include="Areas\eEvent\Views\PublicEvent\Details_RequestCancelModify.cshtml" />
+    <Content Include="Areas\eEvent\Views\PublicEvent\Edit_RequestCancelModify.cshtml" />
+    <Content Include="Areas\eLearning\Views\Home\BrowseElearnings.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\SelectCategory.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_detailsSidebar.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\Review.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEnrollments\UsersProgress.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEnrollments\UserDetails.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -830,19 +1013,17 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js" />
-    <Content Include="Scripts\esm\popper-utils.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
-    <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper.js" />
-    <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper.min.js" />
-    <Content Include="Scripts\esm\popper.min.js.map" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-sortable\jquery-sortable-min.js" />
+    <Content Include="Scripts\jquery-sortable\jquery-sortable.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.truncate.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
@@ -854,11 +1035,8 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\popper-utils.js" />
-    <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Scripts\popper-utils.min.js" />
-    <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper.js" />
-    <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\popper.min.js.map" />
     <Content Include="Scripts\README.md" />
@@ -919,14 +1097,119 @@
     <Content Include="Scripts\summernote\summernote.css" />
     <Content Include="Scripts\summernote\summernote.js" />
     <Content Include="Scripts\summernote\summernote.min.js" />
+    <Content Include="Scripts\tinymce\jquery.tinymce.min.js" />
+    <Content Include="Scripts\tinymce\plugins\advlist\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\advlist\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\anchor\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\anchor\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\autolink\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\autolink\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\autoresize\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\autoresize\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\autosave\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\autosave\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\bbcode\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\bbcode\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\charmap\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\charmap\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\codesample\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\codesample\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\code\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\code\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\colorpicker\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\colorpicker\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\contextmenu\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\contextmenu\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\directionality\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\directionality\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\js\emojis.min.js" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\fullpage\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\fullpage\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\fullscreen\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\fullscreen\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\help\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\help\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\hr\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\hr\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\imagetools\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\imagetools\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\image\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\image\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\importcss\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\importcss\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\insertdatetime\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\insertdatetime\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\legacyoutput\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\legacyoutput\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\link\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\link\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\lists\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\lists\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\mathSymbols\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\mathSymbols\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\media\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\media\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\nonbreaking\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\nonbreaking\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\noneditable\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\noneditable\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\pagebreak\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\pagebreak\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\paste\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\paste\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\preview\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\preview\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\print\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\print\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\quickbars\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\quickbars\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\save\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\save\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\searchreplace\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\searchreplace\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\spellchecker\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\spellchecker\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\tabfocus\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\tabfocus\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\table\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\table\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\template\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\template\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\textcolor\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\textcolor\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\textpattern\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\textpattern\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\toc\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\toc\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\visualblocks\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\visualblocks\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\visualchars\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\visualchars\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\wordcount\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\wordcount\plugin.min.js" />
+    <Content Include="Scripts\tinymce\skins\content\dark\content.min.css" />
+    <Content Include="Scripts\tinymce\skins\content\default\content.min.css" />
+    <Content Include="Scripts\tinymce\skins\content\document\content.min.css" />
+    <Content Include="Scripts\tinymce\skins\content\writer\content.min.css" />
+    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.inline.min.css" />
+    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.min.css" />
+    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.mobile.min.css" />
+    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\skin.min.css" />
+    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\skin.mobile.min.css" />
+    <Content Include="Scripts\tinymce\skins\ui\oxide\content.inline.min.css" />
+    <Content Include="Scripts\tinymce\skins\ui\oxide\content.min.css" />
+    <Content Include="Scripts\tinymce\skins\ui\oxide\content.mobile.min.css" />
+    <Content Include="Scripts\tinymce\skins\ui\oxide\skin.min.css" />
+    <Content Include="Scripts\tinymce\skins\ui\oxide\skin.mobile.min.css" />
+    <Content Include="Scripts\tinymce\themes\mobile\theme.min.js" />
+    <Content Include="Scripts\tinymce\themes\silver\theme.min.js" />
+    <Content Include="Scripts\tinymce\tinymce.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
-    <Content Include="Scripts\umd\popper-utils.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
-    <Content Include="Scripts\umd\popper-utils.min.js.map" />
     <Content Include="Scripts\umd\popper.js" />
-    <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="src\html\components\forum\activity-item.html" />
     <Content Include="src\html\components\hljs.html" />
     <Content Include="src\html\components\messages.sidebar.member.html" />
@@ -1272,7 +1555,6 @@
     <Content Include="src\sass\_variables.scss" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_LayoutLandingPage.cshtml" />
-    <Content Include="Areas\eLearning\Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_NewsArticle.cshtml" />
     <Content Include="Views\Shared\_LayoutAuth.cshtml" />
     <Content Include="Views\Auth\Register.cshtml" />
@@ -1282,6 +1564,10 @@
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_LayoutPublic.cshtml" />
     <Content Include="Views\Shared\_LayoutLandingPagePublic.cshtml" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Views\Shared\_Layout1.cshtml" />
@@ -1300,24 +1586,61 @@
     <Content Include="Scripts\summernote\font\summernote.eot" />
     <Content Include="Scripts\summernote\font\summernote.ttf" />
     <Content Include="Scripts\summernote\font\summernote.woff" />
+    <Content Include="Areas\eEvent\Views\PublicEvent\_Attachment.cshtml" />
+    <Content Include="Views\Auth\LoginAndReturn.cshtml" />
+    <Content Include="Views\Shared\_LayoutPrivateSurvey.cshtml" />
+    <Content Include="Views\Shared\_LayoutPublicSurvey.cshtml" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Home\MyProfileAdmin.cshtml" />
+    <Content Include="Views\Home\EditProfileAdmin.cshtml" />
+    <Content Include="Views\Home\MyProfileStaff.cshtml" />
+    <Content Include="Views\Notification\_Notification.cshtml" />
+    <Content Include="Views\Home\ChangeEmail.cshtml" />
+    <Content Include="Views\Notification\List.cshtml" />
+    <Content Include="Views\Notification\Details.cshtml" />
+    <Content Include="Views\Notification\Delete.cshtml" />
+    <Content Include="Views\Auth\StaffLogin.cshtml" />
+    <Content Include="Scripts\tinymce\plugins\mathSymbols\LICENSE" />
+    <Content Include="Scripts\tinymce\plugins\mathSymbols\package.json" />
+    <Content Include="Scripts\tinymce\plugins\mathSymbols\README.md" />
+    <Content Include="Views\Home\UpdateAvatar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administrator\Models\" />
+    <Folder Include="Areas\Commerce\Models\" />
+    <Folder Include="Areas\Commerce\Views\Shared\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
+    <Folder Include="Areas\eEvent\Views\EventRefund\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Areas\Logs\Models\" />
     <Folder Include="Areas\Logs\Views\Shared\" />
+    <Folder Include="Areas\Reward\Models\" />
+    <Folder Include="Areas\Reward\Views\Shared\" />
     <Folder Include="Areas\Setting\Models\" />
     <Folder Include="Areas\Setting\Views\Shared\" />
     <Folder Include="Areas\SLAReminder\Models\" />
     <Folder Include="Areas\SLAReminder\Views\Shared\" />
     <Folder Include="Areas\Template\Views\Shared\" />
-    <Folder Include="bin\" />
+    <Folder Include="bin\roslyn\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FEP.Language\FEP.Language.csproj">
@@ -1332,12 +1655,6 @@
       <Project>{91af142d-c57f-4296-a485-d17a80cdc57e}</Project>
       <Name>FEP.WebApiModel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -1368,12 +1685,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -1387,4 +1698,13 @@
     <MakeDir Directories="$(WebProjectOutputDir)\bin\roslyn" />
     <Copy SourceFiles="@(RoslynFiles)" DestinationFolder="$(WebProjectOutputDir)\bin\roslyn" SkipUnchangedFiles="true" Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
   </Target>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
 </Project>

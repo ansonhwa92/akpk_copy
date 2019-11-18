@@ -1,12 +1,13 @@
 ﻿using FEP.Helper;
-using FEP.Intranet.Models;
 using FEP.Model;
 using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.Home;
 using FEP.WebApiModel.Setting;
+using FEP.WebApiModel.SLAReminder;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -32,6 +33,12 @@ namespace FEP.Intranet.Controllers
             return view;
         }
 
+        [AllowAnonymous]
+        public ActionResult Error()
+        {
+            return View("/Views/Shared/Error.cshtml");
+        }
+
         public ActionResult Dashboard()
         {
             return View();
@@ -41,30 +48,53 @@ namespace FEP.Intranet.Controllers
         {
             var userid = CurrentUser.UserId;
 
-            if (CurrentUser.UserType == UserType.Individual || CurrentUser.UserType == UserType.SystemAdmin)
+            if (CurrentUser.UserType == UserType.SystemAdmin)
+            {
+                var response = await WepApiMethod.SendApiAsync<AdminProfileModel>(HttpVerbs.Get, $"Administration/User?id={userid}");
+
+                if (response.isSuccess)
+                {
+                    var profile = response.Data;
+
+                    return View("MyProfileAdmin", profile);
+                }
+
+            }
+            else if (CurrentUser.UserType == UserType.Individual)
             {
 
-                var response = await WepApiMethod.SendApiAsync<IndividualProfileModel>(HttpVerbs.Get, $"Home/Profile/GetIndividualProfile?id={userid}");
+                var response = await WepApiMethod.SendApiAsync<IndividualProfileModel>(HttpVerbs.Get, $"Administration/Individual?id={userid}");
 
-                var profile = response.Data;
+                if (response.isSuccess)
+                {
+                    var profile = response.Data;
 
-                return View("MyProfileIndividual", profile);
+                    return View("MyProfileIndividual", profile);
+                }
 
             }
             else if (CurrentUser.UserType == UserType.Company)
             {
+                var response = await WepApiMethod.SendApiAsync<CompanyProfileModel>(HttpVerbs.Get, $"Administration/Company?id={userid}");
 
-                var response = await WepApiMethod.SendApiAsync<CompanyProfileModel>(HttpVerbs.Get, $"Home/Profile/GetCompanyProfile?id={userid}");
+                if (response.isSuccess)
+                {
+                    var profile = response.Data;
 
-                var profile = response.Data;
-
-                return View("MyProfileCompany", profile);
+                    return View("MyProfileCompany", profile);
+                }
 
             }
             else if (CurrentUser.UserType == UserType.Staff)
             {
+                var response = await WepApiMethod.SendApiAsync<StaffProfileModel>(HttpVerbs.Get, $"Administration/Staff?id={userid}");
 
-                return View("MyProfileStaff");
+                if (response.isSuccess)
+                {
+                    var profile = response.Data;
+
+                    return View("MyProfileStaff", profile);
+                }
             }
 
             return new HttpStatusCodeResult(404);
@@ -75,87 +105,191 @@ namespace FEP.Intranet.Controllers
         {
             var userid = CurrentUser.UserId;
 
-            if (CurrentUser.UserType == UserType.Individual || CurrentUser.UserType == UserType.SystemAdmin)
+            if (CurrentUser.UserType == UserType.SystemAdmin)
             {
-                var response = await WepApiMethod.SendApiAsync<IndividualProfileModel>(HttpVerbs.Get, $"Home/Profile/GetIndividualProfile?id={userid}");
+                var response = await WepApiMethod.SendApiAsync<DetailsUserModel>(HttpVerbs.Get, $"Administration/User?id={userid}");
 
                 if (response.Data == null)
                 {
                     return new HttpStatusCodeResult(404);
                 }
 
-                var profile = new EditIndividualProfileModel
+                var model = new EditAdminProfileModel
                 {
                     Name = response.Data.Name,
                     Email = response.Data.Email,
-                    ICNo = response.Data.ICNo,
-                    MobileNo = response.Data.MobileNo
+                    MobileNo = response.Data.MobileNo,
+                    CountryCode = response.Data.CountryCode
                 };
 
-                return View("EditProfileIndividual", profile);
+                return View("EditProfileAdmin", model);
+
+            }
+            else if (CurrentUser.UserType == UserType.Individual)
+            {
+                var response = await WepApiMethod.SendApiAsync<DetailsIndividualModel>(HttpVerbs.Get, $"Administration/Individual?id={userid}");
+
+                if (response.Data == null)
+                {
+                    return new HttpStatusCodeResult(404);
+                }
+
+                var model = new EditIndividualProfileModel
+                {
+                    IsMalaysian = response.Data.IsMalaysian,
+                    CitizenshipId = response.Data.Citizenship != null ? response.Data.Citizenship.Id : (int?)null,
+                    Name = response.Data.Name,
+                    ICNo = response.Data.ICNo,
+                    PassportNo = response.Data.PassportNo,
+                    MobileNo = response.Data.MobileNo,
+                    CountryCode = response.Data.CountryCode,
+                    Address1 = response.Data.Address1,
+                    Address2 = response.Data.Address2,
+                    PostCodeMalaysian = response.Data.PostCodeMalaysian,
+                    PostCodeNonMalaysian = response.Data.PostCodeNonMalaysian,
+                    City = response.Data.City,
+                    StateId = response.Data.State.Id,
+                    State = response.Data.State.Name,
+                    CountryId = response.Data.Country.Id
+                };
+
+                var countries = await GetCountries();
+
+                model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+
+                model.States = new SelectList(await GetStates(), "Id", "Name", 0);
+                model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
+                model.Citizenships = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
+
+                return View("EditProfileIndividual", model);
             }
             else if (CurrentUser.UserType == UserType.Company)
             {
 
-                var response = await WepApiMethod.SendApiAsync<CompanyProfileModel>(HttpVerbs.Get, $"Home/Profile/GetCompanyProfile?id={userid}");
+                var response = await WepApiMethod.SendApiAsync<DetailsCompanyModel>(HttpVerbs.Get, $"Administration/Company?id={userid}");
 
                 if (response.Data == null)
                 {
                     return new HttpStatusCodeResult(404);
                 }
 
-                var profile = new EditCompanyProfileModel
+                var model = new EditCompanyProfileModel
                 {
+                    Type = response.Data.Type,
                     CompanyName = response.Data.CompanyName,
+                    AgencyName = response.Data.AgencyName,
+                    MinistryId = response.Data.Ministry != null ? response.Data.Ministry.Id : (int?)null,
+                    SectorId = response.Data.Sector != null ? response.Data.Sector.Id : (int?)null,
                     CompanyRegNo = response.Data.CompanyRegNo,
-                    SectorId = response.Data.SectorId,
                     Address1 = response.Data.Address1,
                     Address2 = response.Data.Address2,
-                    City = response.Data.City,                    
-                    PostCode = response.Data.PostCode,
-                    State = response.Data.State,
+                    PostCodeMalaysian = response.Data.PostCodeMalaysian,
+                    PostCodeNonMalaysian = response.Data.PostCodeNonMalaysian,
+                    City = response.Data.City,
+                    StateId = response.Data.State.Id,
+                    State = response.Data.State.Name,
+                    CountryId = response.Data.Country.Id,
                     CompanyPhoneNo = response.Data.CompanyPhoneNo,
-
                     Name = response.Data.Name,
-                    Email = response.Data.Email,
                     ICNo = response.Data.ICNo,
-                    MobileNo = response.Data.MobileNo
+                    PassportNo = response.Data.PassportNo,
+                    MobileNo = response.Data.MobileNo,
+                    CountryCode = response.Data.CountryCode,
                 };
 
-                profile.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+                var countries = await GetCountries();
 
-                //profile.States = new SelectList(await GetStates(), "Id", "Name", 0);
-                
-                return View("EditProfileCompany", profile);
+                model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+
+                model.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+                model.States = new SelectList(await GetStates(), "Id", "Name", 0);
+                model.Ministries = new SelectList(await GetMinistry(), "Id", "Name", 0);
+                model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
+
+
+                return View("EditProfileCompany", model);
             }
-            
+
             return RedirectToAction("MyProfile", "Home", new { area = "" });
-             
+
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditProfile(int? id)
         {
 
-            if (CurrentUser.UserType == UserType.Individual || CurrentUser.UserType == UserType.SystemAdmin)
+            if (CurrentUser.UserType == UserType.SystemAdmin)
+            {
+                var model = new EditAdminProfileModel();
+
+                if (TryUpdateModel(model))
+                {
+
+                    var modelapi = new EditUserModel();
+
+                    modelapi.Name = model.Name;
+                    modelapi.MobileNo = model.MobileNo;
+
+                    var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Administration/User?id={CurrentUser.UserId}", modelapi);
+
+                    if (response.Data)
+                    {
+                        await LogActivity(Modules.Setting, "Update Profile", model);
+
+                        TempData["SuccessMessage"] = Language.Profile.AlertSuccessUpdateProfile;
+
+                        return RedirectToAction("MyProfile", "Home", new { area = "" });
+                    }
+                }
+
+            }
+            else if (CurrentUser.UserType == UserType.Individual)
             {
                 var model = new EditIndividualProfileModel();
 
-                if (TryUpdateModel(model))
+                TryUpdateModel(model);
+
+                if (model.IsMalaysian)
+                {
+                    ModelState.Remove("PassportNo");
+                    ModelState.Remove("CitizenshipId");
+                    ModelState.Remove("PostCodeNonMalaysian");
+                    ModelState.Remove("State");
+                    ModelState.Remove("CountryId");
+
+                    model.CountryId = model.MalaysiaCountryId;
+                }
+                else
+                {
+                    ModelState.Remove("ICNo");
+                    ModelState.Remove("PostCodeMalaysian");
+                    ModelState.Remove("StateId");
+                    model.StateId = null;
+                }
+
+                if (ModelState.IsValid)
                 {
                     var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Home/Profile/EditIndividualProfile?id={CurrentUser.UserId}", model);
 
                     if (response.Data)
                     {
-                        LogActivity(Modules.Admin, "Update Profile", model);
+                        await LogActivity(Modules.Setting, "Update Profile", model);
 
-                        TempData["SuccessMessage"] = "Profile successfully updated.";
+                        TempData["SuccessMessage"] = Language.Profile.AlertSuccessUpdateProfile;
 
                         return RedirectToAction("MyProfile", "Home", new { area = "" });
                     }
                 }
+
+                var countries = await GetCountries();
+
+                model.MalaysiaCountryId = countries.Where(c => c.Name == "Malaysia").Select(s => s.Id).FirstOrDefault();
+
+                model.States = new SelectList(await GetStates(), "Id", "Name", 0);
+                model.Countries = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
+                model.Citizenships = new SelectList(countries.Where(c => c.Name != "Malaysia"), "Id", "Name", 0);
 
                 return View("EditProfileIndividual", model);
 
@@ -165,16 +299,52 @@ namespace FEP.Intranet.Controllers
 
                 var model = new EditCompanyProfileModel();
 
-                if (TryUpdateModel(model))
+                TryUpdateModel(model);
+
+                if (model.Type == CompanyType.Government)
+                {
+                    ModelState.Remove("PassportNo");
+                    ModelState.Remove("PostCodeNonMalaysian");
+                    ModelState.Remove("State");
+                    ModelState.Remove("CountryId");
+                    ModelState.Remove("CompanyName");
+                    ModelState.Remove("CompanyRegNo");
+                    ModelState.Remove("SectorId");
+
+                    model.CountryId = model.MalaysiaCountryId;
+                }
+                else if (model.Type == CompanyType.MalaysianCompany)
+                {
+                    ModelState.Remove("PassportNo");
+                    ModelState.Remove("PostCodeNonMalaysian");
+                    ModelState.Remove("State");
+                    ModelState.Remove("CountryId");
+                    ModelState.Remove("AgencyName");
+                    ModelState.Remove("MinistryId");
+
+                    model.CountryId = model.MalaysiaCountryId;
+                }
+                else
+                {
+                    ModelState.Remove("ICNo");
+                    ModelState.Remove("PostCodeMalaysian");
+                    ModelState.Remove("StateId");
+                    ModelState.Remove("AgencyName");
+                    ModelState.Remove("MinistryId");
+                    ModelState.Remove("CompanyRegNo");
+                }
+
+
+                if (ModelState.IsValid)
                 {
 
                     var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Home/Profile/EditCompanyProfile?id={CurrentUser.UserId}", model);
 
                     if (response.Data)
                     {
-                        LogActivity(Modules.Admin, "Update Profile", model);
+                        await LogActivity(Modules.Setting, "Update Profile", model);
 
-                        TempData["SuccessMessage"] = "Profile successfully updated.";
+                        TempData["SuccessMessage"] = Language.Profile.AlertSuccessUpdateProfile;
 
                         return RedirectToAction("MyProfile", "Home", new { area = "" });
                     }
@@ -192,17 +362,85 @@ namespace FEP.Intranet.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> UpdateAvatar()
+        {
+            var response = await WepApiMethod.SendApiAsync<AdminProfileModel>(HttpVerbs.Get, $"Administration/User?id={CurrentUser.UserId}");
+
+            var model = new ProfileAvatarModel();
+
+            if (response.isSuccess)
+            {                
+                model.AvatarImageBase64 = response.Data.AvatarImageBase64;
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult LoadAvatar()
+        {
+            foreach (string file in Request.Files)
+            {
+                var fileContent = Request.Files[file];
+
+                var image64 = ConvertImageToBase64(fileContent);
+
+                if (image64 != null)
+                {
+                    return Content(JsonConvert.SerializeObject(new { image64 = image64 }), "application/json");
+                }
+            }
+
+            return Content(JsonConvert.SerializeObject(new { image64 = "" }), "application/json");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UpdateAvatar(ProfileAvatarModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                var image64 = ConvertImageToBase64(model.AvatarFile);
+
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Home/Profile/UpdateAvatar?id={CurrentUser.UserId}", new Image64Model { image64 = image64 });
+
+                if (response.isSuccess)
+                {
+                    await LogActivity(Modules.Setting, "Change Avatar Photo");
+
+                    TempData["SuccessMessage"] = Language.Profile.AlertSuccessUpdateAvatar;
+
+                    return RedirectToAction("MyProfile", "Home", new { area = "" });
+                }
+            }
+
+            TempData["ErrorMessage"] = Language.Profile.AlertFailUpdateAvatar;
+
+            return View(model);
+        }
+
+        [HttpGet]
         public ActionResult ChangePassword()
         {
-            
             return View();
-
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordModel model)
         {
+
+            var passwordResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Auth/ValidatePassword?password={model.Password}");
+
+            if (!passwordResponse.isSuccess)
+            {
+                var error = JsonConvert.DeserializeObject<Dictionary<string, string>>(passwordResponse.ErrorMessage);
+
+                if (error.ContainsKey("Message"))
+                    ModelState.AddModelError("Password", error["Message"]);
+            }
 
             if (ModelState.IsValid)
             {
@@ -211,20 +449,82 @@ namespace FEP.Intranet.Controllers
 
                 if (response.Data)
                 {
-                    LogActivity(Modules.Admin, "Change Password");
+                    await LogActivity(Modules.Setting, "Change Password");
 
-                    TempData["SuccessMessage"] = "Password successfully updated.";
+                    TempData["SuccessMessage"] = Language.Profile.AlertSuccessChangePassword;
 
                     return RedirectToAction("MyProfile", "Home", new { area = "" });
                 }
-                
+
             }
 
-            TempData["SuccessMessage"] = "Fail to change password.";
+            TempData["ErrorMessage"] = Language.Profile.AlertFailChangePassword;
 
             return View();
 
         }
+
+        [HttpGet]
+        public ActionResult ChangeEmail()
+        {
+
+            TempData["Message"] = "You have to activate new email account if changed";
+
+            return View();
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeEmail(ChangeEmailModel model)
+        {
+
+            var emailResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsEmailExist?id={CurrentUser.UserId}&email={model.Email}");
+
+            if (emailResponse.Data)
+            {
+                ModelState.AddModelError("Email", Language.Profile.ValidIsExistEmail);
+            }
+
+            if (ModelState.IsValid)
+            {
+
+                var response = await WepApiMethod.SendApiAsync<dynamic>(HttpVerbs.Put, $"Home/Profile/ChangeEmail?id={CurrentUser.UserId}", model);
+
+                if (response.isSuccess)
+                {
+
+                    ParameterListToSend notificationParameter = new ParameterListToSend();
+                    notificationParameter.UserFullName = CurrentUser.Name;
+                    notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
+                    notificationParameter.LoginDetail = $"Email: { model.Email }";
+
+                    CreateAutoReminder notification = new CreateAutoReminder
+                    {
+                        NotificationType = NotificationType.ActivateAccount,
+                        NotificationCategory = NotificationCategory.Event,
+                        ParameterListToSend = notificationParameter,
+                        StartNotificationDate = DateTime.Now,
+                        ReceiverId = new List<int> { (int)CurrentUser.UserId }
+                    };
+
+                    var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
+
+                    await LogActivity(Modules.Setting, "Change Email");
+
+                    TempData["SuccessMessage"] = Language.Profile.AlertSuccessChangeEmail;
+
+                    return RedirectToAction("MyProfile", "Home", new { area = "" });
+                }
+
+            }
+
+            TempData["ErrorMessage"] = Language.Profile.AlertFailChangeEmail;
+
+            return View();
+
+        }
+
 
         public async Task<JsonResult> CheckCurrentPassword(string CurrentPassword)
         {
@@ -238,49 +538,18 @@ namespace FEP.Intranet.Controllers
             return Json(false, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<JsonResult> ValidatePassword(string Password)
+        public async Task<JsonResult> CheckCurrentEmail(string CurrentEmail)
         {
-            var hasNumber = new Regex(@"[0-9]+");
-            var hasUpperChar = new Regex(@"[A-Z]+");
-            var hasMiniMaxChars = new Regex(@".{8,15}");
-            var hasLowerChar = new Regex(@"[a-z]+");
-            var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Auth/AuthenticateEmail?id={CurrentUser.UserId}&Email={CurrentEmail}");
 
-            var response = await WepApiMethod.SendApiAsync<AccountSettingModel>(HttpVerbs.Get, $"Setting/AccountSetting");
-
-            
-            if (response.isSuccess)
+            if (response.Data)
             {
-
-                var config = response.Data;
-
-                if (config.IsContainLowerCase && !hasLowerChar.IsMatch(Password))
-                {
-                    return Json(Language.AccountSetting.ValidContainLowerCase, JsonRequestBehavior.AllowGet);
-                }
-                else if (config.IsContainUpperCase && !hasUpperChar.IsMatch(Password))
-                {
-                    return Json(Language.AccountSetting.ValidContainUpperCase, JsonRequestBehavior.AllowGet);
-                }
-                else if (config.IsContainNumeric && !hasNumber.IsMatch(Password))
-                {
-                    return Json(Language.AccountSetting.ValidContainNumeric, JsonRequestBehavior.AllowGet);
-                }
-                else if (config.IsContainSymbol && !hasSymbols.IsMatch(Password))
-                {
-                    return Json(Language.AccountSetting.ValidContainSymbol, JsonRequestBehavior.AllowGet);
-                }
-                else if (config.IsLengthLimit && !hasMiniMaxChars.IsMatch(Password))
-                {
-                    return Json(Language.AccountSetting.ValidLengthLimit, JsonRequestBehavior.AllowGet);
-                }
-
+                return Json(true, JsonRequestBehavior.AllowGet);
             }
 
-            return Json(true, JsonRequestBehavior.AllowGet);
-
-
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
+
 
         [NonAction]
         private async Task<IEnumerable<SectorModel>> GetSectors()
@@ -296,6 +565,79 @@ namespace FEP.Intranet.Controllers
             }
 
             return sectors;
+
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<StateModel>> GetStates()
+        {
+            var states = Enumerable.Empty<StateModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<StateModel>>(HttpVerbs.Get, $"Administration/State");
+
+            if (response.isSuccess)
+            {
+                states = response.Data.OrderBy(o => o.Name);
+            }
+
+            return states;
+
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<CountryModel>> GetCountries()
+        {
+            var countries = Enumerable.Empty<CountryModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<CountryModel>>(HttpVerbs.Get, $"Administration/Country");
+
+            if (response.isSuccess)
+            {
+                countries = response.Data.OrderBy(o => o.Name);
+            }
+
+            return countries;
+
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<MinistryModel>> GetMinistry()
+        {
+            var ministries = Enumerable.Empty<MinistryModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<MinistryModel>>(HttpVerbs.Get, $"Administration/Ministry");
+
+            if (response.isSuccess)
+            {
+                ministries = response.Data.OrderBy(o => o.Name);
+            }
+
+            return ministries;
+
+        }
+
+        [NonAction]
+        private string ConvertImageToBase64(HttpPostedFileBase image)
+        {
+
+            if (image != null && image.ContentLength > 0)
+            {
+
+                byte[] thePictureAsBytes = new byte[image.ContentLength];
+
+                using (BinaryReader theReader = new BinaryReader(image.InputStream))
+                {
+                    thePictureAsBytes = theReader.ReadBytes(image.ContentLength);
+                }
+
+                string photo = Convert.ToBase64String(thePictureAsBytes);
+
+                var dataUrl = string.Format("data:{0};base64,{1}", "image/(png|jpg|jpeg)", photo);
+
+                return dataUrl;
+            }
+
+            return null;
 
         }
 

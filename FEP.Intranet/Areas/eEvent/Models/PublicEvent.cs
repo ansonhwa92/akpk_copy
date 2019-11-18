@@ -1,4 +1,6 @@
-﻿using FEP.Model;
+﻿using FEP.Intranet.Models;
+using FEP.Model;
+using FEP.WebApiModel.FileDocuments;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,19 +21,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Objective")]
 		public string EventObjective { get; set; }
 
-		[Required(ErrorMessage = "Please Insert Start Date")]
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
-		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
-		[Display(Name = "Start Date")]
-		public DateTime? StartDate { get; set; }
-
-		[Required(ErrorMessage = "Please Insert End Date")]
-		[DataType(DataType.Date)]
-		[UIHint("Date")]
-		[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
-		[Display(Name = "End Date")]
-		public DateTime? EndDate { get; set; }
+		
 
 		[Required(ErrorMessage = "Please Insert Event Venue")]
 		[Display(Name = "Event Venue")]
@@ -41,41 +31,20 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Fee (RM) per Person")]
 		public float? Fee { get; set; }
 
+		[Required(ErrorMessage = "Please Insert No of Participant")]
 		[Display(Name = "No. of Participant")]
 		[RegularExpression("([1-9][0-9]*)")]
 		public int? ParticipantAllowed { get; set; }
 
+		[Required(ErrorMessage = "Please Select Targeted Group")]
 		[Display(Name = "Targeted Group")]
 		public EventTargetGroup? TargetedGroup { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public int? ApprovalId1 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public string ApprovalName1 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public int? ApprovalId2 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public string ApprovalName2 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public int? ApprovalId3 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public string ApprovalName3 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public int? ApprovalId4 { get; set; }
-
-		[Display(Name = "Approver Name")]
-		public string ApprovalName4 { get; set; }
 
 		[Required(ErrorMessage = "Please Select Event Status")]
 		[Display(Name = "Status")]
 		public EventStatus? EventStatus { get; set; }
 
+		[Required(ErrorMessage = "Please Select Event Category")]
 		[Display(Name = "Event Category")]
 		public int? EventCategoryId { get; set; }
 
@@ -91,8 +60,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Remarks")]
 		public string Remarks { get; set; }
 
-		[Display(Name = "Speaker")]
-		public int? SpeakerId { get; set; }
+		[Required(ErrorMessage = "Please Select Event Speaker")]
+		[Display(Name = "Speakers")]
+		public int[] SpeakerId { get; set; }
 
 		[Display(Name = "Speaker")]
 		public string SpeakerName { get; set; }
@@ -100,8 +70,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Speaker")]
 		public IEnumerable<SelectListItem> SpeakerList { get; set; }
 
-		[Display(Name = "External Exhibitor")] 
-		public int? ExternalExhibitorId { get; set; }
+		[Required(ErrorMessage = "Please Select Event External Exhibitor")]
+		[Display(Name = "External Exhibitors")] 
+		public int[] ExternalExhibitorId { get; set; }
 
 		[Display(Name = "External Exhibitor")]
 		public string ExternalExhibitorName { get; set; }
@@ -113,33 +84,57 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string GetFileName { get; set; }
 
 		public string origin { get; set; }
-		 
 		public string RefNo { get; set; }
 
-
-		//File
-		[Required(ErrorMessage = "Please attach file")]
-		[Display(Name = "Proof of Approval")]
-		public HttpPostedFileBase DocumentEvent { get; set; }
-		[Display(Name = "File Name")]
-		public string FileName { get; set; }
-		[Display(Name = "File Description")]
-		public string FileDescription { get; set; }
-		[Display(Name = "Uploaded Date")]
-		public DateTime UploadedDate { get; set; }
 	}
 
 	public class CreatePublicEventModel : PublicEventModel
 	{
-		public CreatePublicEventModel() { }
+		public CreatePublicEventModel() 
+        {
+            Attachments = new List<Attachment>();
+            AttachmentFiles = new List<HttpPostedFileBase>();
+        }
+        		
+        [Required]
+        [Display(Name = "Proof of Approval")]
+        public IEnumerable<Attachment> Attachments { get; set; }
+
+        public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
+
+		[Required(ErrorMessage = "Please Insert Start Date")]
+		[Display(Name = "Start Date")]
+		public DateTime? StartDate { get; set; }
+
+		[Required(ErrorMessage = "Please Insert End Date")]
+		[Display(Name = "End Date")]
+		public DateTime? EndDate { get; set; }
 	}
 
 	public class EditPublicEventModel : PublicEventModel
 	{
-		[Required]
+        public EditPublicEventModel()
+        {
+            Attachments = new List<Attachment>();
+            AttachmentFiles = new List<HttpPostedFileBase>();
+        }
+
+        [Required]
 		public int Id { get; set; }
 
-		public string origin { get; set; }
+        [Required]
+        [Display(Name = "Proof of Approval")]
+        public IEnumerable<Attachment> Attachments { get; set; }
+
+        public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
+
+		[Required(ErrorMessage = "Please Insert Start Date")]
+		[Display(Name = "Start Date")]
+		public DateTime? StartDate { get; set; }
+
+		[Required(ErrorMessage = "Please Insert End Date")]
+		[Display(Name = "End Date")]
+		public DateTime? EndDate { get; set; }
 	}
 
 	public class DetailsPublicEventModel : PublicEventModel
@@ -151,10 +146,21 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		public bool Display { get; set; }
 		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "Created Date")]
-		public DateTime CreatedDate { get; set; }
+		public DateTime? CreatedDate { get; set; }
+
+        [Display(Name = "Proof of Approval")]
+        public IEnumerable<Attachment> Attachments { get; set; }
+
+		[Display(Name = "Start Date")]
+		[DataType(DataType.Date)]
+		public DateTime? StartDate { get; set; }
+
+		[Display(Name = "End Date")]
+		[DataType(DataType.Date)]
+		public DateTime? EndDate { get; set; }
 	}
 
 	public class DeletePublicEventModel : DetailsPublicEventModel
@@ -179,16 +185,16 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Event Title")]
 		public string EventTitle { get; set; }
 
-		[Display(Name = "Objective")]
-		public string EventObjective { get; set; }
+		[Display(Name = "RefNo")]
+		public string RefNo { get; set; }
 
 
-		[DataType(DataType.Date)]
 		[Display(Name = "Start Date")]
+		[DataType(DataType.Date)]
 		public DateTime StartDate { get; set; }
 
-		[DataType(DataType.Date)]
 		[Display(Name = "End Date")]
+		[DataType(DataType.Date)]
 		public DateTime EndDate { get; set; }
 
 		[Display(Name = "Event Venue")]
@@ -205,5 +211,54 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Display(Name = "Status")]
 		public EventStatus? EventStatus { get; set; }
+	}
+
+	public class EventRequestModel
+	{
+		public EventRequestModel()
+		{
+			Attachments = new List<Attachment>();
+			AttachmentFiles = new List<HttpPostedFileBase>();
+		}
+
+		[Required]
+		[Display(Name = "Proof of Approval")]
+		public IEnumerable<Attachment> Attachments { get; set; } 
+
+		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
+
+
+
+		public int? Id { get; set; }
+
+		[Required]
+		[Display(Name = "ReqReason", ResourceType = typeof(Language.Event))]
+		public string Reason { get; set; }
+
+		[Required]
+		[Display(Name = "ReqType", ResourceType = typeof(Language.Event))]
+		public RequestType? RequestType { get; set; }
+
+		[Display(Name = "ReqStatus", ResourceType = typeof(Language.Event))]
+		public RequestStatus? RequestStatus { get; set; }
+
+		public int? EventId { get; set; }
+
+		[Display(Name = "ReqEventTitle", ResourceType = typeof(Language.Event))]
+		public string EventTitle { get; set; }
+
+		[Display(Name = "ReqEventRefNo", ResourceType = typeof(Language.Event))]
+		public string EventRefNo { get; set; }
+
+		[Display(Name = "ReqEventCategory", ResourceType = typeof(Language.Event))]
+		public string EventCategory { get; set; }
+
+		[Display(Name = "ReqEventObjective", ResourceType = typeof(Language.Event))]
+		public string EventObjective { get; set; }
+
+		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
+		public DateTime? CreatedDate { get; set; }
+		public bool Display { get; set; }
 	}
 }

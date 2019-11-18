@@ -47,80 +47,59 @@
 
 <div class="row">
 
-    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
-        <div id="page-nav" class="sidebar-left page-nav">
-            <div data-perfect-scrollbar class="ps">
-                <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
-                    <ul class="nav page-nav__menu">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">@Model.ContentType</a>
-                        </li>
+    @*<div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div id="page-nav" class="sidebar-left page-nav">
+                <div data-perfect-scrollbar class="ps">
+                    <div class="page-section">
+                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                        <ul class="nav page-nav__menu">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">@Model.Title</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </div>*@
 
-    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+    <div class="col-xl-12 col-md-12 col-sm-12 mt-2 pb-5">
+
+
+
         <!-- Start Form -->
         <div class="border-form rounded-top">
+
+            @if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit))
+            {
+                <div class="col-sm-12 ">
+                    <div class="row float-right">
+
+                        <a href="@Url.Action($"Edit", "CourseContents", new { area = "eLearning", id = Model.Id })"
+                           data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit"></i></a>
+                        <a href="@Url.Action($"Delete", "CourseContents", new { area = "eLearning", id = Model.Id })"
+                           data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o"></i></a>
+                    </div>
+                </div>
+            }
+
             <div class="form-container">
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <h3>@Model.ModuleName</h3>
+                    <h4>@Model.Title</h4>
+                </div>
 
-                @{
-                    switch (Model.ContentType)
-                    {
-                        case FEP.Model.eLearning.CourseContentType.Video:
+                @*@Html.TextAreaFor(model => model.Description, new { @class = "summernote form-control editor" })*@
 
-                            @Html.Action("Video", "CourseContents", new { id = @Model.Id })
+                @Html.Raw(Model.Description)
 
-                            break;
+                @Html.Partial($"_view{Model.ContentType.ToString()}", Model)
 
-                        case FEP.Model.eLearning.CourseContentType.RichText:
+                <hr />
 
-                            @Html.Action("RichText", "CourseContents", new { id = @Model.Id })
 
-                            break;
-                        case FEP.Model.eLearning.CourseContentType.IFrame:
 
-                            @Html.Action("IFrame", "CourseContents", new { id = @Model.Id })
-
-                            break;
-                        case FEP.Model.eLearning.CourseContentType.Audio:
-
-                            @Html.Action("Audio", "CourseContents", new { id = @Model.Id })
-
-                            break;
-                        case FEP.Model.eLearning.CourseContentType.Document:
-
-                            @Html.Action("Document", "CourseContents", new { id = @Model.Id })
-
-                            break;
-                        case FEP.Model.eLearning.CourseContentType.WebLink:
-
-                            @Html.Action("WebLink", "CourseContents", new { id = @Model.Id })
-
-                            break;
-                        case FEP.Model.eLearning.CourseContentType.Test:
-
-                            @Html.Action("Test", "CourseContents", new { id = @Model.Id })
-
-                            break;
-                        case FEP.Model.eLearning.CourseContentType.Assignment:
-
-                            @Html.Action("Assignment", "CourseContents", new { id = @Model.Id })
-
-                            break;
-
-                        default:
-                            @Html.Action("RichText", "CourseContents", new { id = @Model.Id })
-
-                            break;
-
-                    }
-                }
-                @Html.Partial("_contentCompletionView", Model)
+                @Html.Action("Get", "ContentCompletions", new { @contentId = Model.Id })
             </div>
         </div>
 
@@ -133,8 +112,36 @@
 </div>
 
 <style>
+
+    .form-container {
+        max-width: none !important;
+    }
 </style>
 
 @section ContentScript {
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
 
+    <script>
+
+        $(document).ready(function () {
+            tinymce.init({
+                selector: '.editor',
+                plugins: "autoresize",
+                autoresize_on_init: true,
+                width: 1200,
+                height: 800,
+                menubar: false,
+                statusbar: false,
+                toolbar: false,
+                readonly: true,
+                relative_urls : false,
+                remove_script_host : false,
+                convert_urls: true,
+                branding: false,
+            });
+        });
+
+
+    </script>
 }
+

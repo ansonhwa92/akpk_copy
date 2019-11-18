@@ -32,4 +32,6 @@ namespace FEP.WebApiModel.eLearning
         public FileType ContentFileType { get; set; }
         public int ContentId { get; set; }
     }
+
+
 }

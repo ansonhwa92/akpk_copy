@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace FEP.Model.eLearning
 {
@@ -15,6 +16,7 @@ namespace FEP.Model.eLearning
 
         [Required]
         public int CategoryId { get; set; }
+
         public virtual RefCourseCategory Category { get; set; }
 
         [Index]
@@ -22,18 +24,18 @@ namespace FEP.Model.eLearning
         public string Code { get; set; }
 
         // should be HTML string
-        public string Objectives { get; set; }       
+        public string Objectives { get; set; }
 
         public CourseMedium Medium { get; set; }
         public CourseScheduleType ScheduleType { get; set; }
 
         // Total duration of the course, 10 days? 10 weeeks. Used with DurationType
-        public int? Duration { get; set; }
+        [Range(0.5, 1000, ErrorMessage = "Invalid Value")]
+        public decimal? Duration { get; set; } 
 
         public DurationType DurationType { get; set; }
 
         public CourseLanguage Language { get; set; }
-
 
         public bool IsFree { get; set; } = true;
 
@@ -45,7 +47,7 @@ namespace FEP.Model.eLearning
         //public virtual ICollection<CourseContent> FrontPageContents { get; set; }
 
         public CourseStatus Status { get; set; }
-        
+
         public int? IntroMaterialId { get; set; }
         public virtual FileDocument IntroMaterial { get; set; }
 
@@ -66,18 +68,15 @@ namespace FEP.Model.eLearning
 
         //----- START APPROVAlS
         public ICollection<CourseApprovalLog> CourseApprovalLog { get; set; }
-      
+
         public int TotalModules { get; set; }
-  
-
-
-        //----- END APPROVAlS
 
         // ----- Default Course Item
         /// <summary>
-        /// Certificate for this course. 
+        /// Certificate for this course.
         /// </summary>
         public int? CourseCertificateId { get; set; }
+
         public virtual CourseCertificate DefaultCertificate { get; set; }
         public int? CourseCertificateTemplateId { get; set; }
         public virtual CourseCertificateTemplate CourseCertificateTemplate { get; set; }
@@ -92,10 +91,9 @@ namespace FEP.Model.eLearning
         /// This value is required for Paid Course and will need to be copied to
         /// CourseEvent when CourseEvent is created
         /// </summary>
-        public decimal DefaultAllowablePercentageBeforeWithdraw { get; set; } = 50.0m;
+        public decimal DefaultAllowablePercentageBeforeWithdraw { get; set; } = 0.0m;
 
         public ViewCategory ViewCategory { get; set; }
-
 
         // ----- START COURSE COMPLETION CRITERIA
         public CompletionCriteriaType CompletionCriteriaType { get; set; } = CompletionCriteriaType.General;
@@ -115,12 +113,9 @@ namespace FEP.Model.eLearning
         /// </summary>
         public string TestsPassed { get; set; }
 
-
         // ----- END COURSE COMPLETION CRITERIA
 
-
         public string LearningPath { get; set; }
-
 
         public string CreatedByName { get; set; }
         /// Evertyhing below is not used, here for reference/future use.
@@ -128,29 +123,65 @@ namespace FEP.Model.eLearning
 
         public bool IsDeleted { get; set; }
 
+        //Course Image
+        public string IntroImageFileName { get; set; }
 
+        public SkillLevel SkillLevel { get; set; }
+
+        public int SLAReminderId { get; set; }
+
+        public int TotalContents { get; set; }
+
+        public void UpdateCourseStat()
+        {
+            TotalModules = this.Modules.Count();            
+            TotalContents = this.Modules.Sum(x => x.TotalContent);
+        }
     }
 
-
+    public enum SkillLevel
+    {
+        All,
+        Beginner,
+        Intermediate,
+        Advanced,
+    }
 
     /// <summary>
     /// LifeCycle of the course, in sequence.
     /// </summary>
     public enum CourseStatus
     {
-        Draft,
-        Trial,
-        Submitted,
-        VerifierApproval,
-        Verified,
-        VerifierRejected,  // Should go back to draft
-        FirstApproval,
-        ApproverRejected, // Should go back to draft
-        SecondApproval,
-        ThirdApproval,
-        
-        Approved, // Ready to publish
-        Published, // Fit for consumption
+        [Display(Name = "CourseStatusDraft", ResourceType = typeof(Language.eLearning.Enum))]
+        Draft,  // 0
+
+        [Display(Name = "CourseStatusTrial", ResourceType = typeof(Language.eLearning.Enum))]
+        Trial,  // 1
+
+        [Display(Name = "CourseStatusSubmitted", ResourceType = typeof(Language.eLearning.Enum))]
+        Submitted, // 2
+
+        [Display(Name = "CourseStatusVerified", ResourceType = typeof(Language.eLearning.Enum))]
+        Verified, // 3
+
+        [Display(Name = "CourseStatusApproved", ResourceType = typeof(Language.eLearning.Enum))]
+        Approved, // Ready to publish 4
+
+        [Display(Name = "CourseStatusAmendment", ResourceType = typeof(Language.eLearning.Enum))]
+        Amendment, // 5
+
+        [Display(Name = "CourseStatusPublished", ResourceType = typeof(Language.eLearning.Enum))]
+        Published, // Fit for consumption 6
+
+        [Display(Name = "CourseStatusFirstApproval", ResourceType = typeof(Language.eLearning.Enum))]
+        FirstApproval, // 7
+
+        [Display(Name = "CourseStatusSecondApproval", ResourceType = typeof(Language.eLearning.Enum))]
+        SecondApproval,// 8
+
+        [Display(Name = "CourseStatusThirdApproval", ResourceType = typeof(Language.eLearning.Enum))]
+        ThirdApproval, //9
+
         Hidden, //The course is hidden froom search and view, however the point given is still valid
         Deleted,
 
@@ -204,7 +235,7 @@ namespace FEP.Model.eLearning
         Malay,
         Chinese,
         Tamil,
-        Others
+        MultiLanguage,
     }
 
     /// <summary>
@@ -234,7 +265,6 @@ namespace FEP.Model.eLearning
         [Display(Name = "Specific tests & assignments")]
         Specific,
     }
-
 
     public enum CompletionCriteriaType
     {

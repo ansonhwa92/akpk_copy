@@ -23,34 +23,32 @@ namespace FEP.Model
 
 	public enum MediaType
 	{
-		[Display(Name = "Broadcast")]
-		Broadcast,
+		[Display(Name = "Televisyen")]
+		Televisyen,
 
-		[Display(Name = "Internet")]
-		Internet,
+		[Display(Name = "Radio")]
+		Radio,
 
-		[Display(Name = "Magazine")]
-		Magazine,
+		[Display(Name = "Online")]
+		Online,
 
-		[Display(Name = "Newspaper")]
-		Newspaper,
+		[Display(Name = "Magazine / Newspaper")]
+		MagazineNewspaper,
 
-		[Display(Name = "Pres Agency")]
-		PressAgency
 	}
 
 	public enum EventStatus
 	{
-		[Display(Name = "New")]
+		[Display(Name = "Draft")]
 		New, //If Saved Public Event
 
-		[Display(Name = "Pending Approval")]
+		[Display(Name = "Pending Verification")]
 		PendingforVerification, //If Admin Public Event Submit
 
-		[Display(Name = "Pending Approval")]
+		[Display(Name = "Pending Approval 2")]
 		VerifiedbyFirstApprover, //If Approver 1 Submit
 
-		[Display(Name = "Pending Approval")]
+		[Display(Name = "Pending Approval 3")]
 		VerifiedbySecondApprover, //If Approver 1 Submit
 
 		[Display(Name = "Approved")]
@@ -60,7 +58,13 @@ namespace FEP.Model
 		RejectNeedToEdit, //If Approver 3 Rejected
 
 		[Display(Name = "Rejected")]
-		Cancelled //If Admin Cancel Public Event 
+		Cancelled, //If Admin Cancel Public Event 
+
+		[Display(Name = "Published")]
+		Published, //If Admin Event who creates Public Event 
+
+		[Display(Name = "Pending Approval 1")]
+		Verified
 	}
 
 	public enum Ticket
@@ -78,26 +82,42 @@ namespace FEP.Model
 		Withdraw
 	}
 
-	public enum ApprovalType
+	public enum EventApprovalLevel
 	{
-		NewEvent,
-		ModifyEvent,
-		CancelEvent
+		[Display(Name = "Verifier")]
+		Verifier,
+		[Display(Name = "Approver 1")]
+		Approver1,
+		[Display(Name = "Approver 2")]
+		Approver2,
+		[Display(Name = "Approver 3")]
+		Approver3
 	}
 
-	public enum VerifyType
+	public enum EventApprovalStatus
 	{
-		NewEvent,
-		ModifyEvent,
-		CancelEvent
+		[Display(Name = "None")]
+		None,
+		[Display(Name = "Approved")]
+		Approved,
+		[Display(Name = "Rejected")]
+		Rejected
 	}
 
 	public enum SpeakerType
 	{
 		[Display(Name = "Internal")]
-		FEP,
+		Internal, //FEP STAFF
 		[Display(Name = "External")]
-		OBS
+		External //OBS SPEAKER
+	}
+
+	public enum SpeakerStatus
+	{
+		[Display(Name = "Active")]
+		Active,
+		[Display(Name = "Inactive")]
+		Inactive
 	}
 
 	public enum MediaState
@@ -123,34 +143,63 @@ namespace FEP.Model
 
 	public enum MediaStatus
 	{
+		[Display(Name = "Draft")]
 		New,
 		[Display(Name = "Representative Available")]
 		RepAvailable,
 		[Display(Name = "Representative Not Available")]
 		RepNotAvailable,
-
+		[Display(Name = "Pending Verification")]
+		PendingVerified,
+		[Display(Name = "Pending Approval 1")]
+		Verified,
+		[Display(Name = "Require Amendment")]
+		NotVerified,
+		[Display(Name = "Pending Approval 2")]
+		ApprovedByApprover1,
+		[Display(Name = "Pending Approval 3")]
+		ApprovedByApprover2,
+		[Display(Name = "Approved")]
+		ApprovedByApprover3,
 	}
 
 	public enum ExhibitionStatus
 	{
+		[Display(Name = "Draft")]
 		New,
-		Cancelled,
-		Approved
-	}
+		[Display(Name = "Pending Verification")]
+		PendingVerified,
+		[Display(Name = "Pending Approval 1")]
+		Verified,
+		[Display(Name = "Require Amendment")]
+		NotVerified,
+		[Display(Name = "Pending Approval 2")]
+		ApprovedByApprover1,
+		[Display(Name = "Pending Approval 3")]
+		ApprovedByApprover2,
+		[Display(Name = "Approved")]
+		ApprovedByApprover3,
 
-	public enum MaritialStatus
-	{
-		Married,
-		Single,
-		Divorced,
-		Widowed
+
+		[Display(Name = "Pending Verification")]
+		SubmitVerifyDutyRoster,
+		[Display(Name = "Pending Approval")]
+		VerifiedDutyRoster,
+		[Display(Name = "Require Amendment")]
+		NotVerifiedDutyRoster,
+		[Display(Name = "Approved")]
+		ApproveDutyRoster,
+		[Display(Name = "Participation Accepted")]
+		AcceptParticipation,
+		[Display(Name = "Participation Declined")]
+		DeclineParticipation,
 	}
 
 	public enum Religion
 	{
 		Islam,
 		Hindu,
-		Buddha, 
+		Buddha,
 		Christian
 	}
 
@@ -162,5 +211,31 @@ namespace FEP.Model
 		Tamil,
 		Mandarin,
 		Cantonese,
+	}
+
+	public enum RequestType
+	{
+		[Display(Name = "Cancellation Required")]
+		CancelRequired,
+		[Display(Name = "Modification Required")]
+		ModifyRequired
+	}
+
+	public enum RequestStatus
+	{
+		[Display(Name = "Draft")]
+		New,
+		[Display(Name = "Pending Verification")]
+		PendingVerified,
+		[Display(Name = "Pending Approval 1")]
+		Verified,
+		[Display(Name = "Require Amendment")]
+		AmendmentRequired,
+		[Display(Name = "Pending Approval 2")]
+		ApprovedByApprover1,
+		[Display(Name = "Pending Approval 3")]
+		ApprovedByApprover2,
+		[Display(Name = "Approved")]
+		ApprovedByApprover3,
 	}
 }

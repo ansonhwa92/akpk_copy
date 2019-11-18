@@ -1,0 +1,51 @@
+﻿@model StaffLogInModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+}
+
+@section ButtonBack{
+    <a href="@Url.Action("Index", "Home", new { area = "" })" class="btn btn-outline-secondary"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a>
+}
+
+<div class="login-wrapper" style="min-height: 100vh">
+    <div class="col-sm-8 col-md-6 col-lg-4 mx-auto mw-600">
+        <div class="card navbar-shadow">
+            <div class="card-header text-center">
+                <h4 class="color-darkblue mb-1">Login</h4>
+                <p>Login to your AD account</p>
+            </div>
+            <div class="card-body">
+
+                @using (Html.BeginForm("StaffLogin", "Auth", new { area = "" }, FormMethod.Post, new { id = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.ReturnUrl)
+
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.LoginId, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.LoginId, new { htmlAttributes = new { @class = "form-control form-control-prepended" } })
+                            @Html.ValidationMessageFor(model => model.LoginId, "")
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.FEPLabelFor(m => m.Password, htmlAttributes: new { @class = "form-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control form-control-prepended" } })
+                            @Html.ValidationMessageFor(model => model.Password, "")
+                        </div>
+                    </div>
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-secondary btn-block">Login</button>
+                    </div>                   
+                }
+
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+

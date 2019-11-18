@@ -149,14 +149,18 @@ namespace FEP.WebApi.Api.Administration
 
         public IHttpActionResult Get(int id)
         {
-            var user = db.User.Where(u => u.Id == id)
+            var user = db.User.Where(u => u.Id == id && u.UserType == UserType.Staff && u.Display)
                 .Select(s => new DetailsStaffModel
                 {
                     Id = s.Id,
+                    StaffId = s.StaffProfile.StaffId,
                     Name = s.Name,
                     Email = s.Email,
-                    Branch = s.StaffProfile.Branch.Name,
-                    Department = s.StaffProfile.Department.Name,
+                    MobileNo = s.MobileNo,
+                    ICNo = s.ICNo,
+                    Branch = s.StaffProfile.BranchId != null ? new BranchModel { Id = s.StaffProfile.Branch.Id, Name = s.StaffProfile.Branch.Name } : null,
+                    Department = s.StaffProfile.DepartmentId != null ? new DepartmentModel { Id = s.StaffProfile.Department.Id, Name = s.StaffProfile.Department.Name } : null,
+                    Designation = s.StaffProfile.DesignationId != null ? new DesignationModel { Id = s.StaffProfile.Designation.Id, Name = s.StaffProfile.Designation.Name } : null,
                     Status = s.UserAccount.IsEnable
                 })
                 .FirstOrDefault();
@@ -166,7 +170,52 @@ namespace FEP.WebApi.Api.Administration
                 return NotFound();
             }
 
+            user.Roles = db.UserRole.Where(u => u.UserId == id).Select(s => new RoleModel { Id = s.RoleId, Name = s.Role.Name, Description = s.Role.Description }).ToList();
+
             return Ok(user);
+        }
+
+        public IHttpActionResult Put(int id, [FromBody] EditStaffModel model)
+        {
+            var user = db.User.Where(u => u.Id == id && u.Display && u.UserType == UserType.Staff).FirstOrDefault();
+            var staff = db.StaffProfile.Where(i => i.UserId == id).FirstOrDefault();
+            //var useraccount = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
+
+            if (user == null || staff == null)
+            {
+                return NotFound();
+            }
+                       
+            if (ModelState.IsValid)
+            {
+
+                staff.BranchId = model.BranchId;
+
+                db.StaffProfile.Attach(staff);
+                db.Entry(staff).Property(m => m.BranchId).IsModified = true;
+                
+
+                db.UserRole.RemoveRange(db.UserRole.Where(u => u.UserId == id));//remove all
+                foreach (var roleid in model.RoleIds)
+                {
+                    var userrole = new UserRole
+                    {
+                        RoleId = roleid,
+                        UserId = id
+                    };
+
+                    db.UserRole.Add(userrole);
+                }
+
+                db.Configuration.ValidateOnSaveEnabled = true;
+                db.SaveChanges();
+
+                return Ok(true);
+
+            }
+
+            return BadRequest(ModelState);
+
         }
 
 

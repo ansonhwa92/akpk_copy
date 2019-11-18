@@ -117,24 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FieldAddress" xml:space="preserve">
-    <value>Company Address</value>
-  </data>
-  <data name="FieldCity" xml:space="preserve">
-    <value>City</value>
-  </data>
-  <data name="FieldCompanyName" xml:space="preserve">
-    <value>Company Name</value>
-  </data>
-  <data name="FieldCompanyPhoneNo" xml:space="preserve">
-    <value>Company Phne No</value>
-  </data>
-  <data name="FieldCompanyRegNo" xml:space="preserve">
-    <value>Company Regstration No</value>
-  </data>
-  <data name="FieldConfirmPassword" xml:space="preserve">
-    <value>Confirm Password</value>
-  </data>
   <data name="FieldEmail" xml:space="preserve">
     <value>Email</value>
   </data>
@@ -147,35 +129,8 @@
   <data name="FieldName" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="FieldPostCode" xml:space="preserve">
-    <value>Postcode</value>
-  </data>
-  <data name="FieldSector" xml:space="preserve">
-    <value>Sector</value>
-  </data>
-  <data name="FieldSectorId" xml:space="preserve">
-    <value>Sector</value>
-  </data>
-  <data name="FieldStateId" xml:space="preserve">
-    <value>State</value>
-  </data>
-  <data name="PlaceholderAddress1" xml:space="preserve">
-    <value>Street address line 1</value>
-  </data>
-  <data name="PlaceholderAddress2" xml:space="preserve">
-    <value>Street address line 2</value>
-  </data>
-  <data name="PlaceholderCity" xml:space="preserve">
-    <value>City</value>
-  </data>
-  <data name="PlaceholderCompanyName" xml:space="preserve">
-    <value>Company Name</value>
-  </data>
-  <data name="PlaceholderCompanyPhoneNo" xml:space="preserve">
-    <value>Company Phone No</value>
-  </data>
-  <data name="PlaceholderCompRegNo" xml:space="preserve">
-    <value>Company Registration No</value>
+  <data name="FieldUserType" xml:space="preserve">
+    <value>User Type</value>
   </data>
   <data name="PlaceholderEmail" xml:space="preserve">
     <value>Email</value>
@@ -189,27 +144,6 @@
   <data name="PlaceholderName" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="PlaceholderPostCode" xml:space="preserve">
-    <value>Postcode</value>
-  </data>
-  <data name="PlaceholderSectorId" xml:space="preserve">
-    <value>Select Sector</value>
-  </data>
-  <data name="PlaceholderStateId" xml:space="preserve">
-    <value>Select State</value>
-  </data>
-  <data name="ValidRequiredAddress" xml:space="preserve">
-    <value>Please enter Address</value>
-  </data>
-  <data name="ValidRequiredCity" xml:space="preserve">
-    <value>Please enter City</value>
-  </data>
-  <data name="ValidRequiredCompanyName" xml:space="preserve">
-    <value>Please enter Company Name</value>
-  </data>
-  <data name="ValidRequiredCompanyPhoneNo" xml:space="preserve">
-    <value>Please enter Company Phone No</value>
-  </data>
   <data name="ValidRequiredEmail" xml:space="preserve">
     <value>Please enter Email</value>
   </data>
@@ -221,20 +155,5 @@
   </data>
   <data name="ValidRequiredName" xml:space="preserve">
     <value>Please enter Name</value>
-  </data>
-  <data name="ValidRequiredPassword" xml:space="preserve">
-    <value>Please enter Password</value>
-  </data>
-  <data name="ValidRequiredPostCode" xml:space="preserve">
-    <value>Please enter Postcode</value>
-  </data>
-  <data name="ValidRequiredRetypePassword" xml:space="preserve">
-    <value>Please enter Retype Password</value>
-  </data>
-  <data name="ValidRequiredSectorId" xml:space="preserve">
-    <value>Please select Sector</value>
-  </data>
-  <data name="ValidRequiredStateId" xml:space="preserve">
-    <value>Please select State</value>
   </data>
 </root>

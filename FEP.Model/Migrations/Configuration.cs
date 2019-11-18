@@ -1,4 +1,4 @@
-namespace FEP.Model.Migrations
+﻿namespace FEP.Model.Migrations
 {
     using System;
     using System.Data.Entity;
@@ -17,11 +17,12 @@ namespace FEP.Model.Migrations
             mhafeez.Seed(context);
             aiman.Seed(context);
             firus.Seed(context);
-            tajulSeed.Seed(context);
 
             // Seed Elearning Default data and Test users and sample data
             SeedElearning.Seed(context);
-
+            SeedElearningEmail.SeedTemplateParameter(context);
+            SeedElearningEmail.Seed(context);
+            tajulSeed.DefaultTemplate(context);
         }
     }
 }

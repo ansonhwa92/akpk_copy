@@ -1,0 +1,308 @@
+﻿@model FEP.WebApiModel.RnP.PurchasePublicationModel
+
+@{
+    ViewBag.Title = "Purchase Publication";
+    Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
+}
+
+@section Nav{
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publications</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/BrowsePublications">Browse Publications</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+            </ol>
+        </nav>
+    </div>
+    <h1 class="page-title text-white">@ViewBag.PubTitle</h1>
+    <div class="header-text">
+        <div class="d-flex star-rating">
+            <div class="rating">
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star</i>
+                <i class="material-icons">star_border</i>
+            </div>
+            <div class="mx-2">4.2 (104 ratings) <span class="reviews-text">99 reviews</span></div>
+        </div>
+    </div>
+}
+
+<div class="content-container">
+    <div class="container">
+        <div class="row">
+            <!-- column content left -->
+            <div class="col-lg-9">
+                <div class="col-content">
+                    <h4 class="color-darkblue">Purchase Information</h4>
+                    <table class="table tableStyle1 table-foot mt-0 mb-5">
+                        <tfoot>
+                            <tr>
+                                <td class="text-left font-weight-bolder">Item Name</td>
+                                <td class="text-left font-weight-bolder">Format</td>
+                                <td class="text-right font-weight-bolder">Price</td>
+                                <td class="text-right font-weight-bolder">Quantity</td>
+                                <td class="text-right font-weight-bolder">Amount</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left font-weight-bold">@ViewBag.PubTitle</td>
+                                <td class="text-left font-weight-bold">Digital</td>
+                                <td class="text-right font-weight-bold">@ViewBag.PubDPrice.ToString("0.00")</td>
+                                @if (ViewBag.DBuy == "true")
+                                {
+                                    <td class="text-right font-weight-bold">1</td>
+                                    <td class="text-right font-weight-bold">@ViewBag.PubDPrice.ToString("0.00")</td>
+                                }
+                                else
+                                {
+                                    <td class="text-right font-weight-bold">0</td>
+                                    <td class="text-right font-weight-bold">0.00</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold"></td>
+                                <td class="text-left font-weight-bold">Hard Copy</td>
+                                <td class="text-right font-weight-bold">@ViewBag.PubHPrice.ToString("0.00")</td>
+                                @if (ViewBag.HBuy == "true")
+                                {
+                                    <td class="text-right font-weight-bold">@ViewBag.HBil</td>
+                                    <td class="text-right font-weight-bold">@ViewBag.HAmt.ToString("0.00")</td>
+                                }
+                                else
+                                {
+                                    <td class="text-right font-weight-bold">0</td>
+                                    <td class="text-right font-weight-bold">0.00</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td class="text-right font-weight-bold"></td>
+                                <td class="text-left font-weight-bold">Promotion 1+1</td>
+                                <td class="text-right font-weight-bold">@ViewBag.PubHDPrice.ToString("0.00")</td>
+                                @if (ViewBag.PBuy == "true")
+                                {
+                                    <td class="text-right font-weight-bold">1</td>
+                                    <td class="text-right font-weight-bold">@ViewBag.PubHDPrice.ToString("0.00")</td>
+                                }
+                                else
+                                {
+                                    <td class="text-right font-weight-bold">0</td>
+                                    <td class="text-right font-weight-bold">0.00</td>
+                                }
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!-- Table total -->
+                    <table class="table tableStyle1 table-foot mt-0 mb-5">
+                        <tfoot>
+                            @*<tr>
+                                    <td class="text-right font-weight-bold"><span class="color-grey2 xs-small">Shipping Fee <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="If less than or equal 50 books / order = RM18 per delivery. If more than 50 books / oder = RM0.40 per book"><i class="la la-question-circle color-red align-middle" style="font-size: 17px;"></i></a></span> </td>
+                                    <td class="text-right font-weight-bolder" style="width: 150px;"><span class="xs-small">RM 0.00</span></td>
+                                </tr>*@
+                            <tr>
+                                <td class="text-right font-weight-bolder">Total</td>
+                                <td class="text-right font-weight-bolder" style="width: 150px;"><span class="color-red">RM @ViewBag.TAmt.ToString("0.00")</span></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "myform", id = "myform" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        if ((ViewBag.HBuy == "true") || (ViewBag.PBuy == "true"))
+                        {
+                            <h4 class="color-darkblue">Shipping Address <span class="text-danger">*</span></h4>
+                            <div class="form-container p-0">
+                                <div class="row">
+                                    <div class="col-lg-6 form-group">
+                                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @placeholder = "First Name" } })
+                                        @*Html.ValidationMessageFor(model => model.Delivery.FirstName, "", new { @class = "text-danger" })*@
+                                    </div>
+                                    <div class="col-lg-6 form-group">
+                                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Last Name" } })
+                                        @*Html.ValidationMessageFor(model => model.Delivery.LastName, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 form-group">
+                                        @Html.EditorFor(model => model.Address1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
+                                        @*Html.ValidationMessageFor(model => model.Delivery.Address1, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 form-group">
+                                        @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 2" } })
+                                        @*Html.ValidationMessageFor(model => model.Delivery.Address2, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 form-group">
+                                        @Html.EditorFor(model => model.Postcode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Postcode" } })
+                                        @*Html.ValidationMessageFor(model => model.Delivery.Postcode, "", new { @class = "text-danger" })*@
+                                    </div>
+                                    <div class="col-lg-6 form-group">
+                                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
+                                        @*Html.ValidationMessageFor(model => model.Delivery.City, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 form-group">
+                                        @Html.EnumDropDownListFor(model => model.State, "Select State", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone Number" } })
+                                        @*Html.ValidationMessageFor(model => model.Delivery.PhoneNumber, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+                                @*<div class="row">
+                                        <div class="custom-control custom-checkbox">
+                                            <div class="form-group col-lg-12">
+                                                <input type="checkbox" class="custom-control-input" id="savethisinformation">
+                                                <label class="custom-control-label" for="savethisinformation">Save this information for next time</label>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-container p-0">
+                                @Html.HiddenFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @placeholder = "First Name" } })
+                                @Html.HiddenFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Last Name" } })
+                                @Html.HiddenFor(model => model.Address1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
+                                @Html.HiddenFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 2" } })
+                                @Html.HiddenFor(model => model.Postcode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Postcode" } })
+                                @Html.HiddenFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
+                                @Html.HiddenFor(model => model.State, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.HiddenFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone Number" } })
+                            </div>
+                        }
+                        <!-- Action Button -->
+                        <div class="border-top py-3 mt-5">
+                            @Html.HiddenFor(model => model.PublicationID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.FormatDigital, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.FormatHardcopy, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.FormatPromotion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.HardcopyQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.DeliveryID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+                            <a class="btn btn-default font-weight-normal mr-2" href="@Url.Action("SelectFormat", "Home", new { area = "RnP", @id = ViewBag.PubID })">Back</a>
+                            <button class="btn btn-secondary" id="btnAddtoCart">Add to Cart</button>
+                            @*<a class="btn btn-secondary" id="btnAddtoCart" href="#" data-toggle="modal" data-target="#addtocart">Add to Cart</a>*@
+                        </div>
+                    }
+                    <!-- Popup -->
+                    <div class="modal fade" id="addtocart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <img src="~/img/icon-noti-email.svg" alt="image">
+                                    <p class="small mt-4" id="resultMsg">Item(s) have been added to your cart.</p>
+                                </div>
+                                <div class="divider-border"></div>
+                                <div class="m-4 text-center">
+                                    <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close" id="btnBackToBrowse">Continue Shopping</button>
+                                    @*<button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#">Add to Cart</button>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end column content left -->
+            <!-- column content right -->
+            <div class="col-lg-3">
+                <div class="right-sidebar">
+                    <div class="right-top">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="card__top__wapper"><img class="card__top__image" src="~/img/cover-buku-1.jpg" alt="image"></div>
+                            </div>
+                        </div>
+                        <!--<div class="mb-4"><img src="../img/cover-publication-dummy.jpg"></div>-->
+                        <div class="card-group">
+                            <div class="lead color-darkblue mb-3 font-weight-bolder">Publication Details</div>
+                            <ul>
+                                <li><i class="la la-list-ul font-icon color-secondary" style="font-size: 17px;"></i>@ViewBag.PubCategory</li>
+                                <li><i class="la la-user font-icon color-secondary" style="font-size: 17px;"></i>@ViewBag.PubAuthor</li>
+                                <li><i class="la la-calendar font-icon color-secondary" style="font-size: 19px;"></i>@ViewBag.PubYear</li>
+                                <li><i class="la la-language font-icon color-secondary" style="font-size: 17px;"></i>@ViewBag.PubLanguage</li>
+                                <li><i class="la la-barcode font-icon color-secondary" style="font-size: 17px;"></i>@ViewBag.PubISBN</li>
+                                @if ((ViewBag.PubHDcopy) || ((ViewBag.PubDigitalcopy) && (ViewBag.PubHardcopy)))
+                                {
+                                    <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Digital/Hard copy</li>
+                                }
+                                else if (ViewBag.PubHardcopy)
+                                {
+                                    <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Hard copy</li>
+                                }
+                                else if (ViewBag.PubDigitalcopy)
+                                {
+                                    <li><i class="la la-book font-icon color-secondary" style="font-size: 17px;"></i>Digital</li>
+                                }
+                            </ul>
+                        </div>
+                        <!-- Share with friends -->
+                        <div class="card-group">
+                            <div class="lead color-darkblue mb-3 font-weight-bolder">Share with Friends</div>
+                            <div class="ms-share"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end column content right -->
+        </div>
+    </div>
+    <!-- Wrapper -->
+</div>
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#btnAddtoCart').click(function (event) {
+                var form = $('#myform');
+                //alert(form.serialize());
+                //return false;
+                var myurl = '@Url.Action("AddToCart", "Home", new { area = "RnP" })';
+                $.ajax({
+                    url: myurl,
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        if (data == "success") {
+                            $("#resultMsg").text('Item(s) have been added to your cart.');
+                            $("#addtocart").modal();
+                        }
+                        else if (data == "failure") {
+                            $("#resultMsg").text('Failed to add item(s) to your cart!');
+                            $("#addtocart").modal();
+                        }
+                        else {
+                            $("#resultMsg").text('Failed to add item(s) to your cart!');
+                            $("#addtocart").modal();
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $('#btnBackToBrowse').click(function (event) {
+                var url = '@Url.Action("BrowsePublications", "Home", new { area = "RnP" })';
+                window.location = url;
+            });
+        });
+    </script>
+}
+

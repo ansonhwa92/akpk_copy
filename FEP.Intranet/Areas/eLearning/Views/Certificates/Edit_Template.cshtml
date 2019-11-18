@@ -1,0 +1,221 @@
+﻿@model FEP.WebApiModel.eLearning.CreateTemplateModel
+
+@{
+    ViewBag.Title = "Certificate";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                @*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Learning Management</a></li>
+                                <li class="breadcrumb-item"><a href="#">Certificate Template</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Certificate Template</h1>
+                    <div class="header-text">Modified Certificate Template</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@using (Html.BeginForm("Update_Template", "Certificates", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="row">
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div class="sidebar-left">
+                <!-- Steps -->
+                <div class="sidebar-inner sticky">
+                    <ul class="steps steps-vertical">
+                        <li class="step-item complete">
+                            <a href="" class="step-link">
+                                <span class="step-number">1</span>
+                                <span class="step-title">Update Template</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- End Steps -->
+                </div>
+                <div class="sidebar-inner sticky">
+                    @*<span class="title">Tags</span>*@
+                    <div class="card-body">
+                        <table class="table" id="tagTable">
+                            <tbody>
+                                <tr class="table-row clickable-row">
+                                    <td>{{organization}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{first_name}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{last_name}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{email}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{course}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{issue_date}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{latest_issue_date}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{expiration_date}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{instructor_name}}</td>
+                                </tr>
+                                <tr class="table-row clickable-row">
+                                    <td>{{unique_identifier}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <div class="border-form rounded-top">
+                <form>
+                    <div class="form-container form-container-w100">
+                        <div class="d-flex pb-4 align-items-center">
+                            <div>
+                                <h4 class="color-darkblue mb-0">You can update or delete this template</h4>
+                            </div>
+                            <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.Description)
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.TypePageOrientation)
+                                @Html.EnumDropDownListFor(model => model.TypePageOrientation, "-Select-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.TypePageOrientation, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.Template)
+                                @Html.TextAreaFor(m => m.Template, new { @class = "summernote form-control", @id = "summernote", @name = "editordata" })
+                                @Html.ValidationMessageFor(model => model.Template, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a class="btn btn-default" href="@Url.Action("Index", "Certificates", new { area = "eLearning" })"
+                   data-toggle="tooltip" data-placement="top" title="Back">Back</a>
+                <a class="btn btn-warning" href="@Url.Action("Delete_Template", "Certificates", new { area = "eLearning",  id = Model.Id })"
+                   data-toggle="tooltip" data-placement="top">Delete</a>
+                <button type="submit" class="btn btn-secondary pull-right" id="btnSave" name="Submittype" value="Save">Save</button>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .table-row {
+        cursor: pointer;
+        font-size: 0.7em;
+        padding: 0 !important;
+    }
+
+    .table .td {
+        padding: 0.3em !important;
+    }
+
+    tbody {
+        display: block;
+        max-height: 450px;
+        overflow-y: auto;
+    }
+    .form-container {
+        max-width: none !important;
+    }
+</style>
+
+@section ContentScript {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
+    <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var initMarkup = $('#Template').val();
+            console.log(initMarkup);
+
+            $('.summernote').summernote({
+                placeholder: 'Type your text here.',
+                tabsize: 2,
+                height: 300,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'hr']],
+                    ['misc', ['fullscreen', 'undo', 'redo', 'codeview']]
+                ],
+                codeviewFilter: false,
+                codeviewIframeFilter: true,
+            });
+
+            $('#summernote').summernote('code', initMarkup);
+
+            $(".table-row").click(function (e) {
+
+                e.preventDefault();
+
+                var newText = $.trim($(this).text());
+                $('#summernote').summernote('editor.saveRange');
+
+                // Editor loses selected range (e.g after blur)
+                $('#summernote').summernote('editor.restoreRange');
+                $('#summernote').summernote('editor.focus');
+                $('#summernote').summernote('editor.insertText', newText);
+            });
+        });
+
+        function GetContent() {
+
+            var content = $('#summernote').summernote('code');
+
+            $('#Template').val(content);
+
+            return true;
+        }
+    </script>
+}

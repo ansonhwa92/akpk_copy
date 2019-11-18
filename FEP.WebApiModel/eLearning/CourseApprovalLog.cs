@@ -25,32 +25,7 @@ namespace FEP.WebApiModel.eLearning
         public bool IsNextLevelRequired { get; set; }
 
         public string Remark { get; set; }
+        public CourseStatus Status { get; set; }
+        public string CourseTitle { get; set; }
     }
-
-
-    //public enum ApprovalLevel
-    //{
-    //    [Display(Name = "ApprovalLevelNone", ResourceType = typeof(Language.eLearning.Enum))]
-    //    None,
-    //    [Display(Name = "ApprovalLevelVerifier", ResourceType = typeof(Language.eLearning.Enum))]
-    //    Verifier,
-    //    [Display(Name = "ApprovalLevelApprover1", ResourceType = typeof(Language.eLearning.Enum))]
-    //    Approver1,
-    //    [Display(Name = "ApprovalLevelApprover2", ResourceType = typeof(Language.eLearning.Enum))]
-    //    Approver2,
-    //    [Display(Name = "ApprovalLevelApprover3", ResourceType = typeof(Language.eLearning.Enum))]
-    //    Approver3
-    //}
-
-    //public enum ApprovalStatus
-    //{
-    //    [Display(Name = "ApprovalStatusNone", ResourceType = typeof(Language.eLearning.Enum))]
-    //    None,
-    //    [Display(Name = "ApprovalStatusApproved", ResourceType = typeof(Language.eLearning.Enum))]
-    //    Approved,
-    //    [Display(Name = "ApprovalStatusRejected", ResourceType = typeof(Language.eLearning.Enum))]
-    //    Rejected,
-    //    [Display(Name = "ApprovalStatusSubmitted", ResourceType = typeof(Language.eLearning.Enum))]
-    //    Submitted,
-    //}
 }

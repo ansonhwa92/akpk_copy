@@ -178,6 +178,168 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Amendment.
+        /// </summary>
+        public static string CourseStatusAmendment {
+            get {
+                return ResourceManager.GetString("CourseStatusAmendment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approved.
+        /// </summary>
+        public static string CourseStatusApproved {
+            get {
+                return ResourceManager.GetString("CourseStatusApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Draft.
+        /// </summary>
+        public static string CourseStatusDraft {
+            get {
+                return ResourceManager.GetString("CourseStatusDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First Approver Approved.
+        /// </summary>
+        public static string CourseStatusFirstApproval {
+            get {
+                return ResourceManager.GetString("CourseStatusFirstApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Approval.
+        /// </summary>
+        public static string CourseStatusFirstApproverApproved {
+            get {
+                return ResourceManager.GetString("CourseStatusFirstApproverApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Require Amendment.
+        /// </summary>
+        public static string CourseStatusFirstApproverRejected {
+            get {
+                return ResourceManager.GetString("CourseStatusFirstApproverRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Published.
+        /// </summary>
+        public static string CourseStatusPublished {
+            get {
+                return ResourceManager.GetString("CourseStatusPublished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Second Approver Approved.
+        /// </summary>
+        public static string CourseStatusSecondApproval {
+            get {
+                return ResourceManager.GetString("CourseStatusSecondApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Approval.
+        /// </summary>
+        public static string CourseStatusSecondApproverApproved {
+            get {
+                return ResourceManager.GetString("CourseStatusSecondApproverApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Require Amendment.
+        /// </summary>
+        public static string CourseStatusSecondApproverRejected {
+            get {
+                return ResourceManager.GetString("CourseStatusSecondApproverRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Verification.
+        /// </summary>
+        public static string CourseStatusSubmitted {
+            get {
+                return ResourceManager.GetString("CourseStatusSubmitted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Third Approver Approved.
+        /// </summary>
+        public static string CourseStatusThirdApproval {
+            get {
+                return ResourceManager.GetString("CourseStatusThirdApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approved.
+        /// </summary>
+        public static string CourseStatusThirdApproverApproved {
+            get {
+                return ResourceManager.GetString("CourseStatusThirdApproverApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Require Amendment.
+        /// </summary>
+        public static string CourseStatusThirdApproverRejected {
+            get {
+                return ResourceManager.GetString("CourseStatusThirdApproverRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trial.
+        /// </summary>
+        public static string CourseStatusTrial {
+            get {
+                return ResourceManager.GetString("CourseStatusTrial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Approval.
+        /// </summary>
+        public static string CourseStatusVerified {
+            get {
+                return ResourceManager.GetString("CourseStatusVerified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verifier Approved.
+        /// </summary>
+        public static string CourseStatusVerifierApproval {
+            get {
+                return ResourceManager.GetString("CourseStatusVerifierApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Require Amendment.
+        /// </summary>
+        public static string CourseStatusVerifierRejected {
+            get {
+                return ResourceManager.GetString("CourseStatusVerifierRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Document.
         /// </summary>
         public static string Document {
@@ -192,6 +354,15 @@ namespace Language.eLearning {
         public static string ExternalVideo {
             get {
                 return ResourceManager.GetString("ExternalVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flash.
+        /// </summary>
+        public static string Flash {
+            get {
+                return ResourceManager.GetString("Flash", resourceCulture);
             }
         }
         
@@ -214,6 +385,33 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pdf.
+        /// </summary>
+        public static string Pdf {
+            get {
+                return ResourceManager.GetString("Pdf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pop up window.
+        /// </summary>
+        public static string PopUp {
+            get {
+                return ResourceManager.GetString("PopUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Presentation.
+        /// </summary>
+        public static string Powepoint {
+            get {
+                return ResourceManager.GetString("Powepoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Upload a presentation.
         /// </summary>
         public static string Presentation {
@@ -232,6 +430,24 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio from course files.
+        /// </summary>
+        public static string SavedAudio {
+            get {
+                return ResourceManager.GetString("SavedAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use a document from your files.
+        /// </summary>
+        public static string SavedDocument {
+            get {
+                return ResourceManager.GetString("SavedDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test/Quiz.
         /// </summary>
         public static string Test {
@@ -241,11 +457,29 @@ namespace Language.eLearning {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to After a period of time.
+        ///   Looks up a localized string similar to After a period of time (in seconds).
         /// </summary>
         public static string Timer {
             get {
                 return ResourceManager.GetString("Timer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload an audio file.
+        /// </summary>
+        public static string UploadAudio {
+            get {
+                return ResourceManager.GetString("UploadAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload a document.
+        /// </summary>
+        public static string UploadDocument {
+            get {
+                return ResourceManager.GetString("UploadDocument", resourceCulture);
             }
         }
         
@@ -259,20 +493,20 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use Slideshare.
+        /// </summary>
+        public static string UseSlideshare {
+            get {
+                return ResourceManager.GetString("UseSlideshare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Video.
         /// </summary>
         public static string Video {
             get {
                 return ResourceManager.GetString("Video", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Web Link.
-        /// </summary>
-        public static string WebLink {
-            get {
-                return ResourceManager.GetString("WebLink", resourceCulture);
             }
         }
     }

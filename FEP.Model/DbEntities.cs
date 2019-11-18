@@ -24,12 +24,16 @@ namespace FEP.Model
 
         public DbSet<CompanyProfile> CompanyProfile { get; set; }
         public DbSet<StaffProfile> StaffProfile { get; set; }
+        public DbSet<IndividualProfile> IndividualProfile { get; set; }
 
+        public DbSet<Ministry> Ministry { get; set; }
         public DbSet<Sector> Sector { get; set; }
         public DbSet<State> State { get; set; }
+        public DbSet<Country> Country { get; set; }
 
         public DbSet<Department> Department { get; set; }
         public DbSet<Branch> Branch { get; set; }
+        public DbSet<Designation> Designation { get; set; }
 
         //access
         public DbSet<Access> Access { get; set; }
@@ -46,37 +50,43 @@ namespace FEP.Model
 
         public DbSet<AccountSetting> AccountSetting { get; set; }
 
+        //tot
+        public DbSet<TOTReport> TOTReport { get; set; }
+
+        public DbSet<TOTReportFile> TOTReportFile { get; set; }
+        
         //file
         public DbSet<FileDocument> FileDocument { get; set; }
 
         //notification
         public DbSet<Notification> Notification { get; set; }
+        //public DbSet<NotificationToSend> NotificationToSend { get; set; }
+        //public DbSet<NotificationToSendRecipient> NotificationToSendRecipient { get; set; }
+		//public DbSet<NotificationSetting> NotificationSetting { get; set; }
 
-        public DbSet<NotificationToSend> NotificationToSend { get; set; }
-        public DbSet<NotificationToSendRecipient> NotificationToSendRecipient { get; set; }
-
-        //public DbSet<NotificationSetting> NotificationSetting { get; set; }
-
-        //email
-        public DbSet<EmailToSend> EmailToSend { get; set; }
-
+		//email
+		public DbSet<EmailToSend> EmailToSend { get; set; }
         public DbSet<EmailToSendAddress> EmailToSendAddress { get; set; }
 
         //web api
         public DbSet<Client> Client { get; set; }
 
-        //payment
-        public DbSet<PurchaseOrder> PurchaseOrder { get; set; }
-
-        public DbSet<PurchaseOrderItem> PurchaseOrderItem { get; set; }
+		//payment
+		public DbSet<PurchaseOrder> PurchaseOrder { get; set; }
+		public DbSet<PurchaseOrderItem> PurchaseOrderItem { get; set; }
+        public DbSet<BankInformation> BankInformation { get; set; }
+        public DbSet<Refund> Refund { get; set; }
 
         //logs
         public DbSet<UserLog> UserLog { get; set; }
 
         public DbSet<ErrorLog> ErrorLog { get; set; }
 
+        public DbSet<ShareLog> ShareLog { get; set; }
+        public DbSet<PageLog> PageLog { get; set; }
+
         //elearning
-        //      public DbSet<LearningCourse> LearningCourse { get; set; }
+        //public DbSet<LearningCourse> LearningCourse { get; set; }
         //public DbSet<LearningCourseCertificate> LearningCourseCertificate { get; set; }
         //public DbSet<LearningCourseCategory> LearningCourseCategory { get; set; }
         //public DbSet<Learner> Learner { get; set; }
@@ -105,48 +115,58 @@ namespace FEP.Model
         //publication
         public DbSet<Publication> Publication { get; set; }
 
+        public DbSet<PublicationFile> PublicationFile { get; set; }
         public DbSet<PublicationCategory> PublicationCategory { get; set; }
         public DbSet<PublicationApproval> PublicationApproval { get; set; }
         public DbSet<PublicationWithdrawal> PublicationWithdrawal { get; set; }
-        public DbSet<PublicationPurchase> PublicationPurchase { get; set; }
+        public DbSet<PublicationRank> PublicationRank { get; set; }
+        public DbSet<PublicationReview> PublicationReview { get; set; }
+        public DbSet<PublicationDelivery> PublicationDelivery { get; set; }
         public DbSet<PublicationPurchaseItem> PublicationPurchaseItem { get; set; }
-        public DbSet<PublicationRefund> PublicationRefund { get; set; }
+        public DbSet<PromotionCode> PromotionCode { get; set; }
 
         //research
         public DbSet<Survey> Survey { get; set; }
 
+        public DbSet<SurveyFile> SurveyFile { get; set; }
         public DbSet<SurveyApproval> SurveyApproval { get; set; }
         public DbSet<SurveyResponse> SurveyResponse { get; set; }
 
+        //targeted groups
+        public DbSet<TargetedGroups> TargetedGroups { get; set; }
+        public DbSet<TargetedGroupMembers> TargetedGroupMembers { get; set; }
+
         //eEvent
-        public DbSet<PublicEvent> PublicEvent { get; set; }
+        public DbSet<PublicEvent> PublicEvent { get; set; } 
+		public DbSet<EventCalendar> EventCalendar { get; set; }
+		public DbSet<EventAgenda> EventAgenda { get; set; }
+		public DbSet<EventSpeaker> EventSpeaker { get; set; }
+		public DbSet<EventBooking> EventBooking { get; set; }
+		public DbSet<InvitationEvent> InvitationEvent { get; set; }
+		public DbSet<EventMediaInterviewRequest> EventMediaInterviewRequest { get; set; }
+		public DbSet<EventAttendance> EventAttendance { get; set; }
+		public DbSet<ManuscriptSubmission> ManuscriptSubmission { get; set; }
+		public DbSet<ParticipantFeedback> ParticipantFeedback { get; set; }
+		public DbSet<PublicEventApproval> PublicEventApproval { get; set; }
+		public DbSet<EventMediaInterviewApproval> EventMediaInterviewApproval { get; set; }
+		public DbSet<EventExhibitionRequest> EventExhibitionRequest { get; set; }
+		public DbSet<EventFile> EventFile { get; set; }
+		public DbSet<EventExternalExhibitor> EventExternalExhibitor { get; set; }
+		public DbSet<EventCategory> EventCategory { get; set; }
+		public DbSet<ExhibitionNominee> ExhibitionNominee { get; set; }
+		public DbSet<AssignedSpeaker> AssignedSpeaker { get; set; }
+		public DbSet<AssignedExternalExhibitor> AssignedExternalExhibitor { get; set; }
+		public DbSet<DutyRoster> DutyRoster { get; set; }
+		public DbSet<DutyRosterOfficer> DutyRosterOfficer { get; set; }
+		public DbSet<EventRequest> EventRequest { get; set; }
 
-        public DbSet<EventCalendar> EventCalendar { get; set; }
-        public DbSet<EventAgenda> EventAgenda { get; set; }
-        public DbSet<EventSpeaker> EventSpeaker { get; set; }
-        public DbSet<EventBooking> EventBooking { get; set; }
-        public DbSet<InvitationEvent> InvitationEvent { get; set; }
-        public DbSet<EventMediaInterviewRequest> EventMediaInterviewRequest { get; set; }
-        public DbSet<EventAttendance> EventAttendance { get; set; }
-        public DbSet<ManuscriptSubmission> ManuscriptSubmission { get; set; }
-        public DbSet<ParticipantFeedback> ParticipantFeedback { get; set; }
-        public DbSet<EventMember> EventMember { get; set; }
-        public DbSet<EventApproval> EventApproval { get; set; }
-        public DbSet<EventVerifier> EventVerifier { get; set; }
 
-        //public DbSet<EventCancellation> EventCancellation { get; set; }
-        public DbSet<EventExhibitionRequest> EventExhibitionRequest { get; set; }
 
-        public DbSet<EventFile> EventFile { get; set; }
-        public DbSet<EventExternalExhibitor> EventExternalExhibitor { get; set; }
-        public DbSet<MediaFile> MediaFile { get; set; }
-        public DbSet<EventCategory> EventCategory { get; set; }
-        public DbSet<SpeakerFile> SpeakerFile { get; set; }
-
-        // Elearning
-        public DbSet<Course> Courses { get; set; }
+		// Elearning
+		public DbSet<Course> Courses { get; set; }
 
         public DbSet<ContentFile> ContentFiles { get; set; }
+
         public DbSet<CourseApprovalLog> CourseApprovals { get; set; }
 
         public DbSet<CourseCertificate> CourseCertificates { get; set; }
@@ -155,6 +175,7 @@ namespace FEP.Model
         public DbSet<CourseModule> CourseModules { get; set; }
 
         public DbSet<CourseEvent> CourseEvents { get; set; }
+        public DbSet<CourseInvitation> CourseInvitations { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<GamificationCriteria> GamificationCriteria { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -165,6 +186,8 @@ namespace FEP.Model
         public DbSet<TrainerCourse> TrainerCourses { get; set; }
         public DbSet<TrainerGroup> TrainerGroups { get; set; }
         public DbSet<CourseProgress> CourseProgress { get; set; }
+        public DbSet<FileUpload> FileUploads { get; set; }
+        public DbSet<EnrollmentHistory> EnrollmentHistories { get; set; }
 
         // Quiz, questions
         public DbSet<Question> Questions { get; set; }
@@ -184,12 +207,26 @@ namespace FEP.Model
         // Elearning Lookup
         public DbSet<RefCourseCategory> RefCourseCategories { get; set; }
 
+
         public DbSet<NotificationTemplate> NotificationTemplates { get; set; }
         public DbSet<TemplateParameters> TemplateParameters { get; set; }
         public DbSet<SLAReminder> SLAReminder { get; set; }
         public DbSet<SLAReminderStatus> SLAReminderStatus { get; set; }
         public DbSet<BulkNotification> BulkNotification { get; set; }
         public DbSet<ParameterGroup> ParameterGroup { get; set; }
+
+     
+        public DbSet<RewardActivityPoint> RewardActivityPoint { get; set; }
+        public DbSet<RewardRedemption> RewardRedemption { get; set; }
+        public DbSet<UserRewardPoints> UserRewardPoints { get; set; }
+        public DbSet<UserRewardRedemption> UserRewardRedemption { get; set; }
+
+        // Email?
+        public DbSet<TabBulkEmail> TabBulkEmail { get; set; }
+        public DbSet<TabBulkSMS> TabBulkSMS { get; set; }
+        
+        //CTE
+        public DbSet<Months> Months { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

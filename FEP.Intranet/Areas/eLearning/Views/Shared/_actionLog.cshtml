@@ -1,0 +1,67 @@
+﻿@using FEP.Model.eLearning
+@using FEP.Model
+
+@model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
+
+
+
+<div class="action-log">
+
+    <h6 class="color-darkblue px-3"><i class="la la-comment color-secondary font-icon align-top"></i>Action Log</h6>
+    <!-- Kalau banyak action log akan jd scroll ke bwh -->
+    <div data-perfect-scrollbar class="position-relative">
+
+        @if (Model.CourseApprovalLogs.Count != 0)
+        {
+
+            foreach (var item in Model.CourseApprovalLogs.OrderByDescending(x => x.CreatedDate))
+            {
+
+                <div class="border-form rounded mb-2">
+                    <div class="small text-muted">
+                        @item.CreatedDate.ToString("dd/MM/yyyy")
+                        <span class="float-right">@item.CreatedDate.ToString("hh:mm tt")</span>
+                    </div>
+
+                    @{
+                        switch (item.ApprovalStatus)
+                        {
+                            case ApprovalStatus.Approved:
+                                <div class="small">
+                                    <span class="card__author-name color-darkblue">@item.ApprovedByName</span>
+                                    <br><strong>:Designation: Approval Result</strong>
+                                    <br>— <span class="color-green">Approved</span>
+                                </div>
+                                break;
+                            case ApprovalStatus.Rejected:
+                                <div class="small">
+                                    <span class="card__author-name color-darkblue">@item.ApprovedByName</span>
+                                    <br><strong>:Designation: Approval Result</strong>
+                                    <br>— <span class="color-yellow">Amendment Required</span>
+                                </div>
+                                break;
+                            case ApprovalStatus.Submitted:
+                                <div class="small">
+                                    <span class="card__author-name color-darkblue">@item.CreatedByName</span>
+                                    <br><strong>:Submission For Approval</strong><br>— <span class="color-yellow"></span>
+                                </div>
+                                break;
+                            default:
+                                <div class="small text-muted">
+                                    <span class="card__author-name color-darkblue">@item.CreatedByName</span>
+                                    <br><strong>:Activity</strong><br>— <span class="color-yellow"></span>
+                                </div>
+                                break;
+
+                        }
+                        if (item.Remark != "")
+                        {
+                            <div class="small mt-2"><strong>Remark:</strong> <em>@item.Remark</em></div>
+                        }
+                    }
+                </div>
+            }
+
+        }
+    </div>
+</div>

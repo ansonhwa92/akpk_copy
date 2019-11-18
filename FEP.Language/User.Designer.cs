@@ -61,60 +61,6 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Company Address.
-        /// </summary>
-        public static string FieldAddress {
-            get {
-                return ResourceManager.GetString("FieldAddress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to City.
-        /// </summary>
-        public static string FieldCity {
-            get {
-                return ResourceManager.GetString("FieldCity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Company Name.
-        /// </summary>
-        public static string FieldCompanyName {
-            get {
-                return ResourceManager.GetString("FieldCompanyName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Company Phne No.
-        /// </summary>
-        public static string FieldCompanyPhoneNo {
-            get {
-                return ResourceManager.GetString("FieldCompanyPhoneNo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Company Regstration No.
-        /// </summary>
-        public static string FieldCompanyRegNo {
-            get {
-                return ResourceManager.GetString("FieldCompanyRegNo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Confirm Password.
-        /// </summary>
-        public static string FieldConfirmPassword {
-            get {
-                return ResourceManager.GetString("FieldConfirmPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string FieldEmail {
@@ -151,92 +97,11 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Postcode.
+        ///   Looks up a localized string similar to User Type.
         /// </summary>
-        public static string FieldPostCode {
+        public static string FieldUserType {
             get {
-                return ResourceManager.GetString("FieldPostCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sector.
-        /// </summary>
-        public static string FieldSector {
-            get {
-                return ResourceManager.GetString("FieldSector", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sector.
-        /// </summary>
-        public static string FieldSectorId {
-            get {
-                return ResourceManager.GetString("FieldSectorId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to State.
-        /// </summary>
-        public static string FieldStateId {
-            get {
-                return ResourceManager.GetString("FieldStateId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Street address line 1.
-        /// </summary>
-        public static string PlaceholderAddress1 {
-            get {
-                return ResourceManager.GetString("PlaceholderAddress1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Street address line 2.
-        /// </summary>
-        public static string PlaceholderAddress2 {
-            get {
-                return ResourceManager.GetString("PlaceholderAddress2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to City.
-        /// </summary>
-        public static string PlaceholderCity {
-            get {
-                return ResourceManager.GetString("PlaceholderCity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Company Name.
-        /// </summary>
-        public static string PlaceholderCompanyName {
-            get {
-                return ResourceManager.GetString("PlaceholderCompanyName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Company Phone No.
-        /// </summary>
-        public static string PlaceholderCompanyPhoneNo {
-            get {
-                return ResourceManager.GetString("PlaceholderCompanyPhoneNo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Company Registration No.
-        /// </summary>
-        public static string PlaceholderCompRegNo {
-            get {
-                return ResourceManager.GetString("PlaceholderCompRegNo", resourceCulture);
+                return ResourceManager.GetString("FieldUserType", resourceCulture);
             }
         }
         
@@ -277,69 +142,6 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Postcode.
-        /// </summary>
-        public static string PlaceholderPostCode {
-            get {
-                return ResourceManager.GetString("PlaceholderPostCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select Sector.
-        /// </summary>
-        public static string PlaceholderSectorId {
-            get {
-                return ResourceManager.GetString("PlaceholderSectorId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select State.
-        /// </summary>
-        public static string PlaceholderStateId {
-            get {
-                return ResourceManager.GetString("PlaceholderStateId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please enter Address.
-        /// </summary>
-        public static string ValidRequiredAddress {
-            get {
-                return ResourceManager.GetString("ValidRequiredAddress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please enter City.
-        /// </summary>
-        public static string ValidRequiredCity {
-            get {
-                return ResourceManager.GetString("ValidRequiredCity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please enter Company Name.
-        /// </summary>
-        public static string ValidRequiredCompanyName {
-            get {
-                return ResourceManager.GetString("ValidRequiredCompanyName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please enter Company Phone No.
-        /// </summary>
-        public static string ValidRequiredCompanyPhoneNo {
-            get {
-                return ResourceManager.GetString("ValidRequiredCompanyPhoneNo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Please enter Email.
         /// </summary>
         public static string ValidRequiredEmail {
@@ -372,51 +174,6 @@ namespace Language {
         public static string ValidRequiredName {
             get {
                 return ResourceManager.GetString("ValidRequiredName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please enter Password.
-        /// </summary>
-        public static string ValidRequiredPassword {
-            get {
-                return ResourceManager.GetString("ValidRequiredPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please enter Postcode.
-        /// </summary>
-        public static string ValidRequiredPostCode {
-            get {
-                return ResourceManager.GetString("ValidRequiredPostCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please enter Retype Password.
-        /// </summary>
-        public static string ValidRequiredRetypePassword {
-            get {
-                return ResourceManager.GetString("ValidRequiredRetypePassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please select Sector.
-        /// </summary>
-        public static string ValidRequiredSectorId {
-            get {
-                return ResourceManager.GetString("ValidRequiredSectorId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please select State.
-        /// </summary>
-        public static string ValidRequiredStateId {
-            get {
-                return ResourceManager.GetString("ValidRequiredStateId", resourceCulture);
             }
         }
     }

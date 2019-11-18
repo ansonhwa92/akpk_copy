@@ -58,15 +58,24 @@
                 <div>
                     @{ if ((Model.Auto.Status == SurveyStatus.New) && (CurrentUser.HasAccess(UserAccess.RnPSurveyEdit)))
                         {
-                            <p><button class="btn btn-secondary btn-block" id="btnSubmit" data-surveyid="@Model.Survey.ID">Submit for Approval</button></p>
+                            <p><button class="btn btn-secondary btn-block" id="btnSubmit" data-surveyid="@Model.Survey.ID">Submit for Verification</button></p>
                         }
                         else if ((Model.Auto.Status == SurveyStatus.Approved) && (CurrentUser.HasAccess(UserAccess.RnPSurveyPublish)))
                         {
-                            <p><button class="btn btn-secondary btn-block" id="btnPublish" data-surveyid="@Model.Survey.ID">Publish on FEPP</button></p>
+                            <p><button class="btn btn-secondary btn-block" id="btnPublish" data-surveyid="@Model.Survey.ID">Publish on FEP</button></p>
                         }
                         else if (((Model.Auto.Status == SurveyStatus.VerifierRejected) || (Model.Auto.Status == SurveyStatus.ApproverRejected)) && (CurrentUser.HasAccess(UserAccess.RnPSurveyEdit)))
                         {
                             <p><button class="btn btn-outline-danger btn-block" id="btnCancel">Cancel Survey</button></p>
+                        }
+                        else if ((Model.Auto.Status == SurveyStatus.Published) && (CurrentUser.HasAccess(UserAccess.RnPSurveyPublish)))
+                        {
+                            <p><button class="btn btn-secondary btn-block" id="btnExtend" data-surveyid="@Model.Survey.ID">Extend Survey Date</button></p>
+                            <p><button class="btn btn-default btn-block" id="btnUnpublish" data-surveyid="@Model.Survey.ID">Unpublish from FEP</button></p>
+                        }
+                        else if ((Model.Auto.Status == SurveyStatus.Unpublished) && (CurrentUser.HasAccess(UserAccess.RnPSurveyPublish)))
+                        {
+                            <p><button class="btn btn-secondary btn-block" id="btnPublish" data-surveyid="@Model.Survey.ID">Re-publish on FEP</button></p>
                         }
                         <p><a class="btn btn-default btn-block" id="btnTest" href="@Url.Action("Test", "Survey", new { area = "RnP", @id = Model.Survey.ID })" target="_blank">Test Survey</a></p>
                     }
@@ -111,7 +120,7 @@
                                 }
                                 else if (Model.Auto.Status == SurveyStatus.Verified)
                                 {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Approval">
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Approval @ViewBag.ApprovalStage">
                                 }
                                 else if (Model.Auto.Status == SurveyStatus.ApproverRejected)
                                 {
@@ -131,7 +140,7 @@
                                 }
                                 else if (Model.Auto.Status == SurveyStatus.Trashed)
                                 {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Deleted">
+                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Cancelled">
                                 }
                             }
                         </div>
@@ -161,19 +170,33 @@
                             <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Survey.Description)</textarea>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Survey.TargetGroup, htmlAttributes: new { @class = "control-label" })
-                            <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" disabled="disabled">
-                                <option value="Group 1">Group 1</option>
-                                <option value="Group 2">Group 2</option>
-                                <option value="Group 3">Group 3</option>
-                                <option value="Group 4">Group 4</option>
-                                <option value="Group 5">Group 5</option>
-                            </select>
-                            @Html.HiddenFor(model => model.Survey.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                    @if (ViewBag.TypeName == "Public Mass")
+                    {
+                        <div class="row" style="display:none;">
+                            <div class="form-group col-lg-12">
+                                @Html.HiddenFor(model => model.Survey.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else if (ViewBag.TypeName == "Targeted Groups")
+                    {
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(model => model.Survey.TargetGroup, htmlAttributes: new { @class = "control-label" })
+                                <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" disabled="disabled">
+                                    @if (ViewBag.Groups != null)
+                                    {
+                                        foreach (var group in ViewBag.Groups)
+                                        {
+
+                                            <option value="@group.ID">@group.Name</option>
+                                        }
+                                    }
+                                </select>
+                                @Html.HiddenFor(model => model.Survey.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    }
                     <div class="row">
                         <div class="form-group col-lg-6">
                             @Html.LabelFor(model => model.Survey.StartDate, htmlAttributes: new { @class = "control-label", @title = "The start date of the Survey duration" })
@@ -195,6 +218,24 @@
                                 @Html.Label("no", "No")
                                 @Html.ValidationMessageFor(model => model.Survey.RequireLogin, "", new { @class = "text-danger" })
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Survey.CoverPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_CoverPictureDetails", Model.Survey.CoverPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Survey.AuthorPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_AuthorPictureDetails", Model.Survey.AuthorPictures)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Survey.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_ProofOfApprovalDetails", Model.Survey.ProofOfApproval)
                         </div>
                     </div>
                 </div>
@@ -278,11 +319,12 @@
                             <div class="modal-content">
                                 <div class="m-4 text-center">
                                     <h4 class="color-darkblue mb-0">Cancel Survey Request</h4>
+                                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <input type="hidden" class="form-control" name="ID" id="CancelID" value="@Model.Survey.ID" />
-                                        @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" })
+                                        @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                                         <textarea class="form-control" name="CancelRemark" id="CancelRemark" rows="4" placeholder=""></textarea>
                                         <span class="text-danger field-validation-error" id="span_remarkerror" style="display:none;">Please enter Remarks</span>
                                     </div>
@@ -290,11 +332,89 @@
                                 <div class="divider-border"></div>
                                 <div class="m-4 text-center">
                                     <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
-                                    <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#cancelsent" id="btnCancelConfirm">Cancel Publication</button><!-- erk, both cancel -->
+                                    <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#cancelsent" id="btnCancelConfirm">Submit Cancellation</button>
                                 </div>
                             </div>
                         </div>
                     }
+                </div>
+                <!-- extend -->
+                <div class="modal fade" id="modalExtend" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formextend", id = "formextend" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="m-4 text-center">
+                                    <h4 class="color-darkblue mb-0">Extend Survey Request</h4>
+                                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" class="form-control" name="ID" id="ExtendID" value="@Model.Survey.ID" />
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Extension.NewStartDate, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                                        <div class="dateSelect">
+                                            <input type="text" id="date_start" class="form-control" placeholder="Date Start" data-input="flatpickr">
+                                            <a class="input-button calendar" title="toggle" data-toggle>
+                                                <i class="la la-calendar"></i>
+                                            </a>
+                                            <a class="input-button clear" title="clear" data-clear>
+                                                <i class="la la-times"></i>
+                                            </a>
+                                        </div>
+                                        @Html.HiddenFor(model => model.Extension.NewStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                                        <input type="hidden" id="NewStartDate" name="NewStartDate" value="" />
+                                        <span class="text-danger field-validation-error" id="span_startdateerror" style="display:none;">Invalid Start Date</span>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Extension.NewEndDate, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                                        <div class="dateSelect">
+                                            <input type="text" id="date_end" class="form-control" placeholder="Date End" data-input="flatpickr">
+                                            <a class="input-button calendar" title="toggle" data-toggle>
+                                                <i class="la la-calendar"></i>
+                                            </a>
+                                            <a class="input-button clear" title="clear" data-clear>
+                                                <i class="la la-times"></i>
+                                            </a>
+                                        </div>
+                                        @Html.HiddenFor(model => model.Extension.NewEndDate, new { htmlAttributes = new { @class = "form-control" } })
+                                        <input type="hidden" id="NewEndDate" name="NewEndDate" value="" />
+                                        <span class="text-danger field-validation-error" id="span_enddateerror" style="display:none;">Invalid End Date</span>
+                                    </div>
+                                </div>
+                                <div class="divider-border"></div>
+                                <div class="m-4 text-center">
+                                    <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                    <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#extendsent" id="btnExtendConfirm">Extend Survey</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!-- unpublish -->
+                <div class="modal fade" id="modalUnpublish" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img src="~/img/icon-confirmation.svg" alt="image">
+                                <h4 class="color-darkblue mt-4">Are you sure to Unpublish the Survey?</h4>
+                                <p class="small">Once unpublished, Survey can be re-published at any time if necessary.</p>
+                            </div>
+                            <div class="divider-border"></div>
+                            <div class="m-4 text-center">
+                                <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#unpublishsent" id="btnUnpublishConfirm">Unpublish Survey</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- ajax result - success -->
                 <div class="modal fade" id="modalOperationSuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -406,19 +526,85 @@
 
             // format date picker
 
-            $("#StartDate").flatpickr({
+            $("#Survey_StartDate").flatpickr({
                 dateFormat: "d/m/Y",
                 maxDate: "31/12/2200",
             });
 
-            $("#EndDate").flatpickr({
+            $("#Survey_EndDate").flatpickr({
                 dateFormat: "d/m/Y",
                 maxDate: "31/12/2200",
+            });
+
+            var tstart = $('#Extension_NewStartDate').val();
+            var tend = $('#Extension_NewEndDate').val();
+            tstart = tstart.substr(0, 10);
+            tend = tend.substr(0, 10);
+            $('#Extension_NewStartDate').val(tstart);
+            $('#Extension_NewEndDate').val(tend);
+            $('#NewStartDate').val(tstart);
+            $('#NewEndDate').val(tend);
+            var mystart = $('#Extension_NewStartDate').val();
+            var myend = $('#Extension_NewEndDate').val();
+
+            function sortDates(dateType, dateStr) {
+                var date1 = $('#Extension_NewStartDate').val();
+                var date2 = $('#Extension_NewEndDate').val();
+                var revdate1 = date1.substr(6, 4) + date1.substr(3, 2) + date1.substr(0, 2);
+                var revdate2 = date2.substr(6, 4) + date2.substr(3, 2) + date2.substr(0, 2);
+                if (dateType == 1) {
+                    if (revdate2 < revdate1) {
+                        $('#Extension_NewEndDate').val(date1);
+                        $('#NewEndDate').val(date1);
+                        $("#date_end").val(date1);
+                    }
+                }
+                else if (dateType == 2) {
+                    if (revdate2 < revdate1) {
+                        $('#Extension_NewStartDate').val(date2);
+                        $('#NewStartDate').val(date2);
+                        $("#date_start").val(date2);
+                    }
+                }
+            }
+
+            $("#date_start").flatpickr({
+                dateFormat: "d/m/Y",
+                defaultDate: mystart,
+                minDate: "today",
+                maxDate: "31/01/2200",
+                onChange: function (selectedDates, dateStr, instance) {
+                    $("#Extension_NewStartDate").val(dateStr);
+                    $("#NewStartDate").val(dateStr);
+                    sortDates(1, dateStr);
+                },
+            });
+
+            $("#date_end").flatpickr({
+                dateFormat: "d/m/Y",
+                defaultDate: myend,
+                minDate: "today",
+                maxDate: "31/01/2200",
+                onChange: function (selectedDates, dateStr, instance) {
+                    $("#Extension_NewEndDate").val(dateStr);
+                    $("#NewEndDate").val(dateStr);
+                    sortDates(2, dateStr);
+                },
             });
 
             // populate target groups
 
             var selectedGroup = $('#Survey_TargetGroup').val();
+            var grouparray = selectedGroup.split(',');
+
+            $.each(grouparray, function (index, item) {
+                $('#survey_group option').each(function () {
+                    if ($(this).text() == item) {
+                        $(this).prop("selected", true);
+                    }
+                });
+            });
+            /*
             if (selectedGroup.indexOf("Group 1") >= 0) {
                 $('#survey_group option').each(function () {
                     if ($(this).text() == "Group 1") {
@@ -454,6 +640,7 @@
                     }
                 });
             }
+            */
             $('#survey_group').trigger('change');
 
             // tab switching
@@ -501,6 +688,79 @@
                 var url = '@Url.Action("PublishByID", "Survey", new { area = "RnP" })?id=' + pid;
                 //alert(url);
                 window.location = url;
+            });
+
+            // extend - requires input, shows success notification, and redirects to details view (refreshes)
+
+            $('#btnExtend').click(function (event) {
+                $('#modalExtend').modal();
+            });
+
+            function ValidExtension() {
+                return true;
+            }
+
+            $('#btnExtendConfirm').click(function (event) {
+                if (!ValidExtension()) {
+                    return false;
+                }
+                var form = $('#formextend');
+                //alert(form.serialize());
+                //return false;
+                var myurl = '@Url.Action("Extend", "Survey", new { area = "RnP" })';
+                $.ajax({
+                    url: myurl,
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        if (data == "error") {
+                            $("#resultFailTitle").text('Failed to Extend Survey');
+                            $("#resultFailText").text('Operation to extend Survey unsuccessful! Please try again later.');
+                            $("#modalOperationFail").modal();
+                        }
+                        else {
+                            $("#resultSuccessTitle").text('Survey Extension Successful');
+                            $("#resultSuccessText").text('Survey extended successfully. Survey can now be accessed between the new Start Date and End Date.');
+                            $("#btnCloseOperationSuccess").data('operation', "extend");
+                            $("#modalOperationSuccess").modal();
+                        }
+                    }
+                });
+            });
+
+            // unpublish - requires input, shows success notification, and redirects to details view (refreshes)
+
+            $('#btnUnpublish').click(function (event) {
+                $('#modalUnpublish').modal();
+            });
+
+            function ValidUnpublication() {
+                return true;
+            }
+
+            $('#btnUnpublishConfirm').click(function (event) {
+                if (!ValidUnpublication()) {
+                    return false;
+                }
+                var pid = $("#btnUnpublish").data('surveyid');
+                var myurl = '@Url.Action("Unpublish", "Survey", new { area = "RnP" })?id=' + pid;
+                $.ajax({
+                    url: myurl,
+                    type: "POST",
+                    success: function (data) {
+                        if (data == "error") {
+                            $("#resultFailTitle").text('Failed to Unpublish Survey');
+                            $("#resultFailText").text('Operation to unpublish Survey unsuccessful! Please try again later.');
+                            $("#modalOperationFail").modal();
+                        }
+                        else {
+                            $("#resultSuccessTitle").text('Unpublishing of Survey Successful');
+                            $("#resultSuccessText").text('Survey unpublished successfully. Survey can no longer be accessed by respondents.');
+                            $("#btnCloseOperationSuccess").data('operation', "unpublish");
+                            $("#modalOperationSuccess").modal();
+                        }
+                    }
+                });
             });
 
             // cancel - requires input, shows success notification, and redirects to details view (refreshes)

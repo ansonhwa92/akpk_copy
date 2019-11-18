@@ -9,6 +9,8 @@ namespace FEP.Model.Migrations
 {
     public static class SeedElearning
     {
+        public const int courseTrialId = 99;
+
         public static void Seed(DbEntities db)
         {
             SeedRoles(db);
@@ -18,18 +20,182 @@ namespace FEP.Model.Migrations
 
             SeedSampleData(db);
 
-            SeedSampleQuestions(db);
+            //   SeedSampleQuestions(db);
 
             SeedAssignTrainerToCourse(db);
 
-            SeedSampleCertificateAndTemplate(db);
+            //SeedSampleCertificateAndTemplate(db);
 
             SeedAssignTrainerToGroup(db);
 
+            // SeedAdditionalCourses(db);
+            SeedRules(db);
+
+            DefaultSLAReminder(db);
+            DefaultParameterGroup(db);
+            // DefaultTemplate(db);
         }
 
         private static void SeedDefaultData(DbEntities db)
         {
+        }
+
+        private static Course AddCourse(DbEntities db, string title, int courseId, CourseStatus courseStatus = CourseStatus.Draft)
+        {
+            int i = courseId;
+
+            Course course = new Course
+            {
+                Id = courseId,
+                CategoryId = 1,
+                Code = "CODE : " + title,
+                DefaultAllowablePercentageBeforeWithdraw = 25.0m,
+                Description = "COURSE " + title,
+                Duration = 5,
+                DurationType = DurationType.Hour,
+                IsFree = i % 2 == 1 ? true : false,
+                Language = CourseLanguage.Malay,
+                Medium = CourseMedium.Online,
+                Objectives = "<strong>Objective</strong>",
+                ScheduleType = CourseScheduleType.NoTimeLimit,
+                Title = title,
+                Status = courseStatus,
+            };
+
+            db.Courses.Add(course);
+
+            db.SaveChanges();
+
+            course.Modules = new List<CourseModule>
+                {
+                    new CourseModule { Title = "Sample Module : " + title,
+                        CourseId =course.Id, Order=1, Description="Description",
+                        ModuleContents = new List<CourseContent>
+                        {
+                            new CourseContent
+                            {
+                                Order = 1,
+                                CourseId = course.Id,
+                                ContentType = CourseContentType.RichText,
+                                Text = "<h2>Sample Content for COURSE " + title + "</h2>",
+                                CompletionType = ContentCompletionType.Timer,
+                                Timer = 30, // in seconds
+                                Description = "<p> This is Content 1 for COURSE " +title + "</p>",
+                                Title = "<h2>Sample Content for COURSE " +title + "</h2>",
+                            }
+                        }
+                    }
+                };
+
+            course.CourseApprovalLog = new List<CourseApprovalLog>
+                {
+                    new CourseApprovalLog
+                    {
+                        CreatedByName = "system",
+                        ActionDate = DateTime.Now,
+                        Remark = "Course " + course.Title + " created.",
+                    },
+                };
+
+            db.Entry(course).State = EntityState.Modified;
+
+            db.SaveChanges();
+
+            return course;
+        }
+
+        private static void SeedAdditionalCourses(DbEntities db)
+        {
+            var courseExist = db.Courses.Find(2);
+
+            if (courseExist != null) return;
+
+            int i = 2;
+            while (i <= 5)
+            {
+                // Add a course
+                Course course = new Course
+                {
+                    Id = i,
+                    CategoryId = 1,
+                    Code = "COURSE " + i.ToString(),
+                    DefaultAllowablePercentageBeforeWithdraw = 25.0m,
+                    Description = "Sample Content : Code " + "COURSE " + i.ToString(),
+                    Duration = 5,
+                    DurationType = DurationType.Hour,
+                    IsFree = i % 2 == 1 ? true : false,
+                    Language = CourseLanguage.Malay,
+                    Medium = CourseMedium.Online,
+                    Objectives = "<strong>Objective</strong>",
+                    ScheduleType = CourseScheduleType.NoTimeLimit,
+                    Title = "Sample Content : Code " + "COURSE" + i.ToString(),
+                    Status = CourseStatus.Draft,
+                };
+
+                db.Courses.Add(course);
+
+                db.SaveChanges();
+
+                CourseContent richText = new CourseContent
+                {
+                    Order = 1,
+                    CourseId = course.Id,
+                    ContentType = CourseContentType.RichText,
+                    Text = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
+                    CompletionType = ContentCompletionType.Timer,
+                    Timer = 30, // in seconds
+                    Description = "<p> This is Content 1 for COURSE" + i.ToString() + "</p>",
+                    Title = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
+                };
+
+                course.Modules = new List<CourseModule>
+                {
+                    new CourseModule { Title = "Sample Module : Code " + "COURSE" + i.ToString(),
+                        CourseId =course.Id, Order=1, Description="Description",
+                        ModuleContents = new List<CourseContent>
+                        {
+                            new CourseContent
+                            {
+                                Order = 1,
+                                CourseId = course.Id,
+                                ContentType = CourseContentType.RichText,
+                                Text = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
+                                CompletionType = ContentCompletionType.Timer,
+                                Timer = 60, // in seconds
+                                Description = "<p> This is Content 1 for COURSE" + i.ToString() + "</p>",
+                                Title = "<h2>Sample Content for COURSE" + i.ToString() + "</h2>",
+                            }
+                        }
+                    }
+                };
+
+                course.CourseApprovalLog = new List<CourseApprovalLog>
+                {
+                    new CourseApprovalLog
+                    {
+                        CreatedByName = "system",
+                        ActionDate = DateTime.Now,
+                        Remark = "Course " + course.Title + " created.",
+                    },
+                };
+
+                db.Entry(course).State = EntityState.Modified;
+                db.SaveChanges();
+
+                i++;
+            }
+        }
+
+        private static void SeedRules(DbEntities db)
+        {
+            var course = db.Courses.FirstOrDefault(x => x.Id == 1);
+
+            course.TraversalRule = TraversalRule.Sequential;
+            course.CompletionCriteriaType = CompletionCriteriaType.ActivityCompletion;
+            course.ScoreCalculation = ScoreCalculation.Average;
+            course.LearningPath = "{2,3,4}"; // course 2,3,4
+
+            db.SaveChanges();
         }
 
         private static void SeedSampleCertificateAndTemplate(DbEntities db)
@@ -58,11 +224,45 @@ namespace FEP.Model.Migrations
                 db.CourseCertificateTemplates.Add(new CourseCertificateTemplate
                 {
                     Description = "Template 1",
+                    TypePageOrientation = TypePageOrientation.Portrait,
                     Template = "<h2>CERTIFICATE FOR </h2>"
                 });
 
                 db.SaveChanges();
             }
+        }
+
+        private static void AssignLearnersToCourseEvent(DbEntities db, int courseId)
+        {
+            //if (System.Diagnostics.Debugger.IsAttached == false)
+            //    System.Diagnostics.Debugger.Launch();
+
+            // Get the  course
+            var courseEvent = db.CourseEvents.Where(x => x.CourseId == courseId)
+                    .OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+
+            if (courseEvent == null) return;
+
+            var enrollment = db.Enrollments.Where(x => x.CourseEventId == courseEvent.Id);
+
+            if (enrollment != null)
+                return;
+
+            var userRoles = db.UserRole.Where(x => x.Role.Name == RoleNames.eLearningLearner);
+
+            foreach (var user in userRoles)
+            {
+                db.Enrollments.Add(new Enrollment
+                {
+                    CourseEventId = courseEvent.Id,
+                    CourseId = courseId,
+                    EnrolledDate = DateTime.Now,
+                    LearnerId = user.Id,
+                    Status = EnrollmentStatus.Enrolled,
+                });
+            }
+
+            db.SaveChanges();
         }
 
         private static void SeedAssignTrainerToCourse(DbEntities db)
@@ -82,7 +282,6 @@ namespace FEP.Model.Migrations
 
             var user = db.User.FirstOrDefault(x => x.Id == userRole.UserId);
 
-
             db.TrainerCourses.Add(new TrainerCourse
             {
                 Trainer = new Trainer { User = user },
@@ -94,31 +293,7 @@ namespace FEP.Model.Migrations
 
         private static void SeedAssignTrainerToGroup(DbEntities db)
         {
-            //if (System.Diagnostics.Debugger.IsAttached == false)
-            //    System.Diagnostics.Debugger.Launch();
-
-            // Get the  course
-            //var course = db.Courses.Include(x => x.Trainers).First();
-
-            //if (course.Trainers == null)
-            //{
-            //    course.Trainers = new List<Trainer>();
-            //}
-
-            //var userRole = db.UserRole.FirstOrDefault(x => x.Role.Name == RoleNames.eLearningTrainer);
-
-            //var user = db.User.FirstOrDefault(x => x.Id == userRole.UserId);
-
-
-            //if(!db.Groups)
-
-            //db.TrainerCourses.Add(new TrainerCourse
-            //{
-            //    Trainer = new Trainer { User = user },
-            //    Course = course
-            //});
-
-            //db.SaveChanges();
+            //  Get the  course
         }
 
         private static void SeedRoles(DbEntities db)
@@ -127,7 +302,7 @@ namespace FEP.Model.Migrations
             AddRoleAndAccess(db, RoleNames.eLearningTrainer, "Default Trainer",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseDiscussionGroupCreate, UserAccess.CourseGroupCreate,
-                UserAccess.CourseEdit, UserAccess.CourseAddDocument);
+                UserAccess.CourseAddDocument);
             AddRoleAndAccess(db, RoleNames.eLearningAdmin, "Admin eLearning",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseCreate, UserAccess.CourseEdit,
@@ -147,26 +322,54 @@ namespace FEP.Model.Migrations
             AddRoleAndAccess(db, RoleNames.eLearningLearner, "Learner",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseEnroll);
+
+            AddRoleAndAccess(db, RoleNames.eLearningFacilitator, "Facilitator",
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseDiscussionGroupCreate,
+                UserAccess.CourseGroupCreate, UserAccess.CourseAddDocument, UserAccess.CourseDiscussionCreate,
+                UserAccess.CourseEnroll);
         }
 
         private static void SeedSampleUsers(DbEntities db)
         {
             // Seed User
             AddUser(db, "eladmin@fep.com", "eladmin@fep.com", UserType.Individual, RoleNames.eLearningTrainer, RoleNames.eLearningAdmin);
-            AddUser(db, "eltrainer1@fep.com", "eltrainer1@fep.com", UserType.Individual, RoleNames.eLearningTrainer);
-            AddUser(db, "eltrainer2@fep.com", "eltrainer2@fep.com", UserType.Individual, RoleNames.eLearningTrainer);
-            AddUser(db, "eltrainer3@fep.com", "eltrainer3@fep.com", UserType.Individual, RoleNames.eLearningTrainer);
-            AddUser(db, "eltrainer4@fep.com", "eltrainer4@fep.com", UserType.Individual, RoleNames.eLearningTrainer);
-
-            AddUser(db, "elverifier@fep.com", "elverifier@fep.com", UserType.Individual, RoleNames.eLearningAdmin);
+            AddUser(db, "elverifier@fep.com", "elverifier@fep.com", UserType.Individual, RoleNames.eLearningVerifier);
             AddUser(db, "elapprover1@fep.com", "elapprover1@fep.com", UserType.Individual, RoleNames.eLearningApprover1);
             AddUser(db, "elapprover2@fep.com", "elapprover2@fep.com", UserType.Individual, RoleNames.eLearningApprover2);
             AddUser(db, "elapprover3@fep.com", "elapprover3@fep.com", UserType.Individual, RoleNames.eLearningApprover3);
-            AddUser(db, "ellearner1@fep.com", "learner1@fep.com", UserType.Individual, RoleNames.eLearningLearner);
-            AddUser(db, "ellearner2@fep.com", "learner2@fep.com", UserType.Individual, RoleNames.eLearningLearner);
-            AddUser(db, "ellearner3@fep.com", "learner3@fep.com", UserType.Individual, RoleNames.eLearningLearner);
-            AddUser(db, "ellearner4@ep.com", "learner4@fep.com", UserType.Individual, RoleNames.eLearningLearner);
-            AddUser(db, "ellearner5@fep.com", "learner5@fep.com", UserType.Individual, RoleNames.eLearningLearner);
+
+            AddUser(db, "min.elearn@yahoo.com", "min.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningTrainer, RoleNames.eLearningAdmin);
+            AddUser(db, "v1.elearn@yahoo.com", "v1.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningVerifier);
+            AddUser(db, "app1.elearn@yahoo.com", "app1.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningApprover1);
+            AddUser(db, "app2.elearn@yahoo.com", "app2.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningApprover2);
+            AddUser(db, "app3.elearn@yahoo.com", "app3.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningApprover3);
+
+            AddUser(db, "faci1.elearn@yahoo.com", "faci1.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningFacilitator);
+            AddUser(db, "faci2.elearn@yahoo.com", "faci2.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningFacilitator);
+
+            AddUser(db, "stud1.elearn@yahoo.com", "stud1.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningLearner);
+            AddUser(db, "stud2.elearn@yahoo.com", "stud2.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningLearner);
+
+            for (int i = 1; i <= 10; i++)
+            {
+                var facilitator = $"elInstructor{i}@fep.com";
+
+                AddUser(db, facilitator, facilitator, UserType.Individual, RoleNames.eLearningFacilitator);
+            }
+
+            for (int i = 1; i <= 20; i++)
+            {
+                var trainer = $"eltrainer{i}@fep.com";
+
+                AddUser(db, trainer, trainer, UserType.Individual, RoleNames.eLearningTrainer, RoleNames.eLearningFacilitator);
+            }
+
+            for (int i = 1; i <= 20; i++)
+            {
+                var student = $"elstudent{i}@fep.com";
+
+                AddUser(db, student, student, UserType.Individual, RoleNames.eLearningLearner);
+            }
         }
 
         private static void SeedSampleCategories(DbEntities db)
@@ -186,12 +389,22 @@ namespace FEP.Model.Migrations
                     return u;
                 };
 
+                //db.RefCourseCategories.AddOrUpdate(
+                //    x => x.Name,
+                //    createCategory("General", "General Category"),
+                //    createCategory("Youth", "Youth Personal Finance Management"),
+                //    createCategory("Individual", "Individual Finance Management"),
+                //    createCategory("Family", "Family Finance Management")
+
+                //    );
+
                 db.RefCourseCategories.AddOrUpdate(
                     x => x.Name,
-                    createCategory("General", "General Category"),
-                    createCategory("Youth", "Youth Personal Finance Management"),
-                    createCategory("Individual", "Individual Finance Management"),
-                    createCategory("Family", "Family Finance Management")
+                    createCategory("Cash Flow", "Cash Flow"),
+                    createCategory("Car", "Car"),
+                    createCategory("House", "House"),
+                    createCategory("Investment", "Investment"),
+                    createCategory("Protection", "Protection")
 
                     );
 
@@ -221,6 +434,7 @@ namespace FEP.Model.Migrations
                 // Add a course
                 Course course = new Course
                 {
+                    Id = 1,
                     CategoryId = 1,
                     Code = "GEN01",
                     DefaultAllowablePercentageBeforeWithdraw = 25.0m,
@@ -263,6 +477,7 @@ namespace FEP.Model.Migrations
                         "in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop " +
                         "publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p></div>",
                     CompletionType = ContentCompletionType.Timer,
+                    Timer = 120, // in seconds
                     Description = "<p> This is Content 1 </p>",
                     Title = "Content 1",
                 };
@@ -288,7 +503,7 @@ namespace FEP.Model.Migrations
                     Url = "https://www.sinarharian.com.my/",
                     CompletionType = ContentCompletionType.ClickButton,
                     Description = "<p> This is Content 3 </p>",
-                    Title = "Module 3",
+                    Title = "Content 3",
                 };
                 moduleContents.Add(iframe);
 
@@ -311,7 +526,7 @@ namespace FEP.Model.Migrations
                     {
                         Order = 1,
                         CourseId = course.Id,
-                        Description = "<p> Description Module</p>",
+                        Description = "<p> Description Module 1</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
                         Title = "Module 1",
                         ModuleContents = moduleContents,
@@ -320,16 +535,17 @@ namespace FEP.Model.Migrations
                     {
                         Order = 2,
                         CourseId = course.Id,
-                        Description = "<p> Description Module</p>",
+                        Description = "<p> Description Module 2</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
                         Title = "Module 2",
                         ModuleContents = new List<CourseContent> {
                             new CourseContent
                             {
                                 Order = 1,
+                                CourseId = course.Id,
                                 ContentType = CourseContentType.Video,
                                 Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8" ,
-                                CompletionType = ContentCompletionType.ClickButton,
+                                 CompletionType  = ContentCompletionType.ClickButton,
                                 Description = "<p> Watch the video</p>",
                                 Title = "Content 2",
                             }
@@ -339,29 +555,45 @@ namespace FEP.Model.Migrations
                     {
                         Order = 3,
                         CourseId = course.Id,
-                        Description = "<p> Description Module</p>",
+                        Description = "<p> Description Module 3</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
                         Title = "Module 3",
                         ModuleContents = new List<CourseContent> {
                             new CourseContent
                             {
                                 Order = 1,
+                                CourseId = course.Id,
                                 ContentType = CourseContentType.Video,
                                 Url = "https://www.youtube.com/watch?v=WEDIj9JBTC8" ,
-                                CompletionType = ContentCompletionType.ClickButton,
+                                 CompletionType  = ContentCompletionType.ClickButton,
                                 Description = "<p> Watch the video</p>",
                                 Title = "Content 2",
                             }
-                        } ,
+                        },
                     },
                     new CourseModule
                     {
                         Order = 4,
                         CourseId = course.Id,
-                        Description = "<p> Description Module</p>",
+                        Description = "<p> Description Module 4</p>",
                         Objectives = "In this module you will learn: <br /><ul><li>point 1</li><li>point 2</li><li>point 3</li></ul>",
-                        Title = "Module 1",
-                        ModuleContents = moduleContents.ToList().Select(x => new CourseContent()).ToList(),
+                        Title = "Module 4",
+                        ModuleContents = moduleContents.ToList().Select(x => new CourseContent {
+                            Order = x.Order,
+                            Text = x.Text,
+                            Description = x.Description,
+                            Timer  = x.Timer,
+                            Title = x.Title,
+                            CourseId = x.CourseId,
+                            VideoType = x.VideoType,
+                            AudioType = x.AudioType,
+                            CompletionType = x.CompletionType,
+                            Url = x.Url,
+                            ShowIFrameAs  = x.ShowIFrameAs,
+                            Question = x.Question,
+                            QuestionType = x.QuestionType,
+                            ContentType = x.ContentType
+                        }).ToList(),
                     },
                 };
 
@@ -374,11 +606,21 @@ namespace FEP.Model.Migrations
                         CreatedByName = "system",
                         ActionDate = DateTime.Now,
                         Remark = "Course " + course.Title + " created.",
+                        ApprovalStatus = ApprovalStatus.None
                     },
                 };
 
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
+
+                foreach (var module in course.Modules)
+                {
+                    module.UpdateTotals();
+
+                    db.SetModified(module);
+
+                    db.SaveChanges();
+                }
             }
         }
 
@@ -448,7 +690,9 @@ namespace FEP.Model.Migrations
                     ContentType = CourseContentType.Test,
                     CourseId = courseId,
                     Order = ++order,
+                    CompletionType = ContentCompletionType.AnswerQuestion,
                     QuestionType = question.QuestionType,
+                    QuestionId = question.Id,
                     Title = "Question 1",
                     Description = "Question 1"
                 };
@@ -456,25 +700,7 @@ namespace FEP.Model.Migrations
                 if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
 
                 module.ModuleContents.Add(content);
-
-                db.SaveChanges();
-
-
-                var contentQuestion = new ContentQuestion
-                {
-                    Order = 1,
-                    ContentId = content.Id,
-                    CourseId = courseId,
-                    Question = question,
-                    QuestionId = question.Id,
-                };
-
-                db.ContentQuestions.Add(contentQuestion);
-                db.SaveChanges();
-
-                content.ContentQuestionId = contentQuestion.Id;
-
-                db.SetModified(content);
+                module.UpdateTotals();
 
                 db.SaveChanges();
 
@@ -483,10 +709,14 @@ namespace FEP.Model.Migrations
                     ContentType = CourseContentType.Test,
                     CourseId = courseId,
                     Order = ++order,
+                    CompletionType = ContentCompletionType.AnswerQuestion,
                     QuestionType = question2.QuestionType,
+                    QuestionId = question2.Id,
                     Title = "Question 2",
                     Description = "Question 2"
                 };
+
+                content2.QuestionId = question2.Id;
 
                 if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
 
@@ -494,21 +724,9 @@ namespace FEP.Model.Migrations
 
                 db.SaveChanges();
 
-                var contentQuestion2 = new ContentQuestion
-                {
-                    Order = 2,
-                    ContentId = content2.Id,
-                    CourseId = courseId,
-                    Question = question2,
-                    QuestionId = question2.Id,
-                };
+                module.UpdateTotals();
 
-                db.ContentQuestions.Add(contentQuestion2);
-                db.SaveChanges();
-
-                content2.ContentQuestionId = contentQuestion2.Id;
-
-                db.SetModified(content2);
+                db.SetModified(module);
 
                 db.SaveChanges();
             }
@@ -583,6 +801,222 @@ namespace FEP.Model.Migrations
 
                 db.SaveChanges();
             }
+        }
+
+        public static void DefaultSLAReminder(DbEntities db)
+        {
+            db.SLAReminder.AddOrUpdate(s => s.NotificationType,
+
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Creation, ETCode = "ET016EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Published_Change, ETCode = "ET017EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Published_Withdraw, ETCode = "ET018EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Participant_Withdraw, ETCode = "ET019EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Creation_Approver1, ETCode = "ET020EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Creation_Approver2, ETCode = "ET021EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Creation_Approver3, ETCode = "ET022EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Published_Change, ETCode = "ET023EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Published_Withdraw, ETCode = "ET024EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Approve_Courses_Participant_Withdraw, ETCode = "ET025EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Course_Amendment, ETCode = "ET026EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.ApproveCourses, NotificationType = NotificationType.Course_Approved, ETCode = "ET027EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days }
+
+            );
+        }
+
+        public static void DefaultParameterGroup(DbEntities db)
+        {
+            foreach (TemplateParameterType paramType in Enum.GetValues(typeof(TemplateParameterType)))
+            {
+                SLAEventType EventType;
+
+                int pType = (int)paramType;
+
+                if (pType >= 141 && pType <= 160)
+                {
+                    db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+                    new ParameterGroup { SLAEventType = SLAEventType.VerifyCourses, TemplateParameterType = paramType });
+
+                    db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+                    new ParameterGroup { SLAEventType = SLAEventType.ApproveCourses, TemplateParameterType = paramType });
+
+                    continue;
+                }
+            }
+        }
+
+        public static void DefaultTemplate(DbEntities db)
+        {
+            var user = db.User.Local.Where(r => r.Name.Contains("System Admin")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("System Admin")).FirstOrDefault();
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.Verify_Courses_Creation,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Verify_Courses_Creation.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Verify_Courses_Creation).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Verify A New Course : [#CourseTitle]",
+                    TemplateMessage = @"Hi,<br />
+                                        <p>A course [#CourseTitle] requires verification.</p><br />
+                                        Please click <a href='[#Link]'>here</a> to verify.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    WebNotifyLink = "",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.Approve_Courses_Creation_Approver1,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Approve_Courses_Creation_Approver1.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Approve_Courses_Creation_Approver1).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Approval needed for Course : [#CourseTitle]",
+                    TemplateMessage = @"Hi, <br />
+                                        A course [#CourseTitle] requires Approval.<br />
+                                        Please  click <a href='[#Link]'>here</a> to approve.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    WebNotifyLink = "",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.Approve_Courses_Creation_Approver2,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Approve_Courses_Creation_Approver1.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Approve_Courses_Creation_Approver1).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Approval needed for Course : [#CourseTitle]",
+                    TemplateMessage = @"Hi, <br />
+                                        A course [#CourseTitle] requires Approval.<br />
+                                        Please  click <a href='[#Link]'>here</a> to approve.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    WebNotifyLink = "",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.Approve_Courses_Creation_Approver3,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Approve_Courses_Creation_Approver1.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Approve_Courses_Creation_Approver1).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Approval needed for Course : [#CourseTitle]",
+                    TemplateMessage = @"Hi, <br />
+                                        A course [#CourseTitle] requires Approval.<br />
+                                        Please  click <a href='[#Link]'>here</a> to approve.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    WebNotifyLink = "",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.Course_Approved,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Course_Approved.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Course_Approved).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Course  [#CourseTitle] has been Approved",
+                    TemplateMessage = @"Hi, <br />
+                                        The course [#CourseTitle] has been approved.<br />
+                                        Please  click <a href='[#Link]'>here</a> to view.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    WebNotifyLink = "",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.Course_Amendment,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Course_Amendment.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Course_Amendment).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Course [#CourseTitle] Require Amendment",
+                    TemplateMessage = @"Hi, <br />
+                                        A course [#CourseTitle] requires ammendment.<br />
+                                        Please  click <a href='[#Link]'>here</a> to view.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    WebNotifyLink = "",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.Course_Invitation,
+                    NotificationCategory = NotificationCategory.Learning,
+                    TemplateName = NotificationType.Course_Invitation.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.Course_Invitation).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "Invitation to Enroll To Course [#CourseTitle]",
+                    TemplateMessage = @"Hi, <br />
+                                        You are invited to enroll to the course [#CourseTitle]<br />
+                                        Please  click <a href='[#Link]'>here</a> to enroll.<br />
+                                        Thank you.<br />",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = false,
+                    WebMessage = "Web Message Template",
+                    WebNotifyLink = "",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
         }
     }
 }

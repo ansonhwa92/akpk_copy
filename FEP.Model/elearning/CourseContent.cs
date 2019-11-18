@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FEP.Model.eLearning
 {
@@ -12,37 +13,28 @@ namespace FEP.Model.eLearning
 
         public int CourseModuleId { get; set; }
 
-        [Required]
         public int CourseId { get; set; }
+
+        // Content order in module
+        public int Order { get; set; } = 0;
 
         [Required]
         public CourseContentType ContentType { get; set; }
 
-        [Display(Name = "CompletionCriteria", ResourceType = typeof(Language.eLearning.Content))]
-        public ContentCompletionType CompletionType { get; set; }
-
-        public int Order { get; set; }
-
-        public QuestionType? QuestionType { get; set; }
-
-        // -- START For use with completion Type
-        public int? ContentQuestionId { get; set; }
-        public virtual ContentQuestion ContentQuestion { get; set; }
-        public int Timer { get; set; } //completiontype timer in sec
-        // -- END For use with completion Type
-
-        // -- START For use with single item in the page
+        // For if contenttype = video
         public VideoType? VideoType { get; set; }
+        // For if contenttype = audio
+        public AudioType? AudioType { get; set; }
+
+        public DocumentType? DocumentType { get; set; }
+
+        // For if contenttype = video/youtube url, iframe
         public string Url { get; set; }
 
         //  upload file
         public int? ContentFileId { get; set; }
+
         public virtual ContentFile ContentFile { get; set; }
-
-
-        //public int? FileDocumentId { get; set; }
-        //public virtual FileDocument FileDocument { get; set; }
-        // -- END
 
         // for rich text
         public string Text { get; set; }
@@ -50,11 +42,27 @@ namespace FEP.Model.eLearning
         // for Iframe
         public ShowIFrameAs ShowIFrameAs { get; set; }
 
-        // for other images and files
-        public virtual ICollection<ContentFile> Images { get; set; }
-        public virtual ICollection<ContentFile> Files { get; set; }
-    }
+        // START content completion criteria
 
+        [Display(Name = "CompletionCriteria", ResourceType = typeof(Language.eLearning.Content))]
+        public ContentCompletionType CompletionType { get; set; } = ContentCompletionType.ClickButton;
+
+        public QuestionType? QuestionType { get; set; }
+
+        public int? QuestionId { get; set; }
+
+        public virtual Question Question { get; set; }
+        public int Timer { get; set; } //completiontype timer in sec
+
+        // END Content completion
+        public string IntroImageFileName { get; set; }
+
+        // For video
+        [Range(5, 5000)]
+        public int? Height { get; set; } = 100;
+        [Range(5, 5000)]
+        public int? Width { get; set; } = 100;
+    }
 
     public enum ShowIFrameAs
     {
@@ -88,9 +96,6 @@ namespace FEP.Model.eLearning
         [Display(Name = "RichText", ResourceType = typeof(Language.eLearning.Enum))]
         RichText,
 
-        [Display(Name = "WebLink", ResourceType = typeof(Language.eLearning.Enum))]
-        WebLink,
-
         [Display(Name = "Document", ResourceType = typeof(Language.eLearning.Enum))]
         Document,
 
@@ -111,7 +116,17 @@ namespace FEP.Model.eLearning
         Assignment,
 
         [Display(Name = "Instructor", ResourceType = typeof(Language.eLearning.Enum))]
-        Instructor
+        Instructor,
+
+        [Display(Name = "Flash", ResourceType = typeof(Language.eLearning.Enum))]
+        Flash,
+
+        [Display(Name = "Pdf", ResourceType = typeof(Language.eLearning.Enum))]
+        Pdf,
+
+        //https://github.com/aspose-slides/Aspose.Slides-for-.NET
+        [Display(Name = "Powerpoint", ResourceType = typeof(Language.eLearning.Enum))]
+        Powerpoint
     }
 
     public enum ContentCompletionType
@@ -123,7 +138,6 @@ namespace FEP.Model.eLearning
         Timer
     }
 
-
     public enum CreateContentFrom
     {
         CourseFrontPage,
@@ -132,11 +146,33 @@ namespace FEP.Model.eLearning
 
     public enum VideoType
     {
-        [Display(Name = "Instructor", ResourceType = typeof(Language.eLearning.Enum))]
+        [Display(Name = "ExternalVideo", ResourceType = typeof(Language.eLearning.Enum))]
         ExternalVideo,
 
-        [Display(Name = "Instructor", ResourceType = typeof(Language.eLearning.Enum))]
+        [Display(Name = "UploadVideo", ResourceType = typeof(Language.eLearning.Enum))]
         UploadVideo,
+
         //Presentation
+    }
+
+    public enum AudioType
+    {
+        [Display(Name = "SavedAudio", ResourceType = typeof(Language.eLearning.Enum))]
+        SavedAudio,
+
+        [Display(Name = "UploadAudio", ResourceType = typeof(Language.eLearning.Enum))]
+        UploadAudio,
+    }
+
+    public enum DocumentType
+    {
+        [Display(Name = "SavedDocument", ResourceType = typeof(Language.eLearning.Enum))]
+        SavedDocument,
+
+        [Display(Name = "UploadDocument", ResourceType = typeof(Language.eLearning.Enum))]
+        UploadDocument,
+
+        [Display(Name = "UseSlideshare", ResourceType = typeof(Language.eLearning.Enum))]
+        UseSlideshare,
     }
 }

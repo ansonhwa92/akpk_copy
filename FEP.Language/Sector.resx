@@ -151,7 +151,7 @@
     <value />
   </data>
   <data name="TitleList" xml:space="preserve">
-    <value>Sector Parameter</value>
+    <value>Agency Sector Parameter</value>
   </data>
   <data name="ValidExistName" xml:space="preserve">
     <value>Sector Name already registered in the system</value>

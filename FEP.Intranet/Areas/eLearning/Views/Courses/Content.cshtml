@@ -2,8 +2,6 @@
 @model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
 
 @{
-    /**/
-
     ViewBag.Title = "Manage Course";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 
@@ -21,7 +19,13 @@
         <div class="title-header-container">
             <div class="container">
                 <!-- if have button -->
-                <div class="header-col-right float-right mt-5"><a href="~/eLearning/Courses" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-right float-right mt-5">
+                    <a href="~/eLearning/Courses" class="btn btn-outline-primary text-white">
+                        <span class="align-middle">
+                            <i class="la la-long-arrow-left">&nbsp;</i>
+                        </span> Back
+                    </a>
+                </div>
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
@@ -41,133 +45,196 @@
     </div>
 }
 
-<form id="form" method="post">
+@Html.AntiForgeryToken()
 
-    @Html.AntiForgeryToken()
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.HiddenFor(m => m.Id)
+@Html.HiddenFor(m => m.Title)
+@Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+@Html.HiddenFor(m => m.CourseEventId)
+@Html.HiddenFor(m => m.IntroImageFileName)
+@Html.HiddenFor(m => m.ViewCategory)
 
-    @Html.HiddenFor(m => m.Id)
-    @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+<div class="row">
 
-    <div class="row">
+    @Html.Partial("_contentSidebar")
 
-        @Html.Partial("_contentSidebar")
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 
-        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-            <!-- Start Form -->
-            <div class="border-form rounded-top">
-                <div class="form-container tab-content">
-                    <div class="tab-pane active" id="course-details">
-                        <div class="mb-4 mt-2 mr-auto">
-                            <h5 class="font-weight-bold float-right">Status : @Model.Status</h5>
-                            <span class="text-muted-light x-small font-italic">Course Name</span>
-                            <h2 class="color-darkblue mb-0">
-                                @name
-                            </h2>
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
+
+            <div class="form-container tab-content">
+
+                <div class="row">
+                    <div class="col-sm-9">
+                        <span class="title">
+                            @name
+                        </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="card text-white bg-dark font-weight-bold p-2 float-right border-dark">
+                            @Html.Partial("_courseStatus", Model.Status)
                         </div>
-                        <span class="text-muted-light x-small font-italic">Course Description</span>
-                        <br />
-                        <div>
-                            <div class="descbox">
-                                @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
-                            </div>
-                            <p id="afterDesc"></p>
-                        </div>
+                    </div>
+                </div>
 
-                        <br />
-                        <span class="text-muted-light x-small font-italic">Course Objectives</span>
-                        <div>
-                            <div class="objbox">
-                                @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
-                            </div>
-                            <p id="afterObj"></p>
-                        </div>
-                        <br />
-                        <div>
-                            <div class="row">
+                <div class="tab-pane active" id="course-details">
+                    <div class="mb-4 mt-2 mr-auto">
+                        <input type="file" name="File" id="File" class="file" accept="image/*" hidden />
 
-                                <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
-                                <a class="btn btn-secondary m-2" href="#">View as learner</a>
+                        <div id="imgDiv" onclick="$('#File').click()">
+
+                            <div class="boxed">
+                                <img class="introImage" src=""
+                                     height="250" width="500" alt="" />
                             </div>
                         </div>
-                        <hr />
+                    </div>
 
-                        <input name="order" id="order" hidden />
-                        <!----START MODULES -->
-                        <div id="draggable-element">
-                            @{
+                    <div class="subtitle">
+                        ABOUT
+                    </div>
 
-                                var modules = Model.Modules.OrderBy(x => x.Order).ToList();
+                    <div>
+                        <div class="descbox">
+                            @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
+                        </div>
+                        <p id="afterDesc"></p>
+                    </div>
 
-                                for (int i = 0; i < modules.Count(); i++)
-                                {
-                                    var module = modules[i];
+                    <div class="subtitle">
+                        What you will learn
+                    </div>
 
-                                    <div class="module-box" data-id="@module.Order">
+                    <div>
+                        <div class="objbox">
+                            @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
+                        </div>
+                        <p id="afterObj"></p>
+                    </div>
+                    <div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-3 font-size-16pt">Published To</label>
+                            <div class="col-sm-4">
+                                @Html.EditorFor(model => model.ViewCategory, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                    </div>
 
-                                        <a href="@Url.Action("Content", "CourseModules", new { area = "eLearning", id = module.Id })"
-                                           data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>
-                                        <a href="@Url.Action("Edit", "CourseModules", new { area = "eLearning", id = module.Id })"
-                                           data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit"></i></a>
-                                        <a href="@Url.Action("Delete", "CourseModules", new { area = "eLearning", id = module.Id})"
-                                           data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o"></i></a>
+                    <div>
+                        <div class="row">
+                            <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
+                            <a class="btn btn-secondary m-2" href="@Url.Action("View", "Courses", new { area = "eLearning", id = @Model.Id })">View as learner</a>
+                        </div>
+                    </div>
 
-                                        <div class="row float-right">
+                    <div class="subtitle">
+                        MODULES
+                    </div>
+                    <input name="order" id="order" hidden />
+                    <!----START MODULES -->
+                    <div id="draggable-module">
+                        @{
 
-                                            <i class="fa fa-bars handle color-darkblue" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Reorder"></i>
+                            var modules = Model.Modules.OrderBy(x => x.Order).ToList();
+
+                            for (int i = 0; i < modules.Count(); i++)
+                            {
+                                var module = modules[i];
+
+                                <div class="module-box" data-id="@module.Id" onclick="openModule(@module.Id)">
+
+                                    <div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-sm-9">
+                                                <span class="moduleTitle">@module.Title</span>
+                                            </div>
+                                            @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
+                                                           (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||
+                                                           CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                                {
+                                                    <div class="col-sm-3 pull-right pt-1">
+                                                        <a href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                                           data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>
+                                                        <a href="@Url.Action("Content", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                                           data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit "></i></a>
+                                                        <a href="@Url.Action("Delete", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                                           data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o "></i></a>
+
+                                                        <div class="float-right">
+                                                            <i class="fa fa-bars handle color-darkblue" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Reorder"></i>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
                                         </div>
 
                                         <div>
-                                            <h2>@module.Title</h2>
-                                            @module.Order
-                                            <div>
+                                            <div class="modDescbox">
                                                 @Html.Raw(@module.Description)
+                                            </div>
+
+                                            <div class="row pl-2">
+                                                <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
+                                                <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
+                                                <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
                                             </div>
                                         </div>
                                     </div>
-                                    //i++;
-                                }
+                                    <div class="divider"></div>
+                                </div>
+
                             }
-                        </div>
-                        <!----END MODULES -->
+                        }
                     </div>
-
-                    <!-- Popups -->
-                    <!-- popups end -->
+                    <!----END MODULES -->
                 </div>
-
-                <!--  Start Action Log -->
-                @Html.Partial("_actionLog", Model)
-                <!--  End Action Log -->
             </div>
 
-            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+            <!--  Start Action Log -->
+            @Html.Partial("_actionLog", Model)
+            <!--  End Action Log -->
+        </div>
 
-                <a class="btn btn-default" href="@Url.Action("Index", "Courses", new { area = "eLearning" })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
-                <button type="submit" class="btn btn-default pull-right" id="btnSave" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save</button>
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+            <a class="btn btn-default" href="@Url.Action("Index", "Courses", new { area = "eLearning" })" data-toggle="tooltip"
+               data-placement="top" title="Back">@Language.General.ButtonBack</a>
+        </div>
+    </div>
+</div>
+
+<!-- Alert Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="alertBox">
+    <input id="forAction" hidden />
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnYes">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
-</form>
+</div>
 
 <style>
-    .module-box {
-        border-radius: 3px;
-        border-width: thin;
-        padding: 15px;
-        border-style: solid;
-        border-color: #f7efef;
-        margin: 5px;
-    }
-
-    .handle {
-        cursor: move;
-        cursor: -webkit-grabbing;
-    }
 </style>
 
 @section ContentScript {
+
+    <link href="~/css/elearn.css" rel="stylesheet" />
+
     <script src="~/Scripts/jquery.truncate.js"></script>
     <!-- Sortable.js -->
     <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
@@ -176,8 +243,8 @@
     <script>
 
         $(document).ready(function () {
-            truncate('descbox', 'afterDesc', 200);
-            truncate('objbox', 'afterObj', 200);
+            //truncate('descbox', 'afterDesc', 200);
+            //truncate('objbox', 'afterObj', 200);
 
             var options = {
                 group: 'modules',
@@ -196,19 +263,128 @@
                         var order = sortable.toArray();
                         localStorage.setItem(sortable.options.group.name, order.join('|'));
 
-                        console.log('order - ', order);
+                        //console.log('order - ', order);
 
                         $('#order').val(order);
+
+                        var url = "@WebApiURL" + "eLearning/Courses/OrderContent";
+
+                        var courseId = $('#Id').val();
+                        var createdBy = $('#CreatedBy').val();
+                        var data = { Id: courseId, CreatedBy: createdBy, Order: order };
+
+                        //console.log(data);
+
+                        $.ajax({
+                            url: url,
+                            data: data,
+                            type: 'POST',
+                            success: function (result) {
+                                console.log('result - ', result, );
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.log('error - ' + textStatus + " " + errorThrown);
+                            }
+                        });
                     }
-                }
+                },
             };
 
             // set to null initially, so it wont get read the next reload, but read from db
             localStorage.setItem("modules", null);
 
-            $('#draggable-element').sortable(options);
+            $('#draggable-module').sortable(options);
 
-            //  console.log('local -', localStorage.getItem("modules"));
+             var imgFileName = $('#IntroImageFileName').val();
+
+            if ($.trim(imgFileName) == "") {
+
+                var defaultImgUrl = '@(BaseURL)/Content/logo-akpk.svg';
+                $(".introImage").attr('src', defaultImgUrl);
+            }
+            else {
+                var defaultImgUrl = '@(BaseURL)/File/GetImg?fileName=' + imgFileName;
+                $(".introImage").attr('src', defaultImgUrl);
+            }
+
+        });
+
+        function openModule(moduleId) {
+            var url = '@Url.Action("Content", "CourseModules", new { area = "eLearning" })?id=' + moduleId;
+            window.location = url;
+        }
+
+        $('.file').on('change', function () {
+            let fileName = $(this).val().split('\\').pop();
+
+            var file = document.getElementsByName('File')[0].files[0];
+
+            var uploadImgUrl = '@(BaseURL)/eLearning/File/UploadFile';
+
+            uploadFile(uploadImgUrl, file, function (value) {
+
+                //console.log('value - ', value);
+
+                $('#IntroImageFileName').val(value.FileNameOnStorage);
+
+                var url = "@WebApiURL" + "eLearning/Courses/UpdateIntroImg";
+
+                console.log('url = ', url);
+
+                $.ajax({
+                    url: url,
+                    data: { Id: @Model.Id, FileName: value.FileNameOnStorage },
+                    type: 'post',
+                    success: function (result) {
+                        console.log('result - ', result);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('error - ' + textStatus + " " + errorThrown);
+                    }
+
+                });
+
+                var newImgUrl = '@(BaseURL)/eLearning/File/GetImg?fileName=' + value.FileNameOnStorage;
+
+                $(".introImage").attr('src', newImgUrl);
+
+            });
+        });
+
+        function publish() {
+            showAlertBox("publish", "Publish Course", "Publish this course?");
+        }
+
+        function showAlertBox(forAction, title, body) {
+            $("#alertBox .modal-title").text(title);
+            $("#alertBox .modal-body").text(body);
+
+            $('#forAction').val(forAction); // alert for what action
+
+            $('#alertBox').modal();
+
+        }
+
+        function inviteStudents() {
+            // plan to open modal to invite students
+        }
+
+        $('#btnYes').click(function (e) {
+            e.preventDefault();
+
+            var forAction = $('#forAction').val();
+            //console.log('for action -', forAction);
+
+            var form = $("#formPublish");
+            var courseId = $("#Id").val();
+            var title = $("#Title").val();
+            var viewCategory = $("#ViewCategory").val()
+
+            if (forAction == "publish") {
+                form.attr('action', "@BaseURL/eLearning/CourseEvents/Publish?id=" + courseId + "&title=" + title + "&viewCategory=" + viewCategory);
+
+                form.submit();
+            }
 
         });
     </script>

@@ -1,0 +1,144 @@
+﻿@using FEP.Model.eLearning
+@using FEP.Model
+
+@model FEP.WebApiModel.eLearning.CourseApprovalLogModel
+
+<!-- Start Form -->
+
+@using (Html.BeginForm("SubmitForApproval", "CourseApprovals", FormMethod.Post, new { id = "myform" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.CourseId)
+    @Html.HiddenFor(m => m.Status)
+    @Html.HiddenFor(m => m.Remark)
+    @Html.HiddenFor(m => m.IsApproved)
+    @*@Html.HiddenFor(m => m.IsNextLevelRequired)*@
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <!--MODAL APPROVE  -->
+    <div class="modal fade" id="modalApprove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @if (Model.Status == CourseStatus.Submitted)
+                    {
+                        if (CurrentUser.HasAccess(UserAccess.CourseVerify))
+                        {
+                            <h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
+                        }
+                    }
+                    else if (Model.Status == CourseStatus.Verified ||
+                               Model.Status == CourseStatus.FirstApproval ||
+                               Model.Status == CourseStatus.SecondApproval)
+                    {
+                        if (CurrentUser.HasAccess(UserAccess.CourseApproval1) || CurrentUser.HasAccess(UserAccess.CourseApproval2))
+                        {
+                            <h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
+                            <h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
+                            <div class="form-group">
+                                <div class="ml-4">
+                                    <div class="custom-control custom-radio">
+                                        @Html.RadioButtonFor(model => model.IsNextLevelRequired, true, new { @id = "option1" })
+                                        <label for="option1">Yes, submit to next level approval</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        @Html.RadioButtonFor(model => model.IsNextLevelRequired, false, new { @id = "option2" })
+                                        <label for="option2">No, skip and approve this Course</label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    }
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Remark, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                        <textarea class="form-control" name="Approval_Remark" id="Approval_Remark" rows="4" placeholder=""></textarea>
+
+                        <span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
+                    </div>
+                </div>
+                <div class="divider-border"></div>
+                <div class="m-4 text-center">
+                    <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#approvalsent" id="btnApproveConfirm">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--MODAL APPROVE SENT -->
+    <div class="modal fade" id="modalApproveSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    @if (Model.Status == CourseStatus.Submitted)
+                    {
+                        <!-- verification (always forwarded) -->
+                        <img src="~/img/icon-noti-email.svg" alt="image">
+                        <h4 class="color-darkblue mt-4">Approval Request Sent</h4>
+                        <p class="small">Your approval request has been sent.</p>
+                    }
+                    else if (Model.Status == CourseStatus.Verified ||
+                                Model.Status == CourseStatus.FirstApproval ||
+                                Model.Status == CourseStatus.SecondApproval)
+                    {
+                        <!-- approval -->
+                        <!-- forwarding -->
+                        <img src="~/img/icon-approval.svg" alt="image">
+                        <h4 class="color-darkblue mt-4">Approval Request Sent</h4>
+                        <p class="small">Your approval request has been sent to the next Approver.</p>
+                        <!-- not forwarding -->
+                        <img src="~/img/icon-approval.svg" alt="image">
+                        <h4 class="color-darkblue mt-4">Course Approved</h4>
+                        <p class="small">The course has been approved.</p>
+                    }
+                </div>
+                <!-- Bila xde modal footer -->
+                <div class="modal-footer py-0">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+
+    <!--MODAL REJECT -->
+    <div class="modal fade" id="modalReject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4 class="color-darkblue mt-4">Require Amendment</h4>
+                    <label>Remarks</label> <span class="text-danger">*</span>
+                    <textarea class="form-control" name="Reject_Remark" id="Reject_Remark" rows="4" placeholder=""></textarea>
+                    <span class="text-danger field-validation-error" id="span_rejectremarkserror" style="display:none;">Please enter Remarks</span>
+                </div>
+                <div class="divider-border"></div>
+                <div class="m-4 text-center">
+                    <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#amendmentsent" id="btnRejectConfirm">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalRejectSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="../img/icon-noti-email.svg" alt="image">
+                    <h4 class="color-darkblue mt-4">Ammendment Sent</h4>
+                    <p class="small">Your ammendment request has been sent.</p>
+                </div>
+                <!-- Bila xde modal footer -->
+                <div class="modal-footer py-0">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+}
+<!-- popups end -->

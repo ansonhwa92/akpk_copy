@@ -20,6 +20,8 @@ namespace FEP.WebApiModel.Template
     {
         [Display(Name = "Template Name")]
         public string TemplateName { get; set; }
+        [Display(Name = "Category")]
+        public NotificationCategory? NotificationCategory { get; set; }
 
         [Display(Name = "Date Created")]
         public DateTime CreatedDate { get; set; }
@@ -39,6 +41,10 @@ namespace FEP.WebApiModel.Template
 
         [Display(Name = "Notification Type")]
         public NotificationType NotificationType { get; set; }
+        [Display(Name = "Category")]
+        public NotificationCategory NotificationCategory { get; set; }
+        [Display(Name = "Category")] 
+        public string NotificationCategoryName { get; set; }
 
         [Display(Name = "ID")]
         public string NotificationTypeName { get; set; }
@@ -65,6 +71,8 @@ namespace FEP.WebApiModel.Template
 
         [Display(Name = "Web Message")]
         public string WebMessage { get; set; }
+        [Display(Name = "Web Notification Link")] 
+        public string WebNotifyLink { get; set; }
         [Display(Name = "Send Web Message")]
         public bool enableWebMessage { get; set; }
 
@@ -120,6 +128,8 @@ namespace FEP.WebApiModel.Template
         [Display(Name = "Notification Type")]
         public NotificationType NotificationType { get; set; }
 
+        public NotificationCategory NotificationCategory { get; set; }
+
         [Display(Name = "Description")]
         public string TemplateName { get; set; }
 
@@ -142,7 +152,9 @@ namespace FEP.WebApiModel.Template
 
         [Display(Name = "Web Message")]
         public string WebMessage { get; set; }
-        [Display(Name = "Send Web Message")]
+        [Display(Name = "Web Notification Link")]
+        public string WebNotifyLink { get; set; }
+        [Display(Name = "Send Web Notification")]
         public bool enableWebMessage { get; set; }
 
     }
@@ -176,6 +188,8 @@ namespace FEP.WebApiModel.Template
         [Display(Name = "Notification Type")]
         public NotificationType NotificationType { get; set; }
 
+        public NotificationCategory NotificationCategory { get; set; }
+
         [Display(Name = "Description")]
         public string TemplateName { get; set; }
 
@@ -204,6 +218,8 @@ namespace FEP.WebApiModel.Template
 
         [Display(Name = "Web Message")]
         public string WebMessage { get; set; }
+        [Display(Name = "Web Notification Link")]
+        public string WebNotifyLink { get; set; }
         [Display(Name = "Send Web Message")]
         public bool enableWebMessage { get; set; }
 

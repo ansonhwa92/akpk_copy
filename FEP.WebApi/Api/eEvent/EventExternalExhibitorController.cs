@@ -36,7 +36,7 @@ namespace FEP.WebApi.Api.eEvent
 
 			//advance search
 			query = query.Where(s => (request.Name == null || s.Name.Contains(request.Name))
-			&& (request.PhoneNo == null || s.PhoneNo.Contains(request.PhoneNo))
+			&& (request.PhoneNo == null || s.PhoneNo == (request.PhoneNo))
 			&& (request.Email == null || s.Email.Contains(request.Email))
 			);
 
@@ -140,6 +140,7 @@ namespace FEP.WebApi.Api.eEvent
 					Name = i.Name,
 					Email = i.Email,
 					PhoneNo = i.PhoneNo,
+					CompanyName = i.CompanyName,
 					Remark = i.Remark,
 				}).FirstOrDefault();
 
@@ -160,7 +161,7 @@ namespace FEP.WebApi.Api.eEvent
 				Email = model.Email,
 				PhoneNo = model.PhoneNo,
 				Remark = model.Remark,
-				
+				CompanyName = model.CompanyName,
 				Display = true,
 				CreatedDate = DateTime.Now,
 			};
@@ -183,13 +184,14 @@ namespace FEP.WebApi.Api.eEvent
 			exhibitor.PhoneNo = model.PhoneNo;
 			exhibitor.Email = model.Email;
 			exhibitor.Remark = model.Remark;
-			
+			exhibitor.CompanyName = model.CompanyName;
 
 			db.EventExternalExhibitor.Attach(exhibitor);
 			db.Entry(exhibitor).Property(x => x.Name).IsModified = true;
 			db.Entry(exhibitor).Property(x => x.PhoneNo).IsModified = true;
 			db.Entry(exhibitor).Property(x => x.Email).IsModified = true;
 			db.Entry(exhibitor).Property(x => x.Remark).IsModified = true;
+			db.Entry(exhibitor).Property(x => x.CompanyName).IsModified = true;
 
 			db.Entry(exhibitor).Property(x => x.Display).IsModified = false;
 			db.Entry(exhibitor).Property(x => x.Id).IsModified = false;
@@ -236,6 +238,20 @@ namespace FEP.WebApi.Api.eEvent
 		}
 
 
+		[HttpGet]
+		public IHttpActionResult Get()
+		{
+			var exhibitor = db.EventExternalExhibitor.Where(u => u.Display).Select(s => new EventExternalExhibitorModel
+			{
+				Id = s.Id,
+				Name = s.Name,
+				Email = s.Email,
+				PhoneNo = s.PhoneNo,
+				CompanyName = s.CompanyName,
+			}).ToList();
+
+			return Ok(exhibitor);
+		}
 
 	}
 }

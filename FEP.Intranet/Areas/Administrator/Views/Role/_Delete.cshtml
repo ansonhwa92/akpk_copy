@@ -11,8 +11,9 @@
     @Html.HiddenFor(m => m.Id)
 
     <div class="row divTd">
-        <div class="col-1 text-center">@Html.DisplayFor(m  => m.No)</div>
+        <div class="col-1 text-center">@Html.DisplayFor(m => m.No)</div>
         <div class="col px-0">@Html.DisplayFor(m => m.Name)</div>
+        <div class="col pl-1">@Html.DisplayFor(m => m.Description)</div>
         <div class="col-3 pl-0 text-right">
             <div class="icon-action">
                 <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">Delete</button>

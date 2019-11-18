@@ -1,7 +1,9 @@
 ﻿using FEP.Helper;
 using FEP.Model.eLearning;
+using FEP.WebApiModel.Administration;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FEP.WebApiModel.eLearning
@@ -61,6 +63,8 @@ namespace FEP.WebApiModel.eLearning
         [Display(Name = "Category", ResourceType = typeof(Language.eLearning.Course))]
         public int CategoryId { get; set; }
 
+        public RefCourseCategory Category { get; set; }
+
         [Display(Name = "Code", ResourceType = typeof(Language.eLearning.Course))]
         public string Code { get; set; }
 
@@ -78,7 +82,8 @@ namespace FEP.WebApiModel.eLearning
         public CourseLanguage Language { get; set; }
 
         [Display(Name = "Duration", ResourceType = typeof(Language.eLearning.Course))]
-        public int Duration { get; set; }
+        [Range(0.5, 1000, ErrorMessage = "Invalid Value")]
+        public decimal Duration { get; set; }
 
         [Display(Name = "DurationType", ResourceType = typeof(Language.eLearning.Course))]
         public DurationType DurationType { get; set; }
@@ -99,7 +104,6 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "ScoreCalculation", ResourceType = typeof(Language.eLearning.Course))]
         public ScoreCalculation ScoreCalculation { get; set; }
-
 
         [Display(Name = "CompletionRule", ResourceType = typeof(Language.eLearning.Course))]
         public CompletionCriteriaType CompletionCriteriaType { get; set; } = CompletionCriteriaType.General;
@@ -125,19 +129,41 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "CreatedByName", ResourceType = typeof(Language.eLearning.Course))]
         public string CreatedByName { get; set; }
+
         [Display(Name = "Status", ResourceType = typeof(Language.eLearning.Course))]
         public CourseStatus Status { get; set; }
 
         public ICollection<CourseApprovalLog> CourseApprovalLogs { get; set; }
+
         //public ICollection<CourseContent> FrontPageContents { get; set; }
         public ICollection<CourseModule> Modules { get; set; }
 
         public bool IsDeleted { get; set; }
 
+        public int CourseEventId { get; set; }
 
+        public HttpPostedFileBase File { get; set; }
+        public string IntroImageFileName { get; set; }
+
+        public int UpdatedBy { get; set; }
+        public string UpdatedByName { get; set; }
+
+        public CourseApprovalLogModel CourseApprovalLogModel { get; set; }
+
+        // enrollmentcode, used when the user received a link with enrollmentcode
+        public string EnrollmentCode { get; set; }
+
+        // check for if user is enrolled
+        public bool IsUserEnrolled { get; set; }
+
+        public TrainerCourse Instructor { get; set; }
     }
 
-
+    public class CourseListModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 
     public class CourseRuleModel : BaseModel
     {
@@ -150,7 +176,6 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "ScoreCalculation", ResourceType = typeof(Language.eLearning.Course))]
         public ScoreCalculation ScoreCalculation { get; set; }
-
 
         [Display(Name = "CompletionRule", ResourceType = typeof(Language.eLearning.Course))]
         public CompletionCriteriaType CompletionCriteriaType { get; set; } = CompletionCriteriaType.General;
@@ -174,6 +199,99 @@ namespace FEP.WebApiModel.eLearning
         [Display(Name = "LearningPath", ResourceType = typeof(Language.eLearning.Course))]
         public string LearningPath { get; set; }
 
+    }
+
+    public class TrainerCourseModel
+    {
+        public int CourseId { get; set; }
+        public Course Course { get; set; }
+
+        public int TrainerId { get; set; }
+        public Trainer Trainer { get; set; }
+
+        public ListUserModel Users { get; set; }
+        public List<TrainerCourse> TrainerCourses { get; set; }
+    }
+
+    public class UpdateTrainerCourseModel
+    {
+        public int CourseId { get; set; }
+        public List<int> UserId { get; set; }
+    }
+
+    public class ChangeCourseStatusModel : BaseModel
+    {
+        public int CourseId { get; set; }
+        public string CourseName { get; set; }
+        public int CourseEventId { get; set; }
+        public string Message { get; set; }
+    }
+
+    public class OrderModel
+    {
+        public string Id { get; set; }
+        public string CreatedBy { get; set; }
+        public List<string> Order { get; set; }
+    }
+
+    public class DashboardCourseModel : BaseModel
+    {
+        [Display(Name = "Title", ResourceType = typeof(Language.eLearning.Course))]
+        public string Title { get; set; }
+
+        [Display(Name = "Description", ResourceType = typeof(Language.eLearning.Course))]
+        public string Description { get; set; }
+
+        [Display(Name = "Code", ResourceType = typeof(Language.eLearning.Course))]
+        public string Code { get; set; }
+
+        [Display(Name = "Category", ResourceType = typeof(Language.eLearning.Course))]
+        public int CategoryId { get; set; }
+
+        [Display(Name = "Price", ResourceType = typeof(Language.eLearning.Course))]
+        public string Price { get; set; }
+
+        [Display(Name = "Status", ResourceType = typeof(Language.eLearning.Course))]
+        public CourseStatus Status { get; set; }
+
+        public int TotalModules { get; set; }
+
+        public int TotalStudent { get; set; }
+
+        public string IntroImageFileName { get; set; }
+
+        public string InstructorBy { get; set; }
+
+    }
+
+    // FOR ELEARNING HOME PAGE
+    // Class for returning elearning for user browsing
+    public class BrowseElearningModel
+    {
+        public string Keyword { get; set; }
+
+        public string Sorting { get; set; }
+
+        public int LastIndex { get; set; }
+
+        public int ItemCount { get; set; }
+
+        public List<ReturnElearningModel> Courses { get; set; }
+    }
+
+    public class ReturnElearningModel
+    {
+        public int Id { get; set; }
+        public int CategoryId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public CourseLanguage Language { get; set; }
+        public decimal Price { get; set; }
+        public string Instructor { get; set; }
+        public int TotalModules { get; set; }
+        public int TotalStudent { get; set; }
+        public CourseStatus Status { get; set; }
+        public string IntroImageFileName { get; set; }
 
     }
 }

@@ -83,16 +83,12 @@
 
                             var action = "";
                             var hasEdit = @Json.Encode(CurrentUser.HasAccess(UserAccess.AdminIndividualEdit))
-
+                            
                             action = '<div class="icon-action">'
-                                    +   '<a href="@Url.Action("Details", "Individual", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Delete", "Individual", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
-
-                            if (hasEdit) {
-
-                                action += '<a href="@Url.Action("Edit", "Individual", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                            }
-
+                                + '<a href="@Url.Action("Details", "Individual", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+                                + '<a href="@Url.Action("Edit", "Individual", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+                                + '<a href="@Url.Action("Delete", "Individual", new { area = "Administrator" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+                                                       
                             action = action + '</div>';
 
                             return action;
@@ -155,15 +151,16 @@
 		<div class="title-header-container">
 			<div class="container">
 				<!-- if have button -->
-				@*<div class="header-col-right float-right mt-5"><a href="e-Learning.html" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>*@
+				<div class="header-col-right float-right mt-5"><a href="@Url.Action("Index", "User", new { area = "Administrator" })" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
 				<div class="header-col-left">
 					<div id="breadcrumb">
 						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item"><a href="#">Administration</a></li>
-								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
-							</ol>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Setting</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "Individual", new { area = "Administrator" })">User Management</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
 						</nav>
 					</div>
 					<h1 class="page-title text-white">Individual User List</h1>

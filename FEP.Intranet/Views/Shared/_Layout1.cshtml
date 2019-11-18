@@ -37,363 +37,373 @@
 
 <body class="fixed-layout">
 
-	@*<div class="preloader">
-			<div class="sk-double-bounce">
-				<div class="sk-child sk-double-bounce1"></div>
-				<div class="sk-child sk-double-bounce2"></div>
-			</div>
-		</div>*@
+    @RenderSection("Preloader", false)
 
-	@RenderSection("Preloader", false)
+    <!-- Header Layout -->
+    <div class="bg-gradient">
+        <!-- Header -->
+        <div class="header-container">
+            <div id="header" class="mdk-header m-0" data-fixed data-effects="waterfall">
+                <div class="header__content">
+                    <!-- Navbar -->
+                    <nav id="default-navbar" class="navbar navbar-expand m-0">
+                        <div class="container">
+                            <div class="menu-admin">
+                                <div class="wrapper-menu" data-toggle="collapse" href="#menu-collapse">
+                                    <div class="line-menu half end"></div>
+                                    <div class="line-menu"></div>
+                                    <div class="line-menu short end"></div>
+                                </div>
+                            </div>
+                            <a href="fixed-student-dashboard.html" class="navbar-brand">
+                                <a href='@Url.Action("Dashboard", "Home", new { area = ""})' class="logo-akpk"><img src="@BaseURL/img/logo-akpk.svg" alt="logo" title="logo akpk"></a>
+                            </a>
+                            <!-- Search -->
+                            <form class="search-form d-none d-md-flex mx-2 col-lg-4">
+                                <input type="search" class="form-control" placeholder="Search for online courses, event, etc..">
+                                <button class="btn mw-auto" type="button"><i class="fas fa-search"></i></button>
+                            </form>
+                            <!-- // END Search -->
+                            <div class="flex"></div>
+                            <!-- Menu -->
+                            <ul class="nav navbar-nav flex-nowrap d-none d-lg-flex">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("Items", "Cart", new { area = "Commerce"})">
+                                        <span class="icon-top"><i class="la la-shopping-cart"></i></span>
+                                        <span class="badge badge-notifications point"> </span>
+                                    </a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="la la-heart-o"></i></a>
+                                </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <span class="icon-top"><i class="la la-inbox"></i></span>
+                                        <span class="badge badge-notifications point"> </span>
+                                    </a>
+                                </li>
+                                <!-- Notifications dropdown -->
+                                <li id="notification_dropdown" class="nav-item dropdown dropdown-notifications dropdown-menu-sm-full">
+                                    <button class="nav-link btn-flush dropdown-toggle" type="button" data-toggle="dropdown" data-dropdown-disable-document-scroll data-caret="false">
+                                        <span class="icon-top"><i class="la la-bell-o"></i></span>
+                                        <span class="badge badge-notifications point"> </span>
+                                    </button>
 
-	<!-- Header Layout -->
-	<div class="bg-gradient">
-		<!-- Header -->
-		<div class="header-container">
-			<div id="header" class="mdk-header m-0" data-fixed data-effects="waterfall">
-				<div class="header__content">
-					<!-- Navbar -->
-					<nav id="default-navbar" class="navbar navbar-expand m-0">
-						<div class="container">
-							<div class="menu-admin">
-								<div class="wrapper-menu" data-toggle="collapse" href="#menu-collapse">
-									<div class="line-menu half end"></div>
-									<div class="line-menu"></div>
-									<div class="line-menu short end"></div>
-								</div>
-							</div>
-							<a href="fixed-student-dashboard.html" class="navbar-brand">
-								<a href='@Url.Action("Dashboard", "Home", new { area = ""})' class="logo-akpk"><img src="@BaseURL/img/logo-akpk.svg" alt="logo" title="logo akpk"></a>
-							</a>
-							<!-- Search -->
-							<form class="search-form d-none d-md-flex mx-2 col-lg-4">
-								<input type="search" class="form-control" placeholder="Search for online courses, event, etc..">
-								<button class="btn mw-auto" type="button"><i class="fas fa-search"></i></button>
-							</form>
-							<!-- // END Search -->
-							<div class="flex"></div>
-							<!-- Menu -->
-							<ul class="nav navbar-nav flex-nowrap d-none d-lg-flex">
-								<li class="nav-item">
-									<a class="nav-link" href="#">
-										<span class="icon-top"><i class="la la-shopping-cart"></i></span>
-										<span class="badge badge-notifications point"> </span>
-									</a>
-								</li>
-								<!-- <li class="nav-item">
-									<a class="nav-link" href="#"><i class="la la-heart-o"></i></a>
-								</li> -->
-								<li class="nav-item">
-									<a class="nav-link" href="#">
-										<span class="icon-top"><i class="la la-inbox"></i></span>
-										<span class="badge badge-notifications point"> </span>
-									</a>
-								</li>
-								<!-- Notifications dropdown -->
-								<li class="nav-item dropdown dropdown-notifications dropdown-menu-sm-full">
-									<button class="nav-link btn-flush dropdown-toggle" type="button" data-toggle="dropdown" data-dropdown-disable-document-scroll data-caret="false">
-										<span class="icon-top"><i class="la la-bell-o"></i></span>
-										<span class="badge badge-notifications point"> </span>
-									</button>
-									<div class="dropdown-menu dropdown-menu-right">
-										<div data-perfect-scrollbar class="position-relative">
-											<div class="dropdown-header"><strong>Messages</strong></div>
-											<div class="list-group list-group-flush mb-0">
-												<a href="fixed-student-messages.html" class="list-group-item list-group-item-action unread">
-													<span class="d-flex align-items-center mb-1">
-														<small class="text-muted">5 minutes ago</small>
-														<span class="ml-auto unread-indicator bg-primary"></span>
-													</span>
-													<span class="d-flex">
-														<span class="avatar avatar-xs mr-2">
-															<img src="@BaseURL/dist/assets/images/people/110/woman-5.jpg" alt="people" class="avatar-img rounded-circle">
-														</span>
-														<span class="flex d-flex flex-column">
-															<strong>Michelle</strong>
-															<span class="text-black-70">Clients loved the new design.</span>
-														</span>
-													</span>
-												</a>
-												<a href="fixed-student-messages.html" class="list-group-item list-group-item-action unread">
-													<span class="d-flex align-items-center mb-1">
-														<small class="text-muted">5 minutes ago</small>
-														<span class="ml-auto unread-indicator bg-primary"></span>
-													</span>
-													<span class="d-flex">
-														<span class="avatar avatar-xs mr-2">
-															<img src="@BaseURL/dist/assets/images/people/110/woman-5.jpg" alt="people" class="avatar-img rounded-circle">
-														</span>
-														<span class="flex d-flex flex-column">
-															<strong>Michelle</strong>
-															<span class="text-black-70">🔥 Superb job..</span>
-														</span>
-													</span>
-												</a>
-											</div>
-											<div class="dropdown-header"><strong>System notifications</strong></div>
-											<div class="list-group list-group-flush mb-0">
-												<a href="fixed-student-messages.html" class="list-group-item list-group-item-action border-left-3 border-left-danger">
-													<span class="d-flex align-items-center mb-1">
-														<small class="text-muted">3 minutes ago</small>
-													</span>
-													<span class="d-flex">
-														<span class="avatar avatar-xs mr-2">
-															<span class="avatar-title rounded-circle bg-light">
-																<i class="material-icons font-size-16pt text-danger">account_circle</i>
-															</span>
-														</span>
-														<span class="flex d-flex flex-column">
-															<span class="text-black-70">Your profile information has not been synced correctly.</span>
-														</span>
-													</span>
-												</a>
-												<a href="fixed-student-messages.html" class="list-group-item list-group-item-action">
-													<span class="d-flex align-items-center mb-1">
-														<small class="text-muted">5 hours ago</small>
-													</span>
-													<span class="d-flex">
-														<span class="avatar avatar-xs mr-2">
-															<span class="avatar-title rounded-circle bg-light">
-																<i class="material-icons font-size-16pt text-success">group_add</i>
-															</span>
-														</span>
-														<span class="flex d-flex flex-column">
-															<strong>Adrian. D</strong>
-															<span class="text-black-70">Wants to join your private group.</span>
-														</span>
-													</span>
-												</a>
-												<a href="fixed-student-messages.html" class="list-group-item list-group-item-action">
-													<span class="d-flex align-items-center mb-1">
-														<small class="text-muted">1 day ago</small>
-													</span>
-													<span class="d-flex">
-														<span class="avatar avatar-xs mr-2">
-															<span class="avatar-title rounded-circle bg-light">
-																<i class="material-icons font-size-16pt text-warning">storage</i>
-															</span>
-														</span>
-														<span class="flex d-flex flex-column">
-															<span class="text-black-70">Your deploy was successful.</span>
-														</span>
-													</span>
-												</a>
-											</div>
-										</div>
-									</div>
-								</li>
-								<!-- // END Notifications dropdown -->
-							</ul>
-							<!-- Menu -->
-							<ul class="nav navbar-nav flex-nowrap dropdown-profile">
-								<span class="badge badge-profile mt-2">@CurrentUser.Name</span>
-								<!-- User dropdown -->
-								<li class="nav-item dropdown ml-1">
-									<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"><img src="@BaseURL/dist/assets/images/people/50/guy-6.jpg" alt="Avatar" class="rounded-circle rounded-color" width="40"><span class="dropdown-custom"><i class="fas fa-chevron-down"></i></span></a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<div class="card__author pt-0">
-											<a class="card__col-left" href="#">
-												<span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/dist/assets/images/people/50/guy-6.jpg" alt="image"></span>
-												<span class="card__name-wrap">
-													<span class="card__author-name">@CurrentUser.Name</span>
-													@*<span class="card__instructby">Learner</span>*@
-												</span>
-											</a>
-										</div>
-										<a class="dropdown-item" href="#">
-											<i class="la la-book color-secondary font-icon"></i> My Courses
-										</a>
-										@*<a class="dropdown-item" href="#">
-												<i class="la la-certificate color-secondary font-icon"></i> My Certifications
-											</a>
-											<a class="dropdown-item" href="#">
-												<i class="la la-spinner color-secondary font-icon"></i> My Progress
-											</a>
-											<a class="dropdown-item" href="#">
-												<i class="la la-group color-secondary font-icon"></i> My Groups
-											</a>
-											<a class="dropdown-item" href="#">
-												<i class="la la-sitemap color-secondary font-icon"></i> My Branches
-											</a>
-											<a class="dropdown-item" href="#">
-												<i class="la la-suitcase color-secondary font-icon"></i> My Files
-											</a>
-											<a class="dropdown-item" href="#">
-												<i class="la la-calendar color-secondary font-icon"></i> My Events
-											</a>
-											<a class="dropdown-item" href="#">
-												<i class="la la-pie-chart color-secondary font-icon"></i> My Researches
-											</a>
-											<a class="dropdown-item" href="#">
-												<i class="la la-file-o color-secondary font-icon"></i> My Publications
-											</a>*@
-										<div class="dropdown-divider"></div>
-										@*<a class="dropdown-item" href="#">
-												<i class="la la-life-saver color-secondary font-icon"></i> Help Center
-											</a>*@
-										<a class="dropdown-item" href="@Url.Action("MyProfile", "Home", new { area = "" })">
-											<i class="la la-edit color-secondary font-icon"></i> My Profile
-										</a>
-										<a class="dropdown-item" href="@Url.Action("Logout", "Auth", new { area = "" })">
-											<i class="la la-sign-out color-secondary font-icon"></i> Log out
-										</a>
-									</div>
-								</li>
-								<!-- // END User dropdown -->
-							</ul>
-							<!-- // END Menu -->
-						</div>
-					</nav>
-					<!-- // END Navbar -->
-				</div>
-			</div>
-			<div class="collapse-wrapper collapse" id="menu-collapse">
-				<div class="navbar navbar-expand-sm d-none2">
-					<div class="container">
-						<div class="navbar-collapse collapse main-menu-dropdown">
-							<ul class="nav navbar-nav">
-								<li class="nav-item dropdown">
-									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User & Role Management</a>
-                                    <div class="dropdown-menu">
-										<a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })"><i class="la la-user color-secondary font-icon"></i>Manage Individual</a>
-										<a class="dropdown-item" href="@Url.Action("List", "Company", new { area = "Administrator" })"><i class="la la-group color-secondary font-icon"></i>Manage Agency</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "Role", new { area = "Administrator" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Role</a>
+                                </li>
+                                <!-- // END Notifications dropdown -->
+                            </ul>
+                            <!-- Menu -->
+                            <ul class="nav navbar-nav flex-nowrap dropdown-profile">
+                                <span class="badge badge-profile mt-2">@CurrentUser.Name</span>
+                                <!-- User dropdown -->
+                                <li class="nav-item dropdown ml-1">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
+                                        @if (!String.IsNullOrEmpty(CurrentUser.Avatar))
+                                        {
+                                            <img src="@CurrentUser.Avatar" alt="Avatar" class="rounded-circle rounded-color" width="40">
+                                        }
+                                        else
+                                        {
+                                            <img src="@BaseURL/img/no-photo.jpg" alt="Avatar" class="rounded-circle rounded-color" width="40">
+                                        }
+
+                                        <span class="dropdown-custom"><i class="fas fa-chevron-down"></i></span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <div class="card__author pt-0">
+                                            <a class="card__col-left" href="#">
+                                                <span class="card__avatar">
+                                                    @if (!String.IsNullOrEmpty(CurrentUser.Avatar))
+                                                    {
+                                                        <img class="card__avatar__image" src="@CurrentUser.Avatar" alt="image">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="card__avatar__image" src="@BaseURL/img/no-photo.jpg" alt="image">
+                                                    }
+                                                </span>
+                                                <span class="card__name-wrap">
+                                                    <span class="card__author-name">@CurrentUser.Name</span>
+                                                    @*<span class="card__instructby">Learner</span>*@
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <a class="dropdown-item" href="@Url.Action("PurchaseHistory", "Cart", new { area = "Commerce" })">
+                                            <i class="la la-shopping-cart color-secondary font-icon" style="font-size: 21px;"></i> My Purchase History
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-book color-secondary font-icon"></i> My Courses
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-calendar color-secondary font-icon" style="font-size: 21px;"></i> My Events
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-pie-chart color-secondary font-icon"></i> My Surveys
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-suitcase color-secondary font-icon"></i> My Manuscripts
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-download color-secondary font-icon" style="font-size: 21px;"></i> My Downloads
+                                        </a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "UserRewardPoints", new { area = "Reward" })">
+                                            <i class="la la-certificate color-secondary font-icon"></i> My Points
+                                        </a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "UserRewardRedemptions", new { area = "Reward" })">
+                                            <i class="la la-gift color-secondary font-icon" style="font-size: 19px;"></i> My Rewards
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-refresh color-secondary font-icon" style="font-size: 19px;"></i> My Refund
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="@Url.Action("MyProfile", "Home", new { area = "" })">
+                                            <i class="la la-edit color-secondary font-icon"></i> My Profile
+                                        </a>
+                                        <a class="dropdown-item" href="@Url.Action("Logout", "Auth", new { area = "" })">
+                                            <i class="la la-sign-out color-secondary font-icon"></i> Log out
+                                        </a>
                                     </div>
-								</li>
-								<li class="nav-item dropdown">
-									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Event Management</a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })"><i class="la la-calendar color-secondary font-icon"></i>Create Event</a>
-										<a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Public Event</a>
-										<a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Media Interview</a>
-										<a class="dropdown-item" href="@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Exhibition/Roadshow Request</a>
-										<a class="dropdown-item" href="@Url.Action("Event_Setting", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Event Setting</a>
+                                </li>
+                                <!-- // END User dropdown -->
+                            </ul>
+                            <!-- // END Menu -->
+                        </div>
+                    </nav>
+                    <!-- // END Navbar -->
+                </div>
+            </div>
+            <!-- Start Menu -->
+            @*<div class="collapse-wrapper collapse" id="menu-collapse">
+                    <div class="navbar navbar-expand-sm d-none2">
+                        <div class="container">
+                            <div class="navbar-collapse collapse main-menu-dropdown">
+                                <ul class="nav navbar-nav">
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User & Role Management</a>
+                                        <div class="dropdown-menu">
 
-									</div>
-								</li>
-								<li class="nav-item dropdown">
-									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">R&P Management</a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="~/RnP/Publication"><i class="la la-search color-secondary font-icon"></i>Manage Publication</a>
-                                        <a class="dropdown-item" href="~/RnP/Survey"><i class="la la-search color-secondary font-icon"></i>Manage Survey</a>                                        
-									</div>
-								</li>
-								<li class="nav-item dropdown">
-									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Learning Management</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Event Management</a>
+                                        <div class="dropdown-menu">
+                                            @Html.Action("_Menu", "Home", new { area = "eEvent" })
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">R&P Management</a>
+                                        <div class="dropdown-menu">
+                                            @Html.Action("_Menu", "Home", new { area = "RnP" })
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Learning Management</a>
+                                        <div class="dropdown-menu">
+                                            @Html.Action("Menu", "Home", new { area = "eLearning" })
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Reports</a>
+                                        <div class="dropdown-menu">
+
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Rewards</a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="@Url.Action("List", "UserRewardPoints", new { area = "Reward" })">My Points</a>
+                                            <a class="dropdown-item" href="@Url.Action("List", "UserRewardRedemptions", new { area = "Reward" })">My Rewards</a>
+                                            <a class="dropdown-item" href="@Url.Action("ListToRedeem", "RewardRedemptions", new { area = "Reward" })">Claim Reward</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Settings</a>
+                                        <div class="dropdown-menu">
+
+                                            <a class="dropdown-item" href="@Url.Action("List", "RewardActivityPoints", new { area = "Reward" })">Activity Points Management</a>
+                                            <a class="dropdown-item" href="@Url.Action("List", "RewardRedemptions", new { area = "Reward" })">Reward Redemption Management</a>
+                                            <a class="dropdown-item" href="@Url.Action("ListAll", "UserRewardPoints", new { area = "Reward" })">User Reward Points</a>
+                                            <a class="dropdown-item" href="@Url.Action("ListAll", "UserRewardRedemptions", new { area = "Reward" })">User Reward Redemptions</a>
+                                            <a class="dropdown-item" href="@Url.Action("List", "EmailTemplates", new { area = "Template" })">Notification Template</a>
+                                            <a class="dropdown-item" href="@Url.Action("List", "SLAReminders", new { area = "SLAReminder" })">SLA Reminder Settings</a>
+
+                                            <a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })">Manage Individual</a>
+                                            <a class="dropdown-item" href="@Url.Action("List", "Company", new { area = "Administrator" })">Manage Agency</a>
+                                            <a class="dropdown-item" href="@Url.Action("List", "Staff", new { area = "Administrator" })">Manage Staff</a>
+                                            <a class="dropdown-item" href="@Url.Action("List", "Role", new { area = "Administrator" })">Manage Role</a>
+
+                                            <a class="dropdown-item" href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a>
+                                            <a class="dropdown-item" href="@Url.Action("Index", "Account", new { area = "Setting" })">Account Setting</a>
+                                            <a class="dropdown-item" href="@Url.Action("List", "UserLog", new { area = "Logs" })">User Log</a>
+                                            <a class="dropdown-item" href="@Url.Action("List", "ErrorLog", new { area = "Logs" })">Error Log</a>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">
+                                <span class="material-icons">menu</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>*@
+
+            <div class="collapse-wrapper collapse" id="menu-collapse">
+                <div class="navbar navbar-expand-sm d-none2">
+                    <div class="container">
+                        <div class="navbar-collapse collapse main-menu-dropdown">
+                            <ul class="nav navbar-nav">
+                                <li class="nav-item"><a href="@Url.Action("Dashboard", "Home", new { area = ""})" class="nav-link">Dashboard</a></li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Learning</a>
                                     <div class="dropdown-menu">
                                         @Html.Action("Menu", "Home", new { area = "eLearning" })
-
                                     </div>
-								</li>
-								<li class="nav-item dropdown">
-									<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Reports</a>
-									<div class="dropdown-menu">
-										@*<a class="dropdown-item" href="#">Menu 1</a>
-										<a class="dropdown-item" href="#">Menu 2</a>
-										<a class="dropdown-item" href="#">Menu 3</a>
-										<a class="dropdown-item" href="#">Menu 4</a>*@
-									</div>
-								</li>
+                                </li>
                                 <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">System Settings</a>
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Event</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="@Url.Action("List", "EmailTemplates", new { area = "Template" })"><i class="la la-comment color-secondary font-icon"></i>Template Management</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "SLAReminders", new { area = "SLAReminder" })"><i class="la la-comment color-secondary font-icon"></i>SLA Reminder Settings</a>
-                                   
-                                        <a class="dropdown-item" href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a>
-                                        <a class="dropdown-item" href="@Url.Action("Index", "Account", new { area = "Setting" })">Account Setting</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "UserLog", new { area = "Logs" })">User Log</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "ErrorLog", new { area = "Logs" })">Error Log</a>
+                                        @Html.Action("_Menu", "Home", new { area = "eEvent" })
                                     </div>
-								</li>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Publication</a>
+                                    <div class="dropdown-menu">
+                                        @Html.Action("_Menu", "Publication", new { area = "RnP" })
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Research</a>
+                                    <div class="dropdown-menu">
+                                        @Html.Action("_Menu", "Survey", new { area = "RnP" })
+                                    </div>
+                                </li>
+                                @if (CurrentUser.HasAccess(UserAccess.KMCMenu))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">KMC</a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="menu-list">
+                                                        <h6 class="color-darkblue">Menu</h6>
+                                                        <a class="dropdown-item" href="#">Manage KMC</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="menu-list">
+                                                        <h6 class="color-darkblue">Setting</h6>
+                                                        <a class="dropdown-item" href="#">KMC Category</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                                @if (CurrentUser.HasAccess(UserAccess.ReportMenu))
+                                {
+                                    <li class="nav-item ">
+                                        <a href="#" class="nav-link">Reports</a>
+                                    </li>
+                                }
+                                @if (CurrentUser.HasAccess(UserAccess.SettingMenu))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Settings</a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            @Html.Action("_Menu", "Home", new { area = "Setting" })
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <!-- <button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">
+                            <span class="material-icons">menu</span>
+                        </button> -->
+                    </div>
+                </div>
+            </div>
 
-							</ul>
-						</div>
-						<button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">
-							<span class="material-icons">menu</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Header Layout Content -->
-		<!-- // END Header Layout Content -->
-		@RenderSection("Nav", false)
-		<!-- // END Header -->
-	</div>
-	<!-- Start Content -->
-	<div class="content-container">
-		<div class="container">
+            <!-- End Menu -->
+        </div>
+        <!-- Header Layout Content -->
+        <!-- // END Header Layout Content -->
+        @RenderSection("Nav", false)
+        <!-- // END Header -->
+    </div>
+    <!-- Start Content -->
+    <div class="content-container">
+        <div class="container">
 
-			<div id="alert-message">
+            <div id="alert-message">
 
-				@if (TempData["Message"] != null)
-				{
-					<div class="alert alert-primary alert-dismissible ">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						<p><i class="icon fa fa-info-circle"></i>@TempData["Message"]</p>
-					</div>
-				}
+                @if (TempData["Message"] != null)
+                {
+                    <div class="alert alert-primary alert-dismissible ">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <p><i class="icon fa fa-info-circle"></i>@TempData["Message"]</p>
+                    </div>
+                }
 
-				@if (TempData["SuccessMessage"] != null)
-				{
-					<div class="alert alert-success alert-dismissible ">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						<p><i class="icon fa fa-check"></i>@TempData["SuccessMessage"]</p>
-					</div>
-				}
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible ">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <p><i class="icon fa fa-check"></i>@TempData["SuccessMessage"]</p>
+                    </div>
+                }
 
-				@if (TempData["ErrorMessage"] != null)
-				{
-					<div class="alert alert-danger alert-dismissible ">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						<p><i class="icon fa fa-warning"></i>@TempData["ErrorMessage"]</p>
-					</div>
-				}
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible ">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <p><i class="icon fa fa-warning"></i>@TempData["ErrorMessage"]</p>
+                    </div>
+                }
 
-			</div>
+            </div>
 
-			@RenderBody()
+            @RenderBody()
 
-		</div>
-		<!-- Wrapper -->
-	</div>
-	<!-- // END Header Layout -->
-	@*<script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
+        </div>
+        <!-- Wrapper -->
+    </div>
+    <!-- // END Header Layout -->
+    @*<script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
 
-		<script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
-		<script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
 
-		<script src="@BaseURL/dist/assets/vendor/perfect-scrollbar.min.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/perfect-scrollbar.min.js"></script>
 
-		<script src="@BaseURL/dist/assets/vendor/dom-factory.js"></script>
-		<script src="@BaseURL/dist/assets/vendor/material-design-kit.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/dom-factory.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/material-design-kit.js"></script>
 
-		<script src="@BaseURL/dist/assets/js/app.js"></script>
+        <script src="@BaseURL/dist/assets/js/app.js"></script>
 
-		<script src="@BaseURL/dist/assets/js/hljs.js"></script>
-		<script src="@BaseURL/js/select2.min.js"></script>
+        <script src="@BaseURL/dist/assets/js/hljs.js"></script>
+        <script src="@BaseURL/js/select2.min.js"></script>
 
-		<script src="@BaseURL/dist/assets/js/toggle-check-all.js"></script>
-		<script src="@BaseURL/dist/assets/js/check-selected-row.js"></script>
+        <script src="@BaseURL/dist/assets/js/toggle-check-all.js"></script>
+        <script src="@BaseURL/dist/assets/js/check-selected-row.js"></script>
 
-		<script src="@BaseURL/dist/assets/vendor/flatpickr/flatpickr.min.js"></script>
-		<script src="@BaseURL/dist/assets/js/flatpickr.js"></script>
+        <script src="@BaseURL/dist/assets/vendor/flatpickr/flatpickr.min.js"></script>
+        <script src="@BaseURL/dist/assets/js/flatpickr.js"></script>
 
 
-		<script src="@BaseURL/dist/assets/js/settings.js"></script>
-		<script src="@BaseURL/js/script-admin.js"></script>*@
+        <script src="@BaseURL/dist/assets/js/settings.js"></script>
+        <script src="@BaseURL/js/script-admin.js"></script>*@
 
-	@Scripts.Render("~/layout1/script")
+    @Scripts.Render("~/layout1/script")
 
-	@RenderSection("ContentScript", false)
+    @RenderSection("ContentScript", false)
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
         $.validator.methods.date = function (value, element) {
             debugger
-                var y = moment(value, 'DD/MM/YYYY', true);
-                return this.optional(element) || moment(value, 'DD/MM/YYYY', true).isValid() || moment(value, 'HH:mm', true).isValid();
+            var y = moment(value, 'DD/MM/YYYY', true);
+            return this.optional(element) || moment(value, 'DD/MM/YYYY', true).isValid() || moment(value, 'HH:mm', true).isValid();
         };
 
         function resetValidations() {
@@ -404,11 +414,50 @@
             $('.field-validation-error').html('');
             $('.field-validation-error').addClass('field-validation-valid');
             $('.field-validation-error').removeClass('field-validation-error');
-            //Removes validation summary 
+            //Removes validation summary
             $('.validation-summary-errors').addClass('validation-summary-valid');
             $('.validation-summary-errors').removeClass('validation-summary-errors');
-
         }
+
+        function clearNotification() {
+
+            $.ajax({
+				type: "get",
+				url: "@Url.Action("ClearNotification", "Notification", new { area = "" })",
+				contentType: "application/json",
+				data: [],
+				dataType: "html",
+				success: function (data) {
+					$('#notification_dropdown').html(data);
+				},
+				error: function (xhr, httpStatusMessage, customErrorMessage) {
+
+				}
+			});
+        }
+
+        loadNotify = function () {
+			$.ajax({
+				type: "get",
+				url: "@Url.Action("RefreshNotification", "Notification", new { area = "" })",
+				contentType: "application/json",
+				data: [],
+				dataType: "html",
+				success: function (data) {
+                    $('#notification_dropdown').html(data);
+                    //$('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+				},
+				error: function (xhr, httpStatusMessage, customErrorMessage) {
+
+				}
+			});
+		};
+
+		loadNotify();
+
+		setInterval(function () {
+			loadNotify();
+		}, 10000);
 
         $(".dateSelect").flatpickr({
             // mode: "range",
@@ -422,7 +471,7 @@
             dateFormat: "H:i"
         });
 
-	</script>
+    </script>
 
 </body>
 

@@ -1,0 +1,23 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+
+
+<!-- Play youtube video-->
+@if (Model.VideoType == VideoType.ExternalVideo)
+{
+
+    <iframe width=@Model.Width height=@Model.Height src="@Model.Url" frameborder="0" allow="accelerometer; ; encrypted-media;
+                        gyroscope; picture-in-picture" allowfullscreen></iframe>
+}
+else
+{
+    <video width=@Model.Width height=@Model.Height controls>
+        <source src="@(WebApiURL)eLearning/Video?fileName=@Model.FileDocument.FileNameOnStorage"
+                type="video/mp4">
+        <source src="@(WebApiURL)eLearning/Video?fileName=@Model.FileDocument.FileNameOnStorage"
+                type="video/mpeg">
+
+        Your browser does not support the video tag.
+    </video>
+
+}

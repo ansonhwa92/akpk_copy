@@ -133,7 +133,7 @@
     <value>Location</value>
   </data>
   <data name="ExRoadOrganiser" xml:space="preserve">
-    <value>Organiser</value>
+    <value>Organiser Name</value>
   </data>
   <data name="ExRoadParticipantRequirement" xml:space="preserve">
     <value>Participant Requirement</value>
@@ -162,44 +162,14 @@
   <data name="ExRoadReceivedBys" xml:space="preserve">
     <value>Received By</value>
   </data>
-  <data name="SpAddress1" xml:space="preserve">
-    <value>Address</value>
-  </data>
-  <data name="SpAddress2" xml:space="preserve">
-    <value>Address</value>
-  </data>
-  <data name="SpCity" xml:space="preserve">
-    <value>City</value>
-  </data>
-  <data name="SpDateAssigned" xml:space="preserve">
-    <value>Date Assigned</value>
-  </data>
-  <data name="SpDateOfBirth" xml:space="preserve">
-    <value>Date of Birth</value>
-  </data>
   <data name="SpEmail" xml:space="preserve">
-    <value>Email</value>
+    <value>Email Address</value>
   </data>
   <data name="SpExperience" xml:space="preserve">
     <value>Experience</value>
   </data>
-  <data name="SpMaritialStatus" xml:space="preserve">
-    <value>Maritial Status</value>
-  </data>
   <data name="SpPhoneNo" xml:space="preserve">
     <value>Phone No.</value>
-  </data>
-  <data name="SpPoscode" xml:space="preserve">
-    <value>Poscode</value>
-  </data>
-  <data name="SpReligion" xml:space="preserve">
-    <value>Religion</value>
-  </data>
-  <data name="SpRemark" xml:space="preserve">
-    <value>Remark</value>
-  </data>
-  <data name="SpState" xml:space="preserve">
-    <value>State</value>
   </data>
   <data name="SpType" xml:space="preserve">
     <value>Speaker Type</value>
@@ -238,9 +208,123 @@
     <value>Remark</value>
   </data>
   <data name="ExRoadNomineeId" xml:space="preserve">
-    <value>Nominee</value>
+    <value>Select Nominees</value>
   </data>
   <data name="ExRoadNomineeName" xml:space="preserve">
-    <value>Nominee</value>
+    <value>Select Nominees</value>
+  </data>
+  <data name="PubEventCategoryId" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="PubEventCategoryName" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="PubEventEndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="PubEventExternalExhibitorId" xml:space="preserve">
+    <value>External Exhibitors</value>
+  </data>
+  <data name="PubEventExternalExhibitorName" xml:space="preserve">
+    <value>External Exhibitors</value>
+  </data>
+  <data name="PubEventFee" xml:space="preserve">
+    <value>Fee</value>
+  </data>
+  <data name="PubEventObjective" xml:space="preserve">
+    <value>Event Objective</value>
+  </data>
+  <data name="PubEventParticipantAllowed" xml:space="preserve">
+    <value>Participant Allowed</value>
+  </data>
+  <data name="PubEventRemarks" xml:space="preserve">
+    <value>Remarks</value>
+  </data>
+  <data name="PubEventStartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="PubEventStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="PubEventStatusDesc" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="PubEventTargetedGroup" xml:space="preserve">
+    <value>Targeted Group</value>
+  </data>
+  <data name="PubEventTitle" xml:space="preserve">
+    <value>Event Title </value>
+  </data>
+  <data name="PubEventVenue" xml:space="preserve">
+    <value>Venue</value>
+  </data>
+  <data name="PubEventSpeakerId" xml:space="preserve">
+    <value>Speakers</value>
+  </data>
+  <data name="PubEventSpeakerName" xml:space="preserve">
+    <value>Speakers</value>
+  </data>
+  <data name="PubEventRefNo" xml:space="preserve">
+    <value>Reference No</value>
+  </data>
+  <data name="ExhibitorCompanyName" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="SpStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="SpStatusDesc" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="AgendaDescription" xml:space="preserve">
+    <value>Descriptions</value>
+  </data>
+  <data name="AgendaEventRefNo" xml:space="preserve">
+    <value>Event Reference No.</value>
+  </data>
+  <data name="AgendaPersonInCharge" xml:space="preserve">
+    <value>Person In-Charge</value>
+  </data>
+  <data name="AgendaSupportDocument" xml:space="preserve">
+    <value>Support Document</value>
+  </data>
+  <data name="AgendaTentative" xml:space="preserve">
+    <value>Tentative</value>
+  </data>
+  <data name="AgendaTime" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="AgendaTitle" xml:space="preserve">
+    <value>Agenda Session</value>
+  </data>
+  <data name="ExRoadRefNo" xml:space="preserve">
+    <value>Reference No</value>
+  </data>
+  <data name="ExRoadExhibitionSupDoc" xml:space="preserve">
+    <value>Supporting Document</value>
+  </data>
+  <data name="ExRoadOrganiserEmail" xml:space="preserve">
+    <value>Organiser Email</value>
+  </data>
+  <data name="ReqEventCategory" xml:space="preserve">
+    <value>Event Category</value>
+  </data>
+  <data name="ReqEventObjective" xml:space="preserve">
+    <value>Event Objective</value>
+  </data>
+  <data name="ReqEventRefNo" xml:space="preserve">
+    <value>Reference No.</value>
+  </data>
+  <data name="ReqEventTitle" xml:space="preserve">
+    <value>Event Title</value>
+  </data>
+  <data name="ReqReason" xml:space="preserve">
+    <value>Modification/Cancellation Reasons</value>
+  </data>
+  <data name="ReqStatus" xml:space="preserve">
+    <value>Request Status</value>
+  </data>
+  <data name="ReqType" xml:space="preserve">
+    <value>Request Type</value>
   </data>
 </root>

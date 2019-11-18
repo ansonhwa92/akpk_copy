@@ -1,0 +1,391 @@
+﻿@model FEP.WebApiModel.LandingPage.BrowseEventModel
+@{
+    ViewBag.Title = "e-Events";
+    Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
+}
+
+@section Nav {
+    
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/">Home</a></li>
+				<li class="breadcrumb-item active" aria-current="page"><a href="#">e-Events</a></li>
+				<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+			</ol>
+        </nav>
+    </div>
+    
+    }
+
+<main id="landing-inner" class="rellax" data-rellax-speed="0">
+    <!-- =====================
+        Landing Content
+    ========================-->
+    <section id="main-content">
+        <!-- =====================
+            Search Dropdown
+        ========================-->
+        <div id="search-dropdown">
+            <div class="container">
+                <div id="search-dropdown">
+                    <div class="container">
+                        <div class="search-dropdown-wrapper">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <select class="select2" name="module">
+                                        <option value="e-Learning">e-Learning</option>
+                                        <option value="e-Events">e-Events</option>
+                                        <option value="Research">Research</option>
+                                        <option value="Publications">Publications</option>
+                                    </select>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Search for online courses, instructor name, etc.." name="search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="empty_6"></div>
+    </section>
+    <!-- =====================
+       Searching Result
+    ========================-->
+    <section id="search-result" class="eevents">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="search-col-left">
+                        <div class="input-keyword mb-5">
+                            <input type="text" class="form-control form-control-rounded" placeholder="Type keyword here..." name="keyword">
+                            <div class="input-group-append">
+                                <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+                            </div>
+                        </div>
+                        <!-- Listing Filter -->
+                        <div class="listing_filter dropdown dd-side">
+                            <div class="dropdown-menu">
+                                <div class="listing-filter-inner">
+                                    <div class="filter-type">
+                                        <h4 class="color-darkblue">Event Type</h4>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="customRadio1">Featured</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio2">All Type</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio3">Exhibition</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio4" name="customRadio" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio4">Seminar</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio5" name="customRadio" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio5">Symposium</label>
+                                        </div>
+                                    </div>
+                                    <div class="filter-type">
+                                        <h4 class="color-darkblue">Categories</h4>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">Business</label>
+                                            <span class="filter-counter">(100)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                            <label class="custom-control-label" for="customCheck2">Charity</label>
+                                            <span class="filter-counter">(430)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck3">
+                                            <label class="custom-control-label" for="customCheck3">Community</label>
+                                            <span class="filter-counter">(29)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck4">
+                                            <label class="custom-control-label" for="customCheck4">Health</label>
+                                            <span class="filter-counter">(560)</span>
+                                        </div>
+                                    </div>
+                                    <div class="filter-type">
+                                        <h4 class="color-darkblue">Seat Availability</h4>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck5">
+                                            <label class="custom-control-label" for="customCheck5">Available</label>
+                                            <span class="filter-counter">(13)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck6">
+                                            <label class="custom-control-label" for="customCheck6">Selling Fast</label>
+                                            <span class="filter-counter">(30)</span>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck7">
+                                            <label class="custom-control-label" for="customCheck7">Sold Out</label>
+                                            <span class="filter-counter">(30)</span>
+                                        </div>
+                                    </div>
+                                    <div class="filter-type">
+                                        <h4 class="color-darkblue">Fee Range</h4>
+                                        <div class="form-row">
+                                            <div class="col"><input type="text" class="form-control small" placeholder="RM (Min)"></div>
+                                            <div class="col-1">
+                                                <span class="color-lightgrey icon-remove">
+                                                    <ion-icon name="remove"></ion-icon>
+                                                </span>
+                                            </div>
+                                            <div class="col"><input type="text" class="form-control small" placeholder="RM (Max)"></div>
+                                        </div>
+                                    </div>
+                                    <div class="filter-type">
+                                        <h4 class="color-darkblue">Location</h4>
+                                        <div class="">
+                                            <select class="select2-area form-control" name="location">
+                                                <option></option>
+                                                <option value="Bukit Jalil">Bukit Jalil</option>
+                                                <option value="Puchong">Puchong</option>
+                                                <option value="Damansara">Damansara</option>
+                                                <option value="Pwtc">Pwtc</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary btn-rounded">Clear Filter</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="search-col-right">
+                        <div class="top-filter-wrap">
+                            <div class="showing-result">Showing 1 - 6 of 2000 results</div>
+                            <div class="sorting-wrap">
+                                <div class="pick-date">
+                                    <input type="text" class="range form-control form-control-rounded" placeholder="Pick a Date" data-input="flatpickr" data-flatpickr-mode="range">
+                                    <a class="input-button arrowdown" title="toggle" data-toggle>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </a>
+                                    <a class="input-button clear" title="clear" data-clear>
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                </div>
+                                <div class="sorting-dropdown">
+                                    <select class="select2 form-control small" name="sorting">
+                                        <option value="Default Sorting">Default Sorting</option>
+                                        <option value="sorting 1">Sorting 1</option>
+                                        <option value="sorting 2">Sorting 2</option>
+                                    </select>
+                                </div>
+                                <!--  <div class="layout-wrap ml-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <a href="#" class="btn btn-linear mw-auto px-3"><i class="fas fa-th-list"></i></a>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <a href="#" class="btn btn-default mw-auto px-3 color-lightgrey"><i class="fas fa-th-list"></i></a>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="empty_3"></div>
+                        <!-- Filter result -->
+                        <div class="some-list">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="@BaseURL/img/cover-5.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">Employee Engagement from A to Z</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Angela Jackson</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <ul>
+                                                    <li class="date"><span class="d-inline-block" data-toggle="tooltip" title="Event Date"><span class="card__icon"><i class="la la-calendar"></i></span></span>8 - 9 Sept, 2019</li>
+                                                    <li class="place"><span class="d-inline-block" data-toggle="tooltip" title="Venue"><span class="card__icon"><i class="la la-map-marker"></i></span></span>PWTC, Kuala Lumpur</li>
+                                                    <li class="eventname"><span class="d-inline-block" data-toggle="tooltip" title="Event type"><span class="card__icon"><i class="la la-list-ul"></i></span></span>Workshop</li>
+                                                    <li class="status sellingfast"><span class="d-inline-block" data-toggle="tooltip" title="Seating Availability"><span class="card__icon"><i class="fas fa-chair"></i></span></span>Selling Fast</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="@BaseURL/img/cover-6.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">Financial Management Excellence Certificate</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Norman Bier</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <ul>
+                                                    <li class="date"><span class="card__icon"><i class="la la-calendar"></i></span>3 - 5 Sept, 2019</li>
+                                                    <li class="place"><span class="card__icon"><i class="la la-map-marker"></i></span>KLCC, Kuala Lumpur</li>
+                                                    <li class="eventname"><span class="card__icon"><i class="la la-list-ul"></i></span>Symposium</li>
+                                                    <li class="status available"><span class="card__icon"><i class="fas fa-chair"></i></span>Available</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="@BaseURL/img/cover-7.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">Sales Enablement Leadership & Learning</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/68.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Antony Awaida</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <ul>
+                                                    <li class="date"><span class="card__icon"><i class="la la-calendar"></i></span>3 - 7 Sept, 2019</li>
+                                                    <li class="place"><span class="card__icon"><i class="la la-map-marker"></i></span>PICC, Kuala Lumpur</li>
+                                                    <li class="eventname"><span class="card__icon"><i class="la la-list-ul"></i></span>Exhibition</li>
+                                                    <li class="status available"><span class="card__icon"><i class="fas fa-chair"></i></span>Available</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="card__wrapper">
+                                        <div class="card__top">
+                                            <div class="card__top__wapper"><img class="card__top__image" src="@BaseURL/img/cover-8.jpg" alt="image"></div>
+                                        </div>
+                                        <div class="card__body">
+                                            <a class="card__title" href="#">AKPK International Conference & Expo</a>
+                                            <div class="card__author">
+                                                <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Aazman Iskandar</span></span></a>
+                                            </div>
+                                            <div class="card__info">
+                                                <ul>
+                                                    <li class="date"><span class="card__icon"><i class="la la-calendar"></i></span>8 - 9 Sept, 2019</li>
+                                                    <li class="place"><span class="card__icon"><i class="la la-map-marker"></i></span>Bukit Jalil Conference Hall</li>
+                                                    <li class="eventname"><span class="card__icon"><i class="la la-list-ul"></i></span>Workshop</li>
+                                                    <li class="status soldout"><span class="card__icon"><i class="fas fa-chair"></i></span>Sold Out</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr>
+    <!-- =====================
+        Knowledge Management Centre
+    ========================-->
+    <section id="kmc" class="kmc">
+        <div class="container">
+            <a href="#" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
+            <h1 class="color-darkblue">Knowledge Management Centre</h1>
+            <div class="empty_3"></div>
+            <div class="row">
+                <div class="card-slider owl-carousel">
+                    <div class="wow fadeInUp">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="card__top__wapper"><img class="card__top__image" src="@BaseURL/img/cover-8.jpg" alt="image"></div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Tips Gaji Kecil</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Created by</span><span class="card__author-name">Adila Rahim</span></span></a>
+                                </div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">9 July 2019</span></span></div>
+                                    </div>
+                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wow fadeInUp" data-wow-delay=".5s">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="card__top__wapper"><img class="card__top__image" src="@BaseURL/img/cover-8.jpg" alt="image"></div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Muflis: Apakah tanda-tandanya?</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Created by</span><span class="card__author-name">AKPK Official</span></span></a>
+                                </div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">28 June 2019</span></span></div>
+                                    </div>
+                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wow fadeInUp" data-wow-delay=".7s">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="card__top__wapper"><img class="card__top__image" src="@BaseURL/img/cover-8.jpg" alt="image"></div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">TO BUY OR NOT TO BUY? Volume 1</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Created by</span><span class="card__author-name">REDHA Malaysia</span></span></a>
+                                </div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">14 june 2019</span></span></div>
+                                    </div>
+                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wow fadeInUp" data-wow-delay=".9s">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="card__top__wapper"><img class="card__top__image" src="@BaseURL/img/cover-8.jpg" alt="image"></div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Is it Really a Time for Me to Buy a House?</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Created by</span><span class="card__author-name">AKPK Official</span></span></a>
+                                </div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">31 may 2019</span></span></div>
+                                    </div>
+                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="empty_3"></div>
+        </div>
+    </section>
+
+    @Html.Partial("_NewsArticle")
+
+</main>
+

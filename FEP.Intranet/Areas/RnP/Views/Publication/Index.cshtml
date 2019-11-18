@@ -112,6 +112,7 @@
         <thead>
             <tr>
                 <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.Pubs.RefNo)</th>
                 <th>@Html.DisplayNameFor(model => model.Pubs.Category)</th>
                 <th>@Html.DisplayNameFor(model => model.Pubs.Author)</th>
                 <th>@Html.DisplayNameFor(model => model.Pubs.Title)</th>
@@ -157,6 +158,10 @@
                         }
                     },
                     {
+                        data: 'RefNo',
+                        sortable: true
+                    },
+                    {
                         data: 'Category',
                         sortable: true
                     },
@@ -192,7 +197,18 @@
                                 return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
                             }
                             else if (row.Status == 3) {
-                                return "<span class='color-yellow font-weight-bold'>Pending Approval</span>";
+                                if (row.ApprovalLevel == 1) {
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 1</span>";
+                                }
+                                else if (row.ApprovalLevel == 2) {
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 2</span>";
+                                }
+                                else if (row.ApprovalLevel == 3) {
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 3</span>";
+                                }
+                                else {
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval</span>";
+                                }
                             }
                             else if (row.Status == 4) {
                                 return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
@@ -219,7 +235,18 @@
                                 return "<span class='color-red font-weight-bold'>Withdrawal Pending Amendment</span>";
                             }
                             else if (row.Status == 12) {
-                                return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Approval</span>";
+                                if (row.WithdrawalLevel == 1) {
+                                    return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Approval 1</span>";
+                                }
+                                else if (row.WithdrawalLevel == 2) {
+                                    return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Approval 2</span>";
+                                }
+                                else if (row.WithdrawalLevel == 3) {
+                                    return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Approval 3</span>";
+                                }
+                                else {
+                                    return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Approval</span>";
+                                }
                             }
                             else if (row.Status == 13) {
                                 return "<span class='color-red font-weight-bold'>Withdrawal Pending Amendment</span>";

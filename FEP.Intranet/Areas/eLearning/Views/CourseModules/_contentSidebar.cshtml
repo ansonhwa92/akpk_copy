@@ -37,7 +37,6 @@
                             IFrame
                         </a>
                     </li>
-
                     <li class="nav-item">
                         <a href="@Url.Action("Create", "CourseContents",
                                 new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
@@ -46,14 +45,7 @@
                             Document
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("Create", "CourseContents",
-                                new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
-                                    courseContentType = (int) CourseContentType.WebLink,
-                                    createContentFrom = (int) CreateContentFrom.Module})" class="nav-link">
-                            Web link
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a href="@Url.Action("Create", "CourseContents",
                                 new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
@@ -73,9 +65,17 @@
                     <li class="nav-item">
                         <a href="@Url.Action("Create", "CourseContents",
                                 new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
-                                    courseContentType = (int) CourseContentType.Test,
+                                    courseContentType = (int) CourseContentType.Flash,
                                     createContentFrom = (int) CreateContentFrom.Module})" class="nav-link">
-                            Test
+                            Flash
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Create", "CourseContents",
+                                new { area = "eLearning", courseId = Model.CourseId, moduleId = Model.Id, courseTitle = Model.Title,
+                                    courseContentType = (int) CourseContentType.Pdf,
+                                    createContentFrom = (int) CreateContentFrom.Module})" class="nav-link">
+                            Pdf
                         </a>
                     </li>
                 </ul>

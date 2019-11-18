@@ -4,10 +4,7 @@ using FEP.Intranet.Areas.eLearning.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -18,7 +15,11 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string GetContent = "eLearning/CourseContents/";
         public const string GetAllQuestions = "eLearning/Question/GetAll";
         public const string Create = "eLearning/CourseContents/Create";
-        public const string Complete = "eLearning/CourseContents/Complete";
+        public const string Edit = "eLearning/CourseContents/Edit";
+        public const string Delete = "eLearning/CourseContents/Delete";
+
+        public const string GetAllAudio = "eLearning/CourseContents/GetAllAudio";
+        public const string GetAllDocument = "eLearning/CourseContents/GetAllDocument";
     }
 
     public class CourseContentsController : FEPController
@@ -37,13 +38,16 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             _mapper = config.CreateMapper();
         }
 
+        [HasAccess(UserAccess.CourseEdit)]
         // GET: eLearning/CourseContents/Create
         public async Task<ActionResult> Create(int? courseId, int? moduleId, CreateContentFrom createContentFrom,
             CourseContentType courseContentType, string courseTitle)
         {
             if (courseId == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["ErrorMessage"] = "Could not find a course to create the content to.";
+
+                return Redirect(Request.UrlReferrer.ToString());
             }
 
             CreateOrEditContentModel model = new CreateOrEditContentModel
@@ -62,20 +66,52 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             await GetAllQuestions(courseId.Value);
 
+            if (courseContentType == CourseContentType.Audio)
+                await GetAllAudio(courseId.Value);
+
+            if (courseContentType == CourseContentType.Document)
+                await GetAllDocument(courseId.Value);
+
             return View(model);
         }
 
+        /// <summary>
+        /// create a content. If the content have a file to upload, then we will make 2 calls to API.
+        /// 1. Call to create content, to get the contentid for the file to be uploaded. However, FileName
+        ///     is set to null first, otherwise json error
+        /// 2. Call to upload the file.
+        ///
+        /// Can this be done in 1 call? of course can. I am just too lazy to do it.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         // POST: eLearning/CourseModules/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CreateOrEditContentModel model)
+        public async Task<ActionResult> Create(CreateOrEditContentModel model, string SubmitType="Save")
         {
             if (ModelState.IsValid)
             {
                 model.CreatedBy = CurrentUser.UserId.Value;
 
-                // TODO : FOR NOW DISABLE FILE UPLOAD, NEED TO GET THE PLAN HOW TO DO THIS
-                model.FileName = null;
+                var currentFileName = model.File;
+                string contentId = null;
+
+                model.File = null;
+
+                // check slideshare url and change to embed code
+                if (model.ContentType == CourseContentType.Document)
+                {
+                    await GetAllDocument(model.CourseId, model.ContentFileId != null ? model.ContentFileId.Value : -1);
+
+                    if (model.DocumentType == DocumentType.UseSlideshare)
+                    {
+                        if (!model.Url.Contains("embed_code"))
+                        {
+                            model.Url = await SlideshareHelper.GetEmbedCode(model.Url);
+                        }
+                    }
+                }
 
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, ContentApiUrl.Create, model);
 
@@ -83,46 +119,206 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 {
                     TempData["SuccessMessage"] = "Content successfully added.";
 
-                    await LogActivity(Modules.Learning, "Create content : " + model.Title);
+                    await LogActivity(Modules.Learning, "Create content success : " + model.Title);
 
-                    var contentId = response.Data;
+                    contentId = response.Data;
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error adding content.";
+
+                    await LogActivity(Modules.Learning, "Create content failed : " + model.Title);
+
+                    return RedirectToAction(nameof(Create), new
+                    {
+                        area = "eLearning",
+                        @courseId = model.CourseId,
+                        @moduleId = model.CourseModuleId,
+                        @createContentFrom = model.CreateContentFrom,
+                        courseContentType = model.ContentType,
+                        @courseTitle = model.PageTitle
+                    });
+                }
+
+                // Check if this creation include fileupload, which will require us to save the file
+                model.File = currentFileName;
+                if (((model.ContentType == CourseContentType.Video && model.VideoType == VideoType.UploadVideo) ||
+                    (model.ContentType == CourseContentType.Audio && model.AudioType == AudioType.UploadAudio) ||
+                    (model.ContentType == CourseContentType.Document && model.DocumentType == DocumentType.UploadDocument) ||
+                    (model.ContentType == CourseContentType.Flash) ||
+                    (model.ContentType == CourseContentType.Pdf) ||
+                    (model.ContentType == CourseContentType.Powerpoint)) &&
+                    model.File != null)
+                {
+                    // upload the file
+
+                    var result = await new FileController().UploadToApi<List<FileDocumentModel>>(model.File);
+
+                    if (result.isSuccess)
+                    {
+                        var data = result.Data;
+
+                        var fileDocument = data[0];
+
+                        fileDocument.FileType = model.ContentType.ToString();
+                        fileDocument.CreatedBy = CurrentUser.UserId.Value;
+
+                        fileDocument.CourseId = model.CourseId;
+
+                        if (model.ContentType == CourseContentType.Audio)
+                            fileDocument.ContentFileType = FileType.Audio;
+
+                        if (model.ContentType == CourseContentType.Video)
+                            fileDocument.ContentFileType = FileType.Video;
+
+                        if (model.ContentType == CourseContentType.Document)
+                            fileDocument.ContentFileType = FileType.Document;
+
+                        if (!string.IsNullOrEmpty(contentId))
+                            fileDocument.ContentId = int.Parse(contentId);
+
+                        var resultUpload = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, FileApiUrl.UploadInfo, fileDocument);
+
+                        if (resultUpload.isSuccess)
+                        {
+                            model.ContentFileId = int.Parse(resultUpload.Data);
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = "Cannot upload file";
+                        }
+                    }
+                }
+
+                if (SubmitType.Equals("SaveAndView"))
+                    return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = contentId });
+                else
+                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = model.CourseId });
+            }
+
+            TempData["ErrorMessage"] = "Cannot add content.";
+
+            // await GetAllQuestions(model.CourseId);
+
+            //return View(model);
+            return RedirectToAction(nameof(Create), new
+            {
+                area = "eLearning",
+                @courseId = model.CourseId,
+                @moduleId = model.CourseModuleId,
+                @createContentFrom = model.CreateContentFrom,
+                courseContentType = model.ContentType,
+                @courseTitle = model.PageTitle
+            });
+        }
+
+        [HasAccess(UserAccess.CourseEdit)]
+        // GET: eLearning/CourseContents/Create
+        public async Task<ActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+
+            var model = await TryGetContent(id.Value);
+
+            await GetAllQuestions(model.CourseId, model.ContentQuestionId != null ? model.ContentQuestionId.Value : -1);
+
+            if (model.ContentType == CourseContentType.Audio)
+                await GetAllAudio(model.CourseId, model.ContentFileId != null ? model.ContentFileId.Value : -1);
+
+            if (model.ContentType == CourseContentType.Document)
+            {
+                await GetAllDocument(model.CourseId, model.ContentFileId != null ? model.ContentFileId.Value : -1);
+
+                if (model.DocumentType == DocumentType.UseSlideshare)
+                {
+                    if (!model.Url.Contains("embed_code"))
+                    {
+                        model.Url = await SlideshareHelper.GetEmbedCode(model.Url);
+                    }
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(CreateOrEditContentModel model, string SubmitType="Save")
+        {
+            if (ModelState.IsValid)
+            {
+                model.CreatedBy = CurrentUser.UserId.Value;
+
+                var currentFileName = model.File;
+                model.File = null;
+                var modelFileDocument = model.FileDocument;
+
+                // check slideshare url and change to embed code
+                if (model.ContentType == CourseContentType.Document)
+                {
+                    await GetAllDocument(model.CourseId, model.ContentFileId != null ? model.ContentFileId.Value : -1);
+
+                    if (model.DocumentType == DocumentType.UseSlideshare)
+                    {
+                        if (!model.Url.Contains("embed_code"))
+                        {
+                            model.Url = await SlideshareHelper.GetEmbedCode(model.Url);
+                        }
+                    }
+                }
+
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, ContentApiUrl.Edit, model);
+
+                if (response.isSuccess)
+                {
+                    TempData["SuccessMessage"] = "Content successfully edited.";
+
+                    await LogActivity(Modules.Learning, "Edit content : " + model.Title);
 
                     // Check if this creation include fileupload, which will require us to save the file
+                    model.File = currentFileName;
                     if (((model.ContentType == CourseContentType.Video && model.VideoType == VideoType.UploadVideo) ||
-                        (model.ContentType == CourseContentType.Audio) ||
-                        (model.ContentType == CourseContentType.Document)) &&
-                        model.FileName != null)
+                        (model.ContentType == CourseContentType.Audio && model.AudioType == AudioType.UploadAudio) ||
+                        (model.ContentType == CourseContentType.Document && model.DocumentType == DocumentType.UploadDocument) ||
+                        (model.ContentType == CourseContentType.Flash) ||
+                        (model.ContentType == CourseContentType.Pdf) ||
+                        (model.ContentType == CourseContentType.Powerpoint)) &&
+                        model.File != null)
                     {
-                        JsonResult result = new FileController().UploadFile(model.FileName);
+                        // upload the file
+                        var result = await new FileController().UploadToApi<List<FileDocumentModel>>(model.File);
 
-                        if (result.Data != null)
+                        if (result.isSuccess)
                         {
-                            var fileDocument = JsonConvert.DeserializeObject<FileDocument>(result.Data.ToString());
+                            var data = result.Data;
+
+                            var fileDocument = data[0];
 
                             fileDocument.FileType = model.ContentType.ToString();
                             fileDocument.CreatedBy = CurrentUser.UserId.Value;
-                            fileDocument.CreatedDate = DateTime.Now;
+                            fileDocument.ContentFileType = model.FileType;
+                            fileDocument.CourseId = model.CourseId;
+                            fileDocument.ContentId = model.Id;
 
-                            var vm = new FileDocumentModel
-                            {
-                                ContentFileType = model.FileType,
-                                CourseId = model.CourseId,
-                                CreatedBy = fileDocument.CreatedBy,
-                                FileType = fileDocument.FileType,
-                                CreatedDate = fileDocument.CreatedDate,
-                                FileName = fileDocument.FileName,
-                                FileNameOnStorage = fileDocument.FileNameOnStorage,
-                                FilePath = fileDocument.FilePath,
-                                FileSize = fileDocument.FileSize,
-                                FileTag = fileDocument.FileTag,
-                                User = fileDocument.User,
-                                ContentId = int.Parse(contentId)
-                            };
+                            if (model.ContentType == CourseContentType.Audio)
+                                fileDocument.ContentFileType = FileType.Audio;
 
-                            var resultUpload = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, FileApiUrl.Upload, vm);
+                            if (model.ContentType == CourseContentType.Video)
+                                fileDocument.ContentFileType = FileType.Video;
+
+                            if (model.ContentType == CourseContentType.Document)
+                                fileDocument.ContentFileType = FileType.Document;
+
+                            var resultUpload = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, FileApiUrl.UploadInfo, fileDocument);
 
                             if (resultUpload.isSuccess)
                             {
+                                model.ContentFileId = int.Parse(resultUpload.Data);
                             }
                             else
                             {
@@ -131,56 +327,78 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         }
                     }
 
-                    if (model.CreateContentFrom == CreateContentFrom.CourseFrontPage)
-                        return RedirectToAction("Content", "Courses", new { id = model.CourseId });
+                    if (SubmitType.Equals("SaveAndView"))
+                        return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = model.Id });
                     else
-                        return RedirectToAction("Content", "CourseModules", new { id = model.CourseModuleId });
-                }
+                        return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
+               }
             }
 
-            TempData["ErrorMessage"] = "Cannot add content.";
+            TempData["ErrorMessage"] = "Cannot edit content.";
 
             await GetAllQuestions(model.CourseId);
 
             return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Complete(CreateOrEditContentModel model)
+        [HasAccess(UserAccess.CourseCreate)]
+        public async Task<ActionResult> Delete(int? id)
         {
-            if (ModelState.IsValid)
+            if (id == null)
             {
-                var user = CurrentUser.Name;
+                TempData["ErrorMessage"] = "Could not find the content.";
 
-                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, ContentApiUrl.Complete, model);
-
-                if (response.isSuccess)
-                {
-                    TempData["SuccessMessage"] = "Content Completed";
-
-                    await LogActivity(Modules.Learning, "User : " + user + " complete this content : " + model.Title);
-
-                    var nextContent = response.Data;
-
-                    if (nextContent < 0) // go to index, no more content this module
-                        return RedirectToAction("Content", "CourseModules", new { id = model.CourseId });
-                    else
-                        return RedirectToAction("Content", "CourseContents", new { id = nextContent });
-                }
+                return Redirect(Request.UrlReferrer.ToString());
             }
-            TempData["ErrorMessage"] = "Cannot add content. Please ensure all required fields are filled in.";
+
+            var model = await TryGetContent(id.Value);
+
+            if (model == null)
+            {
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
+            }
 
             return View(model);
         }
 
-        private async Task GetAllQuestions(int id)
+        [HttpPost]
+        public async Task<ActionResult> DeleteConfirmed(int? id)
+        {
+            if (id == null)
+            {
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+
+            var response = await WepApiMethod.SendApiAsync<DeleteContentModel>(HttpVerbs.Post, ContentApiUrl.Delete + $"?id={id.Value}");
+
+            if (response.isSuccess)
+            {
+                TempData["SuccessMessage"] = "Content Deleted";
+
+                var user = CurrentUser.Name;
+                var data = response.Data;
+
+                await LogActivity(Modules.Learning, "User : " + user + " delete the content with title : " + data.Title);
+
+                return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = data.CourseModuleId });
+            }
+
+            TempData["ErrorMessage"] = "Cannot delete content.";
+
+            return RedirectToAction("Delete", "CourseContents", new { area = "eLearning", @id = id.Value });
+        }
+
+        private async Task GetAllQuestions(int id, int selectedId = -1)
         {
             // this should be queried from webapi
             var response = await WepApiMethod.SendApiAsync<IEnumerable<QuestionOnlyModel>>(HttpVerbs.Get, ContentApiUrl.GetAllQuestions + $"?id={id}");
 
             if (response.isSuccess)
-                ViewBag.Questions = new SelectList(response.Data, "Id", "Name");
+                ViewBag.Questions = new SelectList(response.Data, "Id", "Name", selectedId);
             else
             {
                 ViewBag.Questions = new SelectList(new List<QuestionOnlyModel>
@@ -192,251 +410,72 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
         }
 
-        public async Task<ActionResult> View(int? id)
+        private async Task GetAllAudio(int courseId, int selectedId = -1)
         {
-            if (id == null)
+            // this should be queried from webapi
+            var response = await WepApiMethod.SendApiAsync<IEnumerable<AudioListModel>>(HttpVerbs.Get,
+                        ContentApiUrl.GetAllAudio + $"?courseId={courseId}");
+
+            if (response.isSuccess)
+                ViewBag.AudioList = new SelectList(response.Data, "Id", "Name", selectedId);
+            else
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            var model = await TryGetContent(id.Value);
-
-            if (model == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            return View(model);
-        }
-
-        public async Task<ActionResult> ViewVideo(int id)
-        {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                // If its youtube video ensure the word 'embed' is there, if not, put it in
-                // ex https://www.youtube.com/watch?v=WEDIj9JBTC8
-                if (content.VideoType == VideoType.ExternalVideo)
+                ViewBag.AudioList = new SelectList(new List<AudioListModel>
                 {
-                    content.Url = YouTubeUrlHelper.ConvertToEmbeddedUrl(content.Url);
-                }
-                else
+                    new AudioListModel{ Id = 999, Name = "Error"}
+                }, "Id", "Name");
+
+                TempData["Error"] = "Cannot find any audio to display.";
+            }
+        }
+
+        private async Task GetAllDocument(int courseId, int selectedId = -1)
+        {
+            // this should be queried from webapi
+            var response = await WepApiMethod.SendApiAsync<IEnumerable<DocumentListModel>>(HttpVerbs.Get,
+                        ContentApiUrl.GetAllDocument + $"?courseId={courseId}");
+
+            if (response.isSuccess)
+                ViewBag.DocumentList = new SelectList(response.Data, "Id", "Name", selectedId);
+            else
+            {
+                ViewBag.DocumentList = new SelectList(new List<DocumentListModel>
                 {
-                    // TODO : get the uploaded file info
-                }
-                return View(content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    new DocumentListModel{ Id = 999, Name = "Error"}
+                }, "Id", "Name");
+
+                TempData["Error"] = "Cannot find any audio to display.";
             }
         }
 
-        public async Task<ActionResult> ViewRichText(int id)
+        public async Task<ActionResult> View(int id)
         {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
             var content = await TryGetContent(id);
 
             if (content != null)
             {
-                return View(content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
-
-        public async Task<ActionResult> ViewDocument(int id)
-        {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
-
-        public async Task<ActionResult> ViewIFrame(int id)
-        {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
-
-        public async Task<ActionResult> ViewAudio(int id)
-        {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
-
-        public async Task<ActionResult> ViewWebLink(int id)
-        {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
-
-        public async Task<ActionResult> ViewTest(int id)
-        {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
-
-        public async Task<ActionResult> ViewAssignment(int id)
-        {
-            //var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-            var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                return View(content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
-
-        [ChildActionOnly]
-        public async Task<ActionResult> Video(int id)
-        {
-            var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-            //var content = await TryGetContent(id);
-
-            if (content != null)
-            {
-                // If its youtube video ensure the word 'embed' is there, if not, put it in
-                // ex https://www.youtube.com/watch?v=WEDIj9JBTC8
-                if (content.VideoType == VideoType.ExternalVideo)
+                switch (content.ContentType)
                 {
-                    content.Url = YouTubeUrlHelper.ConvertToEmbeddedUrl(content.Url);
+                    case CourseContentType.Video:
+                        // If its youtube video ensure the word 'embed' is there, if not, put it in
+                        // eg. https://www.youtube.com/watch?v=WEDIj9JBTC8
+                        if (content.VideoType == VideoType.ExternalVideo)
+                        {
+                            content.Url = YouTubeUrlHelper.ConvertToEmbeddedUrl(content.Url);
+                        }
+                        break;
+
+                    default:
+                        break;
                 }
-                else
-                {
-                    // TODO : get the uploaded file info
-                }
-                return PartialView("_video", content);
+
+                return View(content);
             }
             else
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
+                TempData["ErrorMessage"] = "Could not find the content.";
 
-        [ChildActionOnly]
-        public ActionResult RichText(int id)
-        {
-            var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-
-            if (content != null)
-            {
-                return PartialView("_richText", content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
-
-        [ChildActionOnly]
-        public ActionResult Document(int id)
-        {
-            var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-
-            if (content != null)
-            {
-                return PartialView("_document", content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
-
-        [ChildActionOnly]
-        public ActionResult IFrame(int id)
-        {
-            var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-
-            if (content != null)
-            {
-                return PartialView("_iframe", content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
-
-        [ChildActionOnly]
-        public ActionResult Audio(int id)
-        {
-            var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-
-            if (content != null)
-            {
-                return PartialView("_audio", content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-        }
-
-        [ChildActionOnly]
-        public ActionResult Weblink(int id)
-        {
-            var content = Task.Run(() => TryGetContent(id).GetAwaiter().GetResult()).Result;
-
-            if (content != null)
-            {
-                return PartialView("_weblink", content);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return Redirect(Request.UrlReferrer.ToString());
             }
         }
 
@@ -450,6 +489,18 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return null;
+        }
+
+        public async Task<string> GetSlideshare(string newUrl)
+        {
+            if (!newUrl.Contains("embed_code"))
+            {
+                var result = await SlideshareHelper.GetEmbedCode(newUrl);
+
+                return result;
+            }
+
+            return newUrl;
         }
 
         protected override void Dispose(bool disposing)

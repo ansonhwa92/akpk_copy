@@ -5,6 +5,10 @@
     {
       "library": "jquery-sortable@0.9.13",
       "destination": "Scripts/jquery-sortable/"
+    },
+    {
+      "library": "tinymce@5.0.16",
+      "destination": "Scripts/tinymce/"
     }
   ]
 }

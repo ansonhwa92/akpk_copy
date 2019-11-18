@@ -1,0 +1,244 @@
+﻿@using FEP.Model
+@using FEP.Model.eLearning
+
+@model FEP.WebApiModel.eLearning.ReturnListCourseEnrollmentModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="@BaseURL/eLearning/CourseEvents/Index?courseId=@Model.Filters.CourseId" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@BaseURL/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="@BaseURL/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="@BaseURL/eLearning/Courses/Content/@Model.Filters.CourseId">Course</a></li>
+                                <li class="breadcrumb-item"><a href="@BaseURL/eLearning/CourseEvents/Index?courseId=@Model.Filters.CourseId">Sessions</a></li>
+                                <li class="breadcrumb-item"><a href="#">Enrollment</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Enrollments : </h1>
+                    <div class="header-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@Html.HiddenFor(m => m.Filters.CourseId)
+@Html.HiddenFor(m => m.Filters.CourseEventId)
+
+<div class="d-flex align-items-center">
+    <div class="filter dropdown">
+        <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+        <div class="dropdown-menu">
+            <div class="filter-head">Filters</div>
+            <div class="filter-body">
+
+                <div>@Html.DisplayNameFor(m => m.Filters.StudentName) </div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filters.StudentName, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>
+                    <button id="btnSearch" class="btn btn-secondary mt-2">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider-vertical">&nbsp;</div>
+    <!-- Search -->
+    <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+        <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+        <div class="input-group-append">
+            <button id="quickSearchBtn" class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="table-responsive" data-toggle="lists" style="overflow-x:hidden">
+    <div class="d-flex pb-4 align-items-center">
+        <div>
+            <!-- Select option -->
+            <span class="select-arrow">
+                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </span>
+        </div>
+        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+
+    </div>
+    <!-- Table -->
+    <table class="table tableStyle1 tabledata">
+        <thead>
+            <tr>
+
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.CourseEnrollment.StudentName)</th>
+                <th>@Html.DisplayNameFor(model => model.CourseEnrollment.DateEnrolled)</th>
+                <th>@Html.DisplayNameFor(model => model.CourseEnrollment.PercentageCompleted)</th>
+                <th>@Html.DisplayNameFor(model => model.CourseEnrollment.Status)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<style>
+
+    .dataTables_scrollBody {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+    }
+</style>
+
+@section ContentScript{
+
+    <link href="~/css/elearn.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var table = $('.tabledata').DataTable({
+                serverSide: true,
+                processing: true,
+                responsive: true,
+                scrollX: false,
+                ajax: {
+                    "type": "post",
+                    "url": '@(WebApiURL)eLearning/CourseEnrollments/Get',
+                    "data": function (filter) {
+                        console.log("-", filter);
+
+                        filter.StudentName = $('#Filters_StudentName').val();
+                        filter.CourseEventId = $('#Filters_CourseEventId').val();
+                        filter.CourseId = $('#Filters_CourseId').val();
+                    },
+                    dataFilter: function (res) {
+                        // do what you need to the data before it loads to the table
+
+                        // for debugging only for now
+                        return res;
+                    },
+                    error: function (x, y) {
+                        console.log("Error -", x);
+                    }
+                },
+                columns: [
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'StudentName',
+                        sortable: true
+                    },
+                    {
+                        data: 'DateEnrolled',
+                        sortable: true,                      
+                    },
+                    {
+                        data: 'PercentageCompleted',
+                        sortable: true,
+                    },
+                    {
+                        data: 'Status',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+
+                            switch (row.Status) {
+                                case @Json.Encode(EnrollmentStatus.Enrolled) :
+                                    return "<span class='color-green font-weight-bold'>Enrolled</span>";
+
+                                case @Json.Encode(EnrollmentStatus.Completed) :
+                                    return "<span class='color-navy-blue font-weight-bold'>Completed</span>";
+
+                                case @Json.Encode(EnrollmentStatus.Invited) :
+                                    return "<span class='color-yellow font-weight-bold'>Invited Verification</span>";
+
+                                default:
+                                    return "<span class='color-red font-weight-bold'>" + row.Status + "</span>";
+
+                            }
+                        }
+                    },
+   
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+
+                            var action = "";
+
+                            var cancreate = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseCreate));
+
+                            action = '<div class="icon-action">';
+
+                            @*if (cancreate) {
+                                action += '<a href="@Url.Action("Index", "CourseEnrollments", new { area = "eLearning" })/' + row.Id +
+                                    '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>&nbsp;';
+                            }*@
+
+                            return action;
+                        }
+                    }
+                ],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_ courses"
+                },
+                dom: 'rtip'
+            });
+
+            $('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#quickSearchBtn').click(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change(function () {
+                table.page.len($(this).val()).draw();
+            });
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt', function () {
+                var info = table.page.info();
+                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' courses');
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            }).draw();
+
+        });
+    </script>
+
+}

@@ -19,7 +19,7 @@ namespace Language.eLearning {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Content {
@@ -79,15 +79,6 @@ namespace Language.eLearning {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Url.
-        /// </summary>
-        public static string AudioUrl {
-            get {
-                return ResourceManager.GetString("AudioUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to With a checkbox.
         /// </summary>
         public static string CompleteACheckbox {
@@ -106,7 +97,7 @@ namespace Language.eLearning {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to After a period of time.
+        ///   Looks up a localized string similar to After a period of time (in seconds).
         /// </summary>
         public static string CompleteATimer {
             get {
@@ -133,6 +124,15 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Video Height.
+        /// </summary>
+        public static string Height {
+            get {
+                return ResourceManager.GetString("Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IFrame Url.
         /// </summary>
         public static string IFrame {
@@ -151,11 +151,74 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select an audio.
+        /// </summary>
+        public static string SelectAudio {
+            get {
+                return ResourceManager.GetString("SelectAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Audio from your course files.
+        /// </summary>
+        public static string SelectAudioList {
+            get {
+                return ResourceManager.GetString("SelectAudioList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a document.
+        /// </summary>
+        public static string SelectDocument {
+            get {
+                return ResourceManager.GetString("SelectDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a document from your course files.
+        /// </summary>
+        public static string SelectDocumentList {
+            get {
+                return ResourceManager.GetString("SelectDocumentList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a flash file.
+        /// </summary>
+        public static string SelectFlash {
+            get {
+                return ResourceManager.GetString("SelectFlash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a pdf file.
+        /// </summary>
+        public static string SelectPdf {
+            get {
+                return ResourceManager.GetString("SelectPdf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a video.
         /// </summary>
         public static string SelectVideo {
             get {
                 return ResourceManager.GetString("SelectVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show IFrame As.
+        /// </summary>
+        public static string ShowIFrameAs {
+            get {
+                return ResourceManager.GetString("ShowIFrameAs", resourceCulture);
             }
         }
         
@@ -205,11 +268,11 @@ namespace Language.eLearning {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Link Url.
+        ///   Looks up a localized string similar to Video Width.
         /// </summary>
-        public static string WebLink {
+        public static string Width {
             get {
-                return ResourceManager.GetString("WebLink", resourceCulture);
+                return ResourceManager.GetString("Width", resourceCulture);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿@model FEP.WebApiModel.RnP.UpdateSurveyModel
+﻿@model FEP.WebApiModel.RnP.CreateSurveyModel
 
 @{
     ViewBag.Title = "Create Survey";
@@ -31,7 +31,7 @@
     </div>
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", id = "target" }))
 {
     @Html.AntiForgeryToken()
 
@@ -76,10 +76,13 @@
             <!-- Start Form -->
             <div class="border-form rounded-top">
                 <div class="form-container">
+                    <div class="mt-2 mb-4 pb-1">
+                        <h4 class="color-darkblue mb-0">Survey Details</h4>
+                        <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                    </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label" })
-                            @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                             @Html.HiddenFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
                             @*Html.EnumDropDownListFor(model => model.Type, new { @class = "form-control", @Value = @ViewBag.TypeId, @readonly = "readonly" })*@
                             <input class="form-control" type="text" name="TypeName" id="TypeName" readonly="readonly" value="@ViewBag.TypeName">
@@ -88,21 +91,21 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                             @Html.EnumDropDownListFor(model => model.Category, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                             @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @placeholder = "Title of the Survey" } })
                             @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                             @*Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @placeholder = "Description of Publication", cols = 48, @rows = 2 })*@
                             <textarea id="Description" name="Description" class="form-control" rows="3" placeholder="Description of Survey"></textarea>
                             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
@@ -120,13 +123,16 @@
                     {
                         <div class="row">
                             <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.TargetGroup, htmlAttributes: new { @class = "control-label" })
+                                @Html.LabelFor(model => model.TargetGroup, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                                 <select class="js-example-basic-multiple" id="survey_group" name="survey_groups[]" multiple="multiple" style="width: 100%;" placeholder="Select group(s)">
-                                    <option value="Group 1">Group 1</option>
-                                    <option value="Group 2">Group 2</option>
-                                    <option value="Group 3">Group 3</option>
-                                    <option value="Group 4">Group 4</option>
-                                    <option value="Group 5">Group 5</option>
+                                    @if (ViewBag.Groups != null)
+                                    {
+                                        foreach (var group in ViewBag.Groups)
+                                        {
+
+                                            <option value="@group.ID">@group.Name</option>
+                                        }
+                                    }
                                 </select>
                                 @Html.HiddenFor(model => model.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.TargetGroup, "", new { @class = "text-danger" })
@@ -135,7 +141,7 @@
                     }
                     <div class="row">
                         <div class="form-group col-lg-6">
-                            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label", @title = "The start date of the Survey duration" })
+                            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label", @title = "The start date of the Survey duration" }) <span class="text-danger">*</span>
                             <div class="dateSelect">
                                 <input type="text" id="date_start" class="form-control" placeholder="Date Start" data-input="flatpickr">
                                 <a class="input-button calendar" title="toggle" data-toggle>
@@ -149,7 +155,7 @@
                             @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-lg-6">
-                            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label", @title = "The end date of the Survey duration" })
+                            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label", @title = "The end date of the Survey duration" }) <span class="text-danger">*</span>
                             <div class="dateSelect">
                                 <input type="text" id="date_end" class="form-control" placeholder="Date End" data-input="flatpickr">
                                 <a class="input-button calendar" title="toggle" data-toggle>
@@ -163,51 +169,9 @@
                             @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <!--
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pictures, htmlAttributes: new { @class = "control-label" })
-                            <div class="custom-file">
-                                @Html.EditorFor(model => model.Pictures, new { htmlAttributes = new { @class = "form-control" } })
-                                <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-                                <label class="custom-file-label" for="customFile">No file choosen</label>
-                                @Html.ValidationMessageFor(model => model.Pictures, "", new { @class = "text-danger" })
-                            </div>
-                            <div id="fileList"></div>
-                        </div>
-                    </div>
-                    -->
-                    <!--
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                            <div class="custom-file">
-                                @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
-                                <input type="file" class="custom-file-input" name="file" id="inputfile" multiple />
-                                <label class="custom-file-label" for="customFile">No file choosen</label>
-                                @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
-                            </div>
-                            <div id="fileList"></div>
-                        </div>
-                    </div>
-                    -->
-                    <div class="row" style="display:none;">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pictures, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pictures, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Pictures, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row" style="display:none;">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.ProofOfApproval, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.RequireLogin, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.RequireLogin, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                             <!--<div class="custom-control custom-radio">
                                 <label for="RequireLogin1"><input type="radio" class="custom-control" id="RequireLogin1" name="RequireLogin" value="1" style="float:left;margin-top:-5px;margin-right:8px;" />Yes</label><br />
                                 <label for="RequireLogin0"><input type="radio" class="custom-control" id="RequireLogin0" name="RequireLogin" value="0" style="float:left;margin-top:-5px;margin-right:8px;" />No</label><br />
@@ -220,6 +184,27 @@
                                 @Html.Label("no", "No")
                                 @Html.ValidationMessageFor(model => model.RequireLogin, "", new { @class = "text-danger" })
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.CoverPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_CoverPicture", Model.CoverPictures)
+                            @Html.ValidationMessageFor(model => model.CoverPictures, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.AuthorPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_AuthorPicture", Model.AuthorPictures)
+                            @Html.ValidationMessageFor(model => model.AuthorPictures, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.ProofOfApproval, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            @Html.Partial("_ProofOfApproval", Model.ProofOfApproval)
+                            @Html.ValidationMessageFor(model => model.ProofOfApproval, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
@@ -257,12 +242,32 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            function sortDates(dateType, dateStr) {
+                var date1 = $('#StartDate').val();
+                var date2 = $('#EndDate').val();
+                var revdate1 = date1.substr(6, 4) + date1.substr(3, 2) + date1.substr(0, 2);
+                var revdate2 = date2.substr(6, 4) + date2.substr(3, 2) + date2.substr(0, 2);
+                if (dateType == 1) {
+                    if (revdate2 < revdate1) {
+                        $('#EndDate').val(date1);
+                        $("#date_end").val(date1);
+                    }
+                }
+                else if (dateType == 2) {
+                    if (revdate2 < revdate1) {
+                        $('#StartDate').val(date2);
+                        $("#date_start").val(date2);
+                    }
+                }
+            }
+
             $("#date_start").flatpickr({
                 dateFormat: "d/m/Y",
                 minDate: "today",
                 maxDate: "31/01/2200",
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#StartDate").val(dateStr);
+                    sortDates(1, dateStr);
                 },
             });
 
@@ -272,6 +277,7 @@
                 maxDate: "31/01/2200",
                 onChange: function (selectedDates, dateStr, instance) {
                     $("#EndDate").val(dateStr);
+                    sortDates(2, dateStr);
                 },
             });
 
@@ -279,11 +285,16 @@
                 var selectedValues = [];
                 var selectedText = "";
                 $("#survey_group :selected").each(function () {
-                    selectedValues.push($(this).val());
+                    //selectedValues.push($(this).val());
+                    selectedValues.push($(this).text());
                 });
                 selectedText = selectedValues.join();
                 $("#TargetGroup").val(selectedText);
             });
+
+            RefreshFile1();
+            RefreshFile2();
+            RefreshFile3();
         });
     </script>
 }

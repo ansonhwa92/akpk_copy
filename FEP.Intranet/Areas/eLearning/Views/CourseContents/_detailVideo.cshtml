@@ -1,0 +1,74 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
+
+
+@Html.Partial("_contentCompletionDetail", Model)
+<div>
+
+    <div class="form-group">
+        <label>@Language.eLearning.Enum.Video</label>
+        <div class="col-sm-12">
+
+            @if (Model.VideoType == VideoType.ExternalVideo)
+            {
+                <!-- Default inline 1-->
+                <div class="video-radio row pl-4 pb-2">
+
+                    <div class="pt-2">
+                        <input type="radio" class="custom-control-input exVideo" checked="checked" value=@VideoType.ExternalVideo
+                               id="video1"
+                               name="VideoType">
+                        <label class="custom-control-label" for="video1">@Language.eLearning.Enum.ExternalVideo</label>
+
+                    </div>
+                    <div class="form-group exVideoWrapper col-sm-8">
+                        @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control",
+                       @readonly = "readonly", @placeholder = "YouTube Url" } })
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="video-radio row pl-4 ">
+
+                    <div class="pt-2">
+                        <input type="radio" class="custom-control-input upVideo" value=@VideoType.UploadVideo
+                               id="video2"
+                               name="VideoType">
+                        <label class="custom-control-label" for="video2">@Language.eLearning.Enum.UploadVideo</label>
+
+                    </div>
+                    <div class="form-group upVideoWrapper col-sm-8">
+                        <div class="">
+                            <input name="FileName" id="FileName" class="form-control" readonly="readonly" value="@Model.FileDocument.FileName" />
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+
+
+        </div>
+
+        <label>Video</label>
+        @if (Model.VideoType == VideoType.ExternalVideo)
+        {
+            <iframe width="100%" height="540" src="@Model.Url" frameborder="0" allow="accelerometer; ; encrypted-media;
+                        gyroscope; picture-in-picture" allowfullscreen></iframe>
+        }
+        else
+        {
+            <video width="100%" height="540" controls>
+                <source src="@(WebApiURL)eLearning/Video?videoFileId=@Model.FileDocumentId&fileName=@Model.FileDocument.FileNameOnStorage"
+                        type="video/mp4">
+                <source src="@(WebApiURL)eLearning/Video?videoFileId=@Model.FileDocumentId&fileName=@Model.FileDocument.FileNameOnStorage"
+                        type="video/mpeg">
+
+                Your browser does not support the video tag.
+            </video>
+
+        }
+
+    </div>
+</div>

@@ -23,11 +23,15 @@ namespace FEP.Model
         public string FileType { get; set; } 
 
         public string FileTag { get; set; }
+
+        public string Directory { get; set; }
         
         public int CreatedBy { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public string FileNameOnStorage { get; set; }
+
+        public bool Display { get; set; }
 
         [ForeignKey("CreatedBy")]
         public User User { get; set; }

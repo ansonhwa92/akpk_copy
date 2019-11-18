@@ -5,13 +5,130 @@
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
+@section ContentScript {
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+			 $('#tab_invitation').click(function () {
+               $('#invitation-details').show();
+			   $('#amendment-history').hide();
+			   $('#interview-details').hide();
+			   $('#rep-details').hide();
+			 });
+
+			 $('#tab_interview').click(function () {
+			   $('#invitation-details').hide();
+			   $('#amendment-history').hide();
+			   $('#interview-details').show();
+			   $('#rep-details').hide();
+			 });
+
+			 $('#tab_rep').click(function () {
+			   $('#invitation-details').hide();
+			   $('#amendment-history').hide();
+			   $('#interview-details').hide();
+			   $('#rep-details').show();
+            });
+
+            $('#tab_history').click(function () {
+               $('#invitation-details').hide();
+			   $('#amendment-history').show();
+			   $('#interview-details').hide();
+			   $('#rep-details').hide();
+            });
+
+			$('#btnApprove').click(function (event) {
+                $("#modalApprove").modal();
+                return false;
+            });
+
+            function ValidApprove() {
+                var aremarks = $('#Approval_Remarks').val();
+                $('#span_approveremarkserror').hide();
+                if (aremarks.trim() == "") {
+                    $('#span_approveremarkserror').show();
+                    return false;
+                }
+                return true;
+            }
+
+            $('#btnApproveConfirm').click(function (event) {
+                // ajax call for approval
+                if (!ValidApprove()) {
+                    return false;
+                }
+                $('#Approval_Status').val('1');
+                $('#Approval_ApproverId').val('@CurrentUser.UserId');
+                var applevel = $('#btnApprove').data('level');
+                if (applevel == "0") {
+                    $('#Approval_RequireNext').val('True');
+                }
+                else if (applevel == "Approver3") {
+                    $('#Approval_RequireNext').val('False');
+				}
+
+
+				if (applevel == "0") {
+					$('#myform').attr("action", "@Url.Action("Verified", "MediaInterview", new { id = Model.Id })");
+				} else if
+					(applevel == "1") {
+					$('#myform').attr("action", "@Url.Action("FirstApproved", "MediaInterview", new { id = Model.Id })");
+				}
+				else if (applevel == "2") {
+					$('#myform').attr("action", "@Url.Action("SecondApproved", "MediaInterview", new { id = Model.Id })");
+				}
+				else if (applevel == "3") {
+					$('#myform').attr("action", "@Url.Action("FinalApproved", "MediaInterview", new { id = Model.Id })");
+				}
+
+				$('#myform').submit();
+            });
+
+            $('#btnReject').click(function (event) {
+                $("#modalReject").modal();
+                return false;
+            });
+
+            function ValidReject() {
+                var rremarks = $('#Reject_Remarks').val();
+                $('#span_rejectremarkserror').hide();
+                if (rremarks.trim() == "") {
+                    $('#span_rejectremarkserror').show();
+                    return false;
+                }
+                return true;
+            }
+
+            $('#btnRejectConfirm').click(function (event) {
+                // ajax call for approval
+                if (!ValidReject()) {
+                    return false;
+                }
+                var rejecttext = $('#Reject_Remarks').val();
+                $('#Approval_Remarks').val(rejecttext);
+                $('#Approval_Status').val('2');
+                $('#Approval_ApproverId').val('@CurrentUser.UserId');
+                var applevel = $('#Approval_Level').val();
+                if (applevel == "Verifier") {
+                    $('#Approval_RequireNext').val('True');
+                }
+                else if (applevel == "Approver3") {
+                    $('#Approval_RequireNext').val('False');
+                }
+                $('#myform').submit();
+
+            });
+		});
+	</script>
+}
+
 @section Nav {
 
 	<div class="title_header">
 		<div class="title-header-container">
 			<div class="container">
 				<!-- if have button -->
-				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "MediaInterview", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "MediaInterview", new { area = "eEvent" })' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
 				<div class="header-col-left">
 					<div id="breadcrumb">
 						<nav aria-label="breadcrumb">
@@ -23,7 +140,7 @@
 							</ol>
 						</nav>
 					</div>
-					<h1 class="page-title text-white">Media Interview Details</h1>
+					<h1 class="page-title text-white">Media Interview Request Ref No: @Model.RefNo</h1>
 					@*<div class="header-text">List of created media interview</div>*@
 				</div>
 			</div>
@@ -36,40 +153,78 @@
 	<div class="col-xl-3 col-md-3 col-sm-4 my-2">
 		<div id="page-nav" class="sidebar-left page-nav">
 			<div data-perfect-scrollbar>
-				<div class="sidebar-inner">
-					<ul class="steps steps-vertical nav">
-						<li class="step-item complete">
-							<a href="#step1" class="step-link" data-toggle="tab">
-								<span class="step-number">1</span>
-								<span class="step-title">Media Interview List</span>
-							</a>
+
+				<div class="page-section">
+					<h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Request Information</h6>
+					<ul class="nav page-nav__menu">
+						<li class="nav-item">
+							<a id="tab_invitation" href="#invitation-details" data-toggle="tab" class="nav-link active">View Invitation Details</a>
 						</li>
-						<li class="step-item active">
-							<a href="#step2" class="step-link" data-toggle="tab">
-								<span class="step-number">2</span>
-								<span class="step-title">View Invitation Details</span>
-							</a>
+						<li class="nav-item">
+							<a id="tab_interview" href="#interview-details" data-toggle="tab" class="nav-link active">View Interview Details</a>
 						</li>
-						<li class="step-item active">
-							<a href="#step3" class="step-link" data-toggle="tab">
-								<span class="step-number">3</span>
-								<span class="step-title">View Interview Details</span>
-							</a>
+						<li class="nav-item">
+							<a id="tab_rep" href="#rep-details" data-toggle="tab" class="nav-link active">View Recommended Rep. Details</a>
 						</li>
-						<li class="step-item active">
-							<a href="#step4" class="step-link" data-toggle="tab">
-								<span class="step-number">4</span>
-								<span class="step-title">View Recommended Rep. Details</span>
-							</a>
+						<li class="nav-item">
+							<a id="tab_history" href="#amendment-history" data-toggle="tab" class="nav-link active">Amendment History</a>
 						</li>
-						@*<li class="step-item disabled">
-								<a href="#step5" class="step-link" data-toggle="tab">
-									<span class="step-number">5</span>
-									<span class="step-title">Review & Submission</span>
-								</a>
-							</li>*@
 					</ul>
-					<!-- End Steps -->
+				</div>
+
+
+				<div>
+					@{if (Model.MediaStatus == FEP.Model.MediaStatus.New && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
+						{
+							<a href='@Url.Action("SubmitToVerify", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
+						}
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.PendingVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Verify_MediaInterview)))
+						{
+							<a href='@Url.Action("Verified", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+							<br />
+							<a href='@Url.Action("Reject", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
+						}
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver1_MediaInterview)))
+						{
+							<a href='@Url.Action("FirstApproved", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+							<br />
+							<a href='@Url.Action("Reject", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
+						}
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver2_MediaInterview)))
+						{
+							<a href='@Url.Action("SecondApproved", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+							<br />
+							<a href='@Url.Action("Reject", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
+						}
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover2 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver3_MediaInterview)))
+						{
+							<a href='@Url.Action("FinalApproved", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-success btn-block mb-2">Approved</a>
+							<br />
+							<a href='@Url.Action("Reject", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-warning btn-block mb-2">Require Amendment</a>
+						}
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.NotVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
+						{
+							<a href='@Url.Action("SubmitToVerify", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
+						}
+						else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover3 && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
+						{
+							<a href='@Url.Action("RepAvailable", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-outline-secondary btn-block mb-2">Representative Available</a>
+
+							<a href='@Url.Action("RepNotAvailable", "MediaInterview", new { area = "eEvent", id = Model.Id })'
+							   class="btn btn-outline-danger btn-block mb-2">Representative Not Available</a>
+						}
+					}
 				</div>
 			</div>
 		</div>
@@ -78,195 +233,254 @@
 	<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 		<!-- Start Form -->
 		<div class="border-form rounded-top">
-			<form>
-				<div class="form-container">
-					<div class="mt-2 mb-4 pb-1">
-						<h4 class="color-darkblue mb-0">Invitation Details</h4>
-						<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
-					</div>
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.MediaName, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.MediaName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.MediaName, "", new { @class = "text-danger" })
-							</div>
-						</div>
-					</div>
+			<div class="form-container tab-content">
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.MediaType, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EnumDropDownListFor(model => model.MediaType, "-Select Media Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", disabled = "disabled" })
-								@Html.ValidationMessageFor(model => model.MediaType, "", new { @class = "text-danger" })
+				<div class="tab-pane active" id="invitation-details">
+					<form>
+						<div class="form-container">
+							<div class="sub-Title my-4 d-flex align-items-center mb-4 mt-2">
+								<h4 class="color-darkblue mr-auto mb-0">Invitation Details<br><span class="small">Review invitation details below.</span></h4>
+								@if (Model.MediaStatus == FEP.Model.MediaStatus.New || Model.MediaStatus == FEP.Model.MediaStatus.NotVerified)
+								{
+									<a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Edit", "MediaInterview", new { area = "eEvent", @id = Model.Id })"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
+								}
 							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.ContactPerson, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.ContactPerson, "", new { @class = "text-danger" })
+							<div class="row">
+								<div class="form-group col-lg-6">
+									@Html.LabelFor(model => model.RefNo)
+									@Html.EditorFor(model => model.RefNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Reference No", @readonly = "readonly" } })
+									@Html.ValidationMessageFor(model => model.RefNo, "", new { @class = "text-danger" })
+								</div>
+								<div class="form-group col-lg-6">
+									@Html.LabelFor(model => model.MediaStatus)
+									@{ if (Model.MediaStatus == FEP.Model.MediaStatus.New)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Draft">
+										}
+										else if (Model.MediaStatus == FEP.Model.MediaStatus.RepAvailable)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Representative Available">
+										}
+										else if (Model.MediaStatus == FEP.Model.MediaStatus.RepNotAvailable)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Representative Not Available">
+										}
+										else if (Model.MediaStatus == FEP.Model.MediaStatus.PendingVerified)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Verification">
+										}
+										else if (Model.MediaStatus == FEP.Model.MediaStatus.Verified)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 1">
+										}
+										else if (Model.MediaStatus == FEP.Model.MediaStatus.NotVerified)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Require Amendment">
+										}
+										else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 2">
+										}
+										else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover2)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 3">
+										}
+										else if (Model.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover3)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Approved">
+										}
+									}
+								</div>
 							</div>
-						</div>
-					</div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.ContactNo, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.MediaName)
+									@Html.EditorFor(model => model.MediaName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									@Html.ValidationMessageFor(model => model.MediaName, "", new { @class = "text-danger" })
+								</div>
 							</div>
-						</div>
-					</div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.AddressStreet1, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.MediaType)
+									@Html.EnumDropDownListFor(model => model.MediaType, "-Select Media Type-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", disabled = "disabled" })
+									@Html.ValidationMessageFor(model => model.MediaType, "", new { @class = "text-danger" })
+								</div>
 							</div>
-						</div>
-					</div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.ContactPerson)
+									@Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									@Html.ValidationMessageFor(model => model.ContactPerson, "", new { @class = "text-danger" })
+								</div>
 							</div>
-						</div>
-					</div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							<div class="row col-lg-12">
-								<div class="col-lg-6">
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.ContactNo)
+									@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									@Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.AddressStreet1)
+									@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1", @readonly = "readonly" } })
+									@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1", @readonly = "readonly" } })
+									@Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-6">
 									@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode", @readonly = "readonly" } })
 									@Html.ValidationMessageFor(model => model.AddressPoscode, "", new { @class = "text-danger" })
 								</div>
-								<div class="col-lg-6">
+								<div class="form-group col-lg-6">
 									@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City", @readonly = "readonly" } })
 									@Html.ValidationMessageFor(model => model.AddressCity, "", new { @class = "text-danger" })
 								</div>
 							</div>
-						</div>
-					</div>
 
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", disabled = "disabled" })
-								@Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.GetFileName, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.GetFileName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "None" } })
-								@Html.ValidationMessageFor(model => model.GetFileName, "", new { @class = "text-danger" })
-							</div>
-						</div>
-					</div>
-
-					<hr />
-					<h4 class="color-darkblue mb-0">Interview Details</h4>
-					<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.DateStart, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="row col-lg-12">
-								<div class="col-lg-6">
-									@Html.EditorFor(model => model.DateStart, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start", disabled = "disabled" } })
-									@Html.ValidationMessageFor(model => model.DateStart, "", new { @class = "text-danger" })
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.State)
+									@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", disabled = "disabled" })
+									@Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
 								</div>
-								<div class="col-lg-6">
-									@Html.EditorFor(model => model.DateEnd, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End", disabled = "disabled" } })
-									@Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.Email)
+									@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.Attachments)
+									@Html.Partial("_AttachmentDetails", Model.Attachments)
 								</div>
 							</div>
 						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.Time, htmlAttributes: new { @class = "control-label col-lg-12" })
-							@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect" , disabled = "disabled"} })
-							@Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
-						</div>
-
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label col-lg-12" })
-							@Html.EnumDropDownListFor(model => model.Language, "-Select Language-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" , disabled = "disabled"})
-							@Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.Topic, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.Topic, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.Topic, "", new { @class = "text-danger" })
-							</div>
-						</div>
-					</div>
-
-					<hr />
-					<div class="mt-2 mb-4 pb-1">
-						<h4 class="color-darkblue mb-0">Recommended Rep. Details</h4>
-						<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.RepUserId, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.RepUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.RepUserId, "", new { @class = "text-danger" })
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-lg-12">
-							@Html.LabelFor(model => model.RepDesignation, htmlAttributes: new { @class = "control-label col-lg-12" })
-							<div class="col-lg-12">
-								@Html.EditorFor(model => model.RepDesignation, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
-								@Html.ValidationMessageFor(model => model.RepDesignation, "", new { @class = "text-danger" })
-							</div>
-						</div>
-					</div>
-
+						<!-- End Form -->
+					</form>
 				</div>
-			</form>
 
-		</div>
-		<div class="border-left border-right border-bottom p-3 rounded-bottom">
-			<div class="col-xs-12">
-				<a href='@Url.Action("List")' class="btn btn-warning">Back</a>
-				<a href='@Url.Action("Edit",new { id = Model.Id })' class="btn btn-primary">Edit</a>
+				<div class="tab-pane" id="interview-details">
+					<form>
+						<div class="form-container">
+							<div class="sub-Title my-4">
+								Interview Details
+							</div>
+							<div class="row">
+								<div class="form-group col-lg-6">
+									@Html.LabelFor(model => model.DateStart, htmlAttributes: new { @class = "control-label col-lg-12" })
+									@Html.EditorFor(model => model.DateStart, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start", disabled = "disabled" } })
+								</div>
+								<div class="form-group col-lg-6">
+									@Html.LabelFor(model => model.DateStart)
+									@Html.EditorFor(model => model.DateEnd, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End", disabled = "disabled" } })
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-6">
+									@Html.LabelFor(model => model.Time)
+									@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control timeSelect", disabled = "disabled" } })
+								</div>
+
+								<div class="form-group col-lg-6">
+									@Html.LabelFor(model => model.Language)
+									@Html.EnumDropDownListFor(model => model.Language, "-Select Language-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", disabled = "disabled" })
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.Topic)
+									@Html.EditorFor(model => model.Topic, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive", @readonly = "readonly" } })
+								</div>
+							</div>
+
+						</div>
+						<!-- End Form -->
+					</form>
+				</div>
+
+				<div class="tab-pane" id="rep-details">
+					<form>
+						<div class="form-container">
+							<div class="sub-Title my-4">
+								Recommended Rep. Details
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.RepUserName)
+									@Html.EditorFor(model => model.RepUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.RepEmail)
+									@Html.EditorFor(model => model.RepEmail, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.RepMobileNumber)
+									@Html.EditorFor(model => model.RepMobileNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.RepDesignation)
+									@Html.EditorFor(model => model.RepDesignation, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								</div>
+							</div>
+
+						</div>
+						<!-- End Form -->
+					</form>
+				</div>
+
+				<div class="tab-pane" id="amendment-history">
+					<div class="mb-4 mt-2 mr-auto">
+						<h4 class="color-darkblue mb-0">Amendment History</h4>
+						<h6 class="font-weight-normal">Check amendment list here.</h6>
+					</div>
+				</div>
 			</div>
+
+			<!-- action log start -->
+			<div class="action-log pull-right">
+				<h5 class="color-darkblue mr-auto mb-0"><i class="la la-comment color-secondary"></i>&nbsp;&nbsp;Action Log</h5>
+				<div data-perfect-scrollbar class="position-relative">
+					<div class="border-form rounded mg-b-10">
+						<p class="small text-muted">@Model.CreatedDate</p>
+						<p class="small"><span class="card__author-name color-darkblue">@Model.CreatedByName</span><br>Media Interview created.</p>
+					</div>
+				</div>
+			</div>
+			<!-- action log end -->
+
+
+
 		</div>
 	</div>
 </div>

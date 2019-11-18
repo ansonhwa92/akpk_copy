@@ -9,14 +9,73 @@
 
         $(document).ready(function () {
 
-            $('.onChangeSubmit').change(
-                function () {
-                    $('.formSLA').attr('id', 'formSLA'+$(this).attr('id'));
-                    alert($('.formSLA').attr('id'));
-                    
-                    $('.formSLA').trigger('submit');
-                });
+            var table = $('.tabledata').DataTable({
+                paging: false,
+                lengthChange: false,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_ User Reward Redemptions"
+                },
+                dom: 'rtip'
             });
+            //$('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup( function () {
+                table.search($(this).val()).draw();
+            });
+
+            /*$('#lengthChange').change( function() {
+                table.page.len($(this).val()).draw();
+            });*/
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt', function () {
+                /*var info = table.page.info();
+
+                var start = 0;
+                if (info.recordsTotal != 0) {
+                    start = info.start + 1;
+                }*/
+                table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                        cell.innerHTML = i+1;
+                });
+                //$('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' User Reward Redemptions ');
+                //$('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            }).draw();
+
+            var prev_val;
+            $('.onChangeSubmit').focus(function () {
+                prev_val = $(this).val();
+            }).change(
+                function () {
+                    if(confirm("Are you sure you want to change this?")){
+                        $('.formSLA').attr('id', 'formSLA'+$(this).attr('id'));
+                        $('.formSLA').trigger('submit');
+                    }
+                    else {
+                        $(this).val(prev_val);
+                        return false;
+                    }
+
+                    
+                });
+
+            @if(ViewBag.pin != 0)
+            {
+                @:document.getElementById(@ViewBag.pin).scrollIntoView({behavior: 'auto',block: 'center'});
+            }
+
+        });
 
     </script>
 }
@@ -38,8 +97,8 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Admin Settings</h1>
-                    <div class="header-text">Manage who can access the admin console to help manage your organization's account.</div>
+                    <h1 class="page-title text-white">SLA Reminder Settings</h1>
+                    @*<div class="header-text">List of registered user as individual</div>*@
                 </div>
             </div>
         </div>
@@ -49,38 +108,23 @@
 
 <div class="row">
     <!-- Start content leftbar -->
-    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+    @*<div class="col-xl-3 col-md-3 col-sm-4 my-2">
         <div id="page-nav" class="sidebar-left page-nav">
             <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> Admin Settings</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-cog font-icon color-secondary align-bottom"></i> SLA Reminder</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="#setting1" data-toggle="tab" class="nav-link">Setting 1</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#adminroles" data-toggle="tab" class="nav-link">Administrator Roles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#emailtemplate" data-toggle="tab" class="nav-link">Email Template</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#sla-reminder" data-toggle="tab" class="nav-link active">SLA Reminder</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#setting4" data-toggle="tab" class="nav-link">Setting 4</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#setting5" data-toggle="tab" class="nav-link">Setting 5</a>
+                            <a href="#" data-toggle="tab" class="nav-link active">List</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
     <!-- End content leftbar -->
 
-    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+    <div class="col-xl-12 col-md-12 col-sm-12 mt-2 pb-5">
         <!-- Start Form -->
         <div class="border-form rounded">
             <div class="tab-content">
@@ -90,15 +134,66 @@
                         <div class="d-flex align-items-center mb-4 mt-2">
                             <h4 class="color-darkblue mr-auto mb-0">SLA Reminder</h4>
                         </div>
+                        <div class="d-flex align-items-center">
+                            @*<div class="filter dropdown">
+                                <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+                                <div class="dropdown-menu">
+                                    <div class="filter-head">Filters</div>
+                                    <div class="filter-body">
+                                        <div>@Html.DisplayNameFor(m => m.filter.SLAEventType)</div>
+                                        <div class="sorting-wrap">
+                                            <div class="sorting-dropdown">
+                                                @Html.DropDownListFor(model => model.filter.SLAEventType, Model.SLAEventTypeList, "-Select SLA Event Type-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+                                            </div>
+                                        </div>
+                                        <div>@Html.DisplayNameFor(m => m.filter.NotificationType)</div>
+                                        <div class="sorting-wrap">
+                                            <div class="sorting-dropdown">
+                                                @Html.DropDownListFor(model => model.filter.NotificationType, Model.NotificationTypeList, "-Select Notiofication Type-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button id="btnSearch" class="mt-2 btn btn-secondary btn-block">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                            <div class="divider-vertical">&nbsp;</div>
+                            <!-- Search -->
+                            <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+                                <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+                                <div class="input-group-append">
+                                    <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr/>
                         <!-- Start Table -->
                         <div class="table-responsive">
+                            @*<div class="d-flex pb-4 align-items-center">
+                                <div>
+                                    <!-- Select option -->
+                                    <span class="select-arrow">
+                                        <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </span>
+                                </div>
+                                <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+                            </div>*@
                             @using (Html.BeginForm("Edit", "SLAReminders", FormMethod.Post, new { id = "formSLA", @class = "formSLA" }))
                             {
                                 @Html.AntiForgeryToken()
                             }
-                            <table class="table tableStyle1">
+                            <table class="table tableStyle1 tabledata">
                                 <thead>
                                     <tr>
+                                        <th></th>
+                                        <th>@Html.DisplayNameFor(model => model.filter.SLAEventType)</th>
                                         <th>@Html.DisplayNameFor(model => model.filter.NotificationType)</th>
                                         @*<th>@Html.DisplayNameFor(model => model.filter.ETCode)</th>*@
                                         <th>@Html.DisplayNameFor(model => model.filter.SLAResolutionTime)</th>
@@ -108,59 +203,66 @@
                                 <tbody>
                                     @foreach (var item in Model.SLAReminderList)
                                     {
-                                    <tr>
-                                        @{
-                                            var formID = "formSLA" + item.Id;
-                                        }
+                                        <tr>
+                                            @{
+                                                var formID = "formSLA" + item.Id;
+                                            }
 
-                                        @Html.HiddenFor(m => item.Id, new  { @form = "formSLA" + item.Id  })
+                                            @Html.HiddenFor(m => item.Id, new { @form = "formSLA" + item.Id })
+                                            <td></td>
+                                            <td><b>@Html.DisplayFor(m => item.SLAEventTypeName)</b></td>
+                                            <td style="width:35%;">
+                                                @Html.DisplayFor(m => item.StagesName)
+                                                @if (ViewBag.pin == item.Id)
+                                                {
+                                                    @:<span class="small text-success"><b>(Updated)</b></span>
+                                                }
+                                            </td>
+                                            @*<td>
+                                @Html.EditorFor(m => item.ETCode, new { htmlAttributes = new { @class = "form-control onChangeSubmit", @size="8", @form = "formSLA" + item.Id, @id=item.Id } })
+                                @Html.ValidationMessageFor(m => item.ETCode, "", new { @class = "text-danger" })
+                            </td>*@
+                                            <td>
+                                                <div class="d-flex align-items-center">
 
-                                        <td>@Html.DisplayFor(m => item.StagesName)</td>
-                                        @*<td>
-                                            @Html.EditorFor(m => item.ETCode, new { htmlAttributes = new { @class = "form-control onChangeSubmit", @size="8", @form = "formSLA" + item.Id, @id=item.Id } })
-                                            @Html.ValidationMessageFor(m => item.ETCode, "", new { @class = "text-danger" })
-                                        </td>*@
-                                        <td>
-                                            <div class="d-flex align-items-center">
+                                                    Less than
+                                                    <input id="@item.Id" type="number" name="SLAResolutionTime" form="@formID" class="numericbox  ml-1 mr-1 form-control onChangeSubmit" min="0" max="5" size="3" style="width:70px;" value="@Html.DisplayFor(m => item.SLAResolutionTime)">
+                                                    days
 
-                                                Less than
-                                                <input id="@item.Id" type="number" name="SLAResolutionTime" form="@formID" class="numericbox  ml-1 mr-1 form-control onChangeSubmit" min="0" max="5" size="3" value="@Html.DisplayFor(m => item.SLAResolutionTime)">
-                                                days
+                                                </div>
+                                            </td>
 
-                                            </div>
-                                        </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
 
-                                        <td>
-                                            <div class="d-flex align-items-center">
+                                                    Every
+                                                    <input id="@item.Id" type="number" name="IntervalDuration" form="@formID" class="numericbox  ml-1 mr-1 form-control onChangeSubmit" min="0" max="5" style="width:70px;" value="@Html.DisplayFor(m => item.IntervalDuration)">
 
-                                                Every
-                                                <input id="@item.Id" type="number" name="IntervalDuration" form="@formID" class="numericbox  ml-1 mr-1 form-control onChangeSubmit" min="0" max="5" value="@Html.DisplayFor(m => item.IntervalDuration)">
+                                                    <span class="select-arrow ml-1 mr-1">
 
-                                                <span class="select-arrow ml-1 mr-1">
+                                                        <select class="custom-select onChangeSubmit" form="@formID" id="@item.Id" name="item.SLADurationType">
+                                                            <option value="none">None</option>
+                                                            @foreach (var duration in Model.SLADurationTypeList)
+                                                            {
+                                                                <option @if (duration.Text == item.SLADurationType.ToString()) { @: selected
+                                                                        }
+                                                                        value="@duration.Value">
+                                                                    @duration.Text
+                                                                </option>
+                                                            }
+                                                        </select>
+                                                    </span>
 
-                                                    <select class="custom-select onChangeSubmit" form="@formID" id="@item.Id" name="item.SLADurationType">
-                                                        <option value="none">None</option>
-                                                        @foreach (var duration in Model.SLADurationTypeList)
-                                                        {
-                                                            <option @if (duration.Text == item.SLADurationType.ToString()) { @: selected
-                                                                    }
-                                                                    value="@duration.Value">
-                                                                @duration.Text
-                                                            </option>
-                                                        }
-                                                    </select>
-                                                </span>
-
-                                            </div>
-                                        </td>
+                                                </div>
+                                            </td>
 
 
-                                    </tr>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>
                         </div>
-                            </div>
+                    </div>
                             <!--</form>-->
                         </div>
                     </div>

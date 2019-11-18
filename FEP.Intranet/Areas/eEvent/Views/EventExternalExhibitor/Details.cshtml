@@ -97,6 +97,13 @@
 
 					<div class="row">
 						<div class="form-group col-lg-12">
+							@Html.LabelFor(model => model.CompanyName)
+							@Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.Remark)
 							@Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 						</div>

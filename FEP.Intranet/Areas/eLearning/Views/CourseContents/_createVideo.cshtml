@@ -1,60 +1,59 @@
 ﻿@using FEP.Model.eLearning
 @model FEP.WebApiModel.eLearning.CreateOrEditContentModel
 
-
-<div class="form-group">
-    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })
-    <div class="">
-        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-    </div>
-</div>
-
-<div class="form-group">
-    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
-    <div class="">
-        @Html.TextAreaFor(model => model.Description, new { @class = "summernote form-control" })
-        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-    </div>
-</div>
-
 @Html.Partial("_contentCompletion", Model)
-<div>
+<hr />
 
-    <div class="form-group">
-        <label>@Language.eLearning.Content.SelectVideo</label>
-        <div class="">
+<div class="form-group">
+    <label>@Language.eLearning.Content.SelectVideo</label>
+    <div class="col-sm-12">
 
-            <!-- Default inline 1-->
-            <div class="custom-control video-radio custom-control-inline">
+        <!-- Default inline 1-->
+        <div class="video-radio row pl-4">
 
-                <input type="radio" class="custom-control-input exVideo" checked="checked" value=@VideoType.ExternalVideo id="defaultInline1"
+            <div class="col-sm-4 pt-2">
+                <input type="radio" class="custom-control-input exVideo" checked="checked" value=@VideoType.ExternalVideo
+                       id="video1"
                        name="VideoType">
-                <label class="custom-control-label" for="defaultInline1">@Language.eLearning.Enum.ExternalVideo</label>
+                <label class="custom-control-label" for="video1">@Language.eLearning.Enum.ExternalVideo</label>
             </div>
-            <!-- Default inline 2-->
-            <div class="custom-control video-radio custom-control-inline">
+            <div class="form-group exVideoWrapper col-sm-8">
+                @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control", @placeholder = "YouTube Url" } })
+                @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-                <input type="radio" class="custom-control-input upVideo" value=@VideoType.UploadVideo id="defaultInline2"
+        <!-- Default inline 2-->
+        <div class="video-radio row pl-4 ">
+
+            <div class="col-sm-4 pt-2">
+                <input type="radio" class="custom-control-input upVideo" value=@VideoType.UploadVideo
+                       id="video2"
                        name="VideoType">
-                <label class="custom-control-label" for="defaultInline2">@Language.eLearning.Enum.UploadVideo</label>
+                <label class="custom-control-label" for="video2">@Language.eLearning.Enum.UploadVideo</label>
+            </div>
+            <div class="form-group upVideoWrapper col-sm-8">
+                <div class="custom-file">
+                    <input name="File" id="File" type="file" class="custom-file-input" accept="video/*">
+                    <label for="File" class="custom-file-label text-truncate">Choose file...</label>
+                </div>
+
+                @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
 
-    <div class="form-group exVideoWrapper">
+    <hr />
+    <div class="row">
 
-        @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control", @placeholder = "YouTube Url" } })
-        @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group upVideoWrapper">
-
-        <div class="custom-file">
-            <input name="FileName" id="FileName" type="file" class="custom-file-input">
-            <label for="FileName" class="custom-file-label text-truncate">Choose file...</label>
+        <div class="form-group col-sm-6">
+            <label>@Language.eLearning.Content.Height</label>
+            @Html.EditorFor(m => m.Height, new { htmlAttributes = new { @class = "form-control", @placeholder = "in pixels" } })
+            @Html.ValidationMessageFor(model => model.Height, "", new { @class = "text-danger" })
         </div>
-
-        @Html.ValidationMessageFor(model => model.FileName, "", new { @class = "text-danger" })
+        <div class="form-group col-sm-6">
+            <label>@Language.eLearning.Content.Width</label>
+            @Html.EditorFor(m => m.Width, new { htmlAttributes = new { @class = "form-control", @placeholder = "in pixels" } })
+            @Html.ValidationMessageFor(model => model.Width, "", new { @class = "text-danger" })
+        </div>
     </div>
-</div>

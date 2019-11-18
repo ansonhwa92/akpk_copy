@@ -187,7 +187,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hard &amp; Digital Copy.
+        ///   Looks up a localized string similar to Promotion (1+1).
         /// </summary>
         public static string PubFormatBoth {
             get {
@@ -228,24 +228,6 @@ namespace Language {
         public static string PubPaymentModeOnline {
             get {
                 return ResourceManager.GetString("PubPaymentModeOnline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Complete.
-        /// </summary>
-        public static string PubRefundStatusComplete {
-            get {
-                return ResourceManager.GetString("PubRefundStatusComplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Incomplete.
-        /// </summary>
-        public static string PubRefundStatusIncomplete {
-            get {
-                return ResourceManager.GetString("PubRefundStatusIncomplete", resourceCulture);
             }
         }
         

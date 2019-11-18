@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,6 +14,8 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,10 +36,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -51,41 +54,48 @@
   <ItemGroup>
     <Compile Include="Access.cs" />
     <Compile Include="Cart.cs" />
+    <Compile Include="Migrations\SeedElearningEmail.cs" />
+    <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="DbEntities.cs" />
     <Compile Include="eEventFile.cs" />
     <Compile Include="eEvent_Enum.cs" />
-    <Compile Include="eLearning.cs" />
     <Compile Include="eEvent.cs" />
     <Compile Include="elearning\BaseEntity.cs" />
     <Compile Include="elearning\Course.cs" />
     <Compile Include="elearning\CourseApproval.cs" />
     <Compile Include="elearning\CourseCertificate.cs" />
+    <Compile Include="elearning\CourseEmailQueue.cs" />
     <Compile Include="elearning\CourseEvent.cs" />
+    <Compile Include="elearning\CourseInvitation.cs" />
     <Compile Include="elearning\CourseProgress.cs" />
     <Compile Include="elearning\Enrollment.cs" />
     <Compile Include="elearning\EnumConstants.cs" />
+    <Compile Include="elearning\FileUpload.cs" />
     <Compile Include="elearning\GamificationCriteria.cs" />
     <Compile Include="elearning\Group.cs" />
     <Compile Include="elearning\GroupMember.cs" />
     <Compile Include="elearning\Discussion.cs" />
     <Compile Include="elearning\Lookups.cs" />
     <Compile Include="elearning\ContentFile.cs" />
-    <Compile Include="elearning\ModuleContent.cs" />
+    <Compile Include="elearning\CourseContent.cs" />
     <Compile Include="elearning\CourseModule.cs" />
     <Compile Include="elearning\Learner.cs" />
+    <Compile Include="elearning\Question.cs" />
     <Compile Include="elearning\Trainer.cs" />
     <Compile Include="elearning\TrainerCourse.cs" />
     <Compile Include="elearning\TrainerGroup.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="File.cs" />
+    <Compile Include="Groups.cs" />
     <Compile Include="Logs.cs" />
 <<<<<<< Updated upstream
-    <Compile Include="Migrations\201909062106261_a.cs" />
-    <Compile Include="Migrations\201909062106261_a.Designer.cs">
-      <DependentUpon>201909062106261_a.cs</DependentUpon>
 =======
+    <Compile Include="Migrations\201911060726018_InitialDB.cs" />
+    <Compile Include="Migrations\201911060726018_InitialDB.designer.cs">
+      <DependentUpon>201911060726018_InitialDB.cs</DependentUpon>
+    </Compile>
 >>>>>>> Stashed changes
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -97,6 +107,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publication.cs" />
     <Compile Include="Research.cs" />
+    <Compile Include="Reward.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="SLAReminder.cs" />
@@ -113,22 +124,20 @@
     </ProjectReference>
   </ItemGroup>
 <<<<<<< Updated upstream
-    <EmbeddedResource Include="Migrations\201909230502192_a.resx">
-      <DependentUpon>201909230502192_a.cs</DependentUpon>
-    <EmbeddedResource Include="Migrations\201909062106261_a.resx">
-      <DependentUpon>201909062106261_a.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909100306276_a1.resx">
-      <DependentUpon>201909100306276_a1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909081033299_0809_1.resx">
-      <DependentUpon>201909081033299_0809_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909081250356_0809_2.resx">
-      <DependentUpon>201909081250356_0809_2.cs</DependentUpon>
+=======
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201911060726018_InitialDB.resx">
+      <DependentUpon>201911060726018_InitialDB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-=======
 >>>>>>> Stashed changes
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
 </Project>

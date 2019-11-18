@@ -61,6 +61,33 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Government Agency.
+        /// </summary>
+        public static string CompanyTypeGovernment {
+            get {
+                return ResourceManager.GetString("CompanyTypeGovernment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Malaysian Company.
+        /// </summary>
+        public static string CompanyTypeMalaysianCompany {
+            get {
+                return ResourceManager.GetString("CompanyTypeMalaysianCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Non Malaysian Company.
+        /// </summary>
+        public static string CompanyTypeNonMalaysianCompany {
+            get {
+                return ResourceManager.GetString("CompanyTypeNonMalaysianCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate Account.
         /// </summary>
         public static string NotificationTypeActivateAccount {
@@ -79,7 +106,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Company.
+        ///   Looks up a localized string similar to Agency.
         /// </summary>
         public static string UserTypeCompany {
             get {
@@ -102,6 +129,15 @@ namespace Language {
         public static string UserTypeStaff {
             get {
                 return ResourceManager.GetString("UserTypeStaff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Admin.
+        /// </summary>
+        public static string UserTypeSystemAdmin {
+            get {
+                return ResourceManager.GetString("UserTypeSystemAdmin", resourceCulture);
             }
         }
     }

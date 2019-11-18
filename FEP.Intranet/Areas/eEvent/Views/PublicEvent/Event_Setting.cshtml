@@ -20,7 +20,7 @@
 							</ol>
 						</nav>
 					</div>
-					<h1 class="page-title text-white">Event Setting</h1>
+					<h1 class="page-title text-white"> Event Setting</h1>
 					@*<div class="header-text">List of event setting</div>*@
 				</div>
 			</div>
@@ -84,6 +84,24 @@
 														</div>
 													</div>
 												</div>
+												<div class="col-lg-4">
+													<div class="box-contain">
+														<div class="card text-center">
+															<span>Event Agenda</span>
+															<a href='@Url.Action("List", "EventAgenda", new { area = "eEvent" })'></a>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-lg-4">
+													<div class="box-contain">
+														<div class="card text-center">
+															<span>Duty Roster</span>
+															<a href='@Url.Action("List", "DutyRoster", new { area = "eEvent" })'></a>
+														</div>
+													</div>
+												</div>
+
 											</div>
 										</div>
 

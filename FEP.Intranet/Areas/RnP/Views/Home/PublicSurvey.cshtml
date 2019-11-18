@@ -1,0 +1,110 @@
+﻿@model FEP.WebApiModel.RnP.ReturnSurveyResponseModel
+
+@{
+    ViewBag.Title = "Survey";
+    Layout = "~/Views/Shared/_LayoutPublicSurvey.cshtml";
+}
+
+@section Nav{
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                <li class="breadcrumb-item"><a href="~/RnP/Home/BrowseSurveys">Research & Publication</a></li>
+                <li class="breadcrumb-item"><a href="#">Public Survey</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+            </ol>
+        </nav>
+    </div>
+    <h1 class="page-title text-white">Survey Title: @Model.Survey.Title</h1>
+    <div class="header-text">Ref No: @Model.Survey.RefNo</div>
+    <div class="header-text">Description: @Model.Survey.Description</div>
+}
+
+<section id="search-result" class="publications">
+    <div class="container">
+        <div class="row">
+            <div class="row">
+                <!--
+                <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+                </div>
+                -->
+                <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+                    <!-- Start Form -->
+                    <div class="border-form rounded-top">
+                        <div class="form-container tab-content">
+                            <div id="surveyContainer"></div>
+                        </div>
+                        <!-- End Form -->
+                        <textarea id="Questions" name="Questions" class="form-control" rows="3" style="display:none;">@Model.Survey.Contents</textarea>
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formresponse", id = "formresponse" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <input type="hidden" name="ID" class="form-control" value="@Model.Response.ID" />
+                            <input type="hidden" name="SurveyID" class="form-control" value="@Model.Survey.ID" />
+                            <input type="hidden" name="Type" class="form-control" value="@Model.Response.Type" />
+                            if (CurrentUser.IsAuthenticated())
+                            {
+                                <input type="hidden" name="UserId" class="form-control" value="@CurrentUser.UserId" />
+                                <input type="hidden" name="Email" class="form-control" value="@CurrentUser.Email" />
+                            }
+                            else
+                            {
+                                <input type="hidden" name="UserId" class="form-control" value="0" />
+                                <input type="hidden" name="Email" class="form-control" value="@Model.Response.Email" />
+                            }
+                            <input type="hidden" name="ResponseDate" class="form-control" value="" />
+                            <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;"></textarea>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var surveyJSON = $('#Questions').val();
+
+            var survey = new Survey.Model(surveyJSON);
+
+            $("#surveyContainer").Survey({
+                model: survey,
+                onComplete: sendDataToServer
+            });
+
+            function sendDataToServer(survey) {
+                var resultAsString = JSON.stringify(survey.data);
+                $('#Contents').val(resultAsString)
+                //alert(resultAsString);
+                //return false;
+                // ajax
+                var form = $('#formresponse');
+                //var u1 = "@(BaseURL)/RnP/Home/SubmitSurvey";
+                //var u2 = form.serialize();
+                //alert(u1);
+                //alert(u2);
+                $.ajax({
+                    url: "@(BaseURL)/RnP/Home/SubmitSurvey",
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        //alert('Survey submitted! - ' + resultAsString)
+                        //alert(data.isSuccess);
+                        //callback(saveNo, data.isSuccess);
+                    },
+                    error: function (xhr, status, error) {
+                        //alert(xhr.responseText);
+                    }
+                });
+            }
+
+        });
+    </script>
+}

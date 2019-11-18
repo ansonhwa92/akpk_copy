@@ -29,9 +29,8 @@ namespace FEP.Model
     public class ErrorLog
     {
         [Key]
-        public long Id { get; set; }
-        
-        public Modules Module { get; set; }
+        public long Id { get; set; }        
+        public Modules? Module { get; set; }
         public int? UserId { get; set; }
         public string Source { get; set; }
         public string IPAddress { get; set; }
@@ -43,4 +42,33 @@ namespace FEP.Model
         public virtual User User { get; set; }
 
     }
+    
+    public enum LogCategory
+    {
+        Event,
+        Research,
+        Publication,
+        Learning
+    }
+    
+    public class ShareLog
+    {
+        [Key]
+        public long Id { get; set; }
+        public LogCategory Category { get; set; }
+        public int CategoryId { get; set; } //eventid, publicationid, researchid, courseid
+        public DateTime CreatedDate { get; set; }
+
+    }
+
+    public class PageLog
+    {
+        [Key]
+        public long Id { get; set; }
+        public LogCategory Category { get; set; }
+        public int CategoryId { get; set; } //eventid, publicationid, researchid, courseid
+        public DateTime CreatedDate { get; set; }
+    }
+
+
 }

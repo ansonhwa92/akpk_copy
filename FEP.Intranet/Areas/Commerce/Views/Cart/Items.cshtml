@@ -1,0 +1,266 @@
+﻿@model FEP.WebApiModel.RnP.PurchaseOrderFullModel
+
+@{
+    ViewBag.Title = "Shopping Cart Items";
+    Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
+}
+
+@section Nav{
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+            </ol>
+        </nav>
+    </div>
+    <h1 class="page-title text-white">Shopping Cart</h1>
+    <div class="header-text">&nbsp;</div>
+}
+
+<div class="content-container">
+    <div class="container">
+        <div class="row">
+            <!-- column content left -->
+            <div class="col-lg-9">
+                <div class="col-content">
+                    <h4 class="color-darkblue">Items in Cart</h4>
+                    <div id="tableCart">
+                        <div class="divtableStyle1 div-font-075">
+                            <div class="divTableWrap card">
+                                <div class="divtableheader no-border">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="d-flex align-items-center">
+                                                <table class="table tableStyle1 table-foot mt-0 mb-5">
+                                                    @{
+                                                        var icount = 0;
+                                                        float psubtotal = 0;
+                                                        float esubtotal = 0;
+                                                        float csubtotal = 0;
+                                                        float isubtotal = 0;
+                                                        float psubtotalplusshipping = 0;
+                                                        float pshippingfee = 0;
+                                                        float itax = 0;
+                                                        float itotal = 0;
+                                                    }
+                                                    @if (Model.Items.Count == 0)
+                                                    {
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center"><br />Your shopping cart is empty.</td>
+                                                        </tr>
+                                                    </tbody>
+                                                    }
+                                                    else
+                                                    {
+                                                    <thead>
+                                                        <tr>
+                                                            <td class="text-left font-weight-bolder">No.</td>
+                                                            <td class="text-left font-weight-bolder">Item Name</td>
+                                                            <td class="text-center font-weight-bolder" style="width: 99px;">Price</td>
+                                                            <td class="text-right font-weight-bolder">Quantity</td>
+                                                            <td class="text-right font-weight-bolder">Amount</td>
+                                                            <td class="text-right font-weight-bolder" style="padding: .5rem .1rem;">&nbsp;</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (Model.Publications.Count > 0)
+                                                        {
+                                                            <tr>
+                                                                <td class="text-left" colspan="6"><div class="col sub-Title color-darkblue pl-0 mb-0">Publications</div></td>
+                                                            </tr>
+                                                            var pcount = 0; float pamt = 0;
+                                                            foreach (FEP.WebApiModel.RnP.PurchaseOrderItemModel item in Model.Publications)
+                                                            {
+                                                                icount++;
+                                                                pcount++;
+                                                                pamt = item.Price * float.Parse(item.Quantity.ToString());
+                                                                psubtotal = psubtotal + pamt;
+                                                                isubtotal = isubtotal + pamt;
+                                                                pshippingfee = 18;
+                                                                psubtotalplusshipping = psubtotal + pshippingfee;
+                                                                <tr>
+                                                                    <td class="text-left">@icount</td>
+                                                                    <td class="text-left">@item.Description</td>
+                                                                    <td class="text-right">RM @item.Price.ToString("0.00")</td>
+                                                                    <td class="text-right">@item.Quantity</td>
+                                                                    <td class="text-right">RM @pamt.ToString("0.00")</td>
+                                                                    <td class="text-right" style="padding: .5rem .1rem;"><span data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" class="removeItem" data-itemid="@item.Id"><i class="la la-trash-o text-muted"></i></span></td>
+                                                                </tr>
+                                                            }
+                                                            <tr>
+                                                                <td class="text-right font-weight-bold" colspan="4"><span class="color-grey2 xs-small">Shipping Fee <i class="la la-question-circle color-red" style="font-size: 17px;"></i></span> </td>
+                                                                <td class="text-right font-weight-bolder" style="width: 150px;"><span class="xs-small">RM 18.00</span></td>
+                                                                <td class="text-right" style="padding: .5rem .1rem;">&nbsp;</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-right font-weight-bolder" colspan="4">Total</td>
+                                                                <td class="text-right font-weight-bolder" style="width: 150px;"><span class="color-red">RM @psubtotalplusshipping.ToString("0.00")</span></td>
+                                                                <td class="text-right" style="padding: .5rem .1rem;">&nbsp;</td>
+                                                            </tr>
+                                                        }
+                                                        @if (Model.Events.Count > 0)
+                                                        {
+                                                            <tr>
+                                                                <td class="text-left" colspan="6"><div class="col sub-Title color-darkblue pl-0 mb-0">Events</div></td>
+                                                            </tr>
+                                                                var ecount = 0; float eamt = 0;
+                                                                foreach (FEP.WebApiModel.RnP.PurchaseOrderItemModel item in Model.Events)
+                                                                {
+                                                                    icount++;
+                                                                    ecount++;
+                                                                    eamt = item.Price * float.Parse(item.Quantity.ToString());
+                                                                    esubtotal = esubtotal + eamt;
+                                                                    isubtotal = isubtotal + eamt;
+                                                                <tr>
+                                                                    <td class="text-left">@icount</td>
+                                                                    <td class="text-left">@item.Description</td>
+                                                                    <td class="text-right">RM @item.Price.ToString("0.00")</td>
+                                                                    <td class="text-right">@item.Quantity</td>
+                                                                    <td class="text-right">RM @eamt.ToString("0.00")</td>
+                                                                    <td class="text-right" style="padding: .5rem .1rem;"><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" class="removeItem" data-itemid="@item.Id"><i class="la la-trash-o text-muted"></i></a></td>
+                                                                </tr>
+                                                                }
+                                                            <tr>
+                                                                <td class="text-right font-weight-bolder" colspan="4">Total</td>
+                                                                <td class="text-right font-weight-bolder" style="width: 150px;"><span class="color-red">RM @esubtotal.ToString("0.00")</span></td>
+                                                                <td class="text-right" style="padding: .5rem .1rem;">&nbsp;</td>
+                                                            </tr>
+                                                        }
+                                                        @if (Model.Courses.Count > 0)
+                                                        {
+                                                            <tr>
+                                                                <td class="text-left" colspan="6"><div class="col sub-Title color-darkblue pl-0 mb-0">Courses</div></td>
+                                                            </tr>
+                                                            var ccount = 0; float camt = 0;
+                                                            foreach (FEP.WebApiModel.RnP.PurchaseOrderItemModel item in Model.Courses)
+                                                            {
+                                                                icount++;
+                                                                ccount++;
+                                                                camt = item.Price * float.Parse(item.Quantity.ToString());
+                                                                csubtotal = csubtotal + camt;
+                                                                isubtotal = isubtotal + camt;
+                                                                <tr>
+                                                                    <td class="text-left">@icount</td>
+                                                                    <td class="text-left">@item.Description</td>
+                                                                    <td class="text-right">RM @item.Price.ToString("0.00")</td>
+                                                                    <td class="text-right">@item.Quantity</td>
+                                                                    <td class="text-right">RM @camt.ToString("0.00")</td>
+                                                                    <td class="text-right" style="padding: .5rem .1rem;"><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" class="removeItem" data-itemid="@item.Id"><i class="la la-trash-o text-muted"></i></a></td>
+                                                                </tr>
+                                                            }
+                                                            <tr>
+                                                                <td class="text-right font-weight-bolder" colspan="4">Total</td>
+                                                                <td class="text-right font-weight-bolder" style="width: 150px;"><span class="color-red">RM @csubtotal.ToString("0.00")</span></td>
+                                                                <td class="text-right" style="padding: .5rem .1rem;">&nbsp;</td>
+                                                            </tr>
+                                                        }
+                                                        @{
+                                                            itax = (isubtotal / 100) * 0;
+                                                            itotal = isubtotal + pshippingfee + itax;
+                                                        }
+                                                    </tbody>
+                                                    }
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end column content left -->
+            <!-- column content right -->
+            <div class="col-lg-3">
+                <div class="right-sidebar mt-md-0 mt-5">
+                    @using (Html.BeginForm("SetDiscountCode", "Cart", new { area = "Commerce" }, FormMethod.Post, new { name = "myform", id = "myform" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="lead color-darkblue mb-3 font-weight-bolder">Order Summary</div>
+                        <div class="card">
+                            <div class="p-3">
+                                <div class="media xs-small mb-2">
+                                    <div class="media-body color-grey2">
+                                        Subtotal (@icount.ToString() items)
+                                    </div>
+                                    <div class="media-right font-weight-bolder">RM @isubtotal.ToString("0.00")</div>
+                                </div>
+                                <div class="media xs-small mb-2">
+                                    <div class="media-body color-grey2">
+                                        Shipping Fee <i class="la la-question-circle color-red" style="font-size: 17px;"></i>
+                                    </div>
+                                    <div class="media-right font-weight-bolder">RM @pshippingfee.ToString("0.00")</div>
+                                </div>
+                                <div class="media xs-small">
+                                    <div class="media-body color-grey2">Tax 0%</div>
+                                    <div class="media-right font-weight-bolder">RM @itax.ToString("0.00")</div>
+                                </div>
+                            </div>
+                            <!-- Total -->
+                            <div class="border-top">
+                                <div class="media small p-3">
+                                    <div class="media-body font-weight-bolder">Order Total</div>
+                                    <div class="media-right font-weight-bolder color-red">RM @itotal.ToString("0.00")</div>
+                                </div>
+                            </div>
+                            <!-- Discount code -->
+                            @if (Model.Items.Count > 0)
+                            {
+                                <div class="border-top">
+                                    <div class="media small p-3" style="padding: 1rem 1rem 0rem 1rem !important">
+                                        <div class="media-body font-weight-bolder">Enter Discount Code:</div>
+                                    </div>
+                                    <div class="media small p-3">
+                                        <div class="media-body font-weight-bolder"><input type="text" name="DiscountCode" id="DiscountCode" value="" style="width: 150px; text-transform: uppercase;" /></div>
+                                    </div>
+                                </div>
+                            }
+                            <input type="hidden" name="Id" id="Id" value="@Model.Cart.Id" />
+                        </div>
+                        <!-- Button -->
+                        if (Model.Items.Count > 0)
+                        {
+                            @*<div><a href="#" class="btn btn-secondary btn-block" id="btnProceedCheckout">Proceed to Checkout</a></div>*@
+                            <div><button type="submit" class="btn btn-secondary btn-block" id="btnProceedCheckout">Proceed to Checkout</button></div><br />
+                            <div><a class="btn btn-default btn-block" href="@Url.Action("Empty", "Cart", new { area = "Commerce", cartid = Model.Cart.Id })"><i class="la la-trash font-icon" style="font-size: 1.5rem;"></i>Empty Cart</a></div>
+                        }
+                    }
+                    </div>
+                </div>
+                <!-- end column content right -->
+            </div>
+        </div>
+        <!-- Wrapper -->
+    </div>
+
+    @section ContentScript {
+        <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('.removeItem').click(function () {
+                var itemid = $(this).data("itemid");
+                var myurl = '@Url.Action("RemoveItem", "Cart", new { area = "Commerce" })' + '?itemid=' + itemid;
+                //alert(myurl);
+                //return false;
+                $.ajax({
+                    url: myurl,
+                    type: "GET",
+                    success: function (data) {
+                        var newurl = '@Url.Action("Items", "Cart", new { area = "Commerce" })';
+                        window.location = newurl;
+                    }
+                });
+            });
+
+            //$('#btnProceedCheckout').click(function () {
+            //    alert("Checking Out!");
+            //});
+        });
+        </script>
+    }
+

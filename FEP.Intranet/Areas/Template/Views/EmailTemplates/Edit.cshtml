@@ -67,6 +67,10 @@
                 currentElement = "webMessage";
                 $('#myModal').modal('show');
             });
+            $('#addParamWebNotifyLink').click(function () {
+                currentElement = "WebNotifyLink";
+                $('#myModal').modal('show');
+            });
             $('#addParamSMS').click(function () {
                 currentElement = "smsMessage";
                 $('#myModal').modal('show');
@@ -88,6 +92,13 @@
                     var textAreaTxt = jQuery("#WebMessage").val();
                     var txtToAdd = $.trim($(this).text());
                     jQuery("#WebMessage").val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos));
+                }
+                if (currentElement == "WebNotifyLink") {
+                    var currentVal = $('#WebNotifyLink').val();
+                    var caretPos = document.getElementById("WebNotifyLink").selectionStart;
+                    var textAreaTxt = jQuery("#WebNotifyLink").val();
+                    var txtToAdd = $.trim($(this).text());
+                    jQuery("#WebNotifyLink").val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos));
                 }
                 if (currentElement == "smsMessage") {
                     var currentVal = $('#SMSMessage').val();
@@ -217,6 +228,7 @@
 
             @Html.HiddenFor(m => m.Id)
             @Html.HiddenFor(m => m.NotificationType)
+            @Html.HiddenFor(m => m.NotificationCategory)
 
             <div class="form-container form-container-w100">
                 <div class="mb-4 mt-2">
@@ -244,7 +256,9 @@
                     </div>
                 </div>
 
-
+                <div class="form-group">
+                    @Html.Label("Tick the following checkbox(s) to send notification using the selected medium :")
+                </div>
                 <div class="divTable">
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
@@ -261,19 +275,48 @@
                         @Html.ValidationMessageFor(model => model.enableWebMessage, "", new { @class = "text-danger" })
 
                     </div>
-                    <div id="webBox" class="form-group">
-                        <div class="col-md-12">
-                        @Html.LabelFor(model => model.WebMessage, htmlAttributes: new { @class = "control-label" })
-                            <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamWeb">
-                                <i class="fa fa-plus"></i>
-                                Add Parameters
-                            </button>
+                    <div id="webBox" class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-12 pl-0">
+                                        @Html.LabelFor(model => model.WebMessage, htmlAttributes: new { @class = "control-label" })
+                                        <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamWeb">
+                                            <i class="fa fa-plus"></i>
+                                            Add Parameters
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 pl-0">
+                                @Html.TextAreaFor(model => model.WebMessage, new { @class = "form-control", @maxlength = "100", @style = "max-width 100%" })
+                                @Html.ValidationMessageFor(model => model.WebMessage, "", new { @class = "text-danger" })
+
+                            </div>
                         </div>
-                        <div class="col-md-12 pl-0">
-                            @Html.TextAreaFor(model => model.WebMessage, new { @class = "form-control", @maxlength = "100", @style = "max-width 100%" })
-                            @Html.ValidationMessageFor(model => model.WebMessage, "", new { @class = "text-danger" })
-                            <label class="control-label pull-right" id="WEBtextarea_feedback"></label>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-12 pl-0">
+                                        @Html.LabelFor(model => model.WebNotifyLink, htmlAttributes: new { @class = "control-label" })
+                                        <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamWebNotifyLink">
+                                            <i class="fa fa-plus"></i>
+                                            Add Parameters
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 pl-0">
+                                @Html.EditorFor(model => model.WebNotifyLink, new { htmlAttributes = new { @class = "form-control", @placeholder = "http://" } })
+                                @Html.ValidationMessageFor(model => model.WebNotifyLink, "", new { @class = "text-danger" })
+                            </div>
                         </div>
+
+
+
+
+
                     </div>
                 </div>
 
@@ -329,7 +372,7 @@
                                 <div class="col-md-12">
                                     <div class="col-md-12 pl-0">
                                         @Html.LabelFor(model => model.TemplateSubject, htmlAttributes: new { @class = "control-label" })
-                                        <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamEmailSubject" >
+                                        <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamEmailSubject">
                                             <i class="fa fa-plus"></i>
                                             Add Parameters
                                         </button>
@@ -348,7 +391,7 @@
                                 <div class="col-md-12">
                                     <div class="col-md-12 pl-0">
                                         @Html.LabelFor(model => model.TemplateMessage, htmlAttributes: new { @class = "control-label" })
-                                        <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamEmailBody" >
+                                        <button type="button" class="btn btn-sm btn-outline-secondary pull-right" id="addParamEmailBody">
                                             <i class="fa fa-plus"></i>
                                             Add Parameters
                                         </button>

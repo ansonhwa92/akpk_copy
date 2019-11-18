@@ -19,7 +19,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             filter.Branchs = new SelectList(await GetBranches(), "Id", "Name", 0);
             filter.Departments = new SelectList(await GetDepartments(), "Id", "Name", 0);
-
+            
             return View(new ListStaffModel { Filter = filter });
         }
 
@@ -40,6 +40,75 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             }
 
             return View(response.Data);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Edit(int? id)
+        {
+
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<DetailsStaffModel>(HttpVerbs.Get, $"Administration/Staff?id={id}");
+
+            if (!response.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var model = new EditStaffModel
+            {
+                Id = response.Data.Id,               
+                Name = response.Data.Name,
+                ICNo = response.Data.ICNo,               
+                Email = response.Data.Email,
+                MobileNo = response.Data.MobileNo,
+                BranchId = response.Data.Branch != null ? response.Data.Branch.Id : (int?) null,
+                Department = response.Data.Department,
+                Designation = response.Data.Designation,
+                StaffId = response.Data.StaffId,                
+                CountryCode = response.Data.CountryCode,              
+                RoleIds = response.Data.Roles.Select(s => s.Id).ToArray(),
+                Status = response.Data.Status
+            };
+                        
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+            model.Branches = new SelectList(await GetBranches(), "Id", "Name", 0);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(EditStaffModel model)
+        {
+                       
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Administration/Staff?id={model.Id}", model);
+
+                if (response.isSuccess)
+                {
+                    await LogActivity(Modules.Setting, "Update Staff", model);
+
+                    TempData["SuccessMessage"] = Language.Individual.AlertEditSuccess;
+
+                    return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = model.Id });
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = Language.Individual.AlertEditFail;
+
+                    return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = model.Id });
+                }
+
+            }
+                      
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
+
         }
 
         [HttpGet]
@@ -73,16 +142,16 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                LogActivity(Modules.Admin, "Activate Staff Account", new { id = id });
+                await LogActivity(Modules.Setting, "Activate Staff Account", new { id = id });
 
-                TempData["SuccessMessage"] = "User account successfully activate.";
+                TempData["SuccessMessage"] = Language.Staff.AlertActivateSuccess;
 
                 return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = "Fail to activate user account.";
+                TempData["ErrorMessage"] = Language.Staff.AlertActivateFail;
 
                 return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = id });
             }
@@ -120,19 +189,64 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (response.isSuccess)
             {
-                LogActivity(Modules.Admin, "Disable Staff Account", new { id = id });
+                await LogActivity(Modules.Setting, "Disable Staff Account", new { id = id });
 
-                TempData["SuccessMessage"] = "User account successfully disable.";
+                TempData["SuccessMessage"] = Language.Staff.AlertDeactivateSuccess;
 
                 return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = "Fail to disable user account.";
+                TempData["ErrorMessage"] = Language.Staff.AlertDeactivateFail;
 
                 return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = id });
             }
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _Add()
+        {
+            var filter = new FilterStaffModel();
+
+            filter.Branchs = new SelectList(await GetBranches(), "Id", "Name", 0);
+            filter.Departments = new SelectList(await GetDepartments(), "Id", "Name", 0);
+
+            return View(new ListStaffModel { Filter = filter });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _Select()
+        {
+            var filter = new FilterStaffModel();
+
+            filter.Branchs = new SelectList(await GetBranches(), "Id", "Name", 0);
+            filter.Departments = new SelectList(await GetDepartments(), "Id", "Name", 0);
+
+            return View(new ListStaffModel { Filter = filter });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _Details(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<DetailsStaffModel>(HttpVerbs.Get, $"Administration/Staff?id={id}");
+
+            if (!response.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var model = response.Data;
+
+            //model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
 
         }
 
@@ -159,7 +273,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var departments = Enumerable.Empty<DepartmentModel>();
 
-            var response = await WepApiMethod.SendApiAsync<List<DepartmentModel>>(HttpVerbs.Get, $"Administration/Branch");
+            var response = await WepApiMethod.SendApiAsync<List<DepartmentModel>>(HttpVerbs.Get, $"Administration/Department");
 
             if (response.isSuccess)
             {
@@ -169,5 +283,23 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             return departments;
 
         }
+
+        [NonAction]
+        private async Task<IEnumerable<RoleModel>> GetRoles()
+        {
+            var roles = Enumerable.Empty<RoleModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<RoleModel>>(HttpVerbs.Get, $"Administration/Role");
+
+            if (response.isSuccess)
+            {
+                roles = response.Data.OrderBy(o => o.Name);
+            }
+
+            return roles;
+
+        }
+
+        
     }
 }

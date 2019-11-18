@@ -1,137 +1,160 @@
-﻿@model FEP.Model.eLearning.CourseContent
+﻿@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
 
 @{
     ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    var name = Model.PageTitle;
+
+    var desc = Model.ContentType.ToString();
+
 }
 
-<h2>Delete</h2>
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5">
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>CourseContent</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Course.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Course.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CourseModule.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CourseModule.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsViewable)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsViewable)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ContentType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ContentType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CompletionType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CompletionType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Order)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Order)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.QuestionType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.QuestionType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Timer)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Timer)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedDate)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+                    <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-outline-primary text-white">
+                        <span class="align-middle">
+                            <i class="la la-long-arrow-left">&nbsp;</i>
+                        </span>
+                        Back
+                    </a>
+                </div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Courses</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId">Module</a></li>
+                                <li class="breadcrumb-item"><a href="#">Content</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@name : Delete @desc</h1>
+                    <div class="header-text">Delete @desc.</div>
+                </div>
+            </div>
         </div>
-    }
+    </div>
+}
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+@Html.HiddenFor(m => m.CourseId)
+@Html.HiddenFor(m => m.CourseModuleId)
+@Html.HiddenFor(m => m.CreateContentFrom)
+@Html.HiddenFor(m => m.ContentType)
+@Html.HiddenFor(m => m.PageTitle)
+@Html.HiddenFor(m => m.VideoType)
+@Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+
+<div class="row">
+
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar class="ps">
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">@Model.ContentType</a>
+                        </li>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Form -->
+        <div class="border-form rounded-top">
+            <div class="form-container">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })
+                    <div class="">
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
+                    <div class="">
+                        @Html.TextAreaFor(model => model.Description, new { @class = "summernote form-control" })
+                    </div>
+                </div>
+                <hr />
+
+
+                @Html.Partial($"_detail{Model.ContentType.ToString()}", Model)
+            </div>
+        </div>
+
+        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+
+            <form action="@BaseURL/CourseContents/DeleteConfirmed" method="post">
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(m => m.Id)
+
+                <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-warning btn-flat" data-toggle="tooltip" data-placement="top"
+                   title="Back">@Language.General.ButtonCancel</a>
+
+                <button type="submit" class="btn btn-primary pull-right" value="Delete">
+                    <i class="la la-trash font-icon" style="font-size: 1.5rem;"></i>Delete
+                </button>
+            </form>
+        </div>
+    </div>
 </div>
+
+<style>
+    .questionWrapper,
+    .timerWrapper {
+        display: none;
+    }
+
+    .form-container {
+        max-width: none !important;
+    }
+
+    .note-editable {
+        background-color: #fafcfd !important;
+        border: 1px solid #e3eaef !important;
+        color: #768396 !important;
+        opacity: 1 !important;
+        font-size: 0.875rem !important;
+        box-shadow: none !important;
+    }
+</style>
+
+@section ContentScript {
+
+    <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
+    <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                placeholder: 'Type your text here.',
+                tabsize: 2,
+                height: 150,
+                toolbar: [],
+                codeviewFilter: false,
+                codeviewIframeFilter: true,
+            });
+
+            $('.summernote').summernote('disable');
+            $('#Text').summernote('disable');
+
+            $('input[type="radio"]').prop("checked", true);
+
+        });
+    </script>
+}

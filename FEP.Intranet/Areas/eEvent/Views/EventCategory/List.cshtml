@@ -108,15 +108,14 @@
     <div class="title_header">
         <div class="title-header-container">
             <div class="container">
-                
-                <div class="header-col-right float-right mt-5"><a href="@Url.Action("Index", "Parameter", new { area = "Setting" })" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a></div>
+                                
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">System Settings</a></li>
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a></li>
+                                <li class="breadcrumb-item"><a href="#">Event Management</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "EventCategory", new { area = "eEvent" })">Event Category</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>

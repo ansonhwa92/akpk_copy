@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FEP.Model;
+using FEP.WebApiModel.FileDocuments;
+using System.Web;
+
 
 namespace FEP.WebApiModel.RnP
 {
@@ -74,11 +77,11 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "PubHDPrice", ResourceType = typeof(Language.RnPForm))]
         public float HDPrice { get; set; }
 
-        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
-        public string Pictures { get; set; }
+        //[Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        //public string Pictures { get; set; }
 
-        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
-        public string ProofOfApproval { get; set; }
+        //[Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        //public string ProofOfApproval { get; set; }
 
         [Display(Name = "PubStockBalance", ResourceType = typeof(Language.RnPForm))]
         public int? StockBalance { get; set; }
@@ -92,8 +95,8 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "PubWithdrawalDate", ResourceType = typeof(Language.RnPForm))]
         public DateTime? WithdrawalDate { get; set; }
 
-        [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
-        public string ProofOfWithdrawal { get; set; }
+        //[Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
+        //public string ProofOfWithdrawal { get; set; }
 
         [Display(Name = "PubDateAdded", ResourceType = typeof(Language.RnPForm))]
         public DateTime DateAdded { get; set; }
@@ -127,6 +130,32 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "PubCategoryNameList", ResourceType = typeof(Language.RnPForm))]
         public string Category { get; set; }
+
+        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+
+        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+
+        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+
+        [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfWithdrawal { get; set; }
+    }
+
+    // Class for returning publications for user browsing
+    public class BrowsePublicationModel
+    {
+        public string Keyword { get; set; }
+
+        public string Sorting { get; set; }
+
+        public int LastIndex { get; set; }
+
+        public int ItemCount { get; set; }
+
+        public List<ReturnPublicationModel> Publications { get; set; }
     }
 
     // class for returning just the auto-fields of publication information to client app
@@ -172,6 +201,9 @@ namespace FEP.WebApiModel.RnP
         //[Display(Name = "PubCategoryID", ResourceType = typeof(Language.RnPForm))]
         //public int CategoryID { get; set; }
 
+        [Display(Name = "PubRefNo", ResourceType = typeof(Language.RnPForm))]
+        public string RefNo { get; set; }
+
         [Display(Name = "PubAuthor", ResourceType = typeof(Language.RnPForm))]
         public string Author { get; set; }
 
@@ -189,6 +221,10 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "PubCategoryNameList", ResourceType = typeof(Language.RnPForm))]
         public string Category { get; set; }
+
+        public PublicationApprovalLevels? ApprovalLevel { get; set; }
+
+        public PublicationApprovalLevels? WithdrawalLevel { get; set; }
     }
 
     // class for setting and returning filters for the datatable list of publications
@@ -292,10 +328,8 @@ namespace FEP.WebApiModel.RnP
 
     // class for updating of publication information by client app
     // used to create and edit publication information
-    public class UpdatePublicationModel
+    public class PublicationModel
     {
-        public int ID { get; set; }
-
         [Required(ErrorMessageResourceName = "ValidRequiredCategory", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubCategoryID", ResourceType = typeof(Language.RnPForm))]
         public int CategoryID { get; set; }
@@ -353,36 +387,244 @@ namespace FEP.WebApiModel.RnP
         public bool FreeHDCopy { get; set; }
 
         [Display(Name = "PubHPrice", ResourceType = typeof(Language.RnPForm))]
+        //[RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceName = "ValidInvalidPrice", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public float HPrice { get; set; }
 
         [Display(Name = "PubDPrice", ResourceType = typeof(Language.RnPForm))]
+        //[RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceName = "ValidInvalidPrice", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public float DPrice { get; set; }
 
         [Display(Name = "PubHDPrice", ResourceType = typeof(Language.RnPForm))]
+        //[RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceName = "ValidInvalidPrice", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public float HDPrice { get; set; }
 
-        //[Required(ErrorMessageResourceName = "ValidRequiredPictures", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        /*
         [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
-        public string Pictures { get; set; }
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> CoverPictureFiles { get; set; }
 
-        //[Required(ErrorMessageResourceName = "ValidRequiredProofOfApproval", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> AuthorPictureFiles { get; set; }
+
+        [Required]
         [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
-        public string ProofOfApproval { get; set; }         // uploaded proof of approval
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+        public IEnumerable<HttpPostedFileBase> ProofOfApprovalFiles { get; set; }
+        */
 
         [Required(ErrorMessageResourceName = "ValidRequiredStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubStockBalance", ResourceType = typeof(Language.RnPForm))]
-        //[MaxLength(4)]
-        //[MinLength(1)]
-        //[Range(0, 9999, ErrorMessage = "Please enter a valid year")]
+        //[RegularExpression("([1-9][0-9]*)", ErrorMessageResourceName = "ValidInvalidStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Range(0, 99999, ErrorMessageResourceName = "ValidInvalidStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
         public int? StockBalance { get; set; }
 
         [Required]
         public int CreatorId { get; set; }
 
         public string CreatorName { get; set; }
+    }
+
+    // for creating
+    public class CreatePublicationModel : PublicationModel
+    {
+        public CreatePublicationModel()
+        {
+            CoverPictures = new List<Attachment>();
+            AuthorPictures = new List<Attachment>();
+            ProofOfApproval = new List<Attachment>();
+            CoverPictureFiles = new List<HttpPostedFileBase>();
+            AuthorPictureFiles = new List<HttpPostedFileBase>();
+            ProofOfApprovalFiles = new List<HttpPostedFileBase>();
+            CoverFilesId = new List<int>();
+            AuthorFilesId = new List<int>();
+            ProofFilesId = new List<int>();
+        }
+
+        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> CoverPictureFiles { get; set; }
+
+        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> AuthorPictureFiles { get; set; }
+
+        [Required]
+        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+        public IEnumerable<HttpPostedFileBase> ProofOfApprovalFiles { get; set; }
+
+        public List<int> CoverFilesId { get; set; }
+        public List<int> AuthorFilesId { get; set; }
+        public List<int> ProofFilesId { get; set; }
+    }
+
+    // for editing
+    public class EditPublicationModel : PublicationModel
+    {
+        public EditPublicationModel()
+        {
+            CoverPictures = new List<Attachment>();
+            AuthorPictures = new List<Attachment>();
+            ProofOfApproval = new List<Attachment>();
+            CoverPictureFiles = new List<HttpPostedFileBase>();
+            AuthorPictureFiles = new List<HttpPostedFileBase>();
+            ProofOfApprovalFiles = new List<HttpPostedFileBase>();
+            CoverFilesId = new List<int>();
+            AuthorFilesId = new List<int>();
+            ProofFilesId = new List<int>();
+        }
+
+        [Required]
+        public int ID { get; set; }
+
+        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> CoverPictureFiles { get; set; }
+
+        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+        public IEnumerable<HttpPostedFileBase> AuthorPictureFiles { get; set; }
+
+        [Required]
+        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+        public IEnumerable<HttpPostedFileBase> ProofOfApprovalFiles { get; set; }
+
+        public List<int> CoverFilesId { get; set; }
+        public List<int> AuthorFilesId { get; set; }
+        public List<int> ProofFilesId { get; set; }
+    }
+
+    // for details
+    public class DetailsPublicationModel : PublicationModel
+    {
+        public DetailsPublicationModel() { }
+
+        [Required]
+        public int ID { get; set; }
+
+        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+
+        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+
+        [Display(Name = "PubProofOfApproval", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+
+        [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
+        public IEnumerable<Attachment> ProofOfWithdrawal { get; set; }
+    }
+
+    // class for updating of publication information by client app
+    // used to create and edit publication information
+    public class PublicationModelNoFile
+    {
+        [Required(ErrorMessageResourceName = "ValidRequiredCategory", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public int CategoryID { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredAuthor", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public string Author { get; set; }
+
+        public string Coauthor { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredTitle", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public string Title { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredYear", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public int? Year { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredDescription", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public string Description { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredLanguage", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public string Language { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredISBN", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public string ISBN { get; set; }
+
+        public bool Hardcopy { get; set; }
+
+        public bool Digitalcopy { get; set; }
+
+        public bool HDcopy { get; set; }
+
+        public bool FreeHCopy { get; set; }
+
+        public bool FreeDCopy { get; set; }
+
+        public bool FreeHDCopy { get; set; }
+
+        public float HPrice { get; set; }
+
+        public float DPrice { get; set; }
+
+        public float HDPrice { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredStockBalance", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        public int? StockBalance { get; set; }
+
+        [Required]
+        public int CreatorId { get; set; }
+
+        public string CreatorName { get; set; }
+    }
+
+    // for creating
+    public class CreatePublicationModelNoFile : PublicationModelNoFile
+    {
+        public CreatePublicationModelNoFile()
+        {
+            CoverPictures = new List<Attachment>();
+            AuthorPictures = new List<Attachment>();
+            ProofOfApproval = new List<Attachment>();
+            CoverFilesId = new List<int>();
+            AuthorFilesId = new List<int>();
+            ProofFilesId = new List<int>();
+        }
+
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+
+        [Required]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+
+        public List<int> CoverFilesId { get; set; }
+        public List<int> AuthorFilesId { get; set; }
+        public List<int> ProofFilesId { get; set; }
+    }
+
+    // for editing
+    public class EditPublicationModelNoFile : PublicationModelNoFile
+    {
+        public EditPublicationModelNoFile()
+        {
+            CoverPictures = new List<Attachment>();
+            AuthorPictures = new List<Attachment>();
+            ProofOfApproval = new List<Attachment>();
+            CoverFilesId = new List<int>();
+            AuthorFilesId = new List<int>();
+            ProofFilesId = new List<int>();
+        }
+
+        [Required]
+        public int ID { get; set; }
+
+        public IEnumerable<Attachment> CoverPictures { get; set; }
+
+        public IEnumerable<Attachment> AuthorPictures { get; set; }
+
+        [Required]
+        public IEnumerable<Attachment> ProofOfApproval { get; set; }
+
+        public List<int> CoverFilesId { get; set; }
+        public List<int> AuthorFilesId { get; set; }
+        public List<int> ProofFilesId { get; set; }
     }
 
     // class for updating of publication cancellation information by client app
@@ -401,6 +643,13 @@ namespace FEP.WebApiModel.RnP
     // used to create and edit publication withdrawal information
     public class UpdatePublicationWithdrawalModel
     {
+        public UpdatePublicationWithdrawalModel()
+        {
+            ProofOfWithdrawal = new List<Attachment>();
+            ProofOfWithdrawalFiles = new List<HttpPostedFileBase>();
+            ProofFilesId = new List<int>();
+        }
+
         [Required]
         public int ID { get; set; }
 
@@ -410,14 +659,17 @@ namespace FEP.WebApiModel.RnP
 
         [Required(ErrorMessageResourceName = "ValidRequiredProofOfWithdrawal", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
-        public string ProofOfWithdrawal { get; set; }
+        public IEnumerable<Attachment> ProofOfWithdrawal { get; set; }
+        public IEnumerable<HttpPostedFileBase> ProofOfWithdrawalFiles { get; set; }
+
+        public List<int> ProofFilesId { get; set; }
     }
 
     // class for returning publication information for submission as well as cancellation form to client app
     // used to create form for viewing publication (admin only)
     public class UpdatePublicationViewModel
     {
-        public UpdatePublicationModel Pub { get; set; }
+        public DetailsPublicationModel Pub { get; set; }
         public ReturnPublicationAutofieldsModel Auto { get; set; }
         public UpdatePublicationWithdrawalModel Withdrawal { get; set; }
         public UpdatePublicationCancellationModel Cancellation { get; set; }
@@ -430,6 +682,78 @@ namespace FEP.WebApiModel.RnP
         public ReturnPublicationModel Pub { get; set; }
         public UpdatePublicationWithdrawalModel Withdrawal { get; set; }
         public ReturnUpdatePublicationApprovalModel Approval { get; set; }
+    }
+
+    // class for returning publication featured/rank information
+    public class ReturnPublicationRank
+    {
+        public int ID { get; set; }
+
+        public int PublicationID { get; set; }
+
+        [Display(Name = "PubRankPosition", ResourceType = typeof(Language.RnPForm))]
+        public int? Position { get; set; }
+    }
+
+    // class for updating publication featured/rank information
+    public class UpdatePublicationRank
+    {
+        public int ID { get; set; }
+
+        [Required]
+        public int PublicationID { get; set; }
+
+        [Display(Name = "PubRankPosition", ResourceType = typeof(Language.RnPForm))]
+        public int? Position { get; set; }
+    }
+
+    // class for returning publication review information
+    public class ReturnPublicationReview
+    {
+        public int ID { get; set; }
+
+        public int PublicationID { get; set; }
+
+        [Display(Name = "PubReviewRating", ResourceType = typeof(Language.RnPForm))]
+        public int Rating { get; set; }
+
+        [Display(Name = "PubReviewReviewerId", ResourceType = typeof(Language.RnPForm))]
+        public int? ReviewerId { get; set; }
+
+        [Display(Name = "PubReviewReviewerName", ResourceType = typeof(Language.RnPForm))]
+        public string ReviewerName { get; set; }
+
+        [Display(Name = "PubReviewReviewDate", ResourceType = typeof(Language.RnPForm))]
+        public DateTime? ReviewDate { get; set; }
+
+        [Display(Name = "PubReviewRemarks", ResourceType = typeof(Language.RnPForm))]
+        public string Remarks { get; set; }
+    }
+
+    // class for updating publication review information
+    public class UpdatePublicationReview
+    {
+        public int ID { get; set; }
+
+        [Required]
+        public int PublicationID { get; set; }
+
+        [Required]
+        [Display(Name = "PubReviewRating", ResourceType = typeof(Language.RnPForm))]
+        public int Rating { get; set; }
+
+        [Display(Name = "PubReviewReviewerId", ResourceType = typeof(Language.RnPForm))]
+        public int? ReviewerId { get; set; }
+
+        [Required]
+        [Display(Name = "PubReviewReviewerName", ResourceType = typeof(Language.RnPForm))]
+        public string ReviewerName { get; set; }
+
+        [Display(Name = "PubReviewReviewDate", ResourceType = typeof(Language.RnPForm))]
+        public DateTime? ReviewDate { get; set; }
+
+        [Display(Name = "PubReviewRemarks", ResourceType = typeof(Language.RnPForm))]
+        public string Remarks { get; set; }
     }
 
     /*
@@ -518,4 +842,191 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "PubApprovalRequireNext", ResourceType = typeof(Language.RnPForm))]
         public bool RequireNext { get; set; }
     }
+
+    // class for returning/updating delivery address for publication ordering
+    public class PublicationDeliveryModel
+    {
+        public int ID { get; set; }
+
+        public int UserId { get; set; }
+
+        [Display(Name = "First Name")]
+        [Required]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        [Required]
+        public string LastName { get; set; }
+
+        [Display(Name = "Street Address 1")]
+        [Required]
+        public string Address1 { get; set; }
+
+        [Display(Name = "Street Address 2")]
+        public string Address2 { get; set; }
+
+        [Display(Name = "Postcode")]
+        [Required]
+        public string Postcode { get; set; }
+
+        [Display(Name = "City")]
+        [Required]
+        public string City { get; set; }
+
+        [Display(Name = "State")]
+        [Required]
+        public DeliveryStates State { get; set; }
+
+        [Display(Name = "Contact No.")]
+        [Required]
+        public string PhoneNumber { get; set; }
+    }
+
+    // class for purchase publication page - contains delivery address and a single publication
+    // in up to 3 formats
+    public class PurchasePublicationModel
+    {
+        public int PublicationID { get; set; }
+
+        public bool FormatDigital { get; set; }
+
+        public bool FormatHardcopy { get; set; }
+
+        public bool FormatPromotion { get; set; }
+
+        public int HardcopyQuantity { get; set; }
+
+        public int DeliveryID { get; set; }
+
+        public int UserId { get; set; }
+
+        [Display(Name = "First Name")]
+        [Required]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        [Required]
+        public string LastName { get; set; }
+
+        [Display(Name = "Street Address 1")]
+        [Required]
+        public string Address1 { get; set; }
+
+        [Display(Name = "Street Address 2")]
+        public string Address2 { get; set; }
+
+        [Display(Name = "Postcode")]
+        [Required]
+        public string Postcode { get; set; }
+
+        [Display(Name = "City")]
+        [Required]
+        public string City { get; set; }
+
+        [Display(Name = "State")]
+        [Required]
+        public DeliveryStates State { get; set; }
+
+        [Display(Name = "Contact No.")]
+        [Required]
+        public string PhoneNumber { get; set; }
+    }
+
+    // class for updating delivery address only
+    public class EditDeliveryAddressModel
+    {
+        public int DeliveryID { get; set; }
+
+        public int UserId { get; set; }
+
+        [Display(Name = "First Name")]
+        [Required]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        [Required]
+        public string LastName { get; set; }
+
+        [Display(Name = "Street Address 1")]
+        [Required]
+        public string Address1 { get; set; }
+
+        [Display(Name = "Street Address 2")]
+        public string Address2 { get; set; }
+
+        [Display(Name = "Postcode")]
+        [Required]
+        public string Postcode { get; set; }
+
+        [Display(Name = "City")]
+        [Required]
+        public string City { get; set; }
+
+        [Display(Name = "State")]
+        [Required]
+        public DeliveryStates State { get; set; }
+
+        [Display(Name = "Contact No.")]
+        [Required]
+        public string PhoneNumber { get; set; }
+    }
+
+    // class for updating delivery information + adding item to order - NOT USED?
+    public class UpdatePublicationDeliveryModel
+    {
+        public List<PublicationPurchaseItemModel> Items { get; set; }
+        public PublicationDeliveryModel Delivery { get; set; }
+    }
+
+    // class for returning/updating publication purchase item
+    // filled in by system
+    public class PublicationPurchaseItemModel
+    {
+        public int ID { get; set; }
+
+        public int UserId { get; set; }
+
+        public int? PurchaseOrderId { get; set; }
+
+        [Display(Name = "Publication Title")]
+        [Required]
+        public int PublicationID { get; set; }
+
+        [Display(Name = "Format")]
+        [Required]
+        public PublicationFormats Format { get; set; }
+
+        [Display(Name = "Unit Price")]
+        [Required]
+        public float Price { get; set; }
+
+        [Display(Name = "Quantity")]
+        [Required]
+        public int Quantity { get; set; }
+    }
+
+    // class for returning/updating promotion code
+    public class PromotionCodeModel
+    {
+        public int ID { get; set; }
+
+        [Display(Name = "Code")]
+        [Required]
+        public string Code { get; set; }
+
+        [Display(Name = "Monetary Value (RM)")]
+        [Required]
+        public int MoneyValue { get; set; }
+
+        [Display(Name = "Percentage Value")]
+        [Required]
+        public int PercentageValue { get; set; }
+
+        [Display(Name = "Expiry Date")]
+        [Required]
+        public DateTime ExpiryDate { get; set; }
+
+        public bool Used { get; set; }
+    }
+
 }

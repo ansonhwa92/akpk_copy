@@ -52,6 +52,7 @@
                 <input type="hidden" name="SurveyID" class="form-control" value="@Model.Survey.ID" />
                 <input type="hidden" name="Type" class="form-control" value="@Model.Response.Type" />
                 <input type="hidden" name="UserId" class="form-control" value="@Model.Response.UserId" />
+                <input type="hidden" name="Email" class="form-control" value="@Model.Response.Email" />
                 <input type="hidden" name="ResponseDate" class="form-control" value="" />
                 <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;"></textarea>
             }
@@ -68,7 +69,7 @@
 
             var survey = new Survey.Model(surveyJSON);
 
-            $("#surveyContainer").SurveyWindow({
+            $("#surveyContainer").Survey({
                 model: survey,
                 onComplete: sendDataToServer
             });

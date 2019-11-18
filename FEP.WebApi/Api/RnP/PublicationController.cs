@@ -8,6 +8,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Data.Entity;
+using System.Web;
+using FEP.WebApiModel.SLAReminder;
+using FEP.WebApiModel.FileDocuments;
 
 
 namespace FEP.WebApi.Api.RnP
@@ -83,6 +86,19 @@ namespace FEP.WebApi.Api.RnP
 
                 switch (sortBy)
                 {
+                    case "RefNo":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.RefNo);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.RefNo);
+                        }
+
+                        break;
+
                     case "Category":
 
                         if (sortAscending)
@@ -163,11 +179,14 @@ namespace FEP.WebApi.Api.RnP
                 .Select(s => new ReturnBriefPublicationModel
                 {
                     ID = s.ID,
+                    RefNo = s.RefNo,
                     Author = s.Author,
                     Title = s.Title,
                     ISBN = s.ISBN,
                     Status = s.Status,
-                    Category = s.Category.Name
+                    Category = s.Category.Name,
+                    ApprovalLevel = db.PublicationApproval.Where(pa => pa.PublicationID == s.ID && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level,
+                    WithdrawalLevel = db.PublicationWithdrawal.Where(pw => pw.PublicationID == s.ID && pw.Status == PublicationApprovalStatus.None).OrderByDescending(pw => pw.ApprovalDate).FirstOrDefault().Level
                 }).ToList();
 
             return Ok(new DataTableResponse
@@ -181,10 +200,10 @@ namespace FEP.WebApi.Api.RnP
         }
 
         // Alternative function for listing (all)
-        // GET: api/RnP/Publication (misc list) - CURRENTLY NOT USED
+        // GET: api/RnP/Publication (misc list) - CURRENTLY USED FOR ANONYMOUS BROWSING
         public List<ReturnPublicationModel> Get()
         {
-            var publications = db.Publication.OrderBy(p => p.Status).OrderBy(p => p.Title).Select(s => new ReturnPublicationModel
+            var publications = db.Publication.Where(p => p.Status == PublicationStatus.Published).OrderByDescending(p => p.DateAdded).OrderBy(p => p.Title).Select(s => new ReturnPublicationModel
             {
                 ID = s.ID,
                 CategoryID = s.CategoryID,
@@ -204,11 +223,11 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
-                ProofOfWithdrawal = s.ProofOfWithdrawal,
+                //ProofOfWithdrawal = s.ProofOfWithdrawal,
                 CancelRemark = s.CancelRemark,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
@@ -222,6 +241,104 @@ namespace FEP.WebApi.Api.RnP
             }).ToList();
 
             return publications;
+        }
+
+        // GET: api/RnP/Publication/GetPublications (list) - CURRENTLY USED FOR ANONYMOUS BROWSING
+        [Route("api/RnP/Publication/GetPublications")]
+        [HttpGet]
+        public BrowsePublicationModel GetPublications(string keyword, string sorting, bool articles, bool books, bool factssheet, bool journals, bool reviews, bool reports, bool researchpapers, bool digital, bool hardcopy, bool bahasamalaysia, bool english)
+        {
+            // active (for now = published) only
+
+            var query = db.Publication.Where(p => p.Status == PublicationStatus.Published);
+
+            var totalCount = query.Count();
+
+            query = query.Where(p => (keyword == null || keyword == ""
+                || p.Title.Contains(keyword)
+                || p.Author.Contains(keyword) || p.Coauthor.Contains(keyword)
+                || p.ISBN.Contains(keyword)));
+
+            if (!articles) { query = query.Where(p => p.CategoryID != 1); }
+            if (!books) { query = query.Where(p => p.CategoryID != 2); }
+            if (!factssheet) { query = query.Where(p => p.CategoryID != 3); }
+            if (!journals) { query = query.Where(p => p.CategoryID != 4); }
+            if (!reviews) { query = query.Where(p => p.CategoryID != 5); }
+            if (!reports) { query = query.Where(p => p.CategoryID != 6); }
+            if (!researchpapers) { query = query.Where(p => p.CategoryID != 7); }
+
+            if (digital) { query = query.Where(p => p.Digitalcopy == true); }
+            if (hardcopy) { query = query.Where(p => p.Hardcopy == true); }
+
+            if (bahasamalaysia) { query = query.Where(p => p.Language.Contains("Bahasa Malaysia")); }
+            if (english) { query = query.Where(p => p.Language.Contains("English")); }
+
+            var filteredCount = query.Count();
+
+            if (sorting == "title")
+            {
+                query = query.OrderBy(o => o.Title).OrderByDescending(o => o.Year);
+            }
+            else if (sorting == "year")
+            {
+                query = query.OrderByDescending(o => o.Year).OrderBy(o => o.Title);
+            }
+            else if (sorting == "added")
+            {
+                query = query.OrderByDescending(o => o.DateAdded).OrderBy(o => o.Title);
+            }
+            else
+            {
+                query = query.OrderBy(o => o.Title).OrderByDescending(o => o.Year);
+            }
+
+            var data = query.Skip(0).Take(filteredCount).Select(s => new ReturnPublicationModel
+            {
+                ID = s.ID,
+                CategoryID = s.CategoryID,
+                Author = s.Author,
+                Coauthor = s.Coauthor,
+                Title = s.Title,
+                Year = s.Year,
+                Description = s.Description,
+                Language = s.Language,
+                ISBN = s.ISBN,
+                Hardcopy = s.Hardcopy,
+                Digitalcopy = s.Digitalcopy,
+                FreeHCopy = s.FreeHCopy,
+                FreeDCopy = s.FreeDCopy,
+                FreeHDCopy = s.FreeHDCopy,
+                HDcopy = s.HDcopy,
+                HPrice = s.HPrice,
+                DPrice = s.DPrice,
+                HDPrice = s.HDPrice,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
+                StockBalance = s.StockBalance,
+                WithdrawalReason = s.WithdrawalReason,
+                //ProofOfWithdrawal = s.ProofOfWithdrawal,
+                CancelRemark = s.CancelRemark,
+                DateAdded = s.DateAdded,
+                CreatorId = s.CreatorId,
+                RefNo = s.RefNo,
+                Status = s.Status,
+                DateCancelled = s.DateCancelled,
+                ViewCount = s.ViewCount,
+                PurchaseCount = s.PurchaseCount,
+                DmsPath = s.DmsPath,
+                Category = s.Category.Name
+            }).ToList();
+
+            var browser = new BrowsePublicationModel
+            {
+                Keyword = keyword,
+                Sorting = sorting,
+                LastIndex = filteredCount,
+                ItemCount = totalCount,
+                Publications = data
+            };
+
+            return browser;
         }
 
         // Function to get a single publication
@@ -250,11 +367,11 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
-                ProofOfWithdrawal = s.ProofOfWithdrawal,
+                //ProofOfWithdrawal = s.ProofOfWithdrawal,
                 CancelRemark = s.CancelRemark,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
@@ -271,6 +388,10 @@ namespace FEP.WebApi.Api.RnP
             {
                 return NotFound();
             }
+
+            publication.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return Ok(publication);
             //return publication;
@@ -318,11 +439,11 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
-                ProofOfWithdrawal = s.ProofOfWithdrawal,
+                //ProofOfWithdrawal = s.ProofOfWithdrawal,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
                 RefNo = s.RefNo,
@@ -338,6 +459,10 @@ namespace FEP.WebApi.Api.RnP
             {
                 publication.CreatorName = puser.Name;
             }
+
+            publication.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return publication;
         }
@@ -370,13 +495,13 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
-                ProofOfWithdrawal = s.ProofOfWithdrawal,
+                //ProofOfWithdrawal = s.ProofOfWithdrawal,
                 WithdrawalDate = s.WithdrawalDate,
-                CancelRemark = s.CancelRemark, 
+                CancelRemark = s.CancelRemark,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
                 RefNo = s.RefNo,
@@ -393,6 +518,11 @@ namespace FEP.WebApi.Api.RnP
             {
                 publication.CreatorName = puser.Name;
             }
+
+            publication.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.ProofOfWithdrawal = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfWithdrawal && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return publication;
         }
@@ -423,11 +553,11 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
-                ProofOfWithdrawal = s.ProofOfWithdrawal,
+                //ProofOfWithdrawal = s.ProofOfWithdrawal,
                 WithdrawalDate = s.WithdrawalDate,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
@@ -444,6 +574,10 @@ namespace FEP.WebApi.Api.RnP
             {
                 publication.CreatorName = puser.Name;
             }
+
+            publication.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             var papproval = db.PublicationApproval.Where(pa => pa.PublicationID == id && pa.Status == PublicationApprovalStatus.None).Select(s => new ReturnUpdatePublicationApprovalModel
             {
@@ -491,11 +625,11 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                Pictures = s.Pictures,
-                ProofOfApproval = s.ProofOfApproval,
+                //Pictures = s.Pictures,
+                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
-                ProofOfWithdrawal = s.ProofOfWithdrawal,
+                //ProofOfWithdrawal = s.ProofOfWithdrawal,
                 WithdrawalDate = s.WithdrawalDate,
                 DateAdded = s.DateAdded,
                 CreatorId = s.CreatorId,
@@ -513,12 +647,18 @@ namespace FEP.WebApi.Api.RnP
                 publication.CreatorName = puser.Name;
             }
 
+            publication.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+
             var pwithdrawal = new UpdatePublicationWithdrawalModel
             {
                 ID = publication.ID,
                 WithdrawalReason = publication.WithdrawalReason,
                 ProofOfWithdrawal = publication.ProofOfWithdrawal
             };
+
+            publication.ProofOfWithdrawal = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfWithdrawal && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             var papproval = db.PublicationWithdrawal.Where(pa => pa.PublicationID == id && pa.Status == PublicationApprovalStatus.None).Select(s => new ReturnUpdatePublicationApprovalModel
             {
@@ -643,7 +783,7 @@ namespace FEP.WebApi.Api.RnP
         [Route("api/RnP/Publication/Create")]
         [HttpPost]
         [ValidationActionFilter]
-        public string Create([FromBody] UpdatePublicationModel model)
+        public string Create([FromBody] CreatePublicationModelNoFile model)
         {
 
             if (ModelState.IsValid)
@@ -667,11 +807,11 @@ namespace FEP.WebApi.Api.RnP
                     HPrice = model.HPrice,
                     DPrice = model.DPrice,
                     HDPrice = model.HDPrice,
-                    Pictures = model.Pictures,
-                    ProofOfApproval = model.ProofOfApproval,
+                    //Pictures = model.Pictures,
+                    //ProofOfApproval = model.ProofOfApproval,
                     StockBalance = model.StockBalance,
                     WithdrawalReason = "",
-                    ProofOfWithdrawal = "",
+                    //ProofOfWithdrawal = "",
                     CancelRemark = "",
                     DateAdded = DateTime.Now,
                     CreatorId = model.CreatorId,
@@ -685,6 +825,45 @@ namespace FEP.WebApi.Api.RnP
                 db.Publication.Add(publication);
                 db.SaveChanges();
                 //if (db.SaveChanges() > 0) {
+
+                //files 1
+                foreach (var fileid in model.CoverFilesId)
+                {
+                    var coverfile = new PublicationFile
+                    {
+                        FileCategory = PublicationFileCategory.CoverImage,
+                        FileId = fileid,
+                        ParentId = publication.ID
+                    };
+
+                    db.PublicationFile.Add(coverfile);
+                }
+
+                //files 2
+                foreach (var fileid in model.AuthorFilesId)
+                {
+                    var authorfile = new PublicationFile
+                    {
+                        FileCategory = PublicationFileCategory.AuthorImage,
+                        FileId = fileid,
+                        ParentId = publication.ID
+                    };
+
+                    db.PublicationFile.Add(authorfile);
+                }
+
+                //files 3
+                foreach (var fileid in model.ProofFilesId)
+                {
+                    var prooffile = new PublicationFile
+                    {
+                        FileCategory = PublicationFileCategory.ProofOfApproval,
+                        FileId = fileid,
+                        ParentId = publication.ID
+                    };
+
+                    db.PublicationFile.Add(prooffile);
+                }
 
                 // modify publication by adding ref no based on year, month and new ID (Survey= SVP & SVT)
                 var refno = "PUB/" + DateTime.Now.ToString("yyMM");
@@ -713,7 +892,7 @@ namespace FEP.WebApi.Api.RnP
         [Route("api/RnP/Publication/Edit")]
         [HttpPost]
         [ValidationActionFilter]
-        public string Edit([FromBody] UpdatePublicationModel model)
+        public string Edit([FromBody] EditPublicationModelNoFile model)
         {
 
             if (ModelState.IsValid)
@@ -739,13 +918,143 @@ namespace FEP.WebApi.Api.RnP
                     publication.HPrice = model.HPrice;
                     publication.DPrice = model.DPrice;
                     publication.HDPrice = model.HDPrice;
-                    publication.Pictures = model.Pictures;
-                    publication.ProofOfApproval = model.ProofOfApproval;
+                    //publication.Pictures = model.Pictures;
+                    //publication.ProofOfApproval = model.ProofOfApproval;
                     publication.StockBalance = model.StockBalance;
                     publication.DmsPath = "";
                     //publication.CreatorId = model.CreatorId;
 
                     db.Entry(publication).State = EntityState.Modified;
+
+                    //files 1
+
+                    var attachments1 = db.PublicationFile.Where(s => s.FileCategory == PublicationFileCategory.CoverImage && s.ParentId == model.ID).ToList();
+
+                    if (attachments1 != null)
+                    {
+                        if (model.CoverPictures == null)
+                        {
+                            foreach (var attachment in attachments1)
+                            {
+                                attachment.FileDocument.Display = false;
+                                db.FileDocument.Attach(attachment.FileDocument);
+                                db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                db.PublicationFile.Remove(attachment);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var attachment in attachments1)
+                            {
+                                if (!model.CoverPictures.Any(u => u.Id == attachment.FileDocument.Id))
+                                {
+                                    attachment.FileDocument.Display = false;
+                                    db.FileDocument.Attach(attachment.FileDocument);
+                                    db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                    db.PublicationFile.Remove(attachment);
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var fileid in model.CoverFilesId)
+                    {
+                        var coverfile = new PublicationFile
+                        {
+                            FileCategory = PublicationFileCategory.CoverImage,
+                            FileId = fileid,
+                            ParentId = publication.ID
+                        };
+
+                        db.PublicationFile.Add(coverfile);
+                    }
+
+                    //files 2
+
+                    var attachments2 = db.PublicationFile.Where(s => s.FileCategory == PublicationFileCategory.AuthorImage && s.ParentId == model.ID).ToList();
+
+                    if (attachments2 != null)
+                    {
+                        if (model.AuthorPictures == null)
+                        {
+                            foreach (var attachment in attachments2)
+                            {
+                                attachment.FileDocument.Display = false;
+                                db.FileDocument.Attach(attachment.FileDocument);
+                                db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                db.PublicationFile.Remove(attachment);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var attachment in attachments2)
+                            {
+                                if (!model.AuthorPictures.Any(u => u.Id == attachment.FileDocument.Id))
+                                {
+                                    attachment.FileDocument.Display = false;
+                                    db.FileDocument.Attach(attachment.FileDocument);
+                                    db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                    db.PublicationFile.Remove(attachment);
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var fileid in model.AuthorFilesId)
+                    {
+                        var authorfile = new PublicationFile
+                        {
+                            FileCategory = PublicationFileCategory.AuthorImage,
+                            FileId = fileid,
+                            ParentId = publication.ID
+                        };
+
+                        db.PublicationFile.Add(authorfile);
+                    }
+
+                    //files 3
+
+                    var attachments3 = db.PublicationFile.Where(s => s.FileCategory == PublicationFileCategory.ProofOfApproval && s.ParentId == model.ID).ToList();
+
+                    if (attachments3 != null)
+                    {
+                        if (model.ProofOfApproval == null)
+                        {
+                            foreach (var attachment in attachments3)
+                            {
+                                attachment.FileDocument.Display = false;
+                                db.FileDocument.Attach(attachment.FileDocument);
+                                db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                db.PublicationFile.Remove(attachment);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var attachment in attachments3)
+                            {
+                                if (!model.ProofOfApproval.Any(u => u.Id == attachment.FileDocument.Id))
+                                {
+                                    attachment.FileDocument.Display = false;
+                                    db.FileDocument.Attach(attachment.FileDocument);
+                                    db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                    db.PublicationFile.Remove(attachment);
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var fileid in model.ProofFilesId)
+                    {
+                        var prooffile = new PublicationFile
+                        {
+                            FileCategory = PublicationFileCategory.ProofOfApproval,
+                            FileId = fileid,
+                            ParentId = publication.ID
+                        };
+
+                        db.PublicationFile.Add(prooffile);
+                    }
+
                     db.SaveChanges();
 
                     return model.Title;
@@ -759,7 +1068,7 @@ namespace FEP.WebApi.Api.RnP
         [Route("api/RnP/Publication/Submit")]
         [HttpPost]
         [ValidationActionFilter]
-        public string Submit([FromBody] UpdatePublicationModel model)
+        public string Submit([FromBody] DetailsPublicationModel model)
         {
 
             if (ModelState.IsValid)
@@ -788,7 +1097,7 @@ namespace FEP.WebApi.Api.RnP
                     db.SaveChanges();
 
                     //return model.Title;
-                    return publication.Title;
+                    return publication.Title + "|" + publication.RefNo;
                 }
             }
             return "";
@@ -824,7 +1133,7 @@ namespace FEP.WebApi.Api.RnP
                 db.SaveChanges();
 
                 //return model.Title;
-                return publication.Title;
+                return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
             }
             return "";
         }
@@ -845,8 +1154,8 @@ namespace FEP.WebApi.Api.RnP
 
                 db.SaveChanges();
 
-                //return model.Title;
-                return publication.Title;
+                //return publication.Title;
+                return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
             }
             return "";
         }
@@ -898,6 +1207,7 @@ namespace FEP.WebApi.Api.RnP
                     // requirenext is always set to true when coming from verifier approval, and always false from approver3
 
                     db.Entry(papproval).State = EntityState.Modified;
+                    // HERE
                     db.SaveChanges();
 
                     var publication = db.Publication.Where(p => p.ID == papproval.PublicationID).FirstOrDefault();
@@ -963,12 +1273,14 @@ namespace FEP.WebApi.Api.RnP
                                 };
 
                                 db.PublicationApproval.Add(pnewapproval);
+                                // HERE
                                 db.SaveChanges();
                             }
 
                         }
 
-                        return publication.Title;
+                        //return publication.Title;
+                        return publication.ID + "|" + publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                     }
                 }
             }
@@ -999,7 +1311,8 @@ namespace FEP.WebApi.Api.RnP
 
                     db.SaveChanges();
 
-                    return publication.Title;
+                    //return publication.Title;
+                    return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                 }
             }
             return "";
@@ -1029,7 +1342,7 @@ namespace FEP.WebApi.Api.RnP
                 {
                     publication.WithdrawalReason = model.WithdrawalReason;
                     publication.WithdrawalDate = DateTime.Now;
-                    publication.ProofOfWithdrawal = model.ProofOfWithdrawal;
+                    //publication.ProofOfWithdrawal = model.ProofOfWithdrawal;
                     publication.Status = PublicationStatus.WithdrawalSubmitted;
 
                     db.Entry(publication).State = EntityState.Modified;
@@ -1047,9 +1360,24 @@ namespace FEP.WebApi.Api.RnP
                     };
 
                     db.PublicationWithdrawal.Add(pwithdrawal);
+
+                    //files 1
+                    foreach (var fileid in model.ProofFilesId)
+                    {
+                        var prooffile = new PublicationFile
+                        {
+                            FileCategory = PublicationFileCategory.ProofOfWithdrawal,
+                            FileId = fileid,
+                            ParentId = publication.ID
+                        };
+
+                        db.PublicationFile.Add(prooffile);
+                    }
+
                     db.SaveChanges();
 
-                    return publication.Title;
+                    //return publication.Title;
+                    return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                 }
             }
 
@@ -1071,7 +1399,7 @@ namespace FEP.WebApi.Api.RnP
                 if (publication != null)
                 {
                     publication.WithdrawalReason = "";
-                    publication.ProofOfWithdrawal = "";
+                    //publication.ProofOfWithdrawal = "";
                     publication.Status = PublicationStatus.Published;
 
                     db.Entry(publication).State = EntityState.Modified;
@@ -1079,7 +1407,8 @@ namespace FEP.WebApi.Api.RnP
                     //db.Configuration.ValidateOnSaveEnabled = false;
                     db.SaveChanges();
 
-                    return publication.Title;
+                    //return publication.Title;
+                    return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                 }
             }
             return "";
@@ -1137,6 +1466,8 @@ namespace FEP.WebApi.Api.RnP
                                 publication.Status = PublicationStatus.Withdrawn;       // as opposed to Approved coz admin don't need to "Publish" withdrawals
                                 db.Entry(publication).State = EntityState.Modified;
                                 db.SaveChanges();
+
+                                var emailres = SendEmailNotificationWithdrawal(publication);
                             }
                             else
                             {
@@ -1177,12 +1508,487 @@ namespace FEP.WebApi.Api.RnP
 
                         }
 
-                        return publication.Title;
+                        //return publication.Title;
+                        return publication.ID + "|" + publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                     }
                 }
             }
 
             return "";
+        }
+
+        /*
+         * The following API calls are for Publication purchasing operations (prior to cart), including:
+         * 1. 
+         * 2. 
+         */
+
+        // Function for getting existing delivery address
+        // GET: api/RnP/Publication/GetDeliveryInfo/5
+        [Route("api/RnP/Publication/GetDeliveryInfo")]
+        public PublicationDeliveryModel GetDeliveryInfo(int userid)
+        {
+            var info = db.PublicationDelivery.Where(d => d.UserId == userid).FirstOrDefault();
+
+            if (info != null)
+            {
+                var newinfo = new PublicationDeliveryModel
+                {
+                    ID = info.ID,
+                    UserId = info.UserId,
+                    FirstName = info.FirstName,
+                    LastName = info.LastName,
+                    Address1 = info.Address1,
+                    Address2 = info.Address2,
+                    Postcode = info.Postcode,
+                    City = info.City,
+                    State = info.State,
+                    PhoneNumber = info.PhoneNumber
+                };
+                return newinfo;
+            }
+            else
+            {
+                var newinfo = new PublicationDeliveryModel
+                {
+                    UserId = userid,
+                    FirstName = "",
+                    LastName = "",
+                    Address1 = "",
+                    Address2 = "",
+                    Postcode = "",
+                    City = "",
+                    State = DeliveryStates.Johor,
+                    PhoneNumber = ""
+                };
+                return newinfo;
+            }
+
+        }
+
+        // Function for creating/upating delivery address for publication purchases
+        // POST: api/RnP/Publication/UpdateDeliveryInfo
+        [Route("api/RnP/Publication/UpdateDeliveryInfo")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool UpdateDeliveryInfo([FromBody] PublicationDeliveryModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var info = db.PublicationDelivery.Where(d => d.UserId == model.UserId).FirstOrDefault();
+
+                if (info != null)
+                {
+                    info.UserId = model.UserId;
+                    info.FirstName = model.FirstName;
+                    info.LastName = model.LastName;
+                    info.Address1 = model.Address1;
+                    info.Address2 = model.Address2;
+                    info.Postcode = model.Postcode;
+                    info.City = model.City;
+                    info.State = model.State;
+                    info.PhoneNumber = model.PhoneNumber;
+
+                    db.Entry(info).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return true;
+                }
+                else
+                {
+                    var newinfo = new PublicationDelivery
+                    {
+                        UserId = model.UserId,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Address1 = model.Address1,
+                        Address2 = model.Address2,
+                        Postcode = model.Postcode,
+                        City = model.City,
+                        State = model.State,
+                        PhoneNumber = model.PhoneNumber
+                    };
+
+                    db.PublicationDelivery.Add(newinfo);
+                    db.SaveChanges();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // Function for adding order item when publication purchase selection is finalised
+        // called by Add to Cart button at PurchasePublication page
+        // the caller must also call api/Commerce/Cart/AddItem
+        // POST: api/RnP/Publication/AddOrderItem
+        [Route("api/RnP/Publication/AddOrderItem")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool AddOrderItem([FromBody] PublicationPurchaseItemModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var pitem = new PublicationPurchaseItem
+                {
+                    PurchaseOrderId = model.PurchaseOrderId,
+                    UserId = model.UserId,
+                    PublicationID = model.PublicationID,
+                    Format = model.Format,
+                    Price = model.Price,
+                    Quantity = model.Quantity
+                };
+
+                db.PublicationPurchaseItem.Add(pitem);
+                db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        // Remove order item
+        // POST: api/RnP/Publication/RemoveOrderItem
+        [Route("api/RnP/Publication/RemoveOrderItem")]
+        public bool RemoveOrderItem(int itemid)
+        {
+            var item = db.PublicationPurchaseItem.Where(pi => pi.ID == itemid).FirstOrDefault();
+
+            if (item != null)
+            {
+                db.PublicationPurchaseItem.Remove(item);
+                db.SaveChanges();
+            }
+
+            return true;
+        }
+
+        /*
+         * The following API calls are for SLAReminder/Notifications including:
+         * 1. Get notification receiver IDs
+         * 2. Save notification ID (to publication table)
+         * The functions are called by SendNotification function from Intranet
+         */
+
+        // Function to get notification receivers based on notification category and type.
+        // Called when sending notifications
+        // TO CONSIDER: Currently cancellations notify all approvers.
+        // GET: api/RnP/Publication/GetNotificationReceivers/
+        [Route("api/RnP/Publication/GetNotificationReceivers")]
+        public List<int> GetNotificationReceivers(NotificationCategory cat, NotificationType type, PublicationApprovalStatus status, bool forward)
+        {
+            List<int> receivers = new List<int> { };
+
+            // prepare
+            bool toadmin = false;
+            bool toverifier = false;
+            bool toapprover1 = false;
+            bool toapprover2 = false;
+            bool toapprover3 = false;
+
+            if ((type == NotificationType.Submit_Publication_Creation) || (type == NotificationType.Submit_Publication_Modification) || (type == NotificationType.Submit_Publication_Withdrawal))
+            {
+                toverifier = true;
+            }
+            else if ((type == NotificationType.Submit_Publication_Cancellation) || (type == NotificationType.Submit_Publication_Modification_Cancellation) || (type == NotificationType.Submit_Publication_Withdrawal_Cancellation))
+            {
+                toverifier = true;
+                toapprover1 = true;
+                toapprover2 = true;
+                toapprover3 = true;
+            }
+            else if (type == NotificationType.Submit_Publication_Publication)
+            {
+                toverifier = true;
+                toapprover1 = true;
+                toapprover2 = true;
+                toapprover3 = true;
+            }
+            else if ((type == NotificationType.Verify_Publication_Creation) || (type == NotificationType.Verify_Publication_Modification) || (type == NotificationType.Verify_Publication_Withdrawal))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                }
+                else
+                {
+                    toapprover1 = true;
+                }
+            }
+            else if ((type == NotificationType.Approve_Publication_Creation_1) || (type == NotificationType.Approve_Publication_Modification_1) || (type == NotificationType.Approve_Publication_Withdrawal_1))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toverifier = true;
+                }
+                else
+                {
+                    if (forward)
+                    {
+                        toapprover2 = true;
+                    }
+                    else
+                    {
+                        toadmin = true;
+                        toverifier = true;
+                    }
+                }
+            }
+            else if ((type == NotificationType.Approve_Publication_Creation_2) || (type == NotificationType.Approve_Publication_Modification_2) || (type == NotificationType.Approve_Publication_Withdrawal_2))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toverifier = true;
+                    toapprover1 = true;
+                }
+                else
+                {
+                    if (forward)
+                    {
+                        toapprover3 = true;
+                    }
+                    else
+                    {
+                        toadmin = true;
+                        toverifier = true;
+                        toapprover1 = true;
+                    }
+                }
+            }
+            else if ((type == NotificationType.Approve_Publication_Creation_3) || (type == NotificationType.Approve_Publication_Modification_3) || (type == NotificationType.Approve_Publication_Withdrawal_3))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toverifier = true;
+                    toapprover1 = true;
+                    toapprover2 = true;
+                }
+                else
+                {
+                    toadmin = true;
+                    toverifier = true;
+                    toapprover1 = true;
+                    toapprover2 = true;
+                }
+            }
+
+            // get list of users
+            var allusers = db.User.Where(u => u.Display).ToList();
+
+            foreach (FEP.Model.User myuser in allusers)
+            {
+                if (myuser.UserAccount.IsEnable)
+                {
+                    // get list of roles
+                    var myroles = myuser.UserAccount.UserRoles;
+                    foreach (UserRole myrole in myroles)
+                    {
+                        var myroleid = myrole.RoleId;
+                        // get list of access
+                        var myaccesses = db.RoleAccess.Where(ra => ra.RoleId == myroleid).ToList();
+                        foreach (RoleAccess myaccess in myaccesses)
+                        {
+                            UserAccess myfunction = myaccess.UserAccess;
+                            if (myfunction == UserAccess.RnPPublicationEdit)
+                            {
+                                if (toadmin)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationWithdraw)
+                            {
+                                if (toadmin)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationVerify)
+                            {
+                                if (toverifier)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationApprove1)
+                            {
+                                if (toapprover1)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationApprove2)
+                            {
+                                if (toapprover2)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                            if (myfunction == UserAccess.RnPPublicationApprove3)
+                            {
+                                if (toapprover3)
+                                {
+                                    receivers.Add(myuser.Id);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // return unique ids
+            if (receivers.Count > 0)
+            {
+                List<int> uniquereceivers = receivers.Distinct().ToList();
+                receivers = uniquereceivers;
+            }
+            return receivers;
+        }
+
+        // Function to save notification ID.
+        // Called when sending notifications
+        // GET: api/RnP/Publication/SaveNotificationID/
+        [Route("api/RnP/Publication/SaveNotificationID")]
+        public bool SaveNotificationID(int id, int notificationid)
+        {
+            var publication = db.Publication.Where(p => p.ID == id).FirstOrDefault();
+
+            if (publication != null)
+            {
+                publication.NotificationID = notificationid;
+
+                db.Entry(publication).State = EntityState.Modified;
+                //db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        // BULK EMAIL
+
+        [NonAction]
+        public bool SendEmailNotificationWithdrawal(Publication model)
+        {
+            ParameterListToSend paramToSend = new ParameterListToSend();
+            paramToSend.PublicationTitle = model.Title;
+            paramToSend.PublicationAuthor = model.Author;
+            paramToSend.PublicationCode = model.RefNo;
+            paramToSend.PublicationApproval = "";
+
+            var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType.Approve_Publication_Withdrawal_Final).FirstOrDefault();
+            string Subject = generateBodyMessage("Publication Withdrawal Notice", NotificationType.Approve_Publication_Withdrawal_Final, paramToSend);
+            string Body = generateBodyMessage(template.TemplateMessage, NotificationType.Approve_Publication_Withdrawal_Final, paramToSend);
+
+            List<string> Email = new List<string> { };
+            var nonstaff = db.User.Where(u => (u.UserType == UserType.Individual || u.UserType == UserType.Company)).ToList();
+            foreach (User myuser in nonstaff)
+            {
+                Email.Add(myuser.Email);
+            }
+
+            var sendresult = SendBulkEmail(NotificationType.Approve_Publication_Withdrawal_Final, NotificationCategory.ResearchAndPublication, Email, paramToSend, Subject, Body);
+            return true;
+        }
+
+        [NonAction]
+        public string GetPropertyValues(Object obj, string propertyName)
+        {
+            Type t = obj.GetType();
+            System.Reflection.PropertyInfo[] props = t.GetProperties();
+            string value = "";
+            foreach (var prop in props)
+                if (prop.Name == propertyName)
+                {
+                    value = (prop.GetValue(obj))?.ToString();
+                    break;
+                }
+                else
+                    value = "";
+
+            return value;
+        }
+
+        [NonAction]
+        public string generateBodyMessage(string TemplateText, NotificationType NotificationType, ParameterListToSend paramToSend)
+        {
+            var ParamList = db.TemplateParameters.Where(p => p.NotificationType == NotificationType).ToList();
+            string WholeText = TemplateText;
+            foreach (var item in ParamList)
+            {
+                string theValue = GetPropertyValues(paramToSend, item.TemplateParameterType);
+                string textToReplace = "[#" + item.TemplateParameterType + "]";
+                WholeText = WholeText.Replace(textToReplace, theValue);
+            }
+
+            return WholeText;
+        }
+
+        [NonAction]
+        public string generateSubjectMessage(string TemplateText, NotificationType NotificationType, ParameterListToSend paramToSend)
+        {
+            var ParamList = db.TemplateParameters.Where(p => p.NotificationType == NotificationType).ToList();
+            string WholeText = TemplateText;
+            foreach (var item in ParamList)
+            {
+                string theValue = GetPropertyValues(paramToSend, item.TemplateParameterType);
+                string textToReplace = "[#" + item.TemplateParameterType + "]";
+                WholeText = WholeText.Replace(textToReplace, theValue);
+            }
+
+            return WholeText;
+        }
+
+        [NonAction]
+        public async System.Threading.Tasks.Task<IHttpActionResult> SendBulkEmail(NotificationType NotificationType, NotificationCategory NotificationCategory, List<string> Emails, ParameterListToSend ParameterListToSend, string emailSubject, string emailBody)
+        {
+            bool success = true;
+            foreach (string receiverEmailAddress in Emails)
+            {
+                int counter = 1;
+                var response = await sendEmailUsingAPIAsync(DateTime.Now, (int)NotificationCategory, (int)NotificationType, receiverEmailAddress, emailSubject, emailBody, counter);
+                if (response == null)
+                {
+                    success = false;
+                }
+            }
+
+            return Ok(success);
+        }
+
+        [NonAction]
+        public async System.Threading.Tasks.Task<EmailClass> sendEmailUsingAPIAsync(DateTime emailDate, int notifyCategory, int notifyType, string emailAddress, string emailSubject, string emailBody, int counter)
+        {
+            DateTime myTimeNow = DateTime.Now;
+            int epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            EmailClass emailObj = new EmailClass
+            {
+                datID = emailAddress + "-email" + counter + "-" + epoch.ToString(),
+                datType = notifyCategory,
+                datNotify = notifyType,
+                dtInsert = myTimeNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                dtSchedule = emailDate.AddMinutes(1).ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                dtExpired = emailDate.AddYears(1).ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                emailTo = emailAddress,
+                subject = HttpUtility.HtmlDecode(emailSubject),
+                body = HttpUtility.HtmlDecode(emailBody)
+            };
+            var response = await FEP.Intranet.WepApiMethod.SendApiAsync<EmailClass>(System.Web.Mvc.HttpVerbs.Post, $"BulkEmail", emailObj, FEP.Intranet.WepApiMethod.APIEngine.EmailSMSAPI);
+
+            if (response.isSuccess)
+                return response.Data;
+            else
+                return null;
         }
 
     }

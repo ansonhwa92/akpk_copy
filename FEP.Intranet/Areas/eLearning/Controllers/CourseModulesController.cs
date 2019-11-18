@@ -4,7 +4,6 @@ using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -16,8 +15,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     {
         public const string Create = "eLearning/CourseModules/Create";
         public const string GetModule = "eLearning/CourseModules";
-
         public const string Content = "eLearning/CourseModules/Content";
+        public const string Start = "eLearning/CourseModules/Start";
     }
 
     [Authorize]
@@ -38,28 +37,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             });
 
             _mapper = config.CreateMapper();
-        }
-
-        // GET: eLearning/CourseModules
-        public async Task<ActionResult> Index()
-        {
-            var courseModules = db.CourseModules;
-            return View(await courseModules.ToListAsync());
-        }
-
-        // GET: eLearning/CourseModules/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CourseModule courseModule = await db.CourseModules.FindAsync(id);
-            if (courseModule == null)
-            {
-                return HttpNotFound();
-            }
-            return View(courseModule);
         }
 
         // GET: eLearning/CourseModules/Create
@@ -103,31 +80,34 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     else
                         return RedirectToAction("Index", "Courses");
                 }
-
-                //// --- FOR TESTING ONLY ----
-                ///
-
-                //var courseModules = db.CourseModules.Where(x => x.CourseId == model.CourseId);
-
-                //var module = new CourseModule
-                //{
-                //    CourseId = model.CourseId,
-                //    Objectives = model.Objectives,
-                //    Description = model.Description,
-                //    Title = model.Title,
-                //    Order = courseModules != null ? (courseModules.Count() + 1) : 0
-                //};
-
-                //var vm = db.CourseModules.Add(module);
-
-                //await db.SaveChangesAsync();
-
-                //return RedirectToAction("Content", "Courses", new { id = vm.Id });
             }
 
             TempData["ErrorMessage"] = "Cannot add module. Please ensure all required fields are filled in.";
 
             return View(model);
+        }
+
+        // GET: eLearning/CourseModules/View/5
+        public async Task<ActionResult> View(int? id)
+        {
+            if (id == null)
+            {
+                TempData["ErrorMessage"] = "Cannot find such module";
+
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+            CreateOrEditModuleModel courseModule = await TryGetModule(id.Value);
+
+            if (courseModule == null)
+            {
+                TempData["ErrorMessage"] = "Cannot find such module";
+
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+
+            ViewBag.CourseTitle = courseModule.CourseTitle;
+
+            return View(courseModule);
         }
 
         // GET: eLearning/CourseModules/Edit/5
@@ -267,7 +247,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 TempData["ErrorMessage"] = "No such module.";
 
-                return RedirectToAction("Index", "CourseModules");
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
             }
 
             return View(model);
@@ -309,7 +289,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 TempData["ErrorMessage"] = "No such module.";
 
-                return RedirectToAction("Content", "CourseModules", new { id = Id.Value });
+                return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = Id.Value });
             }
 
             vm.ModuleContents = vm.ModuleContents.OrderBy(x => x.Order).ToList();
@@ -327,6 +307,28 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return null;
+        }
+
+        // Start the module
+        public async Task<ActionResult> Start(int id)
+        {
+            //var content = await db.CourseContents.Where(x => x.CourseModuleId == id).OrderBy(x => x.Order).FirstOrDefaultAsync();
+
+            //if (content == null)
+            //    return HttpNotFound();
+
+            var response = await WepApiMethod.SendApiAsync<CourseContent>(HttpVerbs.Get, ModuleApiUrl.Start + $"?id={id}");
+
+            if (response.isSuccess)
+            {
+                return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = response.Data.Id });
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Could not find the next content";
+
+                return RedirectToAction("View", "CourseModules", new { area = "eLearning", @id = id });
+            }
         }
     }
 }

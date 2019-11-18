@@ -19,16 +19,14 @@ namespace FEP.WebApiModel.Administration
     public class FilterUserModel : DataTableModel
     {
 
-        [Display(Name = "Name")]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.User))]
         public string Name { get; set; }
 
-        [Display(Name = "Email")]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.User))]
         public string Email { get; set; }
 
-        [Display(Name = "User Type")]
+        [Display(Name = "FieldUserType", ResourceType = typeof(Language.User))]
         public UserType? UserType { get; set; }
-
-        
 
     }
 
@@ -37,25 +35,49 @@ namespace FEP.WebApiModel.Administration
     {
         public int Id { get; set; }
 
-        [Display(Name = "Name")]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.User))]
         public string Name { get; set; }
 
-        [Display(Name = "Email")]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.User))]
         public string Email { get; set; }
 
-        [Display(Name = "User Type")]
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.User))]
+        public string MobileNo { get; set; }
+        public string CountryCode { get; set; }
+
+        [Display(Name = "FieldUserType", ResourceType = typeof(Language.User))]
         public UserType UserType { get; set; }
 
-        [Display(Name = "User Type")]
+        [Display(Name = "FieldUserType", ResourceType = typeof(Language.User))]
         public string UserTypeDesc { get; set; }
+    }
+
+    public class EditUserModel
+    {
+        public int Id { get; set; }
+
+        [Display(Name = "FieldName", ResourceType = typeof(Language.User))]
+        public string Name { get; set; }
+
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.User))]
+        public string Email { get; set; }
+
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.User))]
+        public string MobileNo { get; set; }
+        public string CountryCode { get; set; }
+        public string Avatar { get; set; }
+
     }
 
     public class DetailsUserModel
     {
         public int Id { get; set; }
         public string LoginId { get; set; }
+        public string ICNo { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public string MobileNo { get; set; }
+        public string CountryCode { get; set; }
         public UserType UserType { get; set; }        
         public bool Display { get; set; }
         public int? CreatedBy { get; set; }
@@ -67,6 +89,7 @@ namespace FEP.WebApiModel.Administration
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidTo { get; set; }
         public List<UserAccess> UserAccesses { get; set; }
+        public string AvatarImageBase64 { get; set; }
     }
 
    

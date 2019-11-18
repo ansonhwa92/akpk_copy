@@ -1,0 +1,73 @@
+﻿@using FEP.Model.eLearning
+@using FEP.Model
+
+@model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
+
+
+<div class="col-xl-3 col-md-3 col-sm-4 my-2">
+    <div id="page-nav" class="sidebar-left page-nav">
+
+        <div class="page-section">
+            <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Course</h6>
+            <ul class="nav page-nav__menu">
+                <li class="nav-item">
+                    <a id="tab_details" href="#course-trial" data-toggle="tab" class="nav-link active">Approvals</a>
+                </li>
+            </ul>
+        </div>
+
+        @{
+            switch (Model.Status)
+            {
+                case CourseStatus.Amendment:
+                case CourseStatus.Draft:
+                    break;
+
+                case CourseStatus.Submitted:
+                    if (CurrentUser.HasAccess(UserAccess.CourseVerify))
+                    {
+                        <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Verify & Submit for Approval</button></p>
+                        <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                    }
+
+                    break;
+
+                case CourseStatus.Verified:
+                    if (CurrentUser.HasAccess(UserAccess.CourseApproval1))
+                    {
+                        <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+                        <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                    }
+
+                    break;
+
+                case CourseStatus.FirstApproval:
+                    if (CurrentUser.HasAccess(UserAccess.CourseApproval2))
+                    {
+                        <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+                        <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                    }
+
+                    break;
+                case CourseStatus.SecondApproval:
+
+                    if (CurrentUser.HasAccess(UserAccess.CourseApproval3))
+                    {
+                        <p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+                        <p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        <p>
+            <a href="@Url.Action("View", "Courses", new { area = "eLearning", id = @Model.Id })" class="btn btn-default btn-block mb-2">
+                Preview Course
+            </a>
+        </p>
+    </div>
+</div>

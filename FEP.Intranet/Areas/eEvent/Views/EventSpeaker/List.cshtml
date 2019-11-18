@@ -18,9 +18,7 @@
                     "url": '@(WebApiURL)eEvent/EventSpeaker/GetSpeakerList',
                     "data": function (filter) {
                         filter.UserId = $('#Filter_UserId').val();
-                        //filter.ICNo = $('#Filter_ICNo').val();
-                        //filter.MobileNo = $('#Filter_MobileNo').val();
-                        //filter.Email = $('#Filter_Email').val();
+
                     }
                 },
 				columns: [
@@ -29,7 +27,7 @@
                         sortable: false,
                         render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
-                        }
+                     }
                     },
                     {
                         data: 'UserName',
@@ -40,28 +38,31 @@
                         sortable: true
 					},
 
+					//{
+					//	data: 'DateAssigned',
+					//	sortable: true,
+					//	render: function (data, type, row, meta) {
+					//		var x = moment(data);
+					//		if (x.isValid()) {
+					//			return x.format("DD/MM/YYYY");
+					//		}
+					//		else {
+					//			return '';
+					//		}
+					//	}
+					//},
+                  
 					{
-						data: 'DateAssigned',
-						sortable: true,
+						data: 'SpeakerStatusDesc',
+						sortable: false,
 						render: function (data, type, row, meta) {
-
-							var x = moment(data);
-
-							if (x.isValid()) {
-								return x.format("DD/MM/YYYY");
+							if (row.SpeakerStatus == 0) {
+								return "<span class='color-green font-weight-bold'> Active </span>";
 							}
-							else {
-								return '';
+							else if (row.SpeakerStatus == 1) {
+								return "<span class='font-weight-bold'> Inactive </span>";
 							}
-
 						}
-					},
-					
-                    {
-						data: 'Email',
-
-                        sortable: false,
-
                     },
                     {
                         sortable: false,
@@ -69,9 +70,9 @@
 
                             var action = "";
 
-                            action = '<div class="icon-action">'
+							action = '<div class="icon-action">'
+								    +   '<a href="@Url.Action("Details", "EventSpeaker", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
                                     +   '<a href="@Url.Action("Edit", "EventSpeaker", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-                                    +   '<a href="@Url.Action("Details", "EventSpeaker", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
                                     +   '<a href="@Url.Action("Delete", "EventSpeaker", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
                                     + '</div>';
 
@@ -222,8 +223,7 @@
 				<th>#</th>
 				<th>@Html.DisplayNameFor(model => model.List.UserName)</th>
 				<th>@Html.DisplayNameFor(model => model.List.SpeakerTypeDesc)</th>
-				<th>@Html.DisplayNameFor(model => model.List.DateAssigned)</th>
-				<th>@Html.DisplayNameFor(model => model.List.Email)</th>
+				<th>@Html.DisplayNameFor(model => model.List.SpeakerStatusDesc)</th>
 				<th>Action</th>
 			</tr>
 		</thead>

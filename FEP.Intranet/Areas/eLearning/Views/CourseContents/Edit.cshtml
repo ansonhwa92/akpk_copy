@@ -1,149 +1,448 @@
-﻿@model FEP.Model.eLearning.CourseContent
+﻿@model FEP.WebApiModel.eLearning.CreateOrEditContentModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Content";
     Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    var name = Model.PageTitle;
+
+    var desc = Model.ContentType.ToString();
 }
 
-<h2>Edit</h2>
+<div class="loading">
+    <div class="loader"></div>
 
+</div>
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5">
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>CourseContent</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CourseModuleId, "CourseModuleId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CourseModuleId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CourseModuleId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CourseId, "CourseId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CourseId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CourseId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsViewable, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsViewable)
-                    @Html.ValidationMessageFor(model => model.IsViewable, "", new { @class = "text-danger" })
+                    <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-outline-primary text-white">
+                        <span class="align-middle">
+                            <i class="la la-long-arrow-left">&nbsp;</i>
+                        </span>
+                        Back
+                    </a>
                 </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ContentType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.ContentType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ContentType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CompletionType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.CompletionType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CompletionType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Order, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Order, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Order, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.QuestionType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.QuestionType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.QuestionType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Timer, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Timer, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Timer, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UpdatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UpdatedDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Courses</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId">Module</a></li>
+                                <li class="breadcrumb-item"><a href="#">Content</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@name : Edit @desc</h1>
+                    <div class="header-text">Edit @desc.</div>
+                </div>
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<form action="@BaseURL/CourseContents/Edit" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 
-@section Scripts {
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.CourseId)
+    @Html.HiddenFor(m => m.CourseModuleId)
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.ContentType)
+    @Html.HiddenFor(m => m.PageTitle)
+    @Html.HiddenFor(m => m.VideoType)
+    @Html.HiddenFor(m => m.VideoType)
+    @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+    @Html.HiddenFor(m => m.CompletionType)
+    <input id="WebApiURL" value="@WebApiURL" hidden />
+
+    <div class="row">
+
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div id="page-nav" class="sidebar-left page-nav">
+                <div data-perfect-scrollbar class="ps">
+                    <div class="page-section">
+                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                        <ul class="nav page-nav__menu">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">@Model.ContentType</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <div class="form-container">
+
+                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
+                        <div class="">
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <input type='file' name='fileupload' id='fileupload' style='display: none;'>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
+                        <div class="">
+                            @Html.TextAreaFor(model => model.Description, new { @class = "summernote form-control editor" })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <hr />
+
+                    @Html.Partial($"_edit{Model.ContentType.ToString()}", Model)
+
+                </div>
+            </div>
+
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+
+                <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+                   title="Back">@Language.General.ButtonBack</a>
+
+                <button type="submit" class="btn btn-default pull-right  ml-2" id="btnSaveAndView" name="SubmitType" value="SaveAndView">
+                    <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save And View
+                </button>
+
+                <button type="submit" class="btn btn-default pull-right" id="btnSave" name="SubmitType" value="Save">
+                    <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save
+                </button>
+            </div>
+        </div>
+    </div>
+    @* } *@
+</form>
+
+<style>
+    /*.questionWrapper,
+    .timerWrapper {
+        display: none;
+    }*/
+
+    .form-container {
+        max-width: none !important;
+    }
+</style>
+
+@section ContentScript {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <link href="~/css/elearn.css" rel="stylesheet" />
+    <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
+    <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+    <script src="~/js/elearn.js"></script>
+    <script src="~/js/elearn-course.js"></script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+
+    <script>
+        var uploadImgUrl = '@(BaseURL)/eLearning/File/UploadFile';
+        var getImgUrl = '@(BaseURL)/eLearning/File/GetImg/?fileName=';
+
+            //var uploadDocUrl = '@(WebApiURL)/eLearning/File/';
+        var uploadDocUrl = '@(BaseURL)/eLearning/File/UploadFile';
+        var convertFileUrl = '@(BaseURL)eLearning/File/DocToHTML';
+
+
+        $(document).ready(function () {
+
+
+            $('.loading').hide();
+
+            //$('#Description').summernote({
+            //    placeholder: 'Type your description of the content here.',
+            //    tabsize: 2,
+            //    height: 200,
+            //    toolbar: [
+            //        ['style', ['bold', 'italic', 'underline', 'clear']],
+            //        ['font', ['strikethrough', 'superscript', 'subscript']],
+            //        ['fontsize', ['fontsize']],
+            //        ['color', ['color']],
+            //        ['para', ['ul', 'ol', 'paragraph']],
+            //        ['height', ['height']],
+            //        ['insert', ['link', 'picture']],
+            //    ],
+            //    codeviewFilter: false,
+            //    codeviewIframeFilter: true,
+            //    callbacks: {
+            //        onFocus: function () {
+            //            currentElement = "body";
+            //        },
+            //        onImageUpload: function (files, editor, $editable) {
+            //            uploadFile(uploadImgUrl, files[0], function (message) {
+
+            //                var remoteUrl = getImgUrl +  message.FileNameOnStorage;
+
+            //                $('#Description').summernote('insertImage', remoteUrl, message.FileName);
+
+            //            });
+            //        }
+            //    }
+            //});
+
+            //  $('#Text').summernote({
+            //    placeholder: 'Type your text here.',
+            //    tabsize: 2,
+            //    height: 500,
+            //    toolbar: [
+            //        ['style', ['bold', 'italic', 'underline', 'clear']],
+            //        ['font', ['strikethrough', 'superscript', 'subscript']],
+            //        ['fontsize', ['fontsize']],
+            //        ['color', ['color']],
+            //        ['para', ['ul', 'ol', 'paragraph']],
+            //        ['height', ['height']],
+            //        ['insert', ['link', 'picture']],
+            //    ],
+            //    codeviewFilter: false,
+            //    codeviewIframeFilter: true,
+            //    callbacks: {
+            //        onFocus: function () {
+            //            currentElement = "body";
+            //        },
+            //        onImageUpload: function (files, editor, $editable) {
+            //            uploadFile(uploadImgUrl, files[0], function (message) {
+
+            //                var remoteUrl = getImgUrl +  message.FileNameOnStorage;
+
+            //                $('#Text').summernote('insertImage', remoteUrl, message.FileName);
+
+            //            });
+            //        }
+            //    }
+            //});
+
+            tinymce.init({
+                selector: '.editor',
+
+                plugins: 'print preview fullpage paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+                imagetools_cors_hosts: ['picsum.photos'],
+                menubar: 'file edit view insert format tools table help',
+                toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview print | insertfile image media link anchor codesample | ltr rtl  ',
+                toolbar_sticky: true,
+                autosave_ask_before_unload: true,
+                autosave_interval: "30s",
+                autosave_prefix: "{path}{query}-{id}-",
+                autosave_restore_when_empty: false,
+                autosave_retention: "2m",
+                image_advtab: true,
+                branding: false,
+
+                importcss_append: true,
+                file_picker_types: 'file image media',
+                file_picker_callback: function (callback, value, meta) {
+                    /* Provide file and text for the link dialog */
+                    if (meta.filetype === 'file') {
+                        callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
+                    }
+
+                    /* Provide image and alt text for the image dialog */
+                    if (meta.filetype === 'image') {
+                        callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+                    }
+
+                    /* Provide alternative source and posted for the media dialog */
+                    if (meta.filetype === 'media') {
+                        // callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
+
+                        // Trigger click on file element
+                        jQuery("#fileupload").trigger("click");
+                        $("#fileupload").unbind('change');
+                        // File selection
+                        jQuery("#fileupload").on("change", function () {
+                            var file = this.files[0];
+                            var reader = new FileReader();
+
+                            // FormData
+                            var fd = new FormData();
+                            var files = file;
+                            fd.append("file", files);
+                            fd.append('filetype', meta.filetype);
+
+                            var filename = "";
+
+                            // AJAX
+                            var url = '@BaseURL/elearning/File/EditorUpload';
+                            //console.log('url - ', url);
+
+                            jQuery.ajax({
+                                url: url,
+                                type: "post",
+                                data: fd,
+                                contentType: false,
+                                processData: false,
+                                async: false,
+                                success: function (response) {
+                                    //console.log('filename-', response);
+                                    filename = response.location;
+                                }
+                            });
+
+                            reader.onload = function (e) {
+                                callback(filename);
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    }
+                },
+
+                width: 800,
+                height: 800,
+                image_caption: true,
+                quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+                noneditable_noneditable_class: "mceNonEditable",
+                toolbar_drawer: 'sliding',
+                contextmenu: "link image imagetools table",
+                images_upload_url: '@BaseURL/elearning/File/EditorUpload',
+                images_upload_base_path: '@BaseURL/eLearning',
+                images_upload_credentials: true,
+                relative_urls: false,
+                remove_script_host: false,
+                convert_urls: true,
+
+                init_instance_callback: function (editor) {
+
+                    editor.on('BeforeSetContent', function (e) {
+                        //console.log(e.content);
+
+                        if (e.content.indexOf("video ") > 0) {
+                            if (e.content.indexOf(".pdf") > 0) {
+                                e.content = e.content.replace("<video", "<div");
+
+                                var width = e.content.match("width=\"(.*)\" height");
+                                var height = e.content.match("height=\"(.*)\" controls");
+                                //console.log('width - ', width, ' height - ', height);
+
+                                e.content = e.content.replace("controls=\"controls\"", "");
+
+                                e.content = e.content.replace("<source", "<object");
+                                e.content = e.content.replace("src=", "data=");
+                                //console.log('middle - ', e.content);
+
+                                e.content = e.content.replace("</video", "</div");
+                                e.content = e.content.replace("/>", "type=\"application/pdf\" width=\"" + width[1] + "\" height=\"" + height[1] + "\"  ></object>");
+                            }
+
+                            //console.log('after - ', e.content);
+                        }
+                    });
+                },
+            });
+
+            var completionType = $('#CompletionType').val();
+
+            if (completionType == "AnswerQuestion") {
+                $("#answerQuestion").prop("checked", true);
+                $('#Timer').prop("disabled", true);
+                $('#ContentQuestionId').prop("disabled", false);
+            }
+
+            if (completionType == "ClickButton") {
+                $("#clickButton").prop("checked", true);
+                $('#Timer').prop("disabled", true);
+                $('#ContentQuestionId').prop("disabled", true);
+            }
+
+
+            if (completionType == "Timer") {
+                $("#timer1").prop("checked", true);
+                $('#Timer').prop("disabled", false);
+                $('#ContentQuestionId').prop("disabled", true);
+            }
+
+            var contentType = $('#ContentType').val();
+            if (contentType == 'Video') {
+                if ($('#VideoType').val() == "ExternalVideo") {
+
+                    $("#video1").prop("checked", true);
+                    $('#Url').prop("disabled", false);
+                    $('#File').prop("disabled", true);
+
+                }
+
+                if ($('#VideoType').val() == "UploadVideo") {
+
+                    $("#video2").prop("checked", true);
+                    $('#File').prop("disabled", false);
+                    $('#Url').prop("disabled", true);
+
+                }
+            }
+
+            //console.log($('#AudioType').val());
+            if (contentType == 'Audio') {
+                if ($('#AudioType').val() == "SavedAudio") {
+                    $("#audio1").prop("checked", true);
+                    $('#File').prop("disabled", true);
+                    $("#ContentFileId").prop("disabled", false);
+                }
+
+                if ($('#AudioType').val() == "UploadAudio") {
+
+                    $("#audio2").prop("checked", true);
+                    $("#ContentFileId").prop("disabled", true);
+                    $('#File').prop("disabled", false);
+
+                }
+            }
+
+
+            //console.log($('#DocumentType').val());
+            if (contentType == 'Document') {
+                if ($('#DocumentType').val() == "SavedDocument") {
+                    $("#document1").prop("checked", true);
+                    $('#File').prop("disabled", true);
+                    $("#ContentFileId").prop("disabled", false);
+                    $('#Url').prop("disabled", true);
+
+                    document.getElementById("otherDoc").style.display = "block";
+                    document.getElementById("slideShareDoc").style.display = "none";
+                }
+
+                if ($('#DocumentType').val() == "UploadDocument") {
+
+                    $("#document2").prop("checked", true);
+                    $('#File').prop("disabled", false);
+                    $("#ContentFileId").prop("disabled", true);
+                    $('#Url').prop("disabled", true);
+
+                    document.getElementById("otherDoc").style.display = "block";
+                    document.getElementById("slideShareDoc").style.display = "none";
+
+                }
+                if ($('#DocumentType').val() == "UseSlideshare") {
+
+                    $("#document3").prop("checked", true);
+                    $('#File').prop("disabled", true);
+                    $("#ContentFileId").prop("disabled", true);
+                    $('#Url').prop("disabled", false);
+
+                    document.getElementById("otherDoc").style.display = "none";
+                    document.getElementById("slideShareDoc").style.display = "block";
+
+                }
+            }
+
+        });
+    </script>
+
 }

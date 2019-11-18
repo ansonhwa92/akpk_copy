@@ -156,11 +156,70 @@
   <data name="ClickButton" xml:space="preserve">
     <value>Press complete button</value>
   </data>
+  <data name="CourseStatusAmendment" xml:space="preserve">
+    <value>Amendment</value>
+  </data>
+  <data name="CourseStatusApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="CourseStatusDraft" xml:space="preserve">
+    <value>Draft</value>
+    <comment>CourseStatus</comment>
+  </data>
+  <data name="CourseStatusFirstApproval" xml:space="preserve">
+    <value>First Approver Approved</value>
+  </data>
+  <data name="CourseStatusFirstApproverApproved" xml:space="preserve">
+    <value>Pending Approval</value>
+  </data>
+  <data name="CourseStatusFirstApproverRejected" xml:space="preserve">
+    <value>Require Amendment</value>
+  </data>
+  <data name="CourseStatusPublished" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="CourseStatusSecondApproval" xml:space="preserve">
+    <value>Second Approver Approved</value>
+  </data>
+  <data name="CourseStatusSecondApproverApproved" xml:space="preserve">
+    <value>Pending Approval</value>
+  </data>
+  <data name="CourseStatusSecondApproverRejected" xml:space="preserve">
+    <value>Require Amendment</value>
+  </data>
+  <data name="CourseStatusSubmitted" xml:space="preserve">
+    <value>Pending Verification</value>
+  </data>
+  <data name="CourseStatusThirdApproval" xml:space="preserve">
+    <value>Third Approver Approved</value>
+  </data>
+  <data name="CourseStatusThirdApproverApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="CourseStatusThirdApproverRejected" xml:space="preserve">
+    <value>Require Amendment</value>
+  </data>
+  <data name="CourseStatusTrial" xml:space="preserve">
+    <value>Trial</value>
+    <comment>CourseStatus</comment>
+  </data>
+  <data name="CourseStatusVerified" xml:space="preserve">
+    <value>Pending Approval</value>
+  </data>
+  <data name="CourseStatusVerifierApproval" xml:space="preserve">
+    <value>Verifier Approved</value>
+  </data>
+  <data name="CourseStatusVerifierRejected" xml:space="preserve">
+    <value>Require Amendment</value>
+  </data>
   <data name="Document" xml:space="preserve">
     <value>Document</value>
   </data>
   <data name="ExternalVideo" xml:space="preserve">
     <value>You Tube Video</value>
+  </data>
+  <data name="Flash" xml:space="preserve">
+    <value>Flash</value>
   </data>
   <data name="IFrame" xml:space="preserve">
     <value>IFrame</value>
@@ -168,25 +227,46 @@
   <data name="Instructor" xml:space="preserve">
     <value>Instructor</value>
   </data>
+  <data name="Pdf" xml:space="preserve">
+    <value>Pdf</value>
+  </data>
+  <data name="PopUp" xml:space="preserve">
+    <value>Pop up window</value>
+  </data>
+  <data name="Powepoint" xml:space="preserve">
+    <value>Presentation</value>
+  </data>
   <data name="Presentation" xml:space="preserve">
     <value>Upload a presentation</value>
   </data>
   <data name="RichText" xml:space="preserve">
     <value>Rich Text</value>
   </data>
+  <data name="SavedAudio" xml:space="preserve">
+    <value>Audio from course files</value>
+  </data>
+  <data name="SavedDocument" xml:space="preserve">
+    <value>Use a document from your files</value>
+  </data>
   <data name="Test" xml:space="preserve">
     <value>Test/Quiz</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>After a period of time</value>
+    <value>After a period of time (in seconds)</value>
+  </data>
+  <data name="UploadAudio" xml:space="preserve">
+    <value>Upload an audio file</value>
+  </data>
+  <data name="UploadDocument" xml:space="preserve">
+    <value>Upload a document</value>
   </data>
   <data name="UploadVideo" xml:space="preserve">
     <value>Upload a video</value>
   </data>
+  <data name="UseSlideshare" xml:space="preserve">
+    <value>Use Slideshare</value>
+  </data>
   <data name="Video" xml:space="preserve">
     <value>Video</value>
-  </data>
-  <data name="WebLink" xml:space="preserve">
-    <value>Web Link</value>
   </data>
 </root>

@@ -1,0 +1,242 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CreateOrEditCourseModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Manage Course";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    var name = Model.Title;
+
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/eLearning/Courses" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="#">Courses</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Course : @name</h1>
+                    <div class="header-text">Course details.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="d-flex align-items-center">
+        <div class="title">
+            <span class="title">
+                @name
+            </span>
+        </div>
+</div>
+<hr>
+
+<form id="form" method="post">
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.IntroImageFileName)
+    @Html.HiddenFor(m => m.EnrollmentCode)
+
+    <div class="row">
+
+        @*@Html.Partial("_contentSidebar")*@
+
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <div class="form-container tab-content">
+
+                    <div class="row">
+                        @*<div class="col-sm-9">
+                            <span class="title">
+                                @name
+                            </span>
+                        </div>*@
+                        <div class="col-sm-12">
+                            @if (Model.Status != CourseStatus.Published)
+                            {
+                                <div class="card text-white bg-dark p-2 float-right border-dark">@Model.Status</div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="tab-pane active" id="course-details">
+                        <div class="mb-4 mt-2 mr-auto">
+                            <div class="boxed">
+                                <img class="introImage" src="" height="300" width="100%" alt="" />
+                            </div>
+                        </div>
+
+                        <div class="subtitle">
+                            ABOUT
+                        </div>
+
+                        <div>
+                            <div class="descbox">
+                                @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
+                            </div>
+                        </div>
+
+                        <div class="subtitle">
+                            What you will learn
+                        </div>
+
+                        <div>
+                            <div class="objbox">
+                                @Html.Raw(HttpUtility.HtmlDecode(Model.Objectives))
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="row">
+                                @if (Model.Status == CourseStatus.Published && !Model.IsUserEnrolled)
+                                {
+                                    <button class="btn btn-secondary m-2" onclick="checkLogin()">Enroll</button>
+                                 }
+                                <!-- allow to start course in trial or in published but already enrolled -->
+                                @if (Model.Status == CourseStatus.Trial ||
+                                            (Model.Status == CourseStatus.Published && Model.IsUserEnrolled))
+                                {
+                                    <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">Start the course</a>
+                                }
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="subtitle">
+                            MODULES
+                        </div>
+
+                        <!----START MODULES -->
+                        <div id="draggable-module">
+                            @{
+
+                                var modules = Model.Modules.OrderBy(x => x.Order).ToList();
+
+                                for (int i = 0; i < modules.Count(); i++)
+                                {
+                                    var module = modules[i];
+
+                                    <div class="module-box" data-id="@module.Order" onclick="openModule(@module.Id)">
+                                        <div class="row  mb-2">
+                                            <div class="col-sm-2">
+                                                <span class="moduleTitle">MODULE @i</span>
+                                            </div>
+
+                                            <div class="col-sm-10">
+                                                <span class="moduleTitle">@module.Title</span>
+
+                                                @*<a href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = module.Id })"
+                                                    data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>*@
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div>
+                                                @Html.Raw(@module.Description)
+
+                                                <div class="row pl-2">
+                                                    <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
+                                                    <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
+                                                    <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="divider"></div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <!----END MODULES -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @Html.Partial("_detailsSidebar")
+    </div>
+</form>
+
+<style>
+    .form-container {
+        max-width: 100% !important
+    }
+</style>
+
+@section ContentScript {
+
+    <link href="~/css/elearn.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery.truncate.js"></script>
+
+    <script src="~/js/elearn.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            var imgFileName = $('#IntroImageFileName').val();
+
+            if ($.trim(imgFileName) == "") {
+
+                var defaultImgUrl = '@(BaseURL)/Content/logo-akpk.svg';
+                $(".introImage").attr('src', defaultImgUrl);
+            }
+            else {
+                var defaultImgUrl = '@(BaseURL)/File/GetImg?fileName=' + imgFileName;
+                $(".introImage").attr('src', defaultImgUrl);
+            }
+
+        });
+
+        function openModule(moduleId) {
+            var url = '@Url.Action("View", "CourseModules", new { area = "eLearning" })?id=' + moduleId;
+            window.location = url;
+        }
+
+        function checkLogin() {
+
+            var isAuthenticated = '@CurrentUser.IsAuthenticated()';
+
+            console.log('isAuthenticated=', isAuthenticated);
+
+            if (isAuthenticated == 'True') {
+                var form = $("#form");
+                var enrollmentCode = '@Model.EnrollmentCode';
+
+                if ($.trim(enrollmentCode) != '') {
+                    form.attr('action', "@BaseURL/eLearning/CourseEnrollments/EnrollAsync?courseId=@Model.Id" + "&enrollmentCode=" + enrollmentCode);
+                }
+                else {
+                    form.attr('action', "@BaseURL/eLearning/CourseEnrollments/EnrollAsync?courseId=@Model.Id");
+                }
+                form.submit();
+            }
+            else {
+                var returnUrl = '@BaseURL/eLearning/Courses/View?id=@Model.Id';
+                var enrollmentCode = '@Model.EnrollmentCode';
+
+                if ($.trim(enrollmentCode) != '')
+                    returnUrl = returnUrl + '?enrollmentCode=' + enrollmentCode;
+
+                console.log('returnurl = ', returnUrl);
+
+                var url = '@Url.Action("LoginAndReturn", "Auth", new { area = "" })&returnurl=' + returnUrl;
+                window.location = url;
+            }
+        }
+    </script>
+}

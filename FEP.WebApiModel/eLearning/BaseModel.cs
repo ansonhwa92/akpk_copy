@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FEP.Model.eLearning;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,10 @@ namespace FEP.WebApiModel.eLearning
     public class BaseModel
     {
         public int Id { get; set; }
-        public int CreatedBy { get; set; }
+        public int CreatedBy { get; set; }        
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
     }
+
+ 
 }

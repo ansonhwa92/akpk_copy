@@ -50,12 +50,6 @@
                 <!-- <div class="header-col-right float-right mt-5"><a href="#" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="icon ion-ios-arrow-round-back">&nbsp;</i></span> Back</a></div> -->
                 <div class="header-col-left">
                     @RenderSection("Nav", false)
-                    <!-- Trigger page title here from last child breadcrumb item -->
-                    <h1 class="page-title"></h1>
-                    <!-- end -->
-                    <div class="header-text">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.Lorem ipsum dolor sit amet.
-                    </div>
                 </div>
             </div>
         </div>
@@ -63,7 +57,15 @@
 
     @RenderSection("Preloader", false)
 
-    @Html.Partial("_HeaderLandingPage")
+    <!--firus-->
+    @if (CurrentUser.IsAuthenticated())
+    {
+        @Html.Partial("_Header")
+    }
+    else
+    {
+        @Html.Partial("_HeaderLandingPage")
+    }
 
     @RenderBody()
 

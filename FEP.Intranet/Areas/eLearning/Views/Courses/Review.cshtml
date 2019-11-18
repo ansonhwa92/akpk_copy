@@ -152,7 +152,7 @@
                                             <!-- Default inline 1-->
                                             <div class="free-radio row pl-4 pb-2">
                                                 <div class="col-sm-2">
-                                                    <input type="radio" class="custom-control-input free  form-control " checked="checked" value="@Model.IsFree"
+                                                    <input type="radio" class="custom-control-input free form-control " checked="checked" value="@Model.IsFree"
                                                            id="free" name="IsFree" readonly>
                                                     <label class="custom-control-label control-label" for="free">@Language.eLearning.Course.Free</label>
                                                 </div>
@@ -306,21 +306,21 @@
 
 
 
-        $('.free-radio input[type="radio"]').change(function () {
+        //$('.free-radio input[type="radio"]').change(function () {
 
-            if ($(this).hasClass("free")) {
-                $("#free").prop("checked", true);
-                $('#Price').prop("disabled", true);
+        //    if ($(this).hasClass("free")) {
+        //        $("#free").prop("checked", true);
+        //        $('#Price').prop("disabled", true);
 
-                ($('input[name=IsFree]').val(true));
+        //        ($('input[name=IsFree]').val(true));
 
-            } else {
+        //    } else {
 
-                $("#paid").prop("checked", true);
-                $('#Price').prop("disabled", false);
+        //        $("#paid").prop("checked", true);
+        //        $('#Price').prop("disabled", false);
 
-                ($('input[name=IsFree]').val(false));
-            }
-        });
+        //        ($('input[name=IsFree]').val(false));
+        //    }
+        //});
     </script>
 }

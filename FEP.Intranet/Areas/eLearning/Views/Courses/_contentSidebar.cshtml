@@ -20,7 +20,7 @@
                             <a href="@Url.Action("Trainers", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Instructors</a>
                         </li>
                         <li class="nav-item">
-                            <a href="@Url.Action("Users", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Users And Progress</a>
+                            <a href="@Url.Action("UsersProgress", "CourseEnrollments", new { area = "eLearning", id = @Model.Id })" class="nav-link">Users And Progress</a>
                         </li>
                         <li class="nav-item">
                             <a href="@Url.Action("AssignCertificate", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Certificate</a>

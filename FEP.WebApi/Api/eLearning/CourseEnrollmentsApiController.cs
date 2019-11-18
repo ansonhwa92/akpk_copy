@@ -3,6 +3,7 @@ using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -159,6 +160,204 @@ namespace FEP.WebApi.Api.eLearning
                 data = data
             });
         }
+
+        /// For use in index page, to list all the courses but with some fields only
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/eLearning/CourseEnrollments/GetUsers")]
+        [HttpPost]
+        public IHttpActionResult GetUsers(FilterCourseEnrollmentModel request)
+        {
+            var query = db.Enrollments
+                .Include(x => x.Group)
+                .Include(x => x.Learner.User)
+                .Include(x => x.CourseEvent)
+                .Where(x => x.CourseId == request.CourseId);
+
+            if (!String.IsNullOrEmpty(request.StudentName))
+                query = query.Where(x => x.Learner.User.Name.ToLower().Contains(request.StudentName.ToLower()));
+
+            if (!String.IsNullOrEmpty(request.SessionName))
+                query = query.Where(x =>x.CourseEvent.Name.ToLower().Contains(request.SessionName.ToLower()));
+
+            var totalCount = query.Count();
+
+            //quick search
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+                query = query.Where(x => x.Learner.User.Name.ToLower().Contains(value)
+               || x.CourseEvent.Name.Contains(value)
+               || x.PercentageCompleted.ToString().Contains(value)
+               //|| x.Status.ToString().Contains(value)
+               );
+            }
+
+            var filteredCount = query.Count();
+
+            if (filteredCount > 0)
+            {
+                // TODO : Add also course progress, PercentageCompleted,
+
+                //order
+                if (request.order != null)
+                {
+                    string sortBy = request.columns[request.order[0].column].data;
+                    bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                    switch (sortBy)
+                    {
+                        case "StudentName":
+
+                            if (sortAscending)
+                            {
+                                query = query.OrderBy(o => o.Learner.User.Name);
+                            }
+                            else
+                            {
+                                query = query.OrderByDescending(o => o.Learner.User.Name);
+                            }
+
+                            break;
+
+                        case "DateEnrolled":
+
+                            if (sortAscending)
+                            {
+                                query = query.OrderBy(o => o.EnrolledDate);
+                            }
+                            else
+                            {
+                                query = query.OrderByDescending(o => o.EnrolledDate);
+                            }
+
+                            break;
+
+                        case "Status":
+
+                            if (sortAscending)
+                            {
+                                query = query.OrderBy(o => o.Status);
+                            }
+                            else
+                            {
+                                query = query.OrderByDescending(o => o.Status);
+                            }
+
+                            break;
+
+                        case "PercentageCompleted":
+
+                            if (sortAscending)
+                            {
+                                query = query.OrderBy(o => o.PercentageCompleted);
+                            }
+                            else
+                            {
+                                query = query.OrderByDescending(o => o.PercentageCompleted);
+                            }
+
+                            break;
+
+                        default:
+                            query = query.OrderBy(o => o.Learner.User.Name);
+                            break;
+                    }
+                }
+                else
+                {
+                    query = query.OrderBy(o => o.Learner.User.Name);
+                }
+            }
+
+            var finalResult = query.ToList();
+
+            var data = finalResult.Skip(request.start).Take(request.length)
+               .Select(x => new ReturnBriefCourseEnrollmentModel
+               {
+                   Id = x.Id,
+                   CourseEventId = x.CourseEventId,
+                   SessionName = db.CourseEvents.Find(x.CourseEventId).Name,
+                   StudentName = String.IsNullOrEmpty(x.Learner.User.Name) ? "" : x.Learner.User.Name,
+                   DateEnrolled = x.EnrolledDate.ToString(),
+                   Status = x.Status,
+                   PercentageCompleted = x.PercentageCompleted.ToString(),
+                   CompletionDate = x.CompletionDate.ToString()
+               }).ToArray();
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data
+            });
+        }
+
+        [Route("api/eLearning/CourseEnrollments/GetUserDetails")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetUserDetails (int id)
+        {
+            //var entity = db.Enrollments
+            //    .Include(x => x.Learner)
+            //    .Include(x => x.Course)
+            //    .Include(x => x.CourseEvent)
+            //    .Include(x => x.CourseProgress)
+            //    .Include(x => x.EnrollmentHistories)
+            //    .FirstOrDefault(x => x.Id == id);
+
+            //if (entity == null)
+            //{
+            //    return NotFound();
+            //}
+
+        var user = await db.Enrollments
+            .Include(x => x.Learner)
+            .Include(x => x.Course)
+            .Include(x => x.CourseEvent)
+            .Include(x => x.CourseProgress)
+            .Include(x => x.EnrollmentHistories)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+            var entity = new UserCourseEnrollmentModel
+            {
+                Id = user.Id,
+                StudentName = String.IsNullOrEmpty(user.Learner.User.Name) ? "" : user.Learner.User.Name,
+                SessionName = db.CourseEvents.Find(user.CourseEventId).Name,
+                CourseEventId = user.CourseEventId,
+                CourseTitle = user.Course.Title,
+                DateEnrolled = user.EnrolledDate.ToString(),
+                Status = user.Status,
+                CoursePercentageCompleted = user.PercentageCompleted.ToString(),
+                CompletionDate = user.CompletionDate.ToString(),
+                //CourseProgress = user.CourseProgress,
+                EnrollmentHistory = user.EnrollmentHistories
+            };
+
+            var courseProgress = db.CourseProgress.Where(x => x.EnrollmentId == entity.Id).ToList();
+
+            var progress = new List<ReturnCourseProgressModel>();
+
+            foreach (var item in courseProgress)
+            {
+                var module = db.CourseModules.Find(item.ModuleId);
+
+                progress.Add(new ReturnCourseProgressModel
+                {
+                    EnrollmentId = item.EnrollmentId,
+                    ModuleName = module.Title,
+                    IsCompleted = item.IsCompleted,
+                    Score = item.Score,
+                });
+            }
+            entity.CourseProgress = progress;
+
+            return Ok(entity);
+
+        }
+
+
+
 
         /// For use in view content, when user wants to ernoll
         /// </summary>

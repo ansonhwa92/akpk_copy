@@ -1,8 +1,11 @@
-﻿using FEP.Helper;
+﻿using AutoMapper;
+using FEP.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
 using System;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -11,11 +14,25 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     public static class CourseEnrollmentApiUrl
     {
         public const string EnrollAsync = "eLearning/CourseEnrollments/EnrollAsync";
+        public const string UserDetails = "eLearning/CourseEnrollments/GetUserDetails";
+
     }
 
     public class CourseEnrollmentsController : FEPController
     {
         private readonly DbEntities db = new DbEntities();
+        private readonly IMapper _mapper;
+
+        public CourseEnrollmentsController()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<UserCourseEnrollmentModel, Enrollment>();
+
+            });
+
+            _mapper = config.CreateMapper();
+        }
 
         /// <summary>
         /// View the course Event and list of enrolled users
@@ -36,6 +53,56 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             };
 
             return View(model);
+        }
+
+        [Authorize]
+        public ActionResult UsersProgress(int? id)
+        {
+            var model = new ReturnListCourseEnrollmentModel
+            {
+                CourseEnrollment = new ReturnBriefCourseEnrollmentModel(),
+                Filters = new FilterCourseEnrollmentModel
+                {
+                    CourseId = id.Value,
+                },
+            };
+
+            return View(model);
+        }
+
+        [Authorize]
+        public async Task<ActionResult> UserDetails(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var user = await TryGetCourseUserDetails(id.Value);
+
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "No such course.";
+
+                return RedirectToAction("Index", "Courses");
+            }
+
+            var model = _mapper.Map<UserCourseEnrollmentModel>(user);
+
+            return View(model);
+        }
+
+        //[HasAccess(UserAccess.CourseCreate)]
+        public static async Task<UserCourseEnrollmentModel> TryGetCourseUserDetails(int id)
+        {
+            var response = await WepApiMethod.SendApiAsync<UserCourseEnrollmentModel>(HttpVerbs.Get, CourseEnrollmentApiUrl.UserDetails + $"?id={id}");
+
+            if (response.isSuccess)
+            {
+                return response.Data;
+            }
+
+            return null;
         }
 
         [Authorize]

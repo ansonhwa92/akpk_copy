@@ -58,6 +58,10 @@
     <Compile Include="Migrations\201911060757247_InitialDB.designer.cs">
       <DependentUpon>201911060757247_InitialDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911140729436_addCourseEvent.cs" />
+    <Compile Include="Migrations\201911140729436_addCourseEvent.designer.cs">
+      <DependentUpon>201911140729436_addCourseEvent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />
@@ -123,6 +127,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201911060757247_InitialDB.resx">
       <DependentUpon>201911060757247_InitialDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911140729436_addCourseEvent.resx">
+      <DependentUpon>201911140729436_addCourseEvent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,6 +9,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eLearning.Controllers
@@ -207,9 +208,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             var model = _mapper.Map<CreateOrEditCourseModel>(course);
 
+            model.Description = HttpUtility.HtmlDecode(model.Description);
+            model.Objectives = HttpUtility.HtmlDecode(model.Objectives);
+
             ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", course.CategoryId);
 
-            return View(course);
+            return View(model);
         }
 
         [HttpPost]
@@ -648,5 +652,20 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             return courses;
         }
+
+        public ActionResult Users(int courseId)
+        {
+            var model = new ReturnListCourseEnrollmentModel
+            {
+                CourseEnrollment = new ReturnBriefCourseEnrollmentModel(),
+                Filters = new FilterCourseEnrollmentModel
+                {
+                    CourseId = courseId
+                },
+            };
+
+            return View(model);
+        }
+
     }
 }

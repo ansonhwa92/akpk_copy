@@ -208,10 +208,10 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             var model = _mapper.Map<CreateOrEditCourseModel>(course);
 
-            model.Description = HttpUtility.HtmlDecode(model.Description);
-            model.Objectives = HttpUtility.HtmlDecode(model.Objectives);
+            //model.Description = HttpUtility.HtmlDecode(model.Description);
+            //model.Objectives = HttpUtility.HtmlDecode(model.Objectives);
 
-            ViewBag.CategoryId = new SelectList(db.PublicationCategory, "Id", "Name", course.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name", course.CategoryId);
 
             return View(model);
         }

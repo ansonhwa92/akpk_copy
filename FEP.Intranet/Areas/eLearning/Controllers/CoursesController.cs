@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using FEP.Helper;
+using FEP.Intranet.Areas.eLearning.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
+using FEP.WebApiModel.SLAReminder;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -257,6 +259,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Misleading function Name. This is actually for adding trainer to the course.
+        /// </summary>
+        /// <param name="CourseId"></param>
+        /// <param name="Ids"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> AddUser(int CourseId, int[] Ids)
         {
@@ -272,6 +280,31 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 TempData["SuccessMessage"] = "User successfully assigned to role trainer/instructor.";
                 await LogActivity(Modules.Learning, "Assign user to trainer", model);
+
+                // Notification
+                var notifyModel = new NotificationModel
+                {
+                    Id = CourseId,
+                    Type = typeof(Course),
+                    NotificationType = NotificationType.Course_Assigned_To_Facilitator,
+                    NotificationCategory = NotificationCategory.Learning,
+                    StartNotificationDate = DateTime.Now,
+                    ParameterListToSend = new ParameterListToSend
+                    {
+                        Link = this.Url.AbsoluteAction("View", "Courses", new { id = CourseId }),
+                    },
+                    ReceiverType = ReceiverType.UserIds,
+                    Receivers = Ids.ToList(),
+                    IsNeedRemainder = false,
+                };
+
+                var emailResponse = await EmaiHelper.SendNotification(notifyModel);
+
+                if (emailResponse == null || String.IsNullOrEmpty(emailResponse.Status) ||
+                    !emailResponse.Status.Equals("Success", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    await LogError(Modules.Learning, $"Error Sending Email For Facilitator When Assigned to A Course. Course Id : {CourseId}");
+                }
             }
             else
             {

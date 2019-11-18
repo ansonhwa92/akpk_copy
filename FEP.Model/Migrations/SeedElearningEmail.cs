@@ -20,7 +20,9 @@ namespace FEP.Model.Migrations
                NotificationType.Course_Amendment,
                NotificationType.Course_Invitation,
                NotificationType.Approve_Courses_Published_Change,
-               NotificationType.Approve_Courses_Published_Withdraw
+               NotificationType.Approve_Courses_Published_Withdraw,
+               NotificationType.Course_Assigned_To_Facilitator,
+               NotificationType.Course_Student_Enrolled
             };
 
             foreach (var item in elearnTemplates)
@@ -63,6 +65,16 @@ namespace FEP.Model.Migrations
                     NotificationType = item,
                     TemplateParameterType = "CourseApproval",
                 });
+                db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType }, new TemplateParameters
+                {
+                    NotificationType = item,
+                    TemplateParameterType = "LearnerName",
+                });
+                db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType }, new TemplateParameters
+                {
+                    NotificationType = item,
+                    TemplateParameterType = "ReceiverFullName",
+                });
             }
             db.SaveChanges();
         }
@@ -85,7 +97,7 @@ namespace FEP.Model.Migrations
                             TemplateRefNo = "T" + ((int)notifyType).ToString(),
                             enableEmail = true,
                             TemplateSubject = "Verify A New Course : [#CourseTitle]",
-                            TemplateMessage = @"Dear [#],<br /> <br />
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
                                                 <p>A course [#CourseTitle] requires verification.</p><br />
                                                 Please click <a href='[#Link]'>here</a> to verify.<br />
                                                 Thank you.",
@@ -112,7 +124,7 @@ namespace FEP.Model.Migrations
                             TemplateRefNo = "T" + ((int)notifyType).ToString(),
                             enableEmail = true,
                             TemplateSubject = "Approval needed for Course : [#CourseTitle]",
-                            TemplateMessage = @"Dear [#UserFullName],<br /> <br />
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
                                                 <p>A course [#CourseTitle] requires Approval.</p><br />
                                                 Please  click <a href='[#Link]'>here</a> to approve.<br />
                                                 Thank you.",
@@ -137,7 +149,7 @@ namespace FEP.Model.Migrations
                             TemplateRefNo = "T" + ((int)notifyType).ToString(),
                             enableEmail = true,
                             TemplateSubject = "Course  [#CourseTitle] has been Approved",
-                            TemplateMessage = @"Dear [#UserFullName],<br /> <br />
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
                                                 <p>The course [#CourseTitle] has been approved.</p><br />
                                                 Please  click <a href='[#Link]'>here</a> to view.<br />
                                                 Thank you.",
@@ -162,7 +174,7 @@ namespace FEP.Model.Migrations
                             TemplateRefNo = "T" + ((int)notifyType).ToString(),
                             enableEmail = true,
                             TemplateSubject = "Course [#CourseTitle] Require Amendment",
-                            TemplateMessage = @"Dear [#UserFullName],<br /> <br />
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
                                                 <p>A course [#CourseTitle] requires ammendment.</p><br />
                                                 Please  click <a href='[#Link]'>here</a> to view.<br />
                                                 Thank you.",
@@ -187,9 +199,59 @@ namespace FEP.Model.Migrations
                             TemplateRefNo = "T" + ((int)notifyType).ToString(),
                             enableEmail = true,
                             TemplateSubject = "Invitation to Enroll To Course [#CourseTitle]",
-                            TemplateMessage = @"Dear [#UserFullName],<br /> <br />
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
                                                 <p>You are invited to enroll to the course [#CourseTitle]</p><br />
                                                 Please  click <a href='[#Link]'>here</a> to enroll.<br />
+                                                Thank you.",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
+                    case NotificationType.Course_Assigned_To_Facilitator:
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "Assigned to Course [#CourseTitle]",
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
+                                                <p>As facilitator/trainer, you have been assigned to the course [#CourseTitle].</p><br />
+                                                Please  click <a href='[#Link]'>here</a> to view the course.<br />
+                                                Thank you.",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
+                    case NotificationType.Course_Student_Enrolled:  // Send to Faclitator when a user enrolled
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "A new user enrolled to Course [#CourseTitle]",
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
+                                                <p>A new user ([#LearnerName]) has enrolled to the course [#CourseTitle].</p><br />
+                                                Please  click <a href='[#Link]'>here</a> to view the course.<br />
                                                 Thank you.",
                             enableSMSMessage = false,
                             SMSMessage = "SMS Message Template",

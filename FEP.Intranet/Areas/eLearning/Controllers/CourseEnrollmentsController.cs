@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using FEP.Helper;
+using FEP.Intranet.Areas.eLearning.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
+using FEP.WebApiModel.SLAReminder;
 using System;
 using System.Linq;
 using System.Net;
@@ -158,6 +160,32 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                     TempData["SuccessMessage"] = "You are now enrolled to this course.";
 
+                    // Notification
+                    var notifyModel = new NotificationModel
+                    {
+                        Id = courseId,
+                        Type = typeof(Course),
+                        NotificationType = NotificationType.Course_Student_Enrolled,
+                        NotificationCategory = NotificationCategory.Learning,
+                        StartNotificationDate = DateTime.Now,
+                        ParameterListToSend = new ParameterListToSend
+                        {
+                            Link = this.Url.AbsoluteAction("View", "Courses", new { id = courseId }),
+                        },
+
+                        LearnerUserId = currentUserId,
+                        ReceiverType = ReceiverType.UserIds,
+                        IsNeedRemainder = false,
+                    };
+
+                    var emailResponse = await EmaiHelper.SendNotification(notifyModel);
+
+                    if (emailResponse == null || String.IsNullOrEmpty(emailResponse.Status) ||
+                        !emailResponse.Status.Equals("Success", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        await LogError(Modules.Learning, $"Error Sending Email For Facilitator When A Student Enrolled. Course Id : {courseId}");
+                    }
+
                     return RedirectToAction("View", "Courses", new { area = "eLearning", id = courseId, enrollmentCode = enrollmentCode });
                 }
             }
@@ -170,8 +198,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return RedirectToAction("View", "Courses", new { area = "eLearning", id = courseId, enrollmentCode = enrollmentCode });
         }
 
-
-
         [HasAccess(UserAccess.CourseEdit)]
         public async Task<ActionResult> EnrollmentHistoryByCourse(int userId, int courseId)
         {
@@ -183,9 +209,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return RedirectToAction("Index", "Courses", new { area = "eLearning" });
             }
 
-            var response = await WepApiMethod.SendApiAsync<EnrollmentHistory>(HttpVerbs.Get, 
+            var response = await WepApiMethod.SendApiAsync<EnrollmentHistory>(HttpVerbs.Get,
                 CourseEnrollmentApiUrl.GetEnrollmentHistoryByCourse + $"?userId={userId}&courseId={courseId}");
-
 
             // WIP
             return RedirectToAction("View", "CourseModules", new { area = "eLearning", @id = response.Data.Id });
@@ -201,8 +226,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             //    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
             //}
         }
-
-
 
         protected override void Dispose(bool disposing)
         {

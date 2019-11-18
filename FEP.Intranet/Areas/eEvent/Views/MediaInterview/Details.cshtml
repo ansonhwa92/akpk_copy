@@ -242,7 +242,7 @@
 						<div class="form-container">
 							<div class="sub-Title my-4 d-flex align-items-center mb-4 mt-2">
 								<h4 class="color-darkblue mr-auto mb-0">Invitation Details<br><span class="small">Review invitation details below.</span></h4>
-								@if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.New || Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.RequireAmendment)
+								@if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.New || Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.RequireAmendment && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
 								{
 									<a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Edit", "MediaInterview", new { area = "eEvent", @id = Model.mediainterview.Id })"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
 								}

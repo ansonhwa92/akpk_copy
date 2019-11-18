@@ -254,7 +254,7 @@ namespace FEP.WebApi.Api.eEvent
 					CreatedByName = i.CreatedByUser.Name,
 				}).FirstOrDefault();
 
-			if (media.MediaStatus != MediaStatus.ApprovedByApprover3 && media.MediaStatus != MediaStatus.RequireAmendment)
+			if (media.MediaStatus != MediaStatus.ApprovedByApprover3 && media.MediaStatus != MediaStatus.RequireAmendment && media.MediaStatus != MediaStatus.RepAvailable && media.MediaStatus != MediaStatus.RepNotAvailable)
 			{
 				var approval = db.EventMediaInterviewApproval.Where(pa => pa.MediaId == id && pa.Status == EventApprovalStatus.None).Select(s => new ApprovalModel
 				{
@@ -795,7 +795,8 @@ namespace FEP.WebApi.Api.eEvent
 		[Route("api/eEvent/MediaInterviewRequest/GetHistory")]
 		public List<MediaInterviewApprovalHistoryModel> GetHistory(int id)
 		{
-			var phistory = db.EventMediaInterviewApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { pa.MediaId, pa.Level, pa.ApproverId, pa.ApprovedDate, pa.Status, pa.Remark, UserName = u.Name }).Where(pa => pa.MediaId == id && pa.Status != EventApprovalStatus.None).OrderByDescending(pa => pa.ApprovedDate).Select(s => new MediaInterviewApprovalHistoryModel
+			var phistory = db.EventMediaInterviewApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { pa.MediaId, pa.Level, pa.ApproverId, pa.ApprovedDate, pa.Status, pa.Remark, UserName = u.Name })
+				.Where(pa => pa.MediaId == id && pa.Status != EventApprovalStatus.None).OrderByDescending(pa => pa.ApprovedDate).Select(s => new MediaInterviewApprovalHistoryModel
 			{
 				Level = s.Level,
 				ApproverId = s.ApproverId,
@@ -855,7 +856,51 @@ namespace FEP.WebApi.Api.eEvent
 			return Ok(model);
 		}
 
+		[HttpGet]
+		[Route("api/eEvent/MediaInterviewRequest/GetEmailOrganiser")]
+		public string GetEmailOrganiser(int id)
+		{
+			var model = db.EventMediaInterviewRequest.Where(i => i.Display && i.Id == id)
+			   .Select(i => new DetailsMediaInterviewRequestApiModel
+			   {
+				   Id = i.Id,
+				   MediaName = i.MediaName,
+				   MediaType = i.MediaType,
+				   ContactNo = i.ContactNo,
+				   AddressStreet1 = i.AddressStreet1,
+				   AddressStreet2 = i.AddressStreet2,
+				   AddressPoscode = i.AddressPoscode,
+				   AddressCity = i.AddressCity,
+				   State = i.State,
+				   Email = i.Email,
+				   DateStart = i.DateStart,
+				   DateEnd = i.DateEnd,
+				   Time = i.Time,
+				   Location = i.Location,
+				   Language = i.Language,
+				   Topic = i.Topic,
+				   UserId = i.UserId,
+				   RepUserName = i.User.Name,
+				   RepEmail = i.User.Email,
+				   RepMobileNumber = i.User.MobileNo,
+				   RepDesignation = i.User.StaffProfile.Designation.Name,
+				   ContactPerson = i.ContactPerson,
+				   CreatedBy = i.CreatedBy,
+				   CreatedDate = i.CreatedDate,
+				   RefNo = i.RefNo,
+				   MediaStatus = i.MediaStatus,
+				   CreatedByName = i.CreatedByUser.Name,
+			   }).FirstOrDefault();
+			
+			model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.MediaInterview && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
+			if (model == null)
+			{
+				return "";
+			}
+
+			return model.Email;
+		}
 
 
 

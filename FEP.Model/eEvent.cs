@@ -388,7 +388,7 @@ namespace FEP.Model
 		public EventApprovalLevel Level { get; set; }
 		public EventApprovalStatus Status { get; set; }
 		public bool RequireNext { get; set; }
-		public int ApproverId { get; set; }
+		public int? ApproverId { get; set; }
 
 		public int? ExhibitionId { get; set; }
 		[ForeignKey("ExhibitionId")]

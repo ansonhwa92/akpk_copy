@@ -32,20 +32,172 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			var response = await WepApiMethod.SendApiAsync<DetailsExhibitionRoadshowRequestModel>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest?id={id}");
+			var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowApprovalModel>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest?id={id}");
 
 			if (!response.isSuccess)
 			{
 				return HttpNotFound();
 			}
 
-			var model = response.Data;
+			var exapproval = response.Data;
 
-			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
-			model.Nominees = new SelectList(await GetUsers(), "Id", "Name", 0);
+			var exhibition = new ExhibitionRoadshowRequestModel()
+			{
+				Id = exapproval.exhibitionroadshow.Id,
+				EventName = exapproval.exhibitionroadshow.EventName,
+				Organiser = exapproval.exhibitionroadshow.Organiser,
+				OrganiserEmail = exapproval.exhibitionroadshow.OrganiserEmail,
+				AddressStreet1 = exapproval.exhibitionroadshow.AddressStreet1,
+				AddressStreet2 = exapproval.exhibitionroadshow.AddressStreet2,
+				AddressPoscode = exapproval.exhibitionroadshow.AddressPoscode,
+				AddressCity = exapproval.exhibitionroadshow.AddressCity,
+				State = exapproval.exhibitionroadshow.State,
+				StartDate = exapproval.exhibitionroadshow.StartDate,
+				EndDate = exapproval.exhibitionroadshow.EndDate,
+				StartTime = exapproval.exhibitionroadshow.StartTime,
+				EndTime = exapproval.exhibitionroadshow.EndTime,
+				ExhibitionStatus = exapproval.exhibitionroadshow.ExhibitionStatus,
+				ParticipationRequirement = exapproval.exhibitionroadshow.ParticipationRequirement,
+				ReceivedById = exapproval.exhibitionroadshow.ReceivedById,
+				ReceivedByName = exapproval.exhibitionroadshow.ReceivedByName,
+				ReceivedDate = exapproval.exhibitionroadshow.ReceivedDate,
+				Receive_Via = exapproval.exhibitionroadshow.Receive_Via,
+				Attachments = exapproval.exhibitionroadshow.Attachments,
+				NomineeId = exapproval.exhibitionroadshow.NomineeId,
+				CreatedBy = exapproval.exhibitionroadshow.CreatedBy,
+				CreatedDate = exapproval.exhibitionroadshow.CreatedDate,
+				CreatedByName = exapproval.exhibitionroadshow.CreatedByName
+			};
+
+			var approval = new ApprovalModel
+			{
+				Id = exapproval.approval.Id,
+				ExhibitionId = exapproval.approval.ExhibitionId,
+				Level = exapproval.approval.Level,
+				ApproverId = exapproval.approval.ApproverId,
+				Status = exapproval.approval.Status,
+				Remarks = exapproval.approval.Remarks,
+				RequireNext = exapproval.approval.RequireNext
+			};
+
+			var pevaluation = new ExhibitionRoadshowApprovalModel
+			{
+				exhibitionroadshow = exhibition,
+				approval = approval
+			};
+
+			var responseHistory = await WepApiMethod.SendApiAsync<IEnumerable<ExhibitionApprovalHistoryModel>>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetHistory?id={id}");
+
+			if (responseHistory.isSuccess)
+			{
+				ViewBag.History = responseHistory.Data;
+			}
+
+			pevaluation.exhibitionroadshow.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
+			pevaluation.exhibitionroadshow.Nominees = new SelectList(await GetUsers(), "Id", "Name", 0);
+
+			return View(pevaluation);
+		}
+
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Details(ExhibitionRoadshowApprovalModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/UpdateApproval", model);
+
+				if (response.isSuccess)
+				{
+					if (model.approval.Status == EventApprovalStatus.Approved)
+					{
+						if (model.approval.Level == EventApprovalLevel.Verifier)
+						{
+							await Verified(model.approval.ExhibitionId);
+							await LogActivity(Modules.Event, "Verify Exhibition/Roadshow Request: ", model);
+							TempData["SuccessMessage"] = "Exhibition/Roadshow Request is successfully verified.";
+						}
+						else
+						{
+							if (model.approval.Level == EventApprovalLevel.Approver1)
+							{
+								if (model.approval.RequireNext)
+								{
+									TempData["SuccessMessage"] = "Exhibition/Roadshow Request is successfully approved and require next approval.";
+									await FirstApproved(model.approval.ExhibitionId);
+									await LogActivity(Modules.Event, "Approve Exhibition/Roadshow Request: ", model);
+								}
+								else
+								{
+									TempData["SuccessMessage"] = "Exhibition/Roadshow Request is successfully approved.";
+									await FinalApproved(model.approval.ExhibitionId);
+									await LogActivity(Modules.Event, "Approve Exhibition/Roadshow Request by Approver 1 ", model);
+								}
+							}
+							else if (model.approval.Level == EventApprovalLevel.Approver2)
+							{
+								if (model.approval.RequireNext)
+								{
+									TempData["SuccessMessage"] = "Exhibition/Roadshow Request is successfully approved and require next approval.";
+									await SecondApproved(model.approval.ExhibitionId);
+									await LogActivity(Modules.Event, "Approve Exhibition/Roadshow Request: ", model);
+								}
+								else
+								{
+									TempData["SuccessMessage"] = "Exhibition/Roadshow Request is successfully approved.";
+									await FinalApproved(model.approval.ExhibitionId);
+									await LogActivity(Modules.Event, "Approve Exhibition/Roadshow Request by Approver 2 ", model);
+								}
+							}
+							else if (model.approval.Level == EventApprovalLevel.Approver3)
+							{
+								TempData["SuccessMessage"] = "Exhibition/Roadshow Request is successfully approved.";
+								await FinalApproved(model.approval.ExhibitionId);
+								await LogActivity(Modules.Event, "Approve Exhibition/Roadshow Request by Approver 3  ", model);
+							}
+						}
+					}
+					else
+					{
+						if (model.approval.Level == EventApprovalLevel.Verifier)
+						{
+							await Reject(model.approval.ExhibitionId);
+							await LogActivity(Modules.Event, "Exhibition/Roadshow Request requires amendment.", model);
+							TempData["SuccessMessage"] = "Exhibition/Roadshow Request requires amendment.";
+						}
+						else if (model.approval.Level == EventApprovalLevel.Approver1)
+						{
+							await Reject(model.approval.ExhibitionId);
+							await LogActivity(Modules.Event, "Exhibition/Roadshow Request requires amendment.", model);
+							TempData["SuccessMessage"] = "Exhibition/Roadshow Request requires amendment.";
+						}
+						else if (model.approval.Level == EventApprovalLevel.Approver2)
+						{
+							await Reject(model.approval.ExhibitionId);
+							await LogActivity(Modules.Event, "Exhibition/Roadshow Request requires amendment.", model);
+							TempData["SuccessMessage"] = "Exhibition/Roadshow Request requires amendment.";
+						}
+						else if (model.approval.Level == EventApprovalLevel.Approver3)
+						{
+							await Reject(model.approval.ExhibitionId);
+							await LogActivity(Modules.Event, "Exhibition/Roadshow Request requires amendment.", model);
+							TempData["SuccessMessage"] = "Exhibition/Roadshow Request requires amendment.";
+						}
+					}
+					return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent" });
+				}
+				else
+				{
+					return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = model.approval.ExhibitionId });
+				}
+			}
 
 			return View(model);
 		}
+
+
+
 
 		[HttpGet]
 		public async Task<ActionResult> Create()
@@ -93,6 +245,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ReceivedDate = model.ReceivedDate,
 					Receive_Via = model.Receive_Via,
 					NomineeId = model.NomineeId,
+					CreatedBy = CurrentUser.UserId,
 				};
 
 				//attachment
@@ -143,7 +296,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 
-			var response = await WepApiMethod.SendApiAsync<EditExhibitionRoadshowRequestModel>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest?id={id}");
+			var response = await WepApiMethod.SendApiAsync<EditExhibitionRoadshowRequestModel>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetEditDelete?id={id}");
 
 			if (!response.isSuccess)
 			{
@@ -258,7 +411,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			var response = await WepApiMethod.SendApiAsync<DetailsExhibitionRoadshowRequestModel>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest?id={id}");
+			var response = await WepApiMethod.SendApiAsync<DetailsExhibitionRoadshowRequestModel>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetEditDelete?id={id}");
 
 			if (!response.isSuccess)
 			{
@@ -357,12 +510,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					};
 
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//save saveThisID dalam table
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Submit Exhibition Roadshow Ref No: " + response.Data.RefNo + " for verification.");
 					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully submitted for verification.";
@@ -416,12 +570,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					response.Data.SLAReminderStatusId = saveThisID;
-
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is verified.");
 					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully verified and submitted for approval.";
@@ -474,11 +629,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is approved on first level.");
 					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
@@ -531,11 +688,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is approved on first level.");
 					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
@@ -590,11 +749,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is approved");
 					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully approved.";
@@ -648,12 +809,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//save saveThisID dalam table 
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is rejected and require amendment.");
 					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully rejected and require amendment.";
@@ -709,12 +871,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//save saveThisID dalam table 
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is submitted Duty Roster for verification.");
 					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully submitted Duty Roster for verification.";
@@ -770,12 +933,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//save saveThisID dalam table 
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is verified Duty Roster.");
 					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully verified Duty Roster.";
@@ -830,12 +994,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//save saveThisID dalam table 
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is rejected Duty Roster.");
 					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully rejected Duty Roster.";
@@ -891,12 +1056,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//save saveThisID dalam table 
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is approved Duty Roster.");
 					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully approved Duty Roster.";
@@ -952,12 +1118,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//save saveThisID dalam table 
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is accepted participation.");
 					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully accepted participation.";
@@ -980,7 +1147,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/Reject?id={id}");
+			var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/DeclineParticipation?id={id}");
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
@@ -1013,12 +1180,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//save saveThisID dalam table 
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is declined participation.");
 					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully declined participation.";
@@ -1032,5 +1200,79 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = id });
 			}
 		}
+
+
+
+
+
+		public async Task<ActionResult> SendInvitationToNominees(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+			var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SendInvitationToNominees?id={id}");
+			if (response.isSuccess)
+			{
+				//--------------------------------------------------Stop Previous Email---------------------------------------------//
+				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetSLAId?id={id}");
+				if (responseGetSLAId.isSuccess)
+				{
+					int SLAReminderStatusId = responseGetSLAId.Data;
+					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+					List<BulkNotificationModel> myNotification = responseSLA.Data;
+				}
+
+				//--------------------------------------------------Send Email---------------------------------------------//
+
+				ParameterListToSend paramToSend = new ParameterListToSend();
+				paramToSend.EventCode = response.Data.RefNo;
+				paramToSend.EventName = response.Data.EventName;
+				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
+
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.EventAdministratorCCD}");
+				if (receiveresponse.isSuccess)
+				{
+
+					CreateAutoReminder reminder = new CreateAutoReminder
+					{
+						NotificationType = NotificationType.SendInvitationToNominees,
+						NotificationCategory = NotificationCategory.Event,
+						ParameterListToSend = paramToSend,
+						StartNotificationDate = DateTime.Now,
+						ReceiverId = receiveresponse.Data,
+					};
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
+
+					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is send invitation to nominees.");
+					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully send invitation to nominees.";
+				}
+
+				return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent" });
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to send invitation to nominees.";
+				return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = id });
+			}
+		}
+
+
+
+
+
+
+
+
+
+
 	}
 }

@@ -193,6 +193,8 @@ namespace FEP.Model
 		AcceptParticipation,
 		[Display(Name = "Participation Declined")]
 		DeclineParticipation,
+		[Display(Name = "Nominees Invited")]
+		NomineesInvited,
 	}
 
 	public enum Religion

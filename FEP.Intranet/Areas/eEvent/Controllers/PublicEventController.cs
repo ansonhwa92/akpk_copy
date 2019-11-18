@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using ApprovalModel = FEP.WebApiModel.PublicEvent.ApprovalModel;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
 {
@@ -1616,7 +1617,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 							{
 								TempData["SuccessMessage"] = "Public Event is successfully approved.";
 								await FinalApproved(model.approval.EventId);
-								await LogActivity(Modules.Event, "Approve Public by Approver 3  ", model);
+								await LogActivity(Modules.Event, "Approve Public Event by Approver 3  ", model);
 							}
 						}
 					}

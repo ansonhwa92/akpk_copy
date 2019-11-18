@@ -513,13 +513,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data
 					};
 
-					//var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					//if (response2.isSuccess) { }
-					//int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//response.Data.SLAReminderStatusId = saveThisID;
-					//var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequestRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					//if (response3.isSuccess) { }
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Submit Media Interview Ref No: " + response.Data.RefNo + " for verification.");
 					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully submitted for verification.";
@@ -572,13 +573,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						StartNotificationDate = DateTime.Now,
 						ReceiverId = receiveresponse.Data
 					};
-					//var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					//if (response2.isSuccess) { }
-					//int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//response.Data.SLAReminderStatusId = saveThisID;
-					//var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequestRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					//if (response3.isSuccess) { }
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + " is verified.");
 					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully verified and submitted for approval.";
@@ -628,13 +630,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						StartNotificationDate = DateTime.Now,
 						ReceiverId = receiveresponse.Data
 					};
-					//var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					//if (response2.isSuccess) { }
-					//int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//response.Data.SLAReminderStatusId = saveThisID;
-					//var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequestRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					//if (response3.isSuccess) { }
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + " is approved on first level.");
 					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
@@ -683,13 +686,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						StartNotificationDate = DateTime.Now,
 						ReceiverId = receiveresponse.Data
 					};
-					//var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					//if (response2.isSuccess) { }
-					//int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//response.Data.SLAReminderStatusId = saveThisID;
-					//var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequestRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					//if (response3.isSuccess) { }
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + " is approved on second level.");
 					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
@@ -739,13 +743,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						StartNotificationDate = DateTime.Now,
 						ReceiverId = receiveresponse.Data
 					};
-					//var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					//if (response2.isSuccess) { }
-					//int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//response.Data.SLAReminderStatusId = saveThisID;
-					//var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequestRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					//if (response3.isSuccess) { }
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + " for approved.");
 					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully approved.";
@@ -795,13 +800,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						StartNotificationDate = DateTime.Now,
 						ReceiverId = receiveresponse.Data
 					};
-					//var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					//if (response2.isSuccess) { }
-					//int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//response.Data.SLAReminderStatusId = saveThisID;
-					//var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequestRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					//if (response3.isSuccess) { }
+					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + " is rejected and require amendment.");
 					TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully rejected and require amendment.";
@@ -810,7 +816,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			}
 			else
 			{
-				TempData["ErrorMessage"] = "Failed to reject Media Interview.";
+				TempData["ErrorMessage"] = "Failed to require amendment Media Interview.";
 				return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
 			}
 		}
@@ -825,13 +831,48 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			var response = await WepApiMethod.SendApiAsync<MediaInterviewRequestApiModel>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/RepAvailable?id={id}");
 			if (response.isSuccess)
 			{
+				////--------------------------------------------------Stop Previous Email---------------------------------------------//
+				//var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/MediaInterviewRequest/GetSLAId?id={id}");
+				//if (responseGetSLAId.isSuccess)
+				//{
+				//	int SLAReminderStatusId = responseGetSLAId.Data;
+				//	var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+				//		(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+				//	List<BulkNotificationModel> myNotification = responseSLA.Data;
+				//}
+				////--------------------------------------------------Send Email---------------------------------------------//
+				//ParameterListToSend paramToSend = new ParameterListToSend();
+				//paramToSend.EventCode = response.Data.RefNo;
+				//paramToSend.EventName = response.Data.MediaName;
+				//paramToSend.EventApproval = response.Data.MediaStatus.GetDisplayName();
+
+				//var receiveresponse = await WepApiMethod.SendApiAsync<List<string>>(HttpVerbs.Get, $"eEvent/MediaInterviewRequest/GetEmailOrganiser?id={id}");
+				//if (receiveresponse.isSuccess)
+				//{
+				//	CreateAutoReminder reminder = new CreateAutoReminder
+				//	{
+				//		NotificationType = NotificationType.RepAvailable_MediaInterview,
+				//		NotificationCategory = NotificationCategory.Event,
+				//		ParameterListToSend = paramToSend,
+				//		StartNotificationDate = DateTime.Now,
+				//		ReceiverId = receiveresponse.Data.
+				//	};
+				//	var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+				//	if (response2.isSuccess)
+				//	{
+				//		int saveThisID = response2.Data.SLAReminderStatusId;
+				//		response.Data.SLAReminderStatusId = saveThisID;
+				//		var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+				//		if (response3.isSuccess) { }
+				//	}
 				await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + ", Representative is available.");
-				TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully updated.";
+				TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully updated Representative is available.";
+				//}
 				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
 			}
 			else
 			{
-				TempData["ErrorMessage"] = "Failed to reject Media Interview.";
+				TempData["ErrorMessage"] = "Failed to update Media Interview Ref No: " + response.Data.RefNo + ", Representative is available.";
 				return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
 			}
 		}
@@ -848,13 +889,49 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			var response = await WepApiMethod.SendApiAsync<MediaInterviewRequestApiModel>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/RepNotAvailable?id={id}");
 			if (response.isSuccess)
 			{
+				////--------------------------------------------------Stop Previous Email---------------------------------------------//
+				//var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/MediaInterviewRequest/GetSLAId?id={id}");
+				//if (responseGetSLAId.isSuccess)
+				//{
+				//	int SLAReminderStatusId = responseGetSLAId.Data;
+				//	var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+				//		(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+				//	List<BulkNotificationModel> myNotification = responseSLA.Data;
+				//}
+				////--------------------------------------------------Send Email---------------------------------------------//
+				//ParameterListToSend paramToSend = new ParameterListToSend();
+				//paramToSend.EventCode = response.Data.RefNo;
+				//paramToSend.EventName = response.Data.MediaName;
+				//paramToSend.EventApproval = response.Data.MediaStatus.GetDisplayName();
+
+				//var receiveresponse = await WepApiMethod.SendApiAsync<List<string>>(HttpVerbs.Get, );
+				//if (receiveresponse.isSuccess)
+				//{
+				//	CreateAutoReminder reminder = new CreateAutoReminder
+				//	{
+				//		NotificationType = NotificationType.RepNotAvailable_MediaInterview,
+				//		NotificationCategory = NotificationCategory.Event,
+				//		ParameterListToSend = paramToSend,
+				//		StartNotificationDate = DateTime.Now,
+				//		ReceiverId = receiveresponse.Data
+				//	};
+				//	var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+				//	if (response2.isSuccess)
+				//	{
+				//		int saveThisID = response2.Data.SLAReminderStatusId;
+				//		response.Data.SLAReminderStatusId = saveThisID;
+				//		var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+				//		if (response3.isSuccess) { }
+				//	}
 				await LogActivity(Modules.Event, " Media Interview Ref No: " + response.Data.RefNo + ", Representative is not available.");
-				TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully updated.";
+				TempData["SuccessMessage"] = "Media Interview Ref No: " + response.Data.RefNo + ", successfully updated Representative is not available.";
+				//}
+
 				return RedirectToAction("List", "MediaInterview", new { area = "eEvent" });
 			}
 			else
 			{
-				TempData["ErrorMessage"] = "Failed to reject Media Interview.";
+				TempData["ErrorMessage"] = "Failed to update Media Interview Ref No: " + response.Data.RefNo + ", Representative is not available.";
 				return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", @id = id });
 			}
 		}

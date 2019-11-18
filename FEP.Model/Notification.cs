@@ -71,6 +71,11 @@ namespace FEP.Model
 		[Display(Name = "Media Interview - Rejected")]
 		Reject_Media_Interview,
 
+		[Display(Name = "Media Interview - Representative Available")]
+		RepAvailable_MediaInterview,
+		[Display(Name = "Media Interview - Representative Not Available")]
+		RepNotAvailable_MediaInterview,
+
 
 		//Exhibition Roadshow
 		[Display(Name = "Exhibition Roadshow - Submit Exhibition Roadshow For Verification")]
@@ -101,6 +106,8 @@ namespace FEP.Model
 		AcceptParticipation_Exhibition_RoadShow,
 		[Display(Name = "Exhibition RoadShow - Decline Participation")]
 		DeclineParticipation_Exhibition_RoadShow,
+		[Display(Name = "Exhibition RoadShow - Send Invitation To Nominees")]
+		SendInvitationToNominees,
 
 		//Payment 
 		[Display(Name = "Payment Pending GL")]

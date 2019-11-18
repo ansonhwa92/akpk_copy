@@ -72,7 +72,13 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadRefNo", ResourceType = typeof(Language.Event))]
 		public string RefNo { get; set; }
 		public int? SLAReminderStatusId { get; set; }
-		
+
+		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
+		public DateTime? CreatedDate { get; set; }
+
+		public IEnumerable<Attachment> Attachments { get; set; }
+
 	}
 
 	public class FilterExhibitionRoadshowRequestModel : DataTableModel
@@ -199,6 +205,10 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadNomineeName", ResourceType = typeof(Language.Event))]
 		public string NomineeName { get; set; }
 
+		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
+		public DateTime? CreatedDate { get; set; }
+
 		public IEnumerable<SelectListItem> Nominees { get; set; }
 	}
 
@@ -217,6 +227,56 @@ namespace FEP.WebApiModel.eEvent
 	public class DeleteExhibitionRoadshowRequestModel : ExhibitionRoadshowRequestModel
 	{
 		public DeleteExhibitionRoadshowRequestModel() { }
+	}
+
+	public class ExhibitionRoadshowApprovalModel
+	{
+		public ExhibitionRoadshowRequestModel exhibitionroadshow { get; set; }
+		public ApprovalModel approval { get; set; }
+	}
+
+	public class ApprovalModel
+	{
+		[Required]
+		public int? Id { get; set; }
+
+		[Required]
+		public int? ExhibitionId { get; set; } 
+
+		[Required]
+		[Display(Name = "Level")]
+		public EventApprovalLevel Level { get; set; }
+
+		[Required]
+		public int? ApproverId { get; set; }
+
+		[Required]
+		[Range((int)(EventApprovalStatus.Approved), (int)(EventApprovalStatus.Rejected), ErrorMessage = "Please Select")]
+		[Display(Name = "PubApprovalStatus")]
+		public EventApprovalStatus Status { get; set; }
+
+		[Required]
+		[Display(Name = "Remarks")]
+		public string Remarks { get; set; }
+
+		[Display(Name = "Require Next")]
+		public bool RequireNext { get; set; }
+	}
+
+
+	public class ExhibitionApprovalHistoryModel
+	{
+		public EventApprovalLevel Level { get; set; }
+
+		public int? ApproverId { get; set; }
+
+		public string UserName { get; set; }
+
+		public EventApprovalStatus Status { get; set; }
+
+		public DateTime? ApprovalDate { get; set; }
+
+		public string Remarks { get; set; }
 	}
 
 }

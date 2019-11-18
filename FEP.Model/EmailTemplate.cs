@@ -169,7 +169,7 @@ namespace FEP.Model
         [Display(Name = "Enrollment Code")]
         EnrollmentCode = 145,
 
-        [Display(Name = "Student Name")]
-        StudentName = 146,
+        [Display(Name = "Learner Name")]
+        LearnerName = 146,
     }
 }

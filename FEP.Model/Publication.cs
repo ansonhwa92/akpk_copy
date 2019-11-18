@@ -58,6 +58,7 @@ namespace FEP.Model
         //public PublicationWithdrawalStatus WStatus { get; set; }
         public int ViewCount { get; set; }
         public int PurchaseCount { get; set; }
+        public int DownloadCount { get; set; }
         // DMS integration (TODO)............................................................................................
         public string DmsPath { get; set; }
         public int NotificationID { get; set; }
@@ -209,6 +210,16 @@ namespace FEP.Model
     }
     */
 
+    [Table("PublicationSettings")]
+    public class PublicationSettings
+    {
+        [Key]
+        public int ID { get; set; }
+        public int HardcopyReturnPeriod { get; set; }
+        public int MinimumPublishedYear { get; set; }
+        // stock balance before alert
+    }
+
     public enum PublicationCategories
     {
         [Display(Name = "PubCategoryArticles", ResourceType = typeof(Language.RnPEnum))]
@@ -288,7 +299,9 @@ namespace FEP.Model
         [Display(Name = "Proof of Approval")]
         ProofOfApproval,
         [Display(Name = "Proof of Withdrawal")]
-        ProofOfWithdrawal
+        ProofOfWithdrawal,
+        [Display(Name = "Digital Publication")]
+        DigitalPublication
     }
 
     public enum PublicationApprovalLevels

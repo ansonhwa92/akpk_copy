@@ -32,6 +32,7 @@ namespace FEP.Intranet.Areas.Setting.Controllers
 
         // Process create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateTargetedGroup model)
         {
             if (ModelState.IsValid)
@@ -40,15 +41,15 @@ namespace FEP.Intranet.Areas.Setting.Controllers
 
                 if (response.isSuccess)
                 {
-                    await LogActivity(Modules.Setting, "Create Targeted Group: " + response.Data, model);
+                    await LogActivity(Modules.Setting, "Create Target Group: " + response.Data, model);
 
-                    TempData["SuccessMessage"] = "Targeted Group " + response.Data + " created successfully.";
+                    TempData["SuccessMessage"] = "Target Group " + response.Data + " created successfully.";
 
                     return RedirectToAction("Index", "Group", new { area = "Setting" });
                 }
                 else
                 {
-                    TempData["SuccessMessage"] = "Failed to create Targeted Group.";
+                    TempData["SuccessMessage"] = "Failed to create Target Group.";
 
                     return RedirectToAction("Index", "Group", new { area = "Setting" });
                 }
@@ -76,6 +77,7 @@ namespace FEP.Intranet.Areas.Setting.Controllers
 
         // Process edit
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(EditTargetedGroup model)
         {                        
             if (ModelState.IsValid)
@@ -84,15 +86,15 @@ namespace FEP.Intranet.Areas.Setting.Controllers
 
                 if (response.isSuccess)
                 {
-                    await LogActivity(Modules.Setting, "Edit Targeted Group: " + response.Data, model);
+                    await LogActivity(Modules.Setting, "Edit Target Group: " + response.Data, model);
 
-                    TempData["SuccessMessage"] = "Targeted Group " + response.Data + " updated successfully.";
+                    TempData["SuccessMessage"] = "Target Group " + response.Data + " updated successfully.";
 
                     return RedirectToAction("Index", "Group", new { area = "Setting" });
                 }
                 else
                 {
-                    TempData["SuccessMessage"] = "Failed to update Targeted Group.";
+                    TempData["SuccessMessage"] = "Failed to update Target Group.";
 
                     return RedirectToAction("Index", "Group", new { area = "Setting" });
                 }
@@ -101,5 +103,74 @@ namespace FEP.Intranet.Areas.Setting.Controllers
 
             return View(model);
         }
+
+        // Delete
+        public async Task<ActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<DeleteTargetedGroup>(HttpVerbs.Get, $"Setting/Group/GetSingle?id={id}");
+
+            if (!response.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var model = response.Data;
+
+            return View(model);
+        }
+
+        // Process delete
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Delete, $"Setting/Group/Delete?id={id}");
+
+            if (response.isSuccess)
+            {
+                await LogActivity(Modules.Setting, "Delete Target Group: " + response.Data);
+
+                TempData["SuccessMessage"] = "Target Group " + response.Data + " successfully deleted.";
+
+                return RedirectToAction("Index", "Group", new { area = "Setting" });
+            }
+            else
+            {
+                TempData["SuccessMessage"] = "Failed to delete Target Group.";
+
+                return RedirectToAction("Details", "Group", new { area = "Setting", @id = id });
+            }
+        }
+
+        // Details
+        public async Task<ActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<DetailsTargetedGroup>(HttpVerbs.Get, $"Setting/Group/GetSingle?id={id}");
+
+            if (!response.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var model = response.Data;
+
+            return View(model);
+        }
+
     }
 }

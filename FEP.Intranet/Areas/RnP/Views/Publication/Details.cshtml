@@ -310,6 +310,12 @@
                             &nbsp;
                         </div>
                     </div>
+                    <div class="row" id="rowDigital" style="display:none;">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.DigitalPublications, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_DigitalPublicationDetails", Model.Pub.DigitalPublications)
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Pub.CoverPictures, htmlAttributes: new { @class = "control-label" })
@@ -611,11 +617,11 @@
                                 <p class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="fl-right">@item.ApprovalDate.ToString("hh:mm tt")</span></p>
                                 @if (item.Status == PublicationApprovalStatus.Approved)
                                 {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Withdrawal Approval Result<br>- <span class="color-green">Approved</span></p>
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><!--:Designation: -->Withdrawal Approval Result<br>- <span class="color-green">Approved</span></p>
                                 }
                                 else
                                 {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Withdrawal Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><!--:Designation: -->Withdrawal Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
                                 }
                                 <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
                             </div>
@@ -645,11 +651,11 @@
                                 <p class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="fl-right">@item.ApprovalDate.ToString("hh:mm tt")</span></p>
                                 @if (item.Status == PublicationApprovalStatus.Approved)
                                 {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Approval Result<br>- <span class="color-green">Approved</span></p>
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><!--:Designation: -->Approval Result<br>- <span class="color-green">Approved</span></p>
                                 }
                                 else
                                 {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><!--:Designation: -->Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
                                 }
                                 <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
                             </div>
@@ -672,7 +678,17 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            // populate language selection
+            function toggleDigital() {
+                var hasHc = $('#Pub_Hardcopy').is(':checked');
+                var hasDc = $('#Pub_Digitalcopy').is(':checked');
+                var hasPc = $('#Pub_HDcopy').is(':checked');
+                if (hasDc || hasPc) {
+                    $('#rowDigital').show();
+                }
+                else {
+                    $('#rowDigital').hide();
+                }
+            }
 
             var selectedLang = $('#Pub_Language').val();
             if (selectedLang.indexOf("English") >= 0) {
@@ -902,6 +918,8 @@
                 var url = '@Url.Action("Details", "Publication", new { area = "RnP" })?id=' + pid;
                 window.location = url;
             });
+
+            toggleDigital();
 
             RefreshFile4();
 

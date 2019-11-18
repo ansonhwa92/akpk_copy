@@ -1,0 +1,301 @@
+﻿@model FEP.WebApiModel.RnP.ListRefundHistoryModel
+
+@{
+    ViewBag.Title = "My Refunds";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">My Refunds</h1>
+                    <div class="header-text">View the status of your refund requests.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="d-flex align-items-center">
+    <div class="filter dropdown">
+        <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+        <div class="dropdown-menu">
+            <div class="filter-head">Filters</div>
+            <div class="filter-body">
+                <div>@Html.DisplayNameFor(m => m.Filters.Description)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        <input type="hidden" id="Filters_CurrentUserId" name="Filters.CurrentUserId" value="@CurrentUser.UserId" />
+                        @Html.EditorFor(m => m.Filters.Description, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.Filters.ReceiptNo)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filters.ReceiptNo, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>
+                    <button id="btnSearch" class="btn btn-secondary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider-vertical">&nbsp;</div>
+    <!-- Search -->
+    <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+        <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+        <div class="input-group-append">
+            <button id="quickSearchBtn" class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="table-responsive" data-toggle="lists">
+    <div class="d-flex pb-4 align-items-center">
+        <div>
+            <!-- Select option -->
+            <span class="select-arrow">
+                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </span>
+        </div>
+        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+    </div>
+    <!-- Table -->
+    <table class="table tableStyle1 tabledata">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.Items.ReceiptNo)</th>
+                <th>@Html.DisplayNameFor(model => model.Items.Description)</th>
+                <th>@Html.DisplayNameFor(model => model.Items.Quantity)</th>
+                <th>@Html.DisplayNameFor(model => model.Items.Amount)</th>
+                <th>@Html.DisplayNameFor(model => model.Items.ReturnStatus)</th>
+                <th>@Html.DisplayNameFor(model => model.Items.RefundStatus)</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<div class="modal fade" id="modalRefund" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document" style="max-width: 600px;">
+            <div class="modal-content">
+                <div class="m-4 text-left">
+                    <h4 class="color-darkblue mb-0" id="refund_title" style="margin-bottom: .5rem !important">Refund Status Information #</h4>
+                    <h6 class="font-weight-normal" id="refund_notes">View refund details as per below.</h6>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <label class="contol-label">Full Name</label>
+                            <input type="text" class="form-control" name="FullName" id="FullName" value="" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label class="contol-label">Bank Name</label>
+                            <select class="form-control" name="BankID" id="BankID" disabled="disabled">
+                                @foreach (var bank in ViewBag.Banks)
+                                {
+                                    <option value="@bank.ID">@bank.ShortName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label class="contol-label">Bank Account No.</label>
+                            <input type="text" class="form-control" name="BankAccountNo" id="BankAccountNo" value="" readonly="readonly" />
+                        </div>
+                        <div class="form-group col-lg-6" style="display:none;">
+                            <label class="contol-label">Finance Officer Remarks</label>
+                            <textarea class="form-control" name="Remarks" id="Remarks" rows="4" placeholder=""></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-4 text-right">
+                    <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+            </div>
+        </div>
+</div>
+
+@section ContentScript{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //var incomplete = @*RefundStatus.Incomplete*@;
+            //var complete = @*RefundStatus.Complete*@;
+
+            var table = $('.tabledata').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    "type": "post",
+                    "url": '@(WebApiURL)Commerce/Cart/MyRefunds',
+                    "data": function (filter) {
+                        filter.CurrentUserId = $('#Filters_CurrentUserId').val();
+                        filter.Description = $('#Filters_Description').val();
+                        filter.ReceiptNo = $('#Filters_ReceiptNo').val();
+                    },
+                    dataFilter: function (res) {
+                        // do what you need to the data before it loads to the table
+                        // for debugging only for now
+                        return res;
+                    },
+                    error: function (x, y) {
+                        console.log(x);
+                    }
+                },
+                columns: [
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'ReceiptNo',
+                        sortable: true
+                    },
+                    {
+                        data: 'Description',
+                        sortable: true
+                    },
+                    {
+                        data: 'Quantity',
+                        sortable: false
+                    },
+                    {
+                        data: 'Amount',
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return row.Amount.toFixed(2);
+                        }
+                    },
+                    {
+                        data: 'ReturnStatus',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+                            if (row.ReturnStatus == 0) {
+                                return "<span class='color-grey font-weight-bold'>None</span>";
+                            }
+                            else if (row.ReturnStatus == 1) {
+                                return "<span class='color-yellow font-weight-bold'>Pending</span>";
+                            }
+                            else if (row.ReturnStatus == 2) {
+                                return "<span class='color-red font-weight-bold'>Expired</span>";
+                            }
+                            else if (row.ReturnStatus == 3) {
+                                return "<span class='color-green font-weight-bold'>Returned</span>";
+                            }
+                        }
+                    },
+                    {
+                        data: 'RefundStatus',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+                            if (row.RefundStatus == 0) {
+                                return "<span class='color-yellow font-weight-bold'>Requested</span>";
+                            }
+                            else if (row.RefundStatus == 1) {
+                                return "<span class='color-red font-weight-bold'>Not Refunded</span>";
+                            }
+                            else if (row.RefundStatus == 2) {
+                                return "<span class='color-green font-weight-bold'>Refunded</span>";
+                            }
+                        }
+                    },
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+
+                            var action = '<div class="icon-action">';
+
+                            if (row.RefundStatus == 0) {
+                                action += '<button class="btn btn-secondary btnView" id="btnView" data-refno="' + row.ReceiptNo + '" data-itemid="' + row.ID + '" data-fullname="' + row.FullName + '" data-bankid="' + row.BankID + '" data-accountno="' + row.BankAccountNo + '" data-toggle="tooltip" data-placement="top" title="View Details"><i class="la la-eye text-muted"></i>View Details</button>';
+                            }
+
+                            action += '</div>';
+
+                            return action;
+                        }
+                    }
+                ],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_ items"
+                },
+                dom: 'rtip'
+            });
+
+            $('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#quickSearchBtn').click(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change(function () {
+                table.page.len($(this).val()).draw();
+            });
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt', function () {
+                var info = table.page.info();
+                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' items');
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            }).draw();
+
+            $(document).on('click', '.btnView', function () {
+                var refno = $(this).data("refno");
+                var itemid = $(this).data("itemid");
+                var fullname = $(this).data("fullname");
+                var bankid = $(this).data("bankid");
+                var accountno = $(this).data("accountno");
+                $('#ID').val(itemid);
+                $('#FullName').val(fullname);
+                $('#BankID').val(bankid);
+                $('#BankAccountNo').val(accountno);
+                $('#refund_title').html("Refund Status Information #" + refno);
+                $('#refund_notes').html("View refund details as per below.");
+                $('#modalRefund').modal();
+                return false;
+            });
+
+        });
+
+    </script>
+
+}
+
+

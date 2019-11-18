@@ -124,6 +124,7 @@ namespace FEP.Model
         public DbSet<PublicationDelivery> PublicationDelivery { get; set; }
         public DbSet<PublicationPurchaseItem> PublicationPurchaseItem { get; set; }
         public DbSet<PromotionCode> PromotionCode { get; set; }
+        public DbSet<PublicationSettings> PublicationSettings { get; set; }
 
         //research
         public DbSet<Survey> Survey { get; set; }
@@ -131,6 +132,11 @@ namespace FEP.Model
         public DbSet<SurveyFile> SurveyFile { get; set; }
         public DbSet<SurveyApproval> SurveyApproval { get; set; }
         public DbSet<SurveyResponse> SurveyResponse { get; set; }
+
+        public DbSet<AssessmentSurvey> AssessmentSurvey { get; set; }
+        public DbSet<AssessmentResponse> AssessmentResponse { get; set; }
+        public DbSet<FeedbackSurvey> FeedbackSurvey { get; set; }
+        public DbSet<FeedbackResponse> FeedbackResponse { get; set; }
 
         //targeted groups
         public DbSet<TargetedGroups> TargetedGroups { get; set; }

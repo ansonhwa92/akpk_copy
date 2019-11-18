@@ -161,6 +161,7 @@
         $(document).ready(function () {
 
             var cid = @Model.Purchase.Id;
+            var deadline = '@ViewBag.Deadline';
 
             //$('#btnRefund').click(function () {
             $(document).on('click', '.btn.btn-secondary', function () {
@@ -182,7 +183,7 @@
                     $('#refund_address').hide();
                 }
                 else if (ptype == 2) {
-                    $('#refund_notes').html("In order to complete your refund, kindly provide your account details and return the publication to the address given below"); //  before xxx
+                    $('#refund_notes').html("In order to complete your refund, kindly provide your account details and return the publication to the address given below by " + deadline);
                     $('#refund_address').show();
                 }
                 $('#modalRefund').modal();

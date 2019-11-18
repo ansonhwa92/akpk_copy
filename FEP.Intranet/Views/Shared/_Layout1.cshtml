@@ -115,11 +115,11 @@
                                                 <span class="card__avatar">
                                                     @if (!String.IsNullOrEmpty(CurrentUser.Avatar))
                                                     {
-                                                        <img class="card__avatar__image" src="@CurrentUser.Avatar" alt="image">
+                                                    <img class="card__avatar__image" src="@CurrentUser.Avatar" alt="image">
                                                     }
                                                     else
                                                     {
-                                                        <img class="card__avatar__image" src="@BaseURL/img/no-photo.jpg" alt="image">
+                                                    <img class="card__avatar__image" src="@BaseURL/img/no-photo.jpg" alt="image">
                                                     }
                                                 </span>
                                                 <span class="card__name-wrap">
@@ -128,7 +128,7 @@
                                                 </span>
                                             </a>
                                         </div>
-                                        <a class="dropdown-item" href="@Url.Action("PurchaseHistory", "Cart", new { area = "Commerce" })">
+                                        <a class="dropdown-item" href="@Url.Action(" PurchaseHistory", "Cart" , new { area="Commerce" })">
                                             <i class="la la-shopping-cart color-secondary font-icon" style="font-size: 21px;"></i> My Purchase History
                                         </a>
                                         <a class="dropdown-item" href="#">
@@ -146,20 +146,23 @@
                                         <a class="dropdown-item" href="#">
                                             <i class="la la-download color-secondary font-icon" style="font-size: 21px;"></i> My Downloads
                                         </a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "UserRewardPoints", new { area = "Reward" })">
+                                        <a class="dropdown-item" href="@Url.Action("List", "UserRewardPoints" , new { area="Reward" })">
                                             <i class="la la-certificate color-secondary font-icon"></i> My Points
                                         </a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "UserRewardRedemptions", new { area = "Reward" })">
+                                        <a class="dropdown-item" href="@Url.Action("List", "UserRewardRedemptions" , new { area="Reward" })">
                                             <i class="la la-gift color-secondary font-icon" style="font-size: 19px;"></i> My Rewards
                                         </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="la la-refresh color-secondary font-icon" style="font-size: 19px;"></i> My Refund
+                                        <a class="dropdown-item" href="@Url.Action("PurchaseHistory", "Cart" , new { area="Commerce" })">
+                                            <i class="la la-shopping-cart color-secondary font-icon"></i> My Purchases
+                                        </a>
+                                        <a class="dropdown-item" href="@Url.Action("RefundHistory", "Cart" , new { area="Commerce" })">
+                                            <i class="la la-money color-secondary font-icon"></i> My Refunds
                                         </a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="@Url.Action("MyProfile", "Home", new { area = "" })">
+                                        <a class="dropdown-item" href="@Url.Action(" MyProfile", "Home" , new { area="" })">
                                             <i class="la la-edit color-secondary font-icon"></i> My Profile
                                         </a>
-                                        <a class="dropdown-item" href="@Url.Action("Logout", "Auth", new { area = "" })">
+                                        <a class="dropdown-item" href="@Url.Action(" Logout", "Auth" , new { area="" })">
                                             <i class="la la-sign-out color-secondary font-icon"></i> Log out
                                         </a>
                                     </div>

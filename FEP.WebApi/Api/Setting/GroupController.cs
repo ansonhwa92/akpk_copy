@@ -375,6 +375,29 @@ namespace FEP.WebApi.Api.Setting
             return "";
         }
 
+        // Function to delete a targeted group.
+        [Route("api/Setting/Group/Delete")]
+        //[HttpPost]
+        public string Delete(int id)
+        {
+            var targetgroup = db.TargetedGroups.Where(p => p.ID == id).FirstOrDefault();
+
+            if (targetgroup != null)
+            {
+                string pname = targetgroup.Name;
+
+                // delete record
+                db.TargetedGroups.Remove(targetgroup);
+
+                //db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();
+
+                return pname;
+            }
+
+            return "";
+        }
+
     }
 
 }

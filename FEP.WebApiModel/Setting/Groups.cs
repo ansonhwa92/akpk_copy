@@ -84,8 +84,6 @@ namespace FEP.WebApiModel.Setting
     {
         public CreateTargetedGroup() { }
 
-        public DateTime DateCreated { get; set; }
-
         public int CreatorId { get; set; }
     }
 

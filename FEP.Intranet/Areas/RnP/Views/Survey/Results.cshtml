@@ -1,0 +1,142 @@
+﻿@model FEP.WebApiModel.RnP.SurveyResultsModel
+
+@{
+    ViewBag.Title = "Survey Results";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <div class="header-col-right float-right mt-5"><a href="@Url.Action("List", "Survey", new { area = "RnP"})" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = ""})">@Language.Survey.BreadcrumbHome</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "RnP"})">@Language.Survey.BreadcrumbRnP</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "Survey", new { area = "RnP"})">@Language.Survey.BreadcrumbPublishedSurveys</a></li>
+                                <li class="breadcrumb-item"><a href="#">@Language.Survey.BreadcrumbSurveyResults</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@Language.Survey.ResultsTitle : @Model.Title</h1>
+                    <div class="header-text">@Language.Survey.ResultsRefNo : @Model.RefNo</div>
+                    <div class="header-text">@Language.Survey.ResultsDescription : @Model.Description</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="content-container" style="padding: 0 0;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-content">
+                    <div class="custom-tab mb-4">
+                        <ul class="nav nav-line">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#tabraw" data-toggle="tab">@Language.Survey.TabRawResults</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#tabsummary" data-toggle="tab">@Language.Survey.TabSummary</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#tabstats" data-toggle="tab">@Language.Survey.TabStatistics</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content small">
+                        <div class="tab-pane active" id="tabraw">
+                            <div class="form-container p-0" style="max-width: inherit;">
+                                <div class="row" id="divRaw" style="display:none;">
+                                    <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+                                        <div class="border-form rounded-top">
+                                            <label>Survey Json</label>
+                                            <textarea id="Contents" name="Contents" class="form-control" rows="5">@Model.Contents</textarea>
+                                            <label>Questions</label>
+                                            <textarea id="Questions" name="Questions" class="form-control" rows="5">@Model.RawQuestions</textarea>
+                                            <label>No. of Participants</label>
+                                            <input type="text" id="ParticipantCount" name="ParticipantCount" class="form-control" value="@Model.ParticipantCount" />
+                                            <label>Responses (Raw)</label>
+                                            <textarea id="Results" name="Results" class="form-control" rows="5">@Model.RawResults</textarea>
+                                            <label>Raw Output</label>
+                                            <textarea id="RawOutput" name="RawOutput" class="form-control" rows="5">@Model.RawOutput</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="divTableOutput">
+                                    <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+                                        <div class="border-form rounded-top">
+                                            <label>Tabular Output</label>
+                                            <div style="width: 100%; overflow-x: scroll;">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            @foreach (var q in Model.Questions)
+                                                            {
+                                                                <th style="border:1px solid black; font-size:small;">@q</th>
+                                                            }
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var resp in Model.Answers)
+                                                        {
+                                                            <tr>
+                                                                @foreach (var answer in resp)
+                                                                {
+                                                                    <td style="border:1px solid black; font-size:small;">@answer</td>
+                                                                }
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="divCSVOutput" style="display:none;">
+                                    <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+                                        <div class="border-form rounded-top">
+                                            <label>CSV</label>
+                                            <textarea id="CSVOutput" name="CSVOutput" class="form-control" rows="5">@Model.CSVOutput</textarea>
+                                            <label>XLS</label>
+                                            <textarea id="XLSOutput" name="XLSOutput" class="form-control" rows="5">@Model.XLSOutput</textarea>
+                                            <label>PDF</label>
+                                            <textarea id="PDFOutput" name="PDFOutput" class="form-control" rows="5">@Model.PDFOutput</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabsummary">
+                            <div class="form-container p-0" style="max-width: inherit;">
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabstats">
+                            <div class="form-container p-0" style="max-width: inherit;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="divExport">
+            <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+                <div class="border-form rounded-top">
+                    <a class="btn btn-secondary" href="@Url.Action("ExportCSV", "Survey", new { area = "RnP", id = Model.ID })" data-toggle="tooltip" data-placement="top" title="Export to CSV">Export to CSV</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+        });
+    </script>
+}

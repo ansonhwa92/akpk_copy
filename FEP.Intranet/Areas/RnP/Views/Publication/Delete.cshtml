@@ -183,6 +183,12 @@
                             &nbsp;
                         </div>
                     </div>
+                    <div class="row" id="rowDigital" style="display:none;">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.DigitalPublications, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_DigitalPublicationDetails", Model.DigitalPublications)
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.CoverPictures, htmlAttributes: new { @class = "control-label" })
@@ -222,6 +228,18 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            function toggleDigital() {
+                var hasHc = $('#Hardcopy').is(':checked');
+                var hasDc = $('#Digitalcopy').is(':checked');
+                var hasPc = $('#HDcopy').is(':checked');
+                if (hasDc || hasPc) {
+                    $('#rowDigital').show();
+                }
+                else {
+                    $('#rowDigital').hide();
+                }
+            }
+
             var selectedLang = $('#Language').val();
             if (selectedLang.indexOf("English") >= 0) {
                 $('#pub_lang option').each(function () {
@@ -238,6 +256,9 @@
                 });
             }
             $('#pub_lang').trigger('change');
+
+            toggleDigital();
+
         });
     </script>
 }

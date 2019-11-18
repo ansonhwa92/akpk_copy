@@ -918,11 +918,31 @@ namespace FEP.WebApiModel.RnP
     // Class for processing/viewing survey results
     public class SurveyResultsModel : ReturnSurveyModelNoFile
     {
+        public SurveyResultsModel()
+        {
+            Questions = new List<string>();
+            Answers = new List<List<string>>();
+            SingleChoices = new List<SurveySingleChoiceAnswersModel>();
+            MultipleChoices = new List<SurveyMultipleChoiceAnswersModel>();
+        }
+
+        public string RawQuestions { get; set; }
+
+        public List<string> Questions { get; set; }
+
         public int ParticipantCount { get; set; }
 
-        public string Results { get; set; }
+        public string RawResults { get; set; }
 
-        public string Answers { get; set; }
+        public string RawAnswers { get; set; }
+
+        public List<List<string>> Answers { get; set; }
+
+        public List<SurveySingleChoiceAnswersModel> SingleChoices { get; set; }
+
+        public List<SurveyMultipleChoiceAnswersModel> MultipleChoices { get; set; }
+
+        public string RawOutput { get; set; }
 
         public string CSVOutput { get; set; }
 
@@ -931,34 +951,7 @@ namespace FEP.WebApiModel.RnP
         public string PDFOutput { get; set; }
     }
 
-    // Class for survey questions
-    //public class Survey
-
-    // Class for survey response processing
-    //result: [
-    //{"surveyId":"1","question":"question1","answer":"Answer to first question","questionType":"text"},
-    //{"surveyId":"1","question":"question2","answer":["item1","item3"],"questionType":"checkbox"},
-    //{"surveyId":"1","question":"question3","answer":"item2","questionType":"radiogroup"},
-    //{"surveyId":"1","question":"question4","answer":"item2","questionType":"dropdown"},
-    //{"surveyId":"1","question":"question5","answer":"My comments","questionType":"comment"},
-    //{"surveyId":"1","question":"question6","answer":4,"questionType":"rating"},
-    //{"surveyId":"1","question":"question7","answer":true,"questionType":"boolean"},
-    //{"surveyId":"1","question":"question8row_Row 1","answer":"Column 1","questionType":"matrix"},
-    //{"surveyId":"1","question":"question8row_Row 2","answer":"Column 3","questionType":"matrix"},
-    //{"surveyId":"1","question":"question9","answer":{"Row 1":{"Column 1":1,"Column 2":2,"Column 3":3},"Row 2":{"Column 1":3,"Column 2":4,"Column 3":5}},"questionType":"matrixdropdown"},
-    //{"surveyId":"1","question":"question10.text1","answer":"Answer 9.1","questionType":"text"},
-    //{"surveyId":"1","question":"question10.text2","answer":"Answer 9.2","questionType":"text"},
-    //{"surveyId":"1","question":"question11","answer":"giraffe","questionType":"imagepicker"},
-    //{"surveyId":"1","question":"question12row_1.Column 1.Column 1","answer":1,"questionType":"dropdown"},
-    //{"surveyId":"1","question":"question12row_1.Column 2.Column 2","answer":2,"questionType":"dropdown"},
-    //{"surveyId":"1","question":"question12row_1.Column 3.Column 3","answer":3,"questionType":"dropdown"},
-    //{"surveyId":"1","question":"question12row_2.Column 1.Column 1","answer":2,"questionType":"dropdown"},
-    //{"surveyId":"1","question":"question12row_2.Column 2.Column 2","answer":3,"questionType":"dropdown"},
-    //{"surveyId":"1","question":"question12row_2.Column 3.Column 3","answer":4,"questionType":"dropdown"},
-    //{"surveyId":"1","question":"question12row_3.Column 1.Column 1","answer":3,"questionType":"dropdown"},
-    //{"surveyId":"1","question":"question12row_3.Column 2.Column 2","answer":4,"questionType":"dropdown"},
-    //{"surveyId":"1","question":"question12row_3.Column 3.Column 3","answer":5,"questionType":"dropdown"}
-    //]
+    // Answers
     public class SurveyAnswersModel
     {
         public string surveyId { get; set; }
@@ -969,4 +962,109 @@ namespace FEP.WebApiModel.RnP
 
         public string questionType { get; set; }
     }
+
+    // Single-choice answers
+    public class SurveySingleChoiceAnswersModel
+    {
+        public SurveySingleChoiceAnswersModel()
+        {
+            answers = new List<string>();
+            values = new List<string>();
+            counts = new List<int>();
+        }
+
+        public string question { get; set; }
+
+        public string questionname { get; set; }
+
+        public List<string> answers { get; set; }
+
+        public List<string> values { get; set; }
+
+        public List<int> counts { get; set; }
+    }
+
+    // Multiple-choice answers
+    public class SurveyMultipleChoiceAnswersModel
+    {
+        public SurveyMultipleChoiceAnswersModel()
+        {
+            answers = new List<string>();
+            values = new List<string>();
+            counts = new List<int>();
+        }
+
+        public string question { get; set; }
+
+        public string questionname { get; set; }
+
+        public List<string> answers { get; set; }
+
+        public List<string> values { get; set; }
+
+        public List<int> counts { get; set; }
+    }
+
+    // Questions
+    public class SurveyElementsModel
+    {
+        public string type { get; set; }
+
+        public string name { get; set; }
+
+        public string title { get; set; }
+
+        public dynamic choices { get; set; }
+
+        public dynamic columns { get; set; }
+
+        public dynamic rows { get; set; }
+
+        public dynamic items { get; set; }
+    }
+
+    // Choices
+    public class SurveyElementsChoicesModel
+    {
+        public string value { get; set; }
+
+        public string text { get; set; }
+    }
+
+    // Image Choices
+    public class SurveyElementsImageChoicesModel
+    {
+        public string value { get; set; }
+
+        public string imageLink { get; set; }
+    }
+
+    // Pages
+    public class SurveyPagesModel
+    {
+        public string name { get; set; }
+
+        public List<SurveyElementsModel> elements { get; set; }
+    }
+
+    // Certain question types
+    public class SurveyCheckboxModel
+    {
+        public SurveyCheckboxModel()
+        {
+            items = new List<string>();
+        }
+
+        public List<string> items { get; set; }
+    }
+
+    //public class SurveyMatrixDropdownColModel
+    //{
+    //    public dynamic column { get; set; }
+    //}
+
+    //public class SurveyMatrixDropdownRowModel
+    //{
+    //    public dynamic List<SurveyMatrixDropdownColModel>
+    //}
 }

@@ -194,6 +194,141 @@ namespace FEP.WebApi.Api.RnP
 
         }
 
+        // DataTable function for listing and filtering published surveys (and results)
+        // POST: api/RnP/Survey/GetPublished (DataTable)
+        [Route("api/RnP/Survey/GetPublished")]
+        [HttpPost]
+        public IHttpActionResult GetPublished(FilterSurveyModel request)
+        {
+
+            var query = db.Survey.Where(p => p.Status == SurveyStatus.Published);
+
+            var totalCount = query.Count();
+
+            query = query.Where(p => (request.Title == null || p.Title.Contains(request.Title)));
+
+            //quick search 
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+                query = query.Where(p => p.Title.Contains(value)
+                || p.Description.Contains(value)
+                );
+            }
+
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "RefNo":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.RefNo);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.RefNo);
+                        }
+
+                        break;
+
+                    case "Title":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Title);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Title);
+                        }
+
+                        break;
+
+                    case "Type":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Type);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Type);
+                        }
+
+                        break;
+
+                    case "Duration":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.StartDate);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.StartDate);
+                        }
+
+                        break;
+
+                    case "Status":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Status);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Status);
+                        }
+
+                        break;
+
+                    default:
+                        query = query.OrderBy(o => o.Title);
+                        break;
+                }
+
+            }
+            else
+            {
+                query = query.OrderBy(o => o.Title);
+            }
+
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(s => new ReturnBriefSurveyModel
+                {
+                    ID = s.ID,
+                    RefNo = s.RefNo,
+                    Title = s.Title,
+                    Type = s.Type,
+                    StartDate = s.StartDate,
+                    EndDate = s.EndDate,
+                    Duration = "",
+                    InviteCount = s.InviteCount,
+                    SubmitCount = s.SubmitCount,
+                    Progress = "",
+                    Status = s.Status,
+                    ApprovalLevel = db.SurveyApproval.Where(sa => sa.SurveyID == s.ID && sa.Status == SurveyApprovalStatus.None).OrderByDescending(sa => sa.ApprovalDate).FirstOrDefault().Level
+                }).ToList();
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+
+        }
+
         // GET: api/RnP/Survey (list) - CURRENTLY NOT USED
         // (i.e. public/targeted surveys that don't require Login)
         public List<ReturnSurveyModel> Get()
@@ -1795,11 +1930,136 @@ namespace FEP.WebApi.Api.RnP
 
         // Survey analysis functions
 
-        // Function to compile survey answers.
+        // Function to compile survey answers for display only.
         // GET: api/RnP/Survey/CompileAnswers/5
         [Route("api/RnP/Survey/CompileAnswers")]
         [HttpGet]
         public SurveyResultsModel CompileAnswers(int id)
+        {
+            SurveyResultsModel results = CompileResults(id);
+            if (results != null)
+            {
+                results.CSVOutput = CompileToCsv(results);
+                //results.XLSOutput = CompileToXls(results);
+                //results.PDFOutput = CompileToPdf(results);
+            }
+
+            return results;
+        }
+
+        // csv
+        // Function to export to csv
+        [Route("api/RnP/Survey/ExportToCsv")]
+        [HttpGet]
+        //public HttpResponseMessage ExportToCsv(int id)
+        public string ExportToCsv(int id)
+        {
+            SurveyResultsModel results = CompileResults(id);
+            if (results != null)
+            {
+                string csvresults = CompileToCsv(results);
+                //HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+                //result.Content = new StringContent(csvresults);
+                //result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+                //result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment") { FileName = "export.csv" };
+                //return result;
+                return csvresults;
+            }
+            else
+            {
+                //HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.NotFound);
+                //return result;
+                return "";
+            }
+        }
+
+        // xls
+        // Function to export to xls
+        [Route("api/RnP/Survey/ExportToXls")]
+        [HttpGet]
+        public HttpResponseMessage ExportToXls(int id)
+        {
+            SurveyResultsModel results = CompileResults(id);
+            if (results != null)
+            {
+                string csvresults = CompileToCsv(results);
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+                result.Content = new StringContent(csvresults);
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment") { FileName = "export.csv" };
+                return result;
+            }
+            else
+            {
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.NotFound);
+                return result;
+            }
+        }
+
+        // pdf
+        // Function to export to pdf
+        [Route("api/RnP/Survey/ExportToPdf")]
+        [HttpGet]
+        public HttpResponseMessage ExportToPdf(int id)
+        {
+            SurveyResultsModel results = CompileResults(id);
+            if (results != null)
+            {
+                string csvresults = CompileToCsv(results);
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+                result.Content = new StringContent(csvresults);
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment") { FileName = "export.csv" };
+                return result;
+            }
+            else
+            {
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.NotFound);
+                return result;
+            }
+        }
+
+        // Private functions
+
+        // export conversion functions
+
+        // compile to csv
+        [NonAction]
+        private string CompileToCsv(SurveyResultsModel results)
+        {
+            if (results != null)
+            {
+                StringWriter csvString = new StringWriter();
+                using (var csv = new CsvWriter(csvString))
+                {
+                    //csv.Configuration.SkipEmptyRecords = true;
+                    //csv.Configuration.WillThrowOnMissingField = false;
+                    csv.Configuration.Delimiter = ",";
+
+                    foreach (var q in results.Questions)
+                    {
+                        csv.WriteField(q);
+                    }
+                    csv.NextRecord();
+
+                    foreach (var a in results.Answers)
+                    {
+                        foreach (var afield in a)
+                        {
+                            csv.WriteField(afield);
+                        }
+                        csv.NextRecord();
+                    }
+
+                    return csvString.ToString();
+                }
+            }
+            return "";
+        }
+
+        // main massaging function
+        [NonAction]
+        private SurveyResultsModel CompileResults(int id)
         {
             var results = db.Survey.Where(p => p.ID == id).Select(s => new SurveyResultsModel
             {
@@ -1821,9 +2081,10 @@ namespace FEP.WebApi.Api.RnP
                 Status = s.Status,
                 InviteCount = s.InviteCount,
                 SubmitCount = s.SubmitCount,
+                RawQuestions = "",
                 ParticipantCount = 0,
-                Results = "",
-                Answers = "",
+                RawResults = "",
+                RawAnswers = "",
                 CSVOutput = "",
                 XLSOutput = "",
                 PDFOutput = ""
@@ -1832,8 +2093,89 @@ namespace FEP.WebApi.Api.RnP
             if (results != null)
             {
                 // break up questions
-                // temp just show json
-                
+                var strippedq = results.Contents.Substring(13, results.Contents.Length - 16);
+                var pages = JsonConvert.DeserializeObject<List<SurveyPagesModel>>(strippedq);
+
+                foreach (var mypage in pages)
+                {
+                    foreach (var myelement in mypage.elements)
+                    {
+                        results.RawQuestions = results.RawQuestions + myelement.title + "\r\n";
+                        results.Questions.Add(myelement.title);
+                        if ((myelement.type == "dropdown") || (myelement.type == "radiogroup"))
+                        {
+                            var newsc = new SurveySingleChoiceAnswersModel();
+                            List<SurveyElementsChoicesModel> choices = new List<SurveyElementsChoicesModel>();
+                            choices = JsonConvert.DeserializeObject<List<SurveyElementsChoicesModel>>(Convert.ToString(myelement.choices));
+                            foreach (SurveyElementsChoicesModel choice in choices)
+                            {
+                                newsc.question = myelement.title;
+                                newsc.questionname = myelement.name;
+                                newsc.values.Add(choice.value);
+                                newsc.answers.Add(choice.text);
+                                newsc.counts.Add(0);
+                            }
+                            results.SingleChoices.Add(newsc);
+                        }
+                        else if (myelement.type == "rating")
+                        {
+                            var newsc = new SurveySingleChoiceAnswersModel();
+                            for (var rate = 1; rate <= 20; rate++)
+                            {
+                                newsc.question = myelement.title;
+                                newsc.questionname = myelement.name;
+                                newsc.values.Add(rate.ToString());
+                                newsc.answers.Add(rate.ToString());
+                                newsc.counts.Add(0);
+                            }
+                            results.SingleChoices.Add(newsc);
+                        }
+                        else if (myelement.type == "boolean")
+                        {
+                            var newsc = new SurveySingleChoiceAnswersModel();
+                            newsc.question = myelement.title;
+                            newsc.questionname = myelement.name;
+                            newsc.values.Add("True");
+                            newsc.values.Add("False");
+                            newsc.answers.Add("True");
+                            newsc.answers.Add("False");
+                            newsc.counts.Add(0);
+                            newsc.counts.Add(0);
+                            results.SingleChoices.Add(newsc);
+                        }
+                        else if (myelement.type == "imagepicker")
+                        {
+                            var newsc = new SurveySingleChoiceAnswersModel();
+                            List<SurveyElementsImageChoicesModel> choices = new List<SurveyElementsImageChoicesModel>();
+                            choices = JsonConvert.DeserializeObject<List<SurveyElementsImageChoicesModel>>(Convert.ToString(myelement.choices));
+                            foreach (SurveyElementsImageChoicesModel choice in choices)
+                            {
+                                newsc.question = myelement.title;
+                                newsc.questionname = myelement.name;
+                                newsc.values.Add(choice.value);
+                                newsc.answers.Add(choice.imageLink);
+                                newsc.counts.Add(0);
+                            }
+                            results.SingleChoices.Add(newsc);
+                        }
+                        else if (myelement.type == "checkbox")
+                        {
+                            var newsc = new SurveyMultipleChoiceAnswersModel();
+                            List<SurveyElementsChoicesModel> choices = new List<SurveyElementsChoicesModel>();
+                            choices = JsonConvert.DeserializeObject<List<SurveyElementsChoicesModel>>(Convert.ToString(myelement.choices));
+                            foreach (SurveyElementsChoicesModel choice in choices)
+                            {
+                                newsc.question = myelement.title;
+                                newsc.questionname = myelement.name;
+                                newsc.values.Add(choice.value);
+                                newsc.answers.Add(choice.text);
+                                newsc.counts.Add(0);
+                            }
+                            results.MultipleChoices.Add(newsc);
+                        }
+                    }
+                }
+
                 var responses = db.SurveyResponse.Where(p => p.SurveyID == id).Select(s => new SurveyResponseModel
                 {
                     ID = s.ID,
@@ -1847,73 +2189,122 @@ namespace FEP.WebApi.Api.RnP
 
                 results.ParticipantCount = responses.Count;
 
-                string csvstring = "";
-
                 foreach (SurveyResponseModel response in responses)
                 {
-                    results.Results = results.Results + response.Contents + "\r\n";
-                    var answers = JsonConvert.DeserializeObject<List<SurveyAnswersModel>>(response.Answers);
-                    foreach (var myanswer in answers)
+                    results.Answers.Add(new List<string>());
+                    var lastindex = results.Answers.Count() - 1;
+                    results.RawResults = results.RawResults + response.Contents + "\r\n";
+                    var inputs = JsonConvert.DeserializeObject<List<SurveyAnswersModel>>(response.Answers);
+
+                    string lastq = "";
+                    int lastqindex = 0;
+                    string lastrow = "";
+
+                    foreach (var myinput in inputs)
                     {
-                        results.CSVOutput = results.CSVOutput + myanswer.answer;
+                        string realq = "";
+                        int dotpos = myinput.question.IndexOf('.');
+                        if (dotpos == -1)
+                        {
+                            realq = myinput.question;
+                        }
+                        else
+                        {
+                            realq = myinput.question.Substring(0, dotpos);
+                        }
+
+                        if (realq != lastq)
+                        {
+                            results.RawOutput = results.RawOutput + "#" + myinput.answer;
+
+                            // raw
+                            if (myinput.questionType == "checkbox")
+                            {
+                                List<string> items = new List<string>();
+                                items = JsonConvert.DeserializeObject<List<string>>(Convert.ToString(myinput.answer));
+                                string itemstring = "";
+                                foreach (string item in items)
+                                {
+                                    itemstring = itemstring + "|" + item;
+                                }
+                                itemstring = itemstring.Substring(1);
+                                results.Answers[lastindex].Add(itemstring);
+                            }
+                            else if (myinput.questionType == "dropdown")
+                            {
+                                var rowpos = 0;
+                                var colpos = 0;
+                                rowpos = myinput.question.IndexOf("row_");
+                                colpos = myinput.question.IndexOf("col_");
+                                if ((rowpos != -1) && (colpos != -1))
+                                {
+                                    lastrow = "1";
+                                    results.Answers[lastindex].Add("Row 1: " + Convert.ToString(myinput.answer));
+                                }
+                                else
+                                {
+                                    results.Answers[lastindex].Add(Convert.ToString(myinput.answer));
+                                }
+                            }
+                            else
+                            {
+                                results.Answers[lastindex].Add(Convert.ToString(myinput.answer));
+                            }
+                            lastqindex = results.Answers[lastindex].Count() - 1;
+
+                            // stats
+                            //foreach results.
+                        }
+                        else
+                        {
+                            // raw
+                            if (myinput.questionType == "dropdown")
+                            {
+                                var rowpos = 0;
+                                var colpos = 0;
+                                rowpos = myinput.question.IndexOf("row_");
+                                colpos = myinput.question.IndexOf("col_");
+                                if ((rowpos != -1) && (colpos != -1))
+                                {
+                                    var rownumpos = rowpos + 4;
+                                    var nextdotpos = myinput.question.IndexOf('.', rowpos);
+                                    var rownumlen = nextdotpos - rownumpos;
+                                    var rownum = myinput.question.Substring(rownumpos, rownumlen);
+                                    if (rownum == lastrow)
+                                    {
+                                        results.RawOutput = results.RawOutput + "|" + myinput.answer;
+                                        results.Answers[lastindex][lastqindex] = results.Answers[lastindex][lastqindex] + "|" + Convert.ToString(myinput.answer);
+                                    }
+                                    else
+                                    {
+                                        results.RawOutput = results.RawOutput + "|" + myinput.answer;
+                                        results.Answers[lastindex][lastqindex] = results.Answers[lastindex][lastqindex] + ";" + "Row " + rownum + ": " + Convert.ToString(myinput.answer);
+                                        lastrow = rownum;
+                                    }
+                                }
+                                else
+                                {
+                                    results.RawOutput = results.RawOutput + "|" + myinput.answer;
+                                    results.Answers[lastindex][lastqindex] = results.Answers[lastindex][lastqindex] + "|" + Convert.ToString(myinput.answer);
+                                }
+                            }
+                            else
+                            {
+                                results.RawOutput = results.RawOutput + "|" + myinput.answer;
+                                results.Answers[lastindex][lastqindex] = results.Answers[lastindex][lastqindex] + "|" + Convert.ToString(myinput.answer);
+                            }
+
+                            // stats
+                        }
+                        lastq = realq;
                     }
-                    //results.CSVOutput = results.CSVOutput + answers.
+                    results.RawOutput = results.RawOutput + "\r\n";
                 }
-
-                //var jsonobj1 = JsonConvert.DeserializeObject(results.Results);
-
-                //csvstring = JsonToCSV(results.Results, ",");
-                //results.CSVOutput = csvstring;
 
                 return results;
             }
 
             return null;
-        }
-
-
-        // Private functions
-
-        // export conversion functions
-
-        // json -> datatable
-        [NonAction]
-        private static DataTable jsonStringToTable(string jsonContent)
-        {
-            DataTable dt = JsonConvert.DeserializeObject<DataTable>(jsonContent);
-            return dt;
-        }
-
-        // csv
-        [NonAction]
-        private string JsonToCSV(string jsonContent, string delimiter)
-        {
-            StringWriter csvString = new StringWriter();
-            using (var csv = new CsvWriter(csvString))
-            {
-                //csv.Configuration.SkipEmptyRecords = true;
-                //csv.Configuration.WillThrowOnMissingField = false;
-                csv.Configuration.Delimiter = delimiter;
-
-                using (var dt = jsonStringToTable(jsonContent))
-                {
-                    foreach (DataColumn column in dt.Columns)
-                    {
-                        csv.WriteField(column.ColumnName);
-                    }
-                    csv.NextRecord();
-
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        for (var i = 0; i < dt.Columns.Count; i++)
-                        {
-                            csv.WriteField(row[i]);
-                        }
-                        csv.NextRecord();
-                    }
-                }
-                return csvString.ToString();
-            }
         }
 
         // Targeted Groups lookup

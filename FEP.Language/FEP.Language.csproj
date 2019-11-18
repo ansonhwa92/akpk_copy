@@ -46,6 +46,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Survey.Designer.cs">
+      <DependentUpon>Survey.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Publication.Designer.cs">
+      <DependentUpon>Publication.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="RnPForm.Designer.cs">
       <DependentUpon>RnPForm.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -212,6 +222,14 @@
     <EmbeddedResource Include="DutyRoster.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DutyRoster.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Survey.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Survey.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Publication.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Publication.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RnPForm.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

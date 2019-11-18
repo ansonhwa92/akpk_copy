@@ -1046,4 +1046,16 @@ namespace FEP.WebApiModel.RnP
         public bool Used { get; set; }
     }
 
+    // Class for returning/updating publication settings
+    public class PublicationSettingsModel
+    {
+        [Display(Name = "Publication Hardcopy Return Period (Days)")]
+        [Required]
+        public int HardcopyReturnPeriod { get; set; }
+
+        [Display(Name = "Minimum Year of Publication")]
+        [Required]
+        public int MinimumPublishedYear { get; set; }
+    }
+
 }

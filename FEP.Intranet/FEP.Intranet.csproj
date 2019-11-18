@@ -980,6 +980,9 @@
     <Content Include="Areas\RnP\Views\Publication\_DigitalPublicationDetails.cshtml" />
     <Content Include="Areas\RnP\Views\Home\PublicationPreview.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Results.cshtml" />
+    <Content Include="Areas\Commerce\Views\Cart\RefundHistory.cshtml" />
+    <Content Include="Areas\RnP\Views\Publication\Settings.cshtml" />
+    <Content Include="Areas\RnP\Views\Survey\List.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

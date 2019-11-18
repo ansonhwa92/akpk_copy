@@ -1837,6 +1837,76 @@ namespace FEP.WebApi.Api.RnP
         }
 
         /*
+         * Settings
+        */
+
+        // Load Settings
+        // GET: api/RnP/Publication/LoadSettings
+        [Route("api/RnP/Publication/LoadSettings")]
+        [HttpGet]
+        public PublicationSettingsModel LoadSettings()
+        {
+            var settings = db.PublicationSettings.Select(s => new PublicationSettingsModel
+            {
+                HardcopyReturnPeriod = s.HardcopyReturnPeriod,
+                MinimumPublishedYear = s.MinimumPublishedYear
+            }).FirstOrDefault();
+
+            return settings;
+        }
+
+        // Get specific setting: HardcopyReturnPeriod
+        // GET: api/RnP/Publication/GetSettingsHardcopyReturnPeriod
+        [Route("api/RnP/Publication/GetSettingsHardcopyReturnPeriod")]
+        [HttpGet]
+        public int GetSettingsHardcopyReturnPeriod()
+        {
+            var settings = db.PublicationSettings.Select(s => new PublicationSettingsModel
+            {
+                HardcopyReturnPeriod = s.HardcopyReturnPeriod
+            }).FirstOrDefault();
+
+            return settings.HardcopyReturnPeriod;
+        }
+
+        // Get specific setting: MinimumPublishedYear
+        // GET: api/RnP/Publication/GetSettingsMinimumPublishedYear
+        [Route("api/RnP/Publication/GetSettingsMinimumPublishedYear")]
+        [HttpGet]
+        public int GetSettingsMinimumPublishedYear()
+        {
+            var settings = db.PublicationSettings.Select(s => new PublicationSettingsModel
+            {
+                MinimumPublishedYear = s.MinimumPublishedYear
+            }).FirstOrDefault();
+
+            return settings.MinimumPublishedYear;
+        }
+
+        // Save Settings
+        // POST: api/RnP/Publication/SaveSettings
+        [Route("api/RnP/Publication/SaveSettings")]
+        [HttpPost]
+        public bool SaveSettings(PublicationSettingsModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var settings = db.PublicationSettings.FirstOrDefault();
+
+                if (settings != null)
+                {
+                    settings.HardcopyReturnPeriod = model.HardcopyReturnPeriod;
+                    settings.MinimumPublishedYear = model.MinimumPublishedYear;
+                    db.Entry(settings).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /*
          * The following API calls are for SLAReminder/Notifications including:
          * 1. Get notification receiver IDs
          * 2. Save notification ID (to publication table)

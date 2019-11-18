@@ -75,6 +75,21 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                 ViewBag.CategoryId = new SelectList(categories, "Id", "Name");
             }
 
+            var resYear = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/GetSettingsMinimumPublishedYear");
+
+            
+            if (!resYear.isSuccess)
+            {
+                ViewBag.MinimumYear = 1900;
+            }
+            else
+            {
+                ViewBag.MinimumYear = resYear.Data;
+            }
+            
+
+            //ViewBag.MinimumYear = GetMinimumPublishedYear();
+
             var model = new CreatePublicationModel();
             return View(model);
         }
@@ -282,6 +297,21 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             var categories = resCat.Data;
+
+            
+            var resYear = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/GetSettingsMinimumPublishedYear");
+
+            if (!resYear.isSuccess)
+            {
+                ViewBag.MinimumYear = 1900;
+            }
+            else
+            {
+                ViewBag.MinimumYear = resYear.Data;
+            }
+            
+
+            //ViewBag.MinimumYear = GetMinimumPublishedYear();
 
             ViewBag.CategoryId = new SelectList(categories, "Id", "Name", vmpublication.CategoryID);
 
@@ -1665,7 +1695,85 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return "error";
         }
 
+        // Settings
+
+        // Settings
+        // GET: RnP/Publication/Settings
+        [HasAccess(UserAccess.RnPPublicationEdit)]
+        public async Task<ActionResult> Settings()
+        {
+            var resSettings = await WepApiMethod.SendApiAsync<PublicationSettingsModel>(HttpVerbs.Get, $"RnP/Publication/LoadSettings");
+
+            if (!resSettings.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var settings = resSettings.Data;
+
+            if (settings == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(settings);
+        }
+
+        // Settings
+        // GET: RnP/Publication/Settings
+        [HasAccess(UserAccess.RnPPublicationEdit)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Settings(PublicationSettingsModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"RnP/Publication/SaveSettings", model);
+
+                if (response.isSuccess)
+                {
+                    await LogActivity(Modules.RnP, "Save Publication Settings");
+
+                    TempData["SuccessMessage"] = "Publication Settings saved successfully.";
+
+                    return RedirectToAction("Settings", "Publication", new { area = "RnP" });
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Failed to save Publication Settings.";
+
+                    return RedirectToAction("Settings", "Publication", new { area = "RnP" });
+                }
+            }
+
+            return View();
+        }
+
         // Private functions
+
+        // Get minimum publication year from API
+        private async Task<int> GetMinimumPublishedYear()
+        {
+            var resYear = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/GetSettingsMinimumPublishedYear");
+
+            if (resYear.isSuccess)
+            {
+                return resYear.Data;
+            }
+            return 1900;
+        }
+
+        // Get hardcopy return period from API
+        private async Task<int> GetHardcopyReturnPeriod()
+        {
+            var resDays = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/GetSettingsHardcopyReturnPeriod");
+
+            if (resDays.isSuccess)
+            {
+                return resDays.Data;
+            }
+            return 30;
+        }
 
         // get notification receiver IDs
         // called by SendNotification

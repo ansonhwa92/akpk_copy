@@ -210,6 +210,16 @@ namespace FEP.Model
     }
     */
 
+    [Table("PublicationSettings")]
+    public class PublicationSettings
+    {
+        [Key]
+        public int ID { get; set; }
+        public int HardcopyReturnPeriod { get; set; }
+        public int MinimumPublishedYear { get; set; }
+        // stock balance before alert
+    }
+
     public enum PublicationCategories
     {
         [Display(Name = "PubCategoryArticles", ResourceType = typeof(Language.RnPEnum))]

@@ -413,6 +413,16 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             //{
             //    ItemId =
             //};
+            var resDeadline = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/GetSettingsHardcopyReturnPeriod");
+
+            if (!resDeadline.isSuccess)
+            {
+                ViewBag.Deadline = purchase.PaymentDate.Value.AddDays(resDeadline.Data).ToString("dd/MM/yyyy");
+            }
+            else
+            {
+                ViewBag.Deadline = purchase.PaymentDate.Value.AddDays(30).ToString("dd/MM/yyyy");
+            }
 
             var details = new ListPurchaseDetailsModel
             {
@@ -478,6 +488,23 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             }
 
             return "error";
+        }
+
+        // View refund status/history
+        // GET: Commerce/Cart/RefundHistory
+        [HttpGet]
+        public async Task<ActionResult> RefundHistory()
+        {
+            var resBank = await WepApiMethod.SendApiAsync<List<BankInformationModel>>(HttpVerbs.Get, $"Commerce/Cart/GetBanks");
+
+            if (!resBank.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Banks = resBank.Data;
+
+            return View();
         }
 
     }

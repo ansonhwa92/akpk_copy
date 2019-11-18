@@ -21,25 +21,6 @@ namespace FEP.Intranet.Areas.RnP.Controllers
     public class SurveyController : FEPController
     {
 
-        /*
-        // GET: RnP/Survey
-        public async Task<ActionResult> Index()
-        {
-            var resSurveys = await WepApiMethod.SendApiAsync<IEnumerable<ReturnSurveyModel>>(HttpVerbs.Get, $"RnP/Survey");
-
-            if (resSurveys.isSuccess)
-            {
-                var surveys = resSurveys.Data;
-                if (surveys == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(surveys);
-            }
-            return View();
-        }
-        */
-
         // GET: RnP/Survey
         [HasAccess(UserAccess.RnPSurveyView)]
         public ActionResult Index()
@@ -52,6 +33,13 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         public ActionResult _Menu()
         {
             return PartialView();
+        }
+
+        // GET: RnP/Survey/List
+        [HasAccess(UserAccess.RnPSurveyView)]
+        public ActionResult List()
+        {
+            return View();
         }
 
         // Show select survey type form
@@ -1521,6 +1509,35 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             var results = resResults.Data;
 
             return View(results);
+        }
+
+        // Export survey results to csv
+        // GET: RnP/Survey/ExportCSV/5
+        [HasAccess(UserAccess.RnPSurveyView)]
+        [HttpGet]
+        public async Task<System.Net.Http.HttpResponseMessage> ExportCSV(int? id)
+        {
+            if (id == null)
+            {
+                return new System.Net.Http.HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+
+            //var resResults = await WepApiMethod.SendApiAsync<System.Net.Http.HttpResponseMessage>(HttpVerbs.Get, $"RnP/Survey/ExportToCsv?id={id}");
+            var resResults = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Get, $"RnP/Survey/ExportToCsv?id={id}");
+
+            if (!resResults.isSuccess)
+            {
+                return new System.Net.Http.HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+
+            var results = resResults.Data;
+
+            System.Net.Http.HttpResponseMessage result = new System.Net.Http.HttpResponseMessage(HttpStatusCode.OK);
+            result.Content = new System.Net.Http.StringContent(results);
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment") { FileName = "export.csv" };
+
+            return result;
         }
 
         // Private functions

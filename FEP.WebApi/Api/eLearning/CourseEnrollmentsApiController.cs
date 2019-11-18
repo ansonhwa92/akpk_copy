@@ -298,65 +298,51 @@ namespace FEP.WebApi.Api.eLearning
         [HttpGet]
         public async Task<IHttpActionResult> GetUserDetails (int id)
         {
-            //var entity = db.Enrollments
-            //    .Include(x => x.Learner)
-            //    .Include(x => x.Course)
-            //    .Include(x => x.CourseEvent)
-            //    .Include(x => x.CourseProgress)
-            //    .Include(x => x.EnrollmentHistories)
-            //    .FirstOrDefault(x => x.Id == id);
 
-            //if (entity == null)
-            //{
-            //    return NotFound();
-            //}
+            var user = await db.Enrollments
+                .Include(x => x.Learner)
+                .Include(x => x.Course)
+                .Include(x => x.CourseEvent)
+                .Include(x => x.CourseProgress)
+                .Include(x => x.EnrollmentHistories)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-        var user = await db.Enrollments
-            .Include(x => x.Learner)
-            .Include(x => x.Course)
-            .Include(x => x.CourseEvent)
-            .Include(x => x.CourseProgress)
-            .Include(x => x.EnrollmentHistories)
-            .FirstOrDefaultAsync(x => x.Id == id);
-
-            var entity = new UserCourseEnrollmentModel
-            {
-                Id = user.Id,
-                StudentName = String.IsNullOrEmpty(user.Learner.User.Name) ? "" : user.Learner.User.Name,
-                SessionName = db.CourseEvents.Find(user.CourseEventId).Name,
-                CourseEventId = user.CourseEventId,
-                CourseTitle = user.Course.Title,
-                DateEnrolled = user.EnrolledDate.ToString(),
-                Status = user.Status,
-                CoursePercentageCompleted = user.PercentageCompleted.ToString(),
-                CompletionDate = user.CompletionDate.ToString(),
-                //CourseProgress = user.CourseProgress,
-                EnrollmentHistory = user.EnrollmentHistories
-            };
-
-            var courseProgress = db.CourseProgress.Where(x => x.EnrollmentId == entity.Id).ToList();
-
-            var progress = new List<ReturnCourseProgressModel>();
-
-            foreach (var item in courseProgress)
-            {
-                var module = db.CourseModules.Find(item.ModuleId);
-
-                progress.Add(new ReturnCourseProgressModel
+                var entity = new UserCourseEnrollmentModel
                 {
-                    EnrollmentId = item.EnrollmentId,
-                    ModuleName = module.Title,
-                    IsCompleted = item.IsCompleted,
-                    Score = item.Score,
-                });
-            }
-            entity.CourseProgress = progress;
+                    Id = user.Id,
+                    StudentName = String.IsNullOrEmpty(user.Learner.User.Name) ? "" : user.Learner.User.Name,
+                    SessionName = db.CourseEvents.Find(user.CourseEventId).Name,
+                    CourseEventId = user.CourseEventId,
+                    CourseTitle = user.Course.Title,
+                    DateEnrolled = user.EnrolledDate.ToString(),
+                    Status = user.Status,
+                    CoursePercentageCompleted = user.PercentageCompleted.ToString(),
+                    CompletionDate = user.CompletionDate.ToString(),
+                    //CourseProgress = user.CourseProgress,
+                    EnrollmentHistory = user.EnrollmentHistories
+                };
 
-            return Ok(entity);
+                var courseProgress = db.CourseProgress.Where(x => x.EnrollmentId == entity.Id).ToList();
+
+                var progress = new List<ReturnCourseProgressModel>();
+
+                foreach (var item in courseProgress)
+                {
+                    var module = db.CourseModules.Find(item.ModuleId);
+
+                    progress.Add(new ReturnCourseProgressModel
+                    {
+                        EnrollmentId = item.EnrollmentId,
+                        ModuleName = module.Title,
+                        IsCompleted = item.IsCompleted,
+                        Score = item.Score,
+                    });
+                }
+                entity.CourseProgress = progress;
+
+                return Ok(entity);
 
         }
-
-
 
 
         /// For use in view content, when user wants to ernoll

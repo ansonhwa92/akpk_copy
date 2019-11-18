@@ -272,6 +272,9 @@ namespace FEP.WebApi.Api.eLearning
                 course.CreatedByName = puser.Name;
             }
 
+            course.Description = HttpUtility.HtmlDecode(course.Description);
+            course.Objectives = HttpUtility.HtmlDecode(course.Objectives);
+
             return course;
         }
 

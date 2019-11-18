@@ -49,9 +49,6 @@
     @Html.HiddenFor(m => m.Id)
 
     <div class="row">
-
-        @*@Html.Partial("_contentSidebar")*@
-
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
             <!-- Start Form -->
             <div class="border-form rounded-top">
@@ -103,166 +100,90 @@
                             MODULES COMPLETED
                         </div>
 
-                        <!----START MODULES -->
-                        <div id="draggable-module">
-                            @{
-
-                                var modules = Model.CourseProgress.ToList();
-
-                                for (int i = 0; i < modules.Count(); i++)
-                                {
-                                    var module = modules[i];
-
-                                    <div class="module-box">
-                                        <div class="row  mb-12">
-                                            <span class="moduleTitle">@module.ModuleName</span>
+                        <div class="divtableStyle1">
+                            <div class="row no-gutters">
+                                <div class="col-lg-12 divTableWrap">
+                                    <div class="divtableheader">
+                                        <div class="row">
+                                            <div class="col-2 text-center">No.</div>
+                                            <div class="col-3 text-center">Module Name</div>
+                                            <div class="col-3 text-center">Score</div>
+                                            <div class="col-3 text-center">Is Completed?</div>
                                         </div>
-
-                                        <div class="col-sm-12">
-                                            <span class="moduleTitle">Score : </span>
-                                            <span class="moduleTitle">@module.Score</span>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <span class="moduleTitle">Completed? : </span>
-                                            <span class="moduleTitle">@module.IsCompleted</span>
-                                        </div>
-                                        <div class="divider"></div>
                                     </div>
-                                }
-                            }
+                                    <div class="divtableBody">
+
+                                        <div id="addForm"></div>
+                                        @{ var i = 0;
+                                            var modules = Model.CourseProgress.ToList();
+                                        }
+                                        @foreach (var item in modules)
+                                        {
+                                            { i++; }
+                                            <div class="details">
+                                                <div class="row divTd">
+                                                    <div class="col-2 text-center">@i</div>
+                                                    <div class="col-3 text-center">@Html.DisplayFor(m => item.ModuleName)</div>
+                                                    <div class="col-3 text-center">@Html.DisplayFor(m => item.Score)</div>
+                                                    <div class="col-3 text-center">@Html.DisplayFor(m => item.IsCompleted)</div>
+                                                </div>
+                                            </div>
+                                            @*<div class="editForm"></div>*@
+
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!----END MODULES -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
-            <div id="page-nav" class="sidebar-left page-nav">
-                <div data-perfect-scrollbar class="ps">
-                    <h6 class="color-darkblue px-3"><i class="la la-comment color-secondary font-icon align-top"></i>Enrollment History</h6>
-                        <!-- Kalau banyak action log akan jd scroll ke bwh -->
-                        <div data-perfect-scrollbar class="position-relative">
 
-                            @if (Model.EnrollmentHistory.Count != 0)
-                            {
+                        <hr />
 
-                                foreach (var item in Model.EnrollmentHistory.OrderByDescending(x => x.CreatedDate))
-                                {
-
-                                    <div class="border-form rounded mb-2">
-                                        <div class="small text-muted">
-                                            @item.CreatedDate.ToString("dd/MM/yyyy")
-                                            <span class="float-right">@item.CreatedDate.ToString("hh:mm tt")</span>
+                        <div class="subtitle">
+                            ENROLLMENT HISTORY
+                        </div>
+                        <div class="divtableStyle1">
+                            <div class="row no-gutters">
+                                <div class="col-lg-12 divTableWrap">
+                                    <div class="divtableheader">
+                                        <div class="row">
+                                            <div class="col-2 text-center">No.</div>
+                                            <div class="col-3 text-center">Date</div>
+                                            <div class="col-3">Remark</div>
+                                            <div class="col-3">Status</div>
                                         </div>
-
-                                        @{
-                                            switch (item.Status)
-                                            {
-                                                case EnrollmentStatus.None:
-                                                    <div class="small">
-                                                        @*<span class="card__author-name color-darkblue">@item.ApprovedByName</span>*@
-                                                        @*<br><strong>Designation: Approval Result</strong>*@
-                                                        <br>Status — <span class="color-green">Not Enrolled</span>
-                                                    </div>
-                                                    break;
-                                                case EnrollmentStatus.Invited:
-                                                    <div class="small">
-                                                        @*<span class="card__author-name color-darkblue">@item.ApprovedByName</span>
-                                                        <br><strong>:Designation: Approval Result</strong>*@
-                                                        <br>Status — <span class="color-yellow">Invited but not enrolled</span>
-                                                    </div>
-                                                    break;
-                                                case EnrollmentStatus.Enrolled:
-                                                    <div class="small">
-                                                        @*<span class="card__author-name color-darkblue">@item.CreatedByName</span>*@
-                                                        @*<br><strong>:Submission For Approval</strong><br>— <span class="color-yellow"></span>*@
-                                                        <br>Status — <span class="color-yellow">Enrolled</span>
-                                                    </div>
-                                                    break;
-                                                       case EnrollmentStatus.Withdrawn:
-                                                    <div class="small">
-                                                        @*<span class="card__author-name color-darkblue">@item.CreatedByName</span>*@
-                                                        @*<br><strong>:Submission For Approval</strong><br>— <span class="color-yellow"></span>*@
-                                                        <br>Status — <span class="color-yellow">Withdrawn</span>
-                                                    </div>
-                                                    break;
-                                                    case EnrollmentStatus.Cancelled:
-                                                    <div class="small">
-                                                        @*<span class="card__author-name color-darkblue">@item.CreatedByName</span>*@
-                                                        @*<br><strong>:Submission For Approval</strong><br>— <span class="color-yellow"></span>*@
-                                                        <br>Status — <span class="color-yellow">Invitation cancelled after invited and enrolled</span>
-                                                    </div>
-                                                    break;
-                                                     case EnrollmentStatus.Removed:
-                                                    <div class="small">
-                                                        @*<span class="card__author-name color-darkblue">@item.CreatedByName</span>*@
-                                                        @*<br><strong>:Submission For Approval</strong><br>— <span class="color-yellow"></span>*@
-                                                        <br>Status — <span class="color-yellow">Removed from the course</span>
-                                                    </div>
-                                                    break;
-                                                    case EnrollmentStatus.Completed:
-                                                    <div class="small">
-                                                        @*<span class="card__author-name color-darkblue">@item.CreatedByName</span>*@
-                                                        @*<br><strong>:Submission For Approval</strong><br>— <span class="color-yellow"></span>*@
-                                                        <br>Status — <span class="color-yellow">Completed the course</span>
-                                                    </div>
-                                                    break;
-                                                default:
-                                                    <div class="small text-muted">
-                                                        @*<span class="card__author-name color-darkblue">@item.CreatedByName</span>
-                                                        <br><strong>:Activity</strong><br>— <span class="color-yellow"></span>*@
-                                                        <br>Status — <span class="color-yellow">Failed</span>
-
-                                                    </div>
-                                                    break;
-
-                                            }
-                                            if (item.Remark != "")
-                                            {
-                                                <div class="small mt-2"><strong>Remark:</strong> <em>@item.Remark</em></div>
-                                            }
-                                        }
                                     </div>
-                                }
+                                    <div class="divtableBody">
 
-                            }
+                                        <div id="addForm"></div>
+                                        @{ var p = 0;
+                                            var history = Model.EnrollmentHistory.ToList();
+                                        }
+                                        @foreach (var item in history)
+                                        {
+                                            { p++; }
+                                            <div class="details">
+                                                <div class="row divTd">
+                                                    <div class="col-2 text-center">@p</div>
+                                                    <div class="col-3">@Html.DisplayFor(m => item.CreatedDate)</div>
+                                                    <div class="col-3">@Html.DisplayFor(m => item.Remark)</div>
+                                                    <div class="col-3">@Html.DisplayFor(m => item.Status)</div>
+                                                </div>
+                                            </div>
+                                            @*<div class="editForm"></div>*@
+
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    @*<div class="page-section">
-            <div class="subtitle color-darkblue"><i class="font-icon color-secondary align-bottom"></i>Enrollment History</div>
-            <ul style="padding-left: 20px;">
-                <li class="nav-item">
-                    <p class="x-small" style="margin-bottom: 0px;">
-                        <i class="la la-globe font-icon color-secondary"></i>1
-                    </p>
-                </li>
-                <li class="nav-item">
-                    <p class="x-small" style="margin-bottom: 0px;">
-                        <i class="la la-clock-o font-icon color-secondary"></i>2
-                    </p>
-                </li>
-                <li class="nav-item">
-                    <p class="x-small" style="margin-bottom: 0px;">
-                        <i class="la la-folder-open font-icon color-secondary"></i>3
-                    </p>
-                </li>
-
-                <li class="nav-item">
-                    <p class="x-small" style="margin-bottom: 0px;">
-                        <i class="la la-calendar-check-o font-icon color-secondary"></i>4
-                    </p>
-                </li>
-                <li class="nav-item">
-                    <p class="x-small" style="margin-bottom: 0px;">
-                        <i class="la la-volume-up font-icon color-secondary"></i>5
-                    </p>
-                </li>
-            </ul>
-        </div>*@
                 </div>
-
-
             </div>
         </div>
+        
     </div>
 </form>
 

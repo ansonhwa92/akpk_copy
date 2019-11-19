@@ -343,6 +343,20 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
                 return HttpNotFound();
             }
 
+            // update purchase count (+1 per purchase or +1 per unit??)
+
+            var resItems = await WepApiMethod.SendApiAsync<List<PurchaseOrderItemModel>>(HttpVerbs.Get, $"Commerce/Cart/GetPublications?id={id}");
+
+            if (resItems.isSuccess)
+            {
+                var items = resItems.Data;
+
+                foreach (PurchaseOrderItemModel item in items)
+                {
+                    var resIncrement = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/IncrementPurchase?id={id}&incrementvalue={item.Quantity}");
+                }
+            }
+
             return RedirectToAction("Items", "Cart", new { area = "Commerce" });
         }
 
@@ -399,6 +413,16 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             //{
             //    ItemId =
             //};
+            var resDeadline = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/GetSettingsHardcopyReturnPeriod");
+
+            if (!resDeadline.isSuccess)
+            {
+                ViewBag.Deadline = purchase.PaymentDate.Value.AddDays(resDeadline.Data).ToString("dd/MM/yyyy");
+            }
+            else
+            {
+                ViewBag.Deadline = purchase.PaymentDate.Value.AddDays(30).ToString("dd/MM/yyyy");
+            }
 
             var details = new ListPurchaseDetailsModel
             {
@@ -464,6 +488,23 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             }
 
             return "error";
+        }
+
+        // View refund status/history
+        // GET: Commerce/Cart/RefundHistory
+        [HttpGet]
+        public async Task<ActionResult> RefundHistory()
+        {
+            var resBank = await WepApiMethod.SendApiAsync<List<BankInformationModel>>(HttpVerbs.Get, $"Commerce/Cart/GetBanks");
+
+            if (!resBank.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Banks = resBank.Data;
+
+            return View();
         }
 
     }

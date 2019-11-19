@@ -1,7 +1,7 @@
-﻿@model FEP.WebApiModel.RnP.UpdatePublicationViewModel
+﻿@model FEP.WebApiModel.Setting.DetailsTargetedGroup
 
 @{
-    ViewBag.Title = "Publication Details";
+    ViewBag.Title = "Target Group Details";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
@@ -10,21 +10,19 @@
         <div class="title-header-container">
             <div class="container">
                 <!-- if have button -->
-                <div class="header-col-right float-right mt-5"><a href="~/RnP/Publication" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-right float-right mt-5"><a href="~/Setting/Group" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
-                                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
-                                <li class="breadcrumb-item"><a href="~/RnP/Publication">Publication</a></li>
-                                <li class="breadcrumb-item"><a href="#">Publication Request</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Group", new { area = "Setting" })">Target Group Management</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Publication Request Ref No: @Model.Auto.RefNo</h1>
-                    <div class="header-text"><!--View details of publication.--></div>
+                    <h1 class="page-title text-white">Target Group Details</h1>
+                    <div class="header-text">View details of target group.</div>
                 </div>
             </div>
         </div>
@@ -32,638 +30,111 @@
 }
 
 <div class="row">
-
     <div class="col-xl-3 col-md-3 col-sm-4 my-2">
         <div id="page-nav" class="sidebar-left page-nav">
             <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Request Information</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i>Target Group Management</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a id="tab_details" href="#publication-details" data-toggle="tab" class="nav-link active">Publication Details</a>
-                        </li>
-                        @if (Model.Cancellation.CancelRemark != "")
-                        {
-                            <li class="nav-item">
-                                <a id="tab_cancellation" href="#publication-cancellation" data-toggle="tab" class="nav-link active">Cancellation Information</a>
-                            </li>
-                        }
-                        @if (Model.Withdrawal.WithdrawalReason != "")
-                        {
-                            <li class="nav-item">
-                                <a id="tab_withdrawal" href="#publication-withdrawal" data-toggle="tab" class="nav-link active">Withdrawal Information</a>
-                            </li>
-                        }
-                        <li class="nav-item">
-                            <a id="tab_history" href="#amendment-history" data-toggle="tab" class="nav-link active">Amendment History</a>
+                            <a id="tab_details" href="#group-details" data-toggle="tab" class="nav-link active">Target Group Details</a>
                         </li>
                     </ul>
-                </div>
-                <div>
-                    @{ if ((Model.Auto.Status == PublicationStatus.New) && (CurrentUser.HasAccess(UserAccess.RnPPublicationEdit)))
-                        {
-                            <p><button class="btn btn-secondary btn-block mb-2" id="btnSubmit" data-pubid="@Model.Pub.ID">Submit for Verification</button></p>
-                        }
-                        else if ((Model.Auto.Status == PublicationStatus.Approved) && (CurrentUser.HasAccess(UserAccess.RnPPublicationPublish)))
-                        {
-                            <p><button class="btn btn-secondary btn-block mb-2" id="btnPublish" data-pubid="@Model.Pub.ID">Publish on FEP</button></p>
-                        }
-                        else if ((Model.Auto.Status == PublicationStatus.Published) && (CurrentUser.HasAccess(UserAccess.RnPPublicationWithdraw)))
-                        {
-                            <p><button class="btn btn-secondary btn-block mb-2" id="btnWithdraw">Withdraw Publication</button></p>
-                        }
-                        else if (((Model.Auto.Status == PublicationStatus.VerifierRejected) || (Model.Auto.Status == PublicationStatus.ApproverRejected)) && (CurrentUser.HasAccess(UserAccess.RnPPublicationEdit)))
-                        {
-                            <p><button class="btn btn-outline-danger btn-block mb-2" id="btnCancel">Cancel Publication</button></p>
-                        }
-                        else if (((Model.Auto.Status == PublicationStatus.WithdrawalVerifierRejected) || (Model.Auto.Status == PublicationStatus.WithdrawalApproverRejected)) && (CurrentUser.HasAccess(UserAccess.RnPPublicationEdit)))
-                        {
-                            <p><button class="btn btn-secondary btn-block mb-2" id="btnCancelWithdrawal" data-pubid="@Model.Pub.ID">Cancel Withdrawal</button></p>
-                        }
-                    }
                 </div>
             </div>
         </div>
     </div>
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-        <!-- Start Form -->
         <div class="border-form rounded-top">
             <div class="form-container tab-content">
                 <div class="tab-pane active" id="publication-details">
                     <div class="tab-pane" id="setting1">
                         <div class="d-flex align-items-center mb-4 mt-2">
-                            <h4 class="color-darkblue mr-auto mb-0">Publication Details<br><span class="small">View publication details below.</span></h4>
-                            @{ if (((Model.Auto.Status == PublicationStatus.New) || (Model.Auto.Status == PublicationStatus.VerifierRejected) || (Model.Auto.Status == PublicationStatus.ApproverRejected)) && (CurrentUser.HasAccess(UserAccess.RnPPublicationEdit)))
-                                {
-                                    <a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Edit", "Publication", new { area = "RnP", @id = Model.Pub.ID })"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
-                                }
-                                else if (((Model.Auto.Status == PublicationStatus.WithdrawalVerifierRejected) || (Model.Auto.Status == PublicationStatus.WithdrawalApproverRejected)) && (CurrentUser.HasAccess(UserAccess.RnPPublicationWithdraw)))
-                                {
-                                    <a class="btn btn-default btn-sm mw-auto" id="btnEditWithdrawal" href="#"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit Withdrawal</a>
-                                }
-                            }
+                            <h4 class="color-darkblue mr-auto mb-0">Target Group Details<br><span class="small">View target group details below.</span></h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                            <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Description)</textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-6">
-                            @Html.LabelFor(model => model.Auto.RefNo, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Auto.RefNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.LabelFor(model => model.MinAge, htmlAttributes: new { @class = "control-label" })
+                            <select name="MinAge" id="MinAge" class="form-control" readonly="readonly"></select>
                         </div>
                         <div class="form-group col-lg-6">
-                            @Html.LabelFor(model => model.Auto.Status, htmlAttributes: new { @class = "control-label" })
-                            @*Html.EditorFor(model => model.Auto.Status, new { htmlAttributes = new { @class = "form-control bg-warning-ccd", @readonly = "readonly" } })*@
-                            @{ if (Model.Auto.Status == PublicationStatus.New)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Draft">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.Submitted)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Verification">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.VerifierRejected)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Amendment">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.Verified)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Approval @ViewBag.ApprovalStage">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.ApproverRejected)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Pending Amendment">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.Approved)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Approved">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.Published)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Published">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.Unpublished)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Unpublished">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.Trashed)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Cancelled">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.NewWithdrawal)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Draft Withdrawal">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.WithdrawalSubmitted)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Verification">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.WithdrawalVerifierRejected)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Amendment">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.WithdrawalVerified)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Approval @ViewBag.WithdrawalStage">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.WithdrawalApproverRejected)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Pending Amendment">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.WithdrawalApproved)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Approved">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.Withdrawn)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawn">
-                                }
-                                else if (Model.Auto.Status == PublicationStatus.WithdrawalTrashed)
-                                {
-                                    <input class="form-control bg-warning-ccd" name="Auto.Status" id="Auto_Status" type="text" readonly="readonly" value="Withdrawal Cancelled">
-                                }
-                            }
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pub.CategoryID, htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pub.Author, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pub.Author, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pub.Coauthor, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pub.Coauthor, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pub.Title, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pub.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.LabelFor(model => model.MaxAge, htmlAttributes: new { @class = "control-label" })
+                            <select name="MaxAge" id="MaxAge" class="form-control" readonly="readonly"></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-6">
-                            @Html.LabelFor(model => model.Pub.Year, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pub.Year, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.Gender, "Select Gender", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
                         </div>
                         <div class="form-group col-lg-6">
                             &nbsp;
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pub.Description, htmlAttributes: new { @class = "control-label" })
-                            @*Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @readonly = "readonly", cols = 48, @rows = 5 })*@
-                            <textarea id="Description" name="Description" class="form-control" rows="3" readonly="readonly">@Html.ValueFor(model => model.Pub.Description)</textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pub.Language, htmlAttributes: new { @class = "control-label" })
-                            <select class="js-example-basic-multiple" id="pub_lang" name="pub_langs[]" multiple="multiple" style="width: 100%;" disabled="disabled">
-                                <option value="Bahasa Malaysia">Bahasa Malaysia</option>
-                                <option value="English">English</option>
-                            </select>
-                            @Html.HiddenFor(model => model.Pub.Language, new { htmlAttributes = new { @class = "form-control" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pub.ISBN, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pub.ISBN, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            Format
-                        </div>
-                        <div class="form-group col-lg-4">
-                            Free?
-                        </div>
-                        <div class="form-group col-lg-4">
-                            Price (RM)
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            <div class="custom-control custom-checkbox">
-                                @Html.EditorFor(model => model.Pub.Hardcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.Pub.Hardcopy, htmlAttributes: new { @class = "custom-control-label" })
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <div class="custom-control custom-checkbox">
-                                @Html.EditorFor(model => model.Pub.FreeHCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.Pub.FreeHCopy, htmlAttributes: new { @class = "custom-control-label" })
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            @Html.EditorFor(model => model.Pub.HPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            <div class="custom-control custom-checkbox">
-                                @Html.EditorFor(model => model.Pub.Digitalcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.Pub.Digitalcopy, htmlAttributes: new { @class = "custom-control-label" })
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <div class="custom-control custom-checkbox">
-                                @Html.EditorFor(model => model.Pub.FreeDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.Pub.FreeDCopy, htmlAttributes: new { @class = "custom-control-label" })
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            @Html.EditorFor(model => model.Pub.DPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            <div class="custom-control custom-checkbox">
-                                @Html.EditorFor(model => model.Pub.HDcopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.Pub.HDcopy, htmlAttributes: new { @class = "custom-control-label" })
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <div class="custom-control custom-checkbox">
-                                @Html.EditorFor(model => model.Pub.FreeHDCopy, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.Pub.FreeHDCopy, htmlAttributes: new { @class = "custom-control-label" })
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            @Html.EditorFor(model => model.Pub.HDPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="form-group col-lg-6">
-                            @Html.LabelFor(model => model.Pub.StockBalance, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Pub.StockBalance, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.LabelFor(model => model.MinSalary, htmlAttributes: new { @class = "control-label" })
+                            <select name="MinSalary" id="MinSalary" class="form-control" readonly="readonly"></select>
                         </div>
                         <div class="form-group col-lg-6">
-                            &nbsp;
+                            @Html.LabelFor(model => model.MaxSalary, htmlAttributes: new { @class = "control-label" })
+                            <select name="MaxSalary" id="MaxSalary" class="form-control" readonly="readonly"></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pub.CoverPictures, htmlAttributes: new { @class = "control-label" })
-                            @Html.Partial("_CoverPictureDetails", Model.Pub.CoverPictures)
+                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.Status, "Select Status", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pub.AuthorPictures, htmlAttributes: new { @class = "control-label" })
-                            @Html.Partial("_AuthorPictureDetails", Model.Pub.AuthorPictures)
+                            @Html.LabelFor(model => model.PaymentStatus, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.PaymentStatus, "Select Payment Status", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Pub.ProofOfApproval, htmlAttributes: new { @class = "control-label" })
-                            @Html.Partial("_ProofOfApprovalDetails", Model.Pub.ProofOfApproval)
+                            @Html.LabelFor(model => model.Delinquent, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.Delinquent, "Select Delinquent Status", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
                         </div>
-                    </div>
-                </div>
-                @if (Model.Cancellation.CancelRemark != "")
-                {
-                    <div class="tab-pane" id="publication-cancellation">
-                        <div class="mb-4 mt-2 mr-auto">
-                            <h4 class="color-darkblue mb-0">Cancellation Details</h4>
-                            <h6 class="font-weight-normal">View cancellation details below.</h6>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" })
-                                <textarea name="CReason" id="CReason" class="form-control" rows="3" readonly="readonly">@Model.Cancellation.CancelRemark</textarea>
-                            </div>
-                        </div>
-                    </div>
-                }
-                @if (Model.Withdrawal.WithdrawalReason != "")
-                {
-                    <div class="tab-pane" id="publication-withdrawal">
-                        <div class="mb-4 mt-2 mr-auto">
-                            <h4 class="color-darkblue mb-0">Withdrawal Details</h4>
-                            <h6 class="font-weight-normal">View withdrawal details below.</h6>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Withdrawal.WithdrawalReason, htmlAttributes: new { @class = "control-label" })
-                                <textarea name="WReason" id="WReason" class="form-control" rows="3" readonly="readonly">@Model.Withdrawal.WithdrawalReason</textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.LabelFor(model => model.Withdrawal.ProofOfWithdrawal, htmlAttributes: new { @class = "control-label" })
-                                <input type="text" name="WProof" id="WProof" class="form-control" readonly="readonly" value="@Model.Withdrawal.ProofOfWithdrawal" />
-                            </div>
-                        </div>
-                    </div>
-                }
-                <div class="tab-pane" id="amendment-history">
-                    <div class="mb-4 mt-2 mr-auto">
-                        <h4 class="color-darkblue mb-0">Amendment History</h4>
-                        <h6 class="font-weight-normal">Check amendment list here.</h6>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            <ul class="list-group list-group-fit">
-                                @if (ViewBag.Withdrawal.Count != 0)
-                                {
-                                    var icount = 0;
-                                    foreach (var item in ViewBag.Withdrawal)
-                                    {
-                                        if (item.Status == PublicationApprovalStatus.Rejected)
-                                        {
-                                            icount++;
-                                            <li class="list-group-item pt-4">
-                                                <div class="media align-items-top">
-                                                    <div class="media-left">
-                                                        <div class="card__avatar">
-                                                            <img src="~/dist/assets/images/people/50/guy-6.jpg" alt="Avatar" class="card__avatar__image">
-                                                        </div>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div class="card__name-wrap ml-0">
-                                                            <div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
-                                                            <div class="card__author-name">@item.UserName</div>
-                                                            <div class="card__text pb-3">@item.Remarks</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        }
-                                    }
-                                }
-                                @if (ViewBag.History.Count != 0)
-                                {
-                                    var icount = 0;
-                                    foreach (var item in ViewBag.History)
-                                    {
-                                        if (item.Status == PublicationApprovalStatus.Rejected)
-                                        {
-                                            icount++;
-                                            <li class="list-group-item pt-4">
-                                                <div class="media align-items-top">
-                                                    <div class="media-left">
-                                                        <div class="card__avatar">
-                                                            <img src="~/dist/assets/images/people/50/guy-6.jpg" alt="Avatar" class="card__avatar__image">
-                                                        </div>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div class="card__name-wrap ml-0">
-                                                            <div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
-                                                            <div class="card__author-name">@item.UserName</div>
-                                                            <div class="card__text pb-3">@item.Remarks</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        }
-                                    }
-
-                                }
-
-                            </ul>
+                            @Html.LabelFor(model => model.EmploymentType, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.EmploymentType, "Select Employment Type", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
                         </div>
                     </div>
-                </div>
-                <!-- popups start -->
-                <!-- submit (if requires confirmation, otherwise direct js) -->
-                <!-- publish (same as above) -->
-                <!-- withraw -->
-                <div class="modal fade" id="modalWithdraw" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", name = "formwithdraw", id = "target" }))
-                    {
-                        @Html.AntiForgeryToken()
-
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                        <div class="modal-dialog modal-sm" role="document">
-                            <div class="modal-content">
-                                <div class="m-4 text-center">
-                                    <h4 class="color-darkblue mb-0" id="title_withdrawal">Withdraw Publication</h4>
-                                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <input type="hidden" class="form-control" name="ID" id="WithdrawID" value="@Model.Pub.ID" />
-                                        @Html.LabelFor(model => model.Withdrawal.WithdrawalReason, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                                        <textarea class="form-control" name="WithdrawalReason" id="WithdrawalReason" rows="4" placeholder=""></textarea>
-                                        <span class="text-danger field-validation-error" id="span_reasonerror" style="display:none;">Please enter Reason for Withdrawal</span>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Withdrawal.ProofOfWithdrawal, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                                        @Html.Partial("_ProofOfWithdrawal", Model.Withdrawal.ProofOfWithdrawal)
-                                        @Html.ValidationMessageFor(model => model.Withdrawal.ProofOfWithdrawal, "", new { @class = "text-danger" })
-                                        @*<input type="text" class="form-control" name="ProofOfWithdrawal" id="ProofOfWithdrawal" placeholder="" />*@
-                                        @*<span class="text-danger field-validation-error" id="span_prooferror" style="display:none;">Please upload Proof of Withdrawal</span>*@
-                                    </div>
-                                </div>
-                                <div class="divider-border"></div>
-                                <div class="m-4 text-center">
-                                    <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
-                                    <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#withdrawsent" id="btnWithdrawConfirm">Withdraw Publication</button>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-                <!-- cancel & cancel withdrawal (only one active) -->
-                @if (((Model.Auto.Status == PublicationStatus.VerifierRejected) || (Model.Auto.Status == PublicationStatus.ApproverRejected)) && (CurrentUser.HasAccess(UserAccess.RnPPublicationEdit)))
-                {
-                    <!-- cancel -->
-                    <div class="modal fade" id="modalCancel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formcancel", id = "formcancel" }))
-                        {
-                            @Html.AntiForgeryToken()
-
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                            <div class="modal-dialog modal-sm" role="document">
-                                <div class="modal-content">
-                                    <div class="m-4 text-center">
-                                        <h4 class="color-darkblue mb-0">Cancel Publication Request</h4>
-                                        <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <input type="hidden" class="form-control" name="ID" id="CancelID" value="@Model.Pub.ID" />
-                                            @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                                            <textarea class="form-control" name="CancelRemark" id="CancelRemark" rows="4" placeholder=""></textarea>
-                                            <span class="text-danger field-validation-error" id="span_remarkerror" style="display:none;">Please enter Remarks</span>
-                                        </div>
-                                    </div>
-                                    <div class="divider-border"></div>
-                                    <div class="m-4 text-center">
-                                        <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
-                                        <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#cancelsent" id="btnCancelConfirm">Submit Cancellation</button>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-                else if (((Model.Auto.Status == PublicationStatus.WithdrawalVerifierRejected) || (Model.Auto.Status == PublicationStatus.WithdrawalApproverRejected)) && (CurrentUser.HasAccess(UserAccess.RnPPublicationEdit)))
-                {
-                    <!-- cancel withdrawal (KIV) -->
-                    <div class="modal fade" id="modalCancelWithdrawal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formcancelwithdrawal", id = "formcancelwithdrawal" }))
-                        {
-                            @Html.AntiForgeryToken()
-
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                            <div class="modal-dialog modal-sm" role="document">
-                                <div class="modal-content">
-                                    <div class="m-4 text-center">
-                                        <h4 class="color-darkblue mb-0">Cancel Publication Withdrawal</h4>
-                                        <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <input type="hidden" class="form-control" name="ID" id="CancelID" value="@Model.Pub.ID" />
-                                            @Html.LabelFor(model => model.Cancellation.CancelRemark, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                                            <textarea class="form-control" name="CancelRemark" id="CancelRemark" rows="4" placeholder=""></textarea>
-                                            <span class="text-danger field-validation-error" id="span_withdrawalremarkerror" style="display:none;">Please enter Remarks</span>
-                                        </div>
-                                    </div>
-                                    <div class="divider-border"></div>
-                                    <div class="m-4 text-center">
-                                        <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
-                                        <button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#cancelsent" id="btnCancelWithdrawalConfirm">Submit Cancellation</button>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-                <!-- ajax result - success -->
-                <div class="modal fade" id="modalOperationSuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" id="btnCloseOperationSuccess" class="close" data-dismiss="modal" data-pubid="@Model.Pub.ID" data-operation="" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <img src="~/img/icon-confirmation.svg" alt="image">
-                                <h4 class="color-darkblue mt-4" id="resultSuccessTitle">Success!</h4>
-                                <p class="small" id="resultSuccessText">Operation successful.</p>
-                            </div>
-                            <!-- Bila xde modal footer -->
-                            <div class="modal-footer py-0">&nbsp;</div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label" })
+                            <select name="State" id="State" class="form-control" readonly="readonly"></select>
                         </div>
                     </div>
-                </div>
-                <!-- ajax result - failure -->
-                <div class="modal fade" id="modalOperationFail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" id="btnCloseOperationFail" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <img src="~/img/icon-confirmation.svg" alt="image"><!-- TODO: failed icon -->
-                                <h4 class="color-darkblue mt-4" id="resultFailTitle">Failure!</h4>
-                                <p class="small" id="resultFailText">Operation unsuccessful.</p>
-                            </div>
-                            <!-- Bila xde modal footer -->
-                            <div class="modal-footer py-0">&nbsp;</div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         </div>
-                    </div>
-                </div>
-                <!-- popups end -->
-            </div>
-            <!-- action log start -->
-            <div class="action-log">
-                <h5 class="color-darkblue mr-auto mb-0"><i class="la la-comment color-secondary"></i>&nbsp;&nbsp;Action Log</h5>
-                <div data-perfect-scrollbar class="position-relative">
-                    @if (Model.Cancellation.CancelRemark != "")
-                    {
-                        string cdate = "Unknown Date";
-                        string ctime = "Unknown Time";
-                        if (Model.Auto.DateCancelled.HasValue)
-                        {
-                            cdate = Model.Auto.DateCancelled.Value.ToString("dd/MM/yyyy");
-                            ctime = Model.Auto.DateCancelled.Value.ToString("hh:mm tt");
-                        }
-                        <div class="border-form rounded mg-b-10">
-                            <p class="small text-muted">@cdate<span class="fl-right">@ctime</span></p>
-                            <p class="small"><span class="card__author-name color-darkblue">@Model.Pub.CreatorName</span><br>- <span class="color-yellow">cancelled the Publication</span></p>
-                        </div>
-                    }
-                    @if (ViewBag.Withdrawal.Count != 0)
-                    {
-                        var icount = 0;
-                        foreach (var item in ViewBag.Withdrawal)
-                        {
-                            icount++;
-                            <div class="border-form rounded mg-b-10">
-                                <p class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="fl-right">@item.ApprovalDate.ToString("hh:mm tt")</span></p>
-                                @if (item.Status == PublicationApprovalStatus.Approved)
-                                {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Withdrawal Approval Result<br>- <span class="color-green">Approved</span></p>
-                                }
-                                else
-                                {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Withdrawal Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
-                                }
-                                <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
-                            </div>
-                        }
-                    }
-                    @if (Model.Withdrawal.WithdrawalReason != "")
-                    {
-                        string wdate = "Unknown Date";
-                        string wtime = "Unknown Time";
-                        if (Model.Auto.WithdrawalDate.HasValue)
-                        {
-                            wdate = Model.Auto.WithdrawalDate.Value.ToString("dd/MM/yyyy");
-                            wtime = Model.Auto.WithdrawalDate.Value.ToString("hh:mm tt");
-                        }
-                        <div class="border-form rounded mg-b-10">
-                            <p class="small text-muted">@wdate<span class="fl-right">@wtime</span></p>
-                            <p class="small"><span class="card__author-name color-darkblue">@Model.Pub.CreatorName</span><br>withdrew the Publication.</p>
-                        </div>
-                    }
-                    @if (ViewBag.History.Count != 0)
-                    {
-                        var icount = 0;
-                        foreach (var item in ViewBag.History)
-                        {
-                            icount++;
-                            <div class="border-form rounded mg-b-10">
-                                <p class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="fl-right">@item.ApprovalDate.ToString("hh:mm tt")</span></p>
-                                @if (item.Status == PublicationApprovalStatus.Approved)
-                                {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Approval Result<br>- <span class="color-green">Approved</span></p>
-                                }
-                                else
-                                {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
-                                }
-                                <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
-                            </div>
-                        }
-
-                    }
-                    <div class="border-form rounded mg-b-10">
-                        <p class="small text-muted">@Model.Auto.DateAdded.ToString("dd/MM/yyyy")<span class="fl-right">@Model.Auto.DateAdded.ToString("hh:mm tt")</span></p>
-                        <p class="small"><span class="card__author-name color-darkblue">@Model.Pub.CreatorName</span><br>created the Publication.</p>
                     </div>
                 </div>
             </div>
-            <!-- action log end -->
-            <!-- End Form -->
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a href="@Url.Action("Index", "Group", new { area = "Setting" })" class="btn btn-default mr-2">@Language.General.ButtonBack</a>
+            </div>
         </div>
     </div>
 </div>
@@ -672,238 +143,116 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            // populate language selection
+            var curMinAge = '';
+            var curMaxAge = '';
+            var curMinSalary = '';
+            var curMaxSalary = '';
+            var curState = '';
 
-            var selectedLang = $('#Pub_Language').val();
-            if (selectedLang.indexOf("English") >= 0) {
-                $('#pub_lang option').each(function () {
-                    if ($(this).text() == "English") {
-                        $(this).prop("selected", true);
-                    }
-                });
-            }
-            if (selectedLang.indexOf("Bahasa Malaysia") >= 0) {
-                $('#pub_lang option').each(function () {
-                    if ($(this).text() == "Bahasa Malaysia") {
-                        $(this).prop("selected", true);
-                    }
-                });
-            }
-            $('#pub_lang').trigger('change');
+            if (@Model.MinAge != null) curMinAge = '@Model.MinAge';
+            if (@Model.MaxAge != null) curMaxAge = '@Model.MaxAge';
+            if (@Model.MinSalary != null) curMinSalary = '@Model.MinSalary';
+            if (@Model.MaxSalary != null) curMaxSalary = '@Model.MaxSalary';
+            if (@Model.State != null) curState = '@Model.State';
 
-            // tab switching
-
-            $('#tab_details').click(function () {
-                $('#publication-details').show();
-                $('#publication-cancellation').hide();
-                $('#publication-withdrawal').hide();
-                $('#amendment-history').hide();
-            });
-
-            $('#tab_cancellation').click(function () {
-                $('#publication-details').hide();
-                $('#publication-cancellation').show();
-                $('#publication-withdrawal').hide();
-                $('#amendment-history').hide();
-            });
-
-            $('#tab_withdrawal').click(function () {
-                $('#publication-details').hide();
-                $('#publication-cancellation').hide();
-                $('#publication-withdrawal').show();
-                $('#amendment-history').hide();
-            });
-
-            $('#tab_history').click(function () {
-                $('#publication-details').hide();
-                $('#publication-cancellation').hide();
-                $('#publication-withdrawal').hide();
-                $('#amendment-history').show();
-            });
-
-            // submit - may change if js alert or onscreen confirmation is required
-
-            $('#btnSubmit').click(function (event) {
-                var pid = $(this).data('pubid');
-                var url = '@Url.Action("SubmitByID", "Publication", new { area = "RnP" })?id=' + pid;
-                window.location = url;
-            });
-
-            // publish - may change if js alert or onscreen confirmation is required
-
-            $('#btnPublish').click(function (event) {
-                var pid = $(this).data('pubid');
-                var url = '@Url.Action("PublishByID", "Publication", new { area = "RnP" })?id=' + pid;
-                //alert(url);
-                window.location = url;
-            });
-
-            // withdraw - requires input, shows success notification, and redirects to details view (refreshes)
-            // note: refresh is needed because action buttons will need to change
-
-            $('#btnWithdraw').click(function (event) {
-                $('#title_withdrawal').val("Withdraw Publication");
-                $('#modalWithdraw').modal();
-            });
-
-            $('#btnEditWithdrawal').click(function (event) {
-                $('#title_withdrawal').val("Edit Publication Withdrawal");
-                $('#modalWithdraw').modal();
-            });
-
-            function ValidWithdrawal() {
-                var wreason = $('#WithdrawalReason').val();
-                //var wproof = $('#ProofOfWithdrawal').val();
-                $('#span_reasonerror').hide();
-                //$('#span_prooferror').hide();
-                if (wreason.trim() == "") {
-                    $('#span_reasonerror').show();
-                }
-                //if (wproof.trim() == "") {
-                //    $('#span_prooferror').show();
-                //}
-                //if ((wreason.trim() == "") || (wproof.trim() == "")) {
-                if (wreason.trim() == "") {
-                    return false;
-                }
-                return true;
+            function populateMinAge(curmin) {
+                $('#MinAge').append('<option value="18">18</option>');
+                $('#MinAge').append('<option value="19">19</option>');
+                $('#MinAge').append('<option value="20">20</option>');
+                $('#MinAge').append('<option value="21">21</option>');
+                $('#MinAge').append('<option value="25">25</option>');
+                $('#MinAge').append('<option value="30">30</option>');
+                $('#MinAge').append('<option value="35">35</option>');
+                $('#MinAge').append('<option value="40">40</option>');
+                $('#MinAge').append('<option value="45">45</option>');
+                $('#MinAge').append('<option value="50">50</option>');
+                $('#MinAge').append('<option value="55">55</option>');
+                $('#MinAge').append('<option value="60">60</option>');
+                $('#MinAge').append('<option value="65">65</option>');
+                $('#MinAge').append('<option value="70">70</option>');
+                $('#MinAge').append('<option value=">70">>70</option>');
+                $('#MinAge').val(curmin).change();
             }
 
-            $('#btnWithdrawConfirm').click(function (event) {
-                if (!ValidWithdrawal()) {
-                    return false;
-                }
-                var form = $('#formwithdraw');
-                //alert(form.serialize());
-                //return false;
-                var myurl = '@Url.Action("Withdraw", "Publication", new { area = "RnP" })';
-                $.ajax({
-                    url: myurl,
-                    type: "POST",
-                    data: form.serialize(),
-                    success: function (data) {
-                        if (data == "error") {
-                            $("#resultFailTitle").text('Failed to Withdraw Publication');
-                            $("#resultFailText").text('Operation to withdraw publication unsuccessful! Please try again later.');
-                            $("#modalOperationFail").modal();
-                        }
-                        else {
-                            $("#resultSuccessTitle").text('Withdrawal Request Sent');
-                            $("#resultSuccessText").text('Your request for withdrawal of the Publication has been sent for approval.');
-                            $("#btnCloseOperationSuccess").data('operation', "withdraw");
-                            $("#modalOperationSuccess").modal();
-                        }
-                    }
-                });
-            });
-
-            // cancel - requires input, shows success notification, and redirects to details view (refreshes)
-            // note: refresh is needed because action buttons will need to change
-
-            $('#btnCancel').click(function (event) {
-                $('#modalCancel').modal();
-            });
-
-            function ValidCancellation() {
-                var cremarks = $('#CancelRemark').val();
-                $('#span_remarkerror').hide();
-                if (cremarks.trim() == "") {
-                    $('#span_remarkerror').show();
-                    return false;
-                }
-                return true;
+            function populateMaxAge(curmax) {
+                $('#MaxAge').append('<option value="18">18</option>');
+                $('#MaxAge').append('<option value="19">19</option>');
+                $('#MaxAge').append('<option value="20">20</option>');
+                $('#MaxAge').append('<option value="21">21</option>');
+                $('#MaxAge').append('<option value="25">25</option>');
+                $('#MaxAge').append('<option value="30">30</option>');
+                $('#MaxAge').append('<option value="35">35</option>');
+                $('#MaxAge').append('<option value="40">40</option>');
+                $('#MaxAge').append('<option value="45">45</option>');
+                $('#MaxAge').append('<option value="50">50</option>');
+                $('#MaxAge').append('<option value="55">55</option>');
+                $('#MaxAge').append('<option value="60">60</option>');
+                $('#MaxAge').append('<option value="65">65</option>');
+                $('#MaxAge').append('<option value="70">70</option>');
+                $('#MaxAge').append('<option value=">70">>70</option>');
+                $('#MaxAge').val(curmax).change();
             }
 
-            $('#btnCancelConfirm').click(function (event) {
-                if (!ValidCancellation()) {
-                    return false;
-                }
-                var form = $('#formcancel');
-                //alert(form.serialize());
-                //return false;
-                var myurl = '@Url.Action("Cancel", "Publication", new { area = "RnP" })';
-                $.ajax({
-                    url: myurl,
-                    type: "POST",
-                    data: form.serialize(),
-                    success: function (data) {
-                        if (data == "error") {
-                            $("#resultFailTitle").text('Failed to Cancel Publication');
-                            $("#resultFailText").text('Operation to cancel Publication unsuccessful! Please try again later.');
-                            $("#modalOperationFail").modal();
-                        }
-                        else {
-                            $("#resultSuccessTitle").text('Publication Cancellation Successful');
-                            $("#resultSuccessText").text('Publication cancelled successfully. Publication can no longer be edited or submitted for Approval.');
-                            $("#btnCloseOperationSuccess").data('operation', "cancel");
-                            $("#modalOperationSuccess").modal();
-                        }
-                    }
-                });
-            });
-
-            // cancel withdrawal - may require input, shows success notification, and redirects to details view (refreshes)
-            // note: refresh is needed because action buttons will need to change
-
-            $('#btnCancelWithdrawal').click(function (event) {
-                $('#modalCancelWithdrawal').modal();
-            });
-
-            function ValidWithdrawalCancellation() {
-                var cremarks = $('#CancelRemark').val();
-                $('#span_withdrawalremarkerror').hide();
-                if (cremarks.trim() == "") {
-                    $('#span_withdrawalremarkerror').show();
-                    return false;
-                }
-                return true;
+            function populateMinSalary(curmin) {
+                $('#MinSalary').append('<option value="500">500</option>');
+                $('#MinSalary').append('<option value="800">800</option>');
+                $('#MinSalary').append('<option value="1000">1000</option>');
+                $('#MinSalary').append('<option value="1200">1200</option>');
+                $('#MinSalary').append('<option value="1500">1500</option>');
+                $('#MinSalary').append('<option value="1800">1800</option>');
+                $('#MinSalary').append('<option value="2000">2000</option>');
+                $('#MinSalary').append('<option value="2500">2500</option>');
+                $('#MinSalary').append('<option value="3000">3000</option>');
+                $('#MinSalary').append('<option value="3500">3500</option>');
+                $('#MinSalary').append('<option value="4000">4000</option>');
+                $('#MinSalary').append('<option value="4500">4500</option>');
+                $('#MinSalary').append('<option value="5000">5000</option>');
+                $('#MinSalary').append('<option value=">5000">>5000</option>');
+                $('#MinSalary').val(curmin).change();
             }
 
-            $('#btnCancelWithdrawalConfirm').click(function (event) {
-                if (!ValidWithdrawalCancellation()) {
-                    return false;
-                }
-                var form = $('#formcancelwithdrawal');
-                //alert(form.serialize());
-                //return false;
-                var myurl = '@Url.Action("CancelWithdrawal", "Publication", new { area = "RnP" })';
-                $.ajax({
-                    url: myurl,
-                    type: "POST",
-                    data: form.serialize(),
-                    success: function (data) {
-                        if (data == "error") {
-                            $("#resultFailTitle").text('Failed to Cancel Publication Withdrawal');
-                            $("#resultFailText").text('Operation to cancel Publication Withdrawal unsuccessful! Please try again later.');
-                            $("#modalOperationFail").modal();
-                        }
-                        else {
-                            $("#resultSuccessTitle").text('Publication Withdrawal Cancellation Successful');
-                            $("#resultSuccessText").text('Publication Withdrawal cancelled successfully. Publication will remain available to Users.');
-                            $("#btnCloseOperationSuccess").data('operation', "cancelwithdrawal");
-                            $("#modalOperationSuccess").modal();
-                        }
-                    }
-                });
-            });
+            function populateMaxSalary(curmax) {
+                $('#MaxSalary').append('<option value="500">500</option>');
+                $('#MaxSalary').append('<option value="800">800</option>');
+                $('#MaxSalary').append('<option value="1000">1000</option>');
+                $('#MaxSalary').append('<option value="1200">1200</option>');
+                $('#MaxSalary').append('<option value="1500">1500</option>');
+                $('#MaxSalary').append('<option value="1800">1800</option>');
+                $('#MaxSalary').append('<option value="2000">2000</option>');
+                $('#MaxSalary').append('<option value="2500">2500</option>');
+                $('#MaxSalary').append('<option value="3000">3000</option>');
+                $('#MaxSalary').append('<option value="3500">3500</option>');
+                $('#MaxSalary').append('<option value="4000">4000</option>');
+                $('#MaxSalary').append('<option value="4500">4500</option>');
+                $('#MaxSalary').append('<option value="5000">5000</option>');
+                $('#MaxSalary').append('<option value=">5000">>5000</option>');
+                $('#MaxSalary').val(curmax).change();
+            }
 
-            // redirection after success
+            function populateStates(curstate) {
+                $('#State').append('<option value="0">Any</option>');
+                $('#State').append('<option value="1">Johor</option>');
+                $('#State').append('<option value="2">Kedah</option>');
+                $('#State').append('<option value="3">Kelantan</option>');
+                $('#State').append('<option value="4">Melaka</option>');
+                $('#State').append('<option value="5">Negeri Sembilan</option>');
+                $('#State').append('<option value="6">Pahang</option>');
+                $('#State').append('<option value="7">Perak</option>');
+                $('#State').append('<option value="8">Perlis</option>');
+                $('#State').append('<option value="9">Pulau Pinang</option>');
+                $('#State').append('<option value="10">Selangor</option>');
+                $('#State').append('<option value="11">Terengganu</option>');
+                $('#State').append('<option value="12">Sabah</option>');
+                $('#State').append('<option value="13">Sarawak</option>');
+                $('#State').append('<option value="14">Wilayah Persekutuan</option>');
+                $('#State').val(curstate).change();
+            }
 
-            $('#btnCloseOperationSuccess').click(function (event) {
-                var pid = $(this).data('pubid');
-                var pop = $(this).data('operation');    // in case needed in future
-                var url = '@Url.Action("Details", "Publication", new { area = "RnP" })?id=' + pid;
-                window.location = url;
-            });
-
-            $('#modalOperationSuccess').on( "hidden.bs.modal", function () {
-                var pid = $('#btnCloseOperationSuccess').data('pubid');
-                var pop = $('#btnCloseOperationSuccess').data('operation');    // in case needed in future
-                var url = '@Url.Action("Details", "Publication", new { area = "RnP" })?id=' + pid;
-                window.location = url;
-            });
-
-            RefreshFile4();
+            populateMinAge(curMinAge);
+            populateMaxAge(curMaxAge);
+            populateMinSalary(curMinSalary);
+            populateMaxSalary(curMaxSalary);
+            populateStates(curState);
 
         });
     </script>

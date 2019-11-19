@@ -1,7 +1,7 @@
 ﻿@model FEP.WebApiModel.RnP.ReturnListSurveyModel
 
 @{
-	ViewBag.Title = "Survey";
+	ViewBag.Title = "Published Survey";
 	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
@@ -14,16 +14,16 @@
 				<div class="header-col-left">
 					<div id="breadcrumb">
 						<nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = ""})">@Language.Survey.BreadcrumbHome</a></li>
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "RnP"})">@Language.Survey.BreadcrumbRnP</a></li>
-                                <li class="breadcrumb-item"><a href="#">@Language.Survey.BreadcrumbSurveys</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
-                            </ol>
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = ""})">@Language.Survey.BreadcrumbHome</a></li>
+								<li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "RnP"})">@Language.Survey.BreadcrumbRnP</a></li>
+								<li class="breadcrumb-item"><a href="#">@Language.Survey.BreadcrumbPublishedSurveys</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+							</ol>
 						</nav>
 					</div>
-                    <h1 class="page-title text-white">@Language.Survey.IndexTitle</h1>
-                    <div class="header-text">@Language.Survey.IndexDescription</div>
+                    <h1 class="page-title text-white">@Language.Survey.ListTitle</h1>
+                    <div class="header-text">@Language.Survey.ListDescription</div>
 				</div>
 			</div>
 		</div>
@@ -90,7 +90,6 @@
 			</span>
 		</div>
 		<div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-		<div><a href="@Url.Action("SelectType", "Survey", new { area = "RnP" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>@Language.Survey.ButtonCreateSurvey</a></div>
 	</div>
 	<!-- Table -->
 	<table class="table tableStyle1 tabledata">
@@ -119,7 +118,7 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)RnP/Survey/GetAll',
+                    "url": '@(WebApiURL)RnP/Survey/GetPublished',
                     "data": function (filter) {
                         //filter.Type = $('#Filters_Type').val();
                         filter.Title = $('#Filters_Title').val();
@@ -193,44 +192,7 @@
                         data: 'Status',
                         sortable: true,
                         render: function (data, type, row, meta) {
-                            if (row.Status == 0) {
-                                return "<span class='color-grey font-weight-bold'>Draft</span>";
-                            }
-                            else if (row.Status == 1) {
-                                return "<span class='color-yellow font-weight-bold'>Pending Verification</span>";
-                            }
-                            else if (row.Status == 2) {
-                                return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
-                            }
-                            else if (row.Status == 3) {
-                                if (row.ApprovalLevel == 1) {
-                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 1</span>";
-                                }
-                                else if (row.ApprovalLevel == 2) {
-                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 2</span>";
-                                }
-                                else if (row.ApprovalLevel == 3) {
-                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 3</span>";
-                                }
-                                else {
-                                    return "<span class='color-yellow font-weight-bold'>Pending Approval</span>";
-                                }
-                            }
-                            else if (row.Status == 4) {
-                                return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
-                            }
-                            else if (row.Status == 5) {
-                                return "<span class='color-green font-weight-bold'>Approved</span>";
-                            }
-                            else if (row.Status == 6) {
-                                return "<span class='color-green font-weight-bold'>Published</span>";
-                            }
-                            else if (row.Status == 7) {
-                                return "<span class='color-grey font-weight-bold'>Unpublished</span>";
-                            }
-                            else if (row.Status == 8) {
-                                return "<span class='color-grey font-weight-bold'>Cancelled</span>";
-                            }
+                            return "<span class='color-green font-weight-bold'>Published</span>";
                         }
                     },
                     {
@@ -240,49 +202,11 @@
                             var action = "";
 
                             var canview = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyView));
-                            var canedit = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyEdit));
-                            var canverify = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyVerify));
-                            var canapprove1 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyApprove1));
-                            var canapprove2 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyApprove2));
-                            var canapprove3 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyApprove3));
-                            var canpublish = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyPublish));
 
                             action = '<div class="icon-action">';
 
                             if (canview) {
-                                action += '<a href="@Url.Action("Details", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
-                            }
-
-							if (row.Status == 0) {          // new
-                                if (canedit) {
-                                    action += '<a href="@Url.Action("Edit", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
-                                    action += '<a href="@Url.Action("Delete", "Survey", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>';
-                                }
-                            }
-                            else if (row.Status == 1) {     // submitted
-                                action += '';
-                                //if (canverify || canapprove1 || canapprove2 || canapprove3) {
-                            }
-                            else if (row.Status == 2) {     // verifier rejected (can edit from view - view lets user see comments)
-                                action += '';
-                            }
-                            else if (row.Status == 3) {     // verified
-                                action += '';
-                            }
-                            else if (row.Status == 4) {     // approver rejected
-                                action += '';
-                            }
-                            else if (row.Status == 5) {     // approved (can publish from view, too)
-                                action += '';
-                            }
-                            else if (row.Status == 6) {     // published (can unpublish/deactivate from view)
-                                action += '';
-                            }
-                            else if (row.Status == 7) {     // unpublished
-                                action += '';
-                            }
-                            else if (row.Status == 8) {     // trashed
-                                action += '';
+                                action += '<a href="@Url.Action("Results", "Survey", new { area = "RnP" })' + '?id=' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View Results"><i class="la la-binoculars text-muted"></i></a>';
                             }
 
                             return action;

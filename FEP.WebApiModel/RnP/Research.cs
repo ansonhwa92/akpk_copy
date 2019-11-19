@@ -675,6 +675,8 @@ namespace FEP.WebApiModel.RnP
         [Required(ErrorMessageResourceName = "ValidRequiredSurveyResponseContents", ErrorMessageResourceType = typeof(Language.RnPForm))]
         [Display(Name = "SurveyResponseContents", ResourceType = typeof(Language.RnPForm))]
         public string Contents { get; set; }
+
+        public string Answers { get; set; }
     }
 
     // class for returning survey response preparation to client app
@@ -684,4 +686,385 @@ namespace FEP.WebApiModel.RnP
         public ReturnSurveyModel Survey { get; set; }
         public UpdateSurveyResponseModel Response { get; set; }
     }
+
+    // class for returning survey response to client app
+    public class SurveyResponseModel
+    {
+        public int ID { get; set; }
+
+        public int SurveyID { get; set; }
+
+        public SurveyResponseTypes Type { get; set; }
+
+        public int UserId { get; set; }
+
+        public string Email { get; set; }
+
+        public string Contents { get; set; }
+
+        public string Answers { get; set; }
+    }
+
+    // class for survey questions
+    public class SurveyQuestion
+    {
+        public string Question;
+    }
+
+    public class SurveyQuestions
+    {
+        public List<SurveyQuestions> Questions { get; set; }
+    }
+
+    // class for survey answers
+
+    // classes for eLearning
+
+    // class for updating of quiz/assessment information by client app
+    // used to create and edit quiz/assessment information
+    public class AssessmentSurveyModel
+    {
+        [Required]
+        public int AssessmentID { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredSurveyContents", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "AssessmentContents", ResourceType = typeof(Language.RnPForm))]
+        public string Contents { get; set; }
+    }
+
+    // for creating
+    public class CreateAssessmentSurveyModel : AssessmentSurveyModel
+    {
+        public CreateAssessmentSurveyModel() { }
+    }
+
+    // for editing
+    public class EditAssessmentSurveyModel : AssessmentSurveyModel
+    {
+        public EditAssessmentSurveyModel() { }
+
+        [Required]
+        public int ID { get; set; }
+    }
+
+    // for details
+    public class DetailsAssessmentSurveyModel : AssessmentSurveyModel
+    {
+        public DetailsAssessmentSurveyModel() { }
+
+        public int ID { get; set; }
+    }
+
+    // responses
+    public class AssessmentResponseModel
+    {
+        [Required]
+        public int SurveyID { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
+
+        [Required]
+        [Display(Name = "AssessmentResponseContents", ResourceType = typeof(Language.RnPForm))]
+        public string Contents { get; set; }
+
+        public string Answers { get; set; }
+    }
+
+    // for creating
+    public class CreateAssessmentResponseModel : AssessmentResponseModel
+    {
+        public CreateAssessmentResponseModel() { }
+    }
+
+    // for view
+    public class ViewAssessmentResponseModel : AssessmentResponseModel
+    {
+        public ViewAssessmentResponseModel() { }
+
+        public int ID { get; set; }
+    }
+
+    // classes for eLearning/eEvent feedbacks
+
+    // class for updating of feedback information by client app
+    // used to create and edit feedback information
+    public class FeedbackSurveyModel
+    {
+        [Required]
+        public int FeedbackID { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredSurveyContents", ErrorMessageResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "FeedbackContents", ResourceType = typeof(Language.RnPForm))]
+        public string Contents { get; set; }
+    }
+
+    // for creating
+    public class CreateFeedbackSurveyModel : FeedbackSurveyModel
+    {
+        public CreateFeedbackSurveyModel() { }
+    }
+
+    // for editing
+    public class EditFeedbackSurveyModel : FeedbackSurveyModel
+    {
+        public EditFeedbackSurveyModel() { }
+
+        [Required]
+        public int ID { get; set; }
+    }
+
+    // for details
+    public class DetailsFeedbackSurveyModel : FeedbackSurveyModel
+    {
+        public DetailsFeedbackSurveyModel() { }
+
+        [Required]
+        public int ID { get; set; }
+    }
+
+    // responses
+    public class FeedbackResponseModel
+    {
+        [Required]
+        public int SurveyID { get; set; }
+
+        public int UserId { get; set; }
+
+        public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "FeedbackResponseContents", ResourceType = typeof(Language.RnPForm))]
+        public string Contents { get; set; }
+
+        public string Answers { get; set; }
+    }
+
+    // for creating
+    public class CreateFeedbackResponseModel : FeedbackResponseModel
+    {
+        public CreateFeedbackResponseModel() { }
+    }
+
+    // for view
+    public class ViewFeedbackResponseModel : FeedbackResponseModel
+    {
+        public ViewFeedbackResponseModel() { }
+
+        public int ID { get; set; }
+    }
+
+    // Class for returning selected survey info
+    public class ReturnSurveyModelNoFile
+    {
+        public int ID { get; set; }
+
+        [Display(Name = "SurveyType", ResourceType = typeof(Language.RnPForm))]
+        public SurveyType? Type { get; set; }
+
+        [Display(Name = "SurveyCategory", ResourceType = typeof(Language.RnPForm))]
+        public SurveyCategory Category { get; set; }
+
+        [Display(Name = "SurveyTitle", ResourceType = typeof(Language.RnPForm))]
+        public string Title { get; set; }
+
+        [Display(Name = "SurveyDescription", ResourceType = typeof(Language.RnPForm))]
+        public string Description { get; set; }
+
+        [Display(Name = "SurveyTargetGroup", ResourceType = typeof(Language.RnPForm))]
+        public string TargetGroup { get; set; }
+
+        [Display(Name = "SurveyStartDate", ResourceType = typeof(Language.RnPForm))]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "SurveyEndDate", ResourceType = typeof(Language.RnPForm))]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
+        public DateTime EndDate { get; set; }
+
+        [Display(Name = "SurveyRequireLogin", ResourceType = typeof(Language.RnPForm))]
+        public bool RequireLogin { get; set; }
+
+        [Display(Name = "SurveyContents", ResourceType = typeof(Language.RnPForm))]
+        public string Contents { get; set; }
+
+        [Display(Name = "SurveyActive", ResourceType = typeof(Language.RnPForm))]
+        public bool Active { get; set; }
+
+        [Display(Name = "SurveyDateAdded", ResourceType = typeof(Language.RnPForm))]
+        public DateTime DateAdded { get; set; }
+
+        [Display(Name = "SurveyCreatorId", ResourceType = typeof(Language.RnPForm))]
+        public int CreatorId { get; set; }
+
+        [Display(Name = "SurveyCreatorId", ResourceType = typeof(Language.RnPForm))]
+        public string CreatorName { get; set; }
+
+        [Display(Name = "SurveyRefNo", ResourceType = typeof(Language.RnPForm))]
+        public string RefNo { get; set; }
+
+        [Display(Name = "SurveyStatus", ResourceType = typeof(Language.RnPForm))]
+        public SurveyStatus Status { get; set; }
+
+        [Display(Name = "SurveyInviteCount", ResourceType = typeof(Language.RnPForm))]
+        public int InviteCount { get; set; }
+
+        [Display(Name = "SurveySubmitCount", ResourceType = typeof(Language.RnPForm))]
+        public int SubmitCount { get; set; }
+    }
+
+    // Class for processing/viewing survey results
+    public class SurveyResultsModel : ReturnSurveyModelNoFile
+    {
+        public SurveyResultsModel()
+        {
+            Questions = new List<string>();
+            Answers = new List<List<string>>();
+            SingleChoices = new List<SurveySingleChoiceAnswersModel>();
+            MultipleChoices = new List<SurveyMultipleChoiceAnswersModel>();
+        }
+
+        public string RawQuestions { get; set; }
+
+        public List<string> Questions { get; set; }
+
+        public int ParticipantCount { get; set; }
+
+        public string RawResults { get; set; }
+
+        public string RawAnswers { get; set; }
+
+        public List<List<string>> Answers { get; set; }
+
+        public List<SurveySingleChoiceAnswersModel> SingleChoices { get; set; }
+
+        public List<SurveyMultipleChoiceAnswersModel> MultipleChoices { get; set; }
+
+        public string RawOutput { get; set; }
+
+        public string CSVOutput { get; set; }
+
+        public string XLSOutput { get; set; }
+
+        public string PDFOutput { get; set; }
+    }
+
+    // Answers
+    public class SurveyAnswersModel
+    {
+        public string surveyId { get; set; }
+
+        public string question { get; set; }
+
+        public dynamic answer { get; set; }
+
+        public string questionType { get; set; }
+    }
+
+    // Single-choice answers
+    public class SurveySingleChoiceAnswersModel
+    {
+        public SurveySingleChoiceAnswersModel()
+        {
+            answers = new List<string>();
+            values = new List<string>();
+            counts = new List<int>();
+        }
+
+        public string question { get; set; }
+
+        public string questionname { get; set; }
+
+        public List<string> answers { get; set; }
+
+        public List<string> values { get; set; }
+
+        public List<int> counts { get; set; }
+    }
+
+    // Multiple-choice answers
+    public class SurveyMultipleChoiceAnswersModel
+    {
+        public SurveyMultipleChoiceAnswersModel()
+        {
+            answers = new List<string>();
+            values = new List<string>();
+            counts = new List<int>();
+        }
+
+        public string question { get; set; }
+
+        public string questionname { get; set; }
+
+        public List<string> answers { get; set; }
+
+        public List<string> values { get; set; }
+
+        public List<int> counts { get; set; }
+    }
+
+    // Questions
+    public class SurveyElementsModel
+    {
+        public string type { get; set; }
+
+        public string name { get; set; }
+
+        public string title { get; set; }
+
+        public dynamic choices { get; set; }
+
+        public dynamic columns { get; set; }
+
+        public dynamic rows { get; set; }
+
+        public dynamic items { get; set; }
+    }
+
+    // Choices
+    public class SurveyElementsChoicesModel
+    {
+        public string value { get; set; }
+
+        public string text { get; set; }
+    }
+
+    // Image Choices
+    public class SurveyElementsImageChoicesModel
+    {
+        public string value { get; set; }
+
+        public string imageLink { get; set; }
+    }
+
+    // Pages
+    public class SurveyPagesModel
+    {
+        public string name { get; set; }
+
+        public List<SurveyElementsModel> elements { get; set; }
+    }
+
+    // Certain question types
+    public class SurveyCheckboxModel
+    {
+        public SurveyCheckboxModel()
+        {
+            items = new List<string>();
+        }
+
+        public List<string> items { get; set; }
+    }
+
+    //public class SurveyMatrixDropdownColModel
+    //{
+    //    public dynamic column { get; set; }
+    //}
+
+    //public class SurveyMatrixDropdownRowModel
+    //{
+    //    public dynamic List<SurveyMatrixDropdownColModel>
+    //}
 }

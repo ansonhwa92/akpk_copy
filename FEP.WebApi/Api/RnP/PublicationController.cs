@@ -223,8 +223,6 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                //Pictures = s.Pictures,
-                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
                 //ProofOfWithdrawal = s.ProofOfWithdrawal,
@@ -236,6 +234,7 @@ namespace FEP.WebApi.Api.RnP
                 DateCancelled = s.DateCancelled,
                 ViewCount = s.ViewCount,
                 PurchaseCount = s.PurchaseCount,
+                DownloadCount = s.DownloadCount,
                 DmsPath = s.DmsPath,
                 Category = s.Category.Name
             }).ToList();
@@ -312,8 +311,6 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                //Pictures = s.Pictures,
-                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
                 //ProofOfWithdrawal = s.ProofOfWithdrawal,
@@ -325,6 +322,7 @@ namespace FEP.WebApi.Api.RnP
                 DateCancelled = s.DateCancelled,
                 ViewCount = s.ViewCount,
                 PurchaseCount = s.PurchaseCount,
+                DownloadCount = s.DownloadCount,
                 DmsPath = s.DmsPath,
                 Category = s.Category.Name
             }).ToList();
@@ -367,8 +365,6 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                //Pictures = s.Pictures,
-                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
                 //ProofOfWithdrawal = s.ProofOfWithdrawal,
@@ -380,6 +376,7 @@ namespace FEP.WebApi.Api.RnP
                 DateCancelled = s.DateCancelled,
                 ViewCount = s.ViewCount,
                 PurchaseCount = s.PurchaseCount,
+                DownloadCount = s.DownloadCount,
                 DmsPath = s.DmsPath,
                 Category = s.Category.Name
             }).FirstOrDefault();
@@ -392,6 +389,7 @@ namespace FEP.WebApi.Api.RnP
             publication.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             publication.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             publication.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.DigitalPublications = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.DigitalPublication && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return Ok(publication);
             //return publication;
@@ -439,8 +437,6 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                //Pictures = s.Pictures,
-                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
                 //ProofOfWithdrawal = s.ProofOfWithdrawal,
@@ -450,6 +446,7 @@ namespace FEP.WebApi.Api.RnP
                 Status = s.Status,
                 ViewCount = s.ViewCount,
                 PurchaseCount = s.PurchaseCount,
+                DownloadCount = s.DownloadCount,
                 DmsPath = s.DmsPath,
                 Category = s.Category.Name
             }).FirstOrDefault();
@@ -463,6 +460,7 @@ namespace FEP.WebApi.Api.RnP
             publication.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             publication.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             publication.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.DigitalPublications = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.DigitalPublication && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return publication;
         }
@@ -495,8 +493,6 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                //Pictures = s.Pictures,
-                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
                 //ProofOfWithdrawal = s.ProofOfWithdrawal,
@@ -509,6 +505,7 @@ namespace FEP.WebApi.Api.RnP
                 DateCancelled = s.DateCancelled,
                 ViewCount = s.ViewCount,
                 PurchaseCount = s.PurchaseCount,
+                DownloadCount = s.DownloadCount,
                 DmsPath = s.DmsPath,
                 Category = s.Category.Name
             }).FirstOrDefault();
@@ -523,6 +520,7 @@ namespace FEP.WebApi.Api.RnP
             publication.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             publication.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             publication.ProofOfWithdrawal = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfWithdrawal && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.DigitalPublications = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.DigitalPublication && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             return publication;
         }
@@ -553,8 +551,6 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                //Pictures = s.Pictures,
-                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
                 //ProofOfWithdrawal = s.ProofOfWithdrawal,
@@ -565,6 +561,7 @@ namespace FEP.WebApi.Api.RnP
                 Status = s.Status,
                 ViewCount = s.ViewCount,
                 PurchaseCount = s.PurchaseCount,
+                DownloadCount = s.DownloadCount,
                 DmsPath = s.DmsPath,
                 Category = s.Category.Name
             }).FirstOrDefault();
@@ -578,6 +575,7 @@ namespace FEP.WebApi.Api.RnP
             publication.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             publication.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             publication.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.DigitalPublications = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.DigitalPublication && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             var papproval = db.PublicationApproval.Where(pa => pa.PublicationID == id && pa.Status == PublicationApprovalStatus.None).Select(s => new ReturnUpdatePublicationApprovalModel
             {
@@ -625,8 +623,6 @@ namespace FEP.WebApi.Api.RnP
                 HPrice = s.HPrice,
                 DPrice = s.DPrice,
                 HDPrice = s.HDPrice,
-                //Pictures = s.Pictures,
-                //ProofOfApproval = s.ProofOfApproval,
                 StockBalance = s.StockBalance,
                 WithdrawalReason = s.WithdrawalReason,
                 //ProofOfWithdrawal = s.ProofOfWithdrawal,
@@ -637,6 +633,7 @@ namespace FEP.WebApi.Api.RnP
                 Status = s.Status,
                 ViewCount = s.ViewCount,
                 PurchaseCount = s.PurchaseCount,
+                DownloadCount = s.DownloadCount,
                 DmsPath = s.DmsPath,
                 Category = s.Category.Name
             }).FirstOrDefault();
@@ -650,6 +647,8 @@ namespace FEP.WebApi.Api.RnP
             publication.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             publication.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             publication.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.ProofOfWithdrawal = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfWithdrawal && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+            publication.DigitalPublications = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.DigitalPublication && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             var pwithdrawal = new UpdatePublicationWithdrawalModel
             {
@@ -758,6 +757,46 @@ namespace FEP.WebApi.Api.RnP
             return phistory;
         }
 
+        // Function to check if publication title and author combo exists
+        [Route("api/RnP/Publication/TitleExists")]
+        [HttpGet]
+        public IHttpActionResult TitleExists(int? id, string title, string author)
+        {
+
+            if (id == null)
+            {
+                if (db.Publication.Any(p => p.Title.Equals(title, StringComparison.CurrentCultureIgnoreCase) && p.Author.Equals(author, StringComparison.CurrentCultureIgnoreCase) && p.Status != PublicationStatus.Trashed))
+                    return Ok(true);
+            }
+            else
+            {
+                if (db.Publication.Any(p => p.Title.Equals(title, StringComparison.CurrentCultureIgnoreCase) && p.Author.Equals(author, StringComparison.CurrentCultureIgnoreCase) && p.ID != id && p.Status != PublicationStatus.Trashed))
+                    return Ok(true);
+            }
+
+            return NotFound();
+        }
+
+        // Function to check if publication ISBN/ISSN/DOI exists
+        [Route("api/RnP/Publication/ISBNExists")]
+        [HttpGet]
+        public IHttpActionResult ISBNExists(int? id, string isbn)
+        {
+
+            if (id == null)
+            {
+                if (db.Publication.Any(p => p.ISBN.Equals(isbn, StringComparison.CurrentCultureIgnoreCase) && p.Status != PublicationStatus.Trashed))
+                    return Ok(true);
+            }
+            else
+            {
+                if (db.Publication.Any(p => p.ISBN.Equals(isbn, StringComparison.CurrentCultureIgnoreCase) && p.ID != id && p.Status != PublicationStatus.Trashed))
+                    return Ok(true);
+            }
+
+            return NotFound();
+        }
+
         /*
          * The following API calls are for Publication record modification operations, including:
          * Note: Selection of publication category is handled by Intranet controller
@@ -807,8 +846,6 @@ namespace FEP.WebApi.Api.RnP
                     HPrice = model.HPrice,
                     DPrice = model.DPrice,
                     HDPrice = model.HDPrice,
-                    //Pictures = model.Pictures,
-                    //ProofOfApproval = model.ProofOfApproval,
                     StockBalance = model.StockBalance,
                     WithdrawalReason = "",
                     //ProofOfWithdrawal = "",
@@ -819,12 +856,12 @@ namespace FEP.WebApi.Api.RnP
                     Status = PublicationStatus.New,
                     ViewCount = 0,
                     PurchaseCount = 0,
+                    DownloadCount = 0,
                     DmsPath = ""
                 };
 
                 db.Publication.Add(publication);
                 db.SaveChanges();
-                //if (db.SaveChanges() > 0) {
 
                 //files 1
                 foreach (var fileid in model.CoverFilesId)
@@ -863,6 +900,19 @@ namespace FEP.WebApi.Api.RnP
                     };
 
                     db.PublicationFile.Add(prooffile);
+                }
+
+                //files 4
+                foreach (var fileid in model.DigitalFilesId)
+                {
+                    var digitalfile = new PublicationFile
+                    {
+                        FileCategory = PublicationFileCategory.DigitalPublication,
+                        FileId = fileid,
+                        ParentId = publication.ID
+                    };
+
+                    db.PublicationFile.Add(digitalfile);
                 }
 
                 // modify publication by adding ref no based on year, month and new ID (Survey= SVP & SVT)
@@ -918,8 +968,6 @@ namespace FEP.WebApi.Api.RnP
                     publication.HPrice = model.HPrice;
                     publication.DPrice = model.DPrice;
                     publication.HDPrice = model.HDPrice;
-                    //publication.Pictures = model.Pictures;
-                    //publication.ProofOfApproval = model.ProofOfApproval;
                     publication.StockBalance = model.StockBalance;
                     publication.DmsPath = "";
                     //publication.CreatorId = model.CreatorId;
@@ -1055,6 +1103,49 @@ namespace FEP.WebApi.Api.RnP
                         db.PublicationFile.Add(prooffile);
                     }
 
+                    //files 4
+
+                    var attachments4 = db.PublicationFile.Where(s => s.FileCategory == PublicationFileCategory.DigitalPublication && s.ParentId == model.ID).ToList();
+
+                    if (attachments4 != null)
+                    {
+                        if (model.DigitalPublications == null)
+                        {
+                            foreach (var attachment in attachments4)
+                            {
+                                attachment.FileDocument.Display = false;
+                                db.FileDocument.Attach(attachment.FileDocument);
+                                db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                db.PublicationFile.Remove(attachment);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var attachment in attachments4)
+                            {
+                                if (!model.DigitalPublications.Any(u => u.Id == attachment.FileDocument.Id))
+                                {
+                                    attachment.FileDocument.Display = false;
+                                    db.FileDocument.Attach(attachment.FileDocument);
+                                    db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                    db.PublicationFile.Remove(attachment);
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var fileid in model.DigitalFilesId)
+                    {
+                        var digitalfile = new PublicationFile
+                        {
+                            FileCategory = PublicationFileCategory.DigitalPublication,
+                            FileId = fileid,
+                            ParentId = publication.ID
+                        };
+
+                        db.PublicationFile.Add(digitalfile);
+                    }
+
                     db.SaveChanges();
 
                     return model.Title;
@@ -1096,7 +1187,6 @@ namespace FEP.WebApi.Api.RnP
                     db.PublicationApproval.Add(papproval);
                     db.SaveChanges();
 
-                    //return model.Title;
                     return publication.Title + "|" + publication.RefNo;
                 }
             }
@@ -1132,7 +1222,6 @@ namespace FEP.WebApi.Api.RnP
                 db.PublicationApproval.Add(papproval);
                 db.SaveChanges();
 
-                //return model.Title;
                 return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
             }
             return "";
@@ -1154,7 +1243,6 @@ namespace FEP.WebApi.Api.RnP
 
                 db.SaveChanges();
 
-                //return publication.Title;
                 return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
             }
             return "";
@@ -1177,6 +1265,7 @@ namespace FEP.WebApi.Api.RnP
                 db.Publication.Remove(publication);
 
                 //db.Configuration.ValidateOnSaveEnabled = false;
+
                 db.SaveChanges();
 
                 return ptitle;
@@ -1279,7 +1368,6 @@ namespace FEP.WebApi.Api.RnP
 
                         }
 
-                        //return publication.Title;
                         return publication.ID + "|" + publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                     }
                 }
@@ -1311,7 +1399,6 @@ namespace FEP.WebApi.Api.RnP
 
                     db.SaveChanges();
 
-                    //return publication.Title;
                     return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                 }
             }
@@ -1376,7 +1463,6 @@ namespace FEP.WebApi.Api.RnP
 
                     db.SaveChanges();
 
-                    //return publication.Title;
                     return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                 }
             }
@@ -1405,9 +1491,9 @@ namespace FEP.WebApi.Api.RnP
                     db.Entry(publication).State = EntityState.Modified;
 
                     //db.Configuration.ValidateOnSaveEnabled = false;
+
                     db.SaveChanges();
 
-                    //return publication.Title;
                     return publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                 }
             }
@@ -1508,7 +1594,6 @@ namespace FEP.WebApi.Api.RnP
 
                         }
 
-                        //return publication.Title;
                         return publication.ID + "|" + publication.Title + "|" + publication.Author + "|" + publication.RefNo;
                     }
                 }
@@ -1667,6 +1752,161 @@ namespace FEP.WebApi.Api.RnP
         }
 
         /*
+         * Tracking functions
+         */
+
+        // Function to increment view count.
+        // GET: api/RnP/Publication/IncrementView
+        [Route("api/RnP/Publication/IncrementView")]
+        [HttpGet]
+        public bool IncrementView(int? id)
+        {
+            if (id == null)
+            {
+                return false;
+            }
+
+            var publication = db.Publication.Where(p => p.ID == id).FirstOrDefault();
+
+            if (publication != null)
+            {
+                publication.ViewCount = publication.ViewCount + 1;
+
+                db.Entry(publication).State = EntityState.Modified;
+
+                db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        // Function to increment purchase count.
+        // GET: api/RnP/Publication/IncrementPurchase
+        [Route("api/RnP/Publication/IncrementPurchase")]
+        [HttpGet]
+        public bool IncrementPurchase(int? id, int incrementvalue = 1)
+        {
+            if (id == null)
+            {
+                return false;
+            }
+
+            var publication = db.Publication.Where(p => p.ID == id).FirstOrDefault();
+
+            if (publication != null)
+            {
+                publication.PurchaseCount = publication.PurchaseCount + incrementvalue;
+
+                db.Entry(publication).State = EntityState.Modified;
+
+                db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        // Function to increment download count.
+        // GET: api/RnP/Publication/IncrementDownload
+        [Route("api/RnP/Publication/IncrementDownload")]
+        [HttpGet]
+        public bool IncrementDownload(int? id)
+        {
+            if (id == null)
+            {
+                return false;
+            }
+
+            var publication = db.Publication.Where(p => p.ID == id).FirstOrDefault();
+
+            if (publication != null)
+            {
+                publication.DownloadCount = publication.DownloadCount + 1;
+
+                db.Entry(publication).State = EntityState.Modified;
+
+                db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /*
+         * Settings
+        */
+
+        // Load Settings
+        // GET: api/RnP/Publication/LoadSettings
+        [Route("api/RnP/Publication/LoadSettings")]
+        [HttpGet]
+        public PublicationSettingsModel LoadSettings()
+        {
+            var settings = db.PublicationSettings.Select(s => new PublicationSettingsModel
+            {
+                HardcopyReturnPeriod = s.HardcopyReturnPeriod,
+                MinimumPublishedYear = s.MinimumPublishedYear
+            }).FirstOrDefault();
+
+            return settings;
+        }
+
+        // Get specific setting: HardcopyReturnPeriod
+        // GET: api/RnP/Publication/GetSettingsHardcopyReturnPeriod
+        [Route("api/RnP/Publication/GetSettingsHardcopyReturnPeriod")]
+        [HttpGet]
+        public int GetSettingsHardcopyReturnPeriod()
+        {
+            var settings = db.PublicationSettings.Select(s => new PublicationSettingsModel
+            {
+                HardcopyReturnPeriod = s.HardcopyReturnPeriod
+            }).FirstOrDefault();
+
+            return settings.HardcopyReturnPeriod;
+        }
+
+        // Get specific setting: MinimumPublishedYear
+        // GET: api/RnP/Publication/GetSettingsMinimumPublishedYear
+        [Route("api/RnP/Publication/GetSettingsMinimumPublishedYear")]
+        [HttpGet]
+        public int GetSettingsMinimumPublishedYear()
+        {
+            var settings = db.PublicationSettings.Select(s => new PublicationSettingsModel
+            {
+                MinimumPublishedYear = s.MinimumPublishedYear
+            }).FirstOrDefault();
+
+            return settings.MinimumPublishedYear;
+        }
+
+        // Save Settings
+        // POST: api/RnP/Publication/SaveSettings
+        [Route("api/RnP/Publication/SaveSettings")]
+        [HttpPost]
+        public bool SaveSettings(PublicationSettingsModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var settings = db.PublicationSettings.FirstOrDefault();
+
+                if (settings != null)
+                {
+                    settings.HardcopyReturnPeriod = model.HardcopyReturnPeriod;
+                    settings.MinimumPublishedYear = model.MinimumPublishedYear;
+                    db.Entry(settings).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /*
          * The following API calls are for SLAReminder/Notifications including:
          * 1. Get notification receiver IDs
          * 2. Save notification ID (to publication table)
@@ -1691,10 +1931,12 @@ namespace FEP.WebApi.Api.RnP
 
             if ((type == NotificationType.Submit_Publication_Creation) || (type == NotificationType.Submit_Publication_Modification) || (type == NotificationType.Submit_Publication_Withdrawal))
             {
+                toadmin = true;
                 toverifier = true;
             }
             else if ((type == NotificationType.Submit_Publication_Cancellation) || (type == NotificationType.Submit_Publication_Modification_Cancellation) || (type == NotificationType.Submit_Publication_Withdrawal_Cancellation))
             {
+                toadmin = true;
                 toverifier = true;
                 toapprover1 = true;
                 toapprover2 = true;
@@ -1702,6 +1944,7 @@ namespace FEP.WebApi.Api.RnP
             }
             else if (type == NotificationType.Submit_Publication_Publication)
             {
+                toadmin = true;
                 toverifier = true;
                 toapprover1 = true;
                 toapprover2 = true;
@@ -1715,6 +1958,7 @@ namespace FEP.WebApi.Api.RnP
                 }
                 else
                 {
+                    toadmin = true;
                     toapprover1 = true;
                 }
             }
@@ -1729,6 +1973,7 @@ namespace FEP.WebApi.Api.RnP
                 {
                     if (forward)
                     {
+                        toadmin = true;
                         toapprover2 = true;
                     }
                     else
@@ -1750,6 +1995,7 @@ namespace FEP.WebApi.Api.RnP
                 {
                     if (forward)
                     {
+                        toadmin = true;
                         toapprover3 = true;
                     }
                     else

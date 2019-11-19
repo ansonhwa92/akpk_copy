@@ -37,7 +37,8 @@
                     <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Target Group Management</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="@Url.Action("Create", "Group", new { area = "Setting" })" class="active nav-link">Create Group</a>
+                            <a id="tab_details" href="#group-details" data-toggle="tab" class="nav-link active">Create Group</a>
+                            @*<a href="@Url.Action("Create", "Group", new { area = "Setting" })" class="active nav-link">Create Group</a>*@
                         </li>
                     </ul>
                 </div>
@@ -107,32 +108,51 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
                             @Html.EnumDropDownListFor(model => model.Status, "Select Status", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-lg-6">
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.PaymentStatus, htmlAttributes: new { @class = "control-label" })
                             @Html.EnumDropDownListFor(model => model.PaymentStatus, "Select Payment Status", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.PaymentStatus, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Delinquent, htmlAttributes: new { @class = "control-label" })
                             @Html.EnumDropDownListFor(model => model.Delinquent, "Select Delinquent Status", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Delinquent, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-lg-6">
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.EmploymentType, htmlAttributes: new { @class = "control-label" })
                             @Html.EnumDropDownListFor(model => model.EmploymentType, "Select Employment Type", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.EmploymentType, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label" })
+                            <select name="State" id="State" class="form-control"></select>
+                            @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
+                            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <input class="form-control" type="hidden" name="Active" id="Active" value="True">
                 <input class="form-control" type="hidden" name="CreatorId" id="CreatorId" value="@CurrentUser.UserId">
                 <a href="@Url.Action("Index", "Group", new { area = "Setting" })" class="btn btn-default mr-2">@Language.General.ButtonBack</a>
                 <button type="submit" class="btn btn-secondary" value="Create">Save</button>
@@ -145,18 +165,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            //var curMinAge = '';
-            //var curMaxAge = '';
-            //var curMinSalary = '';
-            //var curMaxSalary = '';
-
-            //if (@Model.MinAge != null) curMinAge = @Model.MinAge;
-            //if (@Model.MaxAge != null) curMaxAge = @Model.MaxAge;
-            //if (@Model.MinSalary != null) curMinSalary = @Model.MinSalary;
-            //if (@Model.MaxSalary != null) curMaxSalary = @Model.MaxSalary;
-
-            function populateMinAge(curmin) {
-                $('#MinAge').append('<option value="18">500</option>');
+            function populateMinAge() {
+                $('#MinAge').append('<option value="18">18</option>');
                 $('#MinAge').append('<option value="19">19</option>');
                 $('#MinAge').append('<option value="20">20</option>');
                 $('#MinAge').append('<option value="21">21</option>');
@@ -171,11 +181,10 @@
                 $('#MinAge').append('<option value="65">65</option>');
                 $('#MinAge').append('<option value="70">70</option>');
                 $('#MinAge').append('<option value=">70">>70</option>');
-                //$('#MinAge select').val(curmin);
             }
 
-            function populateMaxAge(curmin) {
-                $('#MaxAge').append('<option value="18">500</option>');
+            function populateMaxAge() {
+                $('#MaxAge').append('<option value="18">18</option>');
                 $('#MaxAge').append('<option value="19">19</option>');
                 $('#MaxAge').append('<option value="20">20</option>');
                 $('#MaxAge').append('<option value="21">21</option>');
@@ -190,10 +199,9 @@
                 $('#MaxAge').append('<option value="65">65</option>');
                 $('#MaxAge').append('<option value="70">70</option>');
                 $('#MaxAge').append('<option value=">70">>70</option>');
-                //$('#MaxAge select').val(curmin);
             }
 
-            function populateMinSalary(curmin) {
+            function populateMinSalary() {
                 $('#MinSalary').append('<option value="500">500</option>');
                 $('#MinSalary').append('<option value="800">800</option>');
                 $('#MinSalary').append('<option value="1000">1000</option>');
@@ -208,10 +216,9 @@
                 $('#MinSalary').append('<option value="4500">4500</option>');
                 $('#MinSalary').append('<option value="5000">5000</option>');
                 $('#MinSalary').append('<option value=">5000">>5000</option>');
-                //$('#MinSalary select').val(curmin);
             }
 
-            function populateMaxSalary(curmax) {
+            function populateMaxSalary() {
                 $('#MaxSalary').append('<option value="500">500</option>');
                 $('#MaxSalary').append('<option value="800">800</option>');
                 $('#MaxSalary').append('<option value="1000">1000</option>');
@@ -226,18 +233,31 @@
                 $('#MaxSalary').append('<option value="4500">4500</option>');
                 $('#MaxSalary').append('<option value="5000">5000</option>');
                 $('#MaxSalary').append('<option value=">5000">>5000</option>');
-                //$('#MaxSalary select').val(curmax);
             }
 
-            //populateMinAge(curMinAge);
-            //populateMaxAge(curMaxAge);
-            //populateMinSalary(curMinSalary);
-            //populateMaxSalary(curMaxSalary);
+            function populateStates() {
+                $('#State').append('<option value="0">Any</option>');
+                $('#State').append('<option value="1">Johor</option>');
+                $('#State').append('<option value="2">Kedah</option>');
+                $('#State').append('<option value="3">Kelantan</option>');
+                $('#State').append('<option value="4">Melaka</option>');
+                $('#State').append('<option value="5">Negeri Sembilan</option>');
+                $('#State').append('<option value="6">Pahang</option>');
+                $('#State').append('<option value="7">Perak</option>');
+                $('#State').append('<option value="8">Perlis</option>');
+                $('#State').append('<option value="9">Pulau Pinang</option>');
+                $('#State').append('<option value="10">Selangor</option>');
+                $('#State').append('<option value="11">Terengganu</option>');
+                $('#State').append('<option value="12">Sabah</option>');
+                $('#State').append('<option value="13">Sarawak</option>');
+                $('#State').append('<option value="14">Wilayah Persekutuan</option>');
+            }
 
-            populateMinAge('');
-            populateMaxAge('');
-            populateMinSalary('');
-            populateMaxSalary('');
+            populateMinAge();
+            populateMaxAge();
+            populateMinSalary();
+            populateMaxSalary();
+            populateStates();
 
         });
     </script>

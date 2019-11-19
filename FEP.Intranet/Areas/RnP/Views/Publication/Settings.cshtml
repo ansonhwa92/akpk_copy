@@ -1,0 +1,83 @@
+﻿@model FEP.WebApiModel.RnP.PublicationSettingsModel
+
+@{
+    ViewBag.Title = "Edit Publication Settins";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav {
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">@Language.Publication.BreadcrumbHome</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@Language.Publication.SettingsTitle</h1>
+                    <div class="header-text">@Language.Publication.SettingsDescription</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> @Language.Publication.HeadingSettings</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Settings", "Publication", new { area = "RnP" })" class="active nav-link">@Language.General.ButtonEdit</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myform" }))
+        {
+            <div class="border-form rounded-top">
+
+                @Html.AntiForgeryToken()
+
+                <div class="form-container">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.MinimumPublishedYear, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            @Html.EditorFor(model => model.MinimumPublishedYear, new { htmlAttributes = new { @class = "form-control", @placeholder = "Oldest Year of Publication" } })
+                            @Html.ValidationMessageFor(model => model.MinimumPublishedYear)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.HardcopyReturnPeriod, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            @Html.EditorFor(model => model.HardcopyReturnPeriod, new { htmlAttributes = new { @class = "form-control", @placeholder = "Period in Days" } })
+                            @Html.ValidationMessageFor(model => model.HardcopyReturnPeriod)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a href="@Url.Action("Index", "Home", new { area = "" })" class="btn btn-default mr-2">@Language.General.ButtonCancel</a>
+                <button class="btn btn-secondary" type="submit">@Language.General.ButtonSave</button>
+            </div>
+
+        }
+    </div>
+
+</div>
+
+@section ContentScript{
+    <script type="text/javascript">
+    </script>
+}

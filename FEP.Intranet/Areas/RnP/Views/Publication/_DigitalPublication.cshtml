@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Attachment>
+@{
+	Layout = null;
+}
+<script type="text/javascript">
+
+    function RefreshFileDigital() {
+
+        var file_inputdigital;
+        var file_no;
+
+        $('#btnAddFileDigital').click(function () {
+            file_inputdigital = $('<input type="file" name="DigitalPublicationFiles" style="display:none" />');
+            file_inputdigital.trigger('click');
+            file_inputdigital.change(function () {
+
+                var row = $('<tr><td>' + $(this).val().replace(/.*(\/|\\)/, '') + '</tr>');
+
+                var cell = $('<td></td>');
+
+                var button = $('<a href="javascript:void(0);" data-toggle="tooltip" title="Remove File"><i class="fa fa-trash"></i></a>');
+
+                button.click(function () {
+                    $(this).tooltip('hide');
+                    row.remove();
+                });
+
+                cell.append(button);
+                cell.append(file_inputdigital);
+
+                row.append(cell);
+
+                $("table.table-filedigital tbody").append(row);
+
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            });
+
+        });
+
+    }
+
+</script>
+
+<div>
+    <button type="button" class="btn btn-sm btn-primary mb-1" id="btnAddFileDigital">Add File</button>
+
+    <div id="filesdigital" style="display:none"></div>
+    <table class="table table-filedigital table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileName)
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ var i = 0;}
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FileName)
+                        @Html.Hidden("DigitalPublications[" + i + "].Id", item.Id)
+                    </td>
+                    <td>
+                        <a href="javascript:void(0);" onclick="$(this).parent().parent('tr').remove();" data-toggle="tooltip" title="Remove File"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                ++i;
+            }
+        </tbody>
+    </table>
+
+</div>
+
+

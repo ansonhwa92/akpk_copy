@@ -74,6 +74,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				CreatedByName = mediaapproval.mediainterview.CreatedByName,
 				CreatedDate = mediaapproval.mediainterview.CreatedDate,
 				Attachments = mediaapproval.mediainterview.Attachments,
+				BranchId = mediaapproval.mediainterview.BranchId,
+				BranchName = mediaapproval.mediainterview.BranchName,
 			};
 
 			var approval = new ApprovalModel
@@ -208,6 +210,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			var model = new FEP.Intranet.Areas.eEvent.Models.CreateMediaInterviewModel() { };
 
 			model.RepresentativeList = new SelectList(await GetUser(), "Id", "Name", 0);
+			model.BranchList = new SelectList(await GetBranches(), "Id", "Name", 0);
 
 			return View(model);
 		}
@@ -250,7 +253,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					CreatedBy = CurrentUser.UserId,
 					CreatedDate = DateTime.Now,
 					Display = true,
-					MediaStatus = MediaStatus.New
+					MediaStatus = MediaStatus.New,
+					BranchId = model.BranchId
 				};
 
 				//attachment
@@ -284,6 +288,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			}
 
 			model.RepresentativeList = new SelectList(await GetUser(), "Id", "Name");
+			model.BranchList = new SelectList(await GetBranches(), "Id", "Name");
 
 			return View(model);
 		}
@@ -326,10 +331,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				RefNo = response.Data.RefNo,
 				RepEmail = response.Data.RepEmail,
 				RepMobileNumber = response.Data.RepMobileNumber,
-				Attachments = response.Data.Attachments
+				Attachments = response.Data.Attachments,
+				BranchId = response.Data.BranchId,
+				BranchName = response.Data.BranchName
 			};
 
 			model.RepresentativeList = new SelectList(await GetUser(), "Id", "Name");
+			model.BranchList = new SelectList(await GetBranches(), "Id", "Name");
 
 			return View(model);
 		}
@@ -366,7 +374,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					UserId = model.RepUserId,
 					MediaStatus = model.MediaStatus,
 					RefNo = model.RefNo,
-					Attachments = model.Attachments
+					Attachments = model.Attachments,
+					BranchId = model.BranchId,
 				};
 
 
@@ -395,6 +404,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			}
 
 			model.RepresentativeList = new SelectList(await GetUser(), "Id", "Name");
+			model.BranchList = new SelectList(await GetBranches(), "Id", "Name");
 
 			return View(model);
 		}
@@ -439,7 +449,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				MediaStatus = response.Data.MediaStatus,
 				RefNo = response.Data.RefNo,
 				RepDesignation = response.Data.RepDesignation,
-
+				BranchId = response.Data.BranchId,
+				BranchName = response.Data.BranchName
 			};
 
 			if (model == null)
@@ -938,7 +949,22 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 
 
+		[NonAction]
+		private async Task<IEnumerable<BranchModel>> GetBranches()
+		{
 
+			var branches = Enumerable.Empty<BranchModel>();
+
+			var response = await WepApiMethod.SendApiAsync<List<BranchModel>>(HttpVerbs.Get, $"Administration/Branch");
+
+			if (response.isSuccess)
+			{
+				branches = response.Data.OrderBy(o => o.Name);
+			}
+
+			return branches;
+
+		}
 
 
 

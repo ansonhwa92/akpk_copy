@@ -92,7 +92,7 @@
                     return false;
                 }
 				var rejecttext = $('#Reject_Remarks').val();
-				alert(rejecttext);
+				//alert(rejecttext);
                 $('#approval_Remarks').val(rejecttext);
                 $('#approval_Status').val('2');
                 $('#approval_ApproverId').val('@CurrentUser.UserId');
@@ -292,6 +292,13 @@
 											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Approved">
 										}
 									}
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.mediainterview.BranchName)
+									@Html.EditorFor(model => model.mediainterview.BranchName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 								</div>
 							</div>
 

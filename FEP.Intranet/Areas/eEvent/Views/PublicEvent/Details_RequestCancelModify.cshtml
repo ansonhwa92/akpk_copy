@@ -1,8 +1,89 @@
-﻿@model FEP.Intranet.Areas.eEvent.Models.EventRequestModel
+﻿@model FEP.WebApiModel.PublicEvent.EventRequestApprovalModel
 
 @{
 	ViewBag.Title = "Request Cancellation/Modification";
 	Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+
+@section ContentScript {
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+            $('#btnApprove').click(function (event) {
+                $("#modalApprove").modal();
+                return false;
+            });
+
+            function ValidApprove() {
+                var aremarks = $('#approval_Remarks').val();
+                $('#span_approveremarkserror').hide();
+                if (aremarks.trim() == "") {
+                    $('#span_approveremarkserror').show();
+                    return false;
+                }
+                return true;
+            }
+
+            $('#btnApproveConfirm').click(function (event) {
+                // ajax call for approval
+                if (!ValidApprove()) {
+                    return false;
+                }
+                $('#approval_Status').val('1');
+                $('#approval_ApproverId').val('@CurrentUser.UserId');
+				var applevel = $('#approval_Level').val();
+				//alert($('#approval_Level').val())
+				if (applevel == "Verifier") {
+				$('#approval_RequireNext').val('True');
+				}
+				else if (applevel == "Approver3") {
+				$('#approval_RequireNext').val('False');
+				}
+				//alert($('#approval_Status').val());
+				$('#myform').submit();
+				});
+
+				$('#btnReject').click(function (event) {
+				$("#modalReject").modal();
+				return false;
+				});
+
+				function ValidReject() {
+				var rremarks = $('#Reject_Remarks').val();
+				$('#span_rejectremarkserror').hide();
+				if (rremarks.trim() == "") {
+				$('#span_rejectremarkserror').show();
+				return false;
+				}
+				return true;
+				}
+
+				$('#btnRejectConfirm').click(function (event) {
+				// ajax call for approval
+				if (!ValidReject()) {
+				return false;
+				}
+				var rejecttext = $('#Reject_Remarks').val();
+				//alert(rejecttext);
+				$('#approval_Remarks').val(rejecttext);
+				$('#approval_Status').val('2');
+				$('#approval_ApproverId').val('@CurrentUser.UserId');
+				var applevel = $('#approval_Level').val();
+				//alert(applevel);
+				if (applevel == "Verifier") {
+				$('#approval_RequireNext').val('True');
+				}
+				else if (applevel == "Approver3") {
+				$('#approval_RequireNext').val('False');
+				}
+				//alert($('#approval_RequireNext').val());
+				$('#myform').submit();
+
+				});
+
+				});
+	</script>
 }
 
 @section Nav {
@@ -51,42 +132,54 @@
 
 				<br />
 				<div>
-					@if (Model.RequestStatus == FEP.Model.RequestStatus.New || Model.RequestStatus == FEP.Model.RequestStatus.AmendmentRequired && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
+					@if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.New || Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.AmendmentRequired && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
 					{
-						<a href='@Url.Action("SubmitToVerifyRequest", "PublicEvent", new { id = Model.Id })'
+						<a href='@Url.Action("SubmitToVerifyRequest", "PublicEvent", new { id = Model.eventrequest.Id })'
 						   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
 					}
-					else if (Model.RequestStatus == FEP.Model.RequestStatus.PendingVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Verifier_CancellationModificationRequest)))
+					else if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.PendingVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Verifier_CancellationModificationRequest)))
 					{
-						<a href='@Url.Action("VerifiedRequest", "PublicEvent", new { id = Model.Id })'
-						   class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</a>
-						<br />
-						<a href='@Url.Action("RequireAmendmentRequest", "PublicEvent", new { id = Model.Id })'
-						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
+						@*<a href='@Url.Action("VerifiedRequest", "PublicEvent", new { id = Model.eventrequest.Id })'
+			   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+			<br />
+			<a href='@Url.Action("RequireAmendmentRequest", "PublicEvent", new { id = Model.eventrequest.Id })'
+			   class="btn btn-warning btn-block mb-2">Require Amendment</a>*@
+
+						<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+						<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 					}
-					else if (Model.RequestStatus == FEP.Model.RequestStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver1_CancellationModificationRequest)))
+					else if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver1_CancellationModificationRequest)))
 					{
-						<a href='@Url.Action("FirstApprovedRequest", "PublicEvent", new { id = Model.Id })'
+						@*<a href='@Url.Action("FirstApprovedRequest", "PublicEvent", new { id = Model.eventrequest.Id })'
+			   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
+			<br />
+			<a href='@Url.Action("RequireAmendmentRequest", "PublicEvent", new { id = Model.eventrequest.Id })'
+			   class="btn btn-warning btn-block mb-2">Require Amendment</a>*@
+
+						<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+						<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
+					}
+					else if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.ApprovedByApprover1 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver2_CancellationModificationRequest)))
+					{
+						@*<a href='@Url.Action("SecondApprovedRequest", "PublicEvent", new { id = Model.eventrequest.Id })'
 						   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
 						<br />
-						<a href='@Url.Action("RequireAmendmentRequest", "PublicEvent", new { id = Model.Id })'
-						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
+						<a href='@Url.Action("RequireAmendmentRequest", "PublicEvent", new { id = Model.eventrequest.Id })'
+						   class="btn btn-warning btn-block mb-2">Require Amendment</a>*@
+
+						<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+						<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 					}
-					else if (Model.RequestStatus == FEP.Model.RequestStatus.ApprovedByApprover1 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver2_CancellationModificationRequest)))
+					else if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.ApprovedByApprover2 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver3_CancellationModificationRequest)))
 					{
-						<a href='@Url.Action("SecondApprovedRequest", "PublicEvent", new { id = Model.Id })'
-						   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
-						<br />
-						<a href='@Url.Action("RequireAmendmentRequest", "PublicEvent", new { id = Model.Id })'
-						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
-					}
-					else if (Model.RequestStatus == FEP.Model.RequestStatus.ApprovedByApprover2 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver3_CancellationModificationRequest)))
-					{
-						<a href='@Url.Action("FinalApprovedRequest", "PublicEvent", new { id = Model.Id, RequestType = Model.RequestType })'
+						@*<a href='@Url.Action("FinalApprovedRequest", "PublicEvent", new { id = Model.eventrequest.Id, RequestType = Model.eventrequest.RequestType })'
 						   class="btn btn-success btn-block mb-2">Approved</a>
 						<br />
-						<a href='@Url.Action("RequireAmendmentRequest", "PublicEvent", new { id = Model.Id })'
-						   class="btn btn-warning btn-block mb-2">Require Amendment</a>
+						<a href='@Url.Action("RequireAmendmentRequest", "PublicEvent", new { id = Model.eventrequest.Id })'
+						   class="btn btn-warning btn-block mb-2">Require Amendment</a>*@
+
+						<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
+						<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 					}
 				</div>
 			</div>
@@ -111,7 +204,9 @@
 						<li class="nav-item">
 							<a class="nav-link" href="#eventdetails" data-toggle="tab">Event Details</a>
 						</li>
-
+						<li class="nav-item">
+							<a class="nav-link" href="#amendmenthistory" data-toggle="tab">Amendment History</a>
+						</li>
 					</ul>
 				</div>
 				<div class="tab-content">
@@ -125,12 +220,12 @@
 								</div>
 								<div class="row">
 									<div class="form-group col-lg-6">
-										@Html.LabelFor(model => model.RequestType)
-										@{ if (Model.RequestType == FEP.Model.RequestType.CancelRequired)
+										@Html.LabelFor(model => model.eventrequest.RequestType)
+										@{ if (Model.eventrequest.RequestType == FEP.Model.RequestType.CancelRequired)
 											{
 												<input class="form-control bg-cancel-ccd" type="text" readonly="readonly" value="Cancellation Required">
 											}
-											else if (Model.RequestType == FEP.Model.RequestType.ModifyRequired)
+											else if (Model.eventrequest.RequestType == FEP.Model.RequestType.ModifyRequired)
 											{
 												<input class="form-control bg-cancel-ccd" type="text" readonly="readonly" value="Modification Required">
 											}
@@ -138,32 +233,32 @@
 									</div>
 
 									<div class="form-group col-lg-6">
-										@Html.LabelFor(model => model.RequestStatus)
-										@{ if (Model.RequestStatus == FEP.Model.RequestStatus.New)
+										@Html.LabelFor(model => model.eventrequest.RequestStatus)
+										@{ if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.New)
 											{
 												<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="New Request">
 											}
-											else if (Model.RequestStatus == FEP.Model.RequestStatus.PendingVerified)
+											else if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.PendingVerified)
 											{
 												<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Verification">
 											}
-											else if (Model.RequestStatus == FEP.Model.RequestStatus.Verified)
+											else if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.Verified)
 											{
 												<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 1">
 											}
-											else if (Model.RequestStatus == FEP.Model.RequestStatus.AmendmentRequired)
+											else if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.AmendmentRequired)
 											{
 												<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Require Amendment">
 											}
-											else if (Model.RequestStatus == FEP.Model.RequestStatus.ApprovedByApprover1)
+											else if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.ApprovedByApprover1)
 											{
 												<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 2">
 											}
-											else if (Model.RequestStatus == FEP.Model.RequestStatus.ApprovedByApprover2)
+											else if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.ApprovedByApprover2)
 											{
 												<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 3">
 											}
-											else if (Model.RequestStatus == FEP.Model.RequestStatus.ApprovedByApprover3)
+											else if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.ApprovedByApprover3)
 											{
 												<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Approved">
 											}
@@ -173,15 +268,15 @@
 
 								<div class="row">
 									<div class="form-group col-lg-12">
-										@Html.LabelFor(model => model.Reason)
-										@Html.TextAreaFor(model => model.Reason, new { @class = "form-control", rows = 6, @readonly = "readonly" })
+										@Html.LabelFor(model => model.eventrequest.Reason)
+										@Html.TextAreaFor(model => model.eventrequest.Reason, new { @class = "form-control", rows = 6, @readonly = "readonly" })
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="form-group col-lg-12">
-										@Html.LabelFor(model => model.Attachments)
-										@Html.Partial("_AttachmentDetails", Model.Attachments)
+										@Html.LabelFor(model => model.eventrequest.Attachments)
+										@Html.Partial("_AttachmentDetails", Model.eventrequest.Attachments)
 									</div>
 								</div>
 
@@ -199,32 +294,209 @@
 								</div>
 								<div class="row">
 									<div class="form-group col-lg-6">
-										@Html.LabelFor(model => model.EventRefNo)
-										@Html.EditorFor(model => model.EventRefNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+										@Html.LabelFor(model => model.eventrequest.EventRefNo)
+										@Html.EditorFor(model => model.eventrequest.EventRefNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 									</div>
 									<div class="form-group col-lg-6">
-										@Html.LabelFor(model => model.EventCategory)
-										@Html.EditorFor(model => model.EventCategory, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+										@Html.LabelFor(model => model.eventrequest.EventCategory)
+										@Html.EditorFor(model => model.eventrequest.EventCategory, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="form-group col-lg-12">
-										@Html.LabelFor(model => model.EventTitle)
-										@Html.EditorFor(model => model.EventTitle, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+										@Html.LabelFor(model => model.eventrequest.EventTitle)
+										@Html.EditorFor(model => model.eventrequest.EventTitle, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="form-group col-lg-12">
-										@Html.LabelFor(model => model.EventObjective)
-										@Html.EditorFor(model => model.EventObjective, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+										@Html.LabelFor(model => model.eventrequest.EventObjective)
+										@Html.EditorFor(model => model.eventrequest.EventObjective, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 									</div>
 								</div>
 							</div>
 						</form>
 					</div>
 
+					<div class="tab-pane" id="amendmenthistory">
+						<div class="mb-4 mt-2 mr-auto">
+							<h4 class="color-darkblue mb-0">Amendment History</h4>
+							<h6 class="font-weight-normal">Check amendment list here.</h6>
+						</div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								<ul class="list-group list-group-fit">
+									@if (Model.eventrequest.RequestStatus != FEP.Model.RequestStatus.New)
+									{
+										if (ViewBag.History.Count != 0)
+										{
+											var icount = 0;
+											foreach (var item in ViewBag.History)
+											{
+												if (item.Status == FEP.Model.EventApprovalStatus.Rejected)
+												{
+													icount++;
+													<li class="list-group-item pt-4">
+														<div class="media align-items-top">
+															<div class="media-left">
+																<div class="card__avatar">
+																	<img src="assets/images/people/50/guy-6.jpg" alt="Avatar" class="card__avatar__image">
+																</div>
+															</div>
+															<div class="media-body">
+																<div class="card__name-wrap ml-0">
+																	<div class="card__instructby">@item.ApprovalDate.ToString("dd/MM/yyyy, hh:mm tt") <i class="la la-exclamation-circle text-danger"></i></div>
+																	<div class="card__author-name">@item.UserName</div>
+																	<div class="card__text pb-3">@item.Remarks</div>
+																</div>
+															</div>
+														</div>
+													</li>
+												}
+											}
+
+										}
+									}
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- Popups -->
+					<!-- Start Form -->
+					@using (Html.BeginForm("Details_RequestCancelModify", "PublicEvent", FormMethod.Post, new { id = "myform" }))
+					{
+						@Html.AntiForgeryToken()
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+						@Html.HiddenFor(model => model.approval.Id)
+						@Html.HiddenFor(model => model.approval.EventId)
+						@Html.HiddenFor(model => model.approval.Level)
+						@Html.HiddenFor(model => model.approval.ApproverId)
+						@Html.HiddenFor(model => model.approval.Status)
+
+						<div class="modal fade" id="modalApprove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-sm" role="document">
+								<div class="modal-content">
+									<div class="modal-body">
+										@if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.PendingVerified)
+										{
+											if (CurrentUser.HasAccess(FEP.Model.UserAccess.Verifier_CancellationModificationRequest))
+											{
+												<h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
+												@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+											}
+										}
+										else if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.Verified || Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.ApprovedByApprover1)
+										{
+											if (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver1_CancellationModificationRequest) || CurrentUser.HasAccess(FEP.Model.UserAccess.Approver2_CancellationModificationRequest))
+											{
+												<h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
+												<h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
+												<div class="form-group">
+													<div class="ml-4">
+														<div class="custom-control custom-radio">
+															@Html.RadioButtonFor(model => model.approval.RequireNext, true, new { @id = "option1" })
+															<label for="option1">Yes, submit to next level approval</label>
+														</div>
+														<div class="custom-control custom-radio">
+															@Html.RadioButtonFor(model => model.approval.RequireNext, false, new { @id = "option2" })
+															<label for="option2">No, skip and approve this Request</label>
+														</div>
+													</div>
+												</div>
+											}
+											else if (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver3_CancellationModificationRequest))
+											{
+												@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
+											}
+										}
+										<div class="form-group">
+											@Html.LabelFor(model => model.approval.Remarks, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+											<textarea class="form-control" name="Approval.Remarks" id="approval_Remarks" rows="4" placeholder=""></textarea>
+											<span class="text-danger field-validation-error" id="span_approveremarkserror" style="display:none;">Please enter Remarks</span>
+										</div>
+									</div>
+									<div class="divider-border"></div>
+									<div class="m-4 text-center">
+										<button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+										<button class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#approvalsent" id="btnApproveConfirm">Send</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal fade" id="modalApproveSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-sm" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+									</div>
+									<div class="modal-body text-center">
+										@if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.PendingVerified)
+										{
+											<!-- verification (always forwarded) -->
+											<img src="~/img/icon-noti-email.svg" alt="image">
+											<h4 class="color-darkblue mt-4">Approval Request Sent</h4>
+											<p class="small">Your cancellation/modification request of public event approval request has been sent to HOD.</p>
+										}
+										else if (Model.eventrequest.RequestStatus == FEP.Model.RequestStatus.Verified)
+										{
+											<!-- approval -->
+											<!-- forwarding -->
+											<img src="~/img/icon-approval.svg" alt="image">
+											<h4 class="color-darkblue mt-4">Approval Request Sent</h4>
+											<p class="small">Your cancellation/modification request of public event approval request has been sent to the next Approver.</p>
+											<!-- not forwarding -->
+											<img src="~/img/icon-approval.svg" alt="image">
+											<h4 class="color-darkblue mt-4">Public Event Approved</h4>
+											<p class="small">Your cancellation/modification request of public event approval has been notified to CCD.</p>
+										}
+									</div>
+									<!-- Bila xde modal footer -->
+									<div class="modal-footer py-0">&nbsp;</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal fade" id="modalReject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-sm" role="document">
+								<div class="modal-content">
+									<div class="modal-body">
+										<h4 class="color-darkblue mt-4">Require Amendment</h4>
+										<label>Remarks</label> <span class="text-danger">*</span>
+										<textarea class="form-control" name="Reject.Remarks" id="Reject_Remarks" rows="4" placeholder=""></textarea>
+										<span class="text-danger field-validation-error" id="span_rejectremarkserror" style="display:none;">Please enter Remarks</span>
+									</div>
+									<div class="divider-border"></div>
+									<div class="m-4 text-center">
+										<button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+										<button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#amendmentsent" id="btnRejectConfirm">Send</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal fade" id="modalRejectSent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-sm" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+									</div>
+									<div class="modal-body text-center">
+										<img src="../img/icon-noti-email.svg" alt="image">
+										<h4 class="color-darkblue mt-4">Ammendment Sent</h4>
+										<p class="small">Your ammendment request has been sent to CCD.</p>
+									</div>
+									<!-- Bila xde modal footer -->
+									<div class="modal-footer py-0">&nbsp;</div>
+								</div>
+							</div>
+						</div>
+					}
+					<!-- popups end -->
 				</div> <!--/Tab Content-->
 
 			</div>
@@ -233,9 +505,33 @@
 				<h6 class="color-darkblue px-3"><i class="la la-comment color-secondary font-icon align-top"></i>Action Log</h6>
 				<!-- Kalau banyak action log akan jd scroll ke bwh -->
 				<div data-perfect-scrollbar class="position-relative">
+					@if (ViewBag.History.Count != 0)
+					{
+						var icount = 0;
+						foreach (var item in ViewBag.History)
+						{
+							icount++;
+							<div class="border-form rounded mb-2">
+								<div class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="float-right">@item.ApprovalDate.ToString("hh:mm tt")</span></div>
+								@if (item.Status == FEP.Model.EventApprovalStatus.Approved)
+								{
+									<div class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-green">Approved</span></div>
+								}
+								else
+								{
+									<div class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><strong>:Designation: Approval Result</strong><br>— <span class="color-yellow">Amendment Required</span></div>
+								}
+								@if (item.Remarks != "")
+								{
+									<div class="small mt-2"><strong>Remark:</strong> <em>@item.Remarks</em></div>
+								}
+							</div>
+						}
+
+					}
 					<div class="border-form rounded mg-2">
-						<div class="small text-muted">@Model.CreatedDate</div>
-						<div class="small"><span class="card__author-name color-darkblue">@Model.CreatedByName</span><br>Cancellation/Modification Request is created.</div>
+						<div class="small text-muted">@Model.eventrequest.CreatedDate</div>
+						<div class="small"><span class="card__author-name color-darkblue">@Model.eventrequest.CreatedByName</span><br>Cancellation/Modification Request is created.</div>
 					</div>
 				</div>
 			</div>

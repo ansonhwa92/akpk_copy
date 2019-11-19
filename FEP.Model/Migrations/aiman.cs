@@ -138,6 +138,13 @@ namespace FEP.Model.Migrations
 				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveMediaInterview, NotificationType = NotificationType.Approve_Media_Interview_ByApprover_3, ETCode = "ET005EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.RejectMediaInterview, NotificationType = NotificationType.Reject_Media_Interview, ETCode = "ET006EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
+
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.RepAvailable_MediaInterview, NotificationType = NotificationType.RepAvailable_MediaInterview, ETCode = "ET007EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.RepNotAvailable_MediaInterview, NotificationType = NotificationType.RepNotAvailable_MediaInterview, ETCode = "ET008EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+
+
+
+
 				//EVENT EXTERNAL - EXHIBITION ROADSHOW
 				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.SubmitExhibitionRoadshow, NotificationType = NotificationType.Submit_Exhibition_RoadShow_For_Verification, ETCode = "ET007EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.VerifyExhibitionRoadshow, NotificationType = NotificationType.Verify_Exhibition_RoadShow_After_Submit_For_Verification, ETCode = "ET008EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
@@ -151,8 +158,9 @@ namespace FEP.Model.Migrations
 				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveExhibitionRoadshowDutyRoster, NotificationType = NotificationType.NotVerify_DutyRoster, ETCode = "ET015EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveExhibitionRoadshowDutyRoster, NotificationType = NotificationType.Approve_DutyRoster, ETCode = "ET016EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveExhibitionRoadshowDutyRoster, NotificationType = NotificationType.AcceptParticipation_Exhibition_RoadShow, ETCode = "ET017EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.RejectExhibitionRoadshowDutyRoster, NotificationType = NotificationType.DeclineParticipation_Exhibition_RoadShow, ETCode = "ET018EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days }
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.RejectExhibitionRoadshowDutyRoster, NotificationType = NotificationType.DeclineParticipation_Exhibition_RoadShow, ETCode = "ET018EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
+				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.SendInvitationToNominees, NotificationType = NotificationType.SendInvitationToNominees, ETCode = "ET019EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days }
 			);
 
 		}

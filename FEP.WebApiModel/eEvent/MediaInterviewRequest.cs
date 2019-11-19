@@ -68,6 +68,12 @@ namespace FEP.WebApiModel.MediaInterview
 
 		public int? UserId { get; set; }
 
+		[Display(Name = "MediaBranch", ResourceType = typeof(Language.Event))]
+		public int? BranchId { get; set; }
+
+		[Display(Name = "MediaBranch", ResourceType = typeof(Language.Event))]
+		public string BranchName { get; set; }
+
 		[Display(Name = "MediaRepUserName", ResourceType = typeof(Language.Event))]
 		public string RepUserName { get; set; }
 		[Display(Name = "MediaRepDesignation", ResourceType = typeof(Language.Event))]

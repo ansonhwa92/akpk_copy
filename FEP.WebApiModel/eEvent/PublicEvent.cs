@@ -222,7 +222,7 @@ namespace FEP.WebApiModel.PublicEvent
 		public ApprovalModel approval { get; set; }
 	}
 
-	public class ApprovalModel
+	public class ApprovalModel //Share dengan cancel/modi
 	{
 		[Required]
 		public int? Id { get; set; }
@@ -251,7 +251,7 @@ namespace FEP.WebApiModel.PublicEvent
 	}
 
 
-	public class PublicEventApprovalHistoryModel
+	public class PublicEventApprovalHistoryModel //Share dengan cancel/modi
 	{
 		public EventApprovalLevel Level { get; set; }
 
@@ -266,8 +266,14 @@ namespace FEP.WebApiModel.PublicEvent
 		public string Remarks { get; set; }
 	}
 
-	public class EventRequestModel
+	public class EventRequestApprovalModel
 	{
+		public EventRequestModel eventrequest { get; set; }
+		public ApprovalModel approval { get; set; }
+	}
+
+	public class EventRequestModel
+	{ 
 		public EventRequestModel() 
 		{
 			FilesId = new List<int>();

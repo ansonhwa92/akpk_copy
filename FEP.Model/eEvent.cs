@@ -522,4 +522,23 @@ namespace FEP.Model
 		public DateTime? CreatedDate { get; set; }
 		public bool Display { get; set; }
 	}
+
+	[Table("EventRequestApproval")]
+	public class EventRequestApproval
+	{
+		[Key]
+		public int Id { get; set; }
+		public DateTime? ApprovedDate { get; set; }
+		public string Remark { get; set; }
+		public EventApprovalLevel Level { get; set; }
+		public EventApprovalStatus Status { get; set; }
+		public bool RequireNext { get; set; }
+		public int? ApproverId { get; set; }
+		 
+		public int? EventRequestId { get; set; }
+		[ForeignKey("EventRequestId")]
+		public virtual EventRequest EventRequest { get; set; }
+	}
+
+
 }

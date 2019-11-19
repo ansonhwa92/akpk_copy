@@ -273,7 +273,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Status")]
 		public EventStatus? EventStatus { get; set; }
 	}
-
 	public class EventRequestModel
 	{
 		public EventRequestModel()

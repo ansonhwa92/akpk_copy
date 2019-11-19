@@ -160,7 +160,7 @@ namespace FEP.Model
 		public DbSet<DutyRoster> DutyRoster { get; set; }
 		public DbSet<DutyRosterOfficer> DutyRosterOfficer { get; set; }
 		public DbSet<EventRequest> EventRequest { get; set; }
-
+		public DbSet<EventRequestApproval> EventRequestApproval { get; set; }
 
 
 		// Elearning

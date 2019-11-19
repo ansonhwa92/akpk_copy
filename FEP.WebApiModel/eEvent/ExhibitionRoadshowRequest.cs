@@ -77,6 +77,13 @@ namespace FEP.WebApiModel.eEvent
 		public string CreatedByName { get; set; }
 		public DateTime? CreatedDate { get; set; }
 
+
+		[Display(Name = "ExRoadBranch", ResourceType = typeof(Language.Event))]
+		public int? BranchId { get; set; }
+
+		[Display(Name = "ExRoadBranch", ResourceType = typeof(Language.Event))]
+		public string BranchName { get; set; }
+
 		public IEnumerable<Attachment> Attachments { get; set; }
 
 	}
@@ -209,7 +216,14 @@ namespace FEP.WebApiModel.eEvent
 		public string CreatedByName { get; set; }
 		public DateTime? CreatedDate { get; set; }
 
+		[Display(Name = "ExRoadBranch", ResourceType = typeof(Language.Event))]
+		public int? BranchId { get; set; }
+
+		[Display(Name = "ExRoadBranch", ResourceType = typeof(Language.Event))]
+		public string BranchName { get; set; }
+
 		public IEnumerable<SelectListItem> Nominees { get; set; }
+		public IEnumerable<SelectListItem> BranchList { get; set; }
 	}
 
 	public class EditExhibitionRoadshowRequestModel : CreateExhibitionRoadshowRequestModel

@@ -88,10 +88,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Reference No")]
 		public string RefNo { get; set; }
 
-		[Display(Name = "Branch")]
+		[Display(Name = "MediaBranch", ResourceType = typeof(Language.Event))]
 		public int? BranchId { get; set; }
 
-		[Display(Name = "Branch")]
+		[Display(Name = "MediaBranch", ResourceType = typeof(Language.Event))]
 		public string BranchName { get; set; }
 		public IEnumerable<SelectListItem> BranchList { get; set; }
 

@@ -66,7 +66,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				NomineeId = exapproval.exhibitionroadshow.NomineeId,
 				CreatedBy = exapproval.exhibitionroadshow.CreatedBy,
 				CreatedDate = exapproval.exhibitionroadshow.CreatedDate,
-				CreatedByName = exapproval.exhibitionroadshow.CreatedByName
+				CreatedByName = exapproval.exhibitionroadshow.CreatedByName,
+				BranchId = exapproval.exhibitionroadshow.BranchId,
+				BranchName = exapproval.exhibitionroadshow.BranchName,
 			};
 
 			var approval = new ApprovalModel
@@ -206,6 +208,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
 			model.Nominees = new SelectList(await GetUsers(), "Id", "Name", 0);
+			model.BranchList = new SelectList(await GetBranches(), "Id", "Name", 0);
 
 			return View(model);
 		}
@@ -246,6 +249,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Receive_Via = model.Receive_Via,
 					NomineeId = model.NomineeId,
 					CreatedBy = CurrentUser.UserId,
+					BranchId = model.BranchId,
 				};
 
 				//attachment
@@ -281,6 +285,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name");
 			model.Nominees = new SelectList(await GetUsers(), "Id", "Name");
+			model.BranchList = new SelectList(await GetBranches(), "Id", "Name", 0);
 
 			return RedirectToAction("List");
 		}
@@ -325,10 +330,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				Attachments = response.Data.Attachments,
 				NomineeId = response.Data.NomineeId,
 				RefNo = response.Data.RefNo,
+				BranchId = response.Data.BranchId,
+				BranchName = response.Data.BranchName,
 			};
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
 			model.Nominees = new SelectList(await GetUsers(), "Id", "Name", 0);
+			model.BranchList = new SelectList(await GetBranches(), "Id", "Name", 0);
 
 			return View(model);
 		}
@@ -371,6 +379,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Receive_Via = model.Receive_Via,
 					Attachments = model.Attachments,
 					NomineeId = model.NomineeId,
+					BranchId = model.BranchId,
+					BranchName = model.BranchName,
 				};
 
 				//attachment
@@ -398,6 +408,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
 			model.Nominees = new SelectList(await GetUsers(), "Id", "Name", 0);
+			model.BranchList = new SelectList(await GetBranches(), "Id", "Name", 0);
 
 			return View(model);
 
@@ -439,10 +450,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				ReceivedDate = response.Data.ReceivedDate,
 				Receive_Via = response.Data.Receive_Via,
 				Attachments = response.Data.Attachments,
+				BranchId = response.Data.BranchId,
+				BranchName = response.Data.BranchName,
 			};
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
 			model.Nominees = new SelectList(await GetUsers(), "Id", "Name", 0);
+			model.BranchList = new SelectList(await GetBranches(), "Id", "Name", 0);
 
 			return View(model);
 		}
@@ -1118,6 +1132,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+					//var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAndSendEmails/", reminder);
 					if (response2.isSuccess)
 					{
 						int saveThisID = response2.Data.SLAReminderStatusId;
@@ -1267,7 +1282,22 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 
 
+		[NonAction]
+		private async Task<IEnumerable<BranchModel>> GetBranches()
+		{
 
+			var branches = Enumerable.Empty<BranchModel>();
+
+			var response = await WepApiMethod.SendApiAsync<List<BranchModel>>(HttpVerbs.Get, $"Administration/Branch");
+
+			if (response.isSuccess)
+			{
+				branches = response.Data.OrderBy(o => o.Name);
+			}
+
+			return branches;
+
+		}
 
 
 

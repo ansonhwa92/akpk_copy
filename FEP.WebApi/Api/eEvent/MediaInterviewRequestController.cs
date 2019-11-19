@@ -74,6 +74,19 @@ namespace FEP.WebApi.Api.eEvent
 
 						break;
 
+					case "BranchId":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.Branch.Name);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.Branch.Name);
+						}
+
+						break;
+
 					case "MediaName":
 
 						if (sortAscending)
@@ -172,7 +185,9 @@ namespace FEP.WebApi.Api.eEvent
 					ContactPerson = s.ContactPerson,
 					DateStart = s.DateStart,
 					DateEnd = s.DateEnd,
-					MediaStatus = s.MediaStatus
+					MediaStatus = s.MediaStatus,
+					BranchId = s.BranchId,
+					BranchName = s.Branch.Name,
 				}).ToList();
 
 			data.ForEach(s =>
@@ -215,6 +230,8 @@ namespace FEP.WebApi.Api.eEvent
 				RepEmail = i.User.Email,
 				RepMobileNumber = i.User.MobileNo,
 				ContactPerson = i.ContactPerson,
+				BranchId = i.BranchId,
+				BranchName = i.Branch.Name
 			}).ToList();
 
 			return model;
@@ -252,6 +269,8 @@ namespace FEP.WebApi.Api.eEvent
 					RefNo = i.RefNo,
 					MediaStatus = i.MediaStatus,
 					CreatedByName = i.CreatedByUser.Name,
+					BranchId = i.BranchId,
+					BranchName = i.Branch.Name
 				}).FirstOrDefault();
 
 			if (media.MediaStatus != MediaStatus.ApprovedByApprover3 && media.MediaStatus != MediaStatus.RequireAmendment && media.MediaStatus != MediaStatus.RepAvailable && media.MediaStatus != MediaStatus.RepNotAvailable)
@@ -327,7 +346,8 @@ namespace FEP.WebApi.Api.eEvent
 				CreatedBy = model.CreatedBy,
 				CreatedDate = DateTime.Now,
 				Display = true,
-				MediaStatus = MediaStatus.New
+				MediaStatus = MediaStatus.New,
+				BranchId = model.BranchId,
 			};
 
 			db.EventMediaInterviewRequest.Add(media);
@@ -401,6 +421,7 @@ namespace FEP.WebApi.Api.eEvent
 			media.UserId = model.UserId;
 			media.MediaStatus = model.MediaStatus;
 			media.RefNo = model.RefNo;
+			media.BranchId = model.BranchId;
 
 			db.Entry(media).State = EntityState.Modified;
 			db.Entry(media).Property(x => x.CreatedDate).IsModified = false;
@@ -844,6 +865,8 @@ namespace FEP.WebApi.Api.eEvent
 				   RefNo = i.RefNo,
 				   MediaStatus = i.MediaStatus,
 				   CreatedByName = i.CreatedByUser.Name,
+				   BranchId = i.BranchId,
+				   BranchName = i.Branch.Name
 			   }).FirstOrDefault();
 
 			if (model == null)
@@ -890,6 +913,8 @@ namespace FEP.WebApi.Api.eEvent
 				   RefNo = i.RefNo,
 				   MediaStatus = i.MediaStatus,
 				   CreatedByName = i.CreatedByUser.Name,
+				   BranchId = i.BranchId,
+				   BranchName = i.Branch.Name
 			   }).FirstOrDefault();
 			
 			model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.MediaInterview && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();

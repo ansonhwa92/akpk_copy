@@ -402,4 +402,10 @@
   <data name="MediaRepUserName" xml:space="preserve">
     <value>Rep. Name</value>
   </data>
+  <data name="MediaBranch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="ExRoadBranch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
 </root>

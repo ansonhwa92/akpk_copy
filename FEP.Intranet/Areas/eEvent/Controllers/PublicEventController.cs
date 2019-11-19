@@ -987,10 +987,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 
-
-
-
-
 		[HttpGet]
 		public ActionResult Create_RequestCancelModify(int? id)
 		{
@@ -1054,6 +1050,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 
+
 		[HttpGet]
 		public async Task<ActionResult> Details_RequestCancelModify(int? id)
 		{
@@ -1062,34 +1059,151 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Get, $"eEvent/PublicEvent/Details?id={id}");
+			var response = await WepApiMethod.SendApiAsync<EventRequestApprovalModel>(HttpVerbs.Get, $"eEvent/PublicEvent/EventRequestDetails?id={id}");
 
 			if (!response.isSuccess)
 			{
 				return HttpNotFound();
 			}
 
-			var model = new FEP.Intranet.Areas.eEvent.Models.EventRequestModel()
+			var reqapproval = response.Data;
+
+			var eventreq = new EventRequestModel()
 			{
-				Id = response.Data.Id,
-				EventTitle = response.Data.EventTitle,
-				EventObjective = response.Data.EventObjective,
-				EventCategory = response.Data.EventCategory,
-				EventId = response.Data.EventId,
-				RequestStatus = response.Data.RequestStatus,
-				RequestType = response.Data.RequestType,
-				CreatedBy = response.Data.CreatedBy,
-				CreatedByName = response.Data.CreatedByName,
-				Display = response.Data.Display,
-				EventRefNo = response.Data.EventRefNo,
-				Reason = response.Data.Reason,
-				Attachments = response.Data.Attachments,
-				CreatedDate = response.Data.CreatedDate,
+				Id = reqapproval.eventrequest.Id,
+				EventTitle = reqapproval.eventrequest.EventTitle,
+				EventObjective = reqapproval.eventrequest.EventObjective,
+				EventCategory = reqapproval.eventrequest.EventCategory,
+				EventId = reqapproval.eventrequest.EventId,
+				RequestStatus = reqapproval.eventrequest.RequestStatus,
+				RequestType = reqapproval.eventrequest.RequestType,
+				CreatedBy = reqapproval.eventrequest.CreatedBy,
+				CreatedByName = reqapproval.eventrequest.CreatedByName,
+				Display = reqapproval.eventrequest.Display,
+				EventRefNo = reqapproval.eventrequest.EventRefNo,
+				Reason = reqapproval.eventrequest.Reason,
+				Attachments = reqapproval.eventrequest.Attachments,
+				CreatedDate = reqapproval.eventrequest.CreatedDate,
 			};
 
-			if (model == null)
+			var approval = new ApprovalModel
 			{
-				return HttpNotFound();
+				Id = reqapproval.approval.Id,
+				EventId = reqapproval.approval.EventId,
+				Level = reqapproval.approval.Level,
+				ApproverId = reqapproval.approval.ApproverId,
+				Status = reqapproval.approval.Status,
+				Remarks = reqapproval.approval.Remarks,
+				RequireNext = reqapproval.approval.RequireNext
+			};
+
+			var pevaluation = new EventRequestApprovalModel
+			{
+				eventrequest = eventreq,
+				approval = approval
+			};
+
+			var responseHistory = await WepApiMethod.SendApiAsync<IEnumerable<PublicEventApprovalHistoryModel>>(HttpVerbs.Get, $"eEvent/PublicEvent/GetHistoryRequest?id={reqapproval.eventrequest.Id}");
+
+			if (responseHistory.isSuccess)
+			{
+				ViewBag.History = responseHistory.Data;
+			}
+
+			return View(pevaluation);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Details_RequestCancelModify(EventRequestApprovalModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/UpdateApprovalEventRequest", model);
+
+				if (response.isSuccess)
+				{
+					if (model.approval.Status == EventApprovalStatus.Approved)
+					{
+						if (model.approval.Level == EventApprovalLevel.Verifier)
+						{
+							await VerifiedRequest(model.approval.EventId);
+							await LogActivity(Modules.Event, "Verify Cancellation/Modification Request: ", model);
+							TempData["SuccessMessage"] = "Cancellation/Modification Request is successfully verified.";
+						}
+						else
+						{
+							if (model.approval.Level == EventApprovalLevel.Approver1)
+							{
+								if (model.approval.RequireNext)
+								{
+									TempData["SuccessMessage"] = "Cancellation/Modification Request is successfully approved and require next approval.";
+									await FirstApprovedRequest(model.approval.EventId);
+									await LogActivity(Modules.Event, "Approve Cancellation/Modification Request: ", model);
+								}
+								else
+								{
+									TempData["SuccessMessage"] = "Cancellation/Modification Request is successfully approved.";
+									await FinalApprovedRequest(model.approval.EventId);
+									await LogActivity(Modules.Event, "Approve Cancellation/Modification Request by Approver 1 ", model);
+								}
+							}
+							else if (model.approval.Level == EventApprovalLevel.Approver2)
+							{
+								if (model.approval.RequireNext)
+								{
+									TempData["SuccessMessage"] = "Cancellation/Modification Request is successfully approved and require next approval.";
+									await SecondApprovedRequest(model.approval.EventId);
+									await LogActivity(Modules.Event, "Approve Cancellation/Modification Request: ", model);
+								}
+								else
+								{
+									TempData["SuccessMessage"] = "Cancellation/Modification Request is successfully approved.";
+									await FinalApprovedRequest(model.approval.EventId);
+									await LogActivity(Modules.Event, "Approve Cancellation/Modification Request by Approver 2 ", model);
+								}
+							}
+							else if (model.approval.Level == EventApprovalLevel.Approver3)
+							{
+								TempData["SuccessMessage"] = "Cancellation/Modification Request is successfully approved.";
+								await FinalApprovedRequest(model.approval.EventId);
+								await LogActivity(Modules.Event, "Cancellation/Modification Request Event by Approver 3  ", model);
+							}
+						}
+					}
+					else
+					{
+						if (model.approval.Level == EventApprovalLevel.Verifier)
+						{
+							await RequireAmendmentRequest(model.approval.EventId);
+							await LogActivity(Modules.Event, "Cancellation/Modification Request requires amendment.", model);
+							TempData["SuccessMessage"] = "Cancellation/Modification Request requires amendment.";
+						}
+						else if (model.approval.Level == EventApprovalLevel.Approver1)
+						{
+							await RequireAmendmentRequest(model.approval.EventId);
+							await LogActivity(Modules.Event, "Cancellation/Modification Request requires amendment.", model);
+							TempData["SuccessMessage"] = "Cancellation/Modification Request requires amendment.";
+						}
+						else if (model.approval.Level == EventApprovalLevel.Approver2)
+						{
+							await RequireAmendmentRequest(model.approval.EventId);
+							await LogActivity(Modules.Event, "Cancellation/Modification Request requires amendment.", model);
+							TempData["SuccessMessage"] = "Cancellation/Modification Request requires amendment.";
+						}
+						else if (model.approval.Level == EventApprovalLevel.Approver3)
+						{
+							await RequireAmendmentRequest(model.approval.EventId);
+							await LogActivity(Modules.Event, "Cancellation/Modification Request requires amendment.", model);
+							TempData["SuccessMessage"] = "Cancellation/Modification Request requires amendment.";
+						}
+					}
+					return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+				}
+				else
+				{
+					return RedirectToAction("List", "PublicEvent", new { area = "eEvent", @id = model.approval.EventId });
+				}
 			}
 
 			return View(model);
@@ -1102,7 +1216,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Get, $"eEvent/PublicEvent/Details?id={id}");
+			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Get, $"eEvent/PublicEvent/GetEditDeleteRequest?id={id}");
 
 			if (!response.isSuccess)
 			{
@@ -1434,13 +1548,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 
-		public async Task<ActionResult> FinalApprovedRequest(int? id, string RequestType)
+		public async Task<ActionResult> FinalApprovedRequest(int? id)
 		{
 			if (id == null)
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Post, $"eEvent/PublicEvent/FinalApprovedRequest?id={id}&RequestType={RequestType}");
+			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Post, $"eEvent/PublicEvent/FinalApprovedRequest?id={id}");
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//

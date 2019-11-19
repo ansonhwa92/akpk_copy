@@ -250,6 +250,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Branch.
+        /// </summary>
+        public static string ExRoadBranch {
+            get {
+                return ResourceManager.GetString("ExRoadBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End Date.
         /// </summary>
         public static string ExRoadEndDate {
@@ -426,6 +435,15 @@ namespace Language {
         public static string ExRoadStartTime {
             get {
                 return ResourceManager.GetString("ExRoadStartTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Branch.
+        /// </summary>
+        public static string MediaBranch {
+            get {
+                return ResourceManager.GetString("MediaBranch", resourceCulture);
             }
         }
         

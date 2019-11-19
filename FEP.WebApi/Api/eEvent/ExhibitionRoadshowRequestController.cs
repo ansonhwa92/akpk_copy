@@ -60,6 +60,32 @@ namespace FEP.WebApi.Api.eEvent
 
 				switch (sortBy)
 				{
+					case "RefNo":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.RefNo);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.RefNo);
+						}
+
+						break;
+
+					case "BranchId":
+
+						if (sortAscending)
+						{
+							query = query.OrderBy(o => o.Branch.Name);
+						}
+						else
+						{
+							query = query.OrderByDescending(o => o.Branch.Name);
+						}
+
+						break;
+
 					case "EventName":
 
 						if (sortAscending)
@@ -159,6 +185,9 @@ namespace FEP.WebApi.Api.eEvent
 					ReceivedById = i.ReceivedById,
 					ReceivedDate = i.ReceivedDate,
 					Receive_Via = i.Receive_Via,
+					RefNo = i.RefNo,
+					BranchId = i.BranchId,
+					BranchName = i.Branch.Name
 				}).ToList();
 
 			data.ForEach(s => s.ExhibitionStatusDesc = s.ExhibitionStatus.GetDisplayName());
@@ -202,6 +231,8 @@ namespace FEP.WebApi.Api.eEvent
 					CreatedDate = s.CreatedDate,
 					CreatedBy = s.CreatedBy,
 					CreatedByName = s.CreatedByUser.Name,
+					BranchId = s.BranchId,
+					BranchName = s.Branch.Name,
 				}).FirstOrDefault();
 
 
@@ -280,7 +311,8 @@ namespace FEP.WebApi.Api.eEvent
 				Receive_Via = model.Receive_Via,
 				Display = true,
 				CreatedDate = DateTime.Now,
-				CreatedBy = model.CreatedBy
+				CreatedBy = model.CreatedBy,
+				BranchId = model.BranchId,
 			};
 
 			db.EventExhibitionRequest.Add(exroad);
@@ -365,6 +397,7 @@ namespace FEP.WebApi.Api.eEvent
 			exroad.ReceivedById = model.ReceivedById;
 			exroad.ReceivedDate = model.ReceivedDate;
 			exroad.Receive_Via = model.Receive_Via;
+			exroad.BranchId = model.BranchId;
 
 			db.EventExhibitionRequest.Attach(exroad);
 			db.Entry(exroad).Property(x => x.EventName).IsModified = true;
@@ -998,6 +1031,8 @@ namespace FEP.WebApi.Api.eEvent
 					CreatedDate = s.CreatedDate,
 					CreatedBy = s.CreatedBy,
 					CreatedByName = s.CreatedByUser.Name,
+					BranchId = s.BranchId,
+					BranchName = s.Branch.Name,
 				}).FirstOrDefault();
 
 			if (exhibition == null)

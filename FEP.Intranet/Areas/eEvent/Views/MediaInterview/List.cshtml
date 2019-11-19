@@ -34,6 +34,10 @@
                         data: 'RefNo',
                         sortable: true
 					},
+					 {
+                        data: 'BranchName',
+                        sortable: true
+					},
 					{
                         data: 'MediaName',
                         sortable: true
@@ -276,6 +280,7 @@
 
 				<th>#</th>
 				<th>@Html.DisplayNameFor(model => model.List.RefNo)</th>
+				<th>@Html.DisplayNameFor(model => model.List.BranchName)</th>
 				<th>@Html.DisplayNameFor(model => model.List.MediaName)</th>
 				<th>@Html.DisplayNameFor(model => model.List.MediaTypeDesc)</th>
 				<th>@Html.DisplayNameFor(model => model.List.ContactPerson)</th>

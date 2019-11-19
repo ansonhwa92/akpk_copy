@@ -1,28 +1,32 @@
-﻿
-@*<a class="dropdown-item" href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })"><i class="la la-calendar color-secondary font-icon"></i>Create Event</a>
-<a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Public Event</a>
-<a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Media Interview</a>
-<a class="dropdown-item" href="@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Exhibition/Roadshow Request</a>
-<a class="dropdown-item" href="@Url.Action("Event_Setting", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Event Setting</a>*@
+﻿@*<a class="dropdown-item" href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })"><i class="la la-calendar color-secondary font-icon"></i>Create Event</a>
+	<a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Public Event</a>
+	<a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Media Interview</a>
+	<a class="dropdown-item" href="@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Exhibition/Roadshow Request</a>
+	<a class="dropdown-item" href="@Url.Action("Event_Setting", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Event Setting</a>*@
 
 <div class="row">
-    <div class="col-lg-7">
-        <div class="menu-list">
-            <h6 class="color-darkblue">Menu</h6>
-            <a class="dropdown-item" href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })">Create Event</a>
-            <a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })">Manage Public Event</a>
-            <a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })">Manage Media Interview</a>
-            <a class="dropdown-item" href="@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent" })">Manage Exhibition/Roadshow Request</a>
-            <a class="dropdown-item" href="https://obs.akpk.org.my/" target="_blank">Online Booking System (OBS)</a>
-        </div>
-    </div>
-    <div class="col-lg-5">
+	<div class="col-lg-7">
 		<div class="menu-list">
-			<h6 class="color-darkblue">Setting</h6>
-			<a class="dropdown-item" href="@Url.Action("List", "EventCategory", new { area = "eEvent" })">Event Category</a>
-			<a class="dropdown-item" href="@Url.Action("List", "EventSpeaker", new { area = "eEvent" })">Event Speakers</a>
-			<a class="dropdown-item" href="@Url.Action("List", "EventExternalExhibitor", new { area = "eEvent" })">External Exhibitor</a>
-			@*<a class="dropdown-item" href="@Url.Action("List", "EventAttendent", new { area = "eEvent" })">Event Attendance</a>*@
+			<h6 class="color-darkblue">Menu</h6>
+			@if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorFED) || CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD))
+			{
+				<a class="dropdown-item" href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })">Create Event</a>
+			}
+			<a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })">Manage Public Event</a>
+			<a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })">Manage Media Interview</a>
+			<a class="dropdown-item" href="@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent" })">Manage Exhibition/Roadshow Request</a>
+			<a class="dropdown-item" href="https://obs.akpk.org.my/" target="_blank">Online Booking System (OBS)</a>
 		</div>
-    </div>
+	</div>
+	@if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorFED) || CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD))
+	{
+		<div class="col-lg-5">
+			<div class="menu-list">
+				<h6 class="color-darkblue">Setting</h6>
+				<a class="dropdown-item" href="@Url.Action("List", "EventCategory", new { area = "eEvent" })">Event Category</a>
+				<a class="dropdown-item" href="@Url.Action("List", "EventSpeaker", new { area = "eEvent" })">Event Speakers</a>
+				<a class="dropdown-item" href="@Url.Action("List", "EventExternalExhibitor", new { area = "eEvent" })">External Exhibitor</a>
+			</div>
+		</div>
+	}
 </div>

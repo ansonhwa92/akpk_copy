@@ -260,12 +260,14 @@
                                         @Html.Action("Menu", "Home", new { area = "eLearning" })
                                     </div>
                                 </li>
+								@if (CurrentUser.HasAccess(UserAccess.EventMenu)) {
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Event</a>
                                     <div class="dropdown-menu">
                                         @Html.Action("_Menu", "Home", new { area = "eEvent" })
                                     </div>
                                 </li>
+								}
                                 <li class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Publication</a>
                                     <div class="dropdown-menu">

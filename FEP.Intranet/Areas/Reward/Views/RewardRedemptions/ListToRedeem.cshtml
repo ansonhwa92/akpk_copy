@@ -29,20 +29,50 @@
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
                     },
-                    { sortable: true, data: 'RewardCode' },
-                    { sortable: true, data: 'Description' },
+                    {
+                        sortable: true,
+                        data: 'RewardCode',
+                        render: function (data, type, row, meta) {
+                            if (row.IsClaimed == 1) {
+                                return "<del>" + data + "</del>";
+                            }
+                            else {
+                                return data;
+                            }
+                        }
+                    },
+                    {
+                        sortable: true,
+                        data: 'Description',
+                        render: function (data, type, row, meta) {
+                            if (row.IsClaimed == 1) {
+                                return "<del>" + data + "</del>";
+                            }
+                            else {
+                                return data;
+                            }
+                        }
+                    },
                     { sortable: true, data: 'DiscountValue' },
                     { sortable: true, data: 'PointsToRedeem' },
                     { sortable: true, data: 'ValidDuration' },
                     {
                         sortable: false,
                         render: function (data, type, row, meta) {
-                            var action = "";
-                            action = '<div class="icon-action">'
-                                    +   '<a href="@Url.Action("DetailsToRedeem", "RewardRedemptions", new { area = "Reward" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Get this reward"><i class="la la-download text-muted"></i></a>'
-                                    + '</div>';
 
-                            return action;
+                            if (row.IsClaimed == 1) {
+                                return "";
+                            }
+                            else {
+                                var action = "";
+                                action = '<div class="icon-action">'
+                                        +   '<a href="@Url.Action("DetailsToRedeem", "RewardRedemptions", new { area = "Reward" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Get this reward"><i class="la la-download text-muted"></i></a>'
+                                        + '</div>';
+
+                                return action;
+                            }
+
+                            
                         }
                     }
                 ],

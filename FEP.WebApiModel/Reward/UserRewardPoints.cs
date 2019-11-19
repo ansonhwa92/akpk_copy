@@ -41,6 +41,14 @@ namespace FEP.WebApiModel.Reward
         public DateTime DateReceived { get; set; }
 
     }
+
+    public class UserGetPointByCourseCompleted
+    {
+        [Required]
+        public int CourseId { get; set; }
+        [Required]
+        public int UserId { get; set; }
+    }
     public class CreateUserRewardPointsModel : UserRewardPointsModel
     {
         public CreateUserRewardPointsModel() { }

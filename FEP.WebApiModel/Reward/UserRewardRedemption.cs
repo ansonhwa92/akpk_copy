@@ -31,6 +31,14 @@ namespace FEP.WebApiModel.Reward
         public RewardStatus RewardStatus { get; set; }
         public string RewardStatusName { get; set; }
     }
+
+    public class CheckRewardValidity
+    {
+        [Required]
+        public string RewardCode { get; set; }
+        [Required]
+        public int UserId { get; set; }
+    }
     public class CreateUserRewardRedemptionModel : UserRewardRedemptionModel
     {
         public CreateUserRewardRedemptionModel() { }

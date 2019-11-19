@@ -20,7 +20,7 @@
             enableTime: false,
             minDate: "today",
             onValueUpdate: function (dObj, dStr, fp, dayElem) {
-                debugger;
+                //debugger;
                 $("#EndDate").flatpickr({
                     dateFormat: "d/m/Y",
                     enableTime: false,
@@ -83,6 +83,8 @@
         var AgendaJSON = {
             "agendaTitle": "",
             "agendaDescription": "",
+            "sessionNames": [],
+            "sessionDescriptions": [],
             "tentatives": []
         }
 
@@ -169,12 +171,18 @@
                         toDisplay += '<div class="form-group col-lg-12">';
                         toDisplay += '<label for="Event_Description">Session Name</label>';
                         toDisplay += '<input class="form-control text-box single-line" data-val="true"';
-                        toDisplay += 'id="sessionName_' + DayCounter + '" name="sessionName_' + DayCounter + '" placeholder="Session ' + (DayCounter+1) + '" type="text">';
+
+                        var tempDate = AgendaJSON['tentatives'][j]['date'];
+                        var tempSessionName = '';
+                        if (AgendaJSON['sessionNames'].length > 0) { let sName = AgendaJSON['sessionNames'].find(s => s.date === tempDate); tempSessionName = (sName != null) ? sName['value'] : ''; }
+                        toDisplay += 'id="sessionName_' + DayCounter + '" name="sessionName_' + DayCounter + '" placeholder="Session ' + (DayCounter + 1) + '" type="text" onchange="(AgendaJSON[\'sessionNames\'].find(s => s.date === \''+ tempDate +'\') == null)? AgendaJSON[\'sessionNames\'].push({date: \''+ tempDate +'\', value: this.value}) : (AgendaJSON[\'sessionNames\'].find(s => s.date === \''+ tempDate +'\'))[\'value\'] = this.value;" value="' + tempSessionName + '">';
                         toDisplay += '</div>';
                         toDisplay += '<div class="form-group col-lg-12">';
                         toDisplay += '<label for="Session_Description">Event Description</label>';
                         toDisplay += '<input class="form-control text-box single-line" data-val="true"';
-                        toDisplay += 'id="sessionDescription_' + DayCounter + '" name="sessionDescription_' + DayCounter + '" placeholder="describe about Session ' + (DayCounter+1) + '" type="text">';
+                        var tempSessionDesc = '';
+                        if (AgendaJSON['sessionDescriptions'].length > 0) { let sDesc = AgendaJSON['sessionDescriptions'].find(s => s.date === tempDate); tempSessionDesc = (sDesc != null )? sDesc['value'] : ''; }
+                        toDisplay += 'id="sessionDescription_' + DayCounter + '" name="sessionDescription_' + DayCounter + '" placeholder="describe about Session ' + (DayCounter+1) + '" type="text" onchange="(AgendaJSON[\'sessionDescriptions\'].find(s => s.date === \''+ tempDate +'\') == null)? AgendaJSON[\'sessionDescriptions\'].push({date: \''+ tempDate +'\', value: this.value})  : (AgendaJSON[\'sessionDescriptions\'].find(s => s.date === \''+ tempDate +'\'))[\'value\'] = this.value;" value="' + tempSessionDesc + '">';
                         toDisplay += '</div>';
                         toDisplay += '</dd>';
                         DayCounter++;

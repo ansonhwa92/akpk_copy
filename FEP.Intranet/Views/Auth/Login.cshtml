@@ -27,14 +27,14 @@
                     <div class="form-group">
                         @Html.FEPLabelFor(m => m.LoginId, htmlAttributes: new { @class = "form-label" })
                         <div class="input-group">
-                            @Html.EditorFor(m => m.LoginId, new { htmlAttributes = new { @class = "form-control form-control-prepended" } })
+                            @Html.EditorFor(m => m.LoginId, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder=Language.Auth.PlaceholderLoginId } })
                             @Html.ValidationMessageFor(model => model.LoginId, "")
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.FEPLabelFor(m => m.Password, htmlAttributes: new { @class = "form-label" })
                         <div class="input-group">
-                            @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control form-control-prepended" } })
+                            @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder=Language.Auth.PlaceholderPassword } })
                             @Html.ValidationMessageFor(model => model.Password, "")
                         </div>
                     </div>

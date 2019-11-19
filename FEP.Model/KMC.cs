@@ -5,19 +5,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FEP.Model
 {
-    [Table("KMC")]
-    public class KMC
+    [Table("KMCs")]
+    public class KMCs
     {
         [Key]
         public int Id { get; set; }
 
         public int KMCCategoryId { get; set; }
         
-        public int? ThumbnailId { get; set; }
+        public string Thumbnail { get; set; }
 
         public string Title { get; set; }
 
-        public KMCType KMCType { get; set; }
+        public string Description { get; set; }
+
+        public bool IsPublic { get; set; }
+
+        public bool IsShow { get; set; }
+
+        public bool IsEditor { get; set; }
+
+        public KMCType? KMCType { get; set; }
 
         public string EditorCode { get; set; }
 
@@ -31,14 +39,29 @@ namespace FEP.Model
 
         [ForeignKey("KMCCategoryId")]
         public virtual KMCCategory Category { get; set; }
-
-        [ForeignKey("ThumbnailId")]
-        public virtual FileDocument Thumbnail { get; set; }
-
+        
         [ForeignKey("FileId")]
         public virtual FileDocument FileDoc { get; set; }
 
     }
+
+    [Table("KMCUser")]
+    public class KMCUser
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public int KMCId { get; set; }
+
+        public int UserId { get; set; }
+
+        [ForeignKey("KMCId")]
+        public virtual KMCs KMC { get; set; }
+
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
+    }
+
 
     [Table("KMCCategory")]
     public class KMCCategory
@@ -61,9 +84,7 @@ namespace FEP.Model
         [Display(Name = "Audio")]
         Audio,
         [Display(Name = "Document")]
-        Document,
-        [Display(Name = "Editor")]
-        HtmlEditor,
+        Document,        
         [Display(Name = "Others")]
         Others
     }

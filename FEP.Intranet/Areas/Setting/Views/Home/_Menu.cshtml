@@ -41,6 +41,10 @@
                 {
                     <a class="dropdown-item" href="@Url.Action("List", "Branch", new { area = "Administrator" })">Staff Branch</a>
                 }
+                @if (CurrentUser.HasAccess(UserAccess.UserAccountSetting))
+                {
+                    <a class="dropdown-item" href="@Url.Action("Index", "Account", new { area = "Setting" })">Account Setting</a>
+                }
             </div>
         </div>
     }

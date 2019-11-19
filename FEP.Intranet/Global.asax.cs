@@ -31,8 +31,9 @@ namespace FEP.Intranet
         {
 
             var httpContext = ((MvcApplication)sender).Context;
-            var currentController = " ";
-            var currentAction = " ";
+            var currentController = "";
+            var currentAction = "";
+            var currentArea = "";
             var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
 
             if (currentRouteData != null)
@@ -46,28 +47,36 @@ namespace FEP.Intranet
                 {
                     currentAction = currentRouteData.Values["action"].ToString();
                 }
+
+                if (currentRouteData.DataTokens["area"] != null && !String.IsNullOrEmpty(currentRouteData.DataTokens["area"].ToString()))
+                {
+                    currentArea = currentRouteData.DataTokens["area"].ToString();
+                }
             }
 
             string ipAddress = httpContext.Request.UserHostAddress;
 
-            var ex = Server.GetLastError();
+            var exception = Server.GetLastError();
 
-            string details = "";
-            string description = "";
+            string details = exception.StackTrace;
+            string description = exception.Message;            
 
-            if (ex != null)
-            {
-                details = ex.StackTrace;
-                description = ex.Message;
-            }
-                        
-            FEPHelperMethod.LogError(Model.Modules.Setting, null, currentAction, currentController, "", ipAddress, description, details);
+            FEPHelperMethod.LogError(Model.Modules.Setting, null, currentAction, currentController, currentArea, ipAddress, description, details);
 
+            var routeData = new RouteData();
+            routeData.Values["controller"] = "Home";
+            routeData.Values["action"] = "Error";
+            
             httpContext.ClearError();
             httpContext.Response.Clear();
-                       
-            Response.Redirect("~/Home/Error");
+
+            using (Controller controller = new Controllers.HomeController())
+            {
+                ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
+            }
+
         }
+
     }
 
     public class DateModelBinder : DefaultModelBinder

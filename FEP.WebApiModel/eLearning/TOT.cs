@@ -91,13 +91,40 @@ namespace FEP.WebApiModel.eLearning
 
         [Required(ErrorMessageResourceName = "ValidRequiredNoOfFemale", ErrorMessageResourceType = typeof(Language.TOT))]        
         public int NoOfFemale { get; set; }
-        
-        [Required(ErrorMessageResourceName = "ValidRequiredAgeRange", ErrorMessageResourceType = typeof(Language.TOT))]        
-        public TOTAgeRange AgeRange { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredSalaryRange", ErrorMessageResourceType = typeof(Language.TOT))]        
-        public TOTSalaryRange SalaryRange { get; set; }
-        
+        public int AgeR1NoOfMale { get; set; }
+        public int AgeR1NoOfFemale { get; set; }
+
+        public int AgeR2NoOfMale { get; set; }
+        public int AgeR2NoOfFemale { get; set; }
+
+        public int AgeR3NoOfMale { get; set; }
+        public int AgeR3NoOfFemale { get; set; }
+
+        public int AgeR4NoOfMale { get; set; }
+        public int AgeR4NoOfFemale { get; set; }
+
+        public int AgeR5NoOfMale { get; set; }
+        public int AgeR5NoOfFemale { get; set; }
+
+        public int SalaryR1NoOfMale { get; set; }
+        public int SalaryR1NoOfFemale { get; set; }
+
+        public int SalaryR2NoOfMale { get; set; }
+        public int SalaryR2NoOfFemale { get; set; }
+
+        public int SalaryR3NoOfMale { get; set; }
+        public int SalaryR3NoOfFemale { get; set; }
+
+        public int SalaryR4NoOfMale { get; set; }
+        public int SalaryR4NoOfFemale { get; set; }
+
+        public int SalaryR5NoOfMale { get; set; }
+        public int SalaryR5NoOfFemale { get; set; }
+
+        public int SalaryR6NoOfMale { get; set; }
+        public int SalaryR6NoOfFemale { get; set; }
+
         public List<int> FilesId { get; set; }
 
         public int? CreatedBy { get; set; }
@@ -133,11 +160,38 @@ namespace FEP.WebApiModel.eLearning
         [Required(ErrorMessageResourceName = "ValidRequiredNoOfFemale", ErrorMessageResourceType = typeof(Language.TOT))]
         public int NoOfFemale { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredAgeRange", ErrorMessageResourceType = typeof(Language.TOT))]
-        public TOTAgeRange AgeRange { get; set; }
+        public int AgeR1NoOfMale { get; set; }
+        public int AgeR1NoOfFemale { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredSalaryRange", ErrorMessageResourceType = typeof(Language.TOT))]
-        public TOTSalaryRange SalaryRange { get; set; }
+        public int AgeR2NoOfMale { get; set; }
+        public int AgeR2NoOfFemale { get; set; }
+
+        public int AgeR3NoOfMale { get; set; }
+        public int AgeR3NoOfFemale { get; set; }
+
+        public int AgeR4NoOfMale { get; set; }
+        public int AgeR4NoOfFemale { get; set; }
+
+        public int AgeR5NoOfMale { get; set; }
+        public int AgeR5NoOfFemale { get; set; }
+
+        public int SalaryR1NoOfMale { get; set; }
+        public int SalaryR1NoOfFemale { get; set; }
+
+        public int SalaryR2NoOfMale { get; set; }
+        public int SalaryR2NoOfFemale { get; set; }
+
+        public int SalaryR3NoOfMale { get; set; }
+        public int SalaryR3NoOfFemale { get; set; }
+
+        public int SalaryR4NoOfMale { get; set; }
+        public int SalaryR4NoOfFemale { get; set; }
+
+        public int SalaryR5NoOfMale { get; set; }
+        public int SalaryR5NoOfFemale { get; set; }
+
+        public int SalaryR6NoOfMale { get; set; }
+        public int SalaryR6NoOfFemale { get; set; }
 
         public IEnumerable<Attachment> Attachments { get; set; }
         public List<int> FilesId { get; set; }
@@ -174,12 +228,39 @@ namespace FEP.WebApiModel.eLearning
                 
         [Display(Name = "FieldNoOfFemale", ResourceType = typeof(Language.TOT))]
         public int NoOfFemale { get; set; }
-                
-        [Display(Name = "FieldAgeRange", ResourceType = typeof(Language.TOT))]
-        public TOTAgeRange AgeRange { get; set; }
-               
-        [Display(Name = "FieldSalaryRange", ResourceType = typeof(Language.TOT))]
-        public TOTSalaryRange SalaryRange { get; set; }
+
+        public int AgeR1NoOfMale { get; set; }
+        public int AgeR1NoOfFemale { get; set; }
+
+        public int AgeR2NoOfMale { get; set; }
+        public int AgeR2NoOfFemale { get; set; }
+
+        public int AgeR3NoOfMale { get; set; }
+        public int AgeR3NoOfFemale { get; set; }
+
+        public int AgeR4NoOfMale { get; set; }
+        public int AgeR4NoOfFemale { get; set; }
+
+        public int AgeR5NoOfMale { get; set; }
+        public int AgeR5NoOfFemale { get; set; }
+
+        public int SalaryR1NoOfMale { get; set; }
+        public int SalaryR1NoOfFemale { get; set; }
+
+        public int SalaryR2NoOfMale { get; set; }
+        public int SalaryR2NoOfFemale { get; set; }
+
+        public int SalaryR3NoOfMale { get; set; }
+        public int SalaryR3NoOfFemale { get; set; }
+
+        public int SalaryR4NoOfMale { get; set; }
+        public int SalaryR4NoOfFemale { get; set; }
+
+        public int SalaryR5NoOfMale { get; set; }
+        public int SalaryR5NoOfFemale { get; set; }
+
+        public int SalaryR6NoOfMale { get; set; }
+        public int SalaryR6NoOfFemale { get; set; }
 
         [Display(Name = "FieldAttachment", ResourceType = typeof(Language.TOT))]
         public IEnumerable<Attachment> Attachments { get; set; }

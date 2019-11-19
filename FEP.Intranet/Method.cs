@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -141,8 +142,7 @@ namespace FEP.Intranet
 
                     client.BaseAddress = new Uri(url);
                     client.DefaultRequestHeaders.Accept.Clear();
-                    //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+                    
                     HttpResponseMessage response = null;
 
                     var content = new MultipartFormDataContent();
@@ -187,7 +187,7 @@ namespace FEP.Intranet
 
             return res;
         }
-
+              
         private static string GetWebApiUrl()
         {
             string theURL = WebConfigurationManager.AppSettings["WebApiURL"] != null ? WebConfigurationManager.AppSettings["WebApiURL"].ToString() : "";
@@ -221,12 +221,66 @@ namespace FEP.Intranet
 
             return null;
         }
-
+              
         public static async Task<HttpResponseMessage> DownloadFile(int id)
         {
             var responseFile = await WepApiMethod.SendApiAsync<HttpResponseMessage>(HttpVerbs.Get, $"System/File?id={id}");
 
             return responseFile.Data;
+
+        }
+
+        public static string SaveFile(HttpPostedFileBase file, string path, string deletefilename = null)
+        {
+            if (file != null)
+            {
+
+                DeleteFile(path, deletefilename);
+
+                var filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + Path.GetFileName(file.FileName);
+
+                file.SaveAs(Path.Combine(path, filename));
+
+                return filename;
+            }
+
+            return null;
+        }
+
+        public static void DeleteFile(string path, string filename)
+        {
+            if (!string.IsNullOrEmpty(filename))
+            {
+                string fullPath = Path.Combine(path, filename);
+
+                if (File.Exists(fullPath))
+                {
+                    File.Delete(fullPath);
+                }
+            }
+        }
+
+        public static string ConvertImageToBase64(HttpPostedFileBase image)
+        {
+
+            if (image != null && image.ContentLength > 0)
+            {
+
+                byte[] thePictureAsBytes = new byte[image.ContentLength];
+
+                using (BinaryReader theReader = new BinaryReader(image.InputStream))
+                {
+                    thePictureAsBytes = theReader.ReadBytes(image.ContentLength);
+                }
+
+                string photo = Convert.ToBase64String(thePictureAsBytes);
+
+                var dataUrl = string.Format("data:{0};base64,{1}", "image/(png|jpg|jpeg)", photo);
+
+                return dataUrl;
+            }
+
+            return null;
 
         }
 
@@ -248,7 +302,7 @@ namespace FEP.Intranet
 
                 using (var client = new HttpClient())
                 {
-                    
+
                     client.BaseAddress = new Uri(url);
                     client.DefaultRequestHeaders.Accept.Clear();
                     //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -256,7 +310,7 @@ namespace FEP.Intranet
                     var payload = JsonConvert.SerializeObject(new { ipUsername = userName, ipPassword = password });
 
                     HttpResponseMessage response = null;
-                    
+
                     var content = new StringContent(payload, Encoding.UTF8, "application/json");
 
                     response = await client.PostAsync(requestURI + $"?ipUserName={userName}&ipPassword={password}", content);
@@ -286,8 +340,6 @@ namespace FEP.Intranet
 
 
     }
-
-
 
     public static class EmailMethod
     {
@@ -1204,6 +1256,5 @@ namespace FEP.Intranet
             }
         }
     }
-
 
 }

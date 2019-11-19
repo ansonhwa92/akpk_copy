@@ -167,6 +167,7 @@
     <Compile Include="Api\eLearning\NotificationApiController.cs" />
     <Compile Include="Api\Integration\GroupController.cs" />
     <Compile Include="Api\KMC\CategoryController.cs" />
+    <Compile Include="Api\KMC\ManageController.cs" />
     <Compile Include="Api\Notification\EmailController.cs" />
     <Compile Include="Api\eEvent\DutyRosterController.cs" />
     <Compile Include="Api\eEvent\EventRefundController.cs" />

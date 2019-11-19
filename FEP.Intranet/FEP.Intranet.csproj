@@ -206,6 +206,7 @@
     <Compile Include="Areas\KMC\Controllers\HomeController.cs" />
     <Compile Include="Areas\KMC\Controllers\ManageController.cs" />
     <Compile Include="Areas\KMC\KMCAreaRegistration.cs" />
+    <Compile Include="Areas\KMC\Models\KMC.cs" />
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />
     <Compile Include="Areas\Logs\Controllers\UserLogController.cs" />
     <Compile Include="Areas\Logs\LogsAreaRegistration.cs" />
@@ -249,6 +250,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\eLearning\Views\CourseContents\_createVideo.cshtml" />
+    <Content Include="img\kmc-thumbnail\no-image.png" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -1039,6 +1041,10 @@
     <Content Include="Areas\KMC\Views\Category\_Delete.cshtml" />
     <Content Include="Areas\KMC\Views\Category\_Edit.cshtml" />
     <Content Include="Areas\KMC\Views\Home\_Menu.cshtml" />
+    <Content Include="Areas\KMC\Views\Manage\List.cshtml" />
+    <Content Include="Areas\KMC\Views\Manage\Index.cshtml" />
+    <Content Include="Areas\KMC\Views\Manage\Create.cshtml" />
+    <Content Include="Areas\eLearning\Views\TOTReport\_Details.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1659,6 +1665,7 @@
     <Content Include="Scripts\tinymce\plugins\mathSymbols\package.json" />
     <Content Include="Scripts\tinymce\plugins\mathSymbols\README.md" />
     <Content Include="Views\Home\UpdateAvatar.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1668,8 +1675,6 @@
     <Folder Include="Areas\eEvent\Views\Default\" />
     <Folder Include="Areas\eEvent\Views\EventRefund\" />
     <Folder Include="Areas\eEvent\Views\Shared\" />
-    <Folder Include="Areas\KMC\Models\" />
-    <Folder Include="Areas\KMC\Views\Manage\" />
     <Folder Include="Areas\KMC\Views\Shared\" />
     <Folder Include="Areas\Logs\Models\" />
     <Folder Include="Areas\Logs\Views\Shared\" />

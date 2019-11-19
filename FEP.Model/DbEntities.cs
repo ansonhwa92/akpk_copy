@@ -226,8 +226,9 @@ namespace FEP.Model
         public DbSet<TabBulkSMS> TabBulkSMS { get; set; }
         
         //KMC
-        public DbSet<KMC> KMC { get; set; }
+        public DbSet<KMCs> KMCs { get; set; }
         public DbSet<KMCCategory> KMCCategory { get; set; }
+        public DbSet<KMCUser> KMCUser { get; set; }
 
         //CTE
         public DbSet<Months> Months { get; set; }

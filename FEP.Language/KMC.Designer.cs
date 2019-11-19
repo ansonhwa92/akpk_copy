@@ -61,7 +61,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fail to add new category.
+        ///   Looks up a localized string similar to Fail to add new file.
         /// </summary>
         public static string AlertFailCreate {
             get {
@@ -70,7 +70,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fail to delete category.
+        ///   Looks up a localized string similar to Fail to delete file.
         /// </summary>
         public static string AlertFailDelete {
             get {
@@ -79,7 +79,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fail to update category.
+        ///   Looks up a localized string similar to Fail to update file.
         /// </summary>
         public static string AlertFailUpdate {
             get {
@@ -88,7 +88,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to KMC Category successfully added.
+        ///   Looks up a localized string similar to File successfully added.
         /// </summary>
         public static string AlertSuccessCreate {
             get {
@@ -97,7 +97,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to KMC Category successfully deleted.
+        ///   Looks up a localized string similar to File successfully deleted.
         /// </summary>
         public static string AlertSuccessDelete {
             get {
@@ -106,7 +106,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to KMC Category successfully updated.
+        ///   Looks up a localized string similar to File successfully updated.
         /// </summary>
         public static string AlertSuccessUpdate {
             get {
@@ -115,7 +115,79 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to KMC Category Title.
+        ///   Looks up a localized string similar to Save as draft.
+        /// </summary>
+        public static string ButtonSaveDraft {
+            get {
+                return ResourceManager.GetString("ButtonSaveDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save and Publish.
+        /// </summary>
+        public static string ButtonSavePublish {
+            get {
+                return ResourceManager.GetString("ButtonSavePublish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category.
+        /// </summary>
+        public static string FieldCategory {
+            get {
+                return ResourceManager.GetString("FieldCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created By.
+        /// </summary>
+        public static string FieldCreatedBy {
+            get {
+                return ResourceManager.GetString("FieldCreatedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string FieldDescription {
+            get {
+                return ResourceManager.GetString("FieldDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Editor.
+        /// </summary>
+        public static string FieldEditorCode {
+            get {
+                return ResourceManager.GetString("FieldEditorCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File.
+        /// </summary>
+        public static string FieldFile {
+            get {
+                return ResourceManager.GetString("FieldFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thumbnail Image.
+        /// </summary>
+        public static string FieldThumbnail {
+            get {
+                return ResourceManager.GetString("FieldThumbnail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
         /// </summary>
         public static string FieldTitle {
             get {
@@ -124,11 +196,38 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter Category Title.
+        ///   Looks up a localized string similar to Type.
         /// </summary>
-        public static string PlaceholderName {
+        public static string FieldType {
             get {
-                return ResourceManager.GetString("PlaceholderName", resourceCulture);
+                return ResourceManager.GetString("FieldType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string PlaceholderDescription {
+            get {
+                return ResourceManager.GetString("PlaceholderDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Title.
+        /// </summary>
+        public static string PlaceholderTitle {
+            get {
+                return ResourceManager.GetString("PlaceholderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select File Type.
+        /// </summary>
+        public static string PlaceholderType {
+            get {
+                return ResourceManager.GetString("PlaceholderType", resourceCulture);
             }
         }
         
@@ -142,11 +241,101 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Category List.
+        ///   Looks up a localized string similar to Accessibility.
         /// </summary>
-        public static string SidebarCategoryList {
+        public static string TextAccessibility {
             get {
-                return ResourceManager.GetString("SidebarCategoryList", resourceCulture);
+                return ResourceManager.GetString("TextAccessibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Availability.
+        /// </summary>
+        public static string TextAvailability {
+            get {
+                return ResourceManager.GetString("TextAvailability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content.
+        /// </summary>
+        public static string TextContent {
+            get {
+                return ResourceManager.GetString("TextContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Editor.
+        /// </summary>
+        public static string TextEditor {
+            get {
+                return ResourceManager.GetString("TextEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File.
+        /// </summary>
+        public static string TextFile {
+            get {
+                return ResourceManager.GetString("TextFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide.
+        /// </summary>
+        public static string TextHide {
+            get {
+                return ResourceManager.GetString("TextHide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Private.
+        /// </summary>
+        public static string TextPrivate {
+            get {
+                return ResourceManager.GetString("TextPrivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Public.
+        /// </summary>
+        public static string TextPublic {
+            get {
+                return ResourceManager.GetString("TextPublic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shown.
+        /// </summary>
+        public static string TextShown {
+            get {
+                return ResourceManager.GetString("TextShown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create KMC File.
+        /// </summary>
+        public static string TitleCreate {
+            get {
+                return ResourceManager.GetString("TitleCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TitleDescriptionCreate {
+            get {
+                return ResourceManager.GetString("TitleDescriptionCreate", resourceCulture);
             }
         }
         
@@ -160,7 +349,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to KMC Category.
+        ///   Looks up a localized string similar to KMC File.
         /// </summary>
         public static string TitleList {
             get {
@@ -169,20 +358,56 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to KMC Category already registered in the system.
+        ///   Looks up a localized string similar to File Title already registered in the system.
         /// </summary>
-        public static string ValidExistName {
+        public static string ValidExistTitle {
             get {
-                return ResourceManager.GetString("ValidExistName", resourceCulture);
+                return ResourceManager.GetString("ValidExistTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter Category Title.
+        ///   Looks up a localized string similar to Please select Category.
         /// </summary>
-        public static string ValidRequiredName {
+        public static string ValidRequiredCategory {
             get {
-                return ResourceManager.GetString("ValidRequiredName", resourceCulture);
+                return ResourceManager.GetString("ValidRequiredCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Editor.
+        /// </summary>
+        public static string ValidRequiredEditor {
+            get {
+                return ResourceManager.GetString("ValidRequiredEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Select File.
+        /// </summary>
+        public static string ValidRequiredFile {
+            get {
+                return ResourceManager.GetString("ValidRequiredFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Title.
+        /// </summary>
+        public static string ValidRequiredTitle {
+            get {
+                return ResourceManager.GetString("ValidRequiredTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select File Type.
+        /// </summary>
+        public static string ValidRequiredType {
+            get {
+                return ResourceManager.GetString("ValidRequiredType", resourceCulture);
             }
         }
     }

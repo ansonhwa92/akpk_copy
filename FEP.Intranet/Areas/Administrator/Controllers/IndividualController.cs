@@ -91,7 +91,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 ModelState.AddModelError("Email", Language.Individual.ValidIsExistEmail);
             }
 
-            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={model.ICNo}");
+            var icno = model.ICNo;
+
+            if (!model.IsMalaysian)
+            {
+                icno = model.PassportNo;
+            }
+
+            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={icno}");
 
             if (icnoResponse.Data)
             {
@@ -230,7 +237,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 ModelState.AddModelError("Email", Language.Individual.ValidIsExistEmail);
             }
 
-            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={model.Id}&icno={model.ICNo}");
+            var icno = model.ICNo;
+
+            if (!model.IsMalaysian)
+            {
+                icno = model.PassportNo;
+            }
+
+            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={model.Id}&icno={icno}");
 
             if (icnoResponse.isSuccess)
             {

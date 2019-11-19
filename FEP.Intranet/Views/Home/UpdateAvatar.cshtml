@@ -147,11 +147,11 @@
                                 <div class="d-flex mr-3 align-self-center">
                                     @if (!String.IsNullOrEmpty(Model.AvatarImageUrl))
                                     {
-                                        <img id="profile_avatar" src="@BaseURL/img/avatar/@Model.AvatarImageUrl" class="photo" />
+                                        <img id="profile_avatar" src="@(BaseURL)/img/avatar/@Model.AvatarImageUrl" class="photo" />
                                     }
                                     else
                                     {
-                                        <img id="profile_avatar" src="@BaseURL/img/no-photo.jpg" class="photo" />
+                                        <img id="profile_avatar" src="@(BaseURL)/img/no-photo.jpg" class="photo" />
                                     }
                                 </div>
                                 <div class="media-body">

@@ -208,6 +208,14 @@
             $('#myModal').modal('hide');
         })
 
+        $('#target').submit(function(event) {
+
+            event.preventDefault(); //this will prevent the default submit
+            // your code here (But not asynchronous code such as Ajax because it does not wait for response and move to next line.)
+            $("#TentativeScript").val(JSON.stringify(AgendaJSON));
+
+            $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+        })
     </script>
 }
 
@@ -404,6 +412,7 @@
                         
                         <div class="row">
                             <div class="form-group col-lg-12">
+                                @Html.HiddenFor(m => m.TentativeScript)
                                 <button type="button" class="btn btn-secondary pull-right" id="btnCreateAgenda">
                                     <i class="la la-plus font-icon"></i>
                                     Add Tentatives

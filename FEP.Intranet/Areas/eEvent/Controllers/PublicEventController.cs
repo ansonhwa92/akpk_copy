@@ -82,6 +82,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				ExternalExhibitorId = pubapproval.publicevent.ExternalExhibitorId,
 				CreatedByName = pubapproval.publicevent.CreatedByName,
 				CreatedDate = pubapproval.publicevent.CreatedDate,
+                tentativeScript = pubapproval.publicevent.tentativeScript
 			};
 
 			var approval = new ApprovalModel
@@ -167,6 +168,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Remarks = model.Remarks,
 					CreatedBy = CurrentUser.UserId,
 					CreatedDate = DateTime.Now,
+                    tentativeScript = model.TentativeScript
 				};
 
 				//attachment

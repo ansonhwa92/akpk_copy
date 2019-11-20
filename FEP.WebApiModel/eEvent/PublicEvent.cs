@@ -115,6 +115,8 @@ namespace FEP.WebApiModel.PublicEvent
 		public string CreatedByName { get; set; }
 		public DateTime? CreatedDate { get; set; }
 
+        public string tentativeScript { get; set; }
+
 
 		public IEnumerable<SelectListItem> CategoryList { get; set; }
 		public IEnumerable<SelectListItem> SpeakerList { get; set; }

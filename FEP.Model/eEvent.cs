@@ -80,7 +80,20 @@ namespace FEP.Model
 		public virtual PublicEvent Event { get; set; }
 	}
 
-	[Table("EventAgenda")]
+    [Table("AgendaScript")]
+    public class AgendaScript
+    {
+        [Key]
+        public int Id { get; set; }
+        public string TentativeScript { get; set; }
+        public int? EventId { get; set; }
+        [ForeignKey("EventId")]
+        public virtual PublicEvent Event { get; set; }
+
+    }
+
+
+    [Table("EventAgenda")]
 	public class EventAgenda
 	{
 		[Key]

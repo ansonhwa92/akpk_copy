@@ -248,6 +248,7 @@ namespace FEP.WebApi.Api.eEvent
 					CreatedByName = i.CreatedByUser.Name,
 				}).FirstOrDefault();
 
+            model.tentativeScript = db.AgendaScript.Where(t => t.EventId == model.Id).FirstOrDefault().TentativeScript;
 
 
 			if (model.EventStatus != EventStatus.Approved && model.EventStatus != EventStatus.Published && model.EventStatus != EventStatus.Cancelled && model.EventStatus != EventStatus.RejectNeedToEdit || model.EventStatus == EventStatus.New)
@@ -326,6 +327,13 @@ namespace FEP.WebApi.Api.eEvent
 				CreatedDate = DateTime.Now,
 			};
 			db.PublicEvent.Add(publicevent);
+
+            var eventTentative = new AgendaScript
+            {
+                TentativeScript = model.tentativeScript,
+                EventId = publicevent.Id
+            };
+            db.AgendaScript.Add(eventTentative);
 
 			foreach (var speakerid in model.SpeakerId)
 			{

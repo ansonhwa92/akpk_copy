@@ -1,0 +1,159 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.ReviewCertificateModel
+
+@{
+    ViewBag.Title = "Certificate";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Learning Management</a></li>
+                                <li class="breadcrumb-item"><a href="#">Certificate Background</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Certificate Background</h1>
+                    <div class="header-text">List of certificate background</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@using (Html.BeginForm("SaveCertificate", "Courses", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.CourseId)
+    @Html.HiddenFor(m => m.Background.Id)
+    @Html.HiddenFor(m => m.Template.Id)
+
+    <div class="row">
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div class="sidebar-left">
+                <!-- Steps -->
+                <div class="sidebar-inner sticky">
+                    <ul class="steps steps-vertical">
+                        <li class="step-item complete">
+                            <a href="" class="step-link">
+                                <span class="step-number">1</span>
+                                <span class="step-title">Select Background</span>
+                            </a>
+                        </li>
+                        <li class="step-item complete">
+                            <a href="" class="step-link">
+                                <span class="step-number">2</span>
+                                <span class="step-title">Select Template</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- End Steps -->
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Background -->
+            <div class="border-form rounded-top">
+                <form>
+                    <div class="form-container form-container-w100 tab-content">
+                        <div class="tab-pane active" id="certificates">
+                            <div class="mb-4 mt-2 mr-auto">
+                                <div class="d-md-flex align-items-center mb-4 mt-2">
+                                    <div class="mr-auto">
+                                        <h4 class="color-darkblue mb-0">Certificates</h4>
+                                        <h6 class="font-weight-normal">Certificates Preview.</h6>
+                                    </div>
+
+                                </div>
+
+                                <div class="cert-wrapper">
+
+                                    <div class="cert-bg"><img src="@Url.Action("GetImg", "FileUpload", new { area = "eLearning", fileName = Model.Background.FileUpload.FileNameOnStorage })"></div><!-- Cert bg image -->
+                                    <div class="cert-template-text">
+
+                                        <div>@Html.Raw(Model.Template.Template)</div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- End Form -->
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a href='@Url.Action("AssignCertificate", "Courses", new { area = "eLearning", id = @Model.CourseId })' class="btn btn-warning btn-flat">Back</a>
+                @*<button class="btn btn-secondary" type="submit">Save</button>*@
+                <button type="submit" class="btn btn-default" id="btnSave" name="Submittype" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save</button>
+                @*<button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Preview</button>*@
+
+            </div>
+        </div>
+    </div>
+}
+<style type="text/css">
+    .cert-wrapper {
+        position: relative;
+    }
+
+    .cert-bg img {
+        max-width: 100%;
+        min-height: 600px;
+        width: 100%;
+    }
+
+    .cert-template-text {
+        position: absolute;
+        top: 0;
+        text-align: center;
+        padding: 3rem 1.5rem;
+        width: 100%;
+    }
+</style>
+
+@section ContentScript {
+    <script type="text/javascript">
+        $(function () {
+            var akpk = {
+                selectBackground: function () {
+                    var bg = $("#selectBackground .card");
+                    bg.click(function () {
+                        $("#selectBackground .box-contain .card").removeClass('active');
+                        $(this).addClass('active');
+                    });
+                },
+                selectTemplate: function () {
+                    var temp = $("#selectTemplate .card");
+                    temp.click(function () {
+                        $("#selectTemplate .box-contain .card").removeClass('active');
+                        $(this).addClass('active');
+                    });
+                }
+            }
+            akpk.selectBackground();
+            akpk.selectTemplate();
+        });
+
+        function assignBackground(id) {
+            $('#selectedBackground').val(id);
+            console.log("selectBackground =", $('#selectedBackground').val());
+        }
+
+        function assignTemplate(id) {
+            $('#selectedTemplate').val(id);
+            console.log("selectedTemplate =", $('#selectedTemplate').val());
+        }
+    </script>
+}

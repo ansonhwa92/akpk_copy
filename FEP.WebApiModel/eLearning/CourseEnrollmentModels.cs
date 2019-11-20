@@ -84,6 +84,8 @@ namespace FEP.WebApiModel.eLearning
         [Display(Name = "CompletionDate", ResourceType = typeof(Language.eLearning.CourseEvent))]
         public string CompletionDate { get; set; }
 
+        public bool IsUserEnrolled { get; set; }
+
         public ICollection<ReturnCourseProgressModel> CourseProgress { get; set; }
         public ICollection<EnrollmentHistory> EnrollmentHistory { get; set; }
 

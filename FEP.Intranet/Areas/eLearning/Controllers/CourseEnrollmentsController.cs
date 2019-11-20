@@ -18,7 +18,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string EnrollAsync = "eLearning/CourseEnrollments/EnrollAsync";
         public const string UserDetails = "eLearning/CourseEnrollments/GetUserDetails";
         public const string GetEnrollmentHistoryByCourse = "eLearning/CourseEnrollments/GetEnrollmentHistoryByCourse";
-
     }
 
     public class CourseEnrollmentsController : FEPController
@@ -31,7 +30,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<UserCourseEnrollmentModel, Enrollment>();
-
             });
 
             _mapper = config.CreateMapper();
@@ -54,6 +52,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     CourseEventId = courseEventId
                 },
             };
+
+            var courseEvent = db.CourseEvents.FirstOrDefault(x => x.Id == courseEventId);
+
+            if (courseEvent != null)
+            {
+                ViewBag.CourseTitle = courseEvent.Course.Title;
+                ViewBag.CourseEventName = courseEvent.Name;
+            }
 
             return View(model);
         }

@@ -49,7 +49,6 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "CompletionDate", ResourceType = typeof(Language.eLearning.CourseEvent))]
         public string CompletionDate { get; set; }
-
     }
 
     public class ReturnListCourseEnrollmentModel
@@ -86,8 +85,8 @@ namespace FEP.WebApiModel.eLearning
 
         public ICollection<ReturnCourseProgressModel> CourseProgress { get; set; }
         public ICollection<EnrollmentHistory> EnrollmentHistory { get; set; }
-
     }
+
     public class ReturnCourseProgressModel
     {
         public int EnrollmentId { get; set; }
@@ -96,10 +95,9 @@ namespace FEP.WebApiModel.eLearning
         public bool IsCompleted { get; set; }
         public decimal Score { get; set; } = 0.0m;
         //public string ModuleCompletionDate { get; set; }
-
     }
-    //**Wawa update end**//
 
+    //**Wawa update end**//
 
     // class for setting and returning filters for the datatable list of publications
     public class FilterCourseEnrollmentHistoryModel : DataTableModel
@@ -111,7 +109,6 @@ namespace FEP.WebApiModel.eLearning
         public string StudentName { get; set; }
 
         public int CourseId { get; set; }
-
 
         [Display(Name = "Status", ResourceType = typeof(Language.eLearning.CourseEvent))]
         public EnrollmentStatus EnrollmentStatus { get; set; }

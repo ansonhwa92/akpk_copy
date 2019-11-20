@@ -42,9 +42,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 Filters = new FilterCourseEventModel { CourseId = courseId },
             };
 
+            var course = db.Courses.FirstOrDefault(x => x.Id == courseId);
+
+            if (course != null)
+            {
+                ViewBag.CourseTitle = course.Title;
+            }
+
             return View(model);
         }
-
 
         [Authorize]
         [HasAccess(UserAccess.CoursePublish)]
@@ -62,7 +68,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<ActionResult> Create(CourseEventModel model)
@@ -79,9 +84,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                         TempData["SuccessMessage"] = $"Successfully created  {model.Name}. You can now invite students to the session.";
 
-                        return RedirectToAction(nameof(InviteLearners), "CourseEvents", 
-                            new { area = "eLearning", courseId = model.CourseId, eventId = response.Data.ObjectId,
-                                    enrollmentCode = model.EnrollmentCode, title = model.Name});
+                        return RedirectToAction(nameof(InviteLearners), "CourseEvents",
+                            new
+                            {
+                                area = "eLearning",
+                                courseId = model.CourseId,
+                                eventId = response.Data.ObjectId,
+                                enrollmentCode = model.EnrollmentCode,
+                                title = model.Name
+                            });
                     }
                 }
                 else
@@ -304,8 +315,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return RedirectToAction("Content", "Courses", new { area = "eLearning", id = id });
         }
 
-
-        public ActionResult InviteLearners(int courseId, int eventId, string enrollmentCode, string title)
+        public ActionResult InviteLearners(int courseId, int eventId, string enrollmentCode = "", string title = "")
         {
             var createdBy = CurrentUser.UserId;
 
@@ -317,13 +327,20 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 CourseTitle = title
             };
 
+            var courseEvent = db.CourseEvents.FirstOrDefault(x => x.Id == eventId);
+
+            if (courseEvent != null)
+            {
+                model.EnrollmentCode = courseEvent.EnrollmentCode;
+                model.CourseTitle = courseEvent.Course.Title;
+            }
+
             return View(model);
         }
 
         [HttpPost]
         public async Task<ActionResult> InviteLearners(InviteLearnerModel model)
         {
-
             var response = await WepApiMethod.SendApiAsync<InviteLearnerModel>(HttpVerbs.Post,
                 CourseEventApiUrl.InviteLearners, model);
 
@@ -379,6 +396,4 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             base.Dispose(disposing);
         }
     }
-
-  
 }

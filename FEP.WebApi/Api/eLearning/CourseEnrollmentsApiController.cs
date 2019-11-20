@@ -149,7 +149,7 @@ namespace FEP.WebApi.Api.eLearning
                    StudentName = String.IsNullOrEmpty(x.Learner.User.Name) ? "" : x.Learner.User.Name,
                    DateEnrolled = x.EnrolledDate.ToString(),
                    Status = x.Status,
-                   PercentageCompleted = x.PercentageCompleted.ToString()
+                   PercentageCompleted = x.PercentageCompleted.ToString(),
                }).ToArray();
 
             return Ok(new DataTableResponse
@@ -178,7 +178,7 @@ namespace FEP.WebApi.Api.eLearning
                 query = query.Where(x => x.Learner.User.Name.ToLower().Contains(request.StudentName.ToLower()));
 
             if (!String.IsNullOrEmpty(request.SessionName))
-                query = query.Where(x =>x.CourseEvent.Name.ToLower().Contains(request.SessionName.ToLower()));
+                query = query.Where(x => x.CourseEvent.Name.ToLower().Contains(request.SessionName.ToLower()));
 
             var totalCount = query.Count();
 
@@ -296,9 +296,8 @@ namespace FEP.WebApi.Api.eLearning
 
         [Route("api/eLearning/CourseEnrollments/GetUserDetails")]
         [HttpGet]
-        public async Task<IHttpActionResult> GetUserDetails (int id)
+        public async Task<IHttpActionResult> GetUserDetails(int id)
         {
-
             var user = await db.Enrollments
                 .Include(x => x.Learner)
                 .Include(x => x.Course)
@@ -307,43 +306,41 @@ namespace FEP.WebApi.Api.eLearning
                 .Include(x => x.EnrollmentHistories)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-                var entity = new UserCourseEnrollmentModel
+            var entity = new UserCourseEnrollmentModel
+            {
+                Id = user.Id,
+                StudentName = String.IsNullOrEmpty(user.Learner.User.Name) ? "" : user.Learner.User.Name,
+                SessionName = db.CourseEvents.Find(user.CourseEventId).Name,
+                CourseEventId = user.CourseEventId,
+                CourseTitle = user.Course.Title,
+                DateEnrolled = user.EnrolledDate.ToString(),
+                Status = user.Status,
+                CoursePercentageCompleted = user.PercentageCompleted.ToString(),
+                CompletionDate = user.CompletionDate.ToString(),
+                //CourseProgress = user.CourseProgress,
+                EnrollmentHistory = user.EnrollmentHistories
+            };
+
+            var courseProgress = db.CourseProgress.Where(x => x.EnrollmentId == entity.Id).ToList();
+
+            var progress = new List<ReturnCourseProgressModel>();
+
+            foreach (var item in courseProgress)
+            {
+                var module = db.CourseModules.Find(item.ModuleId);
+
+                progress.Add(new ReturnCourseProgressModel
                 {
-                    Id = user.Id,
-                    StudentName = String.IsNullOrEmpty(user.Learner.User.Name) ? "" : user.Learner.User.Name,
-                    SessionName = db.CourseEvents.Find(user.CourseEventId).Name,
-                    CourseEventId = user.CourseEventId,
-                    CourseTitle = user.Course.Title,
-                    DateEnrolled = user.EnrolledDate.ToString(),
-                    Status = user.Status,
-                    CoursePercentageCompleted = user.PercentageCompleted.ToString(),
-                    CompletionDate = user.CompletionDate.ToString(),
-                    //CourseProgress = user.CourseProgress,
-                    EnrollmentHistory = user.EnrollmentHistories
-                };
+                    EnrollmentId = item.EnrollmentId,
+                    ModuleName = module.Title,
+                    IsCompleted = item.IsCompleted,
+                    Score = item.Score,
+                });
+            }
+            entity.CourseProgress = progress;
 
-                var courseProgress = db.CourseProgress.Where(x => x.EnrollmentId == entity.Id).ToList();
-
-                var progress = new List<ReturnCourseProgressModel>();
-
-                foreach (var item in courseProgress)
-                {
-                    var module = db.CourseModules.Find(item.ModuleId);
-
-                    progress.Add(new ReturnCourseProgressModel
-                    {
-                        EnrollmentId = item.EnrollmentId,
-                        ModuleName = module.Title,
-                        IsCompleted = item.IsCompleted,
-                        Score = item.Score,
-                    });
-                }
-                entity.CourseProgress = progress;
-
-                return Ok(entity);
-
+            return Ok(entity);
         }
-
 
         /// For use in view content, when user wants to ernoll
         /// </summary>
@@ -578,7 +575,6 @@ namespace FEP.WebApi.Api.eLearning
             if (learner == null)
                 return BadRequest("User Not Found");
 
-
             var history = db.EnrollmentHistories.Where(x => x.LearnerId == learner.Id &&
                     x.CourseId == courseId);
 
@@ -586,7 +582,6 @@ namespace FEP.WebApi.Api.eLearning
                 return Ok(history);
 
             return BadRequest();
-
         }
-    }             
+    }
 }

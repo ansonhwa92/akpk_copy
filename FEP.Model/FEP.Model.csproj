@@ -55,13 +55,9 @@
     <Compile Include="Access.cs" />
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
-    <Compile Include="Migrations\201911090524227_x.cs" />
-    <Compile Include="Migrations\201911090524227_x.designer.cs">
-      <DependentUpon>201911090524227_x.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911140729436_addCourseEvent.cs" />
-    <Compile Include="Migrations\201911140729436_addCourseEvent.designer.cs">
-      <DependentUpon>201911140729436_addCourseEvent.cs</DependentUpon>
+    <Compile Include="Migrations\201911180358017_InitialDB.cs" />
+    <Compile Include="Migrations\201911180358017_InitialDB.designer.cs">
+      <DependentUpon>201911180358017_InitialDB.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
@@ -126,11 +122,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911090524227_x.resx">
-      <DependentUpon>201911090524227_x.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911140729436_addCourseEvent.resx">
-      <DependentUpon>201911140729436_addCourseEvent.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911180358017_InitialDB.resx">
+      <DependentUpon>201911180358017_InitialDB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

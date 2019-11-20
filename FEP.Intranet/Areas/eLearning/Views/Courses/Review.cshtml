@@ -85,7 +85,7 @@
                                     <div class="row">
                                         <div class="form-group col-lg-12">
                                             @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
-                                            @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control", @Value = @ViewBag.SelectedCategory, @readonly = "readonly" })
+                                            @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control", @Value = @ViewBag.SelectedCategory, @disabled = "disabled" })
                                         </div>
                                     </div>
 
@@ -106,15 +106,15 @@
                                     <div class="row">
                                         <div class="form-group col-lg-12">
                                             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
-                                            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @readonly = "readonly" })
-                                            @*@Html.TextArea(HttpUtility.HtmlDecode(Model.Description))*@
-                                        </div>
+                                            @Html.TextAreaFor(m => m.Description, new { @class = "summernote form-control", @readonly = "readonly" })
+                                      </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="form-group col-lg-12">
                                             @Html.LabelFor(model => model.Objectives, htmlAttributes: new { @class = "control-label " })
-                                            @Html.TextAreaFor(m => m.Objectives, new { @class = "form-control", @readonly = "readonly" })
+                                            @Html.TextAreaFor(m => m.Objectives, new { @class = "summernote form-control", @readonly = "readonly" })
+                                            @*@Html.TextAreaFor(m => m.Objectives, new { @class = "form-control", @readonly = "readonly" })*@
                                         </div>
                                     </div>
 
@@ -134,7 +134,7 @@
                                            })
                                             </div>
                                             <div class="col-md-9">
-                                                @Html.EnumDropDownListFor(model => model.DurationType, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                                @Html.EnumDropDownListFor(model => model.DurationType, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
                                             </div>
                                         </div>
                                     </div>
@@ -142,7 +142,8 @@
                                     <div class="row">
                                         <div class="form-group col-lg-12">
                                             @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label " })
-                                            @Html.EnumDropDownListFor(model => model.Language, htmlAttributes: new { @class = "form-control" })
+                                            @Html.EnumDropDownListFor(model => model.Language, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+
                                         </div>
                                     </div>
 
@@ -153,7 +154,7 @@
                                             <div class="free-radio row pl-4 pb-2">
                                                 <div class="col-sm-2">
                                                     <input type="radio" class="custom-control-input free form-control " checked="checked" value="@Model.IsFree"
-                                                           id="free" name="IsFree" readonly>
+                                                           id="free" name="IsFree">
                                                     <label class="custom-control-label control-label" for="free">@Language.eLearning.Course.Free</label>
                                                 </div>
                                             </div>
@@ -163,7 +164,7 @@
                                             <div class="free-radio row pl-4 ">
                                                 <div class="col-sm-2">
                                                     <input type="radio" class="custom-control-input paid form-control" value="@Model.IsFree"
-                                                           id="paid" name="IsFree" readonly>
+                                                           id="paid" name="IsFree">
                                                     <label class="custom-control-label control-label" for="paid">@Language.eLearning.Course.Paid</label>
                                                 </div>
                                             </div>
@@ -184,7 +185,7 @@
                                     <div class="row">
                                         <div class="form-group col-lg-12">
                                             @Html.LabelFor(model => model.ViewCategory, htmlAttributes: new { @class = "control-label " })
-                                            @Html.EnumDropDownListFor(model => model.ViewCategory, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                            @Html.EnumDropDownListFor(model => model.ViewCategory, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
                                         </div>
                                     </div>
 
@@ -244,7 +245,17 @@
         <!-- Wrapper -->
     </div>
 }
+    <style>
 
+        .note-editable {
+            background-color: #fafcfd !important;
+            border: 1px solid #e3eaef !important;
+            color: #768396 !important;
+            opacity: 1 !important;
+            font-size: 0.875rem !important;
+            box-shadow: none !important;
+        }
+    </style>
 
 @section ContentScript {
     @Scripts.Render("~/bundles/jqueryval")
@@ -260,20 +271,14 @@
                 placeholder: 'Type your text here.',
                 tabsize: 2,
                 height: 150,
-                toolbar: [
-
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']],
-
-                ],
+                toolbar: [],
                 codeviewFilter: false,
                 codeviewIframeFilter: true,
 
             });
+
+            $('.summernote').summernote('disable');
+            $('#Text').summernote('disable');
 
             var isFree = $('input[name=IsFree]');
 
@@ -306,21 +311,21 @@
 
 
 
-        //$('.free-radio input[type="radio"]').change(function () {
+        $('.free-radio input[type="radio"]').change(function () {
 
-        //    if ($(this).hasClass("free")) {
-        //        $("#free").prop("checked", true);
-        //        $('#Price').prop("disabled", true);
+            if ($(this).hasClass("free")) {
+                $("#free").prop("checked", true);
+                $('#Price').prop("disabled", true);
 
-        //        ($('input[name=IsFree]').val(true));
+                ($('input[name=IsFree]').val(true));
 
-        //    } else {
+            } else {
 
-        //        $("#paid").prop("checked", true);
-        //        $('#Price').prop("disabled", false);
+                $("#paid").prop("checked", true);
+                $('#Price').prop("disabled", false);
 
-        //        ($('input[name=IsFree]').val(false));
-        //    }
-        //});
+                ($('input[name=IsFree]').val(false));
+            }
+        });
     </script>
 }

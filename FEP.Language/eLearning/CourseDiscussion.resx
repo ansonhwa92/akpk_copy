@@ -135,14 +135,59 @@
   <data name="AlertSuccessUpdate" xml:space="preserve">
     <value>Discussion topic successfully updated</value>
   </data>
+  <data name="AllTopicsLabel" xml:space="preserve">
+    <value>All Topics</value>
+  </data>
+  <data name="BeTheFirst" xml:space="preserve">
+    <value>Be the first to reply</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="CreateNewLabel" xml:space="preserve">
+    <value>Create New Discussion</value>
+  </data>
+  <data name="DateTimeUpdate" xml:space="preserve">
+    <value>Date &amp; Time</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
+  </data>
+  <data name="DiscussionType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="EditedOn" xml:space="preserve">
+    <value>Edited On</value>
   </data>
   <data name="FieldName" xml:space="preserve">
     <value>Discussion topic</value>
   </data>
+  <data name="FirstPost" xml:space="preserve">
+    <value>First Post</value>
+  </data>
+  <data name="GeneralDesc" xml:space="preserve">
+    <value>All non-group discussions.</value>
+  </data>
+  <data name="GeneralLabel" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="GroupDesc" xml:space="preserve">
+    <value>Group related discussions.</value>
+  </data>
+  <data name="GroupLabel" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
   <data name="PlaceholderName" xml:space="preserve">
     <value>Enter Discussion topic</value>
+  </data>
+  <data name="Reply" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="SelectGroup" xml:space="preserve">
+    <value>Choose a group</value>
   </data>
   <data name="TitleDescriptionList" xml:space="preserve">
     <value>All Discussion</value>

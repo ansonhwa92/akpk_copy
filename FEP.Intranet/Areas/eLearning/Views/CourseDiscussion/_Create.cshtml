@@ -121,29 +121,29 @@
         <div class="form-group">
             @Html.LabelFor(m => m.Name, new { htmlAttributes = new { @class = "control-label" } })
             <div class="">
-                @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control text-box single-line", @placeholder = Language.eLearning.CourseCategory.PlaceholderName } })
+                @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control text-box single-line", @placeholder = Language.eLearning.CourseDiscussion.PlaceholderName } })
                 @Html.ValidationMessageFor(m => m.Name)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(m => m.DiscussionVisibility, new { htmlAttributes = new { @class = "control-label" } })
+            @Html.LabelFor(m => m.DiscussionVisibility, Language.eLearning.CourseDiscussion.DiscussionType, new { htmlAttributes = new { @class = "control-label" } })
             <div class="">
-                @Html.DropDownListFor(m => m.DiscussionVisibility, Model.DiscussionVisibilities, Language.eLearning.CourseGroup.PlaceholderName, htmlAttributes: new { @class = "custom-select" })
+                @Html.DropDownListFor(m => m.DiscussionVisibility, Model.DiscussionVisibilities, Language.eLearning.CourseDiscussion.DiscussionType, htmlAttributes: new { @class = "custom-select" })
                 @Html.ValidationMessageFor(m => m.DiscussionVisibility)
             </div>
         </div>
 
         <div class="form-group" id="GroupIdForm">
-            @Html.LabelFor(m => m.GroupId, new { htmlAttributes = new { @class = "control-label" } })
+            @Html.LabelFor(m => m.GroupId, Language.eLearning.CourseDiscussion.SelectGroup, new { htmlAttributes = new { @class = "control-label" } })
             <div class="">
-                @Html.DropDownListFor(m => m.GroupId, Model.Groups, Language.eLearning.CourseGroup.PlaceholderName, htmlAttributes: new { @class = "custom-select" })
+                @Html.DropDownListFor(m => m.GroupId, Model.Groups, Language.eLearning.CourseDiscussion.SelectGroup, htmlAttributes: new { @class = "custom-select" })
                 @Html.ValidationMessageFor(m => m.GroupId)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(m => m.Post.Message, new { htmlAttributes = new { @class = "form-label" } })
+            @Html.LabelFor(m => m.Post.Message, Language.eLearning.CourseDiscussion.FirstPost, new { htmlAttributes = new { @class = "form-label" } })
             <div class="">
                 @Html.TextAreaFor(m => m.Post.Message, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Post.Message)

@@ -1,4 +1,4 @@
-﻿@model List<ListGroupMemberModel>
+﻿@model List<ListCourseModel>
 
 @{
     Layout = null;
@@ -17,8 +17,7 @@
                         <thead>
                             <tr role="row">
                                 <th class="align-center sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" style="width: 65px;">No</th>
-                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="User" style="width: 350px;">@Language.eLearning.CourseGroup.LearnerLabel</th>
-                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Course Status" style="width: 350px;">@Language.eLearning.CourseGroup.CourseInfo</th>
+                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="User" style="width: 350px;">@Language.eLearning.CourseGroup.CourseLabel</th>
                                 <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Options" style="width: 350px;">@Language.eLearning.CourseGroup.Options</th>
                             </tr>
                         </thead>
@@ -37,35 +36,26 @@
                                             </td>
                                             <td class=" tl-align-left">
                                                 <div>
-                                                    <span title="@item.UserName">
-                                                        @item.UserName&nbsp;
-                                                        @if (@item.isMember)
-                                                        {<span class="badge badge-warning">@Language.eLearning.CourseGroup.GroupMember</span>}&nbsp;
-                                                        @if (@item.isOwner)
-                                                        {<span class="badge badge-danger">@Language.eLearning.CourseGroup.Owner</span>}&nbsp;
+                                                    <span title="@item.CourseName">
+                                                        @item.CourseName&nbsp;@item.EventCreatedOn&nbsp;
                                                     </span>
                                                     <i class="icon-lock-1"></i>
                                                 </div>
                                             </td>
+                                           
                                             <td class=" tl-align-left">
                                                 <div>
-                                                    <span title="@item.CourseCompleted">@item.CourseCompleted / @item.CourseEnrolled</span>
-                                                    <i class="icon-lock-1"></i>
-                                                </div>
-                                            </td>
-                                            <td class=" tl-align-left">
-                                                <div>
-                                                    @if (@item.isMember)
+                                                    @if (@item.GroupId.HasValue)
                                                     {
-                                                        <button onclick="arata_ascunde(this, @item.LearnerId, @item.GroupId, 0);" class="btn btn-danger" id="show_hide_bt">
-                                                            <i class="fa fa-minus"></i>@Html.Raw("&nbsp;&nbsp;" + @Language.eLearning.CourseGroup.Remove)
-                                                        </button>
+                                                    <button onclick="arata_ascundeX(this, @item.EventId, @item.ThisGroupId, 0);" class="btn btn-danger" id="show_hide_bt">
+                                                        <i class="fa fa-minus"></i>@Html.Raw("&nbsp;&nbsp;" + @Language.eLearning.CourseGroup.Remove)
+                                                    </button>
                                                     }
                                                     else
                                                     {
-                                                        <button onclick="arata_ascunde(this, @item.LearnerId, @item.GroupId, 1);" class="btn btn-success" id="show_hide_bt">
-                                                            <i class="fa fa-plus"></i>@Html.Raw("&nbsp;&nbsp;" + @Language.eLearning.CourseGroup.Add)
-                                                        </button>
+                                                    <button onclick="arata_ascundeX(this, @item.EventId, @item.ThisGroupId, 1);" class="btn btn-success" id="show_hide_bt">
+                                                        <i class="fa fa-plus"></i>@Html.Raw("&nbsp;&nbsp;" + @Language.eLearning.CourseGroup.Add)
+                                                    </button>
                                                     }
                                                 </div>
                                             </td>
@@ -92,12 +82,12 @@
 </div>
 
 <script>
-    function arata_ascunde(button, id, gid, ops) {
+    function arata_ascundeX(button, id, gid, ops) {
 
         if (ops == 1) {
             $.ajax({
                 type: 'get',
-                url: '@Url.Action("_Subscribe", "CourseGroup", new { area = "eLearning" })?id=' + id + '&GroupId=' + gid,
+                url: '@Url.Action("_AddCourseEvent", "CourseGroup", new { area = "eLearning" })?id=' + id + '&GroupId=' + gid,
                 success: function (data) {
                     $('#PartialViewLocation').html(data);
                 },
@@ -109,7 +99,7 @@
         else {
              $.ajax({
                 type: 'get',
-                url: '@Url.Action("_UnSubscribe", "CourseGroup", new { area = "eLearning" })?id=' + id + '&GroupId=' + gid,
+                url: '@Url.Action("_RemoveCourseEvent", "CourseGroup", new { area = "eLearning" })?id=' + id + '&GroupId=' + gid,
                 success: function (data) {
                     $('#PartialViewLocation').html(data);
                 },

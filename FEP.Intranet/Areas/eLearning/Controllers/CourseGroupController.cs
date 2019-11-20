@@ -45,7 +45,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "Fail generate eCode";
+                TempData["ErrorMessage"] = Language.eLearning.CourseGroup.AlertFailGroupCode;
                 return RedirectToAction("List");
             }
         }
@@ -56,9 +56,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         {
             var nameResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"eLearning/CourseGroup/IsCodeExist?code={model.EnrollmentCode}");
 
-            if (nameResponse.isSuccess)
+            if (!nameResponse.isSuccess)
             {
-                TempData["ErrorMessage"] = "Enrollment Code Not Valid";
+                TempData["ErrorMessage"] = "Group Code Not Valid";
                 return RedirectToAction("List");
             }
 
@@ -70,12 +70,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                 if (response.isSuccess)
                 {
-                    TempData["SuccessMessage"] = "Create New Discussion Completed";
+                    TempData["SuccessMessage"] = Language.eLearning.CourseGroup.AlertSuccessCreate;
                     //LogActivity(Modules.Learning, "Create Discussion Topic", model);
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Failed Create New Discussion";
+                    TempData["ErrorMessage"] = Language.eLearning.CourseGroup.AlertFailCreate;
                 }
             }
             return RedirectToAction("List");
@@ -105,18 +105,18 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eLearning/CourseGroup/JoinGroup", model);
                     if (response.isSuccess)
                     {
-                        TempData["SuccessMessage"] = "You have been added to " + response.Data + " group";
+                        TempData["SuccessMessage"] = Language.eLearning.CourseGroup.AlertSuccessJoin;
                         //LogActivity(Modules.Learning, "Create Discussion Topic", model);
                     }
                     else
                     {
-                        TempData["ErrorMessage"] = "Failed Create New Discussion";
+                        TempData["ErrorMessage"] = Language.eLearning.CourseGroup.AlertFailJoin;
                     }
                 }
             }
             else
             {
-                TempData["ErrorMessage"] = "Enrollment Code Not Valid";
+                TempData["ErrorMessage"] = "Group Code Not Valid";
                 return RedirectToAction("List");
             }
             return RedirectToAction("List");
@@ -137,7 +137,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "fail get group";
+                TempData["ErrorMessage"] = Language.eLearning.CourseGroup.AlertFailLoadGroup;
                 return RedirectToAction("List");
             }
             //var model = new CreateCourseGroupModel();
@@ -178,7 +178,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "fail get group";
+                TempData["ErrorMessage"] = Language.eLearning.CourseGroup.AlertFailUpdate;
                 return RedirectToAction("List");
             }
         }
@@ -194,17 +194,17 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 if (getgroup.isSuccess)
                 {
                     model = getgroup.Data;
-                    TempData["SuccessMessage"] = "Group information has been updated";
+                    TempData["SuccessMessage"] = Language.eLearning.CourseGroup.AlertSuccessUpdate;
 
                     return RedirectToAction("Detail", new { id = model.Id });
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "fail get group";
+                    TempData["ErrorMessage"] = Language.eLearning.CourseGroup.AlertFailUpdate;
                     return RedirectToAction("List");
                 }
             }
-            TempData["ErrorMessage"] = "Content not valid";
+            TempData["ErrorMessage"] = Language.eLearning.CourseGroup.AlertFailUpdate;
             return View(model);
         }
 
@@ -231,11 +231,11 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> _CourseList(int id)
+        public async Task<ActionResult> _CoursesList(int id)
         {
-            var model = new List<ListGroupMemberModel>();
+            var model = new List<ListCourseModel>();
 
-            var getgroup = await WepApiMethod.SendApiAsync<List<ListGroupMemberModel>>(HttpVerbs.Get, $"eLearning/CourseGroup/GetAllLearner?id={id}");
+            var getgroup = await WepApiMethod.SendApiAsync<List<ListCourseModel>>(HttpVerbs.Get, $"eLearning/CourseGroup/GetAllCourse?id={id}");
 
             if (getgroup.isSuccess)
             {
@@ -247,7 +247,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "fail get group";
+                TempData["ErrorMessage"] = Language.eLearning.CourseGroup.AlertFailCreateCourseList;
                 return RedirectToAction("List");
             }
         }
@@ -269,8 +269,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "add u fail get group";
-                return RedirectToAction("List");
+                var getgroup = await WepApiMethod.SendApiAsync<List<ListGroupMemberModel>>(HttpVerbs.Get, $"eLearning/CourseGroup/GetAllLearner?id={GroupId}");
+                if (getgroup.isSuccess)
+                {
+                    model = getgroup.Data;
+                }
+
+                TempData["ErrorMessage"] = Language.eLearning.CourseGroup.AlertFailAddUser;
+                return View("_UserList", model);
             }
         }
 
@@ -290,8 +296,72 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "remove u fail get group";
-                return RedirectToAction("List");
+                var getgroup = await WepApiMethod.SendApiAsync<List<ListGroupMemberModel>>(HttpVerbs.Get, $"eLearning/CourseGroup/GetAllLearner?id={GroupId}");
+                if (getgroup.isSuccess)
+                {
+                    model = getgroup.Data;
+                }
+
+
+                TempData["ErrorMessage"] = Language.eLearning.CourseGroup.AlertFailRemoveUser;
+                return View("_UserList", model);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _AddCourseEvent(int id, int GroupId)
+        {
+            var model = new List<ListCourseModel>();
+            int CreatedById = CurrentUser.UserId.Value;
+            var addtogroup = await WepApiMethod.SendApiAsync<List<ListCourseModel>>(HttpVerbs.Get, $"eLearning/CourseGroup/AddCourseEventToGroup?id={id}&GroupId={GroupId}&uid={CreatedById}");
+
+            if (addtogroup.isSuccess)
+            {
+                model = addtogroup.Data;
+
+                //model.UpdatedBy = CurrentUser.UserId.Value;
+
+                return View("_CoursesList", model);
+            }
+            else
+            {
+
+                var getgroup = await WepApiMethod.SendApiAsync<List<ListCourseModel>>(HttpVerbs.Get, $"eLearning/CourseGroup/GetAllCourse?id={GroupId}");
+
+                if (getgroup.isSuccess)
+                {
+                    model = getgroup.Data;
+                }
+                TempData["ErrorMessage"] = Language.eLearning.CourseGroup.AlertFailAddCourse;
+                return View("_CoursesList", model);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _RemoveCourseEvent(int id, int GroupId)
+        {
+            var model = new List<ListCourseModel>();
+            int CreatedById = CurrentUser.UserId.Value;
+            var removefromgroup = await WepApiMethod.SendApiAsync<List<ListCourseModel>>(HttpVerbs.Get, $"eLearning/CourseGroup/RemoveCourseEventFromGroup?id={id}&GroupId={GroupId}&uid={CreatedById}");
+
+            if (removefromgroup.isSuccess)
+            {
+                model = removefromgroup.Data;
+
+                //model.UpdatedBy = CurrentUser.UserId.Value;
+
+                return View("_CoursesList", model);
+            }
+            else
+            {
+                var getgroup = await WepApiMethod.SendApiAsync<List<ListCourseModel>>(HttpVerbs.Get, $"eLearning/CourseGroup/GetAllCourse?id={GroupId}");
+
+                if (getgroup.isSuccess)
+                {
+                    model = getgroup.Data;
+                }
+                TempData["ErrorMessage"] = Language.eLearning.CourseGroup.AlertFailRemoveCourse;
+                return View("_CoursesList", model);
             }
         }
     }

@@ -20,10 +20,9 @@
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">System Settings</a></li>
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">@Language.eLearning.CourseDiscussion.Home</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "CourseDiscussion", new { area = "eLearning" })">@Language.eLearning.CourseDiscussion.TitleList</a></li>
+                                @*<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>*@
                             </ol>
                         </nav>
                     </div>
@@ -56,7 +55,7 @@
                 <div class="media-right">
                     <a href="#" class="btn btn-secondary" onclick="showAdd();">
                         <i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>
-                        Create New Discussion
+                        @Language.eLearning.CourseDiscussion.CreateNewLabel
                     </a>
                 </div>
             </div>
@@ -74,11 +73,11 @@
             </div>
             @*<small class="text-black-70 text-uppercase mr-3">Displaying 10 out of 5,234 discussions</small>*@
             <div class="dropdown ml-auto">
-                <a href="" data-toggle="dropdown" class="dropdown-toggle text-black-70" id="DropDownSelected">All Topics</a>
+                <a href="" data-toggle="dropdown" class="dropdown-toggle text-black-70" id="DropDownSelected">@Language.eLearning.CourseDiscussion.AllTopicsLabel</a>
                 <div class="dropdown-menu dropdown-menu-right" id="DiscussionDropDown">
-                    <button id="ShowAll"  class="dropdown-item active">All Topics</button>
-                    <button id="ShowGeneral"  class="dropdown-item">General</button>
-                    <button id="ShowGroup" class="dropdown-item">Groups</button>
+                    <button id="ShowAll" class="dropdown-item active">@Language.eLearning.CourseDiscussion.AllTopicsLabel</button>
+                    <button id="ShowGeneral" class="dropdown-item">@Language.eLearning.CourseDiscussion.GeneralLabel</button>
+                    <button id="ShowGroup" class="dropdown-item">@Language.eLearning.CourseDiscussion.GroupLabel</button>
                 </div>
             </div>
         </div>
@@ -90,8 +89,8 @@
                         <div class="card-header">
                             <div class="media align-items-center">
                                 <div class="media-body">
-                                    <h4 class="card-title">General</h4>
-                                    <p class="card-subtitle">All non-course topics.</p>
+                                    <h4 class="card-title">@Language.eLearning.CourseDiscussion.GeneralLabel</h4>
+                                    <p class="card-subtitle">@Language.eLearning.CourseDiscussion.GeneralDesc</p>
                                 </div>
 
                             </div>
@@ -100,8 +99,8 @@
                 </tr>
                 <tr>
                     <th width="15px">#</th>
-                    <th>Discussion</th>
-                    <th width="260px">Date &amp; Time</th>
+                    <th>@Language.eLearning.CourseDiscussion.TitleList</th>
+                    <th width="260px">@Language.eLearning.CourseDiscussion.DateTimeUpdate</th>
                 </tr>
             </thead>
         </table>
@@ -115,8 +114,8 @@
                         <div class="card-header">
                             <div class="media align-items-center">
                                 <div class="media-body">
-                                    <h4 class="card-title">Lessons</h4>
-                                    <p class="card-subtitle">Group related topics.</p>
+                                    <h4 class="card-title">@Language.eLearning.CourseDiscussion.GroupLabel</h4>
+                                    <p class="card-subtitle">@Language.eLearning.CourseDiscussion.GroupDesc</p>
                                 </div>
 
                             </div>
@@ -125,8 +124,8 @@
                 </tr>
                 <tr>
                     <th width="15px">#</th>
-                    <th>Discussion</th>
-                    <th width="260px">Date &amp; Time</th>
+                    <th>@Language.eLearning.CourseDiscussion.TitleList</th>
+                    <th width="260px">@Language.eLearning.CourseDiscussion.DateTimeUpdate</th>
                     @*<th>Post</th>
                         <th>Posted By</th>
 

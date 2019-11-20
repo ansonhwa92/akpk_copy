@@ -117,115 +117,88 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="AlertFailAddCourse" xml:space="preserve">
-    <value>Fail to add course event to this group</value>
-  </data>
-  <data name="AlertFailAddUser" xml:space="preserve">
-    <value>Fail to add user to this group</value>
-  </data>
   <data name="AlertFailCreate" xml:space="preserve">
-    <value>Fail to add create new Group</value>
-  </data>
-  <data name="AlertFailCreateCourseList" xml:space="preserve">
-    <value>Faile to create course list</value>
+    <value>Topik baru untuk perbincangan tidak berjaya diwujudkan</value>
   </data>
   <data name="AlertFailDelete" xml:space="preserve">
-    <value>Fail to delete Group</value>
-  </data>
-  <data name="AlertFailGroupCode" xml:space="preserve">
-    <value>Fail to generate new group code</value>
-  </data>
-  <data name="AlertFailJoin" xml:space="preserve">
-    <value>Fail to join group</value>
-  </data>
-  <data name="AlertFailLoadGroup" xml:space="preserve">
-    <value>Fail to load group</value>
-  </data>
-  <data name="AlertFailRemoveCourse" xml:space="preserve">
-    <value>Fail to remove course event from this group</value>
-  </data>
-  <data name="AlertFailRemoveUser" xml:space="preserve">
-    <value>Fail to remove user from this group</value>
+    <value>Topik perbincangan tidak berjaya dibuang</value>
   </data>
   <data name="AlertFailUpdate" xml:space="preserve">
-    <value>Fail to update Group</value>
+    <value>Topik perbincangan tidak berjaya dikemaskini</value>
   </data>
   <data name="AlertSuccessCreate" xml:space="preserve">
-    <value>New Group  successfully added</value>
+    <value>Topik baru perbincangan berjaya diwujudkan</value>
   </data>
   <data name="AlertSuccessDelete" xml:space="preserve">
-    <value>Group successfully deleted</value>
-  </data>
-  <data name="AlertSuccessJoin" xml:space="preserve">
-    <value>You have been added to the group</value>
+    <value>Topik perbincangan berjaya dibuang</value>
   </data>
   <data name="AlertSuccessUpdate" xml:space="preserve">
-    <value>Group successfully updated</value>
+    <value>Topic perbincangan berjaya dikemaskini</value>
   </data>
-  <data name="CourseInfo" xml:space="preserve">
-    <value>Course completed / Course enrolled</value>
+  <data name="AllTopicsLabel" xml:space="preserve">
+    <value>Semua topik perbincangan</value>
   </data>
-  <data name="CourseLabel" xml:space="preserve">
-    <value>Course Events</value>
+  <data name="BeTheFirst" xml:space="preserve">
+    <value>Jadi yang pertama untuk membalas</value>
   </data>
-  <data name="CreatedOn" xml:space="preserve">
-    <value>Created On</value>
+  <data name="Comment" xml:space="preserve">
+    <value>Komen</value>
+  </data>
+  <data name="CreateNewLabel" xml:space="preserve">
+    <value>Buat topik perbincangan baru</value>
+  </data>
+  <data name="DateTimeUpdate" xml:space="preserve">
+    <value>Kemaskini</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Description</value>
+    <value>Penerangan</value>
+  </data>
+  <data name="DiscussionType" xml:space="preserve">
+    <value>Jenis</value>
+  </data>
+  <data name="EditedOn" xml:space="preserve">
+    <value>Dikemaskini pada</value>
   </data>
   <data name="FieldName" xml:space="preserve">
-    <value>Group</value>
+    <value>Topik perbincangan</value>
   </data>
-  <data name="GroupCode" xml:space="preserve">
-    <value>Group code</value>
+  <data name="FirstPost" xml:space="preserve">
+    <value>Teraju utama</value>
+  </data>
+  <data name="GeneralDesc" xml:space="preserve">
+    <value>Semua topik perbincangan terbuka</value>
+  </data>
+  <data name="GeneralLabel" xml:space="preserve">
+    <value>Perbincangan terbuka</value>
+  </data>
+  <data name="GroupDesc" xml:space="preserve">
+    <value>Topik perbincangan kumpulan</value>
   </data>
   <data name="GroupLabel" xml:space="preserve">
-    <value>Group</value>
-  </data>
-  <data name="GroupMember" xml:space="preserve">
-    <value>Group Member</value>
-  </data>
-  <data name="GroupName" xml:space="preserve">
-    <value>Group name</value>
+    <value>Perbincangan kumpulan</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Home</value>
-  </data>
-  <data name="JoinGroup" xml:space="preserve">
-    <value>Join Group</value>
-  </data>
-  <data name="LearnerLabel" xml:space="preserve">
-    <value>Learner</value>
-  </data>
-  <data name="Options" xml:space="preserve">
-    <value>Options</value>
-  </data>
-  <data name="Owner" xml:space="preserve">
-    <value>Owner</value>
+    <value>Utama</value>
   </data>
   <data name="PlaceholderName" xml:space="preserve">
-    <value>Enter Group name</value>
+    <value>Masukkan topik perbincangan</value>
   </data>
-  <data name="Remove" xml:space="preserve">
-    <value>Remove</value>
+  <data name="Reply" xml:space="preserve">
+    <value>Balas</value>
+  </data>
+  <data name="SelectGroup" xml:space="preserve">
+    <value>Pilih kumpulan</value>
   </data>
   <data name="TitleDescriptionList" xml:space="preserve">
-    <value>All Group</value>
+    <value>Semua perbincangan</value>
   </data>
   <data name="TitleList" xml:space="preserve">
-    <value>Group</value>
-  </data>
-  <data name="UserLabel" xml:space="preserve">
-    <value>Users</value>
+    <value>Perbincangan</value>
   </data>
   <data name="ValidExistName" xml:space="preserve">
-    <value>Group name already registered in the system</value>
+    <value>Topik perbincangan ini telah wujud</value>
   </data>
   <data name="ValidRequiredName" xml:space="preserve">
-    <value>Please enter Group name</value>
+    <value>Sila masukkan topik perbincangan</value>
   </data>
 </root>

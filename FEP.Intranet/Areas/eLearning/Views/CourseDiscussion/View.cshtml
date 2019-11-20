@@ -19,10 +19,10 @@
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">System Settings</a></li>
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">@Language.eLearning.CourseDiscussion.Home</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "CourseDiscussion", new { area = "eLearning" })">@Language.eLearning.CourseDiscussion.TitleList</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#">@Model.Discussion.Name<12
+    /a></li>
                             </ol>
                         </nav>
                     </div>
@@ -85,7 +85,7 @@
                         }
                     </div>
                     <div style="margin-top:0px; padding: 10px;" class="text-right">
-                        <span id="top" class="btn btn-mini btn-primary">Reply</span>
+                        <span id="top" class="btn btn-mini btn-primary">@Language.eLearning.CourseDiscussion.Reply</span>
                     </div>
                 </div>
             </div>
@@ -115,7 +115,7 @@
                                             @{
                                                 if (Model.Post[p].UpdatedDate.HasValue)
                                                 {
-                                                    <i>Edited on </i> @Model.Post[p].UpdatedDate.Value.ToLongDateString()
+                                            <i>@Language.eLearning.CourseDiscussion.EditedOn </i> @Model.Post[p].UpdatedDate.Value.ToLongDateString()
                                                 }
                                                 else
                                                 {
@@ -155,7 +155,7 @@
                                                         @{
                                                             if (x.UpdatedDate.HasValue)
                                                             {
-                                                                <i>Edited on </i> @x.UpdatedDate.Value.ToLongDateString()
+                                                        <i>@Language.eLearning.CourseDiscussion.EditedOn </i> @x.UpdatedDate.Value.ToLongDateString()
                                                             }
                                                             else
                                                             {
@@ -169,7 +169,7 @@
                                                 </div>
                                             }
                                             <div class="" id="CommentArea_@Model.Post[p].Id" style="min-height:50px;">
-                                                <button id="Comment_@Model.Post[p].Id" class="btn btn-secondary btn-sm mw-auto pull-right" aria-valuenow="@Model.Post[p].Id" onclick="callCustomer(@Model.Post[p].Id)">Comment</button>
+                                                <button id="Comment_@Model.Post[p].Id" class="btn btn-secondary btn-sm mw-auto pull-right" aria-valuenow="@Model.Post[p].Id" onclick="callCustomer(@Model.Post[p].Id)">@Language.eLearning.CourseDiscussion.Comment</button>
                                             </div>
                                         </div>
                                     </div>
@@ -184,7 +184,7 @@
             else
             {
                 <div class="center">
-                    <span align="center"> Be the first to reply</span>
+                    <span align="center">@Language.eLearning.CourseDiscussion.BeTheFirst</span>
                 </div>
             }
         }
@@ -211,7 +211,7 @@
     </div>
 </div>
 
-    </div>
+  @*  </div>*@
 
 
 

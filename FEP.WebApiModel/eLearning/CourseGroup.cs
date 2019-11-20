@@ -34,7 +34,7 @@ namespace FEP.WebApiModel.eLearning
         public string Name { get; set; } //group name
         [Display(Name = "Description")]
         public string Description { get; set; }
-        [Display(Name = "Enrollment Code")]
+        [Display(Name = "Group Code")]
         public string EnrollmentCode { get; set; }
 
         public int CreatedBy { get; set; }
@@ -43,7 +43,7 @@ namespace FEP.WebApiModel.eLearning
 
     public class JoinCourseGroupModel
     {
-        [Display(Name = "Enrollment Code")]
+        [Display(Name = "Group Code")]
         public string EnrollmentCode { get; set; }
         public int LearnerId { get; set; }
     }
@@ -54,7 +54,7 @@ namespace FEP.WebApiModel.eLearning
         public string Name { get; set; } //group name
         [Display(Name = "Description")]
         public string Description { get; set; }
-        [Display(Name = "Enrollment Code")]
+        [Display(Name = "Group Code")]
         public string EnrollmentCode { get; set; }
 
         public int CreatedBy { get; set; }
@@ -76,12 +76,12 @@ namespace FEP.WebApiModel.eLearning
 
     public class ListCourseModel
     {
-        public int GroupId { get; set; }
-        public string UserName { get; set; }
-        public int UserId { get; set; }
-        public int LearnerId { get; set; }
-        public int CourseEnrolled { get; set; }
-        public int CourseCompleted { get; set; }
+        public int EventId { get; set; }
+        public int CourseId { get; set; }
+        public string CourseName { get; set; }
+        public DateTime EventCreatedOn { get; set; }
+        public int? GroupId { get; set; }
+        public int ThisGroupId { get; set; }
     }
 
 }

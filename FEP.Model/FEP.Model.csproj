@@ -55,9 +55,9 @@
     <Compile Include="Access.cs" />
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
-    <Compile Include="Migrations\201911180358017_InitialDB.cs" />
-    <Compile Include="Migrations\201911180358017_InitialDB.designer.cs">
-      <DependentUpon>201911180358017_InitialDB.cs</DependentUpon>
+    <Compile Include="Migrations\201911181539294_aftermergerx.cs" />
+    <Compile Include="Migrations\201911181539294_aftermergerx.designer.cs">
+      <DependentUpon>201911181539294_aftermergerx.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
@@ -95,22 +95,6 @@
     <Compile Include="File.cs" />
     <Compile Include="Groups.cs" />
     <Compile Include="Logs.cs" />
-    <Compile Include="Migrations\201910021311286_initial.cs" />
-    <Compile Include="Migrations\201910021311286_initial.Designer.cs">
-      <DependentUpon>201910021311286_initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910021607474_atachmenttable.cs" />
-    <Compile Include="Migrations\201910021607474_atachmenttable.Designer.cs">
-      <DependentUpon>201910021607474_atachmenttable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910021610488_atachmenttable2.cs" />
-    <Compile Include="Migrations\201910021610488_atachmenttable2.Designer.cs">
-      <DependentUpon>201910021610488_atachmenttable2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910161616279_changemapgroup.cs" />
-    <Compile Include="Migrations\201910161616279_changemapgroup.Designer.cs">
-      <DependentUpon>201910161616279_changemapgroup.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\aiman.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\firus.cs" />
@@ -128,7 +112,9 @@
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -138,8 +124,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911180358017_InitialDB.resx">
-      <DependentUpon>201911180358017_InitialDB.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911181539294_aftermergerx.resx">
+      <DependentUpon>201911181539294_aftermergerx.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

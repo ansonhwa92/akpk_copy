@@ -20,15 +20,14 @@
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">System Settings</a></li>
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">@Language.eLearning.CourseGroup.Home</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Group", "CourseGroup", new { area = "eLearning" })">@Language.eLearning.CourseGroup.TitleList</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#">@Model.Name</a></li>
                             </ol>
                         </nav>
                     </div>
                     <h1 class="page-title text-white">@Language.eLearning.CourseGroup.TitleList</h1>
-                    <div class="header-text">@Language.eLearning.CourseGroup.TitleDescriptionList</div>
+                    <div class="header-text">@Model.Name</div>
                 </div>
             </div>
         </div>
@@ -40,7 +39,7 @@
         <ul class="nav nav-tabs" id="barbar">
             <li style="margin: 5px;" class="active"> <button class="btn btn-outline-primary active" href="#" onclick="showEditForm(this, @Model.Id);" title="Edit" data-toggle="tooltip">Info</button></li>
             <li style="margin: 5px;"> <button class="btn btn-outline-primary" href="#" onclick="LoadUsersTable(this, @Model.Id);">Users</button></li>
-            @*<li style="margin: 5px;"> <button class="btn btn-outline-primary" href="#" onclick="LoadCoursesTable(this, @Model.Id);">Course</button></li>*@
+            <li style="margin: 5px;"> <button class="btn btn-outline-primary" href="#" onclick="LoadCoursesTable(this, @Model.Id);">Courses</button></li>
             @*<li style="margin: 5px;"> <a class="btn btn-outline-primary" href="#" onclick="LoadUsersTable(@Model.Id);">Courses</a></li>
                 <li style="margin: 5px;"> <a class="btn btn-outline-primary" href="#" onclick="LoadUsersTable(@Model.Id);">Files</a></li>*@
         </ul>
@@ -144,7 +143,7 @@
 
             $.ajax({
                 type: 'get',
-                url: '@Url.Action("_CourseList", "CourseGroup", new { area = "eLearning" })?id=' + id,
+                url: '@Url.Action("_CoursesList", "CourseGroup", new { area = "eLearning" })?id=' + id,
                 success: function (data) {
                     $('#PartialViewLocation').html(data);
                 },

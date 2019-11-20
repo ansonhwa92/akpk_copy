@@ -992,6 +992,7 @@
     <Content Include="Areas\eLearning\Views\Courses\Review.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseEnrollments\UsersProgress.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseEnrollments\UserDetails.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseGroup\_CoursesList.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

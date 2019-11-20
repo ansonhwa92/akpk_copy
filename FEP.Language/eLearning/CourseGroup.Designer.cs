@@ -61,6 +61,33 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to add course event to this group.
+        /// </summary>
+        public static string AlertFailAddCourse {
+            get {
+                return ResourceManager.GetString("AlertFailAddCourse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to add user to this group.
+        /// </summary>
+        public static string AlertFailAddUser {
+            get {
+                return ResourceManager.GetString("AlertFailAddUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fail to add create new Group.
         /// </summary>
         public static string AlertFailCreate {
@@ -70,11 +97,65 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Faile to create course list.
+        /// </summary>
+        public static string AlertFailCreateCourseList {
+            get {
+                return ResourceManager.GetString("AlertFailCreateCourseList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fail to delete Group.
         /// </summary>
         public static string AlertFailDelete {
             get {
                 return ResourceManager.GetString("AlertFailDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to generate new group code.
+        /// </summary>
+        public static string AlertFailGroupCode {
+            get {
+                return ResourceManager.GetString("AlertFailGroupCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to join group.
+        /// </summary>
+        public static string AlertFailJoin {
+            get {
+                return ResourceManager.GetString("AlertFailJoin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to load group.
+        /// </summary>
+        public static string AlertFailLoadGroup {
+            get {
+                return ResourceManager.GetString("AlertFailLoadGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to remove course event from this group.
+        /// </summary>
+        public static string AlertFailRemoveCourse {
+            get {
+                return ResourceManager.GetString("AlertFailRemoveCourse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to remove user from this group.
+        /// </summary>
+        public static string AlertFailRemoveUser {
+            get {
+                return ResourceManager.GetString("AlertFailRemoveUser", resourceCulture);
             }
         }
         
@@ -106,11 +187,47 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have been added to the group.
+        /// </summary>
+        public static string AlertSuccessJoin {
+            get {
+                return ResourceManager.GetString("AlertSuccessJoin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Group successfully updated.
         /// </summary>
         public static string AlertSuccessUpdate {
             get {
                 return ResourceManager.GetString("AlertSuccessUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Course completed / Course enrolled.
+        /// </summary>
+        public static string CourseInfo {
+            get {
+                return ResourceManager.GetString("CourseInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Course Events.
+        /// </summary>
+        public static string CourseLabel {
+            get {
+                return ResourceManager.GetString("CourseLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created On.
+        /// </summary>
+        public static string CreatedOn {
+            get {
+                return ResourceManager.GetString("CreatedOn", resourceCulture);
             }
         }
         
@@ -133,11 +250,101 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group code.
+        /// </summary>
+        public static string GroupCode {
+            get {
+                return ResourceManager.GetString("GroupCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string GroupLabel {
+            get {
+                return ResourceManager.GetString("GroupLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group Member.
+        /// </summary>
+        public static string GroupMember {
+            get {
+                return ResourceManager.GetString("GroupMember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group name.
+        /// </summary>
+        public static string GroupName {
+            get {
+                return ResourceManager.GetString("GroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Join Group.
+        /// </summary>
+        public static string JoinGroup {
+            get {
+                return ResourceManager.GetString("JoinGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Learner.
+        /// </summary>
+        public static string LearnerLabel {
+            get {
+                return ResourceManager.GetString("LearnerLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Options.
+        /// </summary>
+        public static string Options {
+            get {
+                return ResourceManager.GetString("Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Owner.
+        /// </summary>
+        public static string Owner {
+            get {
+                return ResourceManager.GetString("Owner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter Group name.
         /// </summary>
         public static string PlaceholderName {
             get {
                 return ResourceManager.GetString("PlaceholderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
             }
         }
         
@@ -156,6 +363,15 @@ namespace Language.eLearning {
         public static string TitleList {
             get {
                 return ResourceManager.GetString("TitleList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users.
+        /// </summary>
+        public static string UserLabel {
+            get {
+                return ResourceManager.GetString("UserLabel", resourceCulture);
             }
         }
         

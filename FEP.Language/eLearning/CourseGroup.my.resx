@@ -118,114 +118,114 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add" xml:space="preserve">
-    <value>Add</value>
+    <value>Masukkan</value>
   </data>
   <data name="AlertFailAddCourse" xml:space="preserve">
-    <value>Fail to add course event to this group</value>
+    <value>Tidak berjaya tambah kursus</value>
   </data>
   <data name="AlertFailAddUser" xml:space="preserve">
-    <value>Fail to add user to this group</value>
+    <value>Tidak berjaya menambah pelajar</value>
   </data>
   <data name="AlertFailCreate" xml:space="preserve">
-    <value>Fail to add create new Group</value>
+    <value>Tidak berjaya membuat kumpulan baharu</value>
   </data>
   <data name="AlertFailCreateCourseList" xml:space="preserve">
-    <value>Faile to create course list</value>
+    <value>Tidak berjaya dapatkan senarai kursus</value>
   </data>
   <data name="AlertFailDelete" xml:space="preserve">
-    <value>Fail to delete Group</value>
+    <value>Tidak berjaya membuang kumpulan</value>
   </data>
   <data name="AlertFailGroupCode" xml:space="preserve">
-    <value>Fail to generate new group code</value>
+    <value>Tidak berjaya mendapatkan kod kumpulan</value>
   </data>
   <data name="AlertFailJoin" xml:space="preserve">
-    <value>Fail to join group</value>
+    <value>Tidak berjaya masuk kumpulan</value>
   </data>
   <data name="AlertFailLoadGroup" xml:space="preserve">
-    <value>Fail to load group</value>
+    <value>Tidak berjaya dapatkan kumpulan</value>
   </data>
   <data name="AlertFailRemoveCourse" xml:space="preserve">
-    <value>Fail to remove course event from this group</value>
+    <value>Tidak berjaya untuk keluarkan kursus</value>
   </data>
   <data name="AlertFailRemoveUser" xml:space="preserve">
-    <value>Fail to remove user from this group</value>
+    <value>Tidak berjaya untuk keluarkan pelajar</value>
   </data>
   <data name="AlertFailUpdate" xml:space="preserve">
-    <value>Fail to update Group</value>
+    <value>Kemaskini tidak berjaya</value>
   </data>
   <data name="AlertSuccessCreate" xml:space="preserve">
-    <value>New Group  successfully added</value>
+    <value>Kumpulan telah berjaya didaftarkan</value>
   </data>
   <data name="AlertSuccessDelete" xml:space="preserve">
-    <value>Group successfully deleted</value>
+    <value>Kumpulan telah berjaya dibuang</value>
   </data>
   <data name="AlertSuccessJoin" xml:space="preserve">
-    <value>You have been added to the group</value>
+    <value>Anda telah berjaya mendaftar sebagai ahli kumpulan</value>
   </data>
   <data name="AlertSuccessUpdate" xml:space="preserve">
-    <value>Group successfully updated</value>
+    <value>Kemaskini berjaya</value>
   </data>
   <data name="CourseInfo" xml:space="preserve">
-    <value>Course completed / Course enrolled</value>
+    <value>Kursus sempurna / Kursus terlibat</value>
   </data>
   <data name="CourseLabel" xml:space="preserve">
-    <value>Course Events</value>
+    <value>Kursus</value>
   </data>
   <data name="CreatedOn" xml:space="preserve">
-    <value>Created On</value>
+    <value>Dicipta pada</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Description</value>
+    <value>Penerangan</value>
   </data>
   <data name="FieldName" xml:space="preserve">
-    <value>Group</value>
+    <value>Kumpulan</value>
   </data>
   <data name="GroupCode" xml:space="preserve">
-    <value>Group code</value>
+    <value>Kod Kumpulan</value>
   </data>
   <data name="GroupLabel" xml:space="preserve">
-    <value>Group</value>
+    <value>Kumpulan</value>
   </data>
   <data name="GroupMember" xml:space="preserve">
-    <value>Group Member</value>
+    <value>Ahli kumpulan</value>
   </data>
   <data name="GroupName" xml:space="preserve">
-    <value>Group name</value>
+    <value>Nama kumpulan</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Home</value>
+    <value>Teraju utama</value>
   </data>
   <data name="JoinGroup" xml:space="preserve">
-    <value>Join Group</value>
+    <value>Menjadi Ahli Kumpulan</value>
   </data>
   <data name="LearnerLabel" xml:space="preserve">
-    <value>Learner</value>
+    <value>Pelajar</value>
   </data>
   <data name="Options" xml:space="preserve">
-    <value>Options</value>
+    <value>Pilihan</value>
   </data>
   <data name="Owner" xml:space="preserve">
-    <value>Owner</value>
+    <value>Pencipta</value>
   </data>
   <data name="PlaceholderName" xml:space="preserve">
-    <value>Enter Group name</value>
+    <value>SIla masukkan nama kumpulan</value>
   </data>
   <data name="Remove" xml:space="preserve">
-    <value>Remove</value>
+    <value>Keluarkan</value>
   </data>
   <data name="TitleDescriptionList" xml:space="preserve">
-    <value>All Group</value>
+    <value>Semua Kumpulan</value>
   </data>
   <data name="TitleList" xml:space="preserve">
-    <value>Group</value>
+    <value>Kumpulan</value>
   </data>
   <data name="UserLabel" xml:space="preserve">
-    <value>Users</value>
+    <value>Pelajar</value>
   </data>
   <data name="ValidExistName" xml:space="preserve">
-    <value>Group name already registered in the system</value>
+    <value>Nama kumpulan ini sudah didaftarkan</value>
   </data>
   <data name="ValidRequiredName" xml:space="preserve">
-    <value>Please enter Group name</value>
+    <value>Sila masukkan nama kumpulan</value>
   </data>
 </root>

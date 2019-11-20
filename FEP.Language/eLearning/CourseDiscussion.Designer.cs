@@ -115,11 +115,74 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Topics.
+        /// </summary>
+        public static string AllTopicsLabel {
+            get {
+                return ResourceManager.GetString("AllTopicsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Be the first to reply.
+        /// </summary>
+        public static string BeTheFirst {
+            get {
+                return ResourceManager.GetString("BeTheFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comment.
+        /// </summary>
+        public static string Comment {
+            get {
+                return ResourceManager.GetString("Comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create New Discussion.
+        /// </summary>
+        public static string CreateNewLabel {
+            get {
+                return ResourceManager.GetString("CreateNewLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date &amp; Time.
+        /// </summary>
+        public static string DateTimeUpdate {
+            get {
+                return ResourceManager.GetString("DateTimeUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string DiscussionType {
+            get {
+                return ResourceManager.GetString("DiscussionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edited On.
+        /// </summary>
+        public static string EditedOn {
+            get {
+                return ResourceManager.GetString("EditedOn", resourceCulture);
             }
         }
         
@@ -133,11 +196,83 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First Post.
+        /// </summary>
+        public static string FirstPost {
+            get {
+                return ResourceManager.GetString("FirstPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All non-group discussions..
+        /// </summary>
+        public static string GeneralDesc {
+            get {
+                return ResourceManager.GetString("GeneralDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string GeneralLabel {
+            get {
+                return ResourceManager.GetString("GeneralLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group related discussions..
+        /// </summary>
+        public static string GroupDesc {
+            get {
+                return ResourceManager.GetString("GroupDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string GroupLabel {
+            get {
+                return ResourceManager.GetString("GroupLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter Discussion topic.
         /// </summary>
         public static string PlaceholderName {
             get {
                 return ResourceManager.GetString("PlaceholderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reply.
+        /// </summary>
+        public static string Reply {
+            get {
+                return ResourceManager.GetString("Reply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a group.
+        /// </summary>
+        public static string SelectGroup {
+            get {
+                return ResourceManager.GetString("SelectGroup", resourceCulture);
             }
         }
         

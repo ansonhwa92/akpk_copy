@@ -21,7 +21,7 @@
         @Html.TextAreaFor(m => m.NewDiscussionReply.Message, new { @class = "form-control textarea-reply" })
         @Html.ValidationMessageFor(m => m.NewDiscussionReply.Message)
         @Html.HiddenFor(m => m.NewDiscussionReply.ParentId)
-        <button type="submit" class="btn btn-secondary btn-sm mw-auto pull-right" style="margin: 10px">Comment</button>
+        <button type="submit" class="btn btn-secondary btn-sm mw-auto pull-right" style="margin: 10px">@Language.eLearning.CourseDiscussion.Comment</button>
     </div>
 }
 

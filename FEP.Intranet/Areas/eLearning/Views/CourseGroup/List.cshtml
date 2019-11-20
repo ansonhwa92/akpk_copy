@@ -20,9 +20,8 @@
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">System Settings</a></li>
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">@Language.eLearning.CourseGroup.Home</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Group", "CourseGroup", new { area = "eLearning" })">@Language.eLearning.CourseGroup.TitleList</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
@@ -64,7 +63,7 @@
                     <div id="addForm"></div>
                     <div class="d-flex align-items-center mb-4 mt-2">
                         <h4 class="color-darkblue mr-auto mb-0"></h4>
-                        <button class="btn btn-secondary btn-lg" onclick="showJoin();"><i class="la la-plus font-icon"></i>Join Group</button>
+                        <button class="btn btn-secondary btn-lg" onclick="showJoin();"><i class="la la-plus font-icon"></i>@Language.eLearning.CourseGroup.JoinGroup</button>
                     </div>
                     <div id="joinForm"></div>
 
@@ -75,9 +74,9 @@
                                     <th class="align-center sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" style="width: 50px;">No</th>
                                     @*<th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Instructor" style="width: 350px;">Instructor</th>*@
                                     @*<th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Enrollment Code" style="width: 350px;">Enrollment Code</th>*@
-                                    <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Group" style="width: 350px;">Group</th>
-                                    <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Description" style="width: 350px;">Description</th>
-                                    <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Created On" style="width: 150px;">Created On</th>
+                                    <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Group" style="width: 350px;">@Language.eLearning.CourseGroup.GroupLabel</th>
+                                    <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Description" style="width: 350px;">@Language.eLearning.CourseGroup.Description</th>
+                                    <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Created On" style="width: 150px;">@Language.eLearning.CourseGroup.CreatedOn</th>
                                     @*<th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Action" style="width: 150px;">Action</th>*@
                                 </tr>
                             </thead>

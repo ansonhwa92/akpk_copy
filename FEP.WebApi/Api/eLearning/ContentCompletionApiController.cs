@@ -1,6 +1,7 @@
 ﻿using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.eLearning;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace FEP.WebApi.Api.eLearning
         [Route("api/eLearning/ContentCompletions/")]
         [HttpPost]
         [ValidationActionFilter]
-        public async Task<IHttpActionResult> Post([FromBody] ContentCompletionModel request)
+        public async Task<IHttpActionResult> Post(bool CanViewAsLearner, [FromBody] ContentCompletionModel request)
         {
             if (ModelState.IsValid)
             {
@@ -61,6 +62,12 @@ namespace FEP.WebApi.Api.eLearning
                         request.nextModuleId = nextModule.Id;
                         request.nextContentId = null;
                     }
+                }
+
+                // Check if Admin or non learner, if so, no need to keep progress
+                if (CanViewAsLearner)
+                {
+                    return Ok(request);
                 }
 
                 var course = await db.Courses.FindAsync(currentContent.CourseId);
@@ -141,9 +148,10 @@ namespace FEP.WebApi.Api.eLearning
                     enrollment.TotalContentsCompleted = progressCount;
                     enrollment.PercentageCompleted = progressPercent;
 
-                    if((request.nextContentId == null && request.nextModuleId == null) || enrollment.TotalContentsCompleted == totalContent)
+                    if ((request.nextContentId == null && request.nextModuleId == null) || enrollment.TotalContentsCompleted == totalContent)
                     {
                         enrollment.Status = EnrollmentStatus.Completed;
+                        enrollment.CompletionDate = DateTime.Now;
                     }
 
                     db.SetModified(enrollment);
@@ -153,7 +161,6 @@ namespace FEP.WebApi.Api.eLearning
                     request.CourseId = course.Id;
 
                     return Ok(request);
-
                 }
                 else
                 {
@@ -210,18 +217,15 @@ namespace FEP.WebApi.Api.eLearning
                 model.Timer = 0;
             }
 
-
             //// Get the user progress for this module.
-            var course = await db.Courses.FirstOrDefaultAsync(x => x.Id == contentId);
+            var course = await db.Courses.FirstOrDefaultAsync(x => x.Id == entity.CourseId);
 
-            if (course.Status == CourseStatus.Published)
+            if (course?.Status == CourseStatus.Published)
             {
-
                 var learner = await db.Learners.FirstOrDefaultAsync(x => x.User.Id == userId);
 
                 if (learner != null)
                 {
-
                     var progress = await db.CourseProgress.FirstOrDefaultAsync(x => x.ContentId == contentId &&
                         x.LearnerId == learner.Id);
 
@@ -229,7 +233,6 @@ namespace FEP.WebApi.Api.eLearning
                         model.IsCompleted = true;
                 }
             }
-
 
             return model;
         }

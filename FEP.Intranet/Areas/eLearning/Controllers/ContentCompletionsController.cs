@@ -11,7 +11,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     public static class ContentCompletionsApiUrl
     {
         public const string Get = "eLearning/ContentCompletions/";
-        public const string Post = "eLearning/ContentCompletions/";
+        public const string Post = "eLearning/ContentCompletions";
     }
 
     public class ContentCompletionsController : FEPController
@@ -22,9 +22,19 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Post(ContentCompletionModel model)
         {
+            bool CanViewAsLearner = false;
+
+            if (CurrentUser.HasAccess(UserAccess.CourseCreate) || CurrentUser.HasAccess(UserAccess.CourseEdit) ||
+                CurrentUser.HasAccess(UserAccess.CourseVerify) || CurrentUser.HasAccess(UserAccess.CourseApproval1) ||
+                CurrentUser.HasAccess(UserAccess.CourseApproval2) || CurrentUser.HasAccess(UserAccess.CourseApproval3) ||
+                CurrentUser.HasAccess(UserAccess.CourseDiscussionCreate))
+            {
+                CanViewAsLearner = true;
+            }
+
             if (ModelState.IsValid)
             {
-                var response = await WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Post, ContentCompletionsApiUrl.Post, model);
+                var response = await WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Post, ContentCompletionsApiUrl.Post + $"?CanViewAsLearner={CanViewAsLearner}", model);
 
                 if (response.isSuccess)
                 {

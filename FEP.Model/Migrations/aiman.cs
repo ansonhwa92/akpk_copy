@@ -269,14 +269,21 @@ namespace FEP.Model.Migrations
 
 			//-------------------------------------------------------------------------------------------------//
 
-			List<RoleAccess> VerifierEvent = new List<RoleAccess>();
-			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.Verify_PublicEvent });
-			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.Verify_MediaInterview });
-			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.Verify_ExhibitionRoadShow });
-			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
-			VerifierEvent.Add(new RoleAccess { UserAccess = UserAccess.Verifier_CancellationModificationRequest });
+			List<RoleAccess> VerifierEventFED = new List<RoleAccess>();
+			VerifierEventFED.Add(new RoleAccess { UserAccess = UserAccess.Verify_PublicEvent });
+			VerifierEventFED.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			VerifierEventFED.Add(new RoleAccess { UserAccess = UserAccess.Verifier_CancellationModificationRequest });
 
-			mhafeez.AddRole(db, "Verifier Event", "Verifier Event", VerifierEvent);
+			mhafeez.AddRole(db, "Verifier Event - FED", "Verifier Event", VerifierEventFED);
+
+			//-------------------------------------------------------------------------------------------------//
+
+			List<RoleAccess> VerifierEventCCD = new List<RoleAccess>();
+			VerifierEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Verify_MediaInterview });
+			VerifierEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Verify_ExhibitionRoadShow });
+			VerifierEventCCD.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+
+			mhafeez.AddRole(db, "Verifier Event - CCD", "Verifier Event", VerifierEventCCD);
 
 			//-------------------------------------------------------------------------------------------------//
 

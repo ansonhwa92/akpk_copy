@@ -444,7 +444,7 @@
                 <!-- publish (same as above) -->
                 <!-- withraw -->
                 <div class="modal fade" id="modalWithdraw" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", name = "formwithdraw", id = "target" }))
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", name = "formwithdraw", id = "formwithdraw" }))
                     {
                         @Html.AntiForgeryToken()
 
@@ -463,13 +463,14 @@
                                         <textarea class="form-control" name="WithdrawalReason" id="WithdrawalReason" rows="4" placeholder=""></textarea>
                                         <span class="text-danger field-validation-error" id="span_reasonerror" style="display:none;">Please enter Reason for Withdrawal</span>
                                     </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Withdrawal.ProofOfWithdrawal, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                                        @Html.Partial("_ProofOfWithdrawal", Model.Withdrawal.ProofOfWithdrawal)
-                                        @Html.ValidationMessageFor(model => model.Withdrawal.ProofOfWithdrawal, "", new { @class = "text-danger" })
-                                        @*<input type="text" class="form-control" name="ProofOfWithdrawal" id="ProofOfWithdrawal" placeholder="" />*@
-                                        @*<span class="text-danger field-validation-error" id="span_prooferror" style="display:none;">Please upload Proof of Withdrawal</span>*@
-                                    </div>
+									<div class="form-group">
+										@Html.LabelFor(model => model.Withdrawal.ProofOfWithdrawal, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+										@Html.Partial("_ProofOfWithdrawal", Model.Withdrawal.ProofOfWithdrawal)
+										@Html.ValidationMessageFor(model => model.Withdrawal.ProofOfWithdrawal, "", new { @class = "text-danger" })
+										@*<input type="text" class="form-control" name="ProofOfWithdrawal" id="ProofOfWithdrawal" placeholder="" />*@
+										@*<span class="text-danger field-validation-error" id="span_prooferror" style="display:none;">Please upload Proof of Withdrawal</span>*@
+										<input type="file" name="ProofOfWithdrawalFiles" style="display:block;" />
+									</div>
                                 </div>
                                 <div class="divider-border"></div>
                                 <div class="m-4 text-center">
@@ -789,14 +790,17 @@
                 if (!ValidWithdrawal()) {
                     return false;
                 }
-                var form = $('#formwithdraw');
+				var form = $('#formwithdraw');
+				var form1 = document.getElementById("formwithdraw");
                 //alert(form.serialize());
                 //return false;
                 var myurl = '@Url.Action("Withdraw", "Publication", new { area = "RnP" })';
                 $.ajax({
                     url: myurl,
                     type: "POST",
-                    data: form.serialize(),
+					data: new FormData(form1),
+					processData: false,
+				    contentType: false,
                     success: function (data) {
                         if (data == "error") {
                             $("#resultFailTitle").text('Failed to Withdraw Publication');

@@ -248,7 +248,12 @@ namespace FEP.WebApi.Api.eEvent
 					CreatedByName = i.CreatedByUser.Name,
 				}).FirstOrDefault();
 
-            model.tentativeScript = db.AgendaScript.Where(t => t.EventId == model.Id).FirstOrDefault().TentativeScript;
+            var getTentative = db.AgendaScript.Where(t => t.EventId == model.Id).FirstOrDefault();
+            if (getTentative != null)
+            {
+                model.tentativeScript = getTentative.TentativeScript;
+            }
+            
 
 
 			if (model.EventStatus != EventStatus.Approved && model.EventStatus != EventStatus.Published && model.EventStatus != EventStatus.Cancelled && model.EventStatus != EventStatus.RejectNeedToEdit || model.EventStatus == EventStatus.New)
@@ -500,6 +505,14 @@ namespace FEP.WebApi.Api.eEvent
 				db.EventFile.Add(eventfile);
 			}
 
+            //Update agenda script
+            var getAgenda = db.AgendaScript.Where(a => a.EventId == id).FirstOrDefault();
+            if(getAgenda != null)
+            {
+                getAgenda.TentativeScript = model.tentativeScript;
+                db.Entry(getAgenda).State = EntityState.Modified;
+            }
+
 			db.Configuration.ValidateOnSaveEnabled = true;
 			db.SaveChanges();
 
@@ -517,6 +530,12 @@ namespace FEP.WebApi.Api.eEvent
 
 			publicEvent.Display = false;
 			db.Entry(publicEvent).State = EntityState.Modified;
+
+            var getAgenda = db.AgendaScript.Where(a => a.EventId == id).FirstOrDefault();
+            if(getAgenda != null)
+            {
+                db.AgendaScript.Remove(getAgenda);
+            }
 
 			db.SaveChanges();
 			return Ok(true);
@@ -1335,7 +1354,13 @@ namespace FEP.WebApi.Api.eEvent
 				return NotFound();
 			}
 
-			model.SpeakerId = db.AssignedSpeaker.Where(u => u.PublicEventId == id).Select(s => s.EventSpeakerId).ToArray();
+            var getTentative = db.AgendaScript.Where(t => t.EventId == model.Id).FirstOrDefault();
+            if (getTentative != null)
+            {
+                model.tentativeScript = getTentative.TentativeScript;
+            }
+
+            model.SpeakerId = db.AssignedSpeaker.Where(u => u.PublicEventId == id).Select(s => s.EventSpeakerId).ToArray();
 			model.ExternalExhibitorId = db.AssignedExternalExhibitor.Where(u => u.PublicEventId == id).Select(s => s.ExternalExhibitorId).ToArray();
 			model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.PublicEvent && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 

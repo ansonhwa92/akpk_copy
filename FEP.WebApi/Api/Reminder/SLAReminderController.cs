@@ -17,6 +17,8 @@ using HttpPutAttribute = System.Web.Http.HttpPutAttribute;
 using NonActionAttribute = System.Web.Http.NonActionAttribute;
 using FEP.WebApiModel.Notification;
 using RouteAttribute = System.Web.Http.RouteAttribute;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace FEP.WebApi.Api.Reminder
 {
@@ -535,6 +537,11 @@ namespace FEP.WebApi.Api.Reminder
                 subject = HttpUtility.HtmlDecode(emailSubject),
                 body = HttpUtility.HtmlDecode(emailBody)
             };
+            string jsondata = JsonConvert.SerializeObject(emailObj);
+            using (StreamWriter _testData = new StreamWriter(HttpContext.Current.Server.MapPath("~/Logs/emailLogs.txt"), true))
+            {
+                _testData.WriteLine(jsondata); // Write the file.
+            }
             var response = await WepApiMethod.SendApiAsync<EmailClass>
                 (HttpVerbs.Post, $"BulkEmail", emailObj, WepApiMethod.APIEngine.EmailSMSAPI);
 

@@ -352,6 +352,7 @@
   <ItemGroup>
     <Folder Include="App_Data\Temp_Upload\" />
     <Folder Include="bin\roslyn\" />
+    <Folder Include="Logs\" />
     <Folder Include="Method\" />
     <Folder Include="Views\Auth\" />
     <Folder Include="Views\Cart\" />

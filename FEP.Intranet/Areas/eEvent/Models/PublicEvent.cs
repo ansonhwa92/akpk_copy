@@ -137,7 +137,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Required(ErrorMessage = "Please Insert End Date")]
 		[Display(Name = "End Date")]
 		public DateTime? EndDate { get; set; }
-	}
+
+        public string TentativeScript { get; set; }
+    }
 
 	public class DetailsPublicEventModel : PublicEventModel
 	{
@@ -163,7 +165,9 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "End Date")]
 		[DataType(DataType.Date)]
 		public DateTime? EndDate { get; set; }
-	}
+
+        public string TentativeScript { get; set; }
+    }
 
 	public class DeletePublicEventModel : DetailsPublicEventModel
 	{

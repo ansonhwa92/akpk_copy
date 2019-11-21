@@ -18,7 +18,9 @@
     <a class="dropdown-item" href="#"><i class="la la-calendar color-secondary font-icon"></i>Calendar</a>*@
 
 @{
-    if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit))
+    if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)
+        || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseApproval1) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseApproval2) ||
+        CurrentUser.HasAccess(FEP.Model.UserAccess.CourseApproval3) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseVerify))
     {
 
         <div class="row">

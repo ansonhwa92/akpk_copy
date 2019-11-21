@@ -638,8 +638,8 @@ namespace FEP.WebApi.Api.eLearning
                                 EnrollmentId = newEnrollment.Id,
                                 LearnerId = learner.Id,
                                 Status = EnrollmentStatus.Enrolled,
-                                UserId = userId,  
-                                CourseId = courseEvent.CourseId, 
+                                UserId = userId,
+                                CourseId = courseEvent.CourseId,
                                 CourseEventId = courseEvent.Id
                             }
                         };
@@ -756,7 +756,7 @@ namespace FEP.WebApi.Api.eLearning
                     CourseId = id,
                     AllowablePercentageBeforeWithdraw = entity.DefaultAllowablePercentageBeforeWithdraw,
                     CreatedBy = createdBy,
-                    EnrollmentCode = $"PUBLIC({entity.Code})",
+                    EnrollmentCode = $"PUBLIC ({entity.Id})",
                     ViewCategory = ViewCategory.Public,
                     Status = entity.ViewCategory == ViewCategory.Public ? CourseEventStatus.AvailableToPublic : CourseEventStatus.AvailableToPrivate,
                     Start = DateTime.Now,

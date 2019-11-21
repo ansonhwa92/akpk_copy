@@ -32,7 +32,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string Publish = "eLearning/Courses/Publish";
         public const string IsUserEnrolled = "eLearning/Courses/IsUserEnrolled";
         public const string IsUserCompleted = "eLearning/Courses/IsUserCompleted";
-
     }
 
     public class CoursesController : FEPController
@@ -68,7 +67,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             ViewBag.Categories = new List<RefCourseCategory>(db.RefCourseCategories);
             return View();
         }
-
 
         // GET: eLearning/Courses/Details/5
         public ActionResult Details(int? id)
@@ -141,6 +139,18 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 model.CreatedBy = CurrentUser.UserId.Value;
                 model.CreatedByName = CurrentUser.Name;
 
+                //check coursecode
+                var course = db.Courses.FirstOrDefault(x => x.Code.Equals(model.Code, StringComparison.OrdinalIgnoreCase));
+
+                if (course == null)
+                {
+                    TempData["ErrorMessage"] = $"There is already a course with the Course Code {course.Code}. Please select a new code.";
+
+                    await GetCategories();
+
+                    return View(model);
+                }
+
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, CourseApiUrl.CreateCourse, model);
 
                 if (response.isSuccess)
@@ -184,7 +194,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             //await GetCategories();
             ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name", model.CategoryId);
-
 
             return View(model);
         }
@@ -394,7 +403,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         model.IsUserEnrolled = response.Data.IsUserEnrolled;
                         ViewBag.EnrollmentStatus = response.Data.Status;
                         ViewBag.EnrollmentId = response.Data.Id;
-
                     }
                 }
                 else
@@ -545,6 +553,18 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 model.UpdatedBy = CurrentUser.UserId.Value;
                 model.UpdatedByName = CurrentUser.Name;
 
+                //check coursecode
+                var course = db.Courses.FirstOrDefault(x => x.Code.Equals(model.Code, StringComparison.OrdinalIgnoreCase));
+
+                if (course == null)
+                {
+                    TempData["ErrorMessage"] = $"There is already a course with the Course Code {course.Code}. Please select a new code.";
+
+                    await GetCategories();
+
+                    return View(model);
+                }
+
                 var response = await WepApiMethod.SendApiAsync<CreateOrEditCourseModel>(HttpVerbs.Post, CourseApiUrl.EditCourse, model);
 
                 if (response.isSuccess)
@@ -647,24 +667,22 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 //model.CreatedBy = CurrentUser.UserId.Value;
                 //model.CreatedByName = CurrentUser.Name;
 
-                    var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eLearning/Courses/SaveCertificate", model);
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eLearning/Courses/SaveCertificate", model);
 
-                    if (response.isSuccess)
-                    {
-                        TempData["SuccessMessage"] = "Certificate successfully assigned.";
-                        await LogActivity(Modules.Learning, "Assign certificate to course", model);
+                if (response.isSuccess)
+                {
+                    TempData["SuccessMessage"] = "Certificate successfully assigned.";
+                    await LogActivity(Modules.Learning, "Assign certificate to course", model);
 
                     return RedirectToAction("AssignCertificate", "Courses", new { area = "eLearning", @id = model.CourseId });
-
                 }
                 else
-                    {
-                        TempData["ErrorMessage"] = "Fail to assign certificate.";
-                    }
+                {
+                    TempData["ErrorMessage"] = "Fail to assign certificate.";
                 }
- 
-            return View(model);
+            }
 
+            return View(model);
         }
 
         [HttpPost]
@@ -675,9 +693,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (response.isSuccess)
             {
-
                 return View(response.Data);
-
             }
             else
             {
@@ -687,12 +703,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-     
-
         [HttpGet]
         public async Task<ActionResult> ViewCertificate(int enrollID)
         {
-
             var response = await WepApiMethod.SendApiAsync<ViewCertificateModel>(HttpVerbs.Get, $"eLearning/Courses/ViewCertificate?id={enrollID}");
 
             if (response.isSuccess)
@@ -705,7 +718,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             return View();
         }
-
 
         // Start the course
         [HasAccess(UserAccess.CourseView)]
@@ -755,6 +767,5 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             return View(model);
         }
-
     }
 }

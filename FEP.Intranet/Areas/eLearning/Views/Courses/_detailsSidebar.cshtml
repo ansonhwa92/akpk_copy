@@ -41,7 +41,17 @@
         </div>
 
         <div class="border-form rounded mb-2" style="padding-top: 15px;padding-right: 15px;padding-bottom: 15px;padding-left: 15px;">
-            <div class="text-center">RM @Model.Price</div>
+
+            @{if (Model.IsFree == true)
+                {
+                    <div class="text-center">Free</div>
+                }
+                else
+                {
+                    <div class="text-center">RM @Model.Price</div>
+                }
+            }
+            @*<div class="text-center">RM @Model.Price</div>*@
             @* <p><a href="@Url.Action("StartTrial", "CourseEvents", new { area = "eLearning", id = @Model.Id })" class="btn btn-secondary btn-block mb-2">Take This Course</a></p>*@
         </div>
     </div>

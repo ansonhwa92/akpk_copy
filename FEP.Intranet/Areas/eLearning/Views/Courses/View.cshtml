@@ -110,8 +110,7 @@
 
                                 }
                                 <!-- allow to start course in trial or in published but already enrolled -->
-                                @if (Model.Status == CourseStatus.Trial ||
-                                            (Model.Status == CourseStatus.Published && Model.IsUserEnrolled))
+                                @if (Model.Status == CourseStatus.Trial || (Model.Status == CourseStatus.Published && Model.IsUserEnrolled))
                                 {
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">Start the course</a>
 

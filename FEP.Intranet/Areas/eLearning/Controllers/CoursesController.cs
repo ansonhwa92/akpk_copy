@@ -142,7 +142,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 //check coursecode
                 var course = db.Courses.FirstOrDefault(x => x.Code.Equals(model.Code, StringComparison.OrdinalIgnoreCase));
 
-                if (course == null)
+                if (course != null) // change == to != by wawar
                 {
                     TempData["ErrorMessage"] = $"There is already a course with the Course Code {course.Code}. Please select a new code.";
 
@@ -556,7 +556,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 //check coursecode
                 var course = db.Courses.FirstOrDefault(x => x.Code.Equals(model.Code, StringComparison.OrdinalIgnoreCase));
 
-                if (course == null)
+                if (course != null)
                 {
                     TempData["ErrorMessage"] = $"There is already a course with the Course Code {course.Code}. Please select a new code.";
 

@@ -1020,13 +1020,17 @@ namespace FEP.WebApi.Api.eLearning
                         Id = enrollment.Id,
                         StudentName = enrollment.Learner.User.Name,
                         Status = enrollment.Status,
-                        CompletionDate = DateTime.Parse(enrollment.CompletionDate.ToString()).ToShortDateString(),
+                        CompletionDate = enrollment.CompletionDate.ToString(),
                         IsUserEnrolled = true
                     };
 
-                    if (entity != null)
+                    if (entity == null)
                     {
                         entity.IsUserEnrolled = false;
+                        return Ok(entity);
+                    }
+                    else
+                    {
                         return Ok(entity);
                     }
                 }

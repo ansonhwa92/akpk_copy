@@ -231,7 +231,7 @@
                                                 <div class="card__author">
                                                     <a class="card__col-left" href=""><span class="card__avatar"><img class="card__avatar__image" src="@authorpic"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Siti Saleha @item.Instructor</span></span></a>
                                                 </div>
-                                                <div class="card__text">@Html.Raw(HttpUtility.HtmlDecode(@item.Description))</div>
+                                                <div class="card__text" href="@Url.Action("View", "Courses", new { area = "eLearning", @id = item.Id })">@Html.Raw(HttpUtility.HtmlDecode(@item.Description))</div>
 
                                                 <div class="card__info">
                                                     <div class="card__col-left">

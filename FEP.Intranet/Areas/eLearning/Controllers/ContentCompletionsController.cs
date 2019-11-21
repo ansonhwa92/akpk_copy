@@ -34,6 +34,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (ModelState.IsValid)
             {
+                model.UserId = CurrentUser.UserId.Value;
+
                 var response = await WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Post, ContentCompletionsApiUrl.Post + $"?CanViewAsLearner={CanViewAsLearner}", model);
 
                 if (response.isSuccess)
@@ -57,7 +59,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         }
                         else  // go to next module
                         {
-                            return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = nextModule.Value });
+                            return RedirectToAction("View", "CourseModules", new { area = "eLearning", @id = nextModule.Value });
                         }
                     }
                     else // go to next content

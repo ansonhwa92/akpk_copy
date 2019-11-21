@@ -896,17 +896,16 @@ namespace FEP.WebApi.Api.eLearning
             return BadRequest(ModelState);
         }
 
-
         [Route("api/eLearning/Courses/ReviewCertificate")]
         [HttpPost]
         [ValidationActionFilter]
         public async Task<IHttpActionResult> ReviewCertificate([FromBody] CertificatesModel model)
         {
             var course = await db.Courses.FirstOrDefaultAsync(x => x.Id == model.courseId);
-            var bg =  await db.CourseCertificates.FirstOrDefaultAsync(x => x.Id == model.selectedBackground);
+            var bg = await db.CourseCertificates.FirstOrDefaultAsync(x => x.Id == model.selectedBackground);
             var temp = await db.CourseCertificateTemplates.FirstOrDefaultAsync(x => x.Id == model.selectedTemplate);
 
-            if (bg!=null)
+            if (bg != null)
             {
                 var review = new ReviewCertificateModel
                 {
@@ -916,12 +915,10 @@ namespace FEP.WebApi.Api.eLearning
                 };
 
                 return Ok(review);
-
             }
 
             return BadRequest(ModelState);
         }
-
 
         [Route("api/eLearning/Courses/UpdateIntroImg")]
         [HttpPost]
@@ -1009,7 +1006,7 @@ namespace FEP.WebApi.Api.eLearning
         {
             if (ModelState.IsValid)
             {
-                var enrollment = await db.Enrollments.Where(x => x.Learner.User.Id == userId &&x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefaultAsync();
+                var enrollment = await db.Enrollments.Where(x => x.Learner.User.Id == userId && x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefaultAsync();
 
                 var entity = new UserCourseEnrollmentModel();
 
@@ -1047,8 +1044,7 @@ namespace FEP.WebApi.Api.eLearning
         [ValidationActionFilter]
         public async Task<IHttpActionResult> ViewCertificate(int id)
         {
-
-            var enrollment = await db.Enrollments.Include(x=>x.Course).Include(x=>x.Learner).FirstOrDefaultAsync(x=>x.Id == id);
+            var enrollment = await db.Enrollments.Include(x => x.Course).Include(x => x.Learner).FirstOrDefaultAsync(x => x.Id == id);
 
             if (enrollment == null)
             {
@@ -1062,7 +1058,6 @@ namespace FEP.WebApi.Api.eLearning
                 StudentName = enrollment.Learner.User.Name,
                 EnrollmentStatus = enrollment.Status,
                 DateCompleted = DateTime.Parse(enrollment.CompletionDate.ToString()).ToShortDateString(),
-
             };
 
             var bg = db.CourseCertificates.FirstOrDefault(x => x.Id == enrollment.Course.CourseCertificateId);
@@ -1084,12 +1079,8 @@ namespace FEP.WebApi.Api.eLearning
             }
 
             return Ok(entity);
-
         }
-
     }
-
-   
 
     public class ImageModel
     {

@@ -111,10 +111,10 @@
                                 }
                                 <!-- allow to start course in trial or in published but already enrolled -->
                                 @if (Model.Status == CourseStatus.Trial || (Model.Status == CourseStatus.Published && Model.IsUserEnrolled))
-                                {*@
+                                {
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">Start the course</a>
 
-                                @*}*@
+                                }
                                 @if (@ViewBag.EnrollmentStatus == EnrollmentStatus.Completed)
                                 {
                                     <div><a href="@Url.Action("ViewCertificate", "Courses", new { area = "eLearning", enrollID = @ViewBag.EnrollmentId })" class="btn btn-secondary m-2">View Certificate</a></div>

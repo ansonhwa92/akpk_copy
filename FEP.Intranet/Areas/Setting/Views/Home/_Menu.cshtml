@@ -1,6 +1,6 @@
 ﻿
 <div class="row">
-    @if (CurrentUser.HasAccess(UserAccess.User) || CurrentUser.HasAccess(UserAccess.Role) || CurrentUser.HasAccess(UserAccess.NotificationSetting) || CurrentUser.HasAccess(UserAccess.SLA))
+    @if (CurrentUser.HasAccess(UserAccess.User) || CurrentUser.HasAccess(UserAccess.Role) || CurrentUser.HasAccess(UserAccess.NotificationSetting) || CurrentUser.HasAccess(UserAccess.SLA) || CurrentUser.HasAccess(UserAccess.RnPSurveyEdit))
     {
         <div class="col-lg-4">
             <div class="menu-list">

@@ -261,25 +261,31 @@
                                     </div>
                                 </li>
 								@if (CurrentUser.HasAccess(UserAccess.EventMenu)) {
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Event</a>
-                                    <div class="dropdown-menu">
-                                        @Html.Action("_Menu", "Home", new { area = "eEvent" })
-                                    </div>
-                                </li>
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Event</a>
+                                        <div class="dropdown-menu">
+                                            @Html.Action("_Menu", "Home", new { area = "eEvent" })
+                                        </div>
+                                    </li>
 								}
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Publication</a>
-                                    <div class="dropdown-menu">
-                                        @Html.Action("_Menu", "Publication", new { area = "RnP" })
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Research</a>
-                                    <div class="dropdown-menu">
-                                        @Html.Action("_Menu", "Survey", new { area = "RnP" })
-                                    </div>
-                                </li>
+								@if (CurrentUser.HasAccess(UserAccess.RnPPublicationMenu))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Publication</a>
+                                        <div class="dropdown-menu">
+                                            @Html.Action("_Menu", "Publication", new { area = "RnP" })
+                                        </div>
+                                    </li>
+                                }
+								@if (CurrentUser.HasAccess(UserAccess.RnPSurveyMenu))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Research</a>
+                                        <div class="dropdown-menu">
+                                            @Html.Action("_Menu", "Survey", new { area = "RnP" })
+                                        </div>
+                                    </li>
+                                }
                                 @if (CurrentUser.HasAccess(UserAccess.KMCMenu))
                                 {
                                     <li class="nav-item dropdown">

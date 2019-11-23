@@ -185,11 +185,31 @@
                                 <span class="badge badge-profile mt-2">@CurrentUser.Name</span>
                                 <!-- User dropdown -->
                                 <li class="nav-item dropdown ml-1">
-                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"><img src="@BaseURL/dist/assets/images/people/50/guy-6.jpg" alt="Avatar" class="rounded-circle rounded-color" width="40"><span class="dropdown-custom"><i class="fas fa-chevron-down"></i></span></a>
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
+                                        @if (!String.IsNullOrEmpty(CurrentUser.Avatar))
+                                        {
+                                            <img src="@CurrentUser.Avatar" alt="Avatar" class="rounded-circle rounded-color" width="40">
+                                        }
+                                        else
+                                        {
+                                            <img src="@BaseURL/img/no-photo.jpg" alt="Avatar" class="rounded-circle rounded-color" width="40">
+                                        }
+
+                                        <span class="dropdown-custom"><i class="fas fa-chevron-down"></i></span>
+                                    </a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <div class="card__author pt-0">
                                             <a class="card__col-left" href="#">
-                                                <span class="card__avatar"><img class="card__avatar__image" src="@BaseURL/dist/assets/images/people/50/guy-6.jpg" alt="image"></span>
+                                                <span class="card__avatar">
+                                                    @if (!String.IsNullOrEmpty(CurrentUser.Avatar))
+                                                    {
+                                                    <img class="card__avatar__image" src="@CurrentUser.Avatar" alt="image">
+                                                    }
+                                                    else
+                                                    {
+                                                    <img class="card__avatar__image" src="@BaseURL/img/no-photo.jpg" alt="image">
+                                                    }
+                                                </span>
                                                 <span class="card__name-wrap">
                                                     <span class="card__author-name">@CurrentUser.Name</span>
                                                     @*<span class="card__instructby">Learner</span>*@
@@ -199,44 +219,35 @@
                                         <a class="dropdown-item" href="#">
                                             <i class="la la-book color-secondary font-icon"></i> My Courses
                                         </a>
-                                        <a class="dropdown-item" href="@Url.Action("PurchaseHistory", "Cart", new { area = "Commerce" })">
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-calendar color-secondary font-icon" style="font-size: 21px;"></i> My Events
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-pie-chart color-secondary font-icon"></i> My Surveys
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-suitcase color-secondary font-icon"></i> My Manuscripts
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="la la-download color-secondary font-icon" style="font-size: 21px;"></i> My Downloads
+                                        </a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "UserRewardPoints" , new { area="Reward" })">
+                                            <i class="la la-certificate color-secondary font-icon"></i> My Points
+                                        </a>
+                                        <a class="dropdown-item" href="@Url.Action("List", "UserRewardRedemptions" , new { area="Reward" })">
+                                            <i class="la la-gift color-secondary font-icon" style="font-size: 19px;"></i> My Rewards
+                                        </a>
+                                        <a class="dropdown-item" href="@Url.Action("PurchaseHistory", "Cart" , new { area="Commerce" })">
                                             <i class="la la-shopping-cart color-secondary font-icon"></i> My Purchases
                                         </a>
-                                        <a class="dropdown-item" href="@Url.Action("RefundHistory", "Cart", new { area = "Commerce" })">
+                                        <a class="dropdown-item" href="@Url.Action("RefundHistory", "Cart" , new { area="Commerce" })">
                                             <i class="la la-money color-secondary font-icon"></i> My Refunds
                                         </a>
-                                        @*<a class="dropdown-item" href="#">
-                                        <i class="la la-certificate color-secondary font-icon"></i> My Certifications
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="la la-spinner color-secondary font-icon"></i> My Progress
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="la la-group color-secondary font-icon"></i> My Groups
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="la la-sitemap color-secondary font-icon"></i> My Branches
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="la la-suitcase color-secondary font-icon"></i> My Files
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="la la-calendar color-secondary font-icon"></i> My Events
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="la la-pie-chart color-secondary font-icon"></i> My Researches
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="la la-file-o color-secondary font-icon"></i> My Publications
-                                    </a>*@
                                         <div class="dropdown-divider"></div>
-                                        @*<a class="dropdown-item" href="#">
-                                        <i class="la la-life-saver color-secondary font-icon"></i> Help Center
-                                    </a>*@
-                                        <a class="dropdown-item" href="@Url.Action("MyProfile", "Home", new { area = "" })">
+                                        <a class="dropdown-item" href="@Url.Action("MyProfile", "Home" , new { area="" })">
                                             <i class="la la-edit color-secondary font-icon"></i> My Profile
                                         </a>
-                                        <a class="dropdown-item" href="@Url.Action("Logout", "Auth", new { area = "" })">
+                                        <a class="dropdown-item" href="@Url.Action("LogOut", "Auth" , new { area="" })">
                                             <i class="la la-sign-out color-secondary font-icon"></i> Log out
                                         </a>
                                     </div>
@@ -261,52 +272,69 @@
                                         @Html.Action("Menu", "Home", new { area = "eLearning" })
                                     </div>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Event</a>
-                                    <div class="dropdown-menu">
-                                        @Html.Action("_Menu", "Home", new { area = "eEvent" })
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Publication</a>
-                                    <div class="dropdown-menu">
-                                        @Html.Action("_Menu", "Publication", new { area = "RnP" })
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Research</a>
-                                    <div class="dropdown-menu">
-                                        @Html.Action("_Menu", "Survey", new { area = "RnP" })
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">KMC</a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="menu-list">
-                                                    <h6 class="color-darkblue">Menu</h6>
-                                                    <a class="dropdown-item" href="#">Manage KMC</a>
+								@if (CurrentUser.HasAccess(UserAccess.EventMenu)) {
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Event</a>
+                                        <div class="dropdown-menu">
+                                            @Html.Action("_Menu", "Home", new { area = "eEvent" })
+                                        </div>
+                                    </li>
+								}
+								@if (CurrentUser.HasAccess(UserAccess.RnPPublicationMenu))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Publication</a>
+                                        <div class="dropdown-menu">
+                                            @Html.Action("_Menu", "Publication", new { area = "RnP" })
+                                        </div>
+                                    </li>
+                                }
+								@if (CurrentUser.HasAccess(UserAccess.RnPSurveyMenu))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Research</a>
+                                        <div class="dropdown-menu">
+                                            @Html.Action("_Menu", "Survey", new { area = "RnP" })
+                                        </div>
+                                    </li>
+                                }
+                                @if (CurrentUser.HasAccess(UserAccess.KMCMenu))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">KMC</a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="menu-list">
+                                                        <h6 class="color-darkblue">Menu</h6>
+                                                        <a class="dropdown-item" href="#">Manage KMC</a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="menu-list">
-                                                    <h6 class="color-darkblue">Setting</h6>
-                                                    <a class="dropdown-item" href="#">KMC Category</a>
+                                                <div class="col-lg-6">
+                                                    <div class="menu-list">
+                                                        <h6 class="color-darkblue">Setting</h6>
+                                                        <a class="dropdown-item" href="#">KMC Category</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="#" class="nav-link">Reports</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Settings</a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        @Html.Action("_Menu", "Home", new { area = "Setting" })
-                                    </div>
-                                </li>
+                                    </li>
+                                }
+                                @if (CurrentUser.HasAccess(UserAccess.ReportMenu))
+                                {
+                                    <li class="nav-item ">
+                                        <a href="#" class="nav-link">Reports</a>
+                                    </li>
+                                }
+                                @if (CurrentUser.HasAccess(UserAccess.SettingMenu))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Settings</a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            @Html.Action("_Menu", "Home", new { area = "Setting" })
+                                        </div>
+                                    </li>
+                                }
                             </ul>
                         </div>
                         <!-- <button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">

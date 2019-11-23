@@ -21,6 +21,10 @@
                 {
                     <a class="dropdown-item" href="@Url.Action("List", "SLAReminders", new { area = "SLAReminder" })">SLA Reminder</a>
                 }
+                @if (CurrentUser.HasAccess(UserAccess.RnPSurveyEdit))
+                {
+                    <a class="dropdown-item" href="@Url.Action("Index", "Group", new { area = "Setting" })">Target Group Management</a>
+                }
             </div>
         </div>
     }

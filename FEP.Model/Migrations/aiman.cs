@@ -39,9 +39,9 @@ namespace FEP.Model.Migrations
             AddExternalExhibitor(db, "External Exhibitor 6", "0123456789", "ExternalExhibitor6@yahoo.com", "FoodPanda Sdn Bhd");
 
 
-            //DefaultSLAReminder(db);
-            //DefaultParameterGroup(db);
-            //DefaultTemplate(db);
+            DefaultSLAReminder(db);
+            DefaultParameterGroup(db);
+            DefaultTemplate(db);
 
 
         }

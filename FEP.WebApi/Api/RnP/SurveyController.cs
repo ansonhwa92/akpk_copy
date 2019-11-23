@@ -440,6 +440,23 @@ namespace FEP.WebApi.Api.RnP
                 SubmitCount = s.SubmitCount
             }).ToList();
 
+            foreach (var survey in data)
+            {
+                var surveyimages = db.SurveyImages.Where(i => i.SurveyID == survey.ID).Select(s => new SurveyImagesModel
+                {
+                    ID = s.ID,
+                    SurveyID = s.SurveyID,
+                    CoverPicture = s.CoverPicture,
+                    AuthorPicture = s.AuthorPicture
+                }).FirstOrDefault();
+
+                if (surveyimages != null)
+                {
+                    survey.CoverPicture = surveyimages.CoverPicture;
+                    survey.AuthorPicture = surveyimages.AuthorPicture;
+                }
+            }
+
             var browser = new BrowseSurveyModel
             {
                 Keyword = keyword,
@@ -509,6 +526,23 @@ namespace FEP.WebApi.Api.RnP
                 InviteCount = s.InviteCount,
                 SubmitCount = s.SubmitCount
             }).ToList();
+
+            foreach (var survey in data)
+            {
+                var surveyimages = db.SurveyImages.Where(i => i.SurveyID == survey.ID).Select(s => new SurveyImagesModel
+                {
+                    ID = s.ID,
+                    SurveyID = s.SurveyID,
+                    CoverPicture = s.CoverPicture,
+                    AuthorPicture = s.AuthorPicture
+                }).FirstOrDefault();
+
+                if (surveyimages != null)
+                {
+                    survey.CoverPicture = surveyimages.CoverPicture;
+                    survey.AuthorPicture = surveyimages.AuthorPicture;
+                }
+            }
 
             int newfilteredCount = 0;
 
@@ -587,6 +621,20 @@ namespace FEP.WebApi.Api.RnP
             survey.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.CoverImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             survey.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             survey.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.SurveyFile.Where(p => p.FileCategory == SurveyFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+
+            var surveyimages = db.SurveyImages.Where(i => i.SurveyID == id).Select(s => new SurveyImagesModel
+            {
+                ID = s.ID,
+                SurveyID = s.SurveyID,
+                CoverPicture = s.CoverPicture,
+                AuthorPicture = s.AuthorPicture
+            }).FirstOrDefault();
+
+            if (surveyimages != null)
+            {
+                survey.CoverPicture = surveyimages.CoverPicture;
+                survey.AuthorPicture = surveyimages.AuthorPicture;
+            }
 
             return Ok(survey);
             //return survey;
@@ -1733,6 +1781,69 @@ namespace FEP.WebApi.Api.RnP
             return "";
         }
 
+        /*
+         * The following API calls are for Image uploads
+         * 1. 
+         * 2. 
+         */
+
+        // GET: api/RnP/Survey/UploadImages
+        [Route("api/RnP/Survey/UploadImages")]
+        [HttpGet]
+        public int UploadImages(int surveyid, string coverpic, string authorpic)
+        {
+            var surveyimages = new SurveyImages
+            {
+                SurveyID = surveyid,
+                CoverPicture = coverpic,
+                AuthorPicture = authorpic
+            };
+
+            db.SurveyImages.Add(surveyimages);
+            db.SaveChanges();
+
+            return surveyimages.ID;
+        }
+
+        // GET: api/RnP/Survey/UpdateImages
+        [Route("api/RnP/Survey/UpdateImages")]
+        [HttpGet]
+        public int UpdateImages(int surveyid, string coverpic, string authorpic)
+        {
+            var surveyimages = db.SurveyImages.Where(pi => pi.SurveyID == surveyid).FirstOrDefault();
+
+            if (surveyimages != null)
+            {
+                surveyimages.CoverPicture = coverpic;
+                surveyimages.AuthorPicture = authorpic;
+                db.Entry(surveyimages).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return surveyimages.ID;
+            }
+
+            return 0;
+        }
+
+        // GET: api/RnP/Survey/UpdateImageSurveyID
+        [Route("api/RnP/Survey/UpdateImageSurveyID")]
+        [HttpGet]
+        public int UpdateImageSurveyID(int id, int surveyid)
+        {
+            var surveyimages = db.SurveyImages.Where(pi => pi.ID == id).FirstOrDefault();
+
+            if (surveyimages != null)
+            {
+                surveyimages.SurveyID = surveyid;
+                db.Entry(surveyimages).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return surveyimages.ID;
+            }
+
+            return 0;
+        }
+
         // Function to get notification receivers based on notification category and type.
         // Called when sending notifications
         // TO CONSIDER: Currently cancellations notify all approvers.
@@ -2111,6 +2222,7 @@ namespace FEP.WebApi.Api.RnP
                             {
                                 newsc.question = myelement.title;
                                 newsc.questionname = myelement.name;
+                                newsc.questiontype = myelement.type;
                                 newsc.values.Add(choice.value);
                                 newsc.answers.Add(choice.text);
                                 newsc.counts.Add(0);
@@ -2124,6 +2236,7 @@ namespace FEP.WebApi.Api.RnP
                             {
                                 newsc.question = myelement.title;
                                 newsc.questionname = myelement.name;
+                                newsc.questiontype = myelement.type;
                                 newsc.values.Add(rate.ToString());
                                 newsc.answers.Add(rate.ToString());
                                 newsc.counts.Add(0);
@@ -2135,6 +2248,7 @@ namespace FEP.WebApi.Api.RnP
                             var newsc = new SurveySingleChoiceAnswersModel();
                             newsc.question = myelement.title;
                             newsc.questionname = myelement.name;
+                            newsc.questiontype = myelement.type;
                             newsc.values.Add("True");
                             newsc.values.Add("False");
                             newsc.answers.Add("True");
@@ -2152,8 +2266,9 @@ namespace FEP.WebApi.Api.RnP
                             {
                                 newsc.question = myelement.title;
                                 newsc.questionname = myelement.name;
+                                newsc.questiontype = myelement.type;
                                 newsc.values.Add(choice.value);
-                                newsc.answers.Add(choice.imageLink);
+                                newsc.answers.Add(choice.value);
                                 newsc.counts.Add(0);
                             }
                             results.SingleChoices.Add(newsc);
@@ -2167,6 +2282,7 @@ namespace FEP.WebApi.Api.RnP
                             {
                                 newsc.question = myelement.title;
                                 newsc.questionname = myelement.name;
+                                newsc.questiontype = myelement.type;
                                 newsc.values.Add(choice.value);
                                 newsc.answers.Add(choice.text);
                                 newsc.counts.Add(0);
@@ -2253,7 +2369,44 @@ namespace FEP.WebApi.Api.RnP
                             lastqindex = results.Answers[lastindex].Count() - 1;
 
                             // stats
-                            //foreach results.
+                            foreach (SurveySingleChoiceAnswersModel sq in results.SingleChoices)
+                            {
+                                if (sq.questionname == realq)
+                                {
+                                    int ai = -1;
+                                    foreach (var ans in sq.values)
+                                    {
+                                        ai++;
+                                        if (ans == myinput.answer.ToString())
+                                        {
+                                            sq.counts[ai] = sq.counts[ai] + 1;
+                                        }
+                                        if (sq.questiontype == "rating")
+                                        {
+                                            if (myinput.answer > sq.maxrating)
+                                            {
+                                                sq.maxrating = int.Parse(myinput.answer.ToString());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            foreach (SurveyMultipleChoiceAnswersModel sq in results.MultipleChoices)
+                            {
+                                if (sq.questionname == realq)
+                                {
+                                    int ai = -1;
+                                    foreach (var ans in sq.values)
+                                    {
+                                        ai++;
+                                        if (myinput.answer.ToString().Contains(ans))
+                                        {
+                                            sq.counts[ai] = sq.counts[ai] + 1;
+                                        }
+                                    }
+                                }
+                            }
                         }
                         else
                         {
@@ -2295,10 +2448,128 @@ namespace FEP.WebApi.Api.RnP
                             }
 
                             // stats
+                            // not yet, applicable to single matrix only
                         }
                         lastq = realq;
                     }
                     results.RawOutput = results.RawOutput + "\r\n";
+                }
+
+                // mean/median/mode
+                foreach (SurveySingleChoiceAnswersModel sq in results.SingleChoices)
+                {
+                    int asum = 0;
+                    int acount = 0;
+                    int medcount = 0;
+                    int medpos1 = 0;
+                    float medpos2 = 0;
+                    int medlow = 0;
+                    int medhigh = 0;
+                    List<int> medseries = new List<int>();
+                    int maxcount = 0;
+                    int maxindex = 0;
+
+                    int ai = 0;
+                    int aindex = -1;
+                    foreach (var ans in sq.counts)
+                    {
+                        ai++;
+                        aindex++;
+                        acount = acount + ans;
+                        asum = asum + (ai * ans);
+                        for (var i = 1; i <= ans; i++)
+                        {
+                            medseries.Add(ai);
+                        }
+                        if (ans > maxcount)
+                        {
+                            maxcount = ans;
+                            maxindex = aindex;
+                        }
+                    }
+
+                    sq.mean = (int)Math.Round(decimal.Parse((asum / acount).ToString()));
+
+                    medseries.Sort();
+                    medcount = medseries.Count;
+                    if (medcount % 2 == 0)
+                    {
+                        medpos2 = (medcount + 1) / 2;
+                        medlow = (int)Math.Floor(decimal.Parse(medpos2.ToString()));
+                        medhigh = (int)Math.Ceiling(decimal.Parse(medpos2.ToString()));
+                        sq.median = (medseries[medlow - 1] + medseries[medhigh - 1]) / 2;
+                    }
+                    else
+                    {
+                        medpos1 = (medcount + 1) / 2;
+                        sq.median = medseries[medpos1 - 1];
+                    }
+
+                    sq.mode = maxindex;
+                    Console.WriteLine(sq.question);
+                    Console.WriteLine(maxindex);
+
+                    //if (sq.mean <= 0) sq.mean = 1;
+                    //if (sq.median <= 0) sq.median = 1;
+                    //if (sq.mode <= 0) sq.mode = 1;
+                }
+
+                foreach (SurveyMultipleChoiceAnswersModel sq in results.MultipleChoices)
+                {
+                    int asum = 0;
+                    int acount = 0;
+                    int medcount = 0;
+                    int medpos1 = 0;
+                    float medpos2 = 0;
+                    int medlow = 0;
+                    int medhigh = 0;
+                    List<int> medseries = new List<int>();
+                    int maxcount = 0;
+                    int maxindex = 0;
+
+                    int ai = 0;
+                    int aindex = -1;
+                    foreach (var ans in sq.counts)
+                    {
+                        ai++;
+                        aindex++;
+                        acount = acount + ans;
+                        asum = asum + (ai * ans);
+                        for (var i = 1; i <= ans; i++)
+                        {
+                            medseries.Add(ai);
+                        }
+                        if (ans > maxcount)
+                        {
+                            maxcount = ans;
+                            maxindex = aindex;
+                        }
+                    }
+
+                    sq.mean = (int)Math.Round(decimal.Parse((asum / acount).ToString()));
+
+                    medseries.Sort();
+                    medcount = medseries.Count;
+                    if (medcount % 2 == 0)
+                    {
+                        medpos2 = (medcount + 1) / 2;
+                        medlow = (int)Math.Floor(decimal.Parse(medpos2.ToString()));
+                        medhigh = (int)Math.Ceiling(decimal.Parse(medpos2.ToString()));
+                        sq.median = (medseries[medlow - 1] + medseries[medhigh - 1]) / 2;
+                    }
+                    else
+                    {
+                        medpos1 = (medcount + 1) / 2;
+                        sq.median = medseries[medpos1 - 1];
+                    }
+
+                    sq.mode = maxindex;
+                    Console.WriteLine(sq.question);
+                    Console.WriteLine(maxindex);
+
+                    //if (sq.mean <= 0) sq.mean = 1;
+                    //if (sq.median <= 0) sq.median = 1;
+                    //if (sq.mode <= 0) sq.mode = 1;
                 }
 
                 return results;

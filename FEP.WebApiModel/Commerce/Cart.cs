@@ -195,6 +195,10 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "Item Type")]
         public PurchaseType PurchaseType { get; set; }
 
+        public int ProductID { get; set; }
+
+        public bool Refundable { get; set; }
+
         [Display(Name = "Description")]
         public string Description { get; set; }
 

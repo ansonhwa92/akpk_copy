@@ -248,21 +248,24 @@
                                 @foreach (var item in Model.Publications)
                                 {
                                     icount++;
-                                    //if (item.Pictures != "")
-                                    //{
-                                    //    coverpic1 = BaseURL + "/" + "img" + "/" + item.Pictures;
-                                    //    coverpic2 = BaseURL + "/" + "img" + "/" + item.Pictures;
-                                    //    authorpic = BaseURL + "/" + "img" + "/" + item.Pictures;
-                                    //    coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
-                                    //    coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
-                                    //    authorpic = BaseURL + "/" + "img" + "/8.jpg";
-                                    //}
-                                    //else
-                                    //{
+                                    if ((item.CoverPicture != "") && (item.CoverPicture != null))
+                                    {
+                                        coverpic1 = BaseURL + "/Data/images/publication/" + item.CoverPicture;
+                                        coverpic2 = BaseURL + "/Data/images/publication/" + item.CoverPicture;
+                                    }
+                                    else
+                                    {
                                         coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
                                         coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                                    }
+                                    if ((item.AuthorPicture != "") && (item.AuthorPicture != null))
+                                    {
+                                        authorpic = BaseURL + "/Data/images/publication/" + item.AuthorPicture;
+                                    }
+                                    else
+                                    {
                                         authorpic = BaseURL + "/" + "img" + "/8.jpg";
-                                    //}
+                                    }
 
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="card__wrapper">

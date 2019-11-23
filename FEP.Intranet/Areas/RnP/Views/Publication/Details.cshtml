@@ -366,7 +366,7 @@
                         <div class="row">
                             <div class="form-group col-lg-12">
                                 @Html.LabelFor(model => model.Withdrawal.ProofOfWithdrawal, htmlAttributes: new { @class = "control-label" })
-                                <input type="text" name="WProof" id="WProof" class="form-control" readonly="readonly" value="@Model.Withdrawal.ProofOfWithdrawal" />
+                                @Html.Partial("_ProofOfWithdrawalDetails", Model.Withdrawal.ProofOfWithdrawal)
                             </div>
                         </div>
                     </div>
@@ -444,7 +444,7 @@
                 <!-- publish (same as above) -->
                 <!-- withraw -->
                 <div class="modal fade" id="modalWithdraw" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", name = "formwithdraw", id = "target" }))
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", name = "formwithdraw", id = "formwithdraw" }))
                     {
                         @Html.AntiForgeryToken()
 
@@ -460,7 +460,7 @@
                                     <div class="form-group">
                                         <input type="hidden" class="form-control" name="ID" id="WithdrawID" value="@Model.Pub.ID" />
                                         @Html.LabelFor(model => model.Withdrawal.WithdrawalReason, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                                        <textarea class="form-control" name="WithdrawalReason" id="WithdrawalReason" rows="4" placeholder=""></textarea>
+                                        <textarea class="form-control" name="WithdrawalReason" id="WithdrawalReason" rows="4" placeholder="">@Model.Withdrawal.WithdrawalReason</textarea>
                                         <span class="text-danger field-validation-error" id="span_reasonerror" style="display:none;">Please enter Reason for Withdrawal</span>
                                     </div>
                                     <div class="form-group">
@@ -790,13 +790,16 @@
                     return false;
                 }
                 var form = $('#formwithdraw');
+                var form1 = document.getElementById("formwithdraw");
                 //alert(form.serialize());
                 //return false;
                 var myurl = '@Url.Action("Withdraw", "Publication", new { area = "RnP" })';
                 $.ajax({
                     url: myurl,
                     type: "POST",
-                    data: form.serialize(),
+                    data: new FormData(form1),
+                    processData: false,
+                    contentType: false,
                     success: function (data) {
                         if (data == "error") {
                             $("#resultFailTitle").text('Failed to Withdraw Publication');

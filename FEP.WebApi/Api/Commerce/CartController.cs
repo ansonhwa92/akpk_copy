@@ -395,6 +395,52 @@ namespace FEP.WebApi.Api.Commerce
             return promo;
         }
 
+        // Get rewards
+        // GET: api/Commerce/Cart/GetRewardInfo
+        [Route("api/Commerce/Cart/GetRewardInfo")]
+        [HttpGet]
+        public RewardInfoModel GetRewardInfo(string rewardcode, int userid)
+        {
+            if ((rewardcode == null) || (rewardcode == ""))
+            {
+                return null;
+            }
+
+            var reward = db.UserRewardRedemption.Where(r => r.UserId == userid && r.RewardRedemption.RewardCode == rewardcode).Select(s => new RewardInfoModel
+            {
+                ID = s.Id,
+                UserId = s.UserId,
+                Code = s.RewardRedemption.RewardCode,
+                MoneyValue = s.RewardRedemption.DiscountValue,
+                PercentageValue = 0,
+                ExpiryDate = s.RedeemDate.AddDays(s.RewardRedemption.ValidDuration),
+                Status = s.RewardStatus,
+                Result = ""
+            }).FirstOrDefault();
+
+            if (reward != null)
+            {
+                if (reward.Status == RewardStatus.Closed)
+                {
+                    reward.Result = "Used";
+                }
+                else if (reward.Status == RewardStatus.Open)
+                {
+                    if (reward.ExpiryDate < DateTime.Now)
+                    {
+                        reward.Result = "Expired";
+                    }
+                    else
+                    {
+                        reward.Result = "Valid";
+                    }
+                }
+            }
+
+            return reward;
+        }
+
+
         // TESTING ONLY!!!!
 
         // Update cart status to paid
@@ -771,6 +817,8 @@ namespace FEP.WebApi.Api.Commerce
                     UserId = cart.UserId,
                     ReceiptNo = cart.ReceiptNo,
                     PurchaseType = s.PurchaseType,
+                    ProductID = s.ItemId,
+                    Refundable = false,
                     Description = s.Description,
                     Quantity = s.Quantity,
                     Amount = s.Quantity * s.Price,

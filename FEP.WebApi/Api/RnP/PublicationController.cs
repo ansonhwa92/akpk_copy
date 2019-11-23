@@ -327,6 +327,23 @@ namespace FEP.WebApi.Api.RnP
                 Category = s.Category.Name
             }).ToList();
 
+            foreach (var publication in data)
+            {
+                var pubimages = db.PublicationImages.Where(i => i.PublicationID == publication.ID).Select(s => new PublicationImagesModel
+                {
+                    ID = s.ID,
+                    PublicationID = s.PublicationID,
+                    CoverPicture = s.CoverPicture,
+                    AuthorPicture = s.AuthorPicture
+                }).FirstOrDefault();
+
+                if (pubimages != null)
+                {
+                    publication.CoverPicture = pubimages.CoverPicture;
+                    publication.AuthorPicture = pubimages.AuthorPicture;
+                }
+            }
+
             var browser = new BrowsePublicationModel
             {
                 Keyword = keyword,
@@ -390,6 +407,20 @@ namespace FEP.WebApi.Api.RnP
             publication.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.AuthorImage && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             publication.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfApproval && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
             publication.DigitalPublications = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.DigitalPublication && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+
+            var pubimages = db.PublicationImages.Where(i => i.PublicationID == id).Select(s => new PublicationImagesModel
+            {
+                ID = s.ID,
+                PublicationID = s.PublicationID,
+                CoverPicture = s.CoverPicture,
+                AuthorPicture = s.AuthorPicture
+            }).FirstOrDefault();
+
+            if (pubimages != null)
+            {
+                publication.CoverPicture = pubimages.CoverPicture;
+                publication.AuthorPicture = pubimages.AuthorPicture;
+            }
 
             return Ok(publication);
             //return publication;
@@ -656,8 +687,6 @@ namespace FEP.WebApi.Api.RnP
                 WithdrawalReason = publication.WithdrawalReason,
                 ProofOfWithdrawal = publication.ProofOfWithdrawal
             };
-
-            publication.ProofOfWithdrawal = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfWithdrawal && p.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
             var papproval = db.PublicationWithdrawal.Where(pa => pa.PublicationID == id && pa.Status == PublicationApprovalStatus.None).Select(s => new ReturnUpdatePublicationApprovalModel
             {
@@ -1418,7 +1447,7 @@ namespace FEP.WebApi.Api.RnP
         [Route("api/RnP/Publication/Withdraw")]
         [HttpPost]
         [ValidationActionFilter]
-        public string Withdraw([FromBody] UpdatePublicationWithdrawalModel model)
+        public string Withdraw([FromBody] UpdatePublicationWithdrawalModelNoFile model)
         {
 
             if (ModelState.IsValid)
@@ -1448,7 +1477,37 @@ namespace FEP.WebApi.Api.RnP
 
                     db.PublicationWithdrawal.Add(pwithdrawal);
 
-                    //files 1
+                    //files
+
+                    var attachments1 = db.PublicationFile.Where(s => s.FileCategory == PublicationFileCategory.ProofOfWithdrawal && s.ParentId == model.ID).ToList();
+
+                    if (attachments1 != null)
+                    {
+                        if (model.ProofOfWithdrawal == null)
+                        {
+                            foreach (var attachment in attachments1)
+                            {
+                                attachment.FileDocument.Display = false;
+                                db.FileDocument.Attach(attachment.FileDocument);
+                                db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                db.PublicationFile.Remove(attachment);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var attachment in attachments1)
+                            {
+                                if (!model.ProofOfWithdrawal.Any(u => u.Id == attachment.FileDocument.Id))
+                                {
+                                    attachment.FileDocument.Display = false;
+                                    db.FileDocument.Attach(attachment.FileDocument);
+                                    db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                                    db.PublicationFile.Remove(attachment);
+                                }
+                            }
+                        }
+                    }
+
                     foreach (var fileid in model.ProofFilesId)
                     {
                         var prooffile = new PublicationFile
@@ -1491,6 +1550,21 @@ namespace FEP.WebApi.Api.RnP
                     db.Entry(publication).State = EntityState.Modified;
 
                     //db.Configuration.ValidateOnSaveEnabled = false;
+
+                    //remove files
+
+                    var attachments1 = db.PublicationFile.Where(s => s.FileCategory == PublicationFileCategory.ProofOfWithdrawal && s.ParentId == model.ID).ToList();
+
+                    if (attachments1 != null)
+                    {
+                        foreach (var attachment in attachments1)
+                        {
+                            attachment.FileDocument.Display = false;
+                            db.FileDocument.Attach(attachment.FileDocument);
+                            db.Entry(attachment.FileDocument).Property(m => m.Display).IsModified = true;
+                            db.PublicationFile.Remove(attachment);
+                        }
+                    }
 
                     db.SaveChanges();
 
@@ -1600,6 +1674,69 @@ namespace FEP.WebApi.Api.RnP
             }
 
             return "";
+        }
+
+        /*
+         * The following API calls are for Image uploads
+         * 1. 
+         * 2. 
+         */
+
+        // GET: api/RnP/Publication/UploadImages
+        [Route("api/RnP/Publication/UploadImages")]
+        [HttpGet]
+        public int UploadImages(int pubid, string coverpic, string authorpic)
+        {
+            var pubimages = new PublicationImages
+            {
+                PublicationID = pubid,
+                CoverPicture = coverpic,
+                AuthorPicture = authorpic
+            };
+
+            db.PublicationImages.Add(pubimages);
+            db.SaveChanges();
+
+            return pubimages.ID;
+        }
+
+        // GET: api/RnP/Publication/UpdateImages
+        [Route("api/RnP/Publication/UpdateImages")]
+        [HttpGet]
+        public int UpdateImages(int pubid, string coverpic, string authorpic)
+        {
+            var pubimages = db.PublicationImages.Where(pi => pi.PublicationID == pubid).FirstOrDefault();
+
+            if (pubimages != null)
+            {
+                pubimages.CoverPicture = coverpic;
+                pubimages.AuthorPicture = authorpic;
+                db.Entry(pubimages).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return pubimages.ID;
+            }
+
+            return 0;
+        }
+
+        // GET: api/RnP/Publication/UpdateImagePublicationID
+        [Route("api/RnP/Publication/UpdateImagePublicationID")]
+        [HttpGet]
+        public int UpdateImagePublicationID(int id, int pubid)
+        {
+            var pubimages = db.PublicationImages.Where(pi => pi.ID == id).FirstOrDefault();
+
+            if (pubimages != null)
+            {
+                pubimages.PublicationID = pubid;
+                db.Entry(pubimages).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return pubimages.ID;
+            }
+
+            return 0;
         }
 
         /*
@@ -1813,7 +1950,7 @@ namespace FEP.WebApi.Api.RnP
         // GET: api/RnP/Publication/IncrementDownload
         [Route("api/RnP/Publication/IncrementDownload")]
         [HttpGet]
-        public bool IncrementDownload(int? id)
+        public bool IncrementDownload(int? id, int? userid)
         {
             if (id == null)
             {
@@ -1828,6 +1965,19 @@ namespace FEP.WebApi.Api.RnP
 
                 db.Entry(publication).State = EntityState.Modified;
 
+                var pdownloads = db.PublicationDownloads.Where(d => d.PublicationID == id && d.UserId == userid).FirstOrDefault();
+
+                if (pdownloads == null)
+                {
+                    var pdownload = new PublicationDownloads
+                    {
+                        PublicationID = id.Value,
+                        UserId = userid.Value
+                    };
+
+                    db.PublicationDownloads.Add(pdownload);
+                }
+
                 db.SaveChanges();
 
                 return true;
@@ -1835,6 +1985,56 @@ namespace FEP.WebApi.Api.RnP
 
             return false;
         }
+
+        // Function to check if digital publication is refundable (not yet downloaded)
+        // GET: api/RnP/Publication/IsDownloaded
+        [Route("api/RnP/Publication/IsDownloaded")]
+        [HttpGet]
+        public bool IsDownloaded(int? userid, int? pubid)
+        {
+            if ((userid == null) || (pubid == null))
+            {
+                return true;
+            }
+
+            var pdownloads = db.PublicationDownloads.Where(d => d.PublicationID == pubid && d.UserId == userid).FirstOrDefault();
+
+            if (pdownloads != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        // Function to check if publication is refundable (hard copy or undownloaded softcopy)
+        // GET: api/RnP/Publication/IsRefundable
+        /*
+        [Route("api/RnP/Publication/IsRefundable")]
+        [HttpGet]
+        public bool IsRefundable(int? userid, int? cartid, int? itemid)
+        {
+            if ((userid == null) || (cartid == null) || (itemid == null))
+            {
+                return false;
+            }
+
+            var pubitem = db.PublicationPurchaseItem.Where(pi => pi.UserId == userid && pi.PurchaseOrderId == cartid && pi.PublicationID == itemid).FirstOrDefault();
+
+            if (publication != null)
+            {
+                publication.PurchaseCount = publication.PurchaseCount + incrementvalue;
+
+                db.Entry(publication).State = EntityState.Modified;
+
+                db.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
+        */
 
         /*
          * Settings

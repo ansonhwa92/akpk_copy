@@ -204,6 +204,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     string newid = resparray[0];
                     string title = resparray[1];
 
+                    await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
+
                     await LogActivity(Modules.RnP, "Create New Publication: " + title);
 
                     if (Submittype == "Save")
@@ -423,6 +425,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
+                    await UpdateImageFiles(model.ID, model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
+
                     await LogActivity(Modules.RnP, "Edit Publication: " + response.Data, model);
 
                     if (Submittype == "Save")
@@ -653,17 +657,24 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             if (ModelState.IsValid)
             {
-                //attachment 1: proof pics
+                var apimodel = new UpdatePublicationWithdrawalModelNoFile
+                {
+                    ID = model.ID,
+                    WithdrawalReason = model.WithdrawalReason,
+                    ProofOfWithdrawal = model.ProofOfWithdrawal
+                };
+
+                //attachment 1: proofs
                 if (model.ProofOfWithdrawalFiles.Count() > 0)
                 {
                     var files = await FileMethod.UploadFile(model.ProofOfWithdrawalFiles.ToList(), CurrentUser.UserId, "publication");
                     if (files != null)
                     {
-                        model.ProofFilesId = files.Select(f => f.Id).ToList();
+                        apimodel.ProofFilesId = files.Select(f => f.Id).ToList();
                     }
                 }
 
-                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Publication/Withdraw", model);
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Publication/Withdraw", apimodel);
 
                 if (response.isSuccess)
                 {
@@ -1750,6 +1761,133 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         }
 
         // Private functions
+
+        // Actual upload of cover file
+        private string UploadCoverFile(HttpPostedFileBase coverfile)
+        {
+            //string UploadPath = System.Configuration.ConfigurationManager.AppSettings["FilePath"].ToString();
+
+            if (coverfile != null)
+            {
+                string UploadPath = "Data\\images\\publication\\";
+
+                string FileName = System.IO.Path.GetFileNameWithoutExtension(coverfile.FileName);
+
+                string FileExtension = System.IO.Path.GetExtension(coverfile.FileName);
+
+                FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + FileName.Trim() + FileExtension;
+
+                string ServerPath = UploadPath + FileName;
+
+                coverfile.SaveAs(ServerPath);
+
+                return ServerPath;
+            }
+            return "";
+        }
+
+        // Actual upload of author file
+        private string UploadAuthorFile(HttpPostedFileBase authorfile)
+        {
+            //string UploadPath = System.Configuration.ConfigurationManager.AppSettings["FilePath"].ToString();
+
+            if (authorfile != null)
+            {
+                string UploadPath = "Data\\images\\publication\\";
+
+                string FileName = System.IO.Path.GetFileNameWithoutExtension(authorfile.FileName);
+
+                string FileExtension = System.IO.Path.GetExtension(authorfile.FileName);
+
+                FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + FileName.Trim() + FileExtension;
+
+                string ServerPath = UploadPath + FileName;
+
+                authorfile.SaveAs(ServerPath);
+
+                return ServerPath;
+            }
+            return "";
+        }
+
+        // Upload picture files
+        private async Task<int> UploadImageFiles(int pubid, HttpPostedFileBase coverfile, HttpPostedFileBase authorfile)
+        {
+            string coverpath = UploadCoverFile(coverfile);
+            string authorpath = UploadAuthorFile(authorfile);
+
+            var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/UploadImages?pubid={pubid}coverpic={coverpath}&authorpic={authorpath}");
+
+            if (response.isSuccess)
+            {
+                var newid = response.Data;
+                return newid;
+            }
+
+            return 0;
+        }
+
+        // Update picture files
+        private async Task<int> UpdateImageFiles(int pubid, HttpPostedFileBase coverfile, HttpPostedFileBase authorfile)
+        {
+            string coverpath = UploadCoverFile(coverfile);
+            string authorpath = UploadAuthorFile(authorfile);
+
+            var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/UpdateImages?pubid={pubid}coverpic={coverpath}&authorpic={authorpath}");
+
+            if (response.isSuccess)
+            {
+                var oldid = response.Data;
+                return oldid;
+            }
+
+            return 0;
+        }
+
+        //
+        /*
+        private List<FileDocument> UploadImageFile(List<HttpPostedFileBase> files, int? userId = null, string directory = "publication", string fileType = "", string fileTag = "")
+        {
+            string UploadPath = System.Configuration.ConfigurationManager.AppSettings["FilePath"].ToString();
+
+            UploadPath = UploadPath + "images\\";
+
+            if (directory != "") UploadPath = UploadPath + directory + "\\";
+
+            foreach (var file in files)
+            {
+                string FileName = System.IO.Path.GetFileNameWithoutExtension(file.FileName);
+
+                string FileExtension = System.IO.Path.GetExtension(file.FileName);
+
+                FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + FileName.Trim() + FileExtension;
+
+                string ServerPath = UploadPath + FileName;
+
+                file.SaveAs(ServerPath);
+
+                var filemodel = new PublicationImageFile
+                {
+                    FileName = FileName,
+                    FilePath = ServerPath,
+                    Directory = directory,
+                    Display = true,
+                    ParentId =
+                };
+
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"RnP/Publication/SaveSettings", model);
+
+                if (response.isSuccess)
+                {
+                    await LogActivity(Modules.RnP, "Save Publication Settings");
+
+                    TempData["SuccessMessage"] = "Publication Settings saved successfully.";
+
+                    return RedirectToAction("Settings", "Publication", new { area = "RnP" });
+                }
+            }
+        }
+        */
 
         // Get minimum publication year from API
         private async Task<int> GetMinimumPublishedYear()

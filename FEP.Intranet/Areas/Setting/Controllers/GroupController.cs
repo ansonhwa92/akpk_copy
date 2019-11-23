@@ -24,8 +24,19 @@ namespace FEP.Intranet.Areas.Setting.Controllers
 
         // Create
         [HttpGet]
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            var resCities = await WepApiMethod.SendApiAsync<List<ReturnTargetedGroupCities>>(HttpVerbs.Get, $"Setting/Group/GetCities");
+
+            if (!resCities.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var cities = resCities.Data;
+
+            ViewBag.CityId = new SelectList(cities, "Code", "Name");
+
             var model = new CreateTargetedGroup();
             return View(model);
         }
@@ -35,6 +46,13 @@ namespace FEP.Intranet.Areas.Setting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateTargetedGroup model)
         {
+            var dupName = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Setting/Group/NameExists?id={null}&name={model.Name}");
+
+            if (dupName.Data)
+            {
+                ModelState.AddModelError("Name", "A Group with the same Name already exists in the system");
+            }
+
             if (ModelState.IsValid)
             {
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Setting/Group/Create", model);
@@ -71,7 +89,18 @@ namespace FEP.Intranet.Areas.Setting.Controllers
             }
 
             var model = response.Data;
-                        
+
+            var resCities = await WepApiMethod.SendApiAsync<List<ReturnTargetedGroupCities>>(HttpVerbs.Get, $"Setting/Group/GetCities");
+
+            if (!resCities.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var cities = resCities.Data;
+
+            ViewBag.CityId = new SelectList(cities, "Code", "Name", model.CityCode);
+
             return View(model);
         }
 
@@ -79,7 +108,14 @@ namespace FEP.Intranet.Areas.Setting.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(EditTargetedGroup model)
-        {                        
+        {
+            var dupName = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Setting/Group/NameExists?id={model.ID}&name={model.Name}");
+
+            if (dupName.Data)
+            {
+                ModelState.AddModelError("Name", "A Group with the same Name already exists in the system");
+            }
+
             if (ModelState.IsValid)
             {
                 var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Setting/Group/Update", model);

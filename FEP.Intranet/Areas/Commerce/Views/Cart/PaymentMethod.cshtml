@@ -404,6 +404,12 @@
                                 {
                                     <div class="media-right font-weight-bolder color-red">Code Expired</div>
                                 }
+                                else if (ViewBag.PromoStatus == "Used") {
+                                    <div class="media-right font-weight-bolder color-red">Code Already Used</div>
+                                }
+                                else if (ViewBag.PromoStatus == "Invalid") {
+                                    <div class="media-right font-weight-bolder color-red">Code Invalid</div>
+                                }
                                 else
                                 {
                                     <div class="media-right font-weight-bolder color-green">RM @ViewBag.Discount.ToString("0.00")</div>

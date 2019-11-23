@@ -12,6 +12,15 @@ using System.Web;
 
 namespace FEP.WebApiModel.RnP
 {
+    // class for returning survey local images
+    public class SurveyImagesModel
+    {
+        public int ID { get; set; }
+        public int SurveyID { get; set; }
+        public string CoverPicture { get; set; }
+        public string AuthorPicture { get; set; }
+    }
+
     // class for returning survey information to client app
     // returned whenever the client requests for information on a single survey
     public class ReturnSurveyModel
@@ -104,6 +113,12 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "SurveyProofOfApproval", ResourceType = typeof(Language.RnPForm))]
         public IEnumerable<Attachment> ProofOfApproval { get; set; }
+
+        [Display(Name = "SurveyPictures", ResourceType = typeof(Language.RnPForm))]
+        public string CoverPicture { get; set; }
+
+        [Display(Name = "SurveyAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public string AuthorPicture { get; set; }
     }
 
     // Class for returning surveys for user browsing
@@ -439,6 +454,12 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "SurveyProofOfApproval", ResourceType = typeof(Language.RnPForm))]
         public IEnumerable<Attachment> ProofOfApproval { get; set; }
+
+        [Display(Name = "SurveyPictures", ResourceType = typeof(Language.RnPForm))]
+        public string CoverPicture { get; set; }
+
+        [Display(Name = "SurveyAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public string AuthorPicture { get; set; }
     }
 
     // class for updating of survey information by client app
@@ -968,6 +989,7 @@ namespace FEP.WebApiModel.RnP
     {
         public SurveySingleChoiceAnswersModel()
         {
+            maxrating = 0;
             answers = new List<string>();
             values = new List<string>();
             counts = new List<int>();
@@ -976,6 +998,16 @@ namespace FEP.WebApiModel.RnP
         public string question { get; set; }
 
         public string questionname { get; set; }
+
+        public string questiontype { get; set; }
+
+        public int maxrating { get; set; }
+
+        public int mean { get; set; }
+
+        public float median { get; set; }
+
+        public int mode { get; set; }
 
         public List<string> answers { get; set; }
 
@@ -989,6 +1021,7 @@ namespace FEP.WebApiModel.RnP
     {
         public SurveyMultipleChoiceAnswersModel()
         {
+            maxrating = 0;
             answers = new List<string>();
             values = new List<string>();
             counts = new List<int>();
@@ -997,6 +1030,16 @@ namespace FEP.WebApiModel.RnP
         public string question { get; set; }
 
         public string questionname { get; set; }
+
+        public string questiontype { get; set; }
+
+        public int maxrating { get; set; }
+
+        public int mean { get; set; }
+
+        public float median { get; set; }
+
+        public int mode { get; set; }
 
         public List<string> answers { get; set; }
 

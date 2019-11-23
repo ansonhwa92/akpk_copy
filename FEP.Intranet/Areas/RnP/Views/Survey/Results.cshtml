@@ -114,10 +114,127 @@
                         </div>
                         <div class="tab-pane" id="tabsummary">
                             <div class="form-container p-0" style="max-width: inherit;">
+                                <div class="row" id="divTableSummary">
+                                    <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+                                        <div class="border-form rounded-top">
+                                            <label>Summary</label>
+                                            <div style="width: 100%; overflow-x: scroll;">
+                                                <table style="width: 100%;">
+                                                    <tbody>
+                                                        @foreach (var singleq in Model.SingleChoices)
+                                                        {
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small; padding-left: 10px;" colspan="2">Question : @singleq.question</td>
+                                                            </tr>
+                                                            int qi = -1;
+                                                            int qn = 0;
+                                                            foreach (var answer in singleq.answers)
+                                                            {
+                                                                qi = qi + 1;
+                                                                qn = qn + 1;
+                                                                if ((singleq.maxrating == 0) || ((singleq.maxrating > 0) && (qi < singleq.maxrating)))
+                                                                {
+                                                                    <tr>
+                                                                        <td style="border:1px solid black; font-size:small; min-width: 60%; max-width: 60%; padding-left: 10px;">@qn) @answer</td>
+                                                                        <td style="border:1px solid black; font-size:small; min-width: 40%; max-width: 40%; text-align:center;">@singleq.counts[qi]</td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small;" colspan="2">&nbsp;</td>
+                                                            </tr>
+                                                        }
+                                                        @foreach (var multiq in Model.MultipleChoices)
+                                                        {
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small; padding-left: 10px;" colspan="2">Question : @multiq.question</td>
+                                                            </tr>
+                                                            int qi = -1;
+                                                            int qn = 0;
+                                                            foreach (var answer in multiq.answers)
+                                                            {
+                                                                qi = qi + 1;
+                                                                qn = qn + 1;
+                                                                <tr>
+                                                                    <td style="border:1px solid black; font-size:small; min-width: 60%; max-width: 60%; padding-left: 10px;">@qn) @answer</td>
+                                                                    <td style="border:1px solid black; font-size:small; min-width: 40%; max-width: 40%; text-align:center;">@multiq.counts[qi]</td>
+                                                                </tr>
+                                                            }
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small;" colspan="2">&nbsp;</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="tabstats">
                             <div class="form-container p-0" style="max-width: inherit;">
+                                <div class="row" id="divTableStats">
+                                    <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+                                        <div class="border-form rounded-top">
+                                            <label>Statistics</label>
+                                            <div style="width: 100%; overflow-x: scroll;">
+                                                <table style="width: 100%;">
+                                                    <tbody>
+                                                        @foreach (var singleq in Model.SingleChoices)
+                                                        {
+                                                            var mymean = singleq.mean;
+                                                            var mymedian = (int)Math.Round(singleq.median);
+                                                            var mymode = singleq.mode;
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small; padding-left: 10px;" colspan="2">Question : @singleq.question</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small; min-width: 40%; max-width: 40%; padding-left: 10px;">1) Mean</td>
+                                                                <td style="border:1px solid black; font-size:small; min-width: 60%; max-width: 60%; text-align:center;">@singleq.answers[mymean - 1]</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small; min-width: 40%; max-width: 40%; padding-left: 10px;">2) Median</td>
+                                                                <td style="border:1px solid black; font-size:small; min-width: 60%; max-width: 60%; text-align:center;">@singleq.answers[mymedian - 1]</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small; min-width: 40%; max-width: 40%; padding-left: 10px;">3) Mode</td>
+                                                                <td style="border:1px solid black; font-size:small; min-width: 60%; max-width: 60%; text-align:center;">@singleq.answers[mymode - 1]</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small;" colspan="2">&nbsp;</td>
+                                                            </tr>
+                                                        }
+                                                        @foreach (var multiq in Model.MultipleChoices)
+                                                        {
+                                                            var mymean = multiq.mean;
+                                                            var mymedian = (int)Math.Round(multiq.median);
+                                                            var mymode = multiq.mode;
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small; padding-left: 10px;" colspan="2">Question : @multiq.question</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small; min-width: 40%; max-width: 40%; padding-left: 10px;">1) Mean</td>
+                                                                <td style="border:1px solid black; font-size:small; min-width: 60%; max-width: 60%; text-align:center;">@multiq.answers[mymean - 1]</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small; min-width: 40%; max-width: 40%; padding-left: 10px;">2) Median</td>
+                                                                <td style="border:1px solid black; font-size:small; min-width: 60%; max-width: 60%; text-align:center;">@multiq.answers[mymedian - 1]</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small; min-width: 40%; max-width: 40%; padding-left: 10px;">3) Mode</td>
+                                                                <td style="border:1px solid black; font-size:small; min-width: 60%; max-width: 60%; text-align:center;">@multiq.answers[mymode - 1]</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="border:1px solid black; font-size:small;" colspan="2">&nbsp;</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

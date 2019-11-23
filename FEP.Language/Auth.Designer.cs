@@ -448,7 +448,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username.
+        ///   Looks up a localized string similar to User Name.
         /// </summary>
         public static string FieldUserName {
             get {
@@ -556,6 +556,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Type your Email.
+        /// </summary>
+        public static string PlaceholderLoginId {
+            get {
+                return ResourceManager.GetString("PlaceholderLoginId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Ministry.
         /// </summary>
         public static string PlaceholderMinistry {
@@ -642,6 +651,15 @@ namespace Language {
         public static string PlaceholderType {
             get {
                 return ResourceManager.GetString("PlaceholderType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type your User Name.
+        /// </summary>
+        public static string PlaceholderUserName {
+            get {
+                return ResourceManager.GetString("PlaceholderUserName", resourceCulture);
             }
         }
         
@@ -984,6 +1002,15 @@ namespace Language {
         public static string ValidRequiredStateId {
             get {
                 return ResourceManager.GetString("ValidRequiredStateId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter User Name.
+        /// </summary>
+        public static string ValidRequiredUsername {
+            get {
+                return ResourceManager.GetString("ValidRequiredUsername", resourceCulture);
             }
         }
         

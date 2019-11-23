@@ -17,29 +17,29 @@
             });
 
             $("#StartDate").flatpickr({
-			    dateFormat: "d/m/Y",
-			    enableTime: false,
-			    minDate: "today",
-			    onValueUpdate: function (dObj, dStr, fp, dayElem) {
-				    debugger;
-				    $("#EndDate").flatpickr({
-					    dateFormat: "d/m/Y",
-					    enableTime: false,
-					    minDate: dStr,
-				    });
-			    }
-		    });
+                dateFormat: "d/m/Y",
+                enableTime: false,
+                minDate: "today",
+                onValueUpdate: function (dObj, dStr, fp, dayElem) {
+                    debugger;
+                    $("#EndDate").flatpickr({
+                        dateFormat: "d/m/Y",
+                        enableTime: false,
+                        minDate: dStr,
+                    });
+                }
+            });
 
-		    $("#EndDate").flatpickr({
-			    dateFormat: "d/m/Y",
-			    enableTime: false,
-			    minDate: "today",
-		    });
+            $("#EndDate").flatpickr({
+                dateFormat: "d/m/Y",
+                enableTime: false,
+                minDate: "today",
+            });
 
 
         });
 
-        
+
     </script>
 }
 
@@ -93,7 +93,7 @@
 
                 @Html.AntiForgeryToken()
 
-                <div class="form-container">                   
+                <div class="form-container">
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(model => model.Module)
@@ -132,31 +132,134 @@
                             @Html.ValidationMessageFor(model => model.Venue, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            @Html.FEPLabelFor(model => model.NoOfMale)
-                            @Html.EditorFor(model => model.NoOfMale, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.NoOfMale, "", new { @class = "text-danger" })
+                    <div class="row mb-1">
+                        <div class="col-lg-6">
+                            <label>@Language.TOT.TextAgeRange</label>
+                            <div class="form-control border-0">@Language.TOT.TextAgeR1</div>
                         </div>
-                        <div class="form-group col-lg-6">
-                            @Html.FEPLabelFor(model => model.NoOfFemale)
-                            @Html.EditorFor(model => model.NoOfFemale, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.NoOfFemale, "", new { @class = "text-danger" })
+                        <div class="col-lg-3">
+                            <label>@Language.TOT.TextMale</label>
+                            @Html.EditorFor(model => model.AgeR1NoOfMale, new { htmlAttributes = new { @class = "form-control" } })
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            @Html.FEPLabelFor(model => model.AgeRange)
-                            @Html.EnumDropDownListFor(model => model.AgeRange, Language.TOT.PlaceholderAgeRange, htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
-                            @Html.ValidationMessageFor(model => model.AgeRange, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-lg-6">
-                            @Html.FEPLabelFor(model => model.SalaryRange)
-                            @Html.EnumDropDownListFor(model => model.SalaryRange, Language.TOT.PlaceholderSalaryRange, htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
-                            @Html.ValidationMessageFor(model => model.SalaryRange, "", new { @class = "text-danger" })
+                        <div class="col-lg-3">
+                            <label>@Language.TOT.TextFemale</label>
+                            @Html.EditorFor(model => model.AgeR1NoOfFemale, new { htmlAttributes = new { @class = "form-control" } })
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-1">
+                        <div class="col-lg-6">
+                            <div class="form-control border-0">@Language.TOT.TextAgeR2</div>
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.AgeR2NoOfMale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.AgeR2NoOfFemale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-lg-6">
+                            <div class="form-control border-0">@Language.TOT.TextAgeR3</div>
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.AgeR3NoOfMale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.AgeR3NoOfFemale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-lg-6">
+                            <div class="form-control border-0">@Language.TOT.TextAgeR4</div>
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.AgeR4NoOfMale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.AgeR4NoOfFemale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-lg-6">
+                            <div class="form-control border-0">@Language.TOT.TextAgeR5</div>
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.AgeR5NoOfMale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.AgeR5NoOfFemale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="row mb-1 mt-3">
+                        <div class="col-lg-6">
+                            <label>@Language.TOT.TextSalaryRange</label>
+                            <div class="form-control border-0">@Language.TOT.TextSalaryR1</div>
+                        </div>
+                        <div class="col-lg-3">
+                            <label>@Language.TOT.TextMale</label>
+                            @Html.EditorFor(model => model.SalaryR1NoOfMale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-lg-3">
+                            <label>@Language.TOT.TextFemale</label>
+                            @Html.EditorFor(model => model.SalaryR1NoOfFemale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-lg-6">
+                            <div class="form-control border-0">@Language.TOT.TextSalaryR2</div>
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.SalaryR2NoOfMale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.SalaryR2NoOfFemale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-lg-6">
+                            <div class="form-control border-0">@Language.TOT.TextSalaryR3</div>
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.SalaryR3NoOfMale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.SalaryR3NoOfFemale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-lg-6">
+                            <div class="form-control border-0">@Language.TOT.TextSalaryR4</div>
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.SalaryR4NoOfMale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.SalaryR4NoOfFemale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-lg-6">
+                            <div class="form-control border-0">@Language.TOT.TextSalaryR5</div>
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.SalaryR5NoOfMale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.SalaryR5NoOfFemale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-lg-6">
+                            <div class="form-control border-0">@Language.TOT.TextSalaryR6</div>
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.SalaryR6NoOfMale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.EditorFor(model => model.SalaryR6NoOfFemale, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="row mt-3">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(model => model.Attachments)
                             @Html.Partial("_Attachment", Model.Attachments)

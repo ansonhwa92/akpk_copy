@@ -249,7 +249,7 @@ namespace FEP.WebApi.Api.Administration
                     UserType = UserType.Individual,
                     Name = model.Name,
                     Email = model.Email,
-                    ICNo = model.ICNo,
+                    ICNo = model.IsMalaysian ? model.ICNo : model.PassportNo,
                     MobileNo = model.MobileNo,
                     CountryCode = countryCode.CountryCode1,
                     Display = true,
@@ -326,7 +326,7 @@ namespace FEP.WebApi.Api.Administration
                 }
 
                 user.Name = model.Name;
-                user.ICNo = model.ICNo;
+                user.ICNo = model.IsMalaysian ? model.ICNo : model.PassportNo;
                 user.Email = model.Email;
                 user.MobileNo = model.MobileNo;
                 user.CountryCode = countryCode.CountryCode1;

@@ -314,6 +314,8 @@ namespace FEP.Model
         ErrorLog = 4041,
         [Display(Name = "Settings - Error Logs - Delete")]
         ErrorLogDelete = 4042,
+        [Display(Name = "Settings - User Account")]
+        UserAccountSetting = 4043,
 
         //report 6001 - 7000
         [Display(Name = "Reports Menu")]

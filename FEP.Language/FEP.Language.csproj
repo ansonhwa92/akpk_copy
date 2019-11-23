@@ -56,6 +56,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="KMCCategory.Designer.cs">
+      <DependentUpon>KMCCategory.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="KMC.Designer.cs">
+      <DependentUpon>KMC.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="RnPForm.Designer.cs">
       <DependentUpon>RnPForm.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -235,6 +245,14 @@
     <EmbeddedResource Include="Publication.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Publication.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KMCCategory.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>KMCCategory.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KMC.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>KMC.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RnPForm.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

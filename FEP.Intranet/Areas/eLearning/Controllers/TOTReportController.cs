@@ -22,7 +22,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> List()
+        public ActionResult List()
         {         
             return View();
         }
@@ -70,6 +70,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public async Task<ActionResult> Create(Models.CreateTOTReportModel model)
         {
             
+            if (model.StartDate.Value.Date == model.EndDate.Value.Date)
+            {
+                if(model.StartTime.Value.TimeOfDay > model.EndTime.Value.TimeOfDay )
+                {
+                    ModelState.AddModelError("EndTime", Language.TOT.ValidStartEndTime);
+                }
+            }
+
+
             if (ModelState.IsValid)
             {
                 var modelapi = new WebApiModel.eLearning.CreateTOTReportModel()
@@ -79,10 +88,28 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     StartDate = model.StartDate.Value.Date + new TimeSpan(model.StartTime.Value.Hour,model.StartTime.Value.Minute,model.StartTime.Value.Second),
                     EndDate = model.EndDate.Value.Date + new TimeSpan(model.EndTime.Value.Hour, model.EndTime.Value.Minute, model.EndTime.Value.Second),
                     Venue = model.Venue,
-                    NoOfMale = model.NoOfMale,
-                    NoOfFemale = model.NoOfFemale,
-                    AgeRange = model.AgeRange.Value,
-                    SalaryRange = model.SalaryRange.Value
+                    AgeR1NoOfMale = model.AgeR1NoOfMale,
+                    AgeR1NoOfFemale = model.AgeR1NoOfFemale,
+                    AgeR2NoOfMale = model.AgeR2NoOfMale,
+                    AgeR2NoOfFemale = model.AgeR2NoOfFemale,
+                    AgeR3NoOfMale = model.AgeR3NoOfMale,
+                    AgeR3NoOfFemale = model.AgeR3NoOfFemale,
+                    AgeR4NoOfMale = model.AgeR4NoOfMale,
+                    AgeR4NoOfFemale = model.AgeR4NoOfFemale,
+                    AgeR5NoOfMale = model.AgeR5NoOfMale,
+                    AgeR5NoOfFemale = model.AgeR5NoOfFemale,
+                    SalaryR1NoOfMale = model.SalaryR1NoOfMale,
+                    SalaryR1NoOfFemale = model.SalaryR1NoOfFemale,
+                    SalaryR2NoOfMale = model.SalaryR2NoOfMale,
+                    SalaryR2NoOfFemale = model.SalaryR2NoOfFemale,
+                    SalaryR3NoOfMale = model.SalaryR3NoOfMale,
+                    SalaryR3NoOfFemale = model.SalaryR3NoOfFemale,
+                    SalaryR4NoOfMale = model.SalaryR4NoOfMale,
+                    SalaryR4NoOfFemale = model.SalaryR4NoOfFemale,
+                    SalaryR5NoOfMale = model.SalaryR5NoOfMale,
+                    SalaryR5NoOfFemale = model.SalaryR5NoOfFemale,
+                    SalaryR6NoOfMale = model.SalaryR6NoOfMale,
+                    SalaryR6NoOfFemale = model.SalaryR6NoOfFemale
                 };
 
                 //attachment
@@ -102,9 +129,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 {
                     await LogActivity(Modules.Learning, "Create Train Of Trainer Report", model);
 
-                    TempData["SuccessMessage"] = "Report successfully created";
+                    TempData["SuccessMessage"] = Language.TOT.AlertCreateSuccess;
 
                     return RedirectToAction("List");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = Language.TOT.AlertCreateFail;
                 }
             }
             
@@ -138,10 +169,28 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 EndTime = data.EndDate,               
                 Module = data.Module,
                 Venue = data.Venue,
-                AgeRange = data.AgeRange,
-                SalaryRange = data.SalaryRange,
-                NoOfMale = data.NoOfMale,
-                NoOfFemale = data.NoOfFemale,
+                AgeR1NoOfMale = data.AgeR1NoOfMale,
+                AgeR1NoOfFemale = data.AgeR1NoOfFemale,
+                AgeR2NoOfMale = data.AgeR2NoOfMale,
+                AgeR2NoOfFemale = data.AgeR2NoOfFemale,
+                AgeR3NoOfMale = data.AgeR3NoOfMale,
+                AgeR3NoOfFemale = data.AgeR3NoOfFemale,
+                AgeR4NoOfMale = data.AgeR4NoOfMale,
+                AgeR4NoOfFemale = data.AgeR4NoOfFemale,
+                AgeR5NoOfMale = data.AgeR5NoOfMale,
+                AgeR5NoOfFemale = data.AgeR5NoOfFemale,
+                SalaryR1NoOfMale = data.SalaryR1NoOfMale,
+                SalaryR1NoOfFemale = data.SalaryR1NoOfFemale,
+                SalaryR2NoOfMale = data.SalaryR2NoOfMale,
+                SalaryR2NoOfFemale = data.SalaryR2NoOfFemale,
+                SalaryR3NoOfMale = data.SalaryR3NoOfMale,
+                SalaryR3NoOfFemale = data.SalaryR3NoOfFemale,
+                SalaryR4NoOfMale = data.SalaryR4NoOfMale,
+                SalaryR4NoOfFemale = data.SalaryR4NoOfFemale,
+                SalaryR5NoOfMale = data.SalaryR5NoOfMale,
+                SalaryR5NoOfFemale = data.SalaryR5NoOfFemale,
+                SalaryR6NoOfMale = data.SalaryR6NoOfMale,
+                SalaryR6NoOfFemale = data.SalaryR6NoOfFemale,
                 Attachments = data.Attachments
             };
 
@@ -151,7 +200,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(Models.EditTOTReportModel model)
-        { 
+        {
+            if (model.StartDate.Value.Date == model.EndDate.Value.Date)
+            {
+                if (model.StartTime.Value.TimeOfDay > model.EndTime.Value.TimeOfDay)
+                {
+                    ModelState.AddModelError("EndTime", Language.TOT.ValidStartEndTime);
+                }
+            }
 
             if (ModelState.IsValid)
             {
@@ -162,10 +218,28 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     StartDate = model.StartDate.Value.Date + new TimeSpan(model.StartTime.Value.Hour, model.StartTime.Value.Minute, model.StartTime.Value.Second),
                     EndDate = model.EndDate.Value.Date + new TimeSpan(model.EndTime.Value.Hour, model.EndTime.Value.Minute, model.EndTime.Value.Second),
                     Venue = model.Venue,
-                    NoOfMale = model.NoOfMale,
-                    NoOfFemale = model.NoOfFemale,
-                    AgeRange = model.AgeRange.Value,
-                    SalaryRange = model.SalaryRange.Value
+                    AgeR1NoOfMale = model.AgeR1NoOfMale,
+                    AgeR1NoOfFemale = model.AgeR1NoOfFemale,
+                    AgeR2NoOfMale = model.AgeR2NoOfMale,
+                    AgeR2NoOfFemale = model.AgeR2NoOfFemale,
+                    AgeR3NoOfMale = model.AgeR3NoOfMale,
+                    AgeR3NoOfFemale = model.AgeR3NoOfFemale,
+                    AgeR4NoOfMale = model.AgeR4NoOfMale,
+                    AgeR4NoOfFemale = model.AgeR4NoOfFemale,
+                    AgeR5NoOfMale = model.AgeR5NoOfMale,
+                    AgeR5NoOfFemale = model.AgeR5NoOfFemale,
+                    SalaryR1NoOfMale = model.SalaryR1NoOfMale,
+                    SalaryR1NoOfFemale = model.SalaryR1NoOfFemale,
+                    SalaryR2NoOfMale = model.SalaryR2NoOfMale,
+                    SalaryR2NoOfFemale = model.SalaryR2NoOfFemale,
+                    SalaryR3NoOfMale = model.SalaryR3NoOfMale,
+                    SalaryR3NoOfFemale = model.SalaryR3NoOfFemale,
+                    SalaryR4NoOfMale = model.SalaryR4NoOfMale,
+                    SalaryR4NoOfFemale = model.SalaryR4NoOfFemale,
+                    SalaryR5NoOfMale = model.SalaryR5NoOfMale,
+                    SalaryR5NoOfFemale = model.SalaryR5NoOfFemale,
+                    SalaryR6NoOfMale = model.SalaryR6NoOfMale,
+                    SalaryR6NoOfFemale = model.SalaryR6NoOfFemale
                 };
 
                 //attachment
@@ -185,9 +259,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 {
                     await LogActivity(Modules.Learning, "Update Train Of Trainer Report", model);
 
-                    TempData["SuccessMessage"] = "Report successfully updated";
+                    TempData["SuccessMessage"] = Language.TOT.AlertEditSuccess;
 
                     return RedirectToAction("List");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = Language.TOT.AlertEditFail;
                 }
             }
 
@@ -227,12 +305,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 await LogActivity(Modules.Learning, "Delete Train Of Trainer Report");
 
-                TempData["SuccessMessage"] = "Report successfully deleted";
+                TempData["SuccessMessage"] = Language.TOT.AlertDeleteSuccess;
 
                 return RedirectToAction("List", "TOTReport", new { area = "eLearning" });
             }
 
-            TempData["ErrorMessage"] = "Fail to delete report";
+            TempData["ErrorMessage"] = Language.TOT.AlertDeleteFail;
 
             return RedirectToAction("Delete", new { id = id });
         }

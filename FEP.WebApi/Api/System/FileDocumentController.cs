@@ -166,6 +166,58 @@ namespace FEP.WebApi.Api.Systems
             response.Content.Headers.ContentLength = bytes.LongLength;
 
             //Set the Content Disposition Header Value and FileName.
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            { 
+                FileName = filedoc.FileName                
+            };
+           
+            //Set the File Content Type.
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue(MimeMapping.GetMimeMapping(filedoc.FileName));
+
+            return response;
+        }
+
+        [HttpGet]
+        [Route("api/System/File/Stream")]
+        public HttpResponseMessage Stream(int id)
+        {
+
+            var filedoc = db.FileDocument.Where(f => f.Id == id && f.Display).FirstOrDefault();
+
+            if (filedoc == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+
+            string root = GetFilePath();
+
+            if (string.IsNullOrEmpty(root))
+            {
+                root = HttpContext.Current.Server.MapPath("~/App_Data/Upload");
+            }
+
+            //Set the File Path.
+            string filePath = Path.Combine(root, filedoc.FilePath);
+
+            //Check whether File exists.
+            if (!File.Exists(filePath))
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+
+            //Read the File into a Byte Array.
+            byte[] bytes = File.ReadAllBytes(filePath);
+
+            //Create HTTP Response.
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+
+            //Set the Response Content.
+            response.Content = new ByteArrayContent(bytes);
+
+            //Set the Response Content Length.
+            response.Content.Headers.ContentLength = bytes.LongLength;
+
+            //Set the Content Disposition Header Value and FileName.
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
             response.Content.Headers.ContentDisposition.FileName = filedoc.FileName;
 

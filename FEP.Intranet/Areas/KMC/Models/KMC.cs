@@ -1,4 +1,5 @@
 ﻿using FEP.Model;
+using FEP.WebApiModel.FileDocuments;
 using FEP.WebApiModel.KMC;
 using System;
 using System.Collections.Generic;
@@ -25,8 +26,10 @@ namespace FEP.Intranet.Areas.KMC.Models
         [Display(Name = "FieldCategory", ResourceType = typeof(Language.KMC))]
         public int CategoryId { get; set; }
 
+        [Display(Name = "FieldIsPublic", ResourceType = typeof(Language.KMC))]
         public bool IsPublic { get; set; }
 
+        [Display(Name = "FieldIsShow", ResourceType = typeof(Language.KMC))]
         public bool IsShow { get; set; }
 
         [Display(Name = "FieldThumbnail", ResourceType = typeof(Language.KMC))]
@@ -34,6 +37,7 @@ namespace FEP.Intranet.Areas.KMC.Models
 
         public HttpPostedFileBase ThumbnailFile { get; set; }
 
+        [Display(Name = "FieldIsEditor", ResourceType = typeof(Language.KMC))]
         public bool IsEditor { get; set; }
         
         [Required(ErrorMessageResourceName = "ValidRequiredType", ErrorMessageResourceType = typeof(Language.KMC))]
@@ -48,6 +52,12 @@ namespace FEP.Intranet.Areas.KMC.Models
         [Required(ErrorMessageResourceName = "ValidRequiredEditor", ErrorMessageResourceType = typeof(Language.KMC))]
         [Display(Name = "FieldEditorCode", ResourceType = typeof(Language.KMC))]
         public string EditorCode { get; set; }
+
+        public string filter_imgs { get; set; }
+        public string filter_videos { get; set; }
+        public string filter_audios { get; set; }
+        public string filter_docs { get; set; }
+
     }
 
     public class EditKMCModel
@@ -68,8 +78,10 @@ namespace FEP.Intranet.Areas.KMC.Models
         [Display(Name = "FieldCategory", ResourceType = typeof(Language.KMC))]
         public int CategoryId { get; set; }
 
+        [Display(Name = "FieldIsPublic", ResourceType = typeof(Language.KMC))]
         public bool IsPublic { get; set; }
 
+        [Display(Name = "FieldIsShow", ResourceType = typeof(Language.KMC))]
         public bool IsShow { get; set; }
 
         [Display(Name = "FieldThumbnail", ResourceType = typeof(Language.KMC))]
@@ -77,6 +89,7 @@ namespace FEP.Intranet.Areas.KMC.Models
 
         public HttpPostedFileBase ThumbnailFile { get; set; }
 
+        [Display(Name = "FieldIsEditor", ResourceType = typeof(Language.KMC))]
         public bool IsEditor { get; set; }
 
         [Required(ErrorMessageResourceName = "ValidRequiredType", ErrorMessageResourceType = typeof(Language.KMC))]
@@ -87,9 +100,18 @@ namespace FEP.Intranet.Areas.KMC.Models
         [Display(Name = "FieldFile", ResourceType = typeof(Language.KMC))]
         public HttpPostedFileBase File { get; set; }
 
+        public int? FileId { get; set; }
+                
+        public string FileName { get; set; }
+
         [AllowHtml]
         [Required(ErrorMessageResourceName = "ValidRequiredEditor", ErrorMessageResourceType = typeof(Language.KMC))]
         [Display(Name = "FieldEditorCode", ResourceType = typeof(Language.KMC))]
         public string EditorCode { get; set; }
+
+        public string filter_imgs { get; set; }
+        public string filter_videos { get; set; }
+        public string filter_audios { get; set; }
+        public string filter_docs { get; set; }
     }
 }

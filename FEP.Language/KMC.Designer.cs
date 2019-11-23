@@ -151,6 +151,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created Date.
+        /// </summary>
+        public static string FieldCreatedDate {
+            get {
+                return ResourceManager.GetString("FieldCreatedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string FieldDescription {
@@ -174,6 +183,33 @@ namespace Language {
         public static string FieldFile {
             get {
                 return ResourceManager.GetString("FieldFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content.
+        /// </summary>
+        public static string FieldIsEditor {
+            get {
+                return ResourceManager.GetString("FieldIsEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accessibility.
+        /// </summary>
+        public static string FieldIsPublic {
+            get {
+                return ResourceManager.GetString("FieldIsPublic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Availability.
+        /// </summary>
+        public static string FieldIsShow {
+            get {
+                return ResourceManager.GetString("FieldIsShow", resourceCulture);
             }
         }
         
@@ -342,9 +378,45 @@ namespace Language {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string TitleDescriptionDetails {
+            get {
+                return ResourceManager.GetString("TitleDescriptionDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TitleDescriptionEdit {
+            get {
+                return ResourceManager.GetString("TitleDescriptionEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string TitleDescriptionList {
             get {
                 return ResourceManager.GetString("TitleDescriptionList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to KMC Details.
+        /// </summary>
+        public static string TitleDetails {
+            get {
+                return ResourceManager.GetString("TitleDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update KMC file.
+        /// </summary>
+        public static string TitleEdit {
+            get {
+                return ResourceManager.GetString("TitleEdit", resourceCulture);
             }
         }
         
@@ -363,6 +435,15 @@ namespace Language {
         public static string ValidExistTitle {
             get {
                 return ResourceManager.GetString("ValidExistTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File type is not valid.
+        /// </summary>
+        public static string ValidIsValidTypeFile {
+            get {
+                return ResourceManager.GetString("ValidIsValidTypeFile", resourceCulture);
             }
         }
         

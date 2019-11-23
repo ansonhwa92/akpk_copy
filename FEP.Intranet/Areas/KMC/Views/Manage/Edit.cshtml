@@ -1,7 +1,7 @@
-﻿@model FEP.Intranet.Areas.KMC.Models.CreateKMCModel
+﻿@model FEP.Intranet.Areas.KMC.Models.EditKMCModel
 
 @{
-    ViewBag.Title = "KMC - Create";
+    ViewBag.Title = "KMC - Edit";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
@@ -18,9 +18,9 @@
             width: 250px; /* Set a small width */
         }
 
-        .photo:hover {
-            box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
-        }
+            .photo:hover {
+                box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+            }
     </style>
 }
 
@@ -44,9 +44,11 @@
         $('#File').change(function (e) {
 
             $('.custom-file-label').html('No file choosen');
+            $('#FileName').val('');
 
             if (e.target.files.length > 0) {
-                fileName = e.target.files[0].name;
+                fileName = e.target.files[0].name
+                $('#FileName').val(fileName);
                 $('.custom-file-label').html(fileName);
             }
 
@@ -56,7 +58,6 @@
 
             $('#File').val('');
             $('.custom-file-label').html('No file choosen');
-
             setFileAccept(this.value)
 
         });
@@ -85,6 +86,11 @@
                     $("#File").removeAttr("accept");
 
             }
+        }
+
+        function removeFile() {
+            $('#display_file').addClass("d-none");
+            $("#browse_file").removeClass("d-none");
         }
 
 
@@ -133,7 +139,6 @@
 
         });
 
-
     </script>
 }
 
@@ -154,8 +159,8 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">@Language.KMC.TitleCreate</h1>
-                    <div class="header-text">@Language.KMC.TitleDescriptionCreate</div>
+                    <h1 class="page-title text-white">@Language.KMC.TitleEdit</h1>
+                    <div class="header-text">@Language.KMC.TitleDescriptionEdit</div>
                 </div>
             </div>
         </div>
@@ -167,10 +172,16 @@
         <div id="page-nav" class="sidebar-left page-nav">
             <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> KMC - @Model.Category</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> @Model.Category</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="#" data-toggle="tab" class="active nav-link">Create New</a>
+                            <a href="@Url.Action("Details", "Manage", new { area = "KMC", @id = Model.Id})" class="nav-link">View</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Edit", "Manage", new { area = "KMC", @id = Model.Id})" class="active nav-link">Edit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Delete", "Manage", new { area = "KMC", @id = Model.Id})" class="nav-link">Delete</a>
                         </li>
                     </ul>
                 </div>
@@ -179,12 +190,12 @@
     </div>
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 
-        @using (Html.BeginForm("Create", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("Edit", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <div class="border-form rounded-top">
 
                 @Html.AntiForgeryToken()
-
+                @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.CategoryId)
                 @Html.HiddenFor(model => model.Category)
 
@@ -211,6 +222,7 @@
 
                     <div class="row">
                         <div class="form-group col-lg-12">
+                            @Html.HiddenFor(m => m.ThumbnailUrl)
                             @Html.FEPLabelFor(m => m.ThumbnailUrl)
                             <div class="media align-items-center">
                                 <div class="d-flex mr-3 align-self-center" data-toggle="tooltip" title="Click to upload image" onclick="$('#ThumbnailFile').trigger('click');">
@@ -227,8 +239,8 @@
                                     <div class="custom-file b-form-file">
                                         @Html.TextBoxFor(m => m.ThumbnailFile, htmlAttributes: new { type = "file", accept = @Model.filter_imgs })
                                     </div>
+                                    @Html.ValidationMessageFor(m => m.ThumbnailFile)
                                 </div>
-                                @Html.ValidationMessageFor(m => m.ThumbnailFile)
                             </div>
                         </div>
                     </div>
@@ -253,12 +265,23 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-lg-12">
+                                                               
                                 @Html.FEPLabelFor(model => model.File)
-                                <div class="custom-file">
-                                    @Html.TextBoxFor(model => model.File, htmlAttributes: new { @class = "custom-file-input", @type = "file" })
-                                    <label class="custom-file-label" for="customFile">No file choosen</label>
+                                <div id="display_file" class="input-group @if (Model.FileId == null) { <text>d-none</text> }">
+                                    @Html.HiddenFor(model => model.FileId)
+                                    <span class="form-control">@Html.Raw(@Model.FileName)</span>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" style="cursor:pointer" onclick="removeFile()" data-toggle="tooltip" title="Remove File"><i class="la la-remove"></i></span>
+                                    </div>
                                 </div>
-                                @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+                                <div id="browse_file" class="@if (Model.FileId != null) { <text>d-none</text> }">
+                                    <div class="custom-file">
+                                        @Html.TextBoxFor(model => model.File, htmlAttributes: new { @class = "custom-file-input", @type = "file" })
+                                        <label class="custom-file-label" for="customFile">No file choosen</label>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -270,7 +293,7 @@
                             @Html.ValidationMessageFor(model => model.EditorCode, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    
+
                     <label>@Html.DisplayNameFor(m => m.IsPublic)</label>
                     <div class="form-inline mb-3">
                         <div class="custom-control custom-radio">
@@ -287,7 +310,7 @@
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
                 <a href="@Url.Action("List", "Manage", new { area = "KMC", @id = Model.CategoryId })" class="btn btn-default mr-2">Back</a>
-                <button class="btn btn-secondary" type="submit" name="IsShow" value="false">@Language.General.ButtonSave</button>
+                <button class="btn btn-secondary" type="submit" name="IsShow" value="false">@Language.KMC.ButtonSaveDraft</button>
                 <button class="btn btn-secondary" type="submit" name="IsShow" value="true">@Language.KMC.ButtonSavePublish</button>
             </div>
 

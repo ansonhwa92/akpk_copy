@@ -356,7 +356,7 @@ namespace FEP.WebApi.Api.eLearning
         }
 
         [HttpDelete]
-        public IHttpActionResult Delete(long id)
+        public IHttpActionResult Delete(int id)
         {
 
             var report = db.TOTReport.Where(u => u.Id == id).FirstOrDefault();

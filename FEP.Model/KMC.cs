@@ -31,7 +31,10 @@ namespace FEP.Model
 
         public int? FileId { get; set; }
 
+        public string FileType { get; set; }
+
         public DateTime CreatedDate { get; set; }
+
         public int? CreatedBy { get; set; }
 
         [ForeignKey("CreatedBy")]

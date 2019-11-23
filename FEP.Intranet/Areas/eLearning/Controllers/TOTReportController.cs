@@ -22,7 +22,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> List()
+        public ActionResult List()
         {         
             return View();
         }
@@ -129,9 +129,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 {
                     await LogActivity(Modules.Learning, "Create Train Of Trainer Report", model);
 
-                    TempData["SuccessMessage"] = "Report successfully created";
+                    TempData["SuccessMessage"] = Language.TOT.AlertCreateSuccess;
 
                     return RedirectToAction("List");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = Language.TOT.AlertCreateFail;
                 }
             }
             
@@ -255,9 +259,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 {
                     await LogActivity(Modules.Learning, "Update Train Of Trainer Report", model);
 
-                    TempData["SuccessMessage"] = "Report successfully updated";
+                    TempData["SuccessMessage"] = Language.TOT.AlertEditSuccess;
 
                     return RedirectToAction("List");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = Language.TOT.AlertEditFail;
                 }
             }
 
@@ -297,12 +305,12 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 await LogActivity(Modules.Learning, "Delete Train Of Trainer Report");
 
-                TempData["SuccessMessage"] = "Report successfully deleted";
+                TempData["SuccessMessage"] = Language.TOT.AlertDeleteSuccess;
 
                 return RedirectToAction("List", "TOTReport", new { area = "eLearning" });
             }
 
-            TempData["ErrorMessage"] = "Fail to delete report";
+            TempData["ErrorMessage"] = Language.TOT.AlertDeleteFail;
 
             return RedirectToAction("Delete", new { id = id });
         }

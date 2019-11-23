@@ -147,6 +147,9 @@
   <data name="FieldCreatedBy" xml:space="preserve">
     <value>Created By</value>
   </data>
+  <data name="FieldCreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
   <data name="FieldDescription" xml:space="preserve">
     <value>Description</value>
   </data>
@@ -155,6 +158,15 @@
   </data>
   <data name="FieldFile" xml:space="preserve">
     <value>File</value>
+  </data>
+  <data name="FieldIsEditor" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="FieldIsPublic" xml:space="preserve">
+    <value>Accessibility</value>
+  </data>
+  <data name="FieldIsShow" xml:space="preserve">
+    <value>Availability</value>
   </data>
   <data name="FieldThumbnail" xml:space="preserve">
     <value>Thumbnail Image</value>
@@ -210,14 +222,29 @@
   <data name="TitleDescriptionCreate" xml:space="preserve">
     <value />
   </data>
+  <data name="TitleDescriptionDetails" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TitleDescriptionEdit" xml:space="preserve">
+    <value />
+  </data>
   <data name="TitleDescriptionList" xml:space="preserve">
     <value />
+  </data>
+  <data name="TitleDetails" xml:space="preserve">
+    <value>KMC Details</value>
+  </data>
+  <data name="TitleEdit" xml:space="preserve">
+    <value>Update KMC file</value>
   </data>
   <data name="TitleList" xml:space="preserve">
     <value>KMC File</value>
   </data>
   <data name="ValidExistTitle" xml:space="preserve">
     <value>File Title already registered in the system</value>
+  </data>
+  <data name="ValidIsValidTypeFile" xml:space="preserve">
+    <value>File type is not valid</value>
   </data>
   <data name="ValidRequiredCategory" xml:space="preserve">
     <value>Please select Category</value>

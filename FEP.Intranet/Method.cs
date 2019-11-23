@@ -188,7 +188,7 @@ namespace FEP.Intranet
             return res;
         }
               
-        private static string GetWebApiUrl()
+        public static string GetWebApiUrl()
         {
             string theURL = WebConfigurationManager.AppSettings["WebApiURL"] != null ? WebConfigurationManager.AppSettings["WebApiURL"].ToString() : "";
             return theURL;
@@ -222,13 +222,46 @@ namespace FEP.Intranet
             return null;
         }
               
-        public static async Task<HttpResponseMessage> DownloadFile(int id)
+        public static async Task<FileContentResult> DownloadFile(int id)
         {
-            var responseFile = await WepApiMethod.SendApiAsync<HttpResponseMessage>(HttpVerbs.Get, $"System/File?id={id}");
+            var url = WepApiMethod.GetWebApiUrl();
 
-            return responseFile.Data;
+            FileContentResult result = null;
+
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri(url);
+                client.DefaultRequestHeaders.Accept.Clear();
+
+                HttpResponseMessage responseFile = null;
+
+                responseFile = await client.GetAsync($"System/File/Download?id={id}");
+
+                if (responseFile.IsSuccessStatusCode)
+                {
+                    var base64 = await responseFile.Content.ReadAsByteArrayAsync();
+
+                    var contentdisp = responseFile.Content.Headers.ContentDisposition;
+
+                    var filename = contentdisp.FileName.Trim('"');
+
+                    var contentType = responseFile.Content.Headers.ContentType.MediaType;
+
+                    result = new FileContentResult(base64, contentType)
+                    {
+                        FileDownloadName = filename
+                    };
+                    
+                }
+
+            }
+
+            return result;
 
         }
+
+        
 
         public static string SaveFile(HttpPostedFileBase file, string path, string deletefilename = null)
         {
@@ -282,6 +315,53 @@ namespace FEP.Intranet
 
             return null;
 
+        }
+
+        public static bool IsValidType(HttpPostedFileBase file, string accept_extension = "", string reject_extension = "")
+        {
+            if (file == null)
+            {
+                return false;
+            }
+
+            List<string> accepts = new List<string>();
+            List<string> rejects = new List<string>();
+
+            if (!string.IsNullOrEmpty(accept_extension))
+            {
+                accepts = accept_extension.Split(',').ToList();
+            }
+
+            if (!string.IsNullOrEmpty(reject_extension))
+            {
+                rejects = reject_extension.Split(',').ToList();
+            }
+
+            var extension = Path.GetExtension(file.FileName);
+
+            if (accepts.Count > 0)
+            {
+                var isAccept = accepts.Any(a => a == extension);
+
+                if (isAccept) return true;
+
+                return false;
+
+            }
+
+            if (rejects.Count > 0)
+            {
+
+                var isReject = rejects.Any(a => a == extension);
+
+                if (isReject) return false;
+
+                return true;
+
+            }
+
+            return true;
+            
         }
 
 
@@ -341,160 +421,160 @@ namespace FEP.Intranet
 
     }
 
-    public static class EmailMethod
-    {
+    //public static class EmailMethod
+    //{
 
-        public static async Task<long?> SendEmail(string Subject, string Body, EmailAddress To, DateTime? SendDate = null)
-        {
+    //    public static async Task<long?> SendEmail(string Subject, string Body, EmailAddress To, DateTime? SendDate = null)
+    //    {
 
-            try
-            {
+    //        try
+    //        {
 
-                SendDate = SendDate ?? DateTime.Now;
+    //            SendDate = SendDate ?? DateTime.Now;
 
-                var email = new EmailRecipientModel
-                {
-                    Subject = Subject,
-                    Body = Body,
-                    To = To,
-                    SendDate = SendDate
-                };
+    //            var email = new EmailRecipientModel
+    //            {
+    //                Subject = Subject,
+    //                Body = Body,
+    //                To = To,
+    //                SendDate = SendDate
+    //            };
 
-                var response = await WepApiMethod.SendApiAsync<long?>(HttpVerbs.Post, $"Notification/Email/SendEmailToRecepient", email);
+    //            var response = await WepApiMethod.SendApiAsync<long?>(HttpVerbs.Post, $"Notification/Email/SendEmailToRecepient", email);
 
-                if (response.isSuccess)
-                {
-                    return response.Data;
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-                //LogError(ex.Message, ex.InnerException + " | " + ex.StackTrace);
-                return null;
-            }
-
-            return null;
-        }
+    //            if (response.isSuccess)
+    //            {
+    //                return response.Data;
+    //            }
 
 
-        public static async Task<long?> SendEmail(string Subject, string Body, int UserId, DateTime? SendDate = null)
-        {
-            try
-            {
-                SendDate = SendDate ?? DateTime.Now;
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            //LogError(ex.Message, ex.InnerException + " | " + ex.StackTrace);
+    //            return null;
+    //        }
 
-                var userResponse = await WepApiMethod.SendApiAsync<UserModel>(HttpVerbs.Get, $"Administration/User?id={UserId}");
-
-                if (userResponse.isSuccess)
-                {
-
-                    var user = userResponse.Data;
-
-                    var email = new EmailRecipientModel
-                    {
-                        Subject = Subject,
-                        Body = Body,
-                        To = new EmailAddress { DisplayName = user.Name, Address = user.Email },
-                        SendDate = DateTime.Now
-                    };
-
-                    var emailResponse = await WepApiMethod.SendApiAsync<long?>(HttpVerbs.Post, $"Notification/Email/SendEmailToRecepient", email);
-
-                    if (emailResponse.isSuccess)
-                    {
-                        return emailResponse.Data;
-                    }
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                //LogError(ex.Message, ex.InnerException + " | " + ex.StackTrace);
-                return null;
-            }
-
-            return null;
-        }
+    //        return null;
+    //    }
 
 
-        public static async Task<long?> SendEmail(string Subject, string Body, List<EmailAddress> To, DateTime? SendDate = null)
-        {
-            try
-            {
-                SendDate = SendDate ?? DateTime.Now;
+    //    public static async Task<long?> SendEmail(string Subject, string Body, int UserId, DateTime? SendDate = null)
+    //    {
+    //        try
+    //        {
+    //            SendDate = SendDate ?? DateTime.Now;
 
-                var email = new EmailRecipientsModel
-                {
-                    Subject = Subject,
-                    Body = Body,
-                    To = To,
-                    SendDate = DateTime.Now
-                };
+    //            var userResponse = await WepApiMethod.SendApiAsync<UserModel>(HttpVerbs.Get, $"Administration/User?id={UserId}");
 
-                var response = await WepApiMethod.SendApiAsync<long?>(HttpVerbs.Post, $"Notification/Email/SendEmailToRecepients", email);
+    //            if (userResponse.isSuccess)
+    //            {
 
-                if (response.isSuccess)
-                {
-                    return response.Data;
-                }
+    //                var user = userResponse.Data;
 
-            }
-            catch (Exception ex)
-            {
-                //LogError(ex.Message, ex.InnerException + " | " + ex.StackTrace);
-                return null;
-            }
+    //                var email = new EmailRecipientModel
+    //                {
+    //                    Subject = Subject,
+    //                    Body = Body,
+    //                    To = new EmailAddress { DisplayName = user.Name, Address = user.Email },
+    //                    SendDate = DateTime.Now
+    //                };
 
-            return null;
-        }
+    //                var emailResponse = await WepApiMethod.SendApiAsync<long?>(HttpVerbs.Post, $"Notification/Email/SendEmailToRecepient", email);
 
+    //                if (emailResponse.isSuccess)
+    //                {
+    //                    return emailResponse.Data;
+    //                }
 
-        public static async Task<long?> SendEmail(string Subject, string Body, List<int> RecipientsId, DateTime? SendDate = null)
-        {
-            try
-            {
-                SendDate = SendDate ?? DateTime.Now;
+    //            }
 
-                var userResponse = await WepApiMethod.SendApiAsync<List<UserModel>>(HttpVerbs.Post, $"Administration/UserGetUsers", RecipientsId);
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            //LogError(ex.Message, ex.InnerException + " | " + ex.StackTrace);
+    //            return null;
+    //        }
 
-                if (userResponse.isSuccess)
-                {
-
-                    var users = userResponse.Data;
-
-                    var email = new EmailRecipientsModel
-                    {
-                        Subject = Subject,
-                        Body = Body,
-                        To = users.Select(s => new EmailAddress { Address = s.Email, DisplayName = s.Name }).ToList(),
-                        SendDate = DateTime.Now
-                    };
-
-                    var emailResponse = await WepApiMethod.SendApiAsync<long?>(HttpVerbs.Post, $"Notification/Email/SendEmailToRecepients", email);
-
-                    if (emailResponse.isSuccess)
-                    {
-                        return emailResponse.Data;
-                    }
-
-                }
+    //        return null;
+    //    }
 
 
+    //    public static async Task<long?> SendEmail(string Subject, string Body, List<EmailAddress> To, DateTime? SendDate = null)
+    //    {
+    //        try
+    //        {
+    //            SendDate = SendDate ?? DateTime.Now;
 
-            }
-            catch (Exception ex)
-            {
-                //LogError(ex.Message, ex.InnerException + " | " + ex.StackTrace);
-                return null;
-            }
+    //            var email = new EmailRecipientsModel
+    //            {
+    //                Subject = Subject,
+    //                Body = Body,
+    //                To = To,
+    //                SendDate = DateTime.Now
+    //            };
 
-            return null;
-        }
+    //            var response = await WepApiMethod.SendApiAsync<long?>(HttpVerbs.Post, $"Notification/Email/SendEmailToRecepients", email);
 
-    }
+    //            if (response.isSuccess)
+    //            {
+    //                return response.Data;
+    //            }
+
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            //LogError(ex.Message, ex.InnerException + " | " + ex.StackTrace);
+    //            return null;
+    //        }
+
+    //        return null;
+    //    }
+
+
+    //    public static async Task<long?> SendEmail(string Subject, string Body, List<int> RecipientsId, DateTime? SendDate = null)
+    //    {
+    //        try
+    //        {
+    //            SendDate = SendDate ?? DateTime.Now;
+
+    //            var userResponse = await WepApiMethod.SendApiAsync<List<UserModel>>(HttpVerbs.Post, $"Administration/UserGetUsers", RecipientsId);
+
+    //            if (userResponse.isSuccess)
+    //            {
+
+    //                var users = userResponse.Data;
+
+    //                var email = new EmailRecipientsModel
+    //                {
+    //                    Subject = Subject,
+    //                    Body = Body,
+    //                    To = users.Select(s => new EmailAddress { Address = s.Email, DisplayName = s.Name }).ToList(),
+    //                    SendDate = DateTime.Now
+    //                };
+
+    //                var emailResponse = await WepApiMethod.SendApiAsync<long?>(HttpVerbs.Post, $"Notification/Email/SendEmailToRecepients", email);
+
+    //                if (emailResponse.isSuccess)
+    //                {
+    //                    return emailResponse.Data;
+    //                }
+
+    //            }
+
+
+
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            //LogError(ex.Message, ex.InnerException + " | " + ex.StackTrace);
+    //            return null;
+    //        }
+
+    //        return null;
+    //    }
+
+    //}
 
     public static class Mime
     {
@@ -504,7 +584,7 @@ namespace FEP.Intranet
         {
             var mappings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
 
-                #region Big freaking list of mime types
+                #region list
             
                 // maps both ways,
                 // extension -> mime type

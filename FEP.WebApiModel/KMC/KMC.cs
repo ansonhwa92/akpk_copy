@@ -1,4 +1,5 @@
 ﻿using FEP.Model;
+using FEP.WebApiModel.FileDocuments;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -45,6 +46,8 @@ namespace FEP.WebApiModel.KMC
         [UIHint("Date")]
         [Display(Name = "FieldDateTo", ResourceType = typeof(Language.General))]
         public DateTime? DateTo { get; set; }
+
+        public string QuickSearch { get; set; }
     }
 
     public class CreateKMCModel
@@ -62,6 +65,7 @@ namespace FEP.WebApiModel.KMC
         [Required(ErrorMessageResourceName = "ValidRequiredType", ErrorMessageResourceType = typeof(Language.KMC))]
         public KMCType? Type { get; set; }
         public int? FileId { get; set; }
+        public string FileType { get; set; }
         public string EditorCode { get; set; }
         public bool IsPublic { get; set; }
         public bool IsShow { get; set; }
@@ -76,21 +80,24 @@ namespace FEP.WebApiModel.KMC
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.KMC))]
-        [Display(Name = "FieldTitle", ResourceType = typeof(Language.KMC))]
-        public string Title { get; set; }
-
         [Required(ErrorMessageResourceName = "ValidRequiredCategory", ErrorMessageResourceType = typeof(Language.KMC))]
         public int KMCCategoryId { get; set; }
 
+        [Required(ErrorMessageResourceName = "ValidRequiredTitle", ErrorMessageResourceType = typeof(Language.KMC))]
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
         public string ThumbnailUrl { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredKMCType", ErrorMessageResourceType = typeof(Language.KMC))]
-        public KMCType KMCType { get; set; }
-
+        [Required(ErrorMessageResourceName = "ValidRequiredType", ErrorMessageResourceType = typeof(Language.KMC))]
+        public KMCType? Type { get; set; }
         public int? FileId { get; set; }
-
+        public string FileType { get; set; }
         public string EditorCode { get; set; }
+        public bool IsPublic { get; set; }
+        public bool IsShow { get; set; }
+        public bool IsEditor { get; set; }
 
         [Required(ErrorMessageResourceName = "ValidRequiredCreatedBy", ErrorMessageResourceType = typeof(Language.KMC))]
         public int CreatedBy { get; set; }
@@ -98,18 +105,50 @@ namespace FEP.WebApiModel.KMC
 
     public class DetailsKMCModel
     {
+        public DetailsKMCModel()
+        {
+            Category = new CategoryModel();
+            File = new Attachment();
+        }
+        
         public int Id { get; set; }
         public CategoryModel Category { get; set; }
+
+        [Display(Name = "FieldTitle", ResourceType = typeof(Language.KMC))]
         public string Title { get; set; }
+
+        [Display(Name = "FieldDescription", ResourceType = typeof(Language.KMC))]
         public string Description { get; set; }
-        public string ThumbnailUrl { get; set; }                
+
+        [Display(Name = "FieldThumbnail", ResourceType = typeof(Language.KMC))]
+        public string ThumbnailUrl { get; set; }
+
+        [Display(Name = "FieldType", ResourceType = typeof(Language.KMC))]
         public KMCType? Type { get; set; }
+
         public int? FileId { get; set; }
+        public string FileName { get; set; }
+        public string FileType { get; set; }
+
+        [Display(Name = "FieldFile", ResourceType = typeof(Language.KMC))]
+        public Attachment File { get; set; }
+
+        [Display(Name = "FieldEditorCode", ResourceType = typeof(Language.KMC))]
         public string EditorCode { get; set; }
+
+        [Display(Name = "FieldIsPublic", ResourceType = typeof(Language.KMC))]
         public bool IsPublic { get; set; }
+
+        [Display(Name = "FieldIsShow", ResourceType = typeof(Language.KMC))]
         public bool IsShow { get; set; }
-        public bool IsEditor { get; set; }        
+
+        [Display(Name = "FieldIsEditor", ResourceType = typeof(Language.KMC))]
+        public bool IsEditor { get; set; }
+
+        [Display(Name = "FieldCreatedBy", ResourceType = typeof(Language.KMC))]
         public string CreatedBy { get; set; }
+
+        [Display(Name = "FieldCreatedDate", ResourceType = typeof(Language.KMC))]
         public DateTime CreatedDate { get; set; }
 
     }

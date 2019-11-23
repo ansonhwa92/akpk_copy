@@ -14,9 +14,36 @@
         $(document).ready(function () {
 
 
-
         });
 
+        function searchKMC()
+        {
+
+            var filter =
+            {
+                Title: $('#Filter_Title').val(),
+                CreatedBy: $('#Filter_CreatedBy').val(),
+                DateFrom: $('#Filter_DateFrom').val(),
+                DateTo: $('#Filter_DateTo').val(),
+                QuickSearch: $('#Filter_QuickSearch').val()
+            };
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("_List", "Manage", new { area = "KMC", @id = Model.Category.Id })',
+                dataType: "html",
+                data: filter,
+                success: function (data) {
+
+                    $('#list').html(data);
+
+                },
+                error: function (xhr, status, error) {
+
+                }
+            });
+
+        }
 
     </script>
 
@@ -117,7 +144,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
+                                            <button id="btnSearch" onclick="searchKMC()" class="btn btn-secondary btn-block">Search</button>
                                         </div>
                                     </div>
                                 </div>
@@ -125,15 +152,15 @@
                             <div class="divider-vertical">&nbsp;</div>
                             <!-- Search -->
                             <div class="input-keyword col-lg-5 col-sm-8 mr-auto px-0">
-                                <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+                                @Html.EditorFor(m => m.Filter.QuickSearch, new { htmlAttributes = new { @class = "form-control form-control-rounded", placeholder = "Search" } })
                                 <div class="input-group-append">
-                                    <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+                                    <button class="btn btn-circle" type="button" onclick="searchKMC()"><i class="fas fa-search text-white"></i></button>
                                 </div>
                             </div>
-                         
+
                         </div>
-                        
-                        <div class="sorting-wrap">                            
+
+                        <div class="sorting-wrap">
 
                             <a class="btn btn-secondary btn-lg" href="@Url.Action("Create", "Manage", new { area = "KMC", @id = Model.Category.Id })"><i class="la la-plus font-icon"></i>@Language.General.ButtonCreate</a>
 
@@ -141,57 +168,9 @@
                     </div>
 
                     <div class="some-list">
-                        <div class="row">
+                        <div id="list" class="row">
 
-                            @foreach (var kmc in Model.List)
-                            {
-                                <div class="col-lg-4 col-sm-6">
-                                    <div class="card__wrapper">
-                                        <div class="card__top">
-                                            <div class="card__top__wapper">
-                                                @if (!String.IsNullOrEmpty(kmc.ThumbnailUrl))
-                                                {
-                                                    <img class="card__top__image" src="@(BaseURL)/img/kmc-thumbnail/@(kmc.ThumbnailUrl)" alt="image">
-                                                }
-                                                else
-                                                {
-                                                    <img class="card__top__image" src="@(BaseURL)/img/kmc-thumbnail/no-image.png" alt="image">
-                                                }
-
-                                            </div>
-                                        </div>
-                                        <div class="card__body">
-                                            <a class="card__title" href="@Url.Action("Details", "Manage", new { area = "KMC", @id = kmc.Id })">@kmc.Title</a>
-                                            <div class="card__author">
-                                                <a class="card__col-left">
-                                                    <span class="card__avatar">
-                                                        @if (!String.IsNullOrEmpty(kmc.AvatarUrl))
-                                                        {
-                                                            <img class="card__avatar__image" src="@(BaseURL)/img/avatar/@(kmc.AvatarUrl)" alt="image">
-                                                        }
-                                                        else
-                                                        {
-                                                            <img class="card__avatar__image" src="@(BaseURL)/img/no-photo.jpg" alt="image">
-                                                        }
-                                                    </span>
-                                                    <span class="card__name-wrap"><span class="card__instructby">Created by</span><span class="card__author-name">@kmc.CreatedBy</span></span>
-                                                </a>
-                                            </div>
-                                            <div class="card__info" style="cursor:default">
-                                                <div class="card__col-left">
-                                                    <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Created Date"><span class="d-inline-block">@kmc.CreatedDate.ToString("d MMMM yyyy")</span></span></div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            }
-
-
-
-
+                            @Html.Partial("_List", Model.List)
 
                         </div>
                     </div>

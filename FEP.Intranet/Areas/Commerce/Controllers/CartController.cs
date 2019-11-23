@@ -185,10 +185,19 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
 
             if (ppromo == null)
             {
-                ViewBag.PromoStatus = "Invalid";
-                ViewBag.PromoExpired = false;
-                ViewBag.Discount = 0;
-            }
+				if ((mycart.Cart.DiscountCode != "") && (mycart.Cart.DiscountCode != null))
+				{
+					ViewBag.PromoStatus = "Invalid";
+					ViewBag.PromoExpired = false;
+					ViewBag.Discount = 0;
+				}
+				else
+				{
+					ViewBag.PromoStatus = "None";
+					ViewBag.PromoExpired = false;
+					ViewBag.Discount = 0;
+				}
+			}
             else
             {
                 if (ppromo.Result == "Valid")

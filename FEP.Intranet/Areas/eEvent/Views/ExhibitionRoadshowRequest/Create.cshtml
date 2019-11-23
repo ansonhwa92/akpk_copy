@@ -207,6 +207,14 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.ContactNo)
+								@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
 								@Html.FEPLabelFor(model => model.AddressStreet1)
 								@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
 								@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })

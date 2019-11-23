@@ -20,7 +20,11 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[DataType(DataType.EmailAddress)]
 		[Display(Name = "ExRoadOrganiserEmail", ResourceType = typeof(Language.Event))]
 		public string OrganiserEmail { get; set; }
+
 		
+		[Display(Name = "ExRoadContactNo", ResourceType = typeof(Language.Event))]
+		public string ContactNo { get; set; }
+
 		[Display(Name = "ExRoadLocation", ResourceType = typeof(Language.Event))]
 		public string AddressStreet1 { get; set; }
 		public string AddressStreet2 { get; set; }
@@ -114,6 +118,12 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "ExRoadOrganiserEmail", ResourceType = typeof(Language.Event))]
 		public string OrganiserEmail { get; set; }
 
+		[Required(ErrorMessage = "Please Insert Contact Number")]
+		[DataType(DataType.PhoneNumber)]
+		[RegularExpression(@"^[0-9]{11,}$", ErrorMessage = "Not a valid phone number")]
+		[Display(Name = "ExRoadContactNo", ResourceType = typeof(Language.Event))]
+		public string ContactNo { get; set; }
+
 		[Required(ErrorMessage = "Please insert Location")]
 		[Display(Name = "ExRoadLocation", ResourceType = typeof(Language.Event))]
 		public string AddressStreet1 { get; set; }
@@ -175,13 +185,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "ExRoadReceivedBys", ResourceType = typeof(Language.Event))]
 		public IEnumerable<SelectListItem> ReceivedBys { get; set; }
 
-		[Required(ErrorMessage = "Please select Nominees")]
+		[Required(ErrorMessage = "Please select Exhibitors")]
 		[Display(Name = "ExRoadNomineeId", ResourceType = typeof(Language.Event))]
 		public int[] NomineeId { get; set; }
 
 		[Display(Name = "ExRoadNomineeName", ResourceType = typeof(Language.Event))]
 		public string NomineeName { get; set; }
 
+		[Required(ErrorMessage = "Please select Branch")]
 		[Display(Name = "ExRoadBranch", ResourceType = typeof(Language.Event))]
 		public int? BranchId { get; set; }
 

@@ -106,8 +106,8 @@ namespace FEP.Model
 		AcceptParticipation_Exhibition_RoadShow,
 		[Display(Name = "Exhibition RoadShow - Decline Participation")]
 		DeclineParticipation_Exhibition_RoadShow,
-		[Display(Name = "Exhibition RoadShow - Send Invitation To Nominees")]
-		SendInvitationToNominees,
+		//[Display(Name = "Exhibition RoadShow - Send Invitation To Nominees")]
+		//SendInvitationToNominees,
 
 		//Payment 
 		[Display(Name = "Payment Pending GL")]

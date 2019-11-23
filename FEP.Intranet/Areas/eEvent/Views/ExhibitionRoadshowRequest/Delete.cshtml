@@ -233,6 +233,13 @@
 
 								<div class="row">
 									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.ContactNo)
+										@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-12">
 										@Html.FEPLabelFor(model => model.AddressStreet1)
 										@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1", @readonly = "readonly" } })
 									</div>

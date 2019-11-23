@@ -27,15 +27,79 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 		[AllowAnonymous]
-		public async Task<ActionResult> BrowseEvent(string keyword, string sorting, bool? Workshops, bool? seminars, bool? dialogues, bool? conferences, bool? symposium, bool? convention)
+		public async Task<ActionResult> BrowseEvent(string keyword, string sorting, bool? workshops, bool? seminars, bool? dialogues,
+			bool? conferences, bool? symposium, bool? convention)
 		{
-			var response = await WepApiMethod.SendApiAsync<BrowseEventModel>(HttpVerbs.Get, $"eEvent/PublicEvent/GetPublishedPublicEvent");
-				 if (!response.isSuccess)
+			if (keyword == null) keyword = "";
+			if (sorting == null) sorting = "default";
+			if (workshops == null) workshops = true;
+			if (seminars == null) seminars = true;
+			if (dialogues == null) dialogues = true;
+			if (conferences == null) conferences = true;
+			if (symposium == null) symposium = true;
+			if (convention == null) convention = true;
+
+			var response = await WepApiMethod.SendApiAsync<BrowseEventModel>(HttpVerbs.Get, $"eEvent/PublicEvent/GetPublishedPublicEvent" +
+				$"?keyword={keyword}&sorting={sorting}&workshops={workshops}&seminars={seminars}&dialogues={dialogues}&conferences={conferences}" +
+				$"symposium={symposium}&convention={convention}");
+
+			if (!response.isSuccess)
 			{
 				return HttpNotFound();
 			}
 
-			return View();
+			var browser = response.Data;
+
+			if (browser == null)
+			{
+				return HttpNotFound();
+			}
+
+			if (browser.Sorting == "title")
+			{
+				ViewBag.DefaultSorting = "";
+				ViewBag.TitleSorting = "selected";
+				ViewBag.YearSorting = "";
+				ViewBag.AddedSorting = "";
+			}
+			else if (browser.Sorting == "year")
+			{
+				ViewBag.DefaultSorting = "";
+				ViewBag.TitleSorting = "";
+				ViewBag.YearSorting = "selected";
+				ViewBag.AddedSorting = "";
+			}
+			else if (browser.Sorting == "added")
+			{
+				ViewBag.DefaultSorting = "";
+				ViewBag.TitleSorting = "";
+				ViewBag.YearSorting = "";
+				ViewBag.AddedSorting = "selected";
+			}
+			else
+			{
+				ViewBag.DefaultSorting = "selected";
+				ViewBag.TitleSorting = "";
+				ViewBag.YearSorting = "";
+				ViewBag.AddedSorting = "";
+			}
+
+			ViewBag.Typeworkshops = "";
+			ViewBag.Typeseminars = "";
+			ViewBag.Typedialogues = "";
+			ViewBag.Typeconferences = "";
+			ViewBag.Typesymposium = "";
+			ViewBag.Typeconvention = "";
+
+			if ((bool)workshops) { ViewBag.Typeworkshops = "checked"; }
+			if ((bool)seminars) { ViewBag.Typeseminars = "checked"; }
+			if ((bool)dialogues) { ViewBag.Typedialogues = "checked"; }
+			if ((bool)conferences) { ViewBag.Typeconferences = "checked"; }
+			if ((bool)symposium) { ViewBag.Typesymposium  = "checked"; }
+			if ((bool)convention) { ViewBag.Typeconvention = "checked"; }
+			
+
+			return View(browser);
 		}
 
 		[ChildActionOnly]

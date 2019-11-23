@@ -2,6 +2,7 @@
 using FEP.Model;
 using FEP.WebApiModel.FileDocuments;
 using FEP.WebApiModel.MediaInterview;
+using FEP.WebApiModel.SLAReminder;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -698,6 +699,86 @@ namespace FEP.WebApi.Api.eEvent
 			}
 			return Ok();
 		}
+
+		//[Route("api/eEvent/MediaInterviewRequest/RepAvailable")]
+		//public bool RepAvailable(int id)
+		//{
+		//	var media = db.EventMediaInterviewRequest.Where(p => p.Id == id).FirstOrDefault();
+
+		//	if (media != null)
+		//	{
+		//		ParameterListToSend paramToSend = new ParameterListToSend();
+		//		paramToSend.EventCode = media.RefNo;
+		//		paramToSend.EventName = media.MediaName;
+		//		paramToSend.EventApproval = media.MediaStatus.GetDisplayName();
+		//		paramToSend.EventLocation = "";
+		//		paramToSend.EventMediaEmail = media.Email;
+
+		//		var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType.RepAvailable_MediaInterview).FirstOrDefault();
+		//		string Subject = generateBodyMessage("Media Interview - Representative Available", NotificationType.RepAvailable_MediaInterview, paramToSend);
+		//		string Body = generateBodyMessage(template.TemplateMessage, NotificationType.RepAvailable_MediaInterview, paramToSend);
+
+		//		var sendresult = SendBulkEmail(NotificationType.Submit_Survey_Response, NotificationCategory.ResearchAndPublication, Email, paramToSend, Subject, Body);
+
+		//	}
+		//	return true;
+		//}
+
+		//[NonAction]
+		//public string generateBodyMessage(string TemplateText, NotificationType NotificationType, ParameterListToSend paramToSend)
+		//{
+		//	var ParamList = db.TemplateParameters.Where(p => p.NotificationType == NotificationType).ToList();
+		//	string WholeText = TemplateText;
+		//	foreach (var item in ParamList)
+		//	{
+		//		string theValue = GetPropertyValues(paramToSend, item.TemplateParameterType);
+		//		string textToReplace = "[#" + item.TemplateParameterType + "]";
+		//		WholeText = WholeText.Replace(textToReplace, theValue);
+		//	}
+
+		//	return WholeText;
+		//}
+
+		//[NonAction]
+		//public string GetPropertyValues(Object obj, string propertyName)
+		//{
+		//	Type t = obj.GetType();
+		//	System.Reflection.PropertyInfo[] props = t.GetProperties();
+		//	string value = "";
+		//	foreach (var prop in props)
+		//		if (prop.Name == propertyName)
+		//		{
+		//			value = (prop.GetValue(obj))?.ToString();
+		//			break;
+		//		}
+		//		else
+		//			value = "";
+
+		//	return value;
+		//}
+
+		//[NonAction]
+		//public async System.Threading.Tasks.Task<IHttpActionResult> SendBulkEmail(NotificationType NotificationType, NotificationCategory NotificationCategory, string Emails, ParameterListToSend ParameterListToSend, string emailSubject, string emailBody, bool customlink = false)
+		//{
+		//	bool success = true;
+		//	foreach (string receiverEmailAddress in Emails)
+		//	{
+		//		int counter = 1;
+		//		if (customlink)
+		//		{
+		//			var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType).FirstOrDefault();
+		//			ParameterListToSend.SurveyLink = ParameterListToSend.SurveyLink.Replace("{email}", receiverEmailAddress);
+		//			emailBody = generateBodyMessage(template.TemplateMessage, NotificationType, ParameterListToSend);
+		//		}
+		//		var response = await sendEmailUsingAPIAsync(DateTime.Now, (int)NotificationCategory, (int)NotificationType, receiverEmailAddress, emailSubject, emailBody, counter);
+		//		if (response == null)
+		//		{
+		//			success = false;
+		//		}
+		//	}
+
+		//	return Ok(success);
+		//}
 
 		[Route("api/eEvent/MediaInterviewRequest/RepNotAvailable")]
 		public IHttpActionResult RepNotAvailable(int id)

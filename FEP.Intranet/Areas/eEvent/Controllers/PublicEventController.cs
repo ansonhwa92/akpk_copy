@@ -480,7 +480,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verify_PublicEvent}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Submit_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -544,7 +544,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 				paramToSend.EventLocation = response.Data.Venue;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver1_PublicEvent}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verify_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -604,7 +604,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver2_PublicEvent}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver1_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -665,7 +665,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver3_PublicEvent}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver2_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -726,7 +726,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.EventAdministratorFED}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver3_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -1322,7 +1322,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
 				paramToSend.Reason = response.Data.Reason;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verifier_CancellationModificationRequest}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Submit_CancellationModificationRequest}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -1384,7 +1384,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
 				paramToSend.Reason = response.Data.Reason;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver1_CancellationModificationRequest}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verifier_CancellationModificationRequest}");
 				if (receiveresponse.isSuccess)
 
 
@@ -1448,7 +1448,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
 				paramToSend.Reason = response.Data.Reason;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver2_CancellationModificationRequest}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver1_CancellationModificationRequest}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -1512,7 +1512,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
 				paramToSend.Reason = response.Data.Reason;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver3_CancellationModificationRequest}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver2_CancellationModificationRequest}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -1576,7 +1576,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
 				paramToSend.Reason = response.Data.Reason;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.EventAdministratorFED}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver3_CancellationModificationRequest}");
 				if (receiveresponse.isSuccess)
 				{
 

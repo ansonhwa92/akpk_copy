@@ -22,14 +22,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Media Type")]
 		public MediaType? MediaType { get; set; }
 
-		[Required(ErrorMessage = "Please Insert Contact Person")]
-		[Display(Name = "Contact Person")]
+		[Required(ErrorMessage = "Please Insert Name")]
+		[Display(Name = "Contact Person Name")]
 		public string ContactPerson { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Contact Number")]
 		[DataType(DataType.PhoneNumber)]
-		[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
-		[Display(Name = "Contact Number")]
+		[RegularExpression(@"^[0-9]{11,}$", ErrorMessage = "Not a valid phone number")]
+		[Display(Name = "Contact Person Number")]
 		public string ContactNo { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Address")]
@@ -47,7 +47,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Required(ErrorMessage = "Please Insert Email")]
 		[DataType(DataType.EmailAddress)]
-		[Display(Name = "Email")]
+		[Display(Name = "Contact Person Email")]
 		public string Email { get; set; }
 
 		

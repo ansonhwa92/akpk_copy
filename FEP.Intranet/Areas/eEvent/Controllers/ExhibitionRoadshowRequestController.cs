@@ -20,6 +20,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		// GET: eEvent/ExhibitionRoadshowRequest
 		public ActionResult List()
 		{
+			//int? CurrentUserId = CurrentUser.UserId;
+
+			//var access = new ListExhibitionRoadshowRequestModel();
+
+			//access.List.HasDetail = false;
+			//access.List.HasEdit = CurrentUser.HasAccess(UserAccess.EventAdministratorCCD);
+			//access.List.HasDelete = CurrentUser.HasAccess(UserAccess.EventAdministratorCCD);
+
 			return View();
 		}
 
@@ -69,6 +77,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				CreatedByName = exapproval.exhibitionroadshow.CreatedByName,
 				BranchId = exapproval.exhibitionroadshow.BranchId,
 				BranchName = exapproval.exhibitionroadshow.BranchName,
+				ContactNo = exapproval.exhibitionroadshow.ContactNo,
+				RefNo = exapproval.exhibitionroadshow.RefNo,
 			};
 
 			var approval = new ApprovalModel
@@ -250,6 +260,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					NomineeId = model.NomineeId,
 					CreatedBy = CurrentUser.UserId,
 					BranchId = model.BranchId,
+					ContactNo = model.ContactNo,
 				};
 
 				//attachment
@@ -291,7 +302,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 
-
+		[HasAccess(UserAccess.EventAdministratorCCD)]
 		[HttpGet]
 		public async Task<ActionResult> Edit(int? id)
 		{
@@ -332,6 +343,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				RefNo = response.Data.RefNo,
 				BranchId = response.Data.BranchId,
 				BranchName = response.Data.BranchName,
+				ContactNo = response.Data.ContactNo,
 			};
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
@@ -381,6 +393,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					NomineeId = model.NomineeId,
 					BranchId = model.BranchId,
 					BranchName = model.BranchName,
+					ContactNo = model.ContactNo,
+					RefNo = model.RefNo,
 				};
 
 				//attachment
@@ -414,6 +428,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 		}
 
+		[HasAccess(UserAccess.EventAdministratorCCD)]
 		[HttpGet]
 		public async Task<ActionResult> Delete(int? id)
 		{
@@ -452,6 +467,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				Attachments = response.Data.Attachments,
 				BranchId = response.Data.BranchId,
 				BranchName = response.Data.BranchName,
+				ContactNo = response.Data.ContactNo,
+				RefNo = response.Data.RefNo,
 			};
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
@@ -511,7 +528,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventName;
 				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verify_ExhibitionRoadShow}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Submit_ExhibitionRoadShow}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -572,7 +589,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventName;
 				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver1_ExhibitionRoadShow}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verify_ExhibitionRoadShow}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -630,7 +647,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventName;
 				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver2_ExhibitionRoadShow}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver1_ExhibitionRoadShow}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -690,7 +707,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventName;
 				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver3_ExhibitionRoadShow}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver2_ExhibitionRoadShow}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -750,7 +767,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventName;
 				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.EventAdministratorCCD}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver3_ExhibitionRoadShow}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -872,7 +889,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventName;
 				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verify_ExhibitionRoadShow}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Submit_ExhibitionRoadShow}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -934,7 +951,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventName;
 				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver1_ExhibitionRoadShow}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verify_ExhibitionRoadShow}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -1220,65 +1237,65 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 
 
-		public async Task<ActionResult> SendInvitationToNominees(int? id)
-		{
-			if (id == null)
-			{
-				return HttpNotFound();
-			}
-			var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SendInvitationToNominees?id={id}");
-			if (response.isSuccess)
-			{
-				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetSLAId?id={id}");
-				if (responseGetSLAId.isSuccess)
-				{
-					int SLAReminderStatusId = responseGetSLAId.Data;
-					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
-						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
-					List<BulkNotificationModel> myNotification = responseSLA.Data;
-				}
+		//public async Task<ActionResult> SendInvitationToNominees(int? id)
+		//{
+		//	if (id == null)
+		//	{
+		//		return HttpNotFound();
+		//	}
+		//	var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SendInvitationToNominees?id={id}");
+		//	if (response.isSuccess)
+		//	{
+		//		//--------------------------------------------------Stop Previous Email---------------------------------------------//
+		//		var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetSLAId?id={id}");
+		//		if (responseGetSLAId.isSuccess)
+		//		{
+		//			int SLAReminderStatusId = responseGetSLAId.Data;
+		//			var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+		//				(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+		//			List<BulkNotificationModel> myNotification = responseSLA.Data;
+		//		}
 
-				//--------------------------------------------------Send Email---------------------------------------------//
+		//		//--------------------------------------------------Send Email---------------------------------------------//
 
-				ParameterListToSend paramToSend = new ParameterListToSend();
-				paramToSend.EventCode = response.Data.RefNo;
-				paramToSend.EventName = response.Data.EventName;
-				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
+		//		ParameterListToSend paramToSend = new ParameterListToSend();
+		//		paramToSend.EventCode = response.Data.RefNo;
+		//		paramToSend.EventName = response.Data.EventName;
+		//		paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.EventAdministratorCCD}");
-				if (receiveresponse.isSuccess)
-				{
+		//		var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.EventAdministratorCCD}");
+		//		if (receiveresponse.isSuccess)
+		//		{
 
-					CreateAutoReminder reminder = new CreateAutoReminder
-					{
-						NotificationType = NotificationType.SendInvitationToNominees,
-						NotificationCategory = NotificationCategory.Event,
-						ParameterListToSend = paramToSend,
-						StartNotificationDate = DateTime.Now,
-						ReceiverId = receiveresponse.Data,
-					};
-					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					if (response2.isSuccess)
-					{
-						int saveThisID = response2.Data.SLAReminderStatusId;
-						response.Data.SLAReminderStatusId = saveThisID;
-						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-						if (response3.isSuccess) { }
-					}
+		//			CreateAutoReminder reminder = new CreateAutoReminder
+		//			{
+		//				NotificationType = NotificationType.SendInvitationToNominees,
+		//				NotificationCategory = NotificationCategory.Event,
+		//				ParameterListToSend = paramToSend,
+		//				StartNotificationDate = DateTime.Now,
+		//				ReceiverId = receiveresponse.Data,
+		//			};
+		//			var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+		//			if (response2.isSuccess)
+		//			{
+		//				int saveThisID = response2.Data.SLAReminderStatusId;
+		//				response.Data.SLAReminderStatusId = saveThisID;
+		//				var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+		//				if (response3.isSuccess) { }
+		//			}
 
-					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is send invitation to nominees.");
-					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully send invitation to nominees.";
-				}
+		//			await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is send invitation to nominees.");
+		//			TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully send invitation to nominees.";
+		//		}
 
-				return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent" });
-			}
-			else
-			{
-				TempData["ErrorMessage"] = "Failed to send invitation to nominees.";
-				return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = id });
-			}
-		}
+		//		return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent" });
+		//	}
+		//	else
+		//	{
+		//		TempData["ErrorMessage"] = "Failed to send invitation to nominees.";
+		//		return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = id });
+		//	}
+		//}
 
 
 

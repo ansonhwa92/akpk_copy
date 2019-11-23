@@ -208,10 +208,10 @@
     <value>Remark</value>
   </data>
   <data name="ExRoadNomineeId" xml:space="preserve">
-    <value>Select Nominees</value>
+    <value>Select Exhibitors</value>
   </data>
   <data name="ExRoadNomineeName" xml:space="preserve">
-    <value>Select Nominees</value>
+    <value>Select Exhibitors</value>
   </data>
   <data name="PubEventCategoryId" xml:space="preserve">
     <value>Category</value>
@@ -407,5 +407,8 @@
   </data>
   <data name="ExRoadBranch" xml:space="preserve">
     <value>Branch</value>
+  </data>
+  <data name="ExRoadContactNo" xml:space="preserve">
+    <value>Organiser Phone No.</value>
   </data>
 </root>

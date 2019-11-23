@@ -163,7 +163,6 @@ namespace FEP.WebApi.Api.eEvent
 				query = query.OrderByDescending(o => o.EventName);
 			}
 
-
 			var data = query.Skip(request.start).Take(request.length)
 				.Select(i => new ExhibitionRoadshowRequestModel
 				{
@@ -171,6 +170,7 @@ namespace FEP.WebApi.Api.eEvent
 					EventName = i.EventName,
 					Organiser = i.Organiser,
 					OrganiserEmail = i.OrganiserEmail,
+					ContactNo = i.OrganiserPhoneNo,
 					AddressStreet1 = i.AddressStreet1,
 					AddressStreet2 = i.AddressStreet2,
 					AddressPoscode = i.AddressPoscode,
@@ -187,7 +187,10 @@ namespace FEP.WebApi.Api.eEvent
 					Receive_Via = i.Receive_Via,
 					RefNo = i.RefNo,
 					BranchId = i.BranchId,
-					BranchName = i.Branch.Name
+					BranchName = i.Branch.Name,
+					HasDetail = false,
+					HasEdit = false,
+					HasDelete = false,
 				}).ToList();
 
 			data.ForEach(s => s.ExhibitionStatusDesc = s.ExhibitionStatus.GetDisplayName());
@@ -233,6 +236,7 @@ namespace FEP.WebApi.Api.eEvent
 					CreatedByName = s.CreatedByUser.Name,
 					BranchId = s.BranchId,
 					BranchName = s.Branch.Name,
+					ContactNo = s.OrganiserPhoneNo,
 				}).FirstOrDefault();
 
 
@@ -295,6 +299,7 @@ namespace FEP.WebApi.Api.eEvent
 				EventName = model.EventName,
 				Organiser = model.Organiser,
 				OrganiserEmail = model.OrganiserEmail,
+				OrganiserPhoneNo = model.ContactNo,
 				AddressStreet1 = model.AddressStreet1,
 				AddressStreet2 = model.AddressStreet2,
 				AddressPoscode = model.AddressPoscode,
@@ -383,6 +388,7 @@ namespace FEP.WebApi.Api.eEvent
 			exroad.EventName = model.EventName;
 			exroad.Organiser = model.Organiser;
 			exroad.OrganiserEmail = model.OrganiserEmail;
+			exroad.OrganiserPhoneNo = model.ContactNo;
 			exroad.AddressStreet1 = model.AddressStreet1;
 			exroad.AddressStreet2 = model.AddressStreet2;
 			exroad.AddressPoscode = model.AddressPoscode;
@@ -403,6 +409,7 @@ namespace FEP.WebApi.Api.eEvent
 			db.Entry(exroad).Property(x => x.EventName).IsModified = true;
 			db.Entry(exroad).Property(x => x.Organiser).IsModified = true;
 			db.Entry(exroad).Property(x => x.OrganiserEmail).IsModified = true;
+			db.Entry(exroad).Property(x => x.OrganiserPhoneNo).IsModified = true;
 			db.Entry(exroad).Property(x => x.AddressStreet1).IsModified = true;
 			db.Entry(exroad).Property(x => x.AddressStreet2).IsModified = true;
 			db.Entry(exroad).Property(x => x.AddressPoscode).IsModified = true;
@@ -417,6 +424,7 @@ namespace FEP.WebApi.Api.eEvent
 			db.Entry(exroad).Property(x => x.ReceivedDate).IsModified = true;
 			db.Entry(exroad).Property(x => x.Receive_Via).IsModified = true;
 
+			db.Entry(exroad).Property(x => x.RefNo).IsModified = false;
 			db.Entry(exroad).Property(x => x.ExhibitionStatus).IsModified = false;
 			db.Entry(exroad).Property(x => x.Display).IsModified = false;
 			db.Entry(exroad).Property(x => x.Id).IsModified = false;
@@ -875,33 +883,33 @@ namespace FEP.WebApi.Api.eEvent
 			return Ok();
 		}
 
-		[Route("api/eEvent/ExhibitionRoadshowRequest/SendInvitationToNominees")]
-		public IHttpActionResult SendInvitationToNominees(int id)
-		{
+		//[Route("api/eEvent/ExhibitionRoadshowRequest/SendInvitationToNominees")]
+		//public IHttpActionResult SendInvitationToNominees(int id)
+		//{
 
-			var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
+		//	var exroad = db.EventExhibitionRequest.Where(p => p.Id == id).FirstOrDefault();
 
-			if (exroad != null)
-			{
-				exroad.ExhibitionStatus = ExhibitionStatus.NomineesInvited;
-				db.EventExhibitionRequest.Attach(exroad);
-				db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
-				db.Configuration.ValidateOnSaveEnabled = false;
-				db.SaveChanges();
+		//	if (exroad != null)
+		//	{
+		//		exroad.ExhibitionStatus = ExhibitionStatus.NomineesInvited;
+		//		db.EventExhibitionRequest.Attach(exroad);
+		//		db.Entry(exroad).Property(m => m.ExhibitionStatus).IsModified = true;
+		//		db.Configuration.ValidateOnSaveEnabled = false;
+		//		db.SaveChanges();
 
-				ExhibitionRoadshowRequestModel model = new ExhibitionRoadshowRequestModel
-				{
-					Id = exroad.Id,
-					EventName = exroad.EventName,
-					RefNo = exroad.RefNo,
-					ExhibitionStatus = exroad.ExhibitionStatus,
-					ExhibitionStatusDesc = exroad.ExhibitionStatus.GetDisplayName()
-				};
+		//		ExhibitionRoadshowRequestModel model = new ExhibitionRoadshowRequestModel
+		//		{
+		//			Id = exroad.Id,
+		//			EventName = exroad.EventName,
+		//			RefNo = exroad.RefNo,
+		//			ExhibitionStatus = exroad.ExhibitionStatus,
+		//			ExhibitionStatusDesc = exroad.ExhibitionStatus.GetDisplayName()
+		//		};
 
-				return Ok(model);
-			}
-			return Ok();
-		}
+		//		return Ok(model);
+		//	}
+		//	return Ok();
+		//}
 
 		[Route("api/eEvent/ExhibitionRoadshowRequest/GetHistory")]
 		public List<ExhibitionApprovalHistoryModel> GetHistory(int id)
@@ -1033,6 +1041,7 @@ namespace FEP.WebApi.Api.eEvent
 					CreatedByName = s.CreatedByUser.Name,
 					BranchId = s.BranchId,
 					BranchName = s.Branch.Name,
+					ContactNo = s.OrganiserPhoneNo
 				}).FirstOrDefault();
 
 			if (exhibition == null)

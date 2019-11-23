@@ -127,13 +127,13 @@
 
 							if (row.ExhibitionStatus == 0) {
 								action += '<a href="@Url.Action("Details", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-								action += '<a href="@Url.Action("Edit", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-								action += '<a href="@Url.Action("Delete", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
-							} else if (row.ExhibitionStatus == 3) {
+									action += '<a href="@Url.Action("Edit", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+									action += '<a href="@Url.Action("Delete", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+								} else if (row.ExhibitionStatus == 3) {
 								action += '<a href="@Url.Action("Details", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-								action += '<a href="@Url.Action("Edit", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-							} else {
-																action += '<a href="@Url.Action("Details", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+									action += '<a href="@Url.Action("Edit", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+								} else {
+								action += '<a href="@Url.Action("Details", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
 							}
 								action += '</div>';
 
@@ -268,12 +268,13 @@
 			</span>
 		</div>
 		<div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-		@if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)) {
-		<div><a href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
+		@if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD))
+		{
+			<div><a href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
 		}
 	</div>
 	<!-- Table -->
-	<table class="table tableStyle1 tabledata">
+	<table class="table tableStyle1 tabledata table-responsive-xs-plus">
 		<thead>
 			<tr>
 				<th>#</th>

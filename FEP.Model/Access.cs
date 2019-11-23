@@ -58,19 +58,30 @@ namespace FEP.Model
 		EventMenu = 1001,
 		[Display(Name = "Internal Event Menu")]
 		EventIntenalEventMenu = 1002,
+
+
+
+		//--------Untuk Button Sahaja----//
 		[Display(Name = "Event Admin - FED")]
 		EventAdministratorFED = 1003,
-
 		[Display(Name = "Event Admin - CCD")]
 		EventAdministratorCCD = 1004,
-
 		[Display(Name = "Event Reception")]
 		EventReception = 1005,
+		[Display(Name = "Event Admin - FED")]
+		EventVerifierFED = 1006,
+		[Display(Name = "Event Admin - CCD")]
+		EventVerifierCCD = 1007,
+		[Display(Name = "Event Approver 1")]
+		EventApprover1 = 1008,
+		[Display(Name = "Event Approver 2")]
+		EventApprover2 = 1009,
+		[Display(Name = "Event Approver 3")]
+		EventApprover3 = 1010,
+		//--------/Untuk Button Sahaja----//
 
-		[Display(Name = "Event Moderator")]
-		EventModerator = 1006,
 
-
+		//--------Untuk Notification Receiver-------//
 		[Display(Name = "Media Interview - Submit")]
 		Submit_MediaInterview = 1011,
 		[Display(Name = "Media Interview - Verify")]

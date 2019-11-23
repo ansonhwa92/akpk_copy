@@ -405,6 +405,7 @@ namespace FEP.Model
 		public string EventName { get; set; }
 		public string Organiser { get; set; }
 		public string OrganiserEmail { get; set; }
+		public string OrganiserPhoneNo { get; set; }
 		public string AddressStreet1 { get; set; }
 		public string AddressStreet2 { get; set; }
 		public string AddressPoscode { get; set; }

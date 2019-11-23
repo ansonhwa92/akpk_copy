@@ -259,6 +259,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Organiser Phone No..
+        /// </summary>
+        public static string ExRoadContactNo {
+            get {
+                return ResourceManager.GetString("ExRoadContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End Date.
         /// </summary>
         public static string ExRoadEndDate {
@@ -322,7 +331,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Nominees.
+        ///   Looks up a localized string similar to Select Exhibitors.
         /// </summary>
         public static string ExRoadNomineeId {
             get {
@@ -331,7 +340,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Nominees.
+        ///   Looks up a localized string similar to Select Exhibitors.
         /// </summary>
         public static string ExRoadNomineeName {
             get {

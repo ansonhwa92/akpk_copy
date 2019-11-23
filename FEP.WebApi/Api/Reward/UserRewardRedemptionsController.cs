@@ -170,6 +170,13 @@ namespace FEP.WebApi.Api.Reward
             int totalPoints = points.Sum(p => p.PointsReceived);
 
             var redeemed = db.UserRewardRedemption.Where(r => r.UserId == model.UserId).ToList();
+
+            var getExistingReward = redeemed.Where(r => r.RewardRedemptionId == model.RewardRedemptionId).FirstOrDefault();
+            if(getExistingReward != null)
+            {
+                return BadRequest("You already claimed this reward");
+            }
+
             int usedPoints = redeemed.Sum(u => u.RewardRedemption.PointsToRedeem);
 
             int pointsLeft = totalPoints - usedPoints;
@@ -222,6 +229,34 @@ namespace FEP.WebApi.Api.Reward
 
             return Ok(tempModel);
         }
+
+        [Route("api/Reward/UserRewardRedemptions/CheckRewardValidity")]
+        [HttpPost]
+        public IHttpActionResult CheckRewardValidity(CheckRewardValidity reward)
+        {
+            //if (reward.UserId == null) { return BadRequest(); }
+            //if (reward.RewardCode == null) { return BadRequest(); }
+            if (!ModelState.IsValid) { return BadRequest(); }
+            UserRewardRedemption model = db.UserRewardRedemption.Where(r => r.UserId == reward.UserId && r.RewardRedemption.RewardCode == reward.RewardCode).FirstOrDefault();
+            if (model == null) { return BadRequest("Sorry, Reward Code not valid"); }
+
+            //if (model.RewardStatus == RewardStatus.Closed) { return BadRequest("Sorry, Reward already been used"); }
+
+            DateTime rewardExpiredDate = model.RedeemDate.AddDays(model.RewardRedemption.ValidDuration);
+
+            var tempModel = new
+            {
+                UserId = model.UserId,
+                RewardCode = model.RewardRedemption.RewardCode,
+                DiscountValue = model.RewardRedemption.DiscountValue,
+                RedeemedDate = model.RedeemDate,
+                ValidDurationInDays = model.RewardRedemption.ValidDuration,
+                ExpiredDate = rewardExpiredDate,
+            };
+
+            return Ok(tempModel);
+        }
+
 
         // PUT: api/UserRewardRedemptions/5
         public void Put(int id, [FromBody]string value)

@@ -173,7 +173,8 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
                 return HttpNotFound();
             }
 
-            var resPromo = await WepApiMethod.SendApiAsync<PromotionCodeModel>(HttpVerbs.Get, $"Commerce/Cart/GetPromotion?code={mycart.Cart.DiscountCode}");
+            //var resPromo = await WepApiMethod.SendApiAsync<PromotionCodeModel>(HttpVerbs.Get, $"Commerce/Cart/GetPromotion?code={mycart.Cart.DiscountCode}");
+            var resPromo = await WepApiMethod.SendApiAsync<RewardInfoModel>(HttpVerbs.Get, $"Commerce/Cart/GetRewardInfo?rewardcode={mycart.Cart.DiscountCode}&userid={CurrentUser.UserId}");
 
             if (!resPromo.isSuccess)
             {
@@ -184,11 +185,31 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
 
             if (ppromo == null)
             {
+                ViewBag.PromoStatus = "Invalid";
                 ViewBag.PromoExpired = false;
                 ViewBag.Discount = 0;
             }
             else
             {
+                if (ppromo.Result == "Valid")
+                {
+                    ViewBag.PromoStatus = "Valid";
+                    ViewBag.PromoExpired = false;
+                    ViewBag.Discount = ppromo.MoneyValue;
+                }
+                else if (ppromo.Result == "Expired")
+                {
+                    ViewBag.PromoStatus = "Expired";
+                    ViewBag.PromoExpired = true;
+                    ViewBag.Discount = 0;
+                }
+                else if (ppromo.Result == "Used")
+                {
+                    ViewBag.PromoStatus = "Used";
+                    ViewBag.PromoExpired = false;
+                    ViewBag.Discount = 0;
+                }
+                /*
                 if ((ppromo.ExpiryDate > DateTime.Now) && (!ppromo.Used))
                 {
                     ViewBag.PromoExpired = false;
@@ -199,6 +220,7 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
                     ViewBag.PromoExpired = true;
                     ViewBag.Discount = 0;
                 }
+                */
             }
 
             ViewBag.FirstName = pdelivery.FirstName;
@@ -289,7 +311,8 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
                 return HttpNotFound();
             }
 
-            var resPromo = await WepApiMethod.SendApiAsync<PromotionCodeModel>(HttpVerbs.Get, $"Commerce/Cart/GetPromotion?code={mycart.Cart.DiscountCode}");
+            //var resPromo = await WepApiMethod.SendApiAsync<PromotionCodeModel>(HttpVerbs.Get, $"Commerce/Cart/GetPromotion?code={mycart.Cart.DiscountCode}");
+            var resPromo = await WepApiMethod.SendApiAsync<RewardInfoModel>(HttpVerbs.Get, $"Commerce/Cart/GetRewardInfo?rewardcode={mycart.Cart.DiscountCode}&userid={CurrentUser.UserId}");
 
             if (!resPromo.isSuccess)
             {
@@ -300,11 +323,31 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
 
             if (ppromo == null)
             {
+                ViewBag.PromoStatus = "Invalid";
                 ViewBag.PromoExpired = false;
                 ViewBag.Discount = 0;
             }
             else
             {
+                if (ppromo.Result == "Valid")
+                {
+                    ViewBag.PromoStatus = "Valid";
+                    ViewBag.PromoExpired = false;
+                    ViewBag.Discount = ppromo.MoneyValue;
+                }
+                else if (ppromo.Result == "Expired")
+                {
+                    ViewBag.PromoStatus = "Expired";
+                    ViewBag.PromoExpired = true;
+                    ViewBag.Discount = 0;
+                }
+                else if (ppromo.Result == "Used")
+                {
+                    ViewBag.PromoStatus = "Used";
+                    ViewBag.PromoExpired = false;
+                    ViewBag.Discount = 0;
+                }
+                /*
                 if ((ppromo.ExpiryDate > DateTime.Now) && (!ppromo.Used))
                 {
                     ViewBag.PromoExpired = false;
@@ -315,6 +358,7 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
                     ViewBag.PromoExpired = true;
                     ViewBag.Discount = 0;
                 }
+                */
             }
 
             ViewBag.FirstName = pdelivery.FirstName;
@@ -341,6 +385,20 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             if (!resTest.isSuccess)
             {
                 return HttpNotFound();
+            }
+
+            // update purchase count (+1 per purchase or +1 per unit??)
+
+            var resItems = await WepApiMethod.SendApiAsync<List<PurchaseOrderItemModel>>(HttpVerbs.Get, $"Commerce/Cart/GetPublications?id={id}");
+
+            if (resItems.isSuccess)
+            {
+                var items = resItems.Data;
+
+                foreach (PurchaseOrderItemModel item in items)
+                {
+                    var resIncrement = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/IncrementPurchase?id={id}&incrementvalue={item.Quantity}");
+                }
             }
 
             return RedirectToAction("Items", "Cart", new { area = "Commerce" });
@@ -395,10 +453,56 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
 
             var items = resItems.Data;
 
-            //var refund = new CreateRefundModel
-            //{
-            //    ItemId =
-            //};
+            // check refundability
+            foreach (PurchaseDetailsModel product in items)
+            {
+                if (product.PurchaseType == PurchaseType.Publication)
+                {
+                    /*
+                    var resRefundable = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/IsRefundable?userid={CurrentUser.UserId}&cartid={purchase.Id}&itemid={product.ProductID}");
+                    if (resRefundable.isSuccess)
+                    {
+                        product.Refundable = resRefundable.Data;
+                    }
+                    */
+                    if (product.Description.Contains("(Digital)"))
+                    {
+                        var resDownloaded = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/IsDownloaded?userid={CurrentUser.UserId}&pubid={product.ProductID}");
+                        if (resDownloaded.isSuccess)
+                        {
+                            product.Refundable = !resDownloaded.Data;
+                        }
+                    }
+                    else if (product.Description.Contains("(Hard copy)"))
+                    {
+                        product.Refundable = true;
+                    }
+                    // promo how?
+                }
+            }
+
+            ViewBag.RefundExpired = false;
+            DateTime deadlinedate;
+
+            var resDeadline = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/GetSettingsHardcopyReturnPeriod");
+
+            if (!resDeadline.isSuccess)
+            {
+                deadlinedate = purchase.PaymentDate.Value.AddDays(resDeadline.Data);
+                ViewBag.RefundPeriod = resDeadline.Data;
+            }
+            else
+            {
+                deadlinedate = purchase.PaymentDate.Value.AddDays(30);
+                ViewBag.RefundPeriod = 30;
+            }
+
+            ViewBag.Deadline = deadlinedate.ToString("dd/MM/yyyy");
+
+            if (DateTime.Now > deadlinedate)
+            {
+                ViewBag.RefundExpired = true;
+            }
 
             var details = new ListPurchaseDetailsModel
             {
@@ -464,6 +568,23 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             }
 
             return "error";
+        }
+
+        // View refund status/history
+        // GET: Commerce/Cart/RefundHistory
+        [HttpGet]
+        public async Task<ActionResult> RefundHistory()
+        {
+            var resBank = await WepApiMethod.SendApiAsync<List<BankInformationModel>>(HttpVerbs.Get, $"Commerce/Cart/GetBanks");
+
+            if (!resBank.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Banks = resBank.Data;
+
+            return View();
         }
 
     }

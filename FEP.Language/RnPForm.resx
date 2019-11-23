@@ -139,7 +139,7 @@
     <value>Author</value>
   </data>
   <data name="PubAuthorPictures" xml:space="preserve">
-    <value>Author Images</value>
+    <value>Author Picture</value>
   </data>
   <data name="PubCancelRemark" xml:space="preserve">
     <value>Cancellation Remarks</value>
@@ -208,7 +208,7 @@
     <value>Language</value>
   </data>
   <data name="PubPictures" xml:space="preserve">
-    <value>Publication Images</value>
+    <value>Publication Image</value>
   </data>
   <data name="PubProofOfApproval" xml:space="preserve">
     <value>Proof Of Approval</value>
@@ -301,7 +301,7 @@
     <value>Approval Status</value>
   </data>
   <data name="SurveyAuthorPictures" xml:space="preserve">
-    <value>Author Images</value>
+    <value>Author Picture</value>
   </data>
   <data name="SurveyCancelRemark" xml:space="preserve">
     <value>Cancellation Remarks</value>
@@ -334,7 +334,7 @@
     <value>No. of invited participants</value>
   </data>
   <data name="SurveyPictures" xml:space="preserve">
-    <value>Survey Pictures</value>
+    <value>Survey Picture</value>
   </data>
   <data name="SurveyProofOfApproval" xml:space="preserve">
     <value>Proof of Approval</value>
@@ -518,5 +518,23 @@
   </data>
   <data name="ValidRequiredYear" xml:space="preserve">
     <value>Please specify Published Year</value>
+  </data>
+  <data name="PubDigitalPublication" xml:space="preserve">
+    <value>Digital Publication File</value>
+  </data>
+  <data name="PubDownloadCount" xml:space="preserve">
+    <value>Downloads</value>
+  </data>
+  <data name="AssessmentContents" xml:space="preserve">
+    <value>Assessment Questions</value>
+  </data>
+  <data name="AssessmentResponseContents" xml:space="preserve">
+    <value>Assessment Answers</value>
+  </data>
+  <data name="FeedbackContents" xml:space="preserve">
+    <value>Feedback Questions</value>
+  </data>
+  <data name="FeedbackResponseContents" xml:space="preserve">
+    <value>Feedback Responses</value>
   </data>
 </root>

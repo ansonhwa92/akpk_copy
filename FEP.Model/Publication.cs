@@ -40,24 +40,20 @@ namespace FEP.Model
         public float HPrice { get; set; }
         public float DPrice { get; set; }
         public float HDPrice { get; set; }
-        //public string CoverPictures { get; set; }
-        //public string AuthorPictures { get; set; }
-        //public string ProofOfApproval { get; set; }
         public int? StockBalance { get; set; }
         public string CancelRemark { get; set; }
         // withdrawal info...................................................................................................
         public string WithdrawalReason { get; set; }
         public DateTime? WithdrawalDate { get; set; }
-        //public string ProofOfWithdrawal { get; set; }
         // auto-filled in data...............................................................................................
         public DateTime DateAdded { get; set; }
         public int CreatorId { get; set; }
         public string RefNo { get; set; }
         public PublicationStatus Status { get; set; }
         public DateTime? DateCancelled { get; set; }
-        //public PublicationWithdrawalStatus WStatus { get; set; }
         public int ViewCount { get; set; }
         public int PurchaseCount { get; set; }
+        public int DownloadCount { get; set; }
         // DMS integration (TODO)............................................................................................
         public string DmsPath { get; set; }
         public int NotificationID { get; set; }
@@ -80,6 +76,31 @@ namespace FEP.Model
         [ForeignKey("FileId")]
         public virtual FileDocument FileDocument { get; set; }
     }
+
+    [Table("PublicationImages")]
+    public class PublicationImages
+    {
+        [Key]
+        public int ID { get; set; }
+        public int PublicationID { get; set; }
+        public string CoverPicture { get; set; }
+        public string AuthorPicture { get; set; }
+    }
+
+    /*
+    [Table("PublicationImageFile")]
+    public class PublicationImageFile
+    {
+        [Key]
+        public int ID { get; set; }
+        public PublicationFileCategory FileCategory { get; set; }
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
+        public string Directory { get; set; }
+        public bool Display { get; set; }
+        public int ParentId { get; set; }
+    }
+    */
 
     [Table("PublicationApproval")]
     public class PublicationApproval
@@ -209,6 +230,25 @@ namespace FEP.Model
     }
     */
 
+    [Table("PublicationDownloads")]
+    public class PublicationDownloads
+    {
+        [Key]
+        public int ID { get; set; }
+        public int PublicationID { get; set; }
+        public int UserId { get; set; }
+    }
+
+    [Table("PublicationSettings")]
+    public class PublicationSettings
+    {
+        [Key]
+        public int ID { get; set; }
+        public int HardcopyReturnPeriod { get; set; }
+        public int MinimumPublishedYear { get; set; }
+        // stock balance before alert
+    }
+
     public enum PublicationCategories
     {
         [Display(Name = "PubCategoryArticles", ResourceType = typeof(Language.RnPEnum))]
@@ -288,7 +328,9 @@ namespace FEP.Model
         [Display(Name = "Proof of Approval")]
         ProofOfApproval,
         [Display(Name = "Proof of Withdrawal")]
-        ProofOfWithdrawal
+        ProofOfWithdrawal,
+        [Display(Name = "Digital Publication")]
+        DigitalPublication
     }
 
     public enum PublicationApprovalLevels

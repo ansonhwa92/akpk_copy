@@ -115,6 +115,7 @@ namespace FEP.Model
         //publication
         public DbSet<Publication> Publication { get; set; }
 
+        public DbSet<PublicationImages> PublicationImages { get; set; }
         public DbSet<PublicationFile> PublicationFile { get; set; }
         public DbSet<PublicationCategory> PublicationCategory { get; set; }
         public DbSet<PublicationApproval> PublicationApproval { get; set; }
@@ -124,15 +125,24 @@ namespace FEP.Model
         public DbSet<PublicationDelivery> PublicationDelivery { get; set; }
         public DbSet<PublicationPurchaseItem> PublicationPurchaseItem { get; set; }
         public DbSet<PromotionCode> PromotionCode { get; set; }
+        public DbSet<PublicationDownloads> PublicationDownloads { get; set; }
+        public DbSet<PublicationSettings> PublicationSettings { get; set; }
 
         //research
         public DbSet<Survey> Survey { get; set; }
 
+        public DbSet<SurveyImages> SurveyImages { get; set; }
         public DbSet<SurveyFile> SurveyFile { get; set; }
         public DbSet<SurveyApproval> SurveyApproval { get; set; }
         public DbSet<SurveyResponse> SurveyResponse { get; set; }
 
+        public DbSet<AssessmentSurvey> AssessmentSurvey { get; set; }
+        public DbSet<AssessmentResponse> AssessmentResponse { get; set; }
+        public DbSet<FeedbackSurvey> FeedbackSurvey { get; set; }
+        public DbSet<FeedbackResponse> FeedbackResponse { get; set; }
+
         //targeted groups
+        public DbSet<TargetedGroupCities> TargetedGroupCities { get; set; }
         public DbSet<TargetedGroups> TargetedGroups { get; set; }
         public DbSet<TargetedGroupMembers> TargetedGroupMembers { get; set; }
 

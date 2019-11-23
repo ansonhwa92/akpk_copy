@@ -109,6 +109,19 @@ namespace FEP.WebApi.Api.Reward
                     Description = s.Description
                 }).ToList();
 
+            foreach(DetailRewardRedemptionModel item in rewardRedemption)
+            {
+                var getRedeemedReward = db.UserRewardRedemption.Where(r => r.RewardRedemptionId == item.Id).FirstOrDefault();
+                if(getRedeemedReward != null) 
+                {
+                    item.IsClaimed = true; 
+                }
+                else
+                {
+                    item.IsClaimed = false;
+                }
+            }
+
             return Ok(new DataTableResponse
             {
                 draw = request.draw,

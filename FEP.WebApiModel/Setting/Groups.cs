@@ -88,6 +88,10 @@ namespace FEP.WebApiModel.Setting
         public ViewTargetedGroup() { }
 
         public int ID { get; set; }
+
+        public string DMPStatusText { get; set; }
+
+        public string CityName { get; set; }
     }
 
     public class CreateTargetedGroup : TargetedGroup
@@ -109,6 +113,10 @@ namespace FEP.WebApiModel.Setting
         public DetailsTargetedGroup() { }
 
         public int ID { get; set; }
+
+        public string DMPStatusText { get; set; }
+
+        public string CityName { get; set; }
 
         public DateTime DateCreated { get; set; }
 

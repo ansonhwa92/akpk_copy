@@ -536,9 +536,9 @@ namespace FEP.Model.Migrations
                 db.TargetedGroupCities.Add(new TargetedGroupCities { StateID = 0, Code = 7789, Name = "Pendang (KH)" });
             }
 
-            DefaultSLAReminder(db);
-            DefaultParameterGroup(db);
-            DefaultTemplate(db);
+            //DefaultSLAReminder(db);
+            //DefaultParameterGroup(db);
+            //DefaultTemplate(db);
         }
 
         public static void DefaultSLAReminder(DbEntities db)

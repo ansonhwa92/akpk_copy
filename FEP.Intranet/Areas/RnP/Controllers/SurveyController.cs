@@ -191,7 +191,22 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     string newid = resparray[0];
                     string title = resparray[1];
 
-                    await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
+                    if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() > 0))
+                    {
+                        await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
+                    }
+                    else if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() <= 0))
+                    {
+                        await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles.First(), null);
+                    }
+                    else if ((model.CoverPictureFiles.Count() <= 0) && (model.AuthorPictureFiles.Count() > 0))
+                    {
+                        await UploadImageFiles(int.Parse(newid), null, model.AuthorPictureFiles.First());
+                    }
+                    else
+                    {
+                        await UploadImageFiles(int.Parse(newid), null, null);
+                    }
 
                     await LogActivity(Modules.RnP, "Create New Survey: " + title);
 
@@ -351,7 +366,24 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
-                    await UploadImageFiles(model.ID, model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
+                    /*
+                    if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() > 0))
+                    {
+                        await UpdateImageFiles(model.ID, model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
+                    }
+                    else if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() <= 0))
+                    {
+                        await UpdateImageFiles(model.ID, model.CoverPictureFiles.First(), null);
+                    }
+                    else if ((model.CoverPictureFiles.Count() <= 0) && (model.AuthorPictureFiles.Count() > 0))
+                    {
+                        await UpdateImageFiles(model.ID, null, model.AuthorPictureFiles.First());
+                    }
+                    else
+                    {
+                        await UpdateImageFiles(model.ID, null, null);
+                    }
+                    */
 
                     await LogActivity(Modules.RnP, "Edit Survey: " + response.Data, model);
 
@@ -1553,7 +1585,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             if (coverfile != null)
             {
-                string UploadPath = "Data\\images\\research\\";
+                string UploadPath = HttpContext.Server.MapPath("~/Data/images/research");
 
                 string FileName = System.IO.Path.GetFileNameWithoutExtension(coverfile.FileName);
 
@@ -1561,7 +1593,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + FileName.Trim() + FileExtension;
 
-                string ServerPath = UploadPath + FileName;
+                //string ServerPath = UploadPath + FileName;
+
+                string ServerPath = System.IO.Path.Combine(UploadPath, FileName);
 
                 coverfile.SaveAs(ServerPath);
 
@@ -1577,7 +1611,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
             if (authorfile != null)
             {
-                string UploadPath = "Data\\images\\research\\";
+                string UploadPath = HttpContext.Server.MapPath("~/Data/images/research");
 
                 string FileName = System.IO.Path.GetFileNameWithoutExtension(authorfile.FileName);
 
@@ -1585,7 +1619,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + FileName.Trim() + FileExtension;
 
-                string ServerPath = UploadPath + FileName;
+                //string ServerPath = UploadPath + FileName;
+
+                string ServerPath = System.IO.Path.Combine(UploadPath, FileName);
 
                 authorfile.SaveAs(ServerPath);
 
@@ -1600,7 +1636,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             string coverpath = UploadCoverFile(coverfile);
             string authorpath = UploadAuthorFile(authorfile);
 
-            var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UploadImages?surveyid={surveyid}coverpic={coverpath}&authorpic={authorpath}");
+            var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UploadImages?surveyid={surveyid}&coverpic={coverpath}&authorpic={authorpath}");
 
             if (response.isSuccess)
             {
@@ -1617,7 +1653,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             string coverpath = UploadCoverFile(coverfile);
             string authorpath = UploadAuthorFile(authorfile);
 
-            var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UpdateImages?surveyid={surveyid}coverpic={coverpath}&authorpic={authorpath}");
+            var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UpdateImages?surveyid={surveyid}&coverpic={coverpath}&authorpic={authorpath}");
 
             if (response.isSuccess)
             {
@@ -1693,6 +1729,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     //Console.Write(reminder);
                     try
                     {
+                        await LogActivity(Modules.RnP, "Sending email notification for Survey " + code + " (" + approvalmessage + ") to users " + string.Join(",", receivers));
+
                         var response = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
                         if (response.isSuccess)
                         {

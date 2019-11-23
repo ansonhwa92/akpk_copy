@@ -327,8 +327,10 @@ namespace FEP.WebApi.Api.RnP
                 Category = s.Category.Name
             }).ToList();
 
+            //var di = -1;
             foreach (var publication in data)
             {
+                //di++;
                 var pubimages = db.PublicationImages.Where(i => i.PublicationID == publication.ID).Select(s => new PublicationImagesModel
                 {
                     ID = s.ID,
@@ -339,8 +341,14 @@ namespace FEP.WebApi.Api.RnP
 
                 if (pubimages != null)
                 {
-                    publication.CoverPicture = pubimages.CoverPicture;
-                    publication.AuthorPicture = pubimages.AuthorPicture;
+                    if ((pubimages.CoverPicture != null) && (pubimages.CoverPicture != ""))
+                    {
+                        publication.CoverPicture = pubimages.CoverPicture.Substring(pubimages.CoverPicture.LastIndexOf('\\') + 1);
+                    }
+                    if ((pubimages.AuthorPicture != null) && (pubimages.AuthorPicture != ""))
+                    {
+                        publication.AuthorPicture = pubimages.AuthorPicture.Substring(pubimages.AuthorPicture.LastIndexOf('\\') + 1);
+                    }
                 }
             }
 
@@ -418,8 +426,14 @@ namespace FEP.WebApi.Api.RnP
 
             if (pubimages != null)
             {
-                publication.CoverPicture = pubimages.CoverPicture;
-                publication.AuthorPicture = pubimages.AuthorPicture;
+                if ((pubimages.CoverPicture != null) && (pubimages.CoverPicture != ""))
+                {
+                    publication.CoverPicture = pubimages.CoverPicture.Substring(pubimages.CoverPicture.LastIndexOf('\\') + 1);
+                }
+                if ((pubimages.AuthorPicture != null) && (pubimages.AuthorPicture != ""))
+                {
+                    publication.AuthorPicture = pubimages.AuthorPicture.Substring(pubimages.AuthorPicture.LastIndexOf('\\') + 1);
+                }
             }
 
             return Ok(publication);
@@ -2155,10 +2169,11 @@ namespace FEP.WebApi.Api.RnP
                 if (status == PublicationApprovalStatus.Rejected)
                 {
                     toadmin = true;
+                    toverifier = true;
                 }
                 else
                 {
-                    toadmin = true;
+                    toverifier = true;
                     toapprover1 = true;
                 }
             }
@@ -2167,36 +2182,14 @@ namespace FEP.WebApi.Api.RnP
                 if (status == PublicationApprovalStatus.Rejected)
                 {
                     toadmin = true;
-                    toverifier = true;
-                }
-                else
-                {
-                    if (forward)
-                    {
-                        toadmin = true;
-                        toapprover2 = true;
-                    }
-                    else
-                    {
-                        toadmin = true;
-                        toverifier = true;
-                    }
-                }
-            }
-            else if ((type == NotificationType.Approve_Publication_Creation_2) || (type == NotificationType.Approve_Publication_Modification_2) || (type == NotificationType.Approve_Publication_Withdrawal_2))
-            {
-                if (status == PublicationApprovalStatus.Rejected)
-                {
-                    toadmin = true;
-                    toverifier = true;
                     toapprover1 = true;
                 }
                 else
                 {
                     if (forward)
                     {
-                        toadmin = true;
-                        toapprover3 = true;
+                        toapprover1 = true;
+                        toapprover2 = true;
                     }
                     else
                     {
@@ -2206,21 +2199,40 @@ namespace FEP.WebApi.Api.RnP
                     }
                 }
             }
+            else if ((type == NotificationType.Approve_Publication_Creation_2) || (type == NotificationType.Approve_Publication_Modification_2) || (type == NotificationType.Approve_Publication_Withdrawal_2))
+            {
+                if (status == PublicationApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toapprover2 = true;
+                }
+                else
+                {
+                    if (forward)
+                    {
+                        toapprover2 = true;
+                        toapprover3 = true;
+                    }
+                    else
+                    {
+                        toadmin = true;
+                        toverifier = true;
+                        toapprover2 = true;
+                    }
+                }
+            }
             else if ((type == NotificationType.Approve_Publication_Creation_3) || (type == NotificationType.Approve_Publication_Modification_3) || (type == NotificationType.Approve_Publication_Withdrawal_3))
             {
                 if (status == PublicationApprovalStatus.Rejected)
                 {
                     toadmin = true;
-                    toverifier = true;
-                    toapprover1 = true;
-                    toapprover2 = true;
+                    toapprover3 = true;
                 }
                 else
                 {
                     toadmin = true;
                     toverifier = true;
-                    toapprover1 = true;
-                    toapprover2 = true;
+                    toapprover3 = true;
                 }
             }
 

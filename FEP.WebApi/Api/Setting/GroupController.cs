@@ -207,8 +207,25 @@ namespace FEP.WebApi.Api.Setting
                     EmploymentType = s.EmploymentType,
                     State = s.State,
                     CityCode = s.CityCode,
-                    Active = s.Active
+                    Active = s.Active                    
                 }).ToList();
+
+            foreach (var tgroup in data)
+            {
+                var targetgroupcity = db.TargetedGroupCities.Where(c => c.Code == tgroup.CityCode).Select(s => new ReturnTargetedGroupCities
+                {
+                    ID = s.ID,
+                    StateID = s.StateID,
+                    Code = s.Code,
+                    Name = s.Name
+                }).FirstOrDefault();
+
+                if (targetgroupcity != null)
+                {
+                    tgroup.CityName = targetgroupcity.Name;
+                    tgroup.DMPStatusText = "";
+                }
+            }
 
             return Ok(new DataTableResponse
             {
@@ -305,6 +322,20 @@ namespace FEP.WebApi.Api.Setting
             if (targetgroup == null)
             {
                 return NotFound();
+            }
+
+            var targetgroupcity = db.TargetedGroupCities.Where(c => c.Code == targetgroup.CityCode).Select(s => new ReturnTargetedGroupCities
+            {
+                ID = s.ID,
+                StateID = s.StateID,
+                Code = s.Code,
+                Name = s.Name
+            }).FirstOrDefault();
+
+            if (targetgroupcity != null)
+            {
+                targetgroup.CityName = targetgroupcity.Name;
+                targetgroup.DMPStatusText = "";
             }
 
             return Ok(targetgroup);

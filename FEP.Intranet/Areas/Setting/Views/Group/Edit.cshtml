@@ -140,7 +140,7 @@
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.CityCode, htmlAttributes: new { @class = "control-label" })
                             @*@Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })*@
-                            @Html.DropDownList("CityCode", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownList("CityCode", new SelectList(ViewBag.Cities, "Code", "Name", Model.CityCode), "Select City", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.CityCode, "", new { @class = "text-danger" })
                         </div>
                     </div>

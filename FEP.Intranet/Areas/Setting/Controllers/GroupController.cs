@@ -35,7 +35,8 @@ namespace FEP.Intranet.Areas.Setting.Controllers
 
             var cities = resCities.Data;
 
-            ViewBag.CityId = new SelectList(cities, "Code", "Name");
+            //ViewBag.CityId = new SelectList(cities, "Code", "Name");
+            ViewBag.Cities = cities;
 
             var model = new CreateTargetedGroup();
             return View(model);
@@ -99,7 +100,8 @@ namespace FEP.Intranet.Areas.Setting.Controllers
 
             var cities = resCities.Data;
 
-            ViewBag.CityId = new SelectList(cities, "Code", "Name", model.CityCode);
+            //ViewBag.CityId = new SelectList(cities, "Code", "Name", model.CityCode);
+            ViewBag.Cities = cities;
 
             return View(model);
         }

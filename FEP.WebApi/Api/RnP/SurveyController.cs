@@ -452,8 +452,14 @@ namespace FEP.WebApi.Api.RnP
 
                 if (surveyimages != null)
                 {
-                    survey.CoverPicture = surveyimages.CoverPicture;
-                    survey.AuthorPicture = surveyimages.AuthorPicture;
+                    if ((surveyimages.CoverPicture != null) && (surveyimages.CoverPicture != ""))
+                    {
+                        survey.CoverPicture = surveyimages.CoverPicture.Substring(surveyimages.CoverPicture.LastIndexOf('\\') + 1);
+                    }
+                    if ((surveyimages.AuthorPicture != null) && (surveyimages.AuthorPicture != ""))
+                    {
+                        survey.AuthorPicture = surveyimages.AuthorPicture.Substring(surveyimages.AuthorPicture.LastIndexOf('\\') + 1);
+                    }
                 }
             }
 
@@ -539,8 +545,14 @@ namespace FEP.WebApi.Api.RnP
 
                 if (surveyimages != null)
                 {
-                    survey.CoverPicture = surveyimages.CoverPicture;
-                    survey.AuthorPicture = surveyimages.AuthorPicture;
+                    if ((surveyimages.CoverPicture != null) && (surveyimages.CoverPicture != ""))
+                    {
+                        survey.CoverPicture = surveyimages.CoverPicture.Substring(surveyimages.CoverPicture.LastIndexOf('\\') + 1);
+                    }
+                    if ((surveyimages.AuthorPicture != null) && (surveyimages.AuthorPicture != ""))
+                    {
+                        survey.AuthorPicture = surveyimages.AuthorPicture.Substring(surveyimages.AuthorPicture.LastIndexOf('\\') + 1);
+                    }
                 }
             }
 
@@ -632,8 +644,14 @@ namespace FEP.WebApi.Api.RnP
 
             if (surveyimages != null)
             {
-                survey.CoverPicture = surveyimages.CoverPicture;
-                survey.AuthorPicture = surveyimages.AuthorPicture;
+                if ((surveyimages.CoverPicture != null) && (surveyimages.CoverPicture != ""))
+                {
+                    survey.CoverPicture = surveyimages.CoverPicture.Substring(surveyimages.CoverPicture.LastIndexOf('\\') + 1);
+                }
+                if ((surveyimages.AuthorPicture != null) && (surveyimages.AuthorPicture != ""))
+                {
+                    survey.AuthorPicture = surveyimages.AuthorPicture.Substring(surveyimages.AuthorPicture.LastIndexOf('\\') + 1);
+                }
             }
 
             return Ok(survey);
@@ -1862,10 +1880,12 @@ namespace FEP.WebApi.Api.RnP
 
             if (type == NotificationType.Submit_Survey_Creation)
             {
+                toadmin = true;
                 toverifier = true;
             }
             else if (type == NotificationType.Submit_Survey_Cancellation)
             {
+                toadmin = true;
                 toverifier = true;
                 toapprover1 = true;
                 toapprover2 = true;
@@ -1873,6 +1893,7 @@ namespace FEP.WebApi.Api.RnP
             }
             else if (type == NotificationType.Submit_Survey_Publication)
             {
+                toadmin = true;
                 toverifier = true;
                 toapprover1 = true;
                 toapprover2 = true;
@@ -1883,9 +1904,11 @@ namespace FEP.WebApi.Api.RnP
                 if (status == SurveyApprovalStatus.Rejected)
                 {
                     toadmin = true;
+                    toverifier = true;
                 }
                 else
                 {
+                    toverifier = true;
                     toapprover1 = true;
                 }
             }
@@ -1894,34 +1917,14 @@ namespace FEP.WebApi.Api.RnP
                 if (status == SurveyApprovalStatus.Rejected)
                 {
                     toadmin = true;
-                    toverifier = true;
-                }
-                else
-                {
-                    if (forward)
-                    {
-                        toapprover2 = true;
-                    }
-                    else
-                    {
-                        toadmin = true;
-                        toverifier = true;
-                    }
-                }
-            }
-            else if (type == NotificationType.Approve_Survey_Creation_2)
-            {
-                if (status == SurveyApprovalStatus.Rejected)
-                {
-                    toadmin = true;
-                    toverifier = true;
                     toapprover1 = true;
                 }
                 else
                 {
                     if (forward)
                     {
-                        toapprover3 = true;
+                        toapprover1 = true;
+                        toapprover2 = true;
                     }
                     else
                     {
@@ -1931,21 +1934,40 @@ namespace FEP.WebApi.Api.RnP
                     }
                 }
             }
+            else if (type == NotificationType.Approve_Survey_Creation_2)
+            {
+                if (status == SurveyApprovalStatus.Rejected)
+                {
+                    toadmin = true;
+                    toapprover2 = true;
+                }
+                else
+                {
+                    if (forward)
+                    {
+                        toapprover2 = true;
+                        toapprover3 = true;
+                    }
+                    else
+                    {
+                        toadmin = true;
+                        toverifier = true;
+                        toapprover2 = true;
+                    }
+                }
+            }
             else if (type == NotificationType.Approve_Survey_Creation_3)
             {
                 if (status == SurveyApprovalStatus.Rejected)
                 {
                     toadmin = true;
-                    toverifier = true;
-                    toapprover1 = true;
-                    toapprover2 = true;
+                    toapprover3 = true;
                 }
                 else
                 {
                     toadmin = true;
                     toverifier = true;
-                    toapprover1 = true;
-                    toapprover2 = true;
+                    toapprover3 = true;
                 }
             }
 
@@ -2469,45 +2491,55 @@ namespace FEP.WebApi.Api.RnP
                     int maxcount = 0;
                     int maxindex = 0;
 
-                    int ai = 0;
-                    int aindex = -1;
-                    foreach (var ans in sq.counts)
+                    if (results.Answers.Count > 0)
                     {
-                        ai++;
-                        aindex++;
-                        acount = acount + ans;
-                        asum = asum + (ai * ans);
-                        for (var i = 1; i <= ans; i++)
+                        int ai = 0;
+                        int aindex = -1;
+                        foreach (var ans in sq.counts)
                         {
-                            medseries.Add(ai);
+                            ai++;
+                            aindex++;
+                            acount = acount + ans;
+                            asum = asum + (ai * ans);
+                            for (var i = 1; i <= ans; i++)
+                            {
+                                medseries.Add(ai);
+                            }
+                            if (ans > maxcount)
+                            {
+                                maxcount = ans;
+                                maxindex = aindex;
+                            }
                         }
-                        if (ans > maxcount)
+
+                        sq.mean = (int)Math.Round(decimal.Parse((asum / acount).ToString()));
+
+                        medseries.Sort();
+                        medcount = medseries.Count;
+                        if (medcount % 2 == 0)
                         {
-                            maxcount = ans;
-                            maxindex = aindex;
+                            medpos2 = (medcount + 1) / 2;
+                            medlow = (int)Math.Floor(decimal.Parse(medpos2.ToString()));
+                            medhigh = (int)Math.Ceiling(decimal.Parse(medpos2.ToString()));
+                            sq.median = (medseries[medlow - 1] + medseries[medhigh - 1]) / 2;
                         }
-                    }
+                        else
+                        {
+                            medpos1 = (medcount + 1) / 2;
+                            sq.median = medseries[medpos1 - 1];
+                        }
 
-                    sq.mean = (int)Math.Round(decimal.Parse((asum / acount).ToString()));
-
-                    medseries.Sort();
-                    medcount = medseries.Count;
-                    if (medcount % 2 == 0)
-                    {
-                        medpos2 = (medcount + 1) / 2;
-                        medlow = (int)Math.Floor(decimal.Parse(medpos2.ToString()));
-                        medhigh = (int)Math.Ceiling(decimal.Parse(medpos2.ToString()));
-                        sq.median = (medseries[medlow - 1] + medseries[medhigh - 1]) / 2;
+                        sq.mode = maxindex;
+                        System.Diagnostics.Debug.WriteLine(sq.question);
+                        System.Diagnostics.Debug.WriteLine(maxindex);
+                        System.Diagnostics.Debug.WriteLine(sq.answers[maxindex]);
                     }
                     else
                     {
-                        medpos1 = (medcount + 1) / 2;
-                        sq.median = medseries[medpos1 - 1];
+                        sq.mean = 0;
+                        sq.median = 0;
+                        sq.mode = 0;
                     }
-
-                    sq.mode = maxindex;
-                    Console.WriteLine(sq.question);
-                    Console.WriteLine(maxindex);
 
                     //if (sq.mean <= 0) sq.mean = 1;
                     //if (sq.median <= 0) sq.median = 1;
@@ -2527,45 +2559,55 @@ namespace FEP.WebApi.Api.RnP
                     int maxcount = 0;
                     int maxindex = 0;
 
-                    int ai = 0;
-                    int aindex = -1;
-                    foreach (var ans in sq.counts)
+                    if (results.Answers.Count > 0)
                     {
-                        ai++;
-                        aindex++;
-                        acount = acount + ans;
-                        asum = asum + (ai * ans);
-                        for (var i = 1; i <= ans; i++)
+                        int ai = 0;
+                        int aindex = -1;
+                        foreach (var ans in sq.counts)
                         {
-                            medseries.Add(ai);
+                            ai++;
+                            aindex++;
+                            acount = acount + ans;
+                            asum = asum + (ai * ans);
+                            for (var i = 1; i <= ans; i++)
+                            {
+                                medseries.Add(ai);
+                            }
+                            if (ans > maxcount)
+                            {
+                                maxcount = ans;
+                                maxindex = aindex;
+                            }
                         }
-                        if (ans > maxcount)
+
+                        sq.mean = (int)Math.Round(decimal.Parse((asum / acount).ToString()));
+
+                        medseries.Sort();
+                        medcount = medseries.Count;
+                        if (medcount % 2 == 0)
                         {
-                            maxcount = ans;
-                            maxindex = aindex;
+                            medpos2 = (medcount + 1) / 2;
+                            medlow = (int)Math.Floor(decimal.Parse(medpos2.ToString()));
+                            medhigh = (int)Math.Ceiling(decimal.Parse(medpos2.ToString()));
+                            sq.median = (medseries[medlow - 1] + medseries[medhigh - 1]) / 2;
                         }
-                    }
+                        else
+                        {
+                            medpos1 = (medcount + 1) / 2;
+                            sq.median = medseries[medpos1 - 1];
+                        }
 
-                    sq.mean = (int)Math.Round(decimal.Parse((asum / acount).ToString()));
-
-                    medseries.Sort();
-                    medcount = medseries.Count;
-                    if (medcount % 2 == 0)
-                    {
-                        medpos2 = (medcount + 1) / 2;
-                        medlow = (int)Math.Floor(decimal.Parse(medpos2.ToString()));
-                        medhigh = (int)Math.Ceiling(decimal.Parse(medpos2.ToString()));
-                        sq.median = (medseries[medlow - 1] + medseries[medhigh - 1]) / 2;
+                        sq.mode = maxindex;
+                        System.Diagnostics.Debug.WriteLine(sq.question);
+                        System.Diagnostics.Debug.WriteLine(maxindex);
+                        System.Diagnostics.Debug.WriteLine(sq.answers[maxindex]);
                     }
                     else
                     {
-                        medpos1 = (medcount + 1) / 2;
-                        sq.median = medseries[medpos1 - 1];
+                        sq.mean = 0;
+                        sq.median = 0;
+                        sq.mode = 0;
                     }
-
-                    sq.mode = maxindex;
-                    Console.WriteLine(sq.question);
-                    Console.WriteLine(maxindex);
 
                     //if (sq.mean <= 0) sq.mean = 1;
                     //if (sq.median <= 0) sq.median = 1;

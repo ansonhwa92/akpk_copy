@@ -40,9 +40,6 @@ namespace FEP.Model
         public DateTime DateCreated { get; set; }
         public int CreatorId { get; set; }
         public bool Active { get; set; }
-        // foreign key.......................................................................................................
-        [ForeignKey("CityCode")]
-        public virtual TargetedGroupCities City { get; set; }
     }
 
     [Table("TargetedGroupMembers")]

@@ -365,3 +365,4 @@ healthchecksdb
 
 # Avatar
 !/FEP.Intranet/img/avatar/*
+/FEP.Intranet/App_Data/DiscussionAttachment

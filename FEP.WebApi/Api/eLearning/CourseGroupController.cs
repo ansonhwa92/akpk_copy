@@ -200,6 +200,31 @@ namespace FEP.WebApi.Api.eLearning
             }
         }
 
+        [Route("api/eLearning/CourseGroup/GetAllCourse")]
+        [HttpGet]
+        public IHttpActionResult GetAllCourse(int id)
+        {
+            return Ok(GenerateCoursesListing(id));
+        }
+
+        private List<ListCourseModel> GenerateCoursesListing(int id)
+        {
+            using (DbEntities _db = new DbEntities())
+            {
+                var _getAllEvent = _db.CourseEvents.Where(m => m.IsDisplayed == true && !m.End.HasValue && (!m.GroupId.HasValue || m.GroupId.Value == id)).Select(s => new ListCourseModel
+                {
+                    ThisGroupId = id,
+                    CourseId = s.CourseId,
+                    CourseName = s.Course.Title,
+                    EventCreatedOn = s.CreatedDate,
+                    EventId = s.Id,
+                    GroupId = s.GroupId
+                }).ToList();
+
+                return _getAllEvent;
+            }
+        }
+
         [Route("api/eLearning/CourseGroup/GetAllLearner")]
         [HttpGet]
         public IHttpActionResult GetAllLearner(int id)
@@ -254,11 +279,11 @@ namespace FEP.WebApi.Api.eLearning
             using (DbEntities _db = new DbEntities())
             {
                 var _check = _db.GroupMembers.Where(m => m.GroupId == GroupId && m.LearnerId == id).SingleOrDefault();
-                if (_check!=null)
+                if (_check != null)
                 {
                     _db.Entry(_check).State = System.Data.Entity.EntityState.Deleted;
                     _db.SaveChanges();
-                    return Ok(GenerateMemberListing(id));
+                    return Ok(GenerateMemberListing(GroupId));
                 }
             }
 
@@ -275,14 +300,14 @@ namespace FEP.WebApi.Api.eLearning
                 if (_check.Count == 0)
                 {
                     addToGroup(id, GroupId, uid);
-                    return Ok(GenerateMemberListing(id));
+                    return Ok(GenerateMemberListing(GroupId));
                 }
                 else
                 {
                     if (!_check.Any(m => m.LearnerId == id))
                     {
                         addToGroup(id, GroupId, uid);
-                        return Ok(GenerateMemberListing(id));
+                        return Ok(GenerateMemberListing(GroupId));
                     }
                 }
             }
@@ -307,6 +332,58 @@ namespace FEP.WebApi.Api.eLearning
                 _db.GroupMembers.Add(_new);
                 _db.SaveChanges();
             }
+        }
+
+        [Route("api/eLearning/CourseGroup/AddCourseEventToGroup")]
+        [HttpGet]
+        public IHttpActionResult AddCourseEventToGroup(int id, int GroupId, int uid)
+        {
+            using (DbEntities _db = new DbEntities())
+            {
+                var _get = _db.CourseEvents.Find(id);
+                if (_get != null)
+                {
+                    if (!_get.GroupId.HasValue)
+                    {
+                        _get.GroupId = GroupId;
+                        _get.UpdatedBy = uid;
+                        _get.UpdatedDate = DateTime.Now;
+
+                        _db.Entry(_get).State = System.Data.Entity.EntityState.Modified;
+                        _db.SaveChanges();
+
+                        return Ok(GenerateCoursesListing(GroupId));
+                    }
+                }
+            }
+
+            return NotFound();
+        }
+
+        [Route("api/eLearning/CourseGroup/RemoveCourseEventFromGroup")]
+        [HttpGet]
+        public IHttpActionResult RemoveCourseEventFromGroup(int id, int GroupId, int uid)
+        {
+            using (DbEntities _db = new DbEntities())
+            {
+                var _get = _db.CourseEvents.Find(id);
+                if (_get != null)
+                {
+                    if (_get.GroupId.HasValue)
+                    {
+                        _get.GroupId = null;
+                        _get.UpdatedBy = uid;
+                        _get.UpdatedDate = DateTime.Now;
+
+                        _db.Entry(_get).State = System.Data.Entity.EntityState.Modified;
+                        _db.SaveChanges();
+
+                        return Ok(GenerateCoursesListing(GroupId));
+                    }
+                }
+            }
+
+            return NotFound();
         }
 
 

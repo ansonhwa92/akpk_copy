@@ -160,7 +160,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Author Images.
+        ///   Looks up a localized string similar to Author Picture.
         /// </summary>
         public static string PubAuthorPictures {
             get {
@@ -385,7 +385,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Publication Images.
+        ///   Looks up a localized string similar to Publication Image.
         /// </summary>
         public static string PubPictures {
             get {
@@ -664,7 +664,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Author Images.
+        ///   Looks up a localized string similar to Author Picture.
         /// </summary>
         public static string SurveyAuthorPictures {
             get {
@@ -763,7 +763,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Survey Pictures.
+        ///   Looks up a localized string similar to Survey Picture.
         /// </summary>
         public static string SurveyPictures {
             get {

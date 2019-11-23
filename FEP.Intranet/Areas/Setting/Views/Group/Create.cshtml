@@ -109,16 +109,9 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
-                            @Html.EnumDropDownListFor(model => model.Status, "Select Status", htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.PaymentStatus, htmlAttributes: new { @class = "control-label" })
-                            @Html.EnumDropDownListFor(model => model.PaymentStatus, "Select Payment Status", htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.PaymentStatus, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.DMPStatus, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.DMPStatus, "Select DMP Status", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.DMPStatus, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
@@ -138,15 +131,17 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label" })
-                            <select name="State" id="State" class="form-control"></select>
+                            @Html.EnumDropDownListFor(model => model.State, "Select State", htmlAttributes: new { @class = "form-control" })
+                            @*<select name="State" id="State" class="form-control"></select>*@
                             @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
-                            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.CityCode, htmlAttributes: new { @class = "control-label" })
+                            @*@Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })*@
+                            @Html.DropDownList("CityCode", new SelectList(ViewBag.Cities, "Code", "Name"), "Select City", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CityCode, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
@@ -235,6 +230,7 @@
                 $('#MaxSalary').append('<option value=">5000">>5000</option>');
             }
 
+            /*
             function populateStates() {
                 $('#State').append('<option value="0">Any</option>');
                 $('#State').append('<option value="1">Johor</option>');
@@ -252,12 +248,13 @@
                 $('#State').append('<option value="13">Sarawak</option>');
                 $('#State').append('<option value="14">Wilayah Persekutuan</option>');
             }
+            */
 
             populateMinAge();
             populateMaxAge();
             populateMinSalary();
             populateMaxSalary();
-            populateStates();
+            //populateStates();
 
         });
     </script>

@@ -20,6 +20,15 @@ namespace FEP.WebApiModel.RnP
         public string Name { get; set; }
     }
 
+    // class for returning publication local images
+    public class PublicationImagesModel
+    {
+        public int ID { get; set; }
+        public int PublicationID { get; set; }
+        public string CoverPicture { get; set; }
+        public string AuthorPicture { get; set; }
+    }
+
     // class for returning publication information to client app
     // returned whenever the client requests for information on a single publication
     public class ReturnPublicationModel
@@ -142,6 +151,12 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "PubDigitalPublication", ResourceType = typeof(Language.RnPForm))]
         public IEnumerable<Attachment> DigitalPublications { get; set; }
+
+        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        public string CoverPicture { get; set; }
+
+        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public string AuthorPicture { get; set; }
     }
 
     // Class for returning publications for user browsing
@@ -525,6 +540,12 @@ namespace FEP.WebApiModel.RnP
 
         [Display(Name = "PubDigitalPublication", ResourceType = typeof(Language.RnPForm))]
         public IEnumerable<Attachment> DigitalPublications { get; set; }
+
+        [Display(Name = "PubPictures", ResourceType = typeof(Language.RnPForm))]
+        public string CoverPicture { get; set; }
+
+        [Display(Name = "PubAuthorPictures", ResourceType = typeof(Language.RnPForm))]
+        public string AuthorPicture { get; set; }
     }
 
     // class for updating of publication information by client app
@@ -678,6 +699,27 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "PubProofOfWithdrawal", ResourceType = typeof(Language.RnPForm))]
         public IEnumerable<Attachment> ProofOfWithdrawal { get; set; }
         public IEnumerable<HttpPostedFileBase> ProofOfWithdrawalFiles { get; set; }
+
+        public List<int> ProofFilesId { get; set; }
+    }
+
+    // no file version of above
+    public class UpdatePublicationWithdrawalModelNoFile
+    {
+        public UpdatePublicationWithdrawalModelNoFile()
+        {
+            ProofOfWithdrawal = new List<Attachment>();
+            ProofFilesId = new List<int>();
+        }
+
+        [Required]
+        public int ID { get; set; }
+
+        [Required]
+        public string WithdrawalReason { get; set; }
+
+        [Required]
+        public IEnumerable<Attachment> ProofOfWithdrawal { get; set; }
 
         public List<int> ProofFilesId { get; set; }
     }
@@ -1022,7 +1064,7 @@ namespace FEP.WebApiModel.RnP
         public int Quantity { get; set; }
     }
 
-    // class for returning/updating promotion code
+    // class for returning/updating promotion code - NOT USED
     public class PromotionCodeModel
     {
         public int ID { get; set; }
@@ -1044,6 +1086,41 @@ namespace FEP.WebApiModel.RnP
         public DateTime ExpiryDate { get; set; }
 
         public bool Used { get; set; }
+    }
+
+    // class for returning reward code information
+    // (TEMP replacement for Tajul's)
+    public class RewardInfoModel
+    {
+        public int ID { get; set; }
+
+        public int UserId { get; set; }
+
+        [Display(Name = "Code")]
+        public string Code { get; set; }
+
+        [Display(Name = "Monetary Value (RM)")]
+        public int MoneyValue { get; set; }
+
+        [Display(Name = "Percentage Value")]
+        public int PercentageValue { get; set; }
+
+        [Display(Name = "Expiry Date")]
+        public DateTime ExpiryDate { get; set; }
+
+        public RewardStatus Status { get; set; }
+
+        public string Result { get; set; }
+    }
+
+    // Class for returning/updating publication downloads
+    public class PublicationDownloadsModel
+    {
+        [Required]
+        public int PublicationID { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
     }
 
     // Class for returning/updating publication settings

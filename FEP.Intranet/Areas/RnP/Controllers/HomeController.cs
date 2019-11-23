@@ -268,6 +268,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             ViewBag.PubHPrice = publication.HPrice;
             ViewBag.PubHDPrice = publication.HDPrice;
 
+            ViewBag.CoverPicture = publication.CoverPicture;
+            ViewBag.AuthorPicture = publication.AuthorPicture;
+
             ViewBag.DBuy = dbuy;
             ViewBag.HBuy = hbuy;
             ViewBag.HBil = hbil;

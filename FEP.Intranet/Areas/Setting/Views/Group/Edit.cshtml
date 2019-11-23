@@ -61,6 +61,7 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                         </div>
@@ -108,16 +109,9 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
-                            @Html.EnumDropDownListFor(model => model.Status, "Select Status", htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.PaymentStatus, htmlAttributes: new { @class = "control-label" })
-                            @Html.EnumDropDownListFor(model => model.PaymentStatus, "Select Payment Status", htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.PaymentStatus, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.DMPStatus, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.DMPStatus, "Select DMP Status", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.DMPStatus, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
@@ -137,15 +131,17 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label" })
-                            <select name="State" id="State" class="form-control"></select>
+                            @Html.EnumDropDownListFor(model => model.State, "Select State", htmlAttributes: new { @class = "form-control" })
+                            @*<select name="State" id="State" class="form-control"></select>*@
                             @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
-                            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.CityCode, htmlAttributes: new { @class = "control-label" })
+                            @*@Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })*@
+                            @Html.DropDownList("CityCode", new SelectList(ViewBag.Cities, "Code", "Name", Model.CityCode), "Select City", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CityCode, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
@@ -168,13 +164,13 @@
             var curMaxAge = '';
             var curMinSalary = '';
             var curMaxSalary = '';
-            var curState = '';
+            //var curState = '';
 
             if (@Model.MinAge != null) curMinAge = '@Model.MinAge';
             if (@Model.MaxAge != null) curMaxAge = '@Model.MaxAge';
             if (@Model.MinSalary != null) curMinSalary = '@Model.MinSalary';
             if (@Model.MaxSalary != null) curMaxSalary = '@Model.MaxSalary';
-            if (@Model.State != null) curState = '@Model.State';
+            //if (@Model.State != null) curState = '@Model.State';
 
             function populateMinAge(curmin) {
                 $('#MinAge').append('<option value="18">18</option>');
@@ -254,6 +250,7 @@
                 $('#MaxSalary').val(curmax).change();
             }
 
+            /*
             function populateStates(curstate) {
                 $('#State').append('<option value="0">Any</option>');
                 $('#State').append('<option value="1">Johor</option>');
@@ -273,12 +270,13 @@
                 //$('#State select').val(curstate);
                 $('#State').val(curstate).change();
             }
+            */
 
             populateMinAge(curMinAge);
             populateMaxAge(curMaxAge);
             populateMinSalary(curMinSalary);
             populateMaxSalary(curMaxSalary);
-            populateStates(curState);
+            //populateStates(curState);
 
         });
     </script>

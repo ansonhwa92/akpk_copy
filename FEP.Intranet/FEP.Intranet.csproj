@@ -1636,6 +1636,8 @@
     <Folder Include="Areas\SLAReminder\Views\Shared\" />
     <Folder Include="Areas\Template\Views\Shared\" />
     <Folder Include="bin\roslyn\" />
+    <Folder Include="Data\images\publication\" />
+    <Folder Include="Data\images\research\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>

@@ -191,6 +191,23 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     string newid = resparray[0];
                     string title = resparray[1];
 
+                    if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() > 0))
+                    {
+                        await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
+                    }
+                    else if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() <= 0))
+                    {
+                        await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles.First(), null);
+                    }
+                    else if ((model.CoverPictureFiles.Count() <= 0) && (model.AuthorPictureFiles.Count() > 0))
+                    {
+                        await UploadImageFiles(int.Parse(newid), null, model.AuthorPictureFiles.First());
+                    }
+                    else
+                    {
+                        await UploadImageFiles(int.Parse(newid), null, null);
+                    }
+
                     await LogActivity(Modules.RnP, "Create New Survey: " + title);
 
                     TempData["SuccessMessage"] = "New Survey titled " + title + " created successfully and saved as draft.";
@@ -349,6 +366,25 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
+                    /*
+                    if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() > 0))
+                    {
+                        await UpdateImageFiles(model.ID, model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
+                    }
+                    else if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() <= 0))
+                    {
+                        await UpdateImageFiles(model.ID, model.CoverPictureFiles.First(), null);
+                    }
+                    else if ((model.CoverPictureFiles.Count() <= 0) && (model.AuthorPictureFiles.Count() > 0))
+                    {
+                        await UpdateImageFiles(model.ID, null, model.AuthorPictureFiles.First());
+                    }
+                    else
+                    {
+                        await UpdateImageFiles(model.ID, null, null);
+                    }
+                    */
+
                     await LogActivity(Modules.RnP, "Edit Survey: " + response.Data, model);
 
                     TempData["SuccessMessage"] = "Survey titled " + response.Data + " updated successfully and saved as draft.";
@@ -1542,6 +1578,92 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
         // Private functions
 
+        // Actual upload of cover file
+        private string UploadCoverFile(HttpPostedFileBase coverfile)
+        {
+            //string UploadPath = System.Configuration.ConfigurationManager.AppSettings["FilePath"].ToString();
+
+            if (coverfile != null)
+            {
+                string UploadPath = HttpContext.Server.MapPath("~/Data/images/research");
+
+                string FileName = System.IO.Path.GetFileNameWithoutExtension(coverfile.FileName);
+
+                string FileExtension = System.IO.Path.GetExtension(coverfile.FileName);
+
+                FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + FileName.Trim() + FileExtension;
+
+                //string ServerPath = UploadPath + FileName;
+
+                string ServerPath = System.IO.Path.Combine(UploadPath, FileName);
+
+                coverfile.SaveAs(ServerPath);
+
+                return ServerPath;
+            }
+            return "";
+        }
+
+        // Actual upload of author file
+        private string UploadAuthorFile(HttpPostedFileBase authorfile)
+        {
+            //string UploadPath = System.Configuration.ConfigurationManager.AppSettings["FilePath"].ToString();
+
+            if (authorfile != null)
+            {
+                string UploadPath = HttpContext.Server.MapPath("~/Data/images/research");
+
+                string FileName = System.IO.Path.GetFileNameWithoutExtension(authorfile.FileName);
+
+                string FileExtension = System.IO.Path.GetExtension(authorfile.FileName);
+
+                FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + FileName.Trim() + FileExtension;
+
+                //string ServerPath = UploadPath + FileName;
+
+                string ServerPath = System.IO.Path.Combine(UploadPath, FileName);
+
+                authorfile.SaveAs(ServerPath);
+
+                return ServerPath;
+            }
+            return "";
+        }
+
+        // Upload picture files
+        private async Task<int> UploadImageFiles(int surveyid, HttpPostedFileBase coverfile, HttpPostedFileBase authorfile)
+        {
+            string coverpath = UploadCoverFile(coverfile);
+            string authorpath = UploadAuthorFile(authorfile);
+
+            var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UploadImages?surveyid={surveyid}&coverpic={coverpath}&authorpic={authorpath}");
+
+            if (response.isSuccess)
+            {
+                var newid = response.Data;
+                return newid;
+            }
+
+            return 0;
+        }
+
+        // Update picture files
+        private async Task<int> UpdateImageFiles(int surveyid, HttpPostedFileBase coverfile, HttpPostedFileBase authorfile)
+        {
+            string coverpath = UploadCoverFile(coverfile);
+            string authorpath = UploadAuthorFile(authorfile);
+
+            var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UpdateImages?surveyid={surveyid}&coverpic={coverpath}&authorpic={authorpath}");
+
+            if (response.isSuccess)
+            {
+                var oldid = response.Data;
+                return oldid;
+            }
+
+            return 0;
+        }
+
         // General SLA reminder
 
         // get notification receiver IDs
@@ -1607,6 +1729,8 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     //Console.Write(reminder);
                     try
                     {
+                        await LogActivity(Modules.RnP, "Sending email notification for Survey " + code + " (" + approvalmessage + ") to users " + string.Join(",", receivers));
+
                         var response = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
                         if (response.isSuccess)
                         {

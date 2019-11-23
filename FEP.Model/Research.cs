@@ -27,8 +27,6 @@ namespace FEP.Model
         public string TemplateName { get; set; }
         public string TemplateDescription { get; set; }
         public bool Active { get; set; }
-        //public string Pictures { get; set; }
-        //public string ProofOfApproval { get; set; }
         public string CancelRemark { get; set; }
         // aut-filled in data................................................................................................
         public DateTime DateAdded { get; set; }
@@ -55,6 +53,16 @@ namespace FEP.Model
         public int ParentId { get; set; }
         [ForeignKey("FileId")]
         public virtual FileDocument FileDocument { get; set; }
+    }
+
+    [Table("SurveyImages")]
+    public class SurveyImages
+    {
+        [Key]
+        public int ID { get; set; }
+        public int SurveyID { get; set; }
+        public string CoverPicture { get; set; }
+        public string AuthorPicture { get; set; }
     }
 
     [Table("SurveyApproval")]

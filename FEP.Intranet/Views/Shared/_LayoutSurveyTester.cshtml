@@ -40,13 +40,6 @@
 
 <body class="fixed-layout">
 
-    @*<div class="preloader">
-            <div class="sk-double-bounce">
-                <div class="sk-child sk-double-bounce1"></div>
-                <div class="sk-child sk-double-bounce2"></div>
-            </div>
-        </div>*@
-
     @RenderSection("Preloader", false)
 
     <!-- Header Layout -->
@@ -206,6 +199,12 @@
                                         <a class="dropdown-item" href="#">
                                             <i class="la la-book color-secondary font-icon"></i> My Courses
                                         </a>
+                                        <a class="dropdown-item" href="@Url.Action("PurchaseHistory", "Cart", new { area = "Commerce" })">
+                                            <i class="la la-shopping-cart color-secondary font-icon"></i> My Purchases
+                                        </a>
+                                        <a class="dropdown-item" href="@Url.Action("RefundHistory", "Cart", new { area = "Commerce" })">
+                                            <i class="la la-money color-secondary font-icon"></i> My Refunds
+                                        </a>
                                         @*<a class="dropdown-item" href="#">
                                         <i class="la la-certificate color-secondary font-icon"></i> My Certifications
                                     </a>
@@ -255,71 +254,64 @@
                     <div class="container">
                         <div class="navbar-collapse collapse main-menu-dropdown">
                             <ul class="nav navbar-nav">
+                                <li class="nav-item"><a href="@Url.Action("Dashboard", "Home", new { area = ""})" class="nav-link">Dashboard</a></li>
                                 <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User & Role Management</a>
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Learning</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="@Url.Action("List", "Individual", new { area = "Administrator" })"><i class="la la-user color-secondary font-icon"></i>Manage Individual</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "Company", new { area = "Administrator" })"><i class="la la-group color-secondary font-icon"></i>Manage Agency</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "Role", new { area = "Administrator" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Role</a>
+                                        @Html.Action("Menu", "Home", new { area = "eLearning" })
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Event Management</a>
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Event</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })"><i class="la la-calendar color-secondary font-icon"></i>Create Event</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Public Event</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "MediaInterview", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Media Interview</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Manage Exhibition/Roadshow Request</a>
-                                        <a class="dropdown-item" href="@Url.Action("Event_Setting", "PublicEvent", new { area = "eEvent" })"><i class="la la-comments-o color-secondary font-icon"></i>Event Setting</a>
-
+                                        @Html.Action("_Menu", "Home", new { area = "eEvent" })
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">R&P Management</a>
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Publication</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="~/RnP/Publication"><i class="la la-book color-secondary font-icon"></i>Manage Publication</a>
-                                        <a class="dropdown-item" href="~/RnP/Survey"><i class="la la-search color-secondary font-icon"></i>Manage Survey</a>
-                                        <a class="dropdown-item" href="~/RnP/Home/BrowsePublications"><i class="la la-search color-secondary font-icon"></i>Browse Publications</a>
-                                        <a class="dropdown-item" href="~/RnP/Home/BrowseSurveys"><i class="la la-search color-secondary font-icon"></i>Browse Surveys</a>
+                                        @Html.Action("_Menu", "Publication", new { area = "RnP" })
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Learning Management</a>
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Research</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#"><i class="la la-search color-secondary font-icon"></i>Browse Courses</a>
-                                        <a class="dropdown-item" href="#"><i class="la la-user color-secondary font-icon"></i>Instructors</a>
-                                        <a class="dropdown-item" href="#"><i class="la la-group color-secondary font-icon"></i>Groups</a>
-                                        <a class="dropdown-item" href="#"><i class="la la-comments-o color-secondary font-icon"></i>Discussions</a>
-                                        <a class="dropdown-item" href="#"><i class="la la-calendar color-secondary font-icon"></i>Calendar</a>
+                                        @Html.Action("_Menu", "Survey", new { area = "RnP" })
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Reports</a>
-                                    <div class="dropdown-menu">
-                                        @*<a class="dropdown-item" href="#">Menu 1</a>
-                                    <a class="dropdown-item" href="#">Menu 2</a>
-                                    <a class="dropdown-item" href="#">Menu 3</a>
-                                    <a class="dropdown-item" href="#">Menu 4</a>*@
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">KMC</a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="menu-list">
+                                                    <h6 class="color-darkblue">Menu</h6>
+                                                    <a class="dropdown-item" href="#">Manage KMC</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="menu-list">
+                                                    <h6 class="color-darkblue">Setting</h6>
+                                                    <a class="dropdown-item" href="#">KMC Category</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                </li>
+                                <li class="nav-item ">
+                                    <a href="#" class="nav-link">Reports</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">System Settings</a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="@Url.Action("List", "EmailTemplates", new { area = "Template" })"><i class="la la-comment color-secondary font-icon"></i>Template Management</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "SLAReminders", new { area = "SLAReminder" })"><i class="la la-comment color-secondary font-icon"></i>SLA Reminder Settings</a>
-
-                                        <a class="dropdown-item" href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a>
-                                        <a class="dropdown-item" href="@Url.Action("Index", "Account", new { area = "Setting" })">Account Setting</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "UserLog", new { area = "Logs" })">User Log</a>
-                                        <a class="dropdown-item" href="@Url.Action("List", "ErrorLog", new { area = "Logs" })">Error Log</a>
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Settings</a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        @Html.Action("_Menu", "Home", new { area = "Setting" })
                                     </div>
                                 </li>
-
                             </ul>
                         </div>
-                        <button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">
-                            <span class="material-icons">menu</span>
-                        </button>
+                        <!-- <button class="navbar-toggler" data-toggle="collapse" data-target="#menu-collapse" type="button">
+                        <span class="material-icons">menu</span>
+                        </button> -->
                     </div>
                 </div>
             </div>
@@ -416,6 +408,71 @@
             var y = moment(value, 'DD/MM/YYYY', true);
             return this.optional(element) || moment(value, 'DD/MM/YYYY', true).isValid() || moment(value, 'HH:mm', true).isValid();
         };
+
+        function resetValidations() {
+            //Removes validation from input-fields
+            $('.input-validation-error').addClass('input-validation-valid');
+            $('.input-validation-error').removeClass('input-validation-error');
+            //Removes validation message after input-fields
+            $('.field-validation-error').html('');
+            $('.field-validation-error').addClass('field-validation-valid');
+            $('.field-validation-error').removeClass('field-validation-error');
+            //Removes validation summary
+            $('.validation-summary-errors').addClass('validation-summary-valid');
+            $('.validation-summary-errors').removeClass('validation-summary-errors');
+        }
+
+        function clearNotification() {
+
+            $.ajax({
+				type: "get",
+				url: "@Url.Action("ClearNotification", "Notification", new { area = "" })",
+				contentType: "application/json",
+				data: [],
+				dataType: "html",
+				success: function (data) {
+					$('#notification_dropdown').html(data);
+				},
+				error: function (xhr, httpStatusMessage, customErrorMessage) {
+
+				}
+			});
+        }
+
+        loadNotify = function () {
+			$.ajax({
+				type: "get",
+				url: "@Url.Action("RefreshNotification", "Notification", new { area = "" })",
+				contentType: "application/json",
+				data: [],
+				dataType: "html",
+				success: function (data) {
+                    $('#notification_dropdown').html(data);
+                    //$('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+				},
+				error: function (xhr, httpStatusMessage, customErrorMessage) {
+
+				}
+			});
+		};
+
+		loadNotify();
+
+		setInterval(function () {
+			loadNotify();
+		}, 10000);
+
+        $(".dateSelect").flatpickr({
+            // mode: "range",
+            dateFormat: "d/m/Y",
+            wrap: true
+        });
+
+        $(".timeSelect").flatpickr({
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i"
+        });
 
     </script>
 

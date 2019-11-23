@@ -59,12 +59,24 @@
                         }
                         @if (Model.Title != "")
                         {
-                            //coverpic1 = BaseURL + "/" + "img" + "/" + Model.Pictures;
-                            //coverpic2 = BaseURL + "/" + "img" + "/" + Model.Pictures;
-                            //authorpic = BaseURL + "/" + "img" + "/" + Model.Pictures;
-                            coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
-                            coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
-                            authorpic = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                            if ((Model.CoverPicture != "") && (Model.CoverPicture != null))
+                            {
+                                coverpic1 = BaseURL + "/Data/images/publication/" + Model.CoverPicture;
+                                coverpic2 = BaseURL + "/Data/images/publication/" + Model.CoverPicture;
+                            }
+                            else
+                            {
+                                coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                                coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                            }
+                            if ((Model.AuthorPicture != "") && (Model.AuthorPicture != null))
+                            {
+                                authorpic = BaseURL + "/Data/images/publication/" + Model.AuthorPicture;
+                            }
+                            else
+                            {
+                                authorpic = BaseURL + "/" + "img" + "/8.jpg";
+                            }
                         }
                         else
                         {

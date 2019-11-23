@@ -312,11 +312,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         // Start the module
         public async Task<ActionResult> Start(int id)
         {
-            //var content = await db.CourseContents.Where(x => x.CourseModuleId == id).OrderBy(x => x.Order).FirstOrDefaultAsync();
-
-            //if (content == null)
-            //    return HttpNotFound();
-
             var response = await WepApiMethod.SendApiAsync<CourseContent>(HttpVerbs.Get, ModuleApiUrl.Start + $"?id={id}");
 
             if (response.isSuccess)

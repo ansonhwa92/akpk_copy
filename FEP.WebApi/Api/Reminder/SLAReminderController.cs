@@ -272,12 +272,16 @@ namespace FEP.WebApi.Api.Reminder
                 if (template.enableEmail)
                 {
                     string emailSubject = generateBodyMessage(template.TemplateSubject, reminder.NotificationType, reminder.ParameterListToSend);
-                    string emailBody = generateBodyMessage(template.TemplateMessage, reminder.NotificationType, reminder.ParameterListToSend);
 
                     //send email ke setiap reciever
                     foreach (var receiver in reminder.ReceiverId)
                     {
                         string receiverEmailAddress = db.User.Find(receiver).Email;
+
+                        reminder.ParameterListToSend.ReceiverFullName = GetReceiverFullName(receiverEmailAddress);
+
+                        string emailBody = generateBodyMessage(template.TemplateMessage, reminder.NotificationType, reminder.ParameterListToSend);
+
                         int counter = 1;
                         //send notification mengikut jadual
                         foreach (var notifyDate in ScheduleMessage)
@@ -371,11 +375,10 @@ namespace FEP.WebApi.Api.Reminder
                                 };
                                 var responseWEBNotificationGroup = RegisterBulkNotificationGroup(objWEBNotification);
                             }
-                            
+
                             counter++;
                         }
                     }
-                    
                 }
 
                 ReminderResponse result = new ReminderResponse
@@ -487,6 +490,7 @@ namespace FEP.WebApi.Api.Reminder
             }
             return WEBLinkTextToSend;
         }
+
         [NonAction]
         public string generateBodyMessage(string TemplateText, NotificationType NotificationType, ParameterListToSend paramToSend)
         {
@@ -543,9 +547,9 @@ namespace FEP.WebApi.Api.Reminder
             else
                 return null;
         }
-        
+
         [NonAction]
-        public async Task<long> sendWebNotifyAPI (CreateNotificationModel model)
+        public async Task<long> sendWebNotifyAPI(CreateNotificationModel model)
         {
             var response = await WepApiMethod.SendApiAsync<long>
                 (HttpVerbs.Post, $"System/Notification", model, WepApiMethod.APIEngine.IntranetAPI);
@@ -601,11 +605,11 @@ namespace FEP.WebApi.Api.Reminder
             var response = await WepApiMethod.SendApiAsync<EmailClass>
                 (HttpVerbs.Delete, $"BulkSMS/" + smsId, null, WepApiMethod.APIEngine.EmailSMSAPI);
 
-			if (response.isSuccess)
-				return response.Data;
-			else
-				return null;
-		}
+            if (response.isSuccess)
+                return response.Data;
+            else
+                return null;
+        }
 
         [NonAction]
         public async Task<bool> StopWebNotifyUsingAPI(string webNotifyId)
@@ -618,56 +622,85 @@ namespace FEP.WebApi.Api.Reminder
             else
                 return false;
         }
-		//--------------------------------------------------------------------------------------------------
 
-		/// <summary>
-		/// Used to send emails (without Remainder) when we only have email address, especially for invitation
-		/// to people outside of the system.
-		/// Now use to send invitation to enroll to course.
-		/// </summary>
-		/// <param name="model"></param>
-		/// <returns></returns>
-		public async Task<IHttpActionResult> GenerateAndSendEmails(WebApiModel.eLearning.NotificationModel model)
-		{
-			var template = db.NotificationTemplates.Where(t => t.NotificationType == model.NotificationType).FirstOrDefault();
-			string emailSubject = generateBodyMessage(template.TemplateSubject, model.NotificationType, model.ParameterListToSend);
-			string emailBody = generateBodyMessage(template.TemplateMessage, model.NotificationType, model.ParameterListToSend);
+        //--------------------------------------------------------------------------------------------------
 
-			var receivers = new List<string>();
-			//send email ke setiap reciever
-			if (!String.IsNullOrEmpty(model.Emails))
-				receivers = model.Emails.Split(',').ToList();
-			else
-				return BadRequest();
+        /// <summary>
+        /// Used to send emails (without Remainder) when we only have email address, especially for invitation
+        /// to people outside of the system.
+        /// Now use to send invitation to enroll to course.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<IHttpActionResult> GenerateAndSendEmails(WebApiModel.eLearning.NotificationModel model)
+        {
+            var template = db.NotificationTemplates.Where(t => t.NotificationType == model.NotificationType).FirstOrDefault();
+            string emailSubject = generateBodyMessage(template.TemplateSubject, model.NotificationType, model.ParameterListToSend);
 
-			int counter = 0;
-			foreach (var receiver in receivers)
-			{
-				var cleanReceiver = receiver.Trim();
-				var response = await sendEmailUsingAPIAsync(DateTime.Now, (int)model.NotificationCategory,
-					(int)model.NotificationType, cleanReceiver, emailSubject, emailBody, counter);
+            var receivers = new List<string>();
 
-				if (response != null)
-				{
-					string EmailNotificationId = response.datID; //assumed returned Id
-																 // --> CALL insert BulkNotificationGroup API (NotificationMedium : Email, int [SLAReminderStatusId])
-					BulkNotificationModel objEmailNotification = new BulkNotificationModel
-					{
-						NotificationMedium = NotificationMedium.Email,
-						NotificationId = EmailNotificationId
-					};
+            if (model.ReceiverType == WebApiModel.eLearning.ReceiverType.UserIds)
+            {
+                foreach (var item in model.ReceiverId)
+                {
+                    string receiverEmailAddress = db.User.Find(item).Email;
+                    receivers.Add(receiverEmailAddress);
+                }
+            }
+            else
+            {
+                //send email ke setiap reciever
+                if (!String.IsNullOrEmpty(model.Emails))
+                    receivers = model.Emails.Split(',').ToList();
+                else
+                    return BadRequest();
+            }
 
-					var responseEmailNotificationGroup = RegisterBulkNotificationGroupFunc(objEmailNotification);
-				}
-				counter++;
-			}
+            int counter = 0;
+            foreach (var receiver in receivers)
+            {
+                var cleanReceiver = receiver.Trim();
 
-			ReminderResponse result = new ReminderResponse
-			{
-				Status = "Success",
-			};
-			return Ok(result);
-		}
-	}
+                model.ParameterListToSend.ReceiverFullName = GetReceiverFullName(receiver);
+
+                string emailBody = generateBodyMessage(template.TemplateMessage, model.NotificationType, model.ParameterListToSend);
+
+                var response = await sendEmailUsingAPIAsync(DateTime.Now, (int)model.NotificationCategory,
+                    (int)model.NotificationType, cleanReceiver, emailSubject, emailBody, counter);
+
+                if (response != null)
+                {
+                    string EmailNotificationId = response.datID; //assumed returned Id
+                                                                 // --> CALL insert BulkNotificationGroup API (NotificationMedium : Email, int [SLAReminderStatusId])
+                    BulkNotificationModel objEmailNotification = new BulkNotificationModel
+                    {
+                        NotificationMedium = NotificationMedium.Email,
+                        NotificationId = EmailNotificationId
+                    };
+
+                    var responseEmailNotificationGroup = RegisterBulkNotificationGroupFunc(objEmailNotification);
+                }
+                counter++;
+            }
+
+            ReminderResponse result = new ReminderResponse
+            {
+                Status = "Success",
+            };
+            return Ok(result);
+        }
+
+        [NonAction]
+        public string GetReceiverFullName(string receiverEmail)
+        {
+            var user = db.User.FirstOrDefault(x => x.Email.Equals(receiverEmail, StringComparison.OrdinalIgnoreCase));
+
+            if (user != null && !String.IsNullOrEmpty(user.Name))
+            {
+                return user.Name;
+            }
+
+            return receiverEmail;
+        }
+    }
 }
-

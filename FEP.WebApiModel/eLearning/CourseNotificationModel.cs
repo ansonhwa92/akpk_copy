@@ -13,6 +13,9 @@ namespace FEP.WebApiModel.eLearning
         public Type Type { get; set; }
         public bool IsNeedRemainder { get; set; } = true;
         public ReceiverType ReceiverType { get; set; }
+
+        public List<int> Receivers { get; set; } // if set before hand
+        public int LearnerUserId { get; set; }
     }
 
     public enum ReceiverType

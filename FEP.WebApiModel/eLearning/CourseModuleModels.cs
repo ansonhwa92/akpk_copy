@@ -40,6 +40,8 @@ namespace FEP.WebApiModel.eLearning
 
         public CourseStatus Status { get; set; }
 
+        public bool IsCompleted { get; set; }
+
     }   
 
     public class ViewModuleModel : BaseModel

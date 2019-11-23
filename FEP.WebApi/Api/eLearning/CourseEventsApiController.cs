@@ -65,7 +65,7 @@ namespace FEP.WebApi.Api.eLearning
         {
             var query = db.CourseEvents
                 .Include(x => x.Group)
-                .Where(x => x.CourseId == request.CourseId && x.IsDisplayed == true) ;
+                .Where(x => x.CourseId == request.CourseId && x.IsDisplayed == true);
 
             if (!String.IsNullOrEmpty(request.Name))
                 query = query.Where(x => x.Name.ToLower().Contains(request.Name.ToLower()));
@@ -93,8 +93,7 @@ namespace FEP.WebApi.Api.eLearning
                     Group = x.Group.Name,
                     NumberOfLearners = db.Enrollments
                         .Where(y => y.CourseEventId == x.Id).Count()
-                }) ;
-
+                });
 
             //foreach(var item in data)
             //{
@@ -102,7 +101,6 @@ namespace FEP.WebApi.Api.eLearning
 
             //    item.NumberOfLearners = numberOfLearners == null ? 0 : numberOfLearners.Count();
             //}
-
 
             var filteredCount = query.Count();
 
@@ -635,7 +633,15 @@ namespace FEP.WebApi.Api.eLearning
 
                         newEnrollment.EnrollmentHistories = new List<EnrollmentHistory>
                         {
-                            new EnrollmentHistory { EnrolmmentId = newEnrollment.Id, LearnerId = learner.Id, Status = EnrollmentStatus.Enrolled}
+                            new EnrollmentHistory
+                            {
+                                EnrollmentId = newEnrollment.Id,
+                                LearnerId = learner.Id,
+                                Status = EnrollmentStatus.Enrolled,
+                                UserId = userId,
+                                CourseId = courseEvent.CourseId,
+                                CourseEventId = courseEvent.Id
+                            }
                         };
 
                         db.SetModified(newEnrollment);
@@ -645,9 +651,15 @@ namespace FEP.WebApi.Api.eLearning
                     {
                         enrollment.Status = EnrollmentStatus.Enrolled;
                         enrollment.EnrollmentHistories.Add(new EnrollmentHistory
-
-                        { EnrolmmentId = enrollment.Id, LearnerId = learner.Id, Status = EnrollmentStatus.Enrolled, Remark = "Learner reenrolled" }
-
+                        {
+                            EnrollmentId = enrollment.Id,
+                            LearnerId = learner.Id,
+                            Status = EnrollmentStatus.Enrolled,
+                            Remark = "Learner reenrolled",
+                            UserId = userId,
+                            CourseId = courseEvent.CourseId,
+                            CourseEventId = courseEvent.Id
+                        }
                         );
 
                         db.SetModified(enrollment);
@@ -696,7 +708,7 @@ namespace FEP.WebApi.Api.eLearning
                     enrollment.EnrollmentHistories.Add(
                             new EnrollmentHistory
                             {
-                                EnrolmmentId = enrollment.Id,
+                                EnrollmentId = enrollment.Id,
                                 LearnerId = learner.Id,
                                 Status = EnrollmentStatus.Removed,
                                 Remark = "Removed from Enrollment"
@@ -736,7 +748,7 @@ namespace FEP.WebApi.Api.eLearning
             // check whether a public event has been created
             var publicEvent = await db.CourseEvents.FirstOrDefaultAsync(x => x.CourseId == id && x.ViewCategory == ViewCategory.Public);
 
-            if(publicEvent == null)
+            if (publicEvent == null)
             {
                 var newEvent = new CourseEvent
                 {
@@ -744,7 +756,7 @@ namespace FEP.WebApi.Api.eLearning
                     CourseId = id,
                     AllowablePercentageBeforeWithdraw = entity.DefaultAllowablePercentageBeforeWithdraw,
                     CreatedBy = createdBy,
-                    EnrollmentCode = $"PUBLIC({entity.Code})",
+                    EnrollmentCode = $"PUBLIC ({entity.Id})",
                     ViewCategory = ViewCategory.Public,
                     Status = entity.ViewCategory == ViewCategory.Public ? CourseEventStatus.AvailableToPublic : CourseEventStatus.AvailableToPrivate,
                     Start = DateTime.Now,
@@ -859,7 +871,6 @@ namespace FEP.WebApi.Api.eLearning
             return BadRequest("Invalid data");
         }
 
-
         /// <summary>
         /// Invite learners by email. Called by intranet, same name
         /// </summary>
@@ -887,7 +898,6 @@ namespace FEP.WebApi.Api.eLearning
                     Emails = model.LearnerEmails,
                 });
                 await db.SaveChangesAsync();
-
             }
             return Ok();
         }

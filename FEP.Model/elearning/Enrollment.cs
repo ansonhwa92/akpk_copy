@@ -11,6 +11,8 @@ namespace FEP.Model.eLearning
         [Required, Index]
         public int CourseEventId { get; set; }
 
+        public virtual CourseEvent CourseEvent { get; set; }
+
         [Index]
         public int CourseId { get; set; }
 
@@ -47,7 +49,10 @@ namespace FEP.Model.eLearning
 
     public class EnrollmentHistory : BaseEntity
     {
-        public int EnrolmmentId { get; set; }
+        public int EnrollmentId { get; set; }
+        public int CourseId { get; set; }
+        public int? CourseEventId { get; set; }
+        public int? UserId { get; set; }
         public int LearnerId { get; set; }
         public EnrollmentStatus Status { get; set; }
         public string Remark { get; set; }

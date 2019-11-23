@@ -8,16 +8,18 @@
 
 @section Nav{
 
-    <div id="breadcrumb">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", routeValues:null)">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="">e-Learning</a></li>
-            </ol>
-        </nav>
+    <div class="header-col-left">
+        <div id="breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", routeValues:null)">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                </ol>
+            </nav>
+        </div>
+        <h1 class="page-title text-white">Browse E-Learning</h1>
+        <div class="header-text">Browse and purchase courses</div>
     </div>
-    <h1 class="page-title text-white">Browse E-Learning</h1>
-    <div class="header-text">Browse and purchase courses</div>
 }
 
 <main id="landing-inner" class="rellax" data-rellax-speed="0">
@@ -64,7 +66,7 @@
                 <div class="col-lg-3">
                     <div class="search-col-left">
                         <div class="input-keyword mb-5">
-                            <input type="text" class="form-control form-control-rounded" placeholder="Type keyword here..."value="@Model.Keyword" name="keyword" id="textKeyword">
+                            <input type="text" class="form-control form-control-rounded" placeholder="Type keyword here..." value="@Model.Keyword" name="keyword" id="textKeyword">
                             <div class="input-group-append">
                                 <button class="btn btn-circle" type="button" id="buttonSearch"><i class="fas fa-search text-white"></i></button>
                             </div>
@@ -102,7 +104,7 @@
                                     </div>
 
                                     @*SKILL LEVEL - TAKDE DALAM COURSE*@
-                                        @*<div class="filter-type">
+                                    @*<div class="filter-type">
                                             <h4 class="color-darkblue">Skill Level</h4>
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="checkBeginner" @ViewBag.LevelBeginner>
@@ -116,7 +118,7 @@
                                                 <input type="checkbox" class="custom-control-input" id="checkAdvanced" @ViewBag.LevelAdvanced>
                                                 <label class="custom-control-label" for="checkAdvanced">Advanced</label>
                                             </div>
-                                            
+
                                         </div>*@
 
                                     @*<div class="filter-type">
@@ -145,28 +147,28 @@
 
                                     @*LANGUAGE*@
                                     <div class="filter-type">
-                                            <h4 class="color-darkblue">Language</h4>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="checkEnglish" @ViewBag.LanguageEnglish>
-                                                <label class="custom-control-label" for="checkEnglish" id="labelEnglish">English</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="checkMalay" @ViewBag.LanguageMalay>
-                                                <label class="custom-control-label" for="checkMalay" id="labelMalay">Malay</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="checkChinese" @ViewBag.LanguageChinese>
-                                                <label class="custom-control-label" for="checkChinese" id="labelChinese">Chinese</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="checkTamil" @ViewBag.LanguageTamil>
-                                                <label class="custom-control-label" for="checkTamil" id="labelTamil">Tamil</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="checkMultiLanguage" @ViewBag.LanguageMultiLanguage>
-                                                <label class="custom-control-label" for="checkMultiLanguage" id="labelMultilanguage">Multi Language</label>
-                                            </div>
+                                        <h4 class="color-darkblue">Language</h4>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkEnglish" @ViewBag.LanguageEnglish>
+                                            <label class="custom-control-label" for="checkEnglish" id="labelEnglish">English</label>
                                         </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkMalay" @ViewBag.LanguageMalay>
+                                            <label class="custom-control-label" for="checkMalay" id="labelMalay">Malay</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkChinese" @ViewBag.LanguageChinese>
+                                            <label class="custom-control-label" for="checkChinese" id="labelChinese">Chinese</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkTamil" @ViewBag.LanguageTamil>
+                                            <label class="custom-control-label" for="checkTamil" id="labelTamil">Tamil</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkMultiLanguage" @ViewBag.LanguageMultiLanguage>
+                                            <label class="custom-control-label" for="checkMultiLanguage" id="labelMultilanguage">Multi Language</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <button class="btn btn-secondary btn-rounded" id="buttonReset">Clear Filter</button>
@@ -229,7 +231,7 @@
                                                 <div class="card__author">
                                                     <a class="card__col-left" href=""><span class="card__avatar"><img class="card__avatar__image" src="@authorpic"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Siti Saleha @item.Instructor</span></span></a>
                                                 </div>
-                                                <div class="card__text">@Html.Raw(HttpUtility.HtmlDecode(@item.Description))</div>
+                                                <div class="card__text" href="@Url.Action("View", "Courses", new { area = "eLearning", @id = item.Id })">@Html.Raw(HttpUtility.HtmlDecode(@item.Description))</div>
 
                                                 <div class="card__info">
                                                     <div class="card__col-left">

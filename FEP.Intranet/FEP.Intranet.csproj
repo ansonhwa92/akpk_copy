@@ -903,7 +903,6 @@
     <Content Include="Areas\eLearning\Views\Certificates\_Template.cshtml" />
     <Content Include="Areas\eLearning\Views\Certificates\Edit_Template.cshtml" />
     <Content Include="Areas\eLearning\Views\Certificates\Create_Template.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\View.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\AssignCertificate.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseEvents\_addLearner.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseEvents\Learners.cshtml" />
@@ -1061,6 +1060,14 @@
     <Content Include="Areas\KMC\Views\Manage\_Details.cshtml" />
     <Content Include="Areas\KMC\Views\Manage\Delete.cshtml" />
     <Content Include="Areas\KMC\Views\Manage\_List.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\SelectCategory.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_detailsSidebar.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\Review.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEnrollments\UsersProgress.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEnrollments\UserDetails.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\ReviewCertificate.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\View.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\ViewCertificate.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

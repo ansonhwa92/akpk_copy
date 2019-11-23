@@ -184,8 +184,8 @@
                                                     <div class="pr-3"><i class="la @icon la-2x" data-toggle="tooltip" title=@title></i><span class="pb-1">@content.Title</span></div>
                                                 </div>
                                                 @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
-                                                             (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||
-                                                             CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                                              (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||
+                                                              CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
                                                     {
                                                         <div class="col-sm-4 ">
                                                             <div class="row float-right">

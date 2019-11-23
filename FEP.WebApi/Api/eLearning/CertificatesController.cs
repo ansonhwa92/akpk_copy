@@ -51,7 +51,8 @@ namespace FEP.WebApi.Api.eLearning
             {
                 Background = bg.ToList(),
                 Template = temp.ToList(),
-                Course = course
+                CourseCertificateId = course.CourseCertificateId != null ? course.CourseCertificateId.Value:0,
+                CourseCertificateTemplateId = course.CourseCertificateTemplateId != null ? course.CourseCertificateTemplateId.Value : 0,
             };
 
             return Ok(model);

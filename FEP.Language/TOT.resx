@@ -168,6 +168,9 @@
   <data name="FieldNoOfParticipant" xml:space="preserve">
     <value>No of Participant</value>
   </data>
+  <data name="FieldOrganization" xml:space="preserve">
+    <value>Organization</value>
+  </data>
   <data name="FieldSalaryRange" xml:space="preserve">
     <value>Salary Range</value>
   </data>
@@ -191,6 +194,9 @@
   </data>
   <data name="PlaceholderModule" xml:space="preserve">
     <value>Enter Module Name</value>
+  </data>
+  <data name="PlaceholderOrganization" xml:space="preserve">
+    <value>Enter Organization</value>
   </data>
   <data name="PlaceholderSalaryRange" xml:space="preserve">
     <value>Select Salary Range</value>
@@ -272,6 +278,9 @@
   </data>
   <data name="ValidRequiredNoOfMale" xml:space="preserve">
     <value>Please enter No of Male Participant</value>
+  </data>
+  <data name="ValidRequiredOrganization" xml:space="preserve">
+    <value>Please enter Organization</value>
   </data>
   <data name="ValidRequiredSalaryRange" xml:space="preserve">
     <value>Please select Salary Range</value>

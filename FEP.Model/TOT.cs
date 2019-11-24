@@ -41,6 +41,7 @@ namespace FEP.Model
         public int SalaryR5NoOfFemale { get; set; }
         public int SalaryR6NoOfMale { get; set; }
         public int SalaryR6NoOfFemale { get; set; }
+        public string Organization { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }  
 

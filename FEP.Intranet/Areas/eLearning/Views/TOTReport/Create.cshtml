@@ -132,6 +132,13 @@
                             @Html.ValidationMessageFor(model => model.Venue, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(model => model.Organization)
+                            @Html.EditorFor(model => model.Organization, new { htmlAttributes = new { @class = "form-control", placeholder = Language.TOT.PlaceholderOrganization } })
+                            @Html.ValidationMessageFor(model => model.Organization, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                     <div class="row mb-1">
                         <div class="col-lg-6">
                             <label>@Language.TOT.TextAgeRange</label>

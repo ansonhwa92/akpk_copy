@@ -14,16 +14,16 @@
 
         protected override void Seed(DbEntities context)
         {
-			mhafeez.Seed(context);
-			aiman.Seed(context);
-			firus.Seed(context);
+			//mhafeez.Seed(context);
+			//aiman.Seed(context);
+			//firus.Seed(context);
 
 			//Seed Elearning Default data and Test users and sample data
 
-			SeedElearning.Seed(context);
-			SeedElearningEmail.SeedTemplateParameter(context);
-			SeedElearningEmail.Seed(context);
-			tajulSeed.DefaultTemplate(context);
+			//SeedElearning.Seed(context);
+			//SeedElearningEmail.SeedTemplateParameter(context);
+			//SeedElearningEmail.Seed(context);
+			//tajulSeed.DefaultTemplate(context);
 		}
     }
 }

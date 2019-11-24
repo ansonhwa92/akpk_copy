@@ -109,6 +109,76 @@
 
         }
 
+        function deleteTentative(tId) {
+            for (j = 0; j < AgendaJSON['tentatives'].length; j++) {
+                if (AgendaJSON['tentatives'][j]['id'] == tId) {
+                    //debugger;
+                    if (confirm('Are you sure to delete this entry? \n' + AgendaJSON['tentatives'][j]['date'] + ' ' + AgendaJSON['tentatives'][j]['time'] + '\n' + AgendaJSON['tentatives'][j]['tentative'])) {
+                        console.log(AgendaJSON);
+                        AgendaJSON['tentatives'].splice(j, 1);
+                        console.log(AgendaJSON);
+                        renderAgenda();    
+                    } else {
+                        
+                    }
+                    
+                    break;
+                }
+            }
+
+        }
+
+        function renderAgenda() {
+            var prevDate = "";
+            var currentDate = "";
+            var DayCounter = 0;
+            var toDisplay = '<dl class="row">';
+            for (j = 0; j < AgendaJSON['tentatives'].length; j++) {
+                currentDate = AgendaJSON['tentatives'][j]['date'];
+                if (prevDate != currentDate) {
+                    toDisplay += '</dl>';
+                    toDisplay += '<hr />';
+                    toDisplay += '<dl class="row">';
+                    toDisplay += '<dt class="col-sm-3"><b><div class="card bg-light p-2 float-right border-grey">' + AgendaJSON['tentatives'][j]['date'] + '</div></b></dt>';
+                    toDisplay += '<dd class="col-sm-9">';
+                    toDisplay += '<div class="form-group col-lg-12">';
+                    toDisplay += '<label for="Event_Description">Session Name</label>';
+                    toDisplay += '<input class="form-control text-box single-line" data-val="true"';
+
+                    var tempDate = AgendaJSON['tentatives'][j]['date'];
+                    var tempSessionName = '';
+                    if (AgendaJSON['sessionNames'].length > 0) { let sName = AgendaJSON['sessionNames'].find(s => s.date === tempDate); tempSessionName = (sName != null) ? sName['value'] : ''; }
+                    toDisplay += 'id="sessionName_' + DayCounter + '" name="sessionName_' + DayCounter + '" placeholder="Session ' + (DayCounter + 1) + '" type="text" onchange="(AgendaJSON[\'sessionNames\'].find(s => s.date === \''+ tempDate +'\') == null)? AgendaJSON[\'sessionNames\'].push({date: \''+ tempDate +'\', value: this.value}) : (AgendaJSON[\'sessionNames\'].find(s => s.date === \''+ tempDate +'\'))[\'value\'] = this.value;" value="' + tempSessionName + '">';
+                    toDisplay += '</div>';
+                    toDisplay += '<div class="form-group col-lg-12">';
+                    toDisplay += '<label for="Session_Description">Event Description</label>';
+                    toDisplay += '<input class="form-control text-box single-line" data-val="true"';
+                    var tempSessionDesc = '';
+                    if (AgendaJSON['sessionDescriptions'].length > 0) { let sDesc = AgendaJSON['sessionDescriptions'].find(s => s.date === tempDate); tempSessionDesc = (sDesc != null )? sDesc['value'] : ''; }
+                    toDisplay += 'id="sessionDescription_' + DayCounter + '" name="sessionDescription_' + DayCounter + '" placeholder="describe about Session ' + (DayCounter+1) + '" type="text" onchange="(AgendaJSON[\'sessionDescriptions\'].find(s => s.date === \''+ tempDate +'\') == null)? AgendaJSON[\'sessionDescriptions\'].push({date: \''+ tempDate +'\', value: this.value})  : (AgendaJSON[\'sessionDescriptions\'].find(s => s.date === \''+ tempDate +'\'))[\'value\'] = this.value;" value="' + tempSessionDesc + '">';
+                    toDisplay += '</div>';
+                    toDisplay += '</dd>';
+                    DayCounter++;
+                }
+
+                toDisplay += '<dt class="col-sm-3"><p class="text-right">' + AgendaJSON['tentatives'][j]['time'] + '</p></dt>';
+                toDisplay += '<dd class="col-sm-9">' + AgendaJSON['tentatives'][j]['tentative'];
+                toDisplay += '<a href="#" data-toggle="tooltip" data-placement="top" data-original-title="Edit" onclick="editTentative(' + AgendaJSON['tentatives'][j]['id'] + ')"> <i class="la la-edit text-muted"></i></a>';
+                toDisplay += '<a href="#" data-toggle="tooltip" data-placement="top" data-original-title="Delete" onclick="deleteTentative(' + AgendaJSON['tentatives'][j]['id'] + ')"> <i class="la la-trash text-muted"></i></a>';
+                if (AgendaJSON['tentatives'][j]['speakers'].length > 0) {
+                    for (m = 0; m < AgendaJSON['tentatives'][j]['speakers'].length; m++) {
+                        toDisplay += '<br><i class="fa fa-user-tie font-icon"></i>' + AgendaJSON['tentatives'][j]['speakers'][m]['name'];
+                    }
+                }
+                toDisplay += '</dd>';
+
+                prevDate = currentDate;
+            }
+            toDisplay += '</dl>';
+
+            $("#generatedAgenda").html(toDisplay);
+        }
+
         var tCounter = 0;
         $("#confirmAddTentative").click(function () {
             var dataSpeaker = $("#tentatifSpeakers").select2("data");
@@ -128,6 +198,17 @@
             }
             if ($("#tentativeDate").val() != "" && $("#tentativeTime").val() != "" && $("#tentative").val() != "") {
                 if (ActionMode == "AddNew") {
+
+                    //check if same time already exist
+                    for (var m = 0; m < AgendaJSON['tentatives'].length; m++) {
+                        if (AgendaJSON['tentatives'][m]['date'] == item['date']) {
+                            if (AgendaJSON['tentatives'][m]['time'] == item['time']) {
+                                alert("There is a tentative with the same time already exist.\nPlease select different time");
+                                return;
+                            }
+                        }
+                    }
+
                     item['id'] = tCounter;
                     tCounter++;
                     AgendaJSON['tentatives'].push(item);
@@ -136,6 +217,17 @@
                     item['id'] = $("#tentativeId").val();
                     for (m = 0; m < AgendaJSON['tentatives'].length; m++) {
                         if (AgendaJSON['tentatives'][j]['id'] == $("#tentativeId").val()) {
+
+                            //check if same time already exist
+                            for (var m = 0; m < AgendaJSON['tentatives'].length; m++) {
+                                if (AgendaJSON['tentatives'][m]['date'] == item['date']) {
+                                    if (AgendaJSON['tentatives'][m]['id'] != item['id'] && AgendaJSON['tentatives'][m]['time'] == item['time']) {
+                                        alert("There is a tentative with the same time already exist.\nPlease select different time");
+                                        return;
+                                    }
+                                }
+                            }
+
                             AgendaJSON['tentatives'][j] = item;
                             break;
                         }
@@ -143,69 +235,34 @@
 
                 }
 
-                function sortByProperty(property) {
+                function sortByProperty(property1, property2) {
                     return function (a, b) {
-                        if (a[property] > b[property])
+                        /*if (a[property] > b[property])
                             return 1;
                         else if (a[property] < b[property])
                             return -1;
 
-                        return 0;
+                        return 0;*/
+
+                        if (a[property1] === b[property1]) {
+                            // Price is only important when cities are the same
+                            return a[property2] > b[property2] ? 1 : -1;
+                        }
+                        return a[property1] > b[property1] ? 1 : -1;
                     }
                 }
-                AgendaJSON['tentatives'].sort(sortByProperty("date"));
+                AgendaJSON['tentatives'].sort(sortByProperty("date", "time"));
                 console.log(AgendaJSON);
 
-                var prevDate = "";
-                var currentDate = "";
-                var DayCounter = 0;
-                var toDisplay = '<dl class="row">';
-                for (j = 0; j < AgendaJSON['tentatives'].length; j++) {
-                    currentDate = AgendaJSON['tentatives'][j]['date'];
-                    if (prevDate != currentDate) {
-                        toDisplay += '</dl>';
-                        toDisplay += '<hr />';
-                        toDisplay += '<dl class="row">';
-                        toDisplay += '<dt class="col-sm-3"><b><div class="card bg-light p-2 float-right border-grey">' + AgendaJSON['tentatives'][j]['date'] + '</div></b></dt>';
-                        toDisplay += '<dd class="col-sm-9">';
-                        toDisplay += '<div class="form-group col-lg-12">';
-                        toDisplay += '<label for="Event_Description">Session Name</label>';
-                        toDisplay += '<input class="form-control text-box single-line" data-val="true"';
-
-                        var tempDate = AgendaJSON['tentatives'][j]['date'];
-                        var tempSessionName = '';
-                        if (AgendaJSON['sessionNames'].length > 0) { let sName = AgendaJSON['sessionNames'].find(s => s.date === tempDate); tempSessionName = (sName != null) ? sName['value'] : ''; }
-                        toDisplay += 'id="sessionName_' + DayCounter + '" name="sessionName_' + DayCounter + '" placeholder="Session ' + (DayCounter + 1) + '" type="text" onchange="(AgendaJSON[\'sessionNames\'].find(s => s.date === \''+ tempDate +'\') == null)? AgendaJSON[\'sessionNames\'].push({date: \''+ tempDate +'\', value: this.value}) : (AgendaJSON[\'sessionNames\'].find(s => s.date === \''+ tempDate +'\'))[\'value\'] = this.value;" value="' + tempSessionName + '">';
-                        toDisplay += '</div>';
-                        toDisplay += '<div class="form-group col-lg-12">';
-                        toDisplay += '<label for="Session_Description">Event Description</label>';
-                        toDisplay += '<input class="form-control text-box single-line" data-val="true"';
-                        var tempSessionDesc = '';
-                        if (AgendaJSON['sessionDescriptions'].length > 0) { let sDesc = AgendaJSON['sessionDescriptions'].find(s => s.date === tempDate); tempSessionDesc = (sDesc != null )? sDesc['value'] : ''; }
-                        toDisplay += 'id="sessionDescription_' + DayCounter + '" name="sessionDescription_' + DayCounter + '" placeholder="describe about Session ' + (DayCounter+1) + '" type="text" onchange="(AgendaJSON[\'sessionDescriptions\'].find(s => s.date === \''+ tempDate +'\') == null)? AgendaJSON[\'sessionDescriptions\'].push({date: \''+ tempDate +'\', value: this.value})  : (AgendaJSON[\'sessionDescriptions\'].find(s => s.date === \''+ tempDate +'\'))[\'value\'] = this.value;" value="' + tempSessionDesc + '">';
-                        toDisplay += '</div>';
-                        toDisplay += '</dd>';
-                        DayCounter++;
-                    }
-
-                    toDisplay += '<dt class="col-sm-3"><p class="text-right">' + AgendaJSON['tentatives'][j]['time'] + '</p></dt>';
-                    toDisplay += '<dd class="col-sm-9">' + AgendaJSON['tentatives'][j]['tentative'];
-                    toDisplay += '<a href="#" data-toggle="tooltip" data-placement="top" data-original-title="Edit" onclick="editTentative(' + AgendaJSON['tentatives'][j]['id'] + ')"> <i class="la la-edit text-muted"></i></a>';
-                    if (AgendaJSON['tentatives'][j]['speakers'].length > 0) {
-                        for (m = 0; m < AgendaJSON['tentatives'][j]['speakers'].length; m++) {
-                            toDisplay += '<br><i class="fa fa-user-tie font-icon"></i>' + AgendaJSON['tentatives'][j]['speakers'][m]['name'];
-                        }
-                    }
-                    toDisplay += '</dd>';
-
-                    prevDate = currentDate;
-                }
-                toDisplay += '</dl>';
-
-                $("#generatedAgenda").html(toDisplay);
+                renderAgenda();
+                $('#myModal').modal('hide');
+            }
+            else {
+                alert("Please complete all required fields");
             }
 
-            $('#myModal').modal('hide');
+
+            
         })
 
         $('#target').submit(function(event) {
@@ -269,13 +326,13 @@
                                 </a>
                             </li>
                             <li id="sideMenuDetails" class="step-item active">
-                                <a href="#eventdetails" class="step-link">
+                                <a href="#eventdetails" class="step-link" data-toggle="tab">
                                     <span class="step-number">2</span>
                                     <span class="step-title">Fill Up Event Details</span>
                                 </a>
                             </li>
-                            <li id="sideMenuAgenda" class="step-item">
-                                <a href="#eventagenda" class="step-link">
+                            <li id="sideMenuAgenda" class="step-item active">
+                                <a href="#eventagenda" class="step-link" data-toggle="tab">
                                     <span class="step-number">3</span>
                                     <span class="step-title">Fill Up Event Agenda</span>
                                 </a>

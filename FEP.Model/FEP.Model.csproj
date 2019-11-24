@@ -59,6 +59,14 @@
     <Compile Include="Migrations\201911201402015_tajul2.designer.cs">
       <DependentUpon>201911201402015_tajul2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911240959546_tajul3.cs" />
+    <Compile Include="Migrations\201911240959546_tajul3.designer.cs">
+      <DependentUpon>201911240959546_tajul3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911241025293_tajul31.cs" />
+    <Compile Include="Migrations\201911241025293_tajul31.designer.cs">
+      <DependentUpon>201911241025293_tajul31.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />
@@ -124,6 +132,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201911201402015_tajul2.resx">
       <DependentUpon>201911201402015_tajul2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911240959546_tajul3.resx">
+      <DependentUpon>201911240959546_tajul3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911241025293_tajul31.resx">
+      <DependentUpon>201911241025293_tajul31.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

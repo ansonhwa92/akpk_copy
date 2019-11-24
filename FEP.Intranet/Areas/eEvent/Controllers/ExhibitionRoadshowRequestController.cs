@@ -40,7 +40,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			}
 
 			var model = response.Data;
-
+            
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
 			model.Nominees = new SelectList(await GetUsers(), "Id", "Name", 0);
 
@@ -93,6 +93,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ReceivedDate = model.ReceivedDate,
 					Receive_Via = model.Receive_Via,
 					NomineeId = model.NomineeId,
+                    DutyRosterJSON = model.DutyRosterJSON
 				};
 
 				//attachment

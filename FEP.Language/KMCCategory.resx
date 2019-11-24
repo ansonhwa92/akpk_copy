@@ -156,7 +156,7 @@
   <data name="ValidExistName" xml:space="preserve">
     <value>KMC Category already registered in the system</value>
   </data>
-  <data name="ValidRequiredName" xml:space="preserve">
+  <data name="ValidRequiredTitle" xml:space="preserve">
     <value>Please enter Category Title</value>
   </data>
 </root>

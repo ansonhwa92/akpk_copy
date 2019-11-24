@@ -571,6 +571,7 @@
     <Content Include="img\logo-akpk-normal.svg" />
     <Content Include="img\logo-akpk.svg" />
     <Content Include="img\no-photo.jpg" />
+    <Content Include="img\publications\icon-1+1-promo.svg" />
     <Content Include="img\publications\icon-1-plus-1-promo.svg" />
     <Content Include="img\publications\icon-cart.svg" />
     <Content Include="img\publications\icon-digital.svg" />
@@ -1713,15 +1714,6 @@
     <Folder Include="Data\images\publication\" />
     <Folder Include="Data\images\research\" />
     <Folder Include="img\avatar\" />
-    <Folder Include="img\banner\about-us\" />
-    <Folder Include="img\banner\banking\" />
-    <Folder Include="img\banner\banner\" />
-    <Folder Include="img\banner\calculator\" />
-    <Folder Include="img\banner\introduction\" />
-    <Folder Include="img\banner\publications\" />
-    <Folder Include="img\banner\public\" />
-    <Folder Include="img\banner\services\" />
-    <Folder Include="img\banner\stats\" />
     <Folder Include="img\kmc-thumbnail\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>

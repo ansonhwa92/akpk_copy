@@ -266,11 +266,13 @@ namespace FEP.Intranet
         public static string SaveFile(HttpPostedFileBase file, string path, string deletefilename = null)
         {
             if (file != null)
-            {
+            {              
 
                 DeleteFile(path, deletefilename);
 
                 var filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + Path.GetFileName(file.FileName);
+
+                Directory.CreateDirectory(path);
 
                 file.SaveAs(Path.Combine(path, filename));
 

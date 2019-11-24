@@ -10,14 +10,14 @@ namespace FEP.WebApiModel.KMC
     public class CategoryModel
     {
         public int Id { get; set; }
-        [Display(Name = "FieldTitle", ResourceType = typeof(Language.KMC))]
+        [Display(Name = "FieldTitle", ResourceType = typeof(Language.KMCCategory))]
         public string Title { get; set; }
     }
 
     public class CreateCategoryModel
     {
-        [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.KMC))]
-        [Display(Name = "FieldTitle", ResourceType = typeof(Language.KMC))]
+        [Required(ErrorMessageResourceName = "ValidRequiredTitle", ErrorMessageResourceType = typeof(Language.KMCCategory))]
+        [Display(Name = "FieldTitle", ResourceType = typeof(Language.KMCCategory))]
         public string Title { get; set; }
     }
 
@@ -26,8 +26,8 @@ namespace FEP.WebApiModel.KMC
         public int Id { get; set; }
         public string No { get; set; }
 
-        [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.KMC))]
-        [Display(Name = "FieldTitle", ResourceType = typeof(Language.KMC))]
+        [Required(ErrorMessageResourceName = "ValidRequiredTitle", ErrorMessageResourceType = typeof(Language.KMCCategory))]
+        [Display(Name = "FieldTitle", ResourceType = typeof(Language.KMCCategory))]
         public string Title { get; set; }
     }
 
@@ -36,7 +36,7 @@ namespace FEP.WebApiModel.KMC
         public int Id { get; set; }
         public string No { get; set; }
 
-        [Display(Name = "FieldTitle", ResourceType = typeof(Language.KMC))]
+        [Display(Name = "FieldTitle", ResourceType = typeof(Language.KMCCategory))]
         public string Title { get; set; }
     }
 

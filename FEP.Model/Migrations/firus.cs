@@ -685,11 +685,11 @@ namespace FEP.Model.Migrations
                 if (pType >= 131 && pType <= 140)
                 {
                     // will be superseded by below
-                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
                     new ParameterGroup { SLAEventType = SLAEventType.RefundPublication, TemplateParameterType = paramType });
 
                     // other refunds can add here
-                    db.ParameterGroup.AddOrUpdate(p => p.TemplateParameterType,
+                    db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
                     new ParameterGroup { SLAEventType = SLAEventType.Refund, TemplateParameterType = paramType });
 
                     continue;

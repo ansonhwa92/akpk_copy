@@ -180,9 +180,9 @@ namespace Language {
         /// <summary>
         ///   Looks up a localized string similar to Please enter Category Title.
         /// </summary>
-        public static string ValidRequiredName {
+        public static string ValidRequiredTitle {
             get {
-                return ResourceManager.GetString("ValidRequiredName", resourceCulture);
+                return ResourceManager.GetString("ValidRequiredTitle", resourceCulture);
             }
         }
     }

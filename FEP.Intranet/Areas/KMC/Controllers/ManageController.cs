@@ -375,7 +375,7 @@ namespace FEP.Intranet.Areas.KMC.Controllers
             if (ModelState.IsValid)
             {
 
-                var modelapi = new CreateKMCModel
+                var modelapi = new EditKMCModel
                 {
                     KMCCategoryId = model.CategoryId,
                     Title = model.Title,
@@ -391,7 +391,7 @@ namespace FEP.Intranet.Areas.KMC.Controllers
 
                 if (model.ThumbnailFile != null)
                 {
-                    var filename = FileMethod.SaveFile(model.ThumbnailFile, Server.MapPath("~/img/kmc-thumbnail"));
+                    var filename = FileMethod.SaveFile(model.ThumbnailFile, Server.MapPath("~/img/kmc-thumbnail"), model.ThumbnailUrl);
                     modelapi.ThumbnailUrl = filename;
                 }
 

@@ -364,5 +364,9 @@ healthchecksdb
 /FEP.WebApi/App_Data/*
 
 # Avatar
-!/FEP.Intranet/img/avatar/*
+/FEP.Intranet/img/avatar/*
+
+# KMC
+/FEP.Intranet/img/kmc-thumbnail/*
+
 /FEP.Intranet/App_Data/DiscussionAttachment

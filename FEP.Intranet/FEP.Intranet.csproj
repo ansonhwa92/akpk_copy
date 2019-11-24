@@ -251,7 +251,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\eLearning\Views\CourseContents\_createVideo.cshtml" />
-    <Content Include="img\kmc-thumbnail\no-image.png" />
+    <Content Include="img\no-image.png" />
     <Content Include="Areas\RnP\Views\Survey\Answer.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Build.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Create.cshtml" />
@@ -1722,6 +1722,7 @@
     <Folder Include="img\banner\public\" />
     <Folder Include="img\banner\services\" />
     <Folder Include="img\banner\stats\" />
+    <Folder Include="img\kmc-thumbnail\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>

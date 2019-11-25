@@ -769,6 +769,16 @@ namespace FEP.WebApi.Api.eLearning
                 await db.SaveChangesAsync();
             }
 
+            //sum total content - added by wawar
+
+            var totalContent =  db.CourseContents.Where(x => x.CourseId == id);
+            entity.TotalContents = totalContent.Count();
+
+            var totalModule = db.CourseModules.Where(x => x.CourseId == id);
+            entity.TotalModules = totalContent.Count();
+
+            //end sum
+
             entity.Status = CourseStatus.Published;
 
             if (entity.CourseApprovalLog == null)

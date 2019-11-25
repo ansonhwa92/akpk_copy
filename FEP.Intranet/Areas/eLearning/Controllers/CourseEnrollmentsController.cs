@@ -136,7 +136,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (response.isSuccess)
             {
-                if (response.Data)
+                //if (response.Data == false) // testing fix - CONTINuE FIX HERE
+                if (response.Data == true)
                 {
                     TempData["ErrorMessage"] = "You are already enrolled to this course.";
 

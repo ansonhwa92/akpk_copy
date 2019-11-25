@@ -30,14 +30,14 @@ namespace FEP.Intranet.Areas.eLearning.Helper
                     return response.Data;
                 }
 
-                await new FEPController().LogError(Modules.Learning, $"Error sending Email For {model.NotificationType.GetDisplayName()} " +
+                await new FEPController().LogError(Modules.Learning, $"Error sending Email For {model.NotificationType.ToString()} " +
                     $"Title : " + $"{model.ParameterListToSend.CourseTitle}");
 
                 return response.Data;
             }
             catch (Exception e)
             {
-                await new FEPController().LogError(Modules.Learning, $"Error sending Email For {model.NotificationType.GetDisplayName()} " +
+                await new FEPController().LogError(Modules.Learning, $"Error sending Email For {model.NotificationType.ToString()} " +
                     $"Title : " + $"{model.ParameterListToSend.CourseTitle}");
 
                 return new ReminderResponse
@@ -67,6 +67,7 @@ namespace FEP.Intranet.Areas.eLearning.Helper
                     Link = link,
                 },
                 ReceiverType = ReceiverType.UserIds,
+                IsNeedRemainder = false
             };
 
             var emailResponse = await EmaiHelper.SendNotification(notifyModel);
@@ -95,6 +96,7 @@ namespace FEP.Intranet.Areas.eLearning.Helper
                 },
                 ReceiverType = ReceiverType.UserIds,
                 LearnerUserId = userId,
+                IsNeedRemainder = false
             };
 
             emailResponse = await EmaiHelper.SendNotification(notifyModel);

@@ -990,14 +990,11 @@ namespace FEP.WebApi.Api.eLearning
             }
             else
             {
-                //var enrollment = db.Enrollments.Where(x => x.Learner.User.Id == userId &&
-                //            x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefault();
-
                 // public course
-                var enrollment = await db.Enrollments.Where(x => x.CourseId == id &&
+                var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.CourseId == id &&
                     x.Learner.User.Id == userId &&
-                    (x.Status == EnrollmentStatus.Enrolled || x.Status == EnrollmentStatus.Completed))
-                    .OrderBy(x => x.CreatedDate).FirstOrDefaultAsync();
+                    !x.CourseEvent.IsTrial &&
+                    (x.Status == EnrollmentStatus.Enrolled || x.Status == EnrollmentStatus.Completed));
 
                 if (enrollment != null)
                     return Ok(true);
@@ -1014,7 +1011,8 @@ namespace FEP.WebApi.Api.eLearning
             if (ModelState.IsValid)
             {
                 var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.Learner.User.Id == userId &&
-                    x.CourseId == id && x.Status == EnrollmentStatus.Completed);
+                    x.CourseId == id && !x.CourseEvent.IsTrial &&
+                    x.Status == EnrollmentStatus.Completed);
 
                 var entity = new UserCourseEnrollmentModel();
 
@@ -1030,21 +1028,10 @@ namespace FEP.WebApi.Api.eLearning
                         CourseEventId = enrollment.CourseEventId
                     };
 
-                    if (entity == null)
-                    {
-                        entity.IsUserEnrolled = false;
-                        return Ok(entity);
-                    }
-                    else
-                    {
-                        return Ok(entity);
-                    }
-                }
-                else
-                {
                     return Ok(entity);
                 }
             }
+
             return BadRequest(ModelState);
         }
 

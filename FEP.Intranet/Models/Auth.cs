@@ -26,7 +26,7 @@ namespace FEP.Intranet.Models
 
     public class StaffLogInModel
     {
-        [Required(ErrorMessageResourceName = "ValidRequiredLoginId", ErrorMessageResourceType = typeof(Language.Auth))]
+        [Required(ErrorMessageResourceName = "ValidRequiredUserName", ErrorMessageResourceType = typeof(Language.Auth))]
         [Display(Name = "FieldUserName", ResourceType = typeof(Language.Auth))]
         public string LoginId { get; set; }
 

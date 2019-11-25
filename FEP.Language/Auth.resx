@@ -247,7 +247,7 @@
     <value>State</value>
   </data>
   <data name="FieldUserName" xml:space="preserve">
-    <value>Username</value>
+    <value>User Name</value>
   </data>
   <data name="PlaceholderAddress1" xml:space="preserve">
     <value>Street address line 1</value>
@@ -282,6 +282,9 @@
   <data name="PlaceholderICNo" xml:space="preserve">
     <value>IC Number without -</value>
   </data>
+  <data name="PlaceholderLoginId" xml:space="preserve">
+    <value>Type your Email</value>
+  </data>
   <data name="PlaceholderMinistry" xml:space="preserve">
     <value>Select Ministry</value>
   </data>
@@ -311,6 +314,9 @@
   </data>
   <data name="PlaceholderType" xml:space="preserve">
     <value>Select Agency Type</value>
+  </data>
+  <data name="PlaceholderUserName" xml:space="preserve">
+    <value>Type your User Name</value>
   </data>
   <data name="TextForeign" xml:space="preserve">
     <value>Non Malaysian Company</value>
@@ -425,6 +431,9 @@
   </data>
   <data name="ValidRequiredStateId" xml:space="preserve">
     <value>Please enter State</value>
+  </data>
+  <data name="ValidRequiredUsername" xml:space="preserve">
+    <value>Please enter User Name</value>
   </data>
   <data name="ValidTypeEmail" xml:space="preserve">
     <value>Please enter a valid Email</value>

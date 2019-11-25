@@ -195,6 +195,10 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "Item Type")]
         public PurchaseType PurchaseType { get; set; }
 
+        public int ProductID { get; set; }
+
+        public bool Refundable { get; set; }
+
         [Display(Name = "Description")]
         public string Description { get; set; }
 
@@ -367,6 +371,65 @@ namespace FEP.WebApiModel.RnP
         public RefundRequestModel Items { get; set; }
 
         public UpdateRefundStatusModel Refund { get; set; }
+    }
+
+    // class for returning refund history information
+    public class RefundHistoryModel
+    {
+        public int ID { get; set; }
+
+        public int PurchaseOrderId { get; set; }
+
+        public int OrderItemId { get; set; }
+
+        public int UserId { get; set; }
+
+        [Display(Name = "Receipt No")]
+        public string ReceiptNo { get; set; }
+
+        public PurchaseType PurchaseType { get; set; }
+
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+
+        [Display(Name = "Quantity")]
+        public int Quantity { get; set; }
+
+        [Display(Name = "Amount")]
+        public float Amount { get; set; }
+
+        public string FullName { get; set; }
+
+        public int BankID { get; set; }
+
+        public string BankAccountNo { get; set; }
+
+        [Display(Name = "Return Status")]
+        public ReturnStatus ReturnStatus { get; set; }
+
+        [Display(Name = "Refund Status")]
+        public RefundStatus RefundStatus { get; set; }
+    }
+
+    // class for setting and returning filters for the datatable list of refund history
+    public class FilterRefundHistoryModel : DataTableModel
+    {
+        [Required]
+        public int CurrentUserId { get; set; }
+
+        [Display(Name = "FilterDescription", ResourceType = typeof(Language.Cart))]
+        public string Description { get; set; }
+
+        [Display(Name = "FilterReceiptNo", ResourceType = typeof(Language.Cart))]
+        public string ReceiptNo { get; set; }
+    }
+
+    // class for returning refund history list
+    public class ListRefundHistoryModel
+    {
+        public FilterRefundHistoryModel Filters { get; set; }
+
+        public RefundHistoryModel Items { get; set; }
     }
 
     // return banks

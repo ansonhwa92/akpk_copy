@@ -55,9 +55,9 @@ namespace FEP.Model
 		Approved, //If Approver 3 Approved
 
 		[Display(Name = "Require Amendment")]
-		RejectNeedToEdit, //If Approver 3 Rejected
+		RequireAmendment, //If Approver 3 Rejected
 
-		[Display(Name = "Rejected")]
+		[Display(Name = "Cancelled")]
 		Cancelled, //If Admin Cancel Public Event 
 
 		[Display(Name = "Published")]
@@ -154,7 +154,7 @@ namespace FEP.Model
 		[Display(Name = "Pending Approval 1")]
 		Verified,
 		[Display(Name = "Require Amendment")]
-		NotVerified,
+		RequireAmendment,
 		[Display(Name = "Pending Approval 2")]
 		ApprovedByApprover1,
 		[Display(Name = "Pending Approval 3")]
@@ -172,7 +172,7 @@ namespace FEP.Model
 		[Display(Name = "Pending Approval 1")]
 		Verified,
 		[Display(Name = "Require Amendment")]
-		NotVerified,
+		RequireAmendment,
 		[Display(Name = "Pending Approval 2")]
 		ApprovedByApprover1,
 		[Display(Name = "Pending Approval 3")]
@@ -186,13 +186,15 @@ namespace FEP.Model
 		[Display(Name = "Pending Approval")]
 		VerifiedDutyRoster,
 		[Display(Name = "Require Amendment")]
-		NotVerifiedDutyRoster,
+		RequireAmendmentDutyRoster,
 		[Display(Name = "Approved")]
 		ApproveDutyRoster,
 		[Display(Name = "Participation Accepted")]
 		AcceptParticipation,
 		[Display(Name = "Participation Declined")]
 		DeclineParticipation,
+		[Display(Name = "Nominees Invited")]
+		NomineesInvited,
 	}
 
 	public enum Religion
@@ -237,5 +239,20 @@ namespace FEP.Model
 		ApprovedByApprover2,
 		[Display(Name = "Approved")]
 		ApprovedByApprover3,
+	}
+
+	public enum CheckInStatus
+	{
+		[Display(Name = "Not Yet")]
+		Not_Yet,
+		[Display(Name = "Checked-in")]
+		Check_In
+	}
+
+	public enum ParticipantType
+	{
+		Individual,
+		Group,
+		Agency,
 	}
 }

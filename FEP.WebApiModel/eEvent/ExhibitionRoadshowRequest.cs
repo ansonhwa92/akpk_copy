@@ -21,9 +21,6 @@ namespace FEP.WebApiModel.eEvent
 		public string Organiser { get; set; }
 		[Display(Name = "ExRoadOrganiserEmail", ResourceType = typeof(Language.Event))]
 		public string OrganiserEmail { get; set; }
-		//[Display(Name = "ExRoadLocation", ResourceType = typeof(Language.Event))]
-		//public string Location { get; set; }
-
 
 		[Display(Name = "ExRoadLocation", ResourceType = typeof(Language.Event))]
 		public string AddressStreet1 { get; set; }
@@ -45,34 +42,57 @@ namespace FEP.WebApiModel.eEvent
 
 		[Display(Name = "ExRoadEndTime", ResourceType = typeof(Language.Event))]
 		public DateTime? EndTime { get; set; }
+
 		[Display(Name = "ExRoadParticipantRequirement", ResourceType = typeof(Language.Event))]
 		public int? ParticipationRequirement { get; set; }
+
 		[Display(Name = "ExRoadExhibitionStatus", ResourceType = typeof(Language.Event))]
 		public ExhibitionStatus? ExhibitionStatus { get; set; }
 		[Display(Name = "ExRoadExhibitionStatusDesc", ResourceType = typeof(Language.Event))]
 		public string ExhibitionStatusDesc { get; set; }
+
 		[Display(Name = "ExRoadReceivedById", ResourceType = typeof(Language.Event))]
 		public int? ReceivedById { get; set; }
+
 		[Display(Name = "ExRoadReceivedByName", ResourceType = typeof(Language.Event))]
 		public string ReceivedByName { get; set; }
 
 		[Display(Name = "ExRoadReceivedDate", ResourceType = typeof(Language.Event))]
 		[UIHint("Date")]
 		public DateTime? ReceivedDate { get; set; }
+
 		[Display(Name = "ExRoadReceive_Via", ResourceType = typeof(Language.Event))]
 		public string Receive_Via { get; set; }
 		public IEnumerable<SelectListItem> ReceivedBys { get; set; }
 
 		[Display(Name = "ExRoadNomineeId", ResourceType = typeof(Language.Event))]
 		public int[] NomineeId { get; set; }
+
 		[Display(Name = "ExRoadNomineeName", ResourceType = typeof(Language.Event))]
 		public string NomineeName { get; set; }
 		public IEnumerable<SelectListItem> Nominees { get; set; }
 
 		[Display(Name = "ExRoadRefNo", ResourceType = typeof(Language.Event))]
 		public string RefNo { get; set; }
-		public int? SLAReminderStatusId { get; set; }
 		
+		[Display(Name = "ExRoadBranch", ResourceType = typeof(Language.Event))]
+		public int? BranchId { get; set; }
+
+		[Display(Name = "ExRoadBranch", ResourceType = typeof(Language.Event))]
+		public string BranchName { get; set; }
+
+		[Display(Name = "ExRoadContactNo", ResourceType = typeof(Language.Event))]
+		public string ContactNo { get; set; }
+		public IEnumerable<Attachment> Attachments { get; set; }
+
+		public int? SLAReminderStatusId { get; set; }
+		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
+		public DateTime? CreatedDate { get; set; }
+
+		public bool HasDetail { get; set; }
+		public bool HasEdit { get; set; }
+		public bool HasDelete { get; set; }
 	}
 
 	public class FilterExhibitionRoadshowRequestModel : DataTableModel
@@ -131,6 +151,12 @@ namespace FEP.WebApiModel.eEvent
 		[DataType(DataType.EmailAddress)]
 		[Display(Name = "ExRoadOrganiserEmail", ResourceType = typeof(Language.Event))]
 		public string OrganiserEmail { get; set; }
+
+		[Required(ErrorMessage = "Please Insert Contact Number")]
+		[DataType(DataType.PhoneNumber)]
+		[RegularExpression(@"^[0-9]{11,}$", ErrorMessage = "Not a valid phone number")]
+		[Display(Name = "ExRoadContactNo", ResourceType = typeof(Language.Event))]
+		public string ContactNo { get; set; }
 
 		[Required(ErrorMessage = "Please insert Location")]
 		[Display(Name = "ExRoadLocation", ResourceType = typeof(Language.Event))]
@@ -199,7 +225,22 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadNomineeName", ResourceType = typeof(Language.Event))]
 		public string NomineeName { get; set; }
 
+		public int? CreatedBy { get; set; }
+		public string CreatedByName { get; set; }
+		public DateTime? CreatedDate { get; set; }
+
+		[Display(Name = "ExRoadBranch", ResourceType = typeof(Language.Event))]
+		public int? BranchId { get; set; }
+
+		[Display(Name = "ExRoadBranch", ResourceType = typeof(Language.Event))]
+		public string BranchName { get; set; }
+
 		public IEnumerable<SelectListItem> Nominees { get; set; }
+		public IEnumerable<SelectListItem> BranchList { get; set; }
+
+		public bool HasDetail { get; set; }
+		public bool HasEdit { get; set; }
+		public bool HasDelete { get; set; }
 	}
 
 	public class EditExhibitionRoadshowRequestModel : CreateExhibitionRoadshowRequestModel
@@ -217,6 +258,56 @@ namespace FEP.WebApiModel.eEvent
 	public class DeleteExhibitionRoadshowRequestModel : ExhibitionRoadshowRequestModel
 	{
 		public DeleteExhibitionRoadshowRequestModel() { }
+	}
+
+	public class ExhibitionRoadshowApprovalModel
+	{
+		public ExhibitionRoadshowRequestModel exhibitionroadshow { get; set; }
+		public ApprovalModel approval { get; set; }
+	}
+
+	public class ApprovalModel
+	{
+		[Required]
+		public int? Id { get; set; }
+
+		[Required]
+		public int? ExhibitionId { get; set; } 
+
+		[Required]
+		[Display(Name = "Level")]
+		public EventApprovalLevel Level { get; set; }
+
+		[Required]
+		public int? ApproverId { get; set; }
+
+		[Required]
+		[Range((int)(EventApprovalStatus.Approved), (int)(EventApprovalStatus.Rejected), ErrorMessage = "Please Select")]
+		[Display(Name = "PubApprovalStatus")]
+		public EventApprovalStatus Status { get; set; }
+
+		[Required]
+		[Display(Name = "Remarks")]
+		public string Remarks { get; set; }
+
+		[Display(Name = "Require Next")]
+		public bool RequireNext { get; set; }
+	}
+
+
+	public class ExhibitionApprovalHistoryModel
+	{
+		public EventApprovalLevel Level { get; set; }
+
+		public int? ApproverId { get; set; }
+
+		public string UserName { get; set; }
+
+		public EventApprovalStatus Status { get; set; }
+
+		public DateTime? ApprovalDate { get; set; }
+
+		public string Remarks { get; set; }
 	}
 
 }

@@ -179,7 +179,7 @@ namespace FEP.WebApi.Api.eLearning
             if (entity == null)
                 return NotFound();
 
-            var module = await db.CourseModules.FirstOrDefaultAsync(x => x.Id == entity.CourseId);
+            var module = await db.CourseModules.FirstOrDefaultAsync(x => x.Id == entity.CourseModuleId);
 
             if (module == null)
                 return NotFound();

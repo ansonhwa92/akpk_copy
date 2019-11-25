@@ -27,6 +27,22 @@ namespace FEP.WebApi.Api.Setting
             base.Dispose(disposing);
         }
 
+        // Get cities
+        // GET: api/Setting/Group/GetCities
+        [Route("api/Setting/Group/GetCities")]
+        public List<ReturnTargetedGroupCities> GetCities()
+        {
+            var pubcities = db.TargetedGroupCities.OrderBy(gc => gc.StateID).OrderBy(gc => gc.Name).Select(s => new ReturnTargetedGroupCities
+            {
+                ID = s.ID,
+                StateID = s.StateID,
+                Code = s.Code,
+                Name = s.Name
+            }).ToList();
+
+            return pubcities;
+        }
+
         // GET: Groups List (all) - NOT USED
         // GET: api/Setting/Group/List
         [Route("api/Setting/Group/List")]
@@ -44,12 +60,11 @@ namespace FEP.WebApi.Api.Setting
                 Gender = s.Gender,
                 MinSalary = s.MinSalary,
                 MaxSalary = s.MaxSalary,
-                Status = s.Status,
-                PaymentStatus = s.PaymentStatus,
+                DMPStatus = s.DMPStatus,
                 Delinquent = s.Delinquent,
                 EmploymentType = s.EmploymentType,
                 State = s.State,
-                City = s.City
+                CityCode = s.CityCode
             }).ToList();
 
             return groups;
@@ -71,12 +86,11 @@ namespace FEP.WebApi.Api.Setting
                 Gender = s.Gender,
                 MinSalary = s.MinSalary,
                 MaxSalary = s.MaxSalary,
-                Status = s.Status,
-                PaymentStatus = s.PaymentStatus,
+                DMPStatus = s.DMPStatus,
                 Delinquent = s.Delinquent,
                 EmploymentType = s.EmploymentType,
                 State = s.State,
-                City = s.City
+                CityCode = s.CityCode
             }).ToList();
 
             return groups;
@@ -140,15 +154,15 @@ namespace FEP.WebApi.Api.Setting
 
                         break;
 
-                    case "Status":
+                    case "DMPStatus":
 
                         if (sortAscending)
                         {
-                            query = query.OrderBy(o => o.Status);
+                            query = query.OrderBy(o => o.DMPStatus);
                         }
                         else
                         {
-                            query = query.OrderByDescending(o => o.Status);
+                            query = query.OrderByDescending(o => o.DMPStatus);
                         }
 
                         break;
@@ -188,14 +202,30 @@ namespace FEP.WebApi.Api.Setting
                     Gender = s.Gender,
                     MinSalary = s.MinSalary,
                     MaxSalary = s.MaxSalary,
-                    Status = s.Status,
-                    PaymentStatus = s.PaymentStatus,
+                    DMPStatus = s.DMPStatus,
                     Delinquent = s.Delinquent,
                     EmploymentType = s.EmploymentType,
                     State = s.State,
-                    City = s.City,
-                    Active = s.Active
+                    CityCode = s.CityCode,
+                    Active = s.Active                    
                 }).ToList();
+
+            foreach (var tgroup in data)
+            {
+                var targetgroupcity = db.TargetedGroupCities.Where(c => c.Code == tgroup.CityCode).Select(s => new ReturnTargetedGroupCities
+                {
+                    ID = s.ID,
+                    StateID = s.StateID,
+                    Code = s.Code,
+                    Name = s.Name
+                }).FirstOrDefault();
+
+                if (targetgroupcity != null)
+                {
+                    tgroup.CityName = targetgroupcity.Name;
+                    tgroup.DMPStatusText = "";
+                }
+            }
 
             return Ok(new DataTableResponse
             {
@@ -281,12 +311,11 @@ namespace FEP.WebApi.Api.Setting
                 Gender = s.Gender,
                 MinSalary = s.MinSalary,
                 MaxSalary = s.MaxSalary,
-                Status = s.Status,
-                PaymentStatus = s.PaymentStatus,
+                DMPStatus = s.DMPStatus,
                 Delinquent = s.Delinquent,
                 EmploymentType = s.EmploymentType,
                 State = s.State,
-                City = s.City,
+                CityCode = s.CityCode,
                 Active = s.Active
             }).FirstOrDefault();
 
@@ -295,7 +324,42 @@ namespace FEP.WebApi.Api.Setting
                 return NotFound();
             }
 
+            var targetgroupcity = db.TargetedGroupCities.Where(c => c.Code == targetgroup.CityCode).Select(s => new ReturnTargetedGroupCities
+            {
+                ID = s.ID,
+                StateID = s.StateID,
+                Code = s.Code,
+                Name = s.Name
+            }).FirstOrDefault();
+
+            if (targetgroupcity != null)
+            {
+                targetgroup.CityName = targetgroupcity.Name;
+                targetgroup.DMPStatusText = "";
+            }
+
             return Ok(targetgroup);
+        }
+
+        // Function to check if group name exists
+        // GET: api/Setting/Group/NameExists
+        [Route("api/Setting/Group/NameExists")]
+        [HttpGet]
+        public IHttpActionResult NameExists(int? id, string name)
+        {
+
+            if (id == null)
+            {
+                if (db.TargetedGroups.Any(p => p.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
+                    return Ok(true);
+            }
+            else
+            {
+                if (db.TargetedGroups.Any(p => p.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && p.ID != id))
+                    return Ok(true);
+            }
+
+            return NotFound();
         }
 
         // Function to create a targeted group.
@@ -317,12 +381,11 @@ namespace FEP.WebApi.Api.Setting
                     Gender = model.Gender,
                     MinSalary = model.MinSalary,
                     MaxSalary = model.MaxSalary,
-                    Status = model.Status,
-                    PaymentStatus = model.PaymentStatus,
+                    DMPStatus = model.DMPStatus,
                     Delinquent = model.Delinquent,
                     EmploymentType = model.EmploymentType,
                     State = model.State,
-                    City = model.City,
+                    CityCode = model.CityCode,
                     DateCreated = DateTime.Now,
                     CreatorId = model.CreatorId,
                     Active = model.Active
@@ -357,12 +420,11 @@ namespace FEP.WebApi.Api.Setting
                     targetgroup.Gender = model.Gender;
                     targetgroup.MinSalary = model.MinSalary;
                     targetgroup.MaxSalary = model.MaxSalary;
-                    targetgroup.Status = model.Status;
-                    targetgroup.PaymentStatus = model.PaymentStatus;
+                    targetgroup.DMPStatus = model.DMPStatus;
                     targetgroup.Delinquent = model.Delinquent;
                     targetgroup.EmploymentType = model.EmploymentType;
                     targetgroup.State = model.State;
-                    targetgroup.City = model.City;
+                    targetgroup.CityCode = model.CityCode;
                     targetgroup.Active = model.Active;
 
                     db.Entry(targetgroup).State = EntityState.Modified;
@@ -372,6 +434,29 @@ namespace FEP.WebApi.Api.Setting
                     return model.Name;
                 }
             }
+            return "";
+        }
+
+        // Function to delete a targeted group.
+        [Route("api/Setting/Group/Delete")]
+        //[HttpPost]
+        public string Delete(int id)
+        {
+            var targetgroup = db.TargetedGroups.Where(p => p.ID == id).FirstOrDefault();
+
+            if (targetgroup != null)
+            {
+                string pname = targetgroup.Name;
+
+                // delete record
+                db.TargetedGroups.Remove(targetgroup);
+
+                //db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();
+
+                return pname;
+            }
+
             return "";
         }
 

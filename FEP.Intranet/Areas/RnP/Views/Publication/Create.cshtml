@@ -9,22 +9,21 @@
     <div class="title_header">
         <div class="title-header-container">
             <div class="container">
-                <!-- if have button -->
-                <div class="header-col-right float-right mt-5"><a href="~/RnP/Publication" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-right float-right mt-5"><a href="@Url.Action("Index", "Publication", new { area = "RnP"})" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a></div>
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
-                                <li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
-                                <li class="breadcrumb-item"><a href="~/RnP/Publication">Publication</a></li>
-                                <li class="breadcrumb-item"><a href="#">Create Publication</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = ""})">@Language.Publication.BreadcrumbHome</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "RnP"})">@Language.Publication.BreadcrumbRnP</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Publication", new { area = "RnP"})">@Language.Publication.BreadcrumbPublication</a></li>
+                                <li class="breadcrumb-item"><a href="#">@Language.Publication.CreateTitle</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Create Publication</h1>
-                    <div class="header-text">Create new publication.</div>
+                    <h1 class="page-title text-white">@Language.Publication.CreateTitle</h1>
+                    <div class="header-text">@Language.Publication.CreateDescription</div>
                 </div>
             </div>
         </div>
@@ -40,39 +39,36 @@
     <div class="row">
         <div class="col-xl-3 col-md-3 col-sm-4 my-2">
             <div class="sidebar-left">
-                <!-- Steps -->
                 <div class="sidebar-inner sticky">
                     <ul class="steps steps-vertical">
                         <li class="step-item complete">
                             <a href="" class="step-link">
                                 <span class="step-number">1</span>
-                                <span class="step-title">Select Publication Category</span>
+                                <span class="step-title">@Language.Publication.StageSelectCategory</span>
                             </a>
                         </li>
                         <li class="step-item active">
                             <a href="" class="step-link">
                                 <span class="step-number">2</span>
-                                <span class="step-title">Fill In Publication Details</span>
+                                <span class="step-title">@Language.Publication.StageEnterDetails</span>
                             </a>
                         </li>
                         <li class="step-item disabled">
                             <a href="" class="step-link">
                                 <span class="step-number">3</span>
-                                <span class="step-title">Review & Submission</span>
+                                <span class="step-title">@Language.Publication.StageReview</span>
                             </a>
                         </li>
                     </ul>
-                    <!-- End Steps -->
                 </div>
             </div>
         </div>
         <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-            <!-- Start Form -->
             <div class="border-form rounded-top">
                 <div class="form-container">
                     <div class="mt-2 mb-4 pb-1">
-                        <h4 class="color-darkblue mb-0">Publication Details</h4>
-                        <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                        <h4 class="color-darkblue mb-0">@Language.Publication.HeadingDetails</h4>
+                        <h6 class="font-weight-normal">@Language.Publication.MandatoryPrefix (<span class="text-danger">*</span>) @Language.Publication.MandatorySuffix</h6>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
@@ -105,9 +101,7 @@
                     <div class="row">
                         <div class="form-group col-lg-6">
                             @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                            @*Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", @placeholder = "Year of Publication" } })*@
                             <select name="Year" id="Year" class="form-control"></select>
-                            @*Html.DropDownListFor(model => model.Year, PublicationController.GetDropDownListForYears())*@
                             @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-lg-6">
@@ -126,8 +120,8 @@
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                             <select class="js-example-basic-multiple" id="pub_lang" name="pub_langs[]" multiple="multiple" style="width: 100%;">
-                                <option value="Bahasa Malaysia">Bahasa Malaysia</option>
-                                <option value="English">English</option>
+                                <option value="@Language.Publication.LanguageBahasaMalaysia">@Language.Publication.LanguageBahasaMalaysia</option>
+                                <option value="@Language.Publication.LanguageEnglish">@Language.Publication.LanguageEnglish</option>
                             </select>
                             @Html.HiddenFor(model => model.Language, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
@@ -142,13 +136,13 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-4">
-                            Format
+                            @Language.Publication.LabelFormat
                         </div>
                         <div class="form-group col-lg-4">
-                            Free?
+                            @Language.Publication.LabelFree
                         </div>
                         <div class="form-group col-lg-4">
-                            Price (RM)
+                            @Language.Publication.LabelPrice
                         </div>
                     </div>
                     <div class="row">
@@ -218,6 +212,13 @@
                             &nbsp;
                         </div>
                     </div>
+                    <div class="row" id="rowDigital" style="display:none;">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.DigitalPublications, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
+                            @Html.Partial("_DigitalPublication", Model.DigitalPublications)
+                            @Html.ValidationMessageFor(model => model.DigitalPublications, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.CoverPictures, htmlAttributes: new { @class = "control-label" })
@@ -240,14 +241,12 @@
                         </div>
                     </div>
                 </div>
-                <!-- End Form -->
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
-                <!--input type="submit" value="Create" class="btn btn-default" /-->
                 <input class="form-control" type="hidden" name="CreatorId" id="CreatorId" value="@CurrentUser.UserId">
                 <a class="btn btn-default" href="@Url.Action("SelectCategory", "Publication", new { area = "RnP" })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
-                <button type="submit" class="btn btn-default" id="btnSave" name="Submittype" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save as Draft</button>
-                <button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Review for Submission</button>
+                <button type="submit" class="btn btn-default" id="btnSave" name="Submittype" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>@Language.Publication.ButtonSaveAsDraft</button>
+                <button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">@Language.Publication.ButtonReviewForSubmission</button>
             </div>
         </div>
     </div>
@@ -261,7 +260,7 @@
             function populateYears() {
                 var currentdate = new Date();
                 var currentyear = currentdate.getFullYear();
-                var startyear = 1900;
+                var startyear = @ViewBag.MinimumYear;
                 var endyear = currentyear;
                 var selected = '';
                 for (var i = startyear; i <= endyear; i++) {
@@ -283,6 +282,12 @@
                 else {
                     $('#StockBalance').val('0');
                     $('#StockBalance').prop('readonly', true);
+                }
+                if (hasDc || hasPc) {
+                    $('#rowDigital').show();
+                }
+                else {
+                    $('#rowDigital').hide();
                 }
             }
 
@@ -371,6 +376,8 @@
             RefreshFile1();
             RefreshFile2();
             RefreshFile3();
+            RefreshFileDigital();
+
         });
     </script>
 }

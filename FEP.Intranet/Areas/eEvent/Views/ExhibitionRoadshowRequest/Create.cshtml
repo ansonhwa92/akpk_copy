@@ -130,7 +130,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.ReceivedById, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.ReceivedById)
 								@Html.DropDownListFor(model => model.ReceivedById, Model.ReceivedBys, "-Select Name-", htmlAttributes: new { @class = "form-control select2-area", style = "width: 100%" })
 								@Html.ValidationMessageFor(model => model.ReceivedById, "", new { @class = "text-danger" })
 							</div>
@@ -138,7 +138,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.ReceivedDate, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.ReceivedDate)
 								@Html.EditorFor(model => model.ReceivedDate, new { htmlAttributes = new { @class = "form-control" } })
 								@Html.ValidationMessageFor(model => model.ReceivedDate, "", new { @class = "text-danger" })
 							</div>
@@ -146,7 +146,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.Receive_Via, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.Receive_Via)
 								@Html.EditorFor(model => model.Receive_Via, new { htmlAttributes = new { @class = "form-control" } })
 								@Html.ValidationMessageFor(model => model.Receive_Via, "", new { @class = "text-danger" })
 							</div>
@@ -175,7 +175,15 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.EventName, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.BranchId)
+								@Html.DropDownListFor(model => model.BranchId, Model.BranchList, "-Select Branch-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+								@Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.EventName)
 								@Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control" } })
 								@Html.ValidationMessageFor(model => model.EventName, "", new { @class = "text-danger" })
 							</div>
@@ -183,7 +191,7 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.Organiser, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.Organiser)
 								@Html.EditorFor(model => model.Organiser, new { htmlAttributes = new { @class = "form-control" } })
 								@Html.ValidationMessageFor(model => model.Organiser, "", new { @class = "text-danger" })
 							</div>
@@ -191,9 +199,17 @@
 
 						<div class="row">
 							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.OrganiserEmail, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.FEPLabelFor(model => model.OrganiserEmail)
 								@Html.EditorFor(model => model.OrganiserEmail, new { htmlAttributes = new { @class = "form-control" } })
 								@Html.ValidationMessageFor(model => model.OrganiserEmail, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.ContactNo)
+								@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
 							</div>
 						</div>
 
@@ -244,7 +260,6 @@
 							</div>
 						</div>
 
-
 						<div class="row">
 							<div class="form-group col-lg-6">
 								@Html.FEPLabelFor(model => model.StartTime)
@@ -257,7 +272,6 @@
 								@Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 
 						<div class="row">
 							<div class="form-group col-lg-6">
@@ -284,6 +298,7 @@
 						</div>
 
 					</div>
+
 				</div>
 			</div>
 		</div>

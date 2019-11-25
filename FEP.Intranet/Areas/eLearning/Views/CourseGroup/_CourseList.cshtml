@@ -1,0 +1,139 @@
+﻿@model List<ListGroupMemberModel>
+
+@{
+    Layout = null;
+}
+@section ContentScript {
+}
+
+<div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+
+    <div class="border-form rounded-top">
+
+        <div class="form-container form-container-w100">
+            <div>
+                <div class="divtableStyle1">
+                    <table id="discussions-grid" class="table dataTable no-footer" cellpadding="0" cellspacing="0" border="0" role="grid" style="width: 100%; margin-bottom: 3px;">
+                        <thead>
+                            <tr role="row">
+                                <th class="align-center sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" style="width: 65px;">No</th>
+                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="User" style="width: 350px;">User</th>
+                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Course Status" style="width: 350px;">Course Completed / Course Enrolled</th>
+                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Options" style="width: 350px;">Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ var i = 0;}
+
+
+                            @{ if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        { i++; }
+                                        <tr role="row" class="odd">
+                                            <td class=" tl-align-center">
+                                                @Html.Raw(i)
+                                            </td>
+                                            <td class=" tl-align-left">
+                                                <div>
+                                                    <span title="@item.UserName">
+                                                        @item.UserName&nbsp;
+                                                        @if (@item.isMember)
+                                                        {<span class="badge badge-warning">Group Member</span>}&nbsp;
+                                                        @if (@item.isOwner)
+                                                        {<span class="badge badge-danger">Owner</span>}&nbsp;
+                                                    </span>
+                                                    <i class="icon-lock-1"></i>
+                                                </div>
+                                            </td>
+                                            <td class=" tl-align-left">
+                                                <div>
+                                                    <span title="@item.CourseCompleted">@item.CourseCompleted / @item.CourseEnrolled</span>
+                                                    <i class="icon-lock-1"></i>
+                                                </div>
+                                            </td>
+                                            <td class=" tl-align-left">
+                                                <div>
+                                                    @if (@item.isMember)
+                                                    {
+                                                        <button onclick="arata_ascunde(this, @item.LearnerId, @item.GroupId, 0);" class="btn btn-danger" id="show_hide_bt">
+                                                            <i class="fa fa-minus"></i>@Html.Raw("&nbsp;&nbsp;Remove")
+                                                        </button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <button onclick="arata_ascunde(this, @item.LearnerId, @item.GroupId, 1);" class="btn btn-success" id="show_hide_bt">
+                                                            <i class="fa fa-plus"></i>@Html.Raw("&nbsp;&nbsp;Add")
+                                                        </button>
+                                                    }
+                                                </div>
+                                            </td>
+                                            @*<td class=" tl-align-left">
+                                                    <div class="tl-topic-options pull-right">
+                                                        <a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonEdit" data-toggle="tooltip"><i class="la la-edit text-muted"></i></a>
+                                                        <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>
+                                                    </div>
+                                                </td>*@
+
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function arata_ascunde(button, id, gid, ops) {
+
+        if (ops == 1) {
+            $.ajax({
+                type: 'get',
+                url: '@Url.Action("_Subscribe", "CourseGroup", new { area = "eLearning" })?id=' + id + '&GroupId=' + gid,
+                success: function (data) {
+                    $('#PartialViewLocation').html(data);
+                },
+                error: function (xhr, status, error) {
+                    $('#detail').html('');
+                }
+            });
+        }
+        else {
+             $.ajax({
+                type: 'get',
+                url: '@Url.Action("_UnSubscribe", "CourseGroup", new { area = "eLearning" })?id=' + id + '&GroupId=' + gid,
+                success: function (data) {
+                    $('#PartialViewLocation').html(data);
+                },
+                error: function (xhr, status, error) {
+                    $('#detail').html('');
+                }
+            });
+        }
+
+        //$(button).find('i').remove();
+        //if ($(button).text().trim() == 'Add') {
+        //    $(button).removeClass('btn-success');
+        //    $(button).addClass('btn-danger');
+        //    $(button).html($('<i/>', { class: 'fa fa-minus' })).append('&nbsp;&nbsp;Remove');
+
+        //    //proceed update db
+
+        //}
+        //else {
+        //    $(button).removeClass('btn-danger');
+        //    $(button).addClass('btn-success');
+        //    $(button).html($('<i/>', { class: 'fa fa-plus' })).append('&nbsp;&nbsp;Add');
+
+        //    //proceed update db
+        //}
+    }
+</script>

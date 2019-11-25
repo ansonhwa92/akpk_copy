@@ -9,9 +9,9 @@
     <div class="col-lg-6">
         <div class="menu-list">
             <h6 class="color-darkblue">Menu</h6>
-            <a class="dropdown-item" href="~/RnP/Survey">Manage Survey</a>
-            <a class="dropdown-item" href="~/RnP/Home/BrowseSurveys">Browse Surveys</a>
-            <a class="dropdown-item" href="#">Survey Results</a>
+            <a class="dropdown-item" href="@Url.Action("Index", "Survey", new { area = "RnP" })">Manage Survey</a>
+            <a class="dropdown-item" href="@Url.Action("BrowseSurveys", "Home", new { area = "RnP" })">Browse Surveys</a>
+            <a class="dropdown-item" href="@Url.Action("List", "Survey", new { area = "RnP" })">Survey Results</a>
         </div>
     </div>
     <div class="col-lg-6">

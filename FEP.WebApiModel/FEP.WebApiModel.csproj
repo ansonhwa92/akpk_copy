@@ -79,6 +79,7 @@
     <Compile Include="Commerce\Cart.cs" />
     <Compile Include="eEvent\DutyRoster.cs" />
     <Compile Include="eEvent\EventAgenda.cs" />
+    <Compile Include="eEvent\EventAttendent.cs" />
     <Compile Include="eEvent\EventExternalExhibitor.cs" />
     <Compile Include="eEvent\EventRefund.cs" />
     <Compile Include="eEvent\EventSpeaker.cs" />
@@ -106,6 +107,8 @@
     <Compile Include="eEvent\MediaInterviewRequest.cs" />
     <Compile Include="eEvent\PublicEvent.cs" />
     <Compile Include="Integration\Groups.cs" />
+    <Compile Include="KMC\KMC.cs" />
+    <Compile Include="KMC\Category.cs" />
     <Compile Include="Logs\ErrorLog.cs" />
     <Compile Include="Logs\ReportLog.cs" />
     <Compile Include="Logs\UserLog.cs" />

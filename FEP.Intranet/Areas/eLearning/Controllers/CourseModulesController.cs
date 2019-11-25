@@ -87,6 +87,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
+        //  --- CHECK AT VIEW --- 221119
         // GET: eLearning/CourseModules/View/5
         public async Task<ActionResult> View(int? id)
         {

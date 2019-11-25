@@ -64,71 +64,8 @@
     </div>
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 
-        <div class="border-form rounded-top">
+        @Html.Partial("_Details", Model)
 
-            <div class="form-container">               
-                <div class="row">
-                    <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(model => model.Module)
-                        <input type="text" value="@Model.Module" readonly class="form-control" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        @Html.FEPLabelFor(model => model.StartDate)
-                        <input type="text" value="@Model.StartDate.Value.ToString("dd/MM/yyyy")" readonly class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-6">
-                        @Html.FEPLabelFor(model => model.EndDate)
-                        <input type="text" value="@Model.EndDate.Value.ToString("dd/MM/yyyy")" readonly class="form-control" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        @Html.FEPLabelFor(model => model.StartTime)
-                        <input type="text" value="@Model.StartDate.Value.ToString("hh:mm tt")" readonly class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-6">
-                        @Html.FEPLabelFor(model => model.EndTime)
-                        <input type="text" value="@Model.EndDate.Value.ToString("hh:mm tt")" readonly class="form-control" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(model => model.Venue)
-                        <input type="text" value="@Model.Venue" readonly class="form-control" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        @Html.FEPLabelFor(model => model.NoOfMale)
-                        <input type="text" value="@Model.NoOfMale" readonly class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-6">
-                        @Html.FEPLabelFor(model => model.NoOfFemale)
-                        <input type="text" value="@Model.NoOfFemale" readonly class="form-control" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        @Html.FEPLabelFor(model => model.AgeRange)
-                        <input type="text" value="@Model.AgeRange.GetDisplayName()" readonly class="form-control" />
-                    </div>
-                    <div class="form-group col-lg-6">
-                        @Html.FEPLabelFor(model => model.SalaryRange)
-                        <input type="text" value="@Model.SalaryRange.GetDisplayName()" readonly class="form-control" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(model => model.Attachments)
-                        @Html.Partial("_AttachmentDetails", Model.Attachments)
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
         @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
         {
             @Html.AntiForgeryToken()

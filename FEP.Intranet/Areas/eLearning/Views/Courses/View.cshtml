@@ -115,6 +115,13 @@
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">Start the course</a>
 
                                 }
+
+                                @if (Model.Status != CourseStatus.Published)
+                                {
+                                    <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">View as Learner</a>
+
+                                }
+
                                 @if (@ViewBag.EnrollmentStatus == EnrollmentStatus.Completed)
                                 {
                                     <div><a href="@Url.Action("ViewCertificate", "Courses", new { area = "eLearning", enrollID = @ViewBag.EnrollmentId })" class="btn btn-secondary m-2">View Certificate</a></div>
@@ -132,7 +139,7 @@
                         <div id="draggable-module">
                             @{
 
-                                    var modules = Model.Modules.OrderBy(x => x.Order).ToList();
+                                var modules = Model.Modules.OrderBy(x => x.Order).ToList();
 
                                 for (int i = 0; i < modules.Count(); i++)
                                 {
@@ -140,9 +147,9 @@
 
                                     <div class="module-box" data-id="@module.Order" onclick="openModule(@module.Id)">
                                         <div class="row  mb-2">
-                                            <div class="col-sm-2">
+                                            @*<div class="col-sm-2">
                                                 <span class="moduleTitle">MODULE @i</span>
-                                            </div>
+                                            </div>*@
 
                                             <div class="col-sm-10">
                                                 <span class="moduleTitle">@module.Title</span>

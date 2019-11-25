@@ -10,7 +10,6 @@
 
 
 @section Nav {
-
     <div class="title_header">
         <div class="title-header-container">
             <div class="container">
@@ -20,20 +19,19 @@
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">System Settings</a></li>
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Parameter", new { area = "Setting" })">Parameter Management</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">@Language.eLearning.CourseDiscussion.Home</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "CourseDiscussion", new { area = "eLearning" })">@Language.eLearning.CourseDiscussion.TitleList</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#">@Model.Discussion.Name<12
+    /a></li>
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">@Language.eLearning.CourseCategory.TitleList</h1>
+                    <h1 class="page-title text-white">@Language.eLearning.CourseDiscussion.TitleList - @Model.Discussion.Name</h1>
                     <div class="header-text"></div> @* discussion title *@
                 </div>
             </div>
         </div>
     </div>
-
 }
 
 <style>
@@ -53,41 +51,42 @@
         <div class="border-form rounded-top">
             @* first post*@
             <div class="border-1">
-                <div class="pull-right ">
-                    @*<a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonEdit" data-toggle="tooltip"><i class="la la-edit text-muted"></i></a>
-                        <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>*@
-                </div>
-                <div class="pull-left text-center">
-                    <img src="" class="avatar-xl">
-                </div>
-                <div>
-                    <div>
-                        <a href="linkToUserProfile"><span title="@Model.Post[0]CreatedByName">@Model.Post[0].CreatedByName</span></a>
-                        <span class="label label-info label-role">@Model.Post[0].CreatedByLevel</span> •
-                        @Model.Post[0].CreatedDate.ToLongDateString()
+                <div class="text-left" style="padding:10px;">
+                    <div class="pull-right ">
+                        @*<a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonEdit" data-toggle="tooltip"><i class="la la-edit text-muted"></i></a>
+                            <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>*@
                     </div>
-                    <h4>@Model.Post[0].Topic</h4>
-                    <br>
-                    <div>
-                        @Model.Post[0].Message<br>
+                    <div class="pull-left text-center" style="margin-right:15px;">
+                        <img src="~/dist/assets/images/people/50/guy-6.jpg">
                     </div>
-                    @{ if (Model.Attachment.Count > 0)
-                        {
-                            if (Model.Attachment.Where(m => m.PostId == Model.Post[0].Id).FirstOrDefault() != null)
+                    <div>
+                        <div>
+                            <a href="linkToUserProfile"><span title="@Model.Post[0]CreatedByName">@Model.Post[0].CreatedByName</span></a>
+                            <span class="label label-info label-role">@Model.Post[0].CreatedByLevel</span> •
+                            @Model.Post[0].CreatedDate.ToLongDateString()
+                        </div>
+                        <h4>@Model.Discussion.Name</h4>
+                        <div>
+                            @Model.Post[0].Message<br>
+                        </div>
+                        @{ if (Model.Attachment.Count > 0)
                             {
-                                var att = Model.Attachment.Where(m => m.PostId == Model.Post[0].Id).FirstOrDefault();
-                                if (att.Attachment != null)
+                                if (Model.Attachment.Where(m => m.PostId == Model.Post[0].Id).FirstOrDefault() != null)
                                 {
-                                    <div>
-                                        <i class="fa fa-link"><a class="btn btn-link" href="@att.Attachment.FilePath" target="_blank">@att.Attachment.FileName </a></i>
-                                    </div>
+                                    var att = Model.Attachment.Where(m => m.PostId == Model.Post[0].Id).FirstOrDefault();
+                                    if (att.Attachment != null)
+                                    {
+                                        <div>
+                                            <i class="fa fa-link"><a class="btn btn-link" href="@Url.Action("DownloadAttachment", "CourseDiscussion", new { input=att.Attachment.FilePath, filetype = att.Attachment.FileType })" target="_blank">@att.Attachment.FileName </a></i>
+                                        </div>
+                                    }
                                 }
                             }
                         }
-                    }
-                </div>
-                <div style="margin-top:0px; padding: 10px;" class="text-right">
-                    <span id="top" class="btn btn-mini btn-primary">Reply</span>
+                    </div>
+                    <div style="margin-top:0px; padding: 10px;" class="text-right">
+                        <span id="top" class="btn btn-mini btn-primary">@Language.eLearning.CourseDiscussion.Reply</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -98,67 +97,95 @@
             {
                 for (int p = 1; p < Model.Post.Count; p++)
                 {
-                    <div class="border-1">
-                        <div class="text-left" id="@Model.Post[p].Id" style="padding:20px;">
-                            <div>
-                                <div class="pull-right">
-                                    @*<a href="javascript:void(0);" class="tl-edit-reply" data-id="1" data-attachment="" data-attachment_name="">edit</a> • <a href="javascript:void(0);" onclick="myportal.app.confirm('Delete reply?', '<p>Are you sure you want to delete this reply?</p><p>This action cannot be undone</p>', removeReplyFromDom, this)" data-action="https://myakpk.talentlms.com/discussion/deletereply" data-id="1">delete</a>*@
-                                </div>
+                    if (Model.Post[p].ParentId > 0)
+                    { }
+                    else
+                    {
+                        <div class="border-1" style="margin-left:50px;margin-right:50px;">
+                            <div class="text-left" id="MessagePost_@Model.Post[p].Id" style="padding:10px;">
                                 <div>
-                                    <div class="pull-left text-center">
-                                        <img src="" class="avatar-xl">
-                                    </div>
-                                    <div class="tl-reply-info">
-                                        <a href="linkToUserProfile"><span title="@Model.Post[p].CreatedByName">@Model.Post[p].CreatedByName</span></a>
-                                        <span class="label label-info label-role">@Model.Post[p].CreatedByLevel</span> •
-                                        @{
-                                            if (Model.Post[p].UpdatedDate.HasValue)
-                                            {
-                                                <i>Edited on </i> @Model.Post[p].UpdatedDate.Value.ToLongDateString()
-                                            }
-                                            else
-                                            {
-                                                @Model.Post[p].CreatedDate.ToLongDateString()
-                                            }
-                                        }
-
-                                    </div>
-                                    <br>
                                     <div>
-                                        <div>@Model.Post[p].Message<br></div><br>
-                                        @{ if (Model.Attachment.Count > 0)
-                                            {
-                                                if (Model.Attachment.Where(m => m.PostId == Model.Post[p].Id).FirstOrDefault() != null)
+                                        <div class="pull-left text-center" style="margin-right:15px;">
+                                            <img src="~/dist/assets/images/people/50/guy-6.jpg">
+                                        </div>
+
+                                        <div class="tl-reply-info">
+                                            <a href="linkToUserProfile"><span title="@Model.Post[p].CreatedByName">@Model.Post[p].CreatedByName</span></a>
+                                            <span class="label label-info label-role">@Model.Post[p].CreatedByLevel</span> •
+                                            @{
+                                                if (Model.Post[p].UpdatedDate.HasValue)
                                                 {
-                                                    var att = Model.Attachment.Where(m => m.PostId == Model.Post[p].Id).FirstOrDefault();
-                                                    if (att.Attachment != null)
-                                                    {
-                                                        <div>
-                                                            <i class="fa fa-link"><a class="btn btn-link" href="@att.Attachment.FilePath" target="_blank">@att.Attachment.FileName </a></i>
-                                                        </div>
-                                                    }
+                                            <i>@Language.eLearning.CourseDiscussion.EditedOn </i> @Model.Post[p].UpdatedDate.Value.ToLongDateString()
                                                 }
-
+                                                else
+                                                {
+                                                    @Model.Post[p].CreatedDate.ToLongDateString()
+                                                }
                                             }
-                                        }
-                                        @* <button href="javascript:void(0);" class="btn btn-primary tl-toggle-icon tl-toggle-1 tl-cursor-pointer" data-toggle="tl-comment-form-1">Comment</button>*@
-                                    </div>
-                                    <br />
 
-                                    <button id="Comment" aria-valuenow="@Model.Post[p].Id" onclick="callCustomer(@Model.Post[p].Id)" >Comment</button>
-                                    <div class="border-1" id="CommentArea_@Model.Post[p].Id">
+                                        </div>
+                                        <h4>&nbsp;&nbsp;</h4>
+                                        <div>
+                                            <div>@Model.Post[p].Message</div><br>
+                                            @{ if (Model.Attachment.Count > 0)
+                                                {
+                                                    if (Model.Attachment.Where(m => m.PostId == Model.Post[p].Id).FirstOrDefault() != null)
+                                                    {
+                                                        var att = Model.Attachment.Where(m => m.PostId == Model.Post[p].Id).FirstOrDefault();
+                                                        if (att.Attachment != null)
+                                                        {
+                                                            <div>
+                                                                <i class="fa fa-link"><a class="btn btn-link" href="@Url.Action("DownloadAttachment", "CourseDiscussion", new { input=att.Attachment.FilePath, filetype = att.Attachment.FileType })" target="_blank">@att.Attachment.FileName </a></i>
+                                                            </div>
+                                                        }
+                                                    }
 
+                                                }
+                                            }
+                                            @* <button href="javascript:void(0);" class="btn btn-primary tl-toggle-icon tl-toggle-1 tl-cursor-pointer" data-toggle="tl-comment-form-1">Comment</button>*@
+
+
+                                            @foreach (var x in Model.Post.Where(m => m.ParentId == Model.Post[p].Id))
+                                            {
+                                                <div class="row">
+                                                    <div class="col-1">&nbsp;</div>
+                                                    <div class="border rounded col-10 p-3 bg-light mb-3">
+                                                        <a href="linkToUserProfile"><span title="@x.CreatedByName">@x.CreatedByName</span></a>
+                                                        <span class="label label-info label-role">@x.CreatedByLevel</span> •
+                                                        @{
+                                                            if (x.UpdatedDate.HasValue)
+                                                            {
+                                                        <i>@Language.eLearning.CourseDiscussion.EditedOn </i> @x.UpdatedDate.Value.ToLongDateString()
+                                                            }
+                                                            else
+                                                            {
+                                                                @x.CreatedDate.ToLongDateString()
+                                                            }
+                                                        }
+                                                        <div>
+                                                            <div>@x.Message</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="" id="CommentArea_@Model.Post[p].Id" style="min-height:50px;">
+                                                <button id="Comment_@Model.Post[p].Id" class="btn btn-secondary btn-sm mw-auto pull-right" aria-valuenow="@Model.Post[p].Id" onclick="callCustomer(@Model.Post[p].Id)">@Language.eLearning.CourseDiscussion.Comment</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <br class="clear hidden-desktop">
+                        <br class="clear hidden-desktop">
+                    }
+
                 }
             }
             else
             {
-                <div class="center"><span align="center">Be the first to reply</span></div>
+                <div class="center">
+                    <span align="center">@Language.eLearning.CourseDiscussion.BeTheFirst</span>
+                </div>
             }
         }
 
@@ -184,7 +211,7 @@
     </div>
 </div>
 
-                </div>
+  @*  </div>*@
 
 
 
@@ -192,14 +219,37 @@
     <script type="text/javascript">
 
         function callCustomer(el) {
-            $("div[id*=CommentArea_]").html("");
+            $("#CommentArea_" +el).html("");
 
-            var url = '@Url.Action("DisplaySearchResults", "CourseDiscussion")';
+            var url = '@Url.Action("_CommentReply", "CourseDiscussion")';
             $('#CommentArea_' + el).load(url + '?id=' + el);
-            alert(el);
-        }
 
-       
+        }
+        @*function DownloadAttachment(aid, ftype) {
+             $.ajax({
+                type: 'post',
+                 url: '@Url.Action("DownloadAttachment", "CourseDiscussion") ? input = ' + aid + '  & filetype=' + ftype,
+                success: function (data) {
+
+                    //$('#addForm').html(data);
+                    //$.validator.unobtrusive.parse('#formAdd');
+
+                },
+                error: function (xhr, status, error) {
+                    $('#detail').html('');
+                }
+            });
+        }*@
+
+        $("div[id*=MessagePost_]").hover(function () {
+            var g = this.id.toString().replace('MessagePost_', '');
+
+            $("#Comment_" + g).show();
+        }, function () {
+            var gg = this.id.toString().replace('MessagePost_', '');
+            $("#Comment_" + gg).hide();
+            });
+
         function clearForm() {
             $('#addForm').html('');
 

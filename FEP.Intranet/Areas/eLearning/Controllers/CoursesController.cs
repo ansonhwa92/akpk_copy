@@ -390,30 +390,33 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             // check if user enrolled
-            if (CurrentUser.UserId != null)
+            if (model.Status == CourseStatus.Published)
             {
-                var currentUserId = CurrentUser.UserId.Value;
-
-                if (String.IsNullOrEmpty(enrollmentCode))
+                if (CurrentUser.UserId != null)
                 {
-                    var response = await WepApiMethod.SendApiAsync<UserCourseEnrollmentModel>(HttpVerbs.Get, CourseApiUrl.IsUserCompleted + $"?id={id}&userId={currentUserId}");
+                    var currentUserId = CurrentUser.UserId.Value;
 
-                    if (response.isSuccess)
+                    if (String.IsNullOrEmpty(enrollmentCode))
                     {
-                        model.IsUserEnrolled = response.Data.IsUserEnrolled;
-                        ViewBag.EnrollmentStatus = response.Data.Status;
-                        ViewBag.EnrollmentId = response.Data.Id;
+                        var response = await WepApiMethod.SendApiAsync<UserCourseEnrollmentModel>(HttpVerbs.Get, CourseApiUrl.IsUserCompleted + $"?id={id}&userId={currentUserId}");
+
+                        if (response.isSuccess)
+                        {
+                            model.IsUserEnrolled = response.Data.IsUserEnrolled;
+                            ViewBag.EnrollmentStatus = response.Data.Status;
+                            ViewBag.EnrollmentId = response.Data.Id;
+                        }
                     }
-                }
-                else
-                {
-                    var response = await WepApiMethod.SendApiAsync<UserCourseEnrollmentModel>(HttpVerbs.Get, CourseApiUrl.IsUserCompleted + $"?id={id}&userId={currentUserId}&enrollmentCode={enrollmentCode}");
-
-                    if (response.isSuccess)
+                    else
                     {
-                        model.IsUserEnrolled = response.Data.IsUserEnrolled;
-                        ViewBag.EnrollmentStatus = response.Data.Status;
-                        ViewBag.EnrollmentId = response.Data.Id;
+                        var response = await WepApiMethod.SendApiAsync<UserCourseEnrollmentModel>(HttpVerbs.Get, CourseApiUrl.IsUserCompleted + $"?id={id}&userId={currentUserId}&enrollmentCode={enrollmentCode}");
+
+                        if (response.isSuccess)
+                        {
+                            model.IsUserEnrolled = response.Data.IsUserEnrolled;
+                            ViewBag.EnrollmentStatus = response.Data.Status;
+                            ViewBag.EnrollmentId = response.Data.Id;
+                        }
                     }
                 }
             }

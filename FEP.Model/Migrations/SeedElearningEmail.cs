@@ -22,7 +22,14 @@ namespace FEP.Model.Migrations
                NotificationType.Approve_Courses_Published_Change,
                NotificationType.Approve_Courses_Published_Withdraw,
                NotificationType.Course_Assigned_To_Facilitator,
-               NotificationType.Course_Student_Enrolled
+               NotificationType.Course_Student_Enrolled,
+
+               NotificationType.Approve_Courses_Participant_Withdraw,
+               NotificationType.Approve_Courses_Published_Withdraw,
+               NotificationType.Verify_Courses_Participant_Withdraw,
+               NotificationType.Verify_Courses_Published_Withdraw,
+               NotificationType.Verify_Courses_Published_Change,
+               NotificationType.Approve_Courses_Published_Change
             };
 
             foreach (var item in elearnTemplates)
@@ -79,6 +86,8 @@ namespace FEP.Model.Migrations
             db.SaveChanges();
         }
 
+        //  --  check wasap  on email notification
+
         public static void Seed(DbEntities db)
         {
             var user = db.User.Local.Where(r => r.Name.Contains("System Admin")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("System Admin")).FirstOrDefault();
@@ -87,7 +96,7 @@ namespace FEP.Model.Migrations
             {
                 switch (notifyType)
                 {
-                    case NotificationType.Verify_Courses_Creation:
+                    case NotificationType.Verify_Courses_Creation: // Should send to verifier and admin
 
                         db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
                         new NotificationTemplate

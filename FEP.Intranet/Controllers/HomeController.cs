@@ -364,13 +364,13 @@ namespace FEP.Intranet.Controllers
         [HttpGet]
         public async Task<ActionResult> UpdateAvatar()
         {
-            var response = await WepApiMethod.SendApiAsync<AdminProfileModel>(HttpVerbs.Get, $"Administration/User?id={CurrentUser.UserId}");
+            var response = await WepApiMethod.SendApiAsync<DetailsUserModel>(HttpVerbs.Get, $"Administration/User?id={CurrentUser.UserId}");
 
             var model = new ProfileAvatarModel();
 
             if (response.isSuccess)
             {                
-                model.AvatarImageBase64 = response.Data.AvatarImageBase64;
+                model.AvatarImageUrl = response.Data.AvatarImageUrl;
             }
 
             return View(model);
@@ -383,7 +383,7 @@ namespace FEP.Intranet.Controllers
             {
                 var fileContent = Request.Files[file];
 
-                var image64 = ConvertImageToBase64(fileContent);
+                var image64 = FileMethod.ConvertImageToBase64(fileContent);
 
                 if (image64 != null)
                 {
@@ -401,10 +401,18 @@ namespace FEP.Intranet.Controllers
 
             if (ModelState.IsValid)
             {
+                var deletefilename = "";
 
-                var image64 = ConvertImageToBase64(model.AvatarFile);
+                var responseUser = await WepApiMethod.SendApiAsync<DetailsUserModel>(HttpVerbs.Get, $"Administration/User?id={CurrentUser.UserId}");
 
-                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Home/Profile/UpdateAvatar?id={CurrentUser.UserId}", new Image64Model { image64 = image64 });
+                if (responseUser.isSuccess)
+                {
+                    deletefilename = responseUser.Data.AvatarImageUrl;
+                }
+
+                var filename = FileMethod.SaveFile(model.AvatarFile, Server.MapPath("~/img/avatar"), deletefilename);
+
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"Home/Profile/UpdateAvatar?id={CurrentUser.UserId}&imageUrl={filename}");
 
                 if (response.isSuccess)
                 {
@@ -616,30 +624,7 @@ namespace FEP.Intranet.Controllers
 
         }
 
-        [NonAction]
-        private string ConvertImageToBase64(HttpPostedFileBase image)
-        {
-
-            if (image != null && image.ContentLength > 0)
-            {
-
-                byte[] thePictureAsBytes = new byte[image.ContentLength];
-
-                using (BinaryReader theReader = new BinaryReader(image.InputStream))
-                {
-                    thePictureAsBytes = theReader.ReadBytes(image.ContentLength);
-                }
-
-                string photo = Convert.ToBase64String(thePictureAsBytes);
-
-                var dataUrl = string.Format("data:{0};base64,{1}", "image/(png|jpg|jpeg)", photo);
-
-                return dataUrl;
-            }
-
-            return null;
-
-        }
+        
 
     }
 }

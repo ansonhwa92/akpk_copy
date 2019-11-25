@@ -10,6 +10,19 @@ using FEP.Model;
 
 namespace FEP.WebApiModel.Setting
 {
+    public class ReturnTargetedGroupCities
+    {
+        public int ID { get; set; }
+
+        public int StateID { get; set; }
+
+        [Display(Name = "Code")]
+        public int Code { get; set; }
+
+        [Display(Name = "City Name")]
+        public string Name { get; set; }
+    }
+
     public class TargetedGroup
     {
         [Required]
@@ -27,7 +40,7 @@ namespace FEP.WebApiModel.Setting
         public int? MaxAge { get; set; }
 
         [Display(Name = "Gender")]
-        public MemberGender Gender { get; set; }
+        public MemberGender? Gender { get; set; }
 
         [Display(Name = "Minimum Salary")]
         public int? MinSalary { get; set; }
@@ -35,11 +48,8 @@ namespace FEP.WebApiModel.Setting
         [Display(Name = "Maximum Salary")]
         public int? MaxSalary { get; set; }
 
-        [Display(Name = "Status")]
-        public MemberStatus? Status { get; set; }
-
-        [Display(Name = "Payment Status")]
-        public MemberPaymentStatus? PaymentStatus { get; set; }
+        [Display(Name = "DMP Status")]
+        public MemberDMPStatus? DMPStatus { get; set; }
 
         [Display(Name = "Delinquent")]
         public MemberDelinquent? Delinquent { get; set; }
@@ -48,10 +58,10 @@ namespace FEP.WebApiModel.Setting
         public MemberEmploymentType? EmploymentType { get; set; }
 
         [Display(Name = "State")]
-        public int? State { get; set; }
+        public MemberState? State { get; set; }
 
         [Display(Name = "City")]
-        public string City { get; set; }
+        public int? CityCode { get; set; }
 
         [Display(Name = "Active")]
         public bool Active { get; set; }
@@ -78,13 +88,15 @@ namespace FEP.WebApiModel.Setting
         public ViewTargetedGroup() { }
 
         public int ID { get; set; }
+
+        public string DMPStatusText { get; set; }
+
+        public string CityName { get; set; }
     }
 
     public class CreateTargetedGroup : TargetedGroup
     {
         public CreateTargetedGroup() { }
-
-        public DateTime DateCreated { get; set; }
 
         public int CreatorId { get; set; }
     }
@@ -101,6 +113,10 @@ namespace FEP.WebApiModel.Setting
         public DetailsTargetedGroup() { }
 
         public int ID { get; set; }
+
+        public string DMPStatusText { get; set; }
+
+        public string CityName { get; set; }
 
         public DateTime DateCreated { get; set; }
 

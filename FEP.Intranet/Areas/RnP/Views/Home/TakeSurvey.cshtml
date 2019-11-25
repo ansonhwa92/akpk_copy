@@ -57,6 +57,7 @@
                             }
                             <input type="hidden" name="ResponseDate" class="form-control" value="" />
                             <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;"></textarea>
+                            <textarea id="Answers" name="Answers" class="form-control" rows="3" style="display:none;"></textarea>
                         }
                     </div>
                 </div>
@@ -74,14 +75,90 @@
 
             var survey = new Survey.Model(surveyJSON);
 
+            var surveyId = '@Model.Survey.ID';
+            var questionPrefix = '.';
+
+            function addQuestionIntoResultsCore(results, namePrefix, name, value, qType) {
+                var prefix = !!namePrefix ? namePrefix + questionPrefix : '';
+                results.push({
+                    surveyId: surveyId,
+                    question: prefix + name,
+                    answer: value,
+                    questionType: qType,
+                });
+            }
+
+            function addQuestionIntoResults(q, results, namePrefix) {
+                addQuestionIntoResultsCore(results, namePrefix, q.name, q.value, q.getType());
+            }
+
+            function addQuestionListIntoResults(questions, results, namePrefix) {
+                for (var i = 0; i < questions.length; i++) {
+                    var q = questions[i];
+                    if (q.getType() == "multipletext") {
+                        for (var index = 0; index < q.items.length; index++) {
+                            addQuestionIntoResults(q.items[index].editor, results, q.name);
+                        }
+                    }
+                    else if (q.getType() == 'matrix') {
+                        for (var rowIndex = 0; rowIndex < q.visibleRows.length; rowIndex++) {
+                            var row = q.visibleRows[rowIndex];
+                            if (!row.value) continue;
+                            addQuestionIntoResultsCore(
+                                results,
+                                namePrefix,
+                                q.name + 'row_' + row.text,
+                                row.value,
+                                q.getType()
+                            );
+                        }
+                    }
+                    else if (q.getType() == 'matrixdynamic') {
+                        for (var rowIndex = 0; rowIndex < q.visibleRows.length; rowIndex++) {
+                            for (var colIndex = 0; colIndex < q.columns.length; colIndex++) {
+                                addQuestionIntoResults(
+                                    q.visibleRows[rowIndex].cells[colIndex].question,
+                                    results,
+                                    namePrefix +
+                                    q.name +
+                                    'row_' +
+                                    (rowIndex + 1).toString() +
+                                    questionPrefix +
+                                    q.columns[colIndex].name
+                                );
+                            }
+                        }
+                    } else if (q.getType() == 'paneldynamic') {
+                        for (var panelIndex = 0; panelIndex < q.panels.length; panelIndex++) {
+                            addQuestionListIntoResults(
+                                q.panels[panelIndex].questions,
+                                results,
+                                namePrefix +
+                                q.name +
+                                questionPrefix +
+                                'panel_' +
+                                (panelIndex + 1).toString()
+                            );
+                        }
+                    } else {
+                        addQuestionIntoResults(q, results, namePrefix);
+                    }
+                }
+            }
+
             $("#surveyContainer").Survey({
                 model: survey,
                 onComplete: sendDataToServer
             });
 
             function sendDataToServer(survey) {
+                var data = survey.data;
+                var surveyResults = [];
+                addQuestionListIntoResults(survey.getAllQuestions(), surveyResults, '');
                 var resultAsString = JSON.stringify(survey.data);
                 $('#Contents').val(resultAsString)
+                var resultAsLines = JSON.stringify(surveyResults);
+                $('#Answers').val(resultAsLines)
                 //alert(resultAsString);
                 //return false;
                 // ajax

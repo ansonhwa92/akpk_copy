@@ -16,10 +16,7 @@ namespace FEP.Intranet.Areas.eLearning.Helper
 
     public static class EmaiHelper
     {
- 
         // Notification type determine the object
-        // If no receivers defined in parameterlisttosend, the api will try to find accoring to notificationtype
-      
         public static async Task<ReminderResponse> SendNotification(NotificationModel model)
         {
             try
@@ -31,11 +28,11 @@ namespace FEP.Intranet.Areas.eLearning.Helper
                 }
 
                 await new FEPController().LogError(Modules.Learning, $"Error sending Email For {model.NotificationType.GetDisplayName()} " +
-                    $"Title : " +  $"{model.ParameterListToSend.CourseTitle}");
+                    $"Title : " + $"{model.ParameterListToSend.CourseTitle}");
 
                 return response.Data;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 await new FEPController().LogError(Modules.Learning, $"Error sending Email For {model.NotificationType.GetDisplayName()} " +
                     $"Title : " + $"{model.ParameterListToSend.CourseTitle}");

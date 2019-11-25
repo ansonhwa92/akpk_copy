@@ -61,82 +61,79 @@ namespace FEP.Model
         [Display(Name = "Dashboard 3")]
         HomeDashboard3 = 3,
 
-        //e-Event 1001 - 2000
-        [Display(Name = "Event Management")]
-        EventMenu = 1001,
+		//e-Event 1001 - 2000
+		[Display(Name = "Event Management")]
+		EventMenu = 1001,
+		[Display(Name = "Internal Event Menu")]
+		EventIntenalEventMenu = 1002,
 
-        [Display(Name = "Internal Event Menu")]
-        EventIntenalEventMenu = 1002,
 
-        [Display(Name = "Event Admin - FED")]
-        EventAdministratorFED = 1003,
 
-        [Display(Name = "Event Admin - CCD")]
-        EventAdministratorCCD = 1004,
+		//--------Untuk Button Sahaja----//
+		[Display(Name = "Event Admin - FED")]
+		EventAdministratorFED = 1003,
+		[Display(Name = "Event Admin - CCD")]
+		EventAdministratorCCD = 1004,
+		[Display(Name = "Event Reception")]
+		EventReception = 1005,
+		[Display(Name = "Event Admin - FED")]
+		EventVerifierFED = 1006,
+		[Display(Name = "Event Admin - CCD")]
+		EventVerifierCCD = 1007,
+		[Display(Name = "Event Approver 1")]
+		EventApprover1 = 1008,
+		[Display(Name = "Event Approver 2")]
+		EventApprover2 = 1009,
+		[Display(Name = "Event Approver 3")]
+		EventApprover3 = 1010,
+		//--------/Untuk Button Sahaja----//
 
-        //----------------------Media Interview Button--------------------//
-        [Display(Name = "Media Interview - Submit")]
-        Recipient_Submit_MediaInterview = 1011,
 
-        [Display(Name = "Media Interview - Verify")]
-        Recipient_Verify_MediaInterview = 1012,
+		//--------Untuk Notification Receiver-------//
+		[Display(Name = "Media Interview - Submit")]
+		Submit_MediaInterview = 1011,
+		[Display(Name = "Media Interview - Verify")]
+		Verify_MediaInterview = 1012,
+		[Display(Name = "Media Interview -  Approve (Level 1)")]
+		Approver1_MediaInterview = 1013,
+		[Display(Name = "Media Interview -  Approve (Level 2)")]
+		Approver2_MediaInterview = 1014,
+		[Display(Name = "Media Interview -  Approve (Level 3)")]
+		Approver3_MediaInterview = 1015,
+		[Display(Name = "Media Interview - Require Amendment")]
+		RequireAmendment_MediaInterview = 1016,
 
-        [Display(Name = "Media Interview -  Approve (Level 1)")]
-        Recipient_Approver1_MediaInterview = 1013,
 
-        [Display(Name = "Media Interview -  Approve (Level 2)")]
-        Recipient_Approver2_MediaInterview = 1014,
+		[Display(Name = "Exhibition RoadShow - Submit")]
+		Submit_ExhibitionRoadShow = 1017,
+		[Display(Name = "Exhibition RoadShow - Verify")]
+		Verify_ExhibitionRoadShow = 1018,
+		[Display(Name = "Exhibition RoadShow - Approve (Level 1)")]
+		Approver1_ExhibitionRoadShow = 1019,
+		[Display(Name = "Exhibition RoadShow - Approve (Level 2)")]
+		Approver2_ExhibitionRoadShow = 1020,
+		[Display(Name = "Exhibition RoadShow - Approve (Level 3)")]
+		Approver3_ExhibitionRoadShow = 1021,
+		[Display(Name = "Exhibition RoadShow - Require Amendment")]
+		RequireAmendment_ExhibitionRoadShow = 1022,
 
-        [Display(Name = "Media Interview -  Approve (Level 3)")]
-        Recipient_Approver3_MediaInterview = 1015,
 
-        [Display(Name = "Media Interview - Reject")]
-        Recipient_Reject_MediaInterview = 1016,
-
-        //----------------------Exhibition RoadShow Button--------------------//
-        [Display(Name = "Exhibition RoadShow - Submit")]
-        Recipient_Submit_ExhibitionRoadShow = 1017,
-
-        [Display(Name = "Exhibition RoadShow - Verify")]
-        Recipient_Verify_ExhibitionRoadShow = 1018,
-
-        [Display(Name = "Exhibition RoadShow - Approve (Level 1)")]
-        Recipient_Approver1_ExhibitionRoadShow = 1019,
-
-        [Display(Name = "Exhibition RoadShow - Approve (Level 2)")]
-        Recipient_Approver2_ExhibitionRoadShow = 1020,
-
-        [Display(Name = "Exhibition RoadShow - Approve (Level 3)")]
-        Recipient_Approver3_ExhibitionRoadShow = 1021,
-
-        [Display(Name = "Exhibition RoadShow - Reject")]
-        Recipient_Reject_ExhibitionRoadShow = 1022,
-
-        //-----------------------------------------------------------//
-
-        [Display(Name = "Public Event - Submit")]
-        Recipient_Submit_PublicEvent = 1029,                        //verifier
-
-        [Display(Name = "Public Event - Verify")]
-        Recipient_Verify_PublicEvent = 1030,                        //
-
-        [Display(Name = "Public Event - Approve (Level 1)")]
-        Recipient_Approver1_PublicEvent = 1031,
-
-        [Display(Name = "Public Event - Approve (Level 2)")]
-        Recipient_Approver2_PublicEvent = 1032,
-
-        [Display(Name = "Public Event - Approve (Level 3)")]
-        Recipient_Approver3_PublicEvent = 1033,
-
-        [Display(Name = "Public Event - Published")]
-        Recipient_Published_PublicEvent = 1034,
-
-        [Display(Name = "Public Event - Require Amendment")]
-        Recipient_Reject_PublicEvent = 1035,
-
-        [Display(Name = "Public Event - Cancel")]
-        Recipient_Cancel_PublicEvent = 1036,
+		[Display(Name = "Public Event - Submit")]
+		Submit_PublicEvent = 1029,
+		[Display(Name = "Public Event - Verify")]
+		Verify_PublicEvent = 1030,
+		[Display(Name = "Public Event - Approve (Level 1)")]
+		Approver1_PublicEvent = 1031,
+		[Display(Name = "Public Event - Approve (Level 2)")]
+		Approver2_PublicEvent = 1032,
+		[Display(Name = "Public Event - Approve (Level 3)")]
+		Approver3_PublicEvent = 1033,
+		[Display(Name = "Public Event - Published")]
+		Published_PublicEvent = 1034,
+		[Display(Name = "Public Event - Require Amendment")]
+		RequireAmendment_PublicEvent = 1035,
+		[Display(Name = "Public Event - Cancelled")]
+		Cancelled_PublicEvent = 1036,
 
         [Display(Name = "Cancellation/Modification Public Event - Submit")]
         Submit_CancellationModificationRequest = 1037,
@@ -386,6 +383,8 @@ namespace FEP.Model
 
         [Display(Name = "Settings - Error Logs - Delete")]
         ErrorLogDelete = 4042,
+        [Display(Name = "Settings - User Account")]
+        UserAccountSetting = 4043,
 
         //report 6001 - 7000
         [Display(Name = "Reports Menu")]

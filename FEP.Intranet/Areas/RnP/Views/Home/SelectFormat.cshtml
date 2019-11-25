@@ -142,7 +142,30 @@
                 <div class="right-sidebar">
                     <div class="card__wrapper">
                         <div class="card__top">
-                            <div class="card__top__wapper"><img class="card__top__image" src="~/img/cover-buku-1.jpg" alt="image"></div>
+                            @{
+                                var coverpic1 = "";
+                                var coverpic2 = "";
+                                var authorpic = "";
+                            }
+                            @if ((Model.CoverPicture != "") && (Model.CoverPicture != null))
+                            {
+                                coverpic1 = BaseURL + "/Data/images/publication/" + Model.CoverPicture;
+                                coverpic2 = BaseURL + "/Data/images/publication/" + Model.CoverPicture;
+                            }
+                            else
+                            {
+                                coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                                coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+                            }
+                            @if ((Model.AuthorPicture != "") && (Model.AuthorPicture != null))
+                            {
+                                authorpic = BaseURL + "/Data/images/publication/" + Model.AuthorPicture;
+                            }
+                            else
+                            {
+                                authorpic = BaseURL + "/" + "img" + "/8.jpg";
+                            }
+                            <div class="card__top__wapper"><img class="card__top__image" src="@coverpic1" alt="image"></div>
                         </div>
                     </div>
                     <!--<div class="mb-4"><img src="~/img/cover-buku-x.jpg"></div>-->

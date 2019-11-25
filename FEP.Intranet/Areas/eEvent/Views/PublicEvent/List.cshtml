@@ -7,9 +7,7 @@
 
 @section Contentscript{
 	<script type="text/javascript">
-
 		 $(document).ready(function () {
-
             var table = $('.tabledata').DataTable({
                 serverSide: true,
                 processing: true,
@@ -24,7 +22,7 @@
                     }
                 },
 				columns: [
-					 {
+					{
                         sortable: false,
                         render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
@@ -39,11 +37,11 @@
                         sortable: true
                     },
 
-					 {
+					{
                         data: 'EventCategoryName',
                         sortable: true
 					},
-					  {
+					{
                         data: 'StartDate',
 						sortable: true,
 						  render: function (data, type, row, meta) {
@@ -77,13 +75,13 @@
                         data: 'Venue',
                         sortable: true
                     },
-                    {
-                        data: 'Fee',
-						sortable: true,
-						render: function (data, type, row, meta) {
-							return "RM " + data;
-						}
-                    },
+      //              {
+      //                  data: 'Fee',
+						//sortable: true,
+						//render: function (data, type, row, meta) {
+						//	return "RM " + data;
+						//}
+      //              },
                     {
                         data: 'EventStatusDesc',
 						sortable: false,
@@ -128,14 +126,12 @@
 
                             action = '<div class="icon-action">'
 
-							if (row.EventStatus == 0) {
-
+							if (row.EventStatus == 0)
+							{
 		                    action +='<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-						    action +='<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-							action += '<a href="@Url.Action("Delete", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+									action += '<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+									action += '<a href="@Url.Action("Delete", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
 
-							//Verify By Admin Event
-							@*action +='<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '?origin=toverify" data-toggle="tooltip" data-placement="top" title="Submit"><i class="la la-edit text-muted"></i></i></a>'*@
 							}
 
 							if (row.EventStatus == 1) {
@@ -158,7 +154,7 @@
 								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></i></a>'
 							}
 
-							if (row.EventStatus == 4 || row.EventStatus == 6) {
+							if (row.EventStatus == 4) {
 								//Approved
                                 action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
 							}
@@ -166,6 +162,7 @@
 							if (row.EventStatus == 7) {
 								//Published
 								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+								action += '<a href="@Url.Action("List", "EventAttendent", new { area = "eEvent" })' + '?id=' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View Attendance"><i class="la la-group text-muted"></i></a>'
 
 								if (row.IsRequested == true) {
 									action += '<a href="@Url.Action("Details_RequestCancelModify", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View Cancellation/Modification Request"><i class="la la-sliders text-muted"></i></a>'
@@ -178,16 +175,24 @@
 								{
 									action += '<a href="@Url.Action("Create_RequestCancelModify", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Create Cancellation/Modification Request"><i class="la la-sliders text-muted"></i></a>'
 								}
-							} 
+							}
 
 							if (row.EventStatus == 5) {
 								//require amendment
-								action +='<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+								//if (@CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorFED)) {
+									action += '<a href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent"})/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+								//}
 							}
 
 							if (row.EventStatus == 8) {
 								//Verified
                                 action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+							}
+
+							if (row.EventStatus == 6) {
+								//Cancelled
+								action += '<a href="@Url.Action("Details", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+								action += '<a href="@Url.Action("Details_RequestCancelModify", "PublicEvent", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View Cancellation/Modification Request"><i class="la la-sliders text-muted"></i></a>'
 							}
 
 							action +='</div>';
@@ -336,7 +341,10 @@
 			</span>
 		</div>
 		<div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-		<div><a href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
+		@if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorFED))
+		{
+			<div><a href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
+		}
 	</div>
 	<!-- Table -->
 	<table class="table tableStyle1 tabledata">
@@ -350,7 +358,7 @@
 				<th>@Html.DisplayNameFor(model => model.List.StartDate)</th>
 				<th>@Html.DisplayNameFor(model => model.List.EndDate)</th>
 				<th>@Html.DisplayNameFor(model => model.List.Venue)</th>
-				<th>@Html.DisplayNameFor(model => model.List.Fee)</th>
+				@*<th>@Html.DisplayNameFor(model => model.List.Fee)</th>*@
 				<th>@Html.DisplayNameFor(model => model.List.EventStatusDesc)</th>
 				<th>Action</th>
 			</tr>

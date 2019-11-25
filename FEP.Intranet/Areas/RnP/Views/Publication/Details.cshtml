@@ -310,6 +310,12 @@
                             &nbsp;
                         </div>
                     </div>
+                    <div class="row" id="rowDigital" style="display:none;">
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(model => model.Pub.DigitalPublications, htmlAttributes: new { @class = "control-label" })
+                            @Html.Partial("_DigitalPublicationDetails", Model.Pub.DigitalPublications)
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Pub.CoverPictures, htmlAttributes: new { @class = "control-label" })
@@ -360,7 +366,7 @@
                         <div class="row">
                             <div class="form-group col-lg-12">
                                 @Html.LabelFor(model => model.Withdrawal.ProofOfWithdrawal, htmlAttributes: new { @class = "control-label" })
-                                <input type="text" name="WProof" id="WProof" class="form-control" readonly="readonly" value="@Model.Withdrawal.ProofOfWithdrawal" />
+                                @Html.Partial("_ProofOfWithdrawalDetails", Model.Withdrawal.ProofOfWithdrawal)
                             </div>
                         </div>
                     </div>
@@ -438,7 +444,7 @@
                 <!-- publish (same as above) -->
                 <!-- withraw -->
                 <div class="modal fade" id="modalWithdraw" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", name = "formwithdraw", id = "target" }))
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", name = "formwithdraw", id = "formwithdraw" }))
                     {
                         @Html.AntiForgeryToken()
 
@@ -454,7 +460,7 @@
                                     <div class="form-group">
                                         <input type="hidden" class="form-control" name="ID" id="WithdrawID" value="@Model.Pub.ID" />
                                         @Html.LabelFor(model => model.Withdrawal.WithdrawalReason, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
-                                        <textarea class="form-control" name="WithdrawalReason" id="WithdrawalReason" rows="4" placeholder=""></textarea>
+                                        <textarea class="form-control" name="WithdrawalReason" id="WithdrawalReason" rows="4" placeholder="">@Model.Withdrawal.WithdrawalReason</textarea>
                                         <span class="text-danger field-validation-error" id="span_reasonerror" style="display:none;">Please enter Reason for Withdrawal</span>
                                     </div>
                                     <div class="form-group">
@@ -611,11 +617,11 @@
                                 <p class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="fl-right">@item.ApprovalDate.ToString("hh:mm tt")</span></p>
                                 @if (item.Status == PublicationApprovalStatus.Approved)
                                 {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Withdrawal Approval Result<br>- <span class="color-green">Approved</span></p>
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><!--:Designation: -->Withdrawal Approval Result<br>- <span class="color-green">Approved</span></p>
                                 }
                                 else
                                 {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Withdrawal Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><!--:Designation: -->Withdrawal Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
                                 }
                                 <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
                             </div>
@@ -645,11 +651,11 @@
                                 <p class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="fl-right">@item.ApprovalDate.ToString("hh:mm tt")</span></p>
                                 @if (item.Status == PublicationApprovalStatus.Approved)
                                 {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Approval Result<br>- <span class="color-green">Approved</span></p>
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><!--:Designation: -->Approval Result<br>- <span class="color-green">Approved</span></p>
                                 }
                                 else
                                 {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><!--:Designation: -->Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
                                 }
                                 <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
                             </div>
@@ -672,7 +678,17 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            // populate language selection
+            function toggleDigital() {
+                var hasHc = $('#Pub_Hardcopy').is(':checked');
+                var hasDc = $('#Pub_Digitalcopy').is(':checked');
+                var hasPc = $('#Pub_HDcopy').is(':checked');
+                if (hasDc || hasPc) {
+                    $('#rowDigital').show();
+                }
+                else {
+                    $('#rowDigital').hide();
+                }
+            }
 
             var selectedLang = $('#Pub_Language').val();
             if (selectedLang.indexOf("English") >= 0) {
@@ -774,13 +790,16 @@
                     return false;
                 }
                 var form = $('#formwithdraw');
+                var form1 = document.getElementById("formwithdraw");
                 //alert(form.serialize());
                 //return false;
                 var myurl = '@Url.Action("Withdraw", "Publication", new { area = "RnP" })';
                 $.ajax({
                     url: myurl,
                     type: "POST",
-                    data: form.serialize(),
+                    data: new FormData(form1),
+                    processData: false,
+                    contentType: false,
                     success: function (data) {
                         if (data == "error") {
                             $("#resultFailTitle").text('Failed to Withdraw Publication');
@@ -902,6 +921,8 @@
                 var url = '@Url.Action("Details", "Publication", new { area = "RnP" })?id=' + pid;
                 window.location = url;
             });
+
+            toggleDigital();
 
             RefreshFile4();
 

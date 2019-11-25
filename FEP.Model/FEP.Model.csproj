@@ -55,9 +55,10 @@
     <Compile Include="Access.cs" />
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
-    <Compile Include="Migrations\201911210423537_InitialDB.cs" />
-    <Compile Include="Migrations\201911210423537_InitialDB.designer.cs">
-      <DependentUpon>201911210423537_InitialDB.cs</DependentUpon>
+    <Compile Include="KMC.cs" />
+    <Compile Include="Migrations\201911232123335_x.cs" />
+    <Compile Include="Migrations\201911232123335_x.designer.cs">
+      <DependentUpon>201911232123335_x.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
@@ -112,7 +113,9 @@
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -122,8 +125,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911210423537_InitialDB.resx">
-      <DependentUpon>201911210423537_InitialDB.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911232123335_x.resx">
+      <DependentUpon>201911232123335_x.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -19,10 +19,28 @@ namespace FEP.Model
         public DateTime EndDate { get; set; }
         public string Venue { get; set; }
         public int NoOfParticipant { get; set; }
-        public int NoOfMale { get; set; }
-        public int NoOfFemale { get; set; }
-        public TOTAgeRange AgeRange { get; set; }
-        public TOTSalaryRange SalaryRange { get; set; }                       
+        public int AgeR1NoOfMale { get; set; }
+        public int AgeR1NoOfFemale { get; set; }
+        public int AgeR2NoOfMale { get; set; }
+        public int AgeR2NoOfFemale { get; set; }
+        public int AgeR3NoOfMale { get; set; }
+        public int AgeR3NoOfFemale { get; set; }
+        public int AgeR4NoOfMale { get; set; }
+        public int AgeR4NoOfFemale { get; set; }
+        public int AgeR5NoOfMale { get; set; }
+        public int AgeR5NoOfFemale { get; set; }
+        public int SalaryR1NoOfMale { get; set; }
+        public int SalaryR1NoOfFemale { get; set; }
+        public int SalaryR2NoOfMale { get; set; }
+        public int SalaryR2NoOfFemale { get; set; }
+        public int SalaryR3NoOfMale { get; set; }
+        public int SalaryR3NoOfFemale { get; set; }
+        public int SalaryR4NoOfMale { get; set; }
+        public int SalaryR4NoOfFemale { get; set; }
+        public int SalaryR5NoOfMale { get; set; }
+        public int SalaryR5NoOfFemale { get; set; }
+        public int SalaryR6NoOfMale { get; set; }
+        public int SalaryR6NoOfFemale { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }  
 
@@ -47,35 +65,5 @@ namespace FEP.Model
         public virtual FileDocument FileDocument { get; set; }
 
     }
-
-
-    public enum TOTAgeRange
-    {
-        [Display(Name = "20 - 30")]
-        R1,
-        [Display(Name = "31 - 40")]
-        R2,
-        [Display(Name = "41 - 50")]
-        R3,
-        [Display(Name = "51 - 60")]
-        R4,
-        [Display(Name = "60 and above")]
-        R5
-    }
-
-    public enum TOTSalaryRange
-    {
-        [Display(Name = "1000 - 2000")]
-        R1,
-        [Display(Name = "2001 - 4000")]
-        R2,
-        [Display(Name = "4001 - 6000")]
-        R3,
-        [Display(Name = "6001 - 8000")]
-        R4,
-        [Display(Name = "8001 - 10000")]
-        R5,
-        [Display(Name = "10001 and above")]
-        R6
-    }
+    
 }

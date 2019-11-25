@@ -204,6 +204,7 @@ namespace FEP.WebApiModel.SLAReminder
         public string EventLocation { get; set; }
         public string EventCode { get; set; }
         public string EventApproval { get; set; }
+		public string EventMediaEmail { get; set; }
 
         public string RequestStatus { get; set; }
         public string RequestType { get; set; }

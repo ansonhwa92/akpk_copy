@@ -1,0 +1,180 @@
+﻿@model DetailsTOTReportModel
+
+<div class="border-form rounded-top">
+
+    <div class="form-container">
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(model => model.CreatedBy)
+                <span class="form-control">@Model.CreatedBy</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(model => model.Module)
+                <span class="form-control">@Model.Module</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-6">
+                @Html.FEPLabelFor(model => model.StartDate)
+                <span class="form-control">@Model.StartDate.Value.ToString("dd/MM/yyyy")</span>
+            </div>
+            <div class="form-group col-lg-6">
+                @Html.FEPLabelFor(model => model.EndDate)
+                <span class="form-control">@Model.EndDate.Value.ToString("dd/MM/yyyy")</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-6">
+                @Html.FEPLabelFor(model => model.StartTime)
+                <span class="form-control">@Model.StartTime.Value.ToString("hh:mm tt")</span>
+            </div>
+            <div class="form-group col-lg-6">
+                @Html.FEPLabelFor(model => model.EndTime)
+                <span class="form-control">@Model.EndDate.Value.ToString("hh:mm tt")</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(model => model.Venue)
+                <span class="form-control">@Model.Venue</span>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-lg-6">
+                <label>@Language.TOT.TextAgeRange</label>
+                <div class="form-control border-0">@Language.TOT.TextAgeR1</div>
+            </div>
+            <div class="col-lg-3">
+                <label>@Language.TOT.TextMale</label>
+                <span class="form-control">@Model.AgeR1NoOfMale</span>
+            </div>
+            <div class="col-lg-3">
+                <label>@Language.TOT.TextFemale</label>
+                <span class="form-control">@Model.AgeR1NoOfFemale</span>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-lg-6">
+                <div class="form-control border-0">@Language.TOT.TextAgeR2</div>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.AgeR2NoOfMale</span>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.AgeR2NoOfFemale</span>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-lg-6">
+                <div class="form-control border-0">@Language.TOT.TextAgeR3</div>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.AgeR3NoOfMale</span>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.AgeR3NoOfFemale</span>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-lg-6">
+                <div class="form-control border-0">@Language.TOT.TextAgeR4</div>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.AgeR4NoOfMale</span>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.AgeR4NoOfFemale</span>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-lg-6">
+                <div class="form-control border-0">@Language.TOT.TextAgeR5</div>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.AgeR5NoOfMale</span>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.AgeR5NoOfFemale</span>
+            </div>
+        </div>
+        <div class="row mb-1 mt-3">
+            <div class="col-lg-6">
+                <label>@Language.TOT.TextSalaryRange</label>
+                <div class="form-control border-0">@Language.TOT.TextSalaryR1</div>
+            </div>
+            <div class="col-lg-3">
+                <label>@Language.TOT.TextMale</label>
+                <span class="form-control">@Model.SalaryR1NoOfMale</span>
+            </div>
+            <div class="col-lg-3">
+                <label>@Language.TOT.TextFemale</label>
+                <span class="form-control">@Model.SalaryR1NoOfFemale</span>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-lg-6">
+                <div class="form-control border-0">@Language.TOT.TextSalaryR2</div>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.SalaryR2NoOfMale</span>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.SalaryR2NoOfFemale</span>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-lg-6">
+                <div class="form-control border-0">@Language.TOT.TextSalaryR3</div>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.SalaryR3NoOfMale</span>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.SalaryR3NoOfFemale</span>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-lg-6">
+                <div class="form-control border-0">@Language.TOT.TextSalaryR4</div>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.SalaryR4NoOfMale</span>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.SalaryR4NoOfFemale</span>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-lg-6">
+                <div class="form-control border-0">@Language.TOT.TextSalaryR5</div>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.SalaryR5NoOfMale</span>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.SalaryR5NoOfFemale</span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-lg-6">
+                <div class="form-control border-0">@Language.TOT.TextSalaryR6</div>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.SalaryR6NoOfMale</span>
+            </div>
+            <div class="col-lg-3">
+                <span class="form-control">@Model.SalaryR6NoOfFemale</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(model => model.Attachments)
+                @Html.Partial("_AttachmentDetails", Model.Attachments)
+            </div>
+        </div>
+
+    </div>
+
+</div>

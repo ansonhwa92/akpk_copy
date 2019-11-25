@@ -139,8 +139,8 @@ namespace FEP.Model.Migrations
 			AddRole(db, "Admin R&P", "Admin R&P");
             //AddRole(db, "Admin eLearning", "Admin eLearning");
 
-            AddRole(db, "Event Reception", "Event Reception");
-            AddRole(db, "Event Moderator", "Event Moderator");
+            //AddRole(db, "Event Reception", "Event Reception");
+            //AddRole(db, "Event Moderator", "Event Moderator");
 
             //AddRole(db, "Verifier Event", "Verifier Event");
             AddRole(db, "Verifier R&P", "Verifier R&P");
@@ -731,12 +731,25 @@ namespace FEP.Model.Migrations
                 );
             }
 
+            if (!db.KMCCategory.Any())
+            {
+                db.KMCCategory.AddOrUpdate(s => s.Title,
+                    new KMCCategory { Title = "Infographic", Display = true },
+                    new KMCCategory { Title = "Video", Display = true },
+                    new KMCCategory { Title = "Audio", Display = true },
+                    new KMCCategory { Title = "Article", Display = true }
+                );
+            }
+
             DefaultSLAReminder(db);
             DefaultParameterGroup(db);
             DefaultTemplate(db);
 
+
+
         }
 
+        
 
         public static void DefaultAccess(DbEntities db)
         {
@@ -973,9 +986,9 @@ namespace FEP.Model.Migrations
                 });
 
             db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType },
-                new TemplateParameters { NotificationType = NotificationType.ActivateAccount, TemplateParameterType = "[#UserFullName]" },
-                new TemplateParameters { NotificationType = NotificationType.ActivateAccount, TemplateParameterType = "[#Link]" },
-                new TemplateParameters { NotificationType = NotificationType.ActivateAccount, TemplateParameterType = "[#LoginDetail]" }
+                new TemplateParameters { NotificationType = NotificationType.ActivateAccount, TemplateParameterType = "UserFullName" },
+                new TemplateParameters { NotificationType = NotificationType.ActivateAccount, TemplateParameterType = "Link" },
+                new TemplateParameters { NotificationType = NotificationType.ActivateAccount, TemplateParameterType = "LoginDetail" }
                 );
 
             db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
@@ -1000,8 +1013,8 @@ namespace FEP.Model.Migrations
                 });
 
             db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType },
-                new TemplateParameters { NotificationType = NotificationType.ResetPassword, TemplateParameterType = "[#UserFullName]" },
-                new TemplateParameters { NotificationType = NotificationType.ResetPassword, TemplateParameterType = "[#Link]" }
+                new TemplateParameters { NotificationType = NotificationType.ResetPassword, TemplateParameterType = "UserFullName" },
+                new TemplateParameters { NotificationType = NotificationType.ResetPassword, TemplateParameterType = "Link" }
                 );
 
 

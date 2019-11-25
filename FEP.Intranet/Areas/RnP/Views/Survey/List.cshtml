@@ -1,0 +1,260 @@
+﻿@model FEP.WebApiModel.RnP.ReturnListSurveyModel
+
+@{
+	ViewBag.Title = "Published Survey";
+	Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+	<div class="title_header">
+		<div class="title-header-container">
+			<div class="container">
+				<!-- if have button -->
+				<div class="header-col-right float-right mt-5"><a href="@Url.Action("Index", "Home", new { area = "RnP"})" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a></div>
+				<div class="header-col-left">
+					<div id="breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = ""})">@Language.Survey.BreadcrumbHome</a></li>
+								<li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "RnP"})">@Language.Survey.BreadcrumbRnP</a></li>
+								<li class="breadcrumb-item"><a href="#">@Language.Survey.BreadcrumbPublishedSurveys</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+							</ol>
+						</nav>
+					</div>
+                    <h1 class="page-title text-white">@Language.Survey.ListTitle</h1>
+                    <div class="header-text">@Language.Survey.ListDescription</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+<div class="d-flex align-items-center">
+	<div class="filter dropdown">
+        <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>@Language.Survey.LabelFilters</button>
+		<div class="dropdown-menu">
+            <div class="filter-head">@Language.Survey.LabelFilters</div>
+			<div class="filter-body">
+				<!--
+				<div class="sorting-wrap">
+					<div class="sorting-dropdown">
+						<select class="select2 form-control small" name="filter">
+							<option value="all">All</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+						</select>
+					</div>
+				</div>
+				-->
+				<!--
+				<div class="sorting-wrap">
+					<div class="sorting-dropdown">
+						@*Html.EditorFor(m => m.Filters.Type, new { htmlAttributes = new { @class = "form-control small" } })*@
+					</div>
+				</div>
+				-->
+				<div>@Html.DisplayNameFor(m => m.Filters.Title)</div>
+				<div class="sorting-wrap">
+					<div class="sorting-dropdown">
+						@Html.EditorFor(m => m.Filters.Title, new { htmlAttributes = new { @class = "form-control small" } })
+					</div>
+				</div>
+				<div>
+                    <button id="btnSearch" class="btn btn-secondary">@Language.Survey.ButtonSearch</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="divider-vertical">&nbsp;</div>
+	<!-- Search -->
+	<div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+		<input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+		<div class="input-group-append">
+			<button id="quickSearchBtn" class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+		</div>
+	</div>
+</div>
+<hr>
+<div class="table-responsive" data-toggle="lists">
+	<div class="d-flex pb-4 align-items-center">
+		<div>
+			<!-- Select option -->
+			<span class="select-arrow">
+				<select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+					<option value="10">10</option>
+					<option value="25">25</option>
+					<option value="50">50</option>
+					<option value="100">100</option>
+				</select>
+			</span>
+		</div>
+		<div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+	</div>
+	<!-- Table -->
+	<table class="table tableStyle1 tabledata">
+		<thead>
+            <tr>
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.Surveys.RefNo)</th>
+                <th>@Html.DisplayNameFor(model => model.Surveys.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Surveys.Type)</th>
+                <th>@Language.Survey.LabelDuration</th>
+                <th>@Language.Survey.LabelResponse</th>
+                <!--<th>@*Html.DisplayNameFor(model => model.Surveys.Active)*@</th>-->
+                <th>@Html.DisplayNameFor(model => model.Surveys.Status)</th>
+                <th>@Language.Survey.LabelAction</th>
+            </tr>
+		</thead>
+	</table>
+</div>
+
+@section ContentScript{
+
+	<script type="text/javascript">
+        $(document).ready(function () {
+            var table = $('.tabledata').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    "type": "post",
+                    "url": '@(WebApiURL)RnP/Survey/GetPublished',
+                    "data": function (filter) {
+                        //filter.Type = $('#Filters_Type').val();
+                        filter.Title = $('#Filters_Title').val();
+                        //filter.StartDate = $('#Filters_StartDate').val();
+                        //filter.EndDate = $('#Filters_EndDate').val();
+                    },
+                    dataFilter: function (res) {
+                        // do what you need to the data before it loads to the table
+                        // for debugging only for now
+                        return res;
+                    },
+                    error: function (x, y) {
+                        console.log(x);
+                    }
+                },
+                columns: [
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'RefNo',
+                        sortable: true
+                    },
+                    {
+                        data: 'Title',
+                        sortable: true
+                    },
+                    {
+                        data: 'Type',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+                            if (row.Type == 0) {
+                                return "<span>@Language.General.CategoryPublicMass</span>";
+                            }
+                            else if (row.Type == 1) {
+                                return "<span>@Language.General.CategoryTargetedGroups</span>";
+                            }
+                        }
+                    },
+                    {
+                        data: 'Duration',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+                            var sdate = new Date(row.StartDate);
+                            var sday = ("0" + sdate.getDate()).slice(-2);            //sdate.getDate();
+                            var smonth = ("0" + (sdate.getMonth() + 1)).slice(-2);   //sdate.getMonth();
+                            var syear = sdate.getFullYear();
+                            var sfinaldate = sday + '/' + smonth + '/' + syear;
+                            var edate = new Date(row.EndDate);
+                            var eday = ("0" + edate.getDate()).slice(-2);            //sdate.getDate();
+                            var emonth = ("0" + (edate.getMonth() + 1)).slice(-2);   //sdate.getMonth();
+                            var eyear = edate.getFullYear();
+                            var efinaldate = eday + '/' + emonth + '/' + eyear;
+                            return "<span>" + sfinaldate + " to " + efinaldate + "</span>";
+                        }
+
+                    },
+                    {
+                        data: 'Progress',
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            //return "<span>" + row.SubmitCount + " / " + row.InviteCount + "</span>";
+                            return "<progress max='" + row.SubmitCount + "' value='" + row.InviteCount + "' style='width:100px;'></progress>";
+                            // TODO: return progress bar
+                        }
+                    },
+                    {
+                        data: 'Status',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+                            return "<span class='color-green font-weight-bold'>Published</span>";
+                        }
+                    },
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+
+                            var action = "";
+
+                            var canview = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPSurveyView));
+
+                            action = '<div class="icon-action">';
+
+                            if (canview) {
+                                action += '<a href="@Url.Action("Results", "Survey", new { area = "RnP" })' + '?id=' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View Results"><i class="la la-binoculars text-muted"></i></a>';
+                            }
+
+                            return action;
+                        }
+                    }
+                ],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_ surveys"
+                },
+                dom: 'rtip'
+            });
+
+            $('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#quickSearchBtn').click(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change(function () {
+                table.page.len($(this).val()).draw();
+            });
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt', function () {
+                var info = table.page.info();
+                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' surveys');
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            }).draw();
+
+        });
+
+	</script>
+
+}

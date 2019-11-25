@@ -24,6 +24,9 @@ namespace FEP.Model.Migrations
                NotificationType.Course_Assigned_To_Facilitator,
                NotificationType.Course_Student_Enrolled,
 
+               NotificationType.Notify_Admin_Participant_Withdraw,
+               NotificationType.Notify_Self_Withdraw_From_Course,
+
                NotificationType.Approve_Courses_Participant_Withdraw,
                NotificationType.Approve_Courses_Published_Withdraw,
                NotificationType.Verify_Courses_Participant_Withdraw,
@@ -96,6 +99,54 @@ namespace FEP.Model.Migrations
             {
                 switch (notifyType)
                 {
+                    case NotificationType.Notify_Admin_Participant_Withdraw: // Should send to verifier and admin
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "A Participant Withdraw From Course : [#CourseTitle]",
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
+                                                <p>A participant has withdrawn from the course [#CourseTitle]</p><br />
+                                                Thank you.",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
+                    case NotificationType.Notify_Self_Withdraw_From_Course: // Should send to verifier and admin
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "You have withdrawn From Course : [#CourseTitle]",
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
+                                                <p>You have withdrawn from the course [#CourseTitle]</p><br />
+                                                Thank you.",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
                     case NotificationType.Verify_Courses_Creation: // Should send to verifier and admin
 
                         db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,

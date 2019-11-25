@@ -18,6 +18,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string EnrollAsync = "eLearning/CourseEnrollments/EnrollAsync";
         public const string UserDetails = "eLearning/CourseEnrollments/GetUserDetails";
         public const string GetEnrollmentHistoryByCourse = "eLearning/CourseEnrollments/GetEnrollmentHistoryByCourse";
+        public const string RequestWithdraw = "eLearning/CourseEnrollments/RequestWithdraw";
     }
 
     public class CourseEnrollmentsController : FEPController
@@ -231,6 +232,52 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             //    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
             //}
+        }
+
+        /// <summary>
+        /// Participan Request to Withdraw the course
+        /// - if free course - can always withdraw
+        /// - otherwise, check agains allowable course completion before withdraw       ///
+        /// </summary>
+        /// <param name="id"></param> This is courseId
+        /// <returns></returns>
+        [HasAccess(UserAccess.CourseView)]
+        public async Task<ActionResult> RequestWithdraw(int id)
+        {
+            var currentUserId = CurrentUser.UserId.Value;
+
+            // check for allowable to withdraw
+            // check on payment
+            var response = await WepApiMethod.SendApiAsync<TrxResult<Enrollment>>(HttpVerbs.Get, CourseEnrollmentApiUrl.RequestWithdraw + $"?courseId={id}&userId={currentUserId}");
+
+            if (response.isSuccess)
+            {
+                if (response.Data.IsSuccess)
+                {
+                    TempData["SuccessMessage"] = "You have withdrawn from the course.";
+                    await LogActivity(Modules.Learning, ElearningActivity.UserRequestWithdrawal, response.Data.Message, id);
+
+                    // TODO: Send email for withdrawal
+                    await Notifier.UserWithdrawFromCourse(id, currentUserId, CurrentUser.Name,
+                         Url.AbsoluteAction("Content", "Course", new { id = id }));
+
+                    return RedirectToAction("BrowseElearnings", "Home", new { area = "eLearning" });
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Could not withdraw from the course.";
+                    await LogActivity(Modules.Learning, ElearningActivity.UserRequestWithdrawal, response.Data.Message, id);
+
+                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Could not withdraw from the course.";
+                await LogActivity(Modules.Learning, ElearningActivity.UserRequestWithdrawal, "Witdrawal failed. Reason : " + response.Data, id);
+
+                return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
+            }
         }
 
         protected override void Dispose(bool disposing)

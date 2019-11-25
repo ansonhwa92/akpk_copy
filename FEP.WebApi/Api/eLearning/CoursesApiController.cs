@@ -981,7 +981,8 @@ namespace FEP.WebApi.Api.eLearning
                 if (courseEvent != null)
                 {
                     var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.CourseId == id &&
-                        x.CourseEventId == courseEvent.Id && x.Learner.User.Id == userId);
+                        x.CourseEventId == courseEvent.Id && x.Learner.User.Id == userId &&
+                        (x.Status == EnrollmentStatus.Enrolled || x.Status == EnrollmentStatus.Completed));
 
                     if (enrollment != null)
                         return Ok(true);
@@ -989,8 +990,14 @@ namespace FEP.WebApi.Api.eLearning
             }
             else
             {
-                var enrollment = db.Enrollments.Where(x => x.Learner.User.Id == userId &&
-                            x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefault();
+                //var enrollment = db.Enrollments.Where(x => x.Learner.User.Id == userId &&
+                //            x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefault();
+
+                // public course
+                var enrollment = await db.Enrollments.Where(x => x.CourseId == id &&
+                    x.Learner.User.Id == userId &&
+                    (x.Status == EnrollmentStatus.Enrolled || x.Status == EnrollmentStatus.Completed))
+                    .OrderBy(x => x.CreatedDate).FirstOrDefaultAsync();
 
                 if (enrollment != null)
                     return Ok(true);
@@ -1006,7 +1013,8 @@ namespace FEP.WebApi.Api.eLearning
         {
             if (ModelState.IsValid)
             {
-                var enrollment = await db.Enrollments.Where(x => x.Learner.User.Id == userId && x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefaultAsync();
+                var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.Learner.User.Id == userId &&
+                    x.CourseId == id && x.Status == EnrollmentStatus.Completed);
 
                 var entity = new UserCourseEnrollmentModel();
 
@@ -1018,7 +1026,8 @@ namespace FEP.WebApi.Api.eLearning
                         StudentName = enrollment.Learner.User.Name,
                         Status = enrollment.Status,
                         CompletionDate = enrollment.CompletionDate.ToString(),
-                        IsUserEnrolled = true
+                        IsUserEnrolled = true,
+                        CourseEventId = enrollment.CourseEventId
                     };
 
                     if (entity == null)

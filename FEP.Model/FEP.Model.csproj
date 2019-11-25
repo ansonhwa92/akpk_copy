@@ -55,6 +55,7 @@
     <Compile Include="Access.cs" />
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
+    <Compile Include="KMC.cs" />
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />

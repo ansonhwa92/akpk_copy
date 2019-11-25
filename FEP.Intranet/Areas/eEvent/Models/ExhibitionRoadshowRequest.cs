@@ -100,7 +100,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 			AttachmentFiles = new List<HttpPostedFileBase>();
 		}
 
-		[Display(Name = "ExRoadExhibitionSupDoc", ResourceType = typeof(Language.Event))]
+        //tajul add
+        public string DutyRosterJSON { get; set; }
+
+        [Display(Name = "ExRoadExhibitionSupDoc", ResourceType = typeof(Language.Event))]
 		public IEnumerable<Attachment> Attachments { get; set; }
 
 		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }

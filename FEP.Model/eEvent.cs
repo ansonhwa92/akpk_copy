@@ -475,8 +475,13 @@ namespace FEP.Model
 	{
 		[Key]
 		public int Id { get; set; }
+        public int ExhibitionRoadshowId { get; set; }
 
-		public DateTime? Date { get; set; }
+        [ForeignKey("ExhibitionRoadshowId")]
+        public virtual EventExhibitionRequest ExhibitionRequest { get; set; }
+
+
+        public DateTime? Date { get; set; }
 
 		public DateTime? StartTime { get; set; }
 
@@ -492,7 +497,7 @@ namespace FEP.Model
 	{
 		[Key]
 		public int Id { get; set; }
-		public int? DutyRosterId { get; set; }
+		public int DutyRosterId { get; set; }
 		public int? UserId { get; set; }
 
 		[ForeignKey("DutyRosterId")]

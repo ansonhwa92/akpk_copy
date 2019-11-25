@@ -123,13 +123,34 @@ namespace FEP.WebApiModel.eEvent
 		public ExhibitionRoadshowRequestModel List { get; set; }
 	}
 
-	public class DetailsExhibitionRoadshowRequestModel : ExhibitionRoadshowRequestModel
+    //duty roster
+    public class DutyPIC
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+    }
+    public class DutyDetails
+    {
+        public int id { get; set; }
+        public string date { get; set; }
+        public string startTime { get; set; }
+        public string endTime { get; set; }
+        public List<DutyPIC> pic { get; set; }
+    }
+    public class DutyRosterTempModel
+    {
+        public int exhibitionId { get; set; }
+        public List<DutyDetails> dutyRoster { get; set; }
+    }
+    public class DetailsExhibitionRoadshowRequestModel : ExhibitionRoadshowRequestModel
 	{
 		public DetailsExhibitionRoadshowRequestModel() { }
 
 		[Display(Name = "ExRoadExhibitionSupDoc", ResourceType = typeof(Language.Event))]
 		public IEnumerable<Attachment> Attachments { get; set; }
-	}
+
+        public DutyRosterTempModel DutyRoster { get; set; }
+    }
 
 	public class CreateExhibitionRoadshowRequestModel
 	{
@@ -138,6 +159,9 @@ namespace FEP.WebApiModel.eEvent
 			FilesId = new List<int>();
 		}
 		public List<int> FilesId { get; set; }
+
+        //tajul add
+        public string DutyRosterJSON { get; set; }
 
 		[Required(ErrorMessage = "Please insert Event Name")]
 		[Display(Name = "ExRoadEventName", ResourceType = typeof(Language.Event))]

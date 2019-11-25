@@ -12,7 +12,15 @@
 		$(document).ready(function () {
 
 			RefreshFile();
-
+            renderAgenda();
+            var data = $("#SpeakerId").select2("data");
+            var selector = "<select class='js-example-basic-multiple select2-area select2-hidden-accessible' name='tentatifSpeakers' multiple='multiple' data-select2-id='tentatifSpeakers' id='tentatifSpeakers' style='width:100%' aria-hidden='true'>";
+            for (i = 0; i < data.length; i++) {
+                selector += "<option value='" + data[i].id + "'>" + data[i].text + "</option>";
+            }
+            selector += "</select>";
+            $("#speakerList").html(selector);
+            $('.js-example-basic-multiple').select2();
 		});
 
 		$("#StartDate").flatpickr({
@@ -35,75 +43,241 @@
 			minDate: "today",
 		});
 
+        $("#sideMenuAgenda").click(function () {
+            $("#sideMenuDetails").addClass("complete");
+            $("#sideMenuDetails").removeClass("active");
+            $("#sideMenuAgenda").addClass("active");
 
-		//	$('#IndividualFee').prop('readonly', false);
-		//$('#IndividualEarlyBird').prop('readonly', false);
-		$('#FreeIndividual').change(function () {
-			if ($('#FreeIndividual').is(':checked')) {
-				$('#IndividualFee').val('0.00');
-				$('#IndividualFee').prop('readonly', true);
+            $("#eventdetails").removeClass("active");
+            $("#eventagenda").addClass("active");
+        });
+        $("#sideMenuDetails").click(function () {
+            $("#sideMenuDetails").removeClass("complete");
+            $("#sideMenuDetails").addClass("active");
+            $("#sideMenuAgenda").removeClass("active");
 
-				$('#IndividualEarlyBird').val('0.00');
-				$('#IndividualEarlyBird').prop('readonly', true);
-			} else {
-				$('#IndividualFee').prop('readonly', false);
+            $("#eventdetails").addClass("active");
+            $("#eventagenda").removeClass("active");
+        });
 
-				$('#IndividualEarlyBird').prop('readonly', false);
-			}
-		});
+        var AgendaJSON = JSON.parse('@Html.Raw(Model.TentativeScript)');
+
+        $("#btnCreateAgenda").click(function () {
+            var data = $("#SpeakerId").select2("data");
+            var selector = "<select class='js-example-basic-multiple select2-area select2-hidden-accessible' name='tentatifSpeakers' multiple='multiple' data-select2-id='tentatifSpeakers' id='tentatifSpeakers' style='width:100%' aria-hidden='true'>";
+            for (i = 0; i < data.length; i++) {
+                selector += "<option value='" + data[i].id + "'>" + data[i].text + "</option>";
+            }
+            selector += "</select>";
+            $("#speakerList").html(selector);
+            $('.js-example-basic-multiple').select2();
+            $("#tentativeTime").val('');
+            $("#tentative").val('');
+            $("#confirmAddTentative").text("Add");
+
+            $("#tentativeDate").flatpickr({
+                dateFormat: "d/m/Y",
+                enableTime: false,
+                minDate: $("#StartDate").val(),
+                maxDate: $("#EndDate").val()
+
+            });
+
+            ActionMode = "AddNew";
+            $('#myModal').modal('show');
+
+        });
+
+        function editTentative(tId) {
+            for (j = 0; j < AgendaJSON['tentatives'].length; j++) {
+                if (AgendaJSON['tentatives'][j]['id'] == tId) {
+                    $("#tentativeDate").val(AgendaJSON['tentatives'][j]['date']),
+                        $("#tentativeTime").val(AgendaJSON['tentatives'][j]['time']);
+                    $("#tentative").val(AgendaJSON['tentatives'][j]['tentative']);
+                    $("#tentativeId").val(AgendaJSON['tentatives'][j]['id'])
+                    var preselectedSpeaker = [];
+                    for (i = 0; i < AgendaJSON['tentatives'][j]['speakers'].length; i++) {
+                        preselectedSpeaker.push(AgendaJSON['tentatives'][j]['speakers'][i]['id']);
+                    }
+                    $("#tentatifSpeakers").val(preselectedSpeaker).trigger("change");
+                    $("#confirmAddTentative").text("Update");
+                    ActionMode = "UpdateTentative";
+                    $('#myModal').modal('show');
+                    break;
+                }
+            }
+
+        }
+
+        function deleteTentative(tId) {
+            for (j = 0; j < AgendaJSON['tentatives'].length; j++) {
+                if (AgendaJSON['tentatives'][j]['id'] == tId) {
+                    //debugger;
+                    if (confirm('Are you sure to delete this entry? \n' + AgendaJSON['tentatives'][j]['date'] + ' ' + AgendaJSON['tentatives'][j]['time'] + '\n' + AgendaJSON['tentatives'][j]['tentative'])) {
+                        console.log(AgendaJSON);
+                        AgendaJSON['tentatives'].splice(j, 1);
+                        console.log(AgendaJSON);
+                        renderAgenda();    
+                    } else {
+                        
+                    }
+                    
+                    break;
+                }
+            }
+
+        }
 
 
-		//$('#IndividualPaperFee').prop('readonly', false);
-		//$('#IndividualPaperEarlyBird').prop('readonly', false);
-		$('#FreeIndividualPaper').change(function () {
-			if ($('#FreeIndividualPaper').is(':checked')) {
-				$('#IndividualPaperFee').val('0.00');
-				$('#IndividualPaperFee').prop('readonly', true);
+        function renderAgenda() {
+            var prevDate = "";
+            var currentDate = "";
+            var DayCounter = 0;
+            var toDisplay = '<dl class="row">';
+            for (j = 0; j < AgendaJSON['tentatives'].length; j++) {
+                currentDate = AgendaJSON['tentatives'][j]['date'];
+                if (prevDate != currentDate) {
+                    toDisplay += '</dl>';
+                    toDisplay += '<hr />';
+                    toDisplay += '<dl class="row">';
+                    toDisplay += '<dt class="col-sm-3"><b><div class="card bg-light p-2 float-right border-grey">' + AgendaJSON['tentatives'][j]['date'] + '</div></b></dt>';
+                    toDisplay += '<dd class="col-sm-9">';
+                    toDisplay += '<div class="form-group col-lg-12">';
+                    toDisplay += '<label for="Event_Description">Session Name</label>';
+                    toDisplay += '<input class="form-control text-box single-line" data-val="true"';
 
-				$('#IndividualPaperEarlyBird').val('0.00');
-				$('#IndividualPaperEarlyBird').prop('readonly', true);
-			} else {
-				$('#IndividualPaperFee').prop('readonly', false);
+                    var tempDate = AgendaJSON['tentatives'][j]['date'];
+                    var tempSessionName = '';
+                    if (AgendaJSON['sessionNames'].length > 0) { let sName = AgendaJSON['sessionNames'].find(s => s.date === tempDate); tempSessionName = (sName != null) ? sName['value'] : ''; }
+                    toDisplay += 'id="sessionName_' + DayCounter + '" name="sessionName_' + DayCounter + '" placeholder="Session ' + (DayCounter + 1) + '" type="text" onchange="(AgendaJSON[\'sessionNames\'].find(s => s.date === \''+ tempDate +'\') == null)? AgendaJSON[\'sessionNames\'].push({date: \''+ tempDate +'\', value: this.value}) : (AgendaJSON[\'sessionNames\'].find(s => s.date === \''+ tempDate +'\'))[\'value\'] = this.value;" value="' + tempSessionName + '">';
+                    toDisplay += '</div>';
+                    toDisplay += '<div class="form-group col-lg-12">';
+                    toDisplay += '<label for="Session_Description">Event Description</label>';
+                    toDisplay += '<input class="form-control text-box single-line" data-val="true"';
+                    var tempSessionDesc = '';
+                    if (AgendaJSON['sessionDescriptions'].length > 0) { let sDesc = AgendaJSON['sessionDescriptions'].find(s => s.date === tempDate); tempSessionDesc = (sDesc != null )? sDesc['value'] : ''; }
+                    toDisplay += 'id="sessionDescription_' + DayCounter + '" name="sessionDescription_' + DayCounter + '" placeholder="describe about Session ' + (DayCounter+1) + '" type="text" onchange="(AgendaJSON[\'sessionDescriptions\'].find(s => s.date === \''+ tempDate +'\') == null)? AgendaJSON[\'sessionDescriptions\'].push({date: \''+ tempDate +'\', value: this.value})  : (AgendaJSON[\'sessionDescriptions\'].find(s => s.date === \''+ tempDate +'\'))[\'value\'] = this.value;" value="' + tempSessionDesc + '">';
+                    toDisplay += '</div>';
+                    toDisplay += '</dd>';
+                    DayCounter++;
+                }
 
-				$('#IndividualPaperEarlyBird').prop('readonly', false);
-			}
-		});
+                toDisplay += '<dt class="col-sm-3"><p class="text-right">' + AgendaJSON['tentatives'][j]['time'] + '</p></dt>';
+                toDisplay += '<dd class="col-sm-9">' + AgendaJSON['tentatives'][j]['tentative'];
+                toDisplay += '<a href="#" data-toggle="tooltip" data-placement="top" data-original-title="Edit" onclick="editTentative(' + AgendaJSON['tentatives'][j]['id'] + ')"> <i class="la la-edit text-muted"></i></a>';
+                toDisplay += '<a href="#" data-toggle="tooltip" data-placement="top" data-original-title="Delete" onclick="deleteTentative(' + AgendaJSON['tentatives'][j]['id'] + ')"> <i class="la la-trash text-muted"></i></a>';
+                if (AgendaJSON['tentatives'][j]['speakers'].length > 0) {
+                    for (m = 0; m < AgendaJSON['tentatives'][j]['speakers'].length; m++) {
+                        toDisplay += '<br><i class="fa fa-user-tie font-icon"></i>' + AgendaJSON['tentatives'][j]['speakers'][m]['name'];
+                    }
+                }
+                toDisplay += '</dd>';
 
+                prevDate = currentDate;
+            }
+            toDisplay += '</dl>';
 
-		//$('#IndividualPresentFee').prop('readonly', false);
-		//$('#IndividualPresentEarlyBird').prop('readonly', false);
-		$('#FreeIndividualPresent').change(function () {
-			if ($('#FreeIndividualPresent').is(':checked')) {
-				$('#IndividualPresentFee').val('0.00');
-				$('#IndividualPresentFee').prop('readonly', true);
+            $("#generatedAgenda").html(toDisplay);
+        }
 
-				$('#IndividualPresentEarlyBird').val('0.00');
-				$('#IndividualPresentEarlyBird').prop('readonly', true);
-			} else {
-				$('#IndividualPresentFee').prop('readonly', false);
+        var tCounter = 0;
+        $("#confirmAddTentative").click(function () {
 
-				$('#IndividualPresentEarlyBird').prop('readonly', false);
-			}
-		});
+            var dataSpeaker = $("#tentatifSpeakers").select2("data");
+            var item = {
+                "id": 0,
+                "date": $("#tentativeDate").val(),
+                "time": $("#tentativeTime").val(),
+                "tentative": $("#tentative").val(),
+                "speakers": []
+            }
+            for (k = 0; k < dataSpeaker.length; k++) {
+                var eachSpeaker = {
+                    "id": dataSpeaker[k].id,
+                    "name": dataSpeaker[k].text
+                }
+                item['speakers'].push(eachSpeaker);
+            }
+            if ($("#tentativeDate").val() != "" && $("#tentativeTime").val() != "" && $("#tentative").val() != "") {
+                if (ActionMode == "AddNew") {
 
+                    //check if same time already exist
+                    for (var m = 0; m < AgendaJSON['tentatives'].length; m++) {
+                        if (AgendaJSON['tentatives'][m]['date'] == item['date']) {
+                            if (AgendaJSON['tentatives'][m]['time'] == item['time']) {
+                                alert("There is a tentative with the same time already exist.\nPlease select different time");
+                                return;
+                            }
+                        }
+                    }
 
-		//$('#AgencyFee').prop('readonly', false);
-		//$('#AgencyEarlyBird').prop('readonly', false);
-		$('#FreeAgency').change(function () {
-			if ($('#FreeAgency').is(':checked')) {
-				$('#AgencyFee').val('0.00');
-				$('#AgencyFee').prop('readonly', true);
+                    item['id'] = tCounter;
+                    tCounter++;
+                    AgendaJSON['tentatives'].push(item);
+                }
+                if (ActionMode == "UpdateTentative") {
+                    item['id'] = $("#tentativeId").val();
+                    for (m = 0; m < AgendaJSON['tentatives'].length; m++) {
+                        if (AgendaJSON['tentatives'][j]['id'] == $("#tentativeId").val()) {
+
+                            //check if same time already exist
+                            for (var m = 0; m < AgendaJSON['tentatives'].length; m++) {
+                                if (AgendaJSON['tentatives'][m]['date'] == item['date']) {
+                                    if (AgendaJSON['tentatives'][m]['id'] != item['id'] && AgendaJSON['tentatives'][m]['time'] == item['time']) {
+                                        alert("There is a tentative with the same time already exist.\nPlease select different time");
+                                        return;
+                                    }
+                                }
+                            }
+
+                            AgendaJSON['tentatives'][j] = item;
+                            break;
+                        }
+                    }
 
 				$('#AgencyEarlyBird').val('0.00');
 				$('#AgencyEarlyBird').prop('readonly', true);
 			} else {
 				$('#AgencyFee').prop('readonly', false);
 
-				$('#AgencyEarlyBird').prop('readonly', false);
-			}
-		});
+                 function sortByProperty(property1, property2) {
+                    return function (a, b) {
+                        /*if (a[property] > b[property])
+                            return 1;
+                        else if (a[property] < b[property])
+                            return -1;
 
-	</script>
+                        return 0;*/
+
+                        if (a[property1] === b[property1]) {
+                             // Price is only important when cities are the same
+                            return a[property2] > b[property2] ? 1 : -1;
+                        }
+                        return a[property1] > b[property1] ? 1 : -1;
+                    }
+                }
+                AgendaJSON['tentatives'].sort(sortByProperty("date","time"));
+                console.log(AgendaJSON);
+
+                renderAgenda();
+                $('#myModal').modal('hide');
+            }
+            else {
+                alert("Please complete all required fields");
+            }
+
+            
+        });
+
+        $('#target').submit(function(event) {
+
+            event.preventDefault(); //this will prevent the default submit
+            // your code here (But not asynchronous code such as Ajax because it does not wait for response and move to next line.)
+            $("#TentativeScript").val(JSON.stringify(AgendaJSON));
+
+            $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+        })
+    </script>
 
 }
 
@@ -164,23 +338,23 @@
 							</a>
 						</li>
 
-						<li class="step-item active">
-							<a href="" class="step-link">
-								<span class="step-number">2</span>
-								<span class="step-title">Fill Up Event Details</span>
-							</a>
-						</li>
-						<li class="step-item disabled">
-							<a href="" class="step-link">
-								<span class="step-number">3</span>
-								<span class="step-title">Fill Up Event Agenda</span>
-							</a>
-						</li>
-					</ul>
-					<!-- End Steps -->
-				</div>
-			</div>
-		</div>
+                        <li id="sideMenuDetails" class="step-item rejected">
+                            <a href="#eventdetails" class="step-link">
+                                <span class="step-number">2</span>
+                                <span class="step-title">Fill Up Event Details</span>
+                            </a>
+                        </li>
+                        <li id="sideMenuAgenda" class="step-item">
+                            <a href="#eventagenda" class="step-link">
+                                <span class="step-number">3</span>
+                                <span class="step-title">Fill Up Event Agenda</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- End Steps -->
+                </div>
+            </div>
+        </div>
 
 
 		<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
@@ -380,14 +554,94 @@
 							</div>
 						</div>
 
-					</div>
-				</form>
-				<!-- End Form -->
-			</div>
-			<div class="border-left border-right border-bottom p-3 rounded-bottom">
-				<a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
-				<button type="submit" class="btn btn-primary btn-flat">Save</button>
-			</div>
-		</div>
-	</div>
+					</div>  <div class="tab-pane" id="eventagenda">
+                            <div class="mt-2 mb-4 pb-1 mr-auto">
+                                <h4 class="color-darkblue mb-0">Event Agenda</h4>
+                                <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-lg-12">
+                                    @Html.HiddenFor(m => m.TentativeScript)
+                                    <button type="button" class="btn btn-secondary pull-right" id="btnCreateAgenda">
+                                        <i class="la la-plus font-icon"></i>
+                                        Add Tentatives
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="generatedAgenda"></div>
+
+
+                        </div>
+
+                        <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                            <a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
+                            <button type="submit" class="btn btn-primary btn-flat">Save</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- End Form -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="mr-auto">
+                        <h4 class="color-darkblue mb-0">Event Agenda</h4>
+                        <h6 class="font-weight-normal">Add tentatives for the program</h6>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <input type="hidden" id="tentativeId" name="tentativeId" value="" />
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.Label("Date")<span class="text-danger"> *</span>
+                            <input class="form-control text-box single-line flatpickr-input active"
+                                   data-val="true" data-val-date="The field must be a date."
+                                   data-val-required="Please Insert Date"
+                                   id="tentativeDate" name="tentativeDate" placeholder="Select Date"
+                                   type="text" value="" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.Label("Time")<span class="text-danger"> *</span>
+                            <input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"
+                                   data-val-required="Please insert Start Time"
+                                   id="tentativeTime" name="tentativeTime" placeholder="Time"
+                                   type="text" value="" readonly="readonly" aria-describedby="StartTime-error" aria-invalid="false">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.Label("Tentative")<span class="text-danger"> *</span>
+                            <input class="form-control text-box single-line" data-val="true"
+                                   data-val-required="Please Insert Tentative" id="tentative" name="tentative" placeholder="arrival" type="text" value="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.Label("Speaker(s)")
+                            <div id="speakerList"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmAddTentative">Add</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 }

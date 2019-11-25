@@ -2,6 +2,7 @@
 using FEP.Model;
 using FEP.WebApiModel.eEvent;
 using FEP.WebApiModel.FileDocuments;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -205,6 +206,26 @@ namespace FEP.WebApi.Api.eEvent
 			});
 		}
 
+        ////duty roster
+        //public class DutyPIC
+        //{
+        //    public int id { get; set; }
+        //    public string name { get; set; }
+        //}
+        //public class DutyDetails
+        //{
+        //    public int id { get; set; }
+        //    public string date { get; set; }
+        //    public string startTime { get; set; }
+        //    public string endTime { get; set; }
+        //    public List<DutyPIC> pic { get; set; }
+        //}
+        //public class DutyRosterTempModel
+        //{
+        //    public int exhibitionId { get; set; }
+        //    public List<DutyDetails> dutyRoster { get; set; }
+        //}
+
 
 		public ExhibitionRoadshowApprovalModel Get(int id)
 		{
@@ -289,6 +310,47 @@ namespace FEP.WebApi.Api.eEvent
 				return evaluation;
 			}
 
+
+            //tajul add
+            var getRoster = db.DutyRoster.Where(r => r.Display && r.ExhibitionRoadshowId == id).ToList();
+            if (getRoster != null)
+            {
+                var tempDutyRosterTempModel = new DutyRosterTempModel
+                {
+                    exhibitionId = id
+                };
+                tempDutyRosterTempModel.dutyRoster = new List<DutyDetails>();
+                foreach (var duty in getRoster)
+                {
+                    
+                    var getPIC = db.DutyRosterOfficer.Where(o => o.DutyRosterId == duty.Id).ToList();
+                    var tempDutyDetails = new DutyDetails
+                    {
+                        id = duty.Id,
+                        date = duty.Date.Value.ToString("dddd, dd/MM/yyyy"),
+                        startTime = duty.StartTime.Value.ToString("HH:mm"),
+                        endTime = duty.EndTime.Value.ToString("HH:mm")
+                };
+                    if (getPIC != null)
+                    {
+                        tempDutyDetails.pic = new List<DutyPIC>();
+                        foreach (var pic in getPIC)
+                        {
+                            var tempPIC = new DutyPIC
+                            {
+                                id = pic.Id,
+                                name = pic.User.Name
+                            };
+                            tempDutyDetails.pic.Add(tempPIC);
+                        }
+                    }
+                    tempDutyRosterTempModel.dutyRoster.Add(tempDutyDetails);
+                }
+
+                exhibition.DutyRoster = tempDutyRosterTempModel;
+            }
+
+            return Ok(exhibition);
 		}
 
 		[HttpPost]
@@ -346,6 +408,38 @@ namespace FEP.WebApi.Api.eEvent
 
 				db.EventFile.Add(eventfile);
 			}
+
+            //duty roster
+            if (model.DutyRosterJSON != "" || model.DutyRosterJSON != null) {
+                DutyRosterTempModel drModel = JsonConvert.DeserializeObject<DutyRosterTempModel>(model.DutyRosterJSON);
+                foreach(var duty in drModel.dutyRoster)
+                {
+                    var dutyRoster = new DutyRoster
+                    {
+                        ExhibitionRoadshowId = exroad.Id,
+                        Date = Convert.ToDateTime(duty.date),
+                        StartTime = DateTime.ParseExact(duty.startTime, "H:mm", null, System.Globalization.DateTimeStyles.None),
+                        EndTime = DateTime.ParseExact(duty.endTime, "H:mm", null, System.Globalization.DateTimeStyles.None),
+                        CreatedBy = model.ReceivedById,
+                        CreatedDate = DateTime.Now,
+                        Display = true
+                    };
+                    db.DutyRoster.Add(dutyRoster);
+                    db.SaveChanges();
+
+                    foreach (var pic in duty.pic)
+                    {
+                        var dutyRosterOfficer = new DutyRosterOfficer
+                        {
+                            DutyRosterId = dutyRoster.Id,
+                            UserId = pic.id
+                        };
+                        db.DutyRosterOfficer.Add(dutyRosterOfficer);
+                        db.SaveChanges();
+                    }
+                }
+                
+            }
 			db.SaveChanges();
 
 			if (exroad != null)
@@ -375,8 +469,9 @@ namespace FEP.WebApi.Api.eEvent
 			return Ok(exroad.Id);
 		}
 
+        
 
-		public IHttpActionResult Put(int id, [FromBody] EditExhibitionRoadshowRequestModel model)
+        public IHttpActionResult Put(int id, [FromBody] EditExhibitionRoadshowRequestModel model)
 		{
 			var exroad = db.EventExhibitionRequest.Where(u => u.Id == id).FirstOrDefault();
 

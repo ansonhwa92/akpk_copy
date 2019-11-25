@@ -208,9 +208,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View(model);
 		}
 
-
-
-
 		[HttpGet]
 		public async Task<ActionResult> Create()
 		{
@@ -261,6 +258,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					CreatedBy = CurrentUser.UserId,
 					BranchId = model.BranchId,
 					ContactNo = model.ContactNo,
+                    DutyRosterJSON = model.DutyRosterJSON
 				};
 
 				//attachment

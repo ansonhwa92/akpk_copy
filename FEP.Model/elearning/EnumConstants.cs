@@ -21,6 +21,11 @@ namespace FEP.Model.eLearning
         public static string eLearningFacilitator = "Facilitator";
     }
 
+    public static class ElearningActivity
+    {
+        public static string UserRequestWithdrawal = "User Request Withdrawal";
+    }
+
     public static class Constants
     {
         // This is for content that belong to a course, not a module.
@@ -29,7 +34,7 @@ namespace FEP.Model.eLearning
 
     public enum Gamification
     {
-        [Display(Name ="User Login")]
+        [Display(Name = "User Login")]
         UserLogin,
 
         [Display(Name = "User Enrolled")]
@@ -38,5 +43,4 @@ namespace FEP.Model.eLearning
         [Display(Name = "Course Complete")]
         CourseComplete
     }
-
 }

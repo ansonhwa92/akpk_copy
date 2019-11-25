@@ -85,17 +85,18 @@ namespace FEP.Model
         [Display(Name = "Media Interview - Rejected")]
         Reject_Media_Interview,
 
-		[Display(Name = "Media Interview - Representative Available")]
-		RepAvailable_MediaInterview,
-		[Display(Name = "Media Interview - Representative Not Available")]
-		RepNotAvailable_MediaInterview,
+        [Display(Name = "Media Interview - Representative Available")]
+        RepAvailable_MediaInterview,
 
+        [Display(Name = "Media Interview - Representative Not Available")]
+        RepNotAvailable_MediaInterview,
 
-		//Exhibition Roadshow
-		[Display(Name = "Exhibition Roadshow - Submit Exhibition Roadshow For Verification")]
-		Submit_Exhibition_RoadShow_For_Verification,
-		[Display(Name = "Exhibition Roadshow - Verify Exhibition Roadshow")]
-		Verify_Exhibition_RoadShow_After_Submit_For_Verification,
+        //Exhibition Roadshow
+        [Display(Name = "Exhibition Roadshow - Submit Exhibition Roadshow For Verification")]
+        Submit_Exhibition_RoadShow_For_Verification,
+
+        [Display(Name = "Exhibition Roadshow - Verify Exhibition Roadshow")]
+        Verify_Exhibition_RoadShow_After_Submit_For_Verification,
 
         [Display(Name = "Exhibition Roadshow - Approve Exhibition Roadshow By Approver 1")]
         Approve_Exhibition_RoadShow_ByApprover_1,
@@ -121,13 +122,14 @@ namespace FEP.Model
         [Display(Name = "Exhibition RoadShow - Approve Duty Roster")]
         Approve_DutyRoster,
 
+        [Display(Name = "Exhibition RoadShow - Accept Participation")]
+        AcceptParticipation_Exhibition_RoadShow,
 
-		[Display(Name = "Exhibition RoadShow - Accept Participation")]
-		AcceptParticipation_Exhibition_RoadShow,
-		[Display(Name = "Exhibition RoadShow - Decline Participation")]
-		DeclineParticipation_Exhibition_RoadShow,
-		//[Display(Name = "Exhibition RoadShow - Send Invitation To Nominees")]
-		//SendInvitationToNominees,
+        [Display(Name = "Exhibition RoadShow - Decline Participation")]
+        DeclineParticipation_Exhibition_RoadShow,
+
+        //[Display(Name = "Exhibition RoadShow - Send Invitation To Nominees")]
+        //SendInvitationToNominees,
 
         //Payment
         [Display(Name = "Payment Pending GL")]
@@ -214,6 +216,12 @@ namespace FEP.Model
 
         [Display(Name = "Student Enroll in the Course")]
         Course_Student_Enrolled,
+
+        // User withdraw from course
+        [Display(Name = "Notify Admin Participant Withdraw From Course")]
+        Notify_Admin_Participant_Withdraw,
+
+        Notify_Self_Withdraw_From_Course,
 
         //Survey
         [Display(Name = "Survey Created and Submitted for Verification")]

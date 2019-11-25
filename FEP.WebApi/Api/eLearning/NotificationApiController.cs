@@ -89,6 +89,20 @@ namespace FEP.WebApi.Api.eLearning
 
                             break;
 
+                        case NotificationType.Notify_Admin_Participant_Withdraw:
+
+                            // receivers - all trainer for that course
+                            receivers = await GetCourseTrainers(model.Id);
+
+                            break;
+
+                        case NotificationType.Notify_Self_Withdraw_From_Course:
+
+                            // receivers - all trainer for that course
+                            receivers.Add(model.LearnerUserId);
+
+                            break;
+
                         default:
                             break;
                     }

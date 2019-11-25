@@ -228,9 +228,10 @@ namespace FEP.WebApi.Api.eLearning
                         CourseId = entity.Id,
                         Status = CourseEventStatus.Trial,
                         Start = DateTime.Now,
-                        EnrollmentCode = $"TRIAL({entity.Code}-{DateTime.Now.Ticks}",
+                        EnrollmentCode = $"TRIAL({entity.Code}-{DateTime.Now.Ticks})",
                         ViewCategory = ViewCategory.Private,
-                        CreatedBy = createdBy
+                        CreatedBy = createdBy,
+                        IsTrial = true
                     };
 
                     db.CourseEvents.Add(newEvent);

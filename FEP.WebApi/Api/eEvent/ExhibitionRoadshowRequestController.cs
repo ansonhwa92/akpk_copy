@@ -260,6 +260,45 @@ namespace FEP.WebApi.Api.eEvent
 					ContactNo = s.OrganiserPhoneNo,
 				}).FirstOrDefault();
 
+			//tajul add
+			var getRoster = db.DutyRoster.Where(r => r.Display && r.ExhibitionRoadshowId == id).ToList();
+			if (getRoster != null)
+			{
+				var tempDutyRosterTempModel = new DutyRosterTempModel
+				{
+					exhibitionId = id
+				};
+				tempDutyRosterTempModel.dutyRoster = new List<DutyDetails>();
+				foreach (var duty in getRoster)
+				{
+
+					var getPIC = db.DutyRosterOfficer.Where(o => o.DutyRosterId == duty.Id).ToList();
+					var tempDutyDetails = new DutyDetails
+					{
+						id = duty.Id,
+						date = duty.Date.Value.ToString("dddd, dd/MM/yyyy"),
+						startTime = duty.StartTime.Value.ToString("HH:mm"),
+						endTime = duty.EndTime.Value.ToString("HH:mm")
+					};
+					if (getPIC != null)
+					{
+						tempDutyDetails.pic = new List<DutyPIC>();
+						foreach (var pic in getPIC)
+						{
+							var tempPIC = new DutyPIC
+							{
+								id = pic.Id,
+								name = pic.User.Name
+							};
+							tempDutyDetails.pic.Add(tempPIC);
+						}
+					}
+					tempDutyRosterTempModel.dutyRoster.Add(tempDutyDetails);
+				}
+
+				exhibition.DutyRoster = tempDutyRosterTempModel;
+			}
+
 
 			if (exhibition.ExhibitionStatus != ExhibitionStatus.ApprovedByApprover3 && exhibition.ExhibitionStatus != ExhibitionStatus.AcceptParticipation && exhibition.ExhibitionStatus != ExhibitionStatus.DeclineParticipation && exhibition.ExhibitionStatus != ExhibitionStatus.RequireAmendment && exhibition.ExhibitionStatus != ExhibitionStatus.NomineesInvited)
 			{
@@ -310,47 +349,6 @@ namespace FEP.WebApi.Api.eEvent
 				return evaluation;
 			}
 
-
-            //tajul add
-            var getRoster = db.DutyRoster.Where(r => r.Display && r.ExhibitionRoadshowId == id).ToList();
-            if (getRoster != null)
-            {
-                var tempDutyRosterTempModel = new DutyRosterTempModel
-                {
-                    exhibitionId = id
-                };
-                tempDutyRosterTempModel.dutyRoster = new List<DutyDetails>();
-                foreach (var duty in getRoster)
-                {
-                    
-                    var getPIC = db.DutyRosterOfficer.Where(o => o.DutyRosterId == duty.Id).ToList();
-                    var tempDutyDetails = new DutyDetails
-                    {
-                        id = duty.Id,
-                        date = duty.Date.Value.ToString("dddd, dd/MM/yyyy"),
-                        startTime = duty.StartTime.Value.ToString("HH:mm"),
-                        endTime = duty.EndTime.Value.ToString("HH:mm")
-                };
-                    if (getPIC != null)
-                    {
-                        tempDutyDetails.pic = new List<DutyPIC>();
-                        foreach (var pic in getPIC)
-                        {
-                            var tempPIC = new DutyPIC
-                            {
-                                id = pic.Id,
-                                name = pic.User.Name
-                            };
-                            tempDutyDetails.pic.Add(tempPIC);
-                        }
-                    }
-                    tempDutyRosterTempModel.dutyRoster.Add(tempDutyDetails);
-                }
-
-                exhibition.DutyRoster = tempDutyRosterTempModel;
-            }
-
-            return Ok(exhibition);
 		}
 
 		[HttpPost]

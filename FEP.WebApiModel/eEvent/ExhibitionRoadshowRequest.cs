@@ -90,6 +90,8 @@ namespace FEP.WebApiModel.eEvent
 		public string CreatedByName { get; set; }
 		public DateTime? CreatedDate { get; set; }
 
+		public DutyRosterTempModel DutyRoster { get; set; }
+
 		public bool HasDetail { get; set; }
 		public bool HasEdit { get; set; }
 		public bool HasDelete { get; set; }

@@ -35,6 +35,73 @@
 			minDate: "today",
 		});
 
+		 $('#IndividualFee').prop('readonly', false);
+        $('#IndividualEarlyBird').prop('readonly', false);
+        $('#FreeIndividual').change(function () {
+            if ($('#FreeIndividual').is(':checked')) {
+                $('#IndividualFee').val('0.00');
+                $('#IndividualFee').prop('readonly', true);
+
+                $('#IndividualEarlyBird').val('0.00');
+                $('#IndividualEarlyBird').prop('readonly', true);
+            } else {
+                $('#IndividualFee').prop('readonly', false);
+
+                $('#IndividualEarlyBird').prop('readonly', false);
+            }
+        });
+
+
+        $('#IndividualPaperFee').prop('readonly', false);
+        $('#IndividualPaperEarlyBird').prop('readonly', false);
+        $('#FreeIndividualPaper').change(function () {
+            if ($('#FreeIndividualPaper').is(':checked')) {
+                $('#IndividualPaperFee').val('0.00');
+                $('#IndividualPaperFee').prop('readonly', true);
+
+                $('#IndividualPaperEarlyBird').val('0.00');
+                $('#IndividualPaperEarlyBird').prop('readonly', true);
+            } else {
+                $('#IndividualPaperFee').prop('readonly', false);
+
+                $('#IndividualPaperEarlyBird').prop('readonly', false);
+            }
+        });
+
+
+        $('#IndividualPresentFee').prop('readonly', false);
+        $('#IndividualPresentEarlyBird').prop('readonly', false);
+        $('#FreeIndividualPresent').change(function () {
+            if ($('#FreeIndividualPresent').is(':checked')) {
+                $('#IndividualPresentFee').val('0.00');
+                $('#IndividualPresentFee').prop('readonly', true);
+
+                $('#IndividualPresentEarlyBird').val('0.00');
+                $('#IndividualPresentEarlyBird').prop('readonly', true);
+            } else {
+                $('#IndividualPresentFee').prop('readonly', false);
+
+                $('#IndividualPresentEarlyBird').prop('readonly', false);
+            }
+        });
+
+
+        $('#AgencyFee').prop('readonly', false);
+        $('#AgencyEarlyBird').prop('readonly', false);
+        $('#FreeAgency').change(function () {
+            if ($('#FreeAgency').is(':checked')) {
+                $('#AgencyFee').val('0.00');
+                $('#AgencyFee').prop('readonly', true);
+
+                $('#AgencyEarlyBird').val('0.00');
+                $('#AgencyEarlyBird').prop('readonly', true);
+            } else {
+                $('#AgencyFee').prop('readonly', false);
+
+                $('#AgencyEarlyBird').prop('readonly', false);
+            }
+        });
+
 
         $("#NextToAgendaBtn").click(function () {
             $("#sideMenuDetails").addClass("complete");
@@ -73,24 +140,6 @@
                 maxDate: $("#EndDate").val()
 
             });
-
-
-		$('#IndividualPaperFee').prop('readonly', false);
-		$('#IndividualPaperEarlyBird').prop('readonly', false);
-		$('#FreeIndividualPaper').change(function () {
-			if ($('#FreeIndividualPaper').is(':checked')) {
-				$('#IndividualPaperFee').val('0.00');
-				$('#IndividualPaperFee').prop('readonly', true);
-
-				$('#IndividualPaperEarlyBird').val('0.00');
-				$('#IndividualPaperEarlyBird').prop('readonly', true);
-			} else {
-				$('#IndividualPaperFee').prop('readonly', false);
-
-				$('#IndividualPaperEarlyBird').prop('readonly', false);
-			}
-		});
-
 
         function deleteTentative(tId) {
             for (j = 0; j < AgendaJSON['tentatives'].length; j++) {

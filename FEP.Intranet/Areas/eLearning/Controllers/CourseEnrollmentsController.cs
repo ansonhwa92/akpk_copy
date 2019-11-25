@@ -17,6 +17,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     {
         public const string EnrollAsync = "eLearning/CourseEnrollments/EnrollAsync";
         public const string UserDetails = "eLearning/CourseEnrollments/GetUserDetails";
+        public const string GetEnrollment = "eLearning/CourseEnrollments/GetEnrollment";
         public const string GetEnrollmentHistoryByCourse = "eLearning/CourseEnrollments/GetEnrollmentHistoryByCourse";
         public const string RequestWithdraw = "eLearning/CourseEnrollments/RequestWithdraw";
     }
@@ -255,21 +256,23 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 if (response.Data.IsSuccess)
                 {
-                    TempData["SuccessMessage"] = "You have withdrawn from the course.";
+
                     await LogActivity(Modules.Learning, ElearningActivity.UserRequestWithdrawal, response.Data.Message, id);
 
                     // TODO: Send email for withdrawal
                     await Notifier.UserWithdrawFromCourse(id, currentUserId, CurrentUser.Name,
                          Url.AbsoluteAction("Content", "Course", new { id = id }));
 
-                    return RedirectToAction("BrowseElearnings", "Home", new { area = "eLearning" });
+                    TempData["SuccessMessage"] = "You have withdrawn from the course.";
+
+                    return RedirectToAction("View", "Courses", new { area = "eLearning", @id = id });
                 }
                 else
                 {
                     TempData["ErrorMessage"] = "Could not withdraw from the course.";
                     await LogActivity(Modules.Learning, ElearningActivity.UserRequestWithdrawal, response.Data.Message, id);
 
-                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
+                    return RedirectToAction("View", "Courses", new { area = "eLearning", @id = id });
                 }
             }
             else
@@ -277,7 +280,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 TempData["ErrorMessage"] = "Could not withdraw from the course.";
                 await LogActivity(Modules.Learning, ElearningActivity.UserRequestWithdrawal, "Witdrawal failed. Reason : " + response.Data, id);
 
-                return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
+                return RedirectToAction("View", "Courses", new { area = "eLearning", @id = id });
             }
         }
 

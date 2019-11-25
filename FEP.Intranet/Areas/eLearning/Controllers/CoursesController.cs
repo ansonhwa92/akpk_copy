@@ -390,7 +390,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return RedirectToAction("Index", "Courses");
             }
 
-            // check if user enrolled
+            // Get enrollment Status
             if (model.Status == CourseStatus.Published)
             {
                 if (CurrentUser.UserId != null)
@@ -399,11 +399,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                     if (String.IsNullOrEmpty(enrollmentCode))
                     {
-                        var response = await WepApiMethod.SendApiAsync<UserCourseEnrollmentModel>(HttpVerbs.Get, CourseApiUrl.IsUserCompleted + $"?id={id}&userId={currentUserId}");
+                        var response = await WepApiMethod.SendApiAsync<UserCourseEnrollmentModel>(HttpVerbs.Get, CourseEnrollmentApiUrl.GetEnrollment +
+                            $"?id={id}&userId={currentUserId}");
 
                         if (response.isSuccess)
                         {
-                            model.IsUserEnrolled = response.Data.IsUserEnrolled;
+                            if (response.Data.Status == EnrollmentStatus.Enrolled ||
+                                response.Data.Status == EnrollmentStatus.Completed)
+                                model.IsUserEnrolled = true;
+
                             ViewBag.EnrollmentStatus = response.Data.Status;
                             ViewBag.EnrollmentId = response.Data.Id;
                         }
@@ -414,7 +418,10 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                         if (response.isSuccess)
                         {
-                            model.IsUserEnrolled = response.Data.IsUserEnrolled;
+                            if (response.Data.Status == EnrollmentStatus.Enrolled ||
+                                                          response.Data.Status == EnrollmentStatus.Completed)
+                                model.IsUserEnrolled = true;
+
                             ViewBag.EnrollmentStatus = response.Data.Status;
                             ViewBag.EnrollmentId = response.Data.Id;
                         }

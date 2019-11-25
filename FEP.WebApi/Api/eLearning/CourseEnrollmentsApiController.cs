@@ -543,7 +543,8 @@ namespace FEP.WebApi.Api.eLearning
             if (!String.IsNullOrEmpty(enrollmentCode))
             {
                 var courseEvent = await db.CourseEvents.FirstOrDefaultAsync(x => x.CourseId == id &&
-                    x.EnrollmentCode.Equals(enrollmentCode, StringComparison.OrdinalIgnoreCase));
+                    x.EnrollmentCode.Equals(enrollmentCode, StringComparison.OrdinalIgnoreCase) &&
+                    !x.IsTrial);
 
                 if (courseEvent != null)
                 {
@@ -551,16 +552,30 @@ namespace FEP.WebApi.Api.eLearning
                         x.CourseEventId == courseEvent.Id && x.Learner.User.Id == userId);
 
                     if (enrollment != null)
-                        return Ok(enrollment);
+                        return Ok(new UserCourseEnrollmentModel
+                        {
+                            Id = enrollment.Id,
+                            StudentName = enrollment.Learner.User.Name,
+                            Status = enrollment.Status,
+                            CompletionDate = enrollment.CompletionDate.ToString(),
+                            CourseEventId = enrollment.CourseEventId
+                        });
                 }
             }
             else
             {
                 var enrollment = db.Enrollments.Where(x => x.Learner.User.Id == userId &&
-                            x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefault();
+                            x.CourseId == id && !x.CourseEvent.IsTrial && x.Status != EnrollmentStatus.Withdrawn).OrderBy(x => x.CreatedDate).FirstOrDefault();
 
                 if (enrollment != null)
-                    return Ok(enrollment);
+                    return Ok(new UserCourseEnrollmentModel
+                    {
+                        Id = enrollment.Id,
+                        StudentName = enrollment.Learner.User.Name,
+                        Status = enrollment.Status,
+                        CompletionDate = enrollment.CompletionDate.ToString(),
+                        CourseEventId = enrollment.CourseEventId
+                    });
             }
 
             return BadRequest();
@@ -600,7 +615,9 @@ namespace FEP.WebApi.Api.eLearning
             if (course == null)
                 return BadRequest("No course found");
 
-            var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.Learner.User.Id == userId && x.CourseId == courseId && x.Status == EnrollmentStatus.Enrolled);
+            var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.Learner.User.Id == userId &&
+                x.CourseId == courseId && x.Status == EnrollmentStatus.Enrolled &&
+                !x.CourseEvent.IsTrial);
 
             if (enrollment == null)
                 return BadRequest("No enrollment found.");
@@ -639,7 +656,7 @@ namespace FEP.WebApi.Api.eLearning
             }
             else
             {
-                if (enrollment.PercentageCompleted >= courseEvent.AllowablePercentageBeforeWithdraw)
+                if (enrollment.PercentageCompleted < courseEvent.AllowablePercentageBeforeWithdraw)
                 {
                     enrollment.Status = EnrollmentStatus.Withdrawn;
 
@@ -672,7 +689,7 @@ namespace FEP.WebApi.Api.eLearning
                         CourseId = courseId,
                         CourseTitle = course.Title,
                         IsSuccess = false,
-                        Message = $"User {learner.User.Name} reqeust withdraw from the course {course.Title} unsuccessfull due to more than allowablepercentagetoWitdhraw",
+                        Message = $"User {learner.User.Name} request withdraw from the course {course.Title} unsuccessfull due to more than allowablepercentagetoWitdhraw",
                     });
                 }
             }

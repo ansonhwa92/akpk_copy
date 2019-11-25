@@ -91,14 +91,15 @@ namespace FEP.WebApi.Api.eLearning
 
                         case NotificationType.Notify_Admin_Participant_Withdraw:
 
-                            // receivers - all trainer for that course
-                            receivers = await GetCourseTrainers(model.Id);
+                            var admin = await db.Courses.FindAsync(model.Id);
+
+                            if (admin != null)
+                                receivers.Add(admin.CreatedBy);
 
                             break;
 
                         case NotificationType.Notify_Self_Withdraw_From_Course:
 
-                            // receivers - all trainer for that course
                             receivers.Add(model.LearnerUserId);
 
                             break;

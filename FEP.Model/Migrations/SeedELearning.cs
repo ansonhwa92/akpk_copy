@@ -450,7 +450,8 @@ namespace FEP.Model.Migrations
                     Title = "Kembara Bijak Wang",
                     Status = CourseStatus.Draft,
                     IntroMaterialId = fileDocument.Id,
-                    IntroMaterial = fileDocument
+                    IntroMaterial = fileDocument,
+                    CreatedBy = db.User.FirstOrDefaultAsync(x => x.Email == "min.elearn@yahoo.com").Id
                 };
 
                 db.Courses.Add(course);

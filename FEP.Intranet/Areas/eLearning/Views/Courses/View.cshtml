@@ -104,7 +104,8 @@
 
                         <div>
                             <div class="row">
-                                @if (Model.Status == CourseStatus.Published && !Model.IsUserEnrolled)
+                                @if (Model.Status == CourseStatus.Published && (ViewBag.EnrollmentStatus != EnrollmentStatus.Enrolled &&
+                                                   ViewBag.EnrollmentStatus != EnrollmentStatus.Completed))
                                 {
                                     <button class="btn btn-secondary m-2" onclick="checkLogin()">Enroll</button>
 
@@ -117,9 +118,7 @@
 
                                 @if (Model.Status == CourseStatus.Published && Model.IsUserEnrolled)
                                 {
-                                    <form method="post" id="formWithdraw">
                                         <button class="btn btn-secondary m-2" id="btnWithdraw" type="button" onclick="withdraw()">Withdraw</button>
-                                    </form>
                                     @*<a class="btn btn-secondary m-2" href="~/eLearning/Courses/Withdraw/@Model.Id">Withdraw</a>*@
                                 }
 
@@ -298,9 +297,9 @@
             e.preventDefault();
 
             var forAction = $('#forAction').val();
-            //console.log('for action -', forAction);
+            console.log('for action -', forAction);
 
-            var form = $("#formWithdraw");
+            var form = $("#form");
             var courseId = $("#Id").val();
 
             if (forAction == "withdraw") {

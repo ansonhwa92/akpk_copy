@@ -91,7 +91,8 @@ namespace FEP.WebApi.Api.eLearning
                         return BadRequest();
                     }
 
-                    var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.CourseId == request.CourseId && x.LearnerId == learner.Id);
+                    var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.CourseId == request.CourseId &&
+                        x.LearnerId == learner.Id && !x.CourseEvent.IsTrial && x.Status == EnrollmentStatus.Enrolled);
 
                     if (enrollment == null)
                     {
@@ -107,7 +108,7 @@ namespace FEP.WebApi.Api.eLearning
                         return BadRequest();
                     }
 
-                    var courseProgress = await db.CourseProgress.FirstOrDefaultAsync(x => x.ModuleId == currentContent.CourseModuleId &&
+                    var courseProgress = enrollment.CourseProgress.FirstOrDefault(x => x.ModuleId == currentContent.CourseModuleId &&
                      x.ContentId == request.ContentId && x.LearnerId == learner.Id);
 
                     if (courseProgress == null)

@@ -8,16 +8,17 @@
     <div class="col-lg-6">
         <div class="menu-list">
             <h6 class="color-darkblue">Menu</h6>
-            <a class="dropdown-item" href="~/RnP/Publication">Manage Publication</a>
-            <a class="dropdown-item" href="~/RnP/Home/BrowsePublications">Browse Publications</a>
+            <a class="dropdown-item" href="@Url.Action("Index", "Publication", new { area = "RnP" })">Manage Publication</a>
+            <a class="dropdown-item" href="@Url.Action("BrowsePublications", "Home", new { area = "RnP" })">Browse Publications</a>
             <a class="dropdown-item" href="#">Purchased Publication</a>
-            <a class="dropdown-item" href="~/RnP/Publication/RefundRequest">Manage Refunds</a>
+            <a class="dropdown-item" href="@Url.Action("RefundRequest", "Publication", new { area = "RnP" })">Manage Refunds</a>
         </div>
     </div>
     <div class="col-lg-6">
         <div class="menu-list">
             <h6 class="color-darkblue">Setting</h6>
             <a class="dropdown-item" href="#">Publication Category</a>
+            <a class="dropdown-item" href="@Url.Action("Settings", "Publication", new { area = "RnP" })">Publication Settings</a>
         </div>
     </div>
 </div>

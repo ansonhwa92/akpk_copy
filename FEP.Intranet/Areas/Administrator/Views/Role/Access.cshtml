@@ -50,7 +50,7 @@
                         @foreach (var role in Model.Roles)
                         {
                             <li class="nav-item">
-                                <a href="@Url.Action("Access", new { id = role.Id })" class=" @if (role.Id == Model.RoleId) { @Html.Raw("active")} nav-link">@Html.DisplayFor(m => role.Name)</a>
+                                <a href="@Url.Action("Access", new { id = role.Id })" class=" @if (role.Id == Model.RoleId) { @Html.Raw("active") } nav-link">@Html.DisplayFor(m => role.Name)</a>
                             </li>
                         }
 

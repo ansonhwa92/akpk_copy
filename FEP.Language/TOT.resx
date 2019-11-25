@@ -201,6 +201,51 @@
   <data name="PlaceholderVenue" xml:space="preserve">
     <value>Enter Venue</value>
   </data>
+  <data name="TextAgeR1" xml:space="preserve">
+    <value>20 - 30</value>
+  </data>
+  <data name="TextAgeR2" xml:space="preserve">
+    <value>31- 40</value>
+  </data>
+  <data name="TextAgeR3" xml:space="preserve">
+    <value>41 - 50</value>
+  </data>
+  <data name="TextAgeR4" xml:space="preserve">
+    <value>51 - 60</value>
+  </data>
+  <data name="TextAgeR5" xml:space="preserve">
+    <value>60 and above</value>
+  </data>
+  <data name="TextAgeRange" xml:space="preserve">
+    <value>Age Range</value>
+  </data>
+  <data name="TextFemale" xml:space="preserve">
+    <value>Female</value>
+  </data>
+  <data name="TextMale" xml:space="preserve">
+    <value>Male</value>
+  </data>
+  <data name="TextSalaryR1" xml:space="preserve">
+    <value>1000 - 2000</value>
+  </data>
+  <data name="TextSalaryR2" xml:space="preserve">
+    <value>2001 - 4000</value>
+  </data>
+  <data name="TextSalaryR3" xml:space="preserve">
+    <value>4001 - 6000</value>
+  </data>
+  <data name="TextSalaryR4" xml:space="preserve">
+    <value>6001 - 8000</value>
+  </data>
+  <data name="TextSalaryR5" xml:space="preserve">
+    <value>8001 - 10000</value>
+  </data>
+  <data name="TextSalaryR6" xml:space="preserve">
+    <value>10000 and above</value>
+  </data>
+  <data name="TextSalaryRange" xml:space="preserve">
+    <value>Salary Range</value>
+  </data>
   <data name="TitleDescriptionList" xml:space="preserve">
     <value>List of report from trainer</value>
   </data>
@@ -239,5 +284,8 @@
   </data>
   <data name="ValidRequiredVenue" xml:space="preserve">
     <value>Please enter Venue</value>
+  </data>
+  <data name="ValidStartEndTime" xml:space="preserve">
+    <value>End Time must greater or equal Start Time</value>
   </data>
 </root>

@@ -208,10 +208,10 @@
     <value>Remark</value>
   </data>
   <data name="ExRoadNomineeId" xml:space="preserve">
-    <value>Select Nominees</value>
+    <value>Select Exhibitors</value>
   </data>
   <data name="ExRoadNomineeName" xml:space="preserve">
-    <value>Select Nominees</value>
+    <value>Select Exhibitors</value>
   </data>
   <data name="PubEventCategoryId" xml:space="preserve">
     <value>Category</value>
@@ -353,5 +353,62 @@
   </data>
   <data name="AttUserType" xml:space="preserve">
     <value>Type</value>
+  </data>
+  <data name="PubEventAgencyFree" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="PubEventIndividualFree" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="PubEventIndividualPaperFree" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="PubEventIndividualPresentFree" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="PubEventLabelEarlyBirdFee" xml:space="preserve">
+    <value>Early Bird Fee (RM)</value>
+  </data>
+  <data name="PubEventLabelFree" xml:space="preserve">
+    <value>Free ?</value>
+  </data>
+  <data name="PubEventLabelNormalFee" xml:space="preserve">
+    <value>Normal Fee (RM)</value>
+  </data>
+  <data name="PubEventLabelParticipantType" xml:space="preserve">
+    <value>Participant Type</value>
+  </data>
+  <data name="PubEventLabelAgency" xml:space="preserve">
+    <value>Agency Rep.</value>
+  </data>
+  <data name="PubEventLabelIndividual" xml:space="preserve">
+    <value>Individual</value>
+  </data>
+  <data name="PubEventLabelIndividualPaper" xml:space="preserve">
+    <value>Individual w/ Paper</value>
+  </data>
+  <data name="PubEventLabelIndividualPresent" xml:space="preserve">
+    <value>Individual w/ Paper To Present</value>
+  </data>
+  <data name="MediaRepDesignation" xml:space="preserve">
+    <value>Designation</value>
+  </data>
+  <data name="MediaRepEmail" xml:space="preserve">
+    <value>Email Address</value>
+  </data>
+  <data name="MediaRepMobileNumber" xml:space="preserve">
+    <value>Mobile Number</value>
+  </data>
+  <data name="MediaRepUserName" xml:space="preserve">
+    <value>Rep. Name</value>
+  </data>
+  <data name="MediaBranch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="ExRoadBranch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="ExRoadContactNo" xml:space="preserve">
+    <value>Organiser Phone No.</value>
   </data>
 </root>

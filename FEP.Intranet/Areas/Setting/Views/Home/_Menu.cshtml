@@ -1,6 +1,6 @@
 ﻿
 <div class="row">
-    @if (CurrentUser.HasAccess(UserAccess.User) || CurrentUser.HasAccess(UserAccess.Role) || CurrentUser.HasAccess(UserAccess.NotificationSetting) || CurrentUser.HasAccess(UserAccess.SLA))
+    @if (CurrentUser.HasAccess(UserAccess.User) || CurrentUser.HasAccess(UserAccess.Role) || CurrentUser.HasAccess(UserAccess.NotificationSetting) || CurrentUser.HasAccess(UserAccess.SLA) || CurrentUser.HasAccess(UserAccess.RnPSurveyEdit))
     {
         <div class="col-lg-4">
             <div class="menu-list">
@@ -21,6 +21,10 @@
                 {
                     <a class="dropdown-item" href="@Url.Action("List", "SLAReminders", new { area = "SLAReminder" })">SLA Reminder</a>
                 }
+                @if (CurrentUser.HasAccess(UserAccess.RnPSurveyEdit))
+                {
+                    <a class="dropdown-item" href="@Url.Action("Index", "Group", new { area = "Setting" })">Target Group Management</a>
+                }
             </div>
         </div>
     }
@@ -40,6 +44,10 @@
                 @if (CurrentUser.HasAccess(UserAccess.BranchSetting))
                 {
                     <a class="dropdown-item" href="@Url.Action("List", "Branch", new { area = "Administrator" })">Staff Branch</a>
+                }
+                @if (CurrentUser.HasAccess(UserAccess.UserAccountSetting))
+                {
+                    <a class="dropdown-item" href="@Url.Action("Index", "Account", new { area = "Setting" })">Account Setting</a>
                 }
             </div>
         </div>

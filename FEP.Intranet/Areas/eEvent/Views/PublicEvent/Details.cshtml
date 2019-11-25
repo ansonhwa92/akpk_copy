@@ -56,14 +56,15 @@
                 }
                 $('#approval_Status').val('1');
                 $('#approval_ApproverId').val('@CurrentUser.UserId');
-                var applevel = $('#approval_Level').val();
+				var applevel = $('#approval_Level').val();
+				//alert($('#approval_Level').val())
                 if (applevel == "Verifier") {
                     $('#approval_RequireNext').val('True');
                 }
                 else if (applevel == "Approver3") {
                     $('#approval_RequireNext').val('False');
 				}
-				alert($('#approval_Status').val());
+				//alert($('#approval_Status').val());
                 $('#myform').submit();
             });
 
@@ -88,86 +89,23 @@
                     return false;
                 }
 				var rejecttext = $('#Reject_Remarks').val();
-				alert(rejecttext);
+				//alert(rejecttext);
                 $('#approval_Remarks').val(rejecttext);
                 $('#approval_Status').val('2');
                 $('#approval_ApproverId').val('@CurrentUser.UserId');
 				var applevel = $('#approval_Level').val();
-				alert(applevel);
+				//alert(applevel);
                 if (applevel == "Verifier") {
                     $('#approval_RequireNext').val('True');
                 }
                 else if (applevel == "Approver3") {
                     $('#approval_RequireNext').val('False');
 				}
-				alert($('#approval_RequireNext').val());
+				//alert($('#approval_RequireNext').val());
                 $('#myform').submit();
 
             });
 
-            //------------------------------------------------------------------
-            //generate Agenda
-            var weekday = new Array(7);
-                weekday[0] = "Sun";
-                weekday[1] = "Mon";
-                weekday[2] = "Tue";
-                weekday[3] = "Wed";
-                weekday[4] = "Thu";
-                weekday[5] = "Fri";
-            weekday[6] = "Saturday";
-            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
-              "July", "Aug", "Sept", "Oct", "Nov", "Dec"
-            ];
-
-            var AgendaJSON = JSON.parse('@Html.Raw(Model.publicevent.tentativeScript)');
-            console.log(AgendaJSON);
-            var prevDate = "";
-                var currentDate = "";
-                var DayCounter = 0;
-                var toDisplay = '<dl class="row">';
-                for (j = 0; j < AgendaJSON['tentatives'].length; j++) {
-                    currentDate = AgendaJSON['tentatives'][j]['date'];
-                    if (prevDate != currentDate) {
-                        toDisplay += '</dl>';
-                        toDisplay += '<hr />';
-                        toDisplay += '<dl class="row">';
-
-                        var tempCurrent = currentDate.split('/');
-                        var mydate = new Date(tempCurrent[2] + '-' + tempCurrent[1] + '-' + tempCurrent[0]);
-                        var dateMark = weekday[mydate.getDay()] + ', ' + mydate.getDate() + ' ' + monthNames[mydate.getMonth()];
-                        toDisplay += '<dt class="col-sm-2"><b><div class="card bg-light p-2  border-grey"><span class="small">' + dateMark + '</span></div></b></dt>';
-                        toDisplay += '<dd class="col-sm-10">';
-                        
-                        var tempDate = AgendaJSON['tentatives'][j]['date'];
-                        var tempSessionName = '';
-                        if (AgendaJSON['sessionNames'].length > 0) { let sName = AgendaJSON['sessionNames'].find(s => s.date === tempDate); tempSessionName = (sName != null) ? sName['value'] : ''; }
-                        toDisplay += '<h5 class="color-darkblue mb-0">' + tempSessionName + '</h5>';
-                        
-                        var tempSessionDesc = '';
-                        if (AgendaJSON['sessionDescriptions'].length > 0) { let sDesc = AgendaJSON['sessionDescriptions'].find(s => s.date === tempDate); tempSessionDesc = (sDesc != null) ? sDesc['value'] : ''; }
-                        toDisplay += '<h6 class="font-weight-normal">' + tempSessionDesc + '</h6>';
-                        
-                        toDisplay += '</dd>';
-                        DayCounter++;
-                    }
-
-                    toDisplay += '<dt class="col-sm-2"></dt>';
-                    toDisplay += '<dt class="col-sm-2"><p class="text-left small">' + AgendaJSON['tentatives'][j]['time'] + '</p></dt>';
-                    toDisplay += '<dd class="col-sm-8"><p class="small">' + AgendaJSON['tentatives'][j]['tentative'];
-                    if (AgendaJSON['tentatives'][j]['speakers'].length > 0) {
-                        for (m = 0; m < AgendaJSON['tentatives'][j]['speakers'].length; m++) {
-                            toDisplay += '<br><i class="fa fa-user-tie font-icon"></i>' + AgendaJSON['tentatives'][j]['speakers'][m]['name'];
-                        }
-                    }
-                    toDisplay += '</p></dd>';
-
-                    prevDate = currentDate;
-                }
-                toDisplay += '</dl>';
-
-                $("#generatedAgenda").html(toDisplay);
-
-            //------------------------------------------------------------------
 		});
 	</script>
 }
@@ -226,7 +164,7 @@
 						<a href='@Url.Action("SubmitToVerify", "PublicEvent", new { area = "eEvent", id = Model.publicevent.Id })'
 						   class="btn btn-primary btn-block mb-2">Submit for Verification</a>
 					}
-					else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.PendingforVerification && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Submit_PublicEvent)))
+					else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.PendingforVerification && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventVerifierFED)))
 					{
 						@*<a href='@Url.Action("Verified", "PublicEvent", new { area = "eEvent", id = Model.publicevent.Id })'
 							   class="btn btn-primary btn-block mb-2 ">Submit for Approval</a>
@@ -237,7 +175,7 @@
 						<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 						<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 					}
-					else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver1_PublicEvent)))
+					else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover1)))
 					{
 						@*<a href='@Url.Action("FirstApproved", "PublicEvent", new { area = "eEvent", id = Model.publicevent.Id })'
 							   class="btn btn-primary btn-block mb-2 ">Submit for Approval</a>
@@ -248,7 +186,7 @@
 						<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 						<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 					}
-					else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.VerifiedbyFirstApprover && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver2_PublicEvent)))
+					else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.VerifiedbyFirstApprover && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover2)))
 					{
 						@*<a href='@Url.Action("SecondApproved", "PublicEvent", new { area = "eEvent", id = Model.publicevent.Id })'
 							   class="btn btn-primary  btn-block mb-2">Submit for Approval</a>
@@ -259,7 +197,7 @@
 						<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 						<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 					}
-					else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.VerifiedbySecondApprover && (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver3_PublicEvent)))
+					else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.VerifiedbySecondApprover && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover3)))
 					{
 						@*<a href='@Url.Action("FinalApproved", "PublicEvent", new { id = Model.publicevent.Id })'
 							   class="btn btn-success btn-block mb-2">Approve</a>
@@ -270,7 +208,7 @@
 						<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 						<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 					}
-					else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.RejectNeedToEdit && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorFED)))
+					else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.RequireAmendment && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorFED)))
 					{
 						<a href='@Url.Action("SubmitToVerify", "PublicEvent", new { area = "eEvent", id = Model.publicevent.Id })'
 						   class="btn btn-primary  btn-block mb-2">Submit for Verification</a>
@@ -293,7 +231,8 @@
 				<div class="tab-pane active" id="publicevent-details">
 					<div class="d-flex align-items-center mb-4 mt-2">
 						<h4 class="color-darkblue mr-auto mb-0">Public Event Details<br><span class="small">Review public event details below.</span></h4>
-						@if (Model.publicevent.EventStatus == FEP.Model.EventStatus.New || Model.publicevent.EventStatus == FEP.Model.EventStatus.RejectNeedToEdit)
+						@if (Model.publicevent.EventStatus == FEP.Model.EventStatus.New || Model.publicevent.EventStatus == FEP.Model.EventStatus.RequireAmendment 
+							&& (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorFED)))
 						{
 							<a class="btn btn-default btn-sm mw-auto" href="@Url.Action("Edit", "PublicEvent", new { area = "eEvent", @id = Model.publicevent.Id })"><i class="la la-edit color-secondary"></i>&nbsp;&nbsp;Edit</a>
 						}
@@ -317,7 +256,7 @@
 								{
 									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 1">
 								}
-								else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.RejectNeedToEdit)
+								else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.RequireAmendment)
 								{
 									<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Require Amendment">
 								}
@@ -372,12 +311,99 @@
 					</div>
 
 					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.LabelFor(model => model.publicevent.Fee)
-							@Html.EditorFor(model => model.publicevent.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00", @readonly = "readonly" } })
+						<div class="form-group col-lg-3">
+							@Html.LabelFor(model => model.publicevent.LabelParticipantType)
 						</div>
+						<div class="form-group col-lg-3">
+							@Html.LabelFor(model => model.publicevent.LabelFree)
+						</div>
+						<div class="form-group col-lg-3">
+							@Html.LabelFor(model => model.publicevent.LabelNormalFee)
+						</div>
+						<div class="form-group col-lg-3">
+							@Html.LabelFor(model => model.publicevent.LabelEarlyBirdFee)
+						</div>
+					</div>
 
-						<div class="form-group col-lg-6">
+					<div class="row">
+						<div class="form-group col-lg-3">
+							@Html.LabelFor(model => model.publicevent.LabelIndividual)
+						</div>
+						<div class="form-group col-lg-3">
+							<div class="custom-control custom-checkbox">
+								@Html.EditorFor(model => model.publicevent.FreeIndividual, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+								@Html.LabelFor(model => model.publicevent.FreeIndividual, htmlAttributes: new { @class = "custom-control-label" })
+							</div>
+						</div>
+						<div class="form-group col-lg-3">
+							@Html.EditorFor(model => model.publicevent.IndividualFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+						</div>
+						<div class="form-group col-lg-3">
+							@Html.EditorFor(model => model.publicevent.IndividualEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-3">
+							@Html.LabelFor(model => model.publicevent.LabelIndividualPaper)
+						</div>
+						<div class="form-group col-lg-3">
+							<div class="custom-control custom-checkbox">
+								@Html.EditorFor(model => model.publicevent.FreeIndividualPaper, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+								@Html.LabelFor(model => model.publicevent.FreeIndividualPaper, htmlAttributes: new { @class = "custom-control-label" })
+							</div>
+						</div>
+						<div class="form-group col-lg-3">
+							@Html.EditorFor(model => model.publicevent.IndividualPaperFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+						</div>
+						<div class="form-group col-lg-3">
+							@Html.EditorFor(model => model.publicevent.IndividualPaperEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-3">
+							@Html.LabelFor(model => model.publicevent.LabelIndividualPresent)
+						</div>
+						<div class="form-group col-lg-3">
+							<div class="custom-control custom-checkbox">
+								@Html.EditorFor(model => model.publicevent.FreeIndividualPresent, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+								@Html.LabelFor(model => model.publicevent.FreeIndividualPresent, htmlAttributes: new { @class = "custom-control-label" })
+							</div>
+						</div>
+						<div class="form-group col-lg-3">
+							@Html.EditorFor(model => model.publicevent.IndividualPresentFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+						</div>
+						<div class="form-group col-lg-3">
+							@Html.EditorFor(model => model.publicevent.IndividualPresentEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-lg-3">
+							@Html.LabelFor(model => model.publicevent.LabelAgency)
+						</div>
+						<div class="form-group col-lg-3">
+							<div class="custom-control custom-checkbox">
+								@Html.EditorFor(model => model.publicevent.FreeAgency, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+								@Html.LabelFor(model => model.publicevent.FreeAgency, htmlAttributes: new { @class = "custom-control-label" })
+							</div>
+						</div>
+						<div class="form-group col-lg-3">
+							@Html.EditorFor(model => model.publicevent.AgencyFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+						</div>
+						<div class="form-group col-lg-3">
+							@Html.EditorFor(model => model.publicevent.AgencyEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+						</div>
+					</div>
+
+					<div class="row">
+						@*<div class="form-group col-lg-6">
+								@Html.LabelFor(model => model.publicevent.Fee)
+								@Html.EditorFor(model => model.publicevent.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00", @readonly = "readonly" } })
+							</div>*@
+
+						<div class="form-group col-lg-12">
 							@Html.LabelFor(model => model.publicevent.ParticipantAllowed)
 							@Html.EditorFor(model => model.publicevent.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @readonly = "readonly" } })
 						</div>
@@ -418,13 +444,12 @@
 				</div>
 
 
-                <div id="event-agenda" class="tab-pane">
-                    <div class="mb-4 mt-2 mr-auto">
-                        <h4 class="color-darkblue mb-0">Event Agenda</h4>
-                        <h6 class="font-weight-normal">Check agenda list here.</h6>
-                    </div>
-                    <div id="generatedAgenda"></div>
-                </div>
+				<div id="event-agenda" class="tab-pane">
+					<div class="mb-4 mt-2 mr-auto">
+						<h4 class="color-darkblue mb-0">Event Agenda</h4>
+						<h6 class="font-weight-normal">Check agenda list here.</h6>
+					</div>
+				</div>
 
 
 				<div class="tab-pane" id="amendment-history">
@@ -463,7 +488,6 @@
 												</li>
 											}
 										}
-
 									}
 								}
 							</ul>
@@ -491,15 +515,15 @@
 								<div class="modal-body">
 									@if (Model.publicevent.EventStatus == FEP.Model.EventStatus.PendingforVerification)
 									{
-										if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Verify_PublicEvent))
+										if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventVerifierFED))
 										{
 											<h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
 											@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
 										}
 									}
-									else if ( Model.publicevent.EventStatus == FEP.Model.EventStatus.Verified || Model.publicevent.EventStatus == FEP.Model.EventStatus.VerifiedbyFirstApprover )
+									else if (Model.publicevent.EventStatus == FEP.Model.EventStatus.Verified || Model.publicevent.EventStatus == FEP.Model.EventStatus.VerifiedbyFirstApprover)
 									{
-										if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver1_PublicEvent) || CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver2_PublicEvent))
+										if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover1) || CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover2))
 										{
 											<h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
 											<h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
@@ -516,7 +540,7 @@
 												</div>
 											</div>
 										}
-										else if (CurrentUser.HasAccess(FEP.Model.UserAccess.Recipient_Approver3_PublicEvent))
+										else if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover3))
 										{
 											@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
 										}

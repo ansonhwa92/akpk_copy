@@ -85,7 +85,6 @@ namespace FEP.WebApi.Api.eLearning
             if (tamil) { query = query.Where(p => p.Language == CourseLanguage.Tamil); }
             if (multiLanguage) { query = query.Where(p => p.Language == CourseLanguage.MultiLanguage); }
 
-
             var filteredCount = query.Count();
 
             if (sorting == "title")
@@ -104,7 +103,6 @@ namespace FEP.WebApi.Api.eLearning
             {
                 query = query.OrderBy(o => o.Title).OrderByDescending(o => o.CreatedDate);
             }
-
 
             //var trainer = GetInstructor();
 
@@ -240,6 +238,42 @@ namespace FEP.WebApi.Api.eLearning
                 recordsFiltered = filteredCount,
                 data = data.ToArray()
             });
+        }
+
+        // Function to get publication details for review before submission. The details retrieved include action
+        // log history. This function is called for the third page of publication creation/editing.
+        // GET: api/RnP/Publication/GetForReview/5
+        [Route("api/eLearning/Courses/GetForReview")]
+        public CreateOrEditCourseModel GetForReview(int id)
+        {
+            var course = db.Courses.Where(p => p.Id == id).Select(model => new CreateOrEditCourseModel
+            {
+                CategoryId = model.CategoryId,
+                Title = model.Title,
+                Code = model.Code,
+                Description = model.Description,
+                Objectives = model.Objectives,
+                Medium = model.Medium,
+                Duration = model.Duration.Value,
+                DurationType = model.DurationType,
+                Language = model.Language,
+                IsFree = model.IsFree,
+                ViewCategory = model.ViewCategory,
+                Price = model.Price.Value,
+                UpdatedBy = model.UpdatedBy,
+                CreatedBy = model.CreatedBy
+            }).FirstOrDefault();
+
+            var puser = db.User.Where(u => u.Id == course.CreatedBy).FirstOrDefault();
+            if (puser != null)
+            {
+                course.CreatedByName = puser.Name;
+            }
+
+            course.Description = HttpUtility.HtmlDecode(course.Description);
+            course.Objectives = HttpUtility.HtmlDecode(course.Objectives);
+
+            return course;
         }
 
         /// <summary>
@@ -437,7 +471,9 @@ namespace FEP.WebApi.Api.eLearning
         [HttpPost]
         public IHttpActionResult GetAllTrainers(FilterIndividualModel request)
         {
-            var users = db.UserRole.Where(u => u.UserAccount.User.Display && u.Role.Name == RoleNames.eLearningTrainer).Select(x => x.UserAccount.User);
+            var users = db.UserRole.Where(u => u.UserAccount.User.Display &&
+                (u.Role.Name == RoleNames.eLearningTrainer ||
+                u.Role.Name == RoleNames.eLearningFacilitator)).Select(x => x.UserAccount.User);
 
             if (users == null)
                 return NotFound();
@@ -555,6 +591,12 @@ namespace FEP.WebApi.Api.eLearning
             });
         }
 
+        /// <summary>
+        /// Misleading function Name. This is actually for adding trainer to the course.
+        /// </summary>
+        /// <param name="CourseId"></param>
+        /// <param name="Ids"></param>
+        /// <returns></returns>
         [Route("api/eLearning/Courses/AddUser")]
         [HttpPost]
         public IHttpActionResult AddUser(UpdateTrainerCourseModel model)
@@ -836,19 +878,43 @@ namespace FEP.WebApi.Api.eLearning
         [Route("api/eLearning/Courses/SaveCertificate")]
         [HttpPost]
         [ValidationActionFilter]
-        public async Task<IHttpActionResult> SaveCertificate([FromBody] CertificatesModel model)
+        public async Task<IHttpActionResult> SaveCertificate([FromBody] ReviewCertificateModel model)
         {
-            var entity = await db.Courses.FirstOrDefaultAsync(x => x.Id == model.courseId);
+            var entity = await db.Courses.FirstOrDefaultAsync(x => x.Id == model.CourseId);
 
             if (entity != null)
             {
-                entity.CourseCertificateId = model.selectedBackground;
-                entity.CourseCertificateTemplateId = model.selectedTemplate;
+                entity.CourseCertificateId = model.Background.Id;
+                entity.CourseCertificateTemplateId = model.Template.Id;
                 db.Entry(entity).State = EntityState.Modified;
 
                 db.SaveChanges();
 
                 return Ok(entity.Id);
+            }
+
+            return BadRequest(ModelState);
+        }
+
+        [Route("api/eLearning/Courses/ReviewCertificate")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> ReviewCertificate([FromBody] CertificatesModel model)
+        {
+            var course = await db.Courses.FirstOrDefaultAsync(x => x.Id == model.courseId);
+            var bg = await db.CourseCertificates.FirstOrDefaultAsync(x => x.Id == model.selectedBackground);
+            var temp = await db.CourseCertificateTemplates.FirstOrDefaultAsync(x => x.Id == model.selectedTemplate);
+
+            if (bg != null)
+            {
+                var review = new ReviewCertificateModel
+                {
+                    Background = bg,
+                    Template = temp,
+                    CourseId = course.Id
+                };
+
+                return Ok(review);
             }
 
             return BadRequest(ModelState);
@@ -931,6 +997,88 @@ namespace FEP.WebApi.Api.eLearning
             }
 
             return Ok(false);
+        }
+
+        [Route("api/eLearning/Courses/IsUserCompleted")]
+        [HttpGet]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> IsUserCompleted(int id, int userId)
+        {
+            if (ModelState.IsValid)
+            {
+                var enrollment = await db.Enrollments.Where(x => x.Learner.User.Id == userId && x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefaultAsync();
+
+                var entity = new UserCourseEnrollmentModel();
+
+                if (enrollment != null)
+                {
+                    entity = new UserCourseEnrollmentModel
+                    {
+                        Id = enrollment.Id,
+                        StudentName = enrollment.Learner.User.Name,
+                        Status = enrollment.Status,
+                        CompletionDate = enrollment.CompletionDate.ToString(),
+                        IsUserEnrolled = true
+                    };
+
+                    if (entity == null)
+                    {
+                        entity.IsUserEnrolled = false;
+                        return Ok(entity);
+                    }
+                    else
+                    {
+                        return Ok(entity);
+                    }
+                }
+                else
+                {
+                    return Ok(entity);
+                }
+            }
+            return BadRequest(ModelState);
+        }
+
+        [Route("api/eLearning/Courses/ViewCertificate")]
+        [HttpGet]
+        [ValidationActionFilter]
+        public async Task<IHttpActionResult> ViewCertificate(int id)
+        {
+            var enrollment = await db.Enrollments.Include(x => x.Course).Include(x => x.Learner).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (enrollment == null)
+            {
+                return NotFound();
+            }
+
+            var entity = new ViewCertificateModel
+            {
+                CourseId = enrollment.CourseId,
+                CourseName = enrollment.Course.Title,
+                StudentName = enrollment.Learner.User.Name,
+                EnrollmentStatus = enrollment.Status,
+                DateCompleted = DateTime.Parse(enrollment.CompletionDate.ToString()).ToShortDateString(),
+            };
+
+            var bg = db.CourseCertificates.FirstOrDefault(x => x.Id == enrollment.Course.CourseCertificateId);
+
+            if (bg != null)
+            {
+                entity.Background = bg;
+            }
+
+            var temp = db.CourseCertificateTemplates.FirstOrDefault(x => x.Id == enrollment.Course.CourseCertificateTemplateId);
+
+            if (temp != null)
+            {
+                temp.Template = temp.Template.Replace("{{StudentName}}", entity.StudentName);
+                temp.Template = temp.Template.Replace("{{CourseName}}", entity.CourseName);
+                temp.Template = temp.Template.Replace("{{DateCompleted}}", entity.DateCompleted);
+
+                entity.Template = temp;
+            }
+
+            return Ok(entity);
         }
     }
 

@@ -28,7 +28,7 @@ namespace FEP.WebApi.Api.eEvent
 
 		[Route("api/eEvent/EventAttendent/GetAttendentList")]
 		[HttpPost]
-		public IHttpActionResult Post(FilterEventAttendentModel request, int? id)
+		public IHttpActionResult Post(FilterEventAttendentModel request,int? id)
 		{
 			var query = db.EventAttendance.Where(i => i.Display && i.EventId == id);
 			var totalcount = query.Count();
@@ -36,11 +36,11 @@ namespace FEP.WebApi.Api.eEvent
 			//advance search
 			query = query.Where(e =>
 			   (request.AttendeeName == null || e.AttendeeName.Contains(request.AttendeeName))
-			&& (request.UserType.GetDisplayName() == null || e.UserType.GetDisplayName().Contains(request.UserType.GetDisplayName()))
+			//&& (request.UserType.GetDisplayName() == null || e.UserType.GetDisplayName().Contains(request.UserType.GetDisplayName()))
 			&& (request.CompanyName == null || e.User.CompanyProfile.CompanyName.Contains(request.CompanyName))
 			&& (request.BookingNumber == null || e.BookingNumber.Contains(request.BookingNumber))
 			&& (request.ICNo == null || e.ICNo.Contains(request.ICNo))
-			&& (request.CheckInStatus.GetDisplayName() == null || e.CheckInStatus.GetDisplayName().Contains(request.CheckInStatus.GetDisplayName()))
+			//&& (request.CheckInStatus.GetDisplayName() == null || e.CheckInStatus.GetDisplayName().Contains(request.CheckInStatus.GetDisplayName()))
 			);
 
 			//quick search 
@@ -49,11 +49,11 @@ namespace FEP.WebApi.Api.eEvent
 				var value = request.search.value.Trim();
 
 				query = query.Where(p => p.AttendeeName.Contains(value)
-				|| p.UserType.GetDisplayName().Contains(value)
+				//|| p.UserType.GetDisplayName().Contains(value)
 				|| p.CompanyName.Contains(value)
 				|| p.BookingNumber.Contains(value)
 				|| p.ICNo.Contains(value)
-				|| p.CheckInStatus.GetDisplayName().Contains(value)
+				//|| p.CheckInStatus.GetDisplayName().Contains(value)
 				);
 			}
 
@@ -181,7 +181,8 @@ namespace FEP.WebApi.Api.eEvent
 				draw = request.draw,
 				recordsTotal = totalcount,
 				recordsFiltered = filteredCount,
-				data = data.ToArray()
+				data = data.ToArray(),
+				
 			});
 		}
 

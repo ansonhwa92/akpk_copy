@@ -24,7 +24,7 @@
 							</ol>
 						</nav>
 					</div>
-					<h1 class="page-title text-white">Delete Exhibition/Roadshow Request</h1>
+					<h1 class="page-title text-white">Exhibition/Roadshow Request Ref No: @Model.RefNo</h1>
 					@*<div class="header-text">List of created media interview</div>*@
 				</div>
 			</div>
@@ -105,9 +105,9 @@
 						<li class="nav-item">
 							<a class="nav-link" href="#dutyroster" data-toggle="tab">Duty Roster</a>
 						</li>
-						<li class="nav-item">
+						@*<li class="nav-item">
 							<a class="nav-link" href="#amendmenthistory" data-toggle="tab">Amendment History</a>
-						</li>
+						</li>*@
 					</ul>
 				</div>
 				<div class="tab-content">
@@ -160,9 +160,60 @@
 									Event Details
 								</div>
 								<div class="row">
-									<div class="form-group col-lg-12">
+									<div class="form-group col-lg-6">
 										@Html.LabelFor(model => model.EventName)
 										@Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									</div>
+									<div class="form-group col-lg-6">
+										@Html.LabelFor(model => model.ExhibitionStatus)
+										@*@Html.EditorFor(model => model.ExhibitionStatus, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })*@
+										@if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.New)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Draft">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Verification">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.Verified)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 1">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.RequireAmendment)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Require Amendment">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover1)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 2">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover2)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 3">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover3)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Approved">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.AcceptParticipation)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Accept Participation">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.DeclineParticipation)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Decline Participation">
+										}
+										else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.NomineesInvited)
+										{
+											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Nominees Invited">
+										}
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.BranchName)
+										@Html.EditorFor(model => model.BranchName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 									</div>
 								</div>
 
@@ -177,6 +228,13 @@
 									<div class="form-group col-lg-12">
 										@Html.LabelFor(model => model.OrganiserEmail)
 										@Html.EditorFor(model => model.OrganiserEmail, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.ContactNo)
+										@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 									</div>
 								</div>
 
@@ -205,7 +263,7 @@
 								<div class="row">
 									<div class="form-group col-lg-12">
 										@Html.FEPLabelFor(model => model.State)
-										@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" , @disabled = "disabled"})
+										@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%", @disabled = "disabled" })
 									</div>
 								</div>
 
@@ -263,12 +321,11 @@
 
 
 							</div>
-							<!-- End Form -->
 						</form>
 					</div>
 
 
-					<div class="tab-pane" id="amendmenthistory">
+					@*<div class="tab-pane" id="amendmenthistory">
 						<form>
 							<div class="form-container">
 								<div class="sub-Title my-4">
@@ -277,9 +334,8 @@
 
 
 							</div>
-							<!-- End Form -->
 						</form>
-					</div>
+					</div>*@
 
 
 				</div>

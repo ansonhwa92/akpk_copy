@@ -234,6 +234,51 @@ namespace FEP.WebApi.Api.Reward
             return Ok(userRewardPoints);
         }
 
+        [Route("api/Reward/UserRewardPoints/UserGetPointByCourseCompleted")]
+        [HttpPost]
+        // POST: api/UserRewardPoints
+        public IHttpActionResult UserGetPointByCourseCompleted(UserGetPointByCourseCompleted model)
+        {
+            if (!ModelState.IsValid) { return BadRequest(); }
+
+            var getUser = db.User.Find(model.UserId);
+            if(getUser == null) { return BadRequest("User not exist"); }
+
+            var getActivityPoint = db.RewardActivityPoint.Where(a => a.CourseId == model.CourseId && a.Display == true).FirstOrDefault();
+            if(getActivityPoint == null) { return BadRequest("Course not exist"); }
+
+            //check if already received
+            var getUserReward = db.UserRewardPoints.Where(r => r.UserId == model.UserId && r.CourseId == model.CourseId).FirstOrDefault();
+            if(getUserReward != null)
+            {
+                return BadRequest("This user already received points for this course");
+            }
+
+            var userRewardPoints = new UserRewardPoints
+            {
+                CourseId = getActivityPoint.CourseId,
+                PointsReceived = getActivityPoint.Value,
+                UserId = model.UserId,
+                RewardType = RewardType.ActivityReward,
+                DateReceived = DateTime.Now, //model.DateReceived,
+                Display = true
+            };
+            db.UserRewardPoints.Add(userRewardPoints);
+            db.SaveChanges();
+
+            var tempObj = new
+            {
+                Course_Name = getActivityPoint.Course.Title,
+                Course_Id = model.CourseId,
+                Points_Received = userRewardPoints.PointsReceived,
+                Date_Received = userRewardPoints.DateReceived,
+                User_Name = userRewardPoints.User.Name,
+                User_Id = model.UserId
+            };
+
+            return Ok(tempObj);
+        }
+
         [Route("api/Reward/UserRewardPoints/AwardPoints")]
         [HttpPost]
         public IHttpActionResult AwardPoints(CreateUserRewardPointsModel model)

@@ -25,70 +25,7 @@
 				$('#publicevent-details').hide();
 				$('#amendment-history').show();
 				$('#event-agenda').hide();
-            });
-
-            //------------------------------------------------------------------
-            //generate Agenda
-            var weekday = new Array(7);
-                weekday[0] = "Sun";
-                weekday[1] = "Mon";
-                weekday[2] = "Tue";
-                weekday[3] = "Wed";
-                weekday[4] = "Thu";
-                weekday[5] = "Fri";
-            weekday[6] = "Saturday";
-            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
-              "July", "Aug", "Sept", "Oct", "Nov", "Dec"
-            ];
-
-            var AgendaJSON = JSON.parse('@Html.Raw(Model.TentativeScript)');
-            var prevDate = "";
-            var currentDate = "";
-            var DayCounter = 0;
-            var toDisplay = '<dl class="row">';
-            for (j = 0; j < AgendaJSON['tentatives'].length; j++) {
-                currentDate = AgendaJSON['tentatives'][j]['date'];
-                if (prevDate != currentDate) {
-                    toDisplay += '</dl>';
-                    toDisplay += '<hr />';
-                    toDisplay += '<dl class="row">';
-
-                    var tempCurrent = currentDate.split('/');
-                    var mydate = new Date(tempCurrent[2] + '-' + tempCurrent[1] + '-' + tempCurrent[0]);
-                    var dateMark = weekday[mydate.getDay()] + ', ' + mydate.getDate() + ' ' + monthNames[mydate.getMonth()];
-                    toDisplay += '<dt class="col-sm-2"><b><div class="card bg-light p-2  border-grey"><span class="small">' + dateMark + '</span></div></b></dt>';
-                    toDisplay += '<dd class="col-sm-10">';
-                        
-                    var tempDate = AgendaJSON['tentatives'][j]['date'];
-                    var tempSessionName = '';
-                    if (AgendaJSON['sessionNames'].length > 0) { let sName = AgendaJSON['sessionNames'].find(s => s.date === tempDate); tempSessionName = (sName != null) ? sName['value'] : ''; }
-                    toDisplay += '<h5 class="color-darkblue mb-0">' + tempSessionName + '</h5>';
-                        
-                    var tempSessionDesc = '';
-                    if (AgendaJSON['sessionDescriptions'].length > 0) { let sDesc = AgendaJSON['sessionDescriptions'].find(s => s.date === tempDate); tempSessionDesc = (sDesc != null) ? sDesc['value'] : ''; }
-                    toDisplay += '<h6 class="font-weight-normal">' + tempSessionDesc + '</h6>';
-                        
-                    toDisplay += '</dd>';
-                    DayCounter++;
-                }
-
-                toDisplay += '<dt class="col-sm-2"></dt>';
-                toDisplay += '<dt class="col-sm-2"><p class="text-left small">' + AgendaJSON['tentatives'][j]['time'] + '</p></dt>';
-                toDisplay += '<dd class="col-sm-8"><p class="small">' + AgendaJSON['tentatives'][j]['tentative'];
-                if (AgendaJSON['tentatives'][j]['speakers'].length > 0) {
-                    for (m = 0; m < AgendaJSON['tentatives'][j]['speakers'].length; m++) {
-                        toDisplay += '<br><i class="fa fa-user-tie font-icon"></i>' + AgendaJSON['tentatives'][j]['speakers'][m]['name'];
-                    }
-                }
-                toDisplay += '</p></dd>';
-
-                prevDate = currentDate;
-            }
-            toDisplay += '</dl>';
-
-            $("#generatedAgenda").html(toDisplay);
-
-            //------------------------------------------------------------------
+			});
 		});
 	</script>
 }
@@ -175,7 +112,7 @@
 									{
 										<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 1">
 									}
-									else if (Model.EventStatus == FEP.Model.EventStatus.RejectNeedToEdit)
+									else if (Model.EventStatus == FEP.Model.EventStatus.RequireAmendment)
 									{
 										<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Require Amendment">
 									}
@@ -230,12 +167,99 @@
 						</div>
 
 						<div class="row">
-							<div class="form-group col-lg-6">
-								@Html.LabelFor(model => model.Fee)
-								@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00", @readonly = "readonly" } })
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelParticipantType)
 							</div>
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelFree)
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelNormalFee)
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelEarlyBirdFee)
+							</div>
+						</div>
 
-							<div class="form-group col-lg-6">
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelIndividual)
+							</div>
+							<div class="form-group col-lg-3">
+								<div class="custom-control custom-checkbox">
+									@Html.EditorFor(model => model.FreeIndividual, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+									@Html.LabelFor(model => model.FreeIndividual, htmlAttributes: new { @class = "custom-control-label" })
+								</div>
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelIndividualPaper)
+							</div>
+							<div class="form-group col-lg-3">
+								<div class="custom-control custom-checkbox">
+									@Html.EditorFor(model => model.FreeIndividualPaper, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+									@Html.LabelFor(model => model.FreeIndividualPaper, htmlAttributes: new { @class = "custom-control-label" })
+								</div>
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualPaperFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualPaperEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelIndividualPresent)
+							</div>
+							<div class="form-group col-lg-3">
+								<div class="custom-control custom-checkbox">
+									@Html.EditorFor(model => model.FreeIndividualPresent, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+									@Html.LabelFor(model => model.FreeIndividualPresent, htmlAttributes: new { @class = "custom-control-label" })
+								</div>
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualPresentFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualPresentEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelAgency)
+							</div>
+							<div class="form-group col-lg-3">
+								<div class="custom-control custom-checkbox">
+									@Html.EditorFor(model => model.FreeAgency, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+									@Html.LabelFor(model => model.FreeAgency, htmlAttributes: new { @class = "custom-control-label" })
+								</div>
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.AgencyFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.AgencyEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							</div>
+						</div>
+
+						<div class="row">
+							@*<div class="form-group col-lg-6">
+				@Html.LabelFor(model => model.Fee)
+				@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00", @readonly = "readonly" } })
+			</div>*@
+
+							<div class="form-group col-lg-12">
 								@Html.LabelFor(model => model.ParticipantAllowed)
 								@Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @readonly = "readonly" } })
 							</div>
@@ -276,13 +300,12 @@
 					</div>
 
 
-                    <div id="event-agenda" class="tab-pane">
-                        <div class="mb-4 mt-2 mr-auto">
-                            <h4 class="color-darkblue mb-0">Event Agenda</h4>
-                            <h6 class="font-weight-normal">Check agenda list here.</h6>
-                        </div>
-                        <div id="generatedAgenda"></div>
-                    </div>
+					<div id="event-agenda" class="tab-pane">
+						<div class="mb-4 mt-2 mr-auto">
+							<h4 class="color-darkblue mb-0">Event Agenda</h4>
+							<h6 class="font-weight-normal">Check agenda list here.</h6>
+						</div>
+					</div>
 
 					<div class="tab-pane" id="amendment-history">
 						<div class="mb-4 mt-2 mr-auto">

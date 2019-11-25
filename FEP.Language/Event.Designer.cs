@@ -250,6 +250,24 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Branch.
+        /// </summary>
+        public static string ExRoadBranch {
+            get {
+                return ResourceManager.GetString("ExRoadBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organiser Phone No..
+        /// </summary>
+        public static string ExRoadContactNo {
+            get {
+                return ResourceManager.GetString("ExRoadContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End Date.
         /// </summary>
         public static string ExRoadEndDate {
@@ -313,7 +331,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Nominees.
+        ///   Looks up a localized string similar to Select Exhibitors.
         /// </summary>
         public static string ExRoadNomineeId {
             get {
@@ -322,7 +340,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Nominees.
+        ///   Looks up a localized string similar to Select Exhibitors.
         /// </summary>
         public static string ExRoadNomineeName {
             get {
@@ -430,6 +448,60 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Branch.
+        /// </summary>
+        public static string MediaBranch {
+            get {
+                return ResourceManager.GetString("MediaBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Designation.
+        /// </summary>
+        public static string MediaRepDesignation {
+            get {
+                return ResourceManager.GetString("MediaRepDesignation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email Address.
+        /// </summary>
+        public static string MediaRepEmail {
+            get {
+                return ResourceManager.GetString("MediaRepEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mobile Number.
+        /// </summary>
+        public static string MediaRepMobileNumber {
+            get {
+                return ResourceManager.GetString("MediaRepMobileNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rep. Name.
+        /// </summary>
+        public static string MediaRepUserName {
+            get {
+                return ResourceManager.GetString("MediaRepUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string PubEventAgencyFree {
+            get {
+                return ResourceManager.GetString("PubEventAgencyFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Category.
         /// </summary>
         public static string PubEventCategoryId {
@@ -480,6 +552,105 @@ namespace Language {
         public static string PubEventFee {
             get {
                 return ResourceManager.GetString("PubEventFee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string PubEventIndividualFree {
+            get {
+                return ResourceManager.GetString("PubEventIndividualFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string PubEventIndividualPaperFree {
+            get {
+                return ResourceManager.GetString("PubEventIndividualPaperFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string PubEventIndividualPresentFree {
+            get {
+                return ResourceManager.GetString("PubEventIndividualPresentFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agency Rep..
+        /// </summary>
+        public static string PubEventLabelAgency {
+            get {
+                return ResourceManager.GetString("PubEventLabelAgency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Early Bird Fee (RM).
+        /// </summary>
+        public static string PubEventLabelEarlyBirdFee {
+            get {
+                return ResourceManager.GetString("PubEventLabelEarlyBirdFee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free ?.
+        /// </summary>
+        public static string PubEventLabelFree {
+            get {
+                return ResourceManager.GetString("PubEventLabelFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Individual.
+        /// </summary>
+        public static string PubEventLabelIndividual {
+            get {
+                return ResourceManager.GetString("PubEventLabelIndividual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Individual w/ Paper.
+        /// </summary>
+        public static string PubEventLabelIndividualPaper {
+            get {
+                return ResourceManager.GetString("PubEventLabelIndividualPaper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Individual w/ Paper To Present.
+        /// </summary>
+        public static string PubEventLabelIndividualPresent {
+            get {
+                return ResourceManager.GetString("PubEventLabelIndividualPresent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normal Fee (RM).
+        /// </summary>
+        public static string PubEventLabelNormalFee {
+            get {
+                return ResourceManager.GetString("PubEventLabelNormalFee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Participant Type.
+        /// </summary>
+        public static string PubEventLabelParticipantType {
+            get {
+                return ResourceManager.GetString("PubEventLabelParticipantType", resourceCulture);
             }
         }
         

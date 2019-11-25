@@ -13,9 +13,7 @@ namespace FEP.WebApiModel.Home
 {
     public class AdminProfileModel
     {
-        [Display(Name = "FieldAvatar", ResourceType = typeof(Language.Profile))]
-        public string AvatarImageBase64 { get; set; }
-
+        
         [Display(Name = "FieldName", ResourceType = typeof(Language.Profile))]
         public string Name { get; set; }
 
@@ -31,9 +29,7 @@ namespace FEP.WebApiModel.Home
     public class StaffProfileModel
     {
 
-        [Display(Name = "FieldAvatar", ResourceType = typeof(Language.Profile))]
-        public string AvatarImageBase64 { get; set; }
-
+        
         [Display(Name = "FieldStaffId", ResourceType = typeof(Language.Staff))]
         public string StaffId { get; set; }
 
@@ -68,9 +64,7 @@ namespace FEP.WebApiModel.Home
 
     public class IndividualProfileModel
     {
-        [Display(Name = "FieldAvatar", ResourceType = typeof(Language.Profile))]
-        public string AvatarImageBase64 { get; set; }
-
+        
         [Display(Name = "FieldName", ResourceType = typeof(Language.Profile))]
         public string Name { get; set; }
 
@@ -118,9 +112,7 @@ namespace FEP.WebApiModel.Home
 
     public class CompanyProfileModel
     {
-        [Display(Name = "FieldAvatar", ResourceType = typeof(Language.Profile))]
-        public string AvatarImageBase64 { get; set; }
-
+        
         [Display(Name = "FieldAgencyName", ResourceType = typeof(Language.Profile))]
         public string AgencyName { get; set; }
 
@@ -389,7 +381,7 @@ namespace FEP.WebApiModel.Home
 
     public class ProfileAvatarModel
     {
-        public string AvatarImageBase64 { get; set; }
+        public string AvatarImageUrl { get; set; }
 
         //[Required(ErrorMessageResourceName = "ValidRequiredAvatar", ErrorMessageResourceType = typeof(Language.Profile))]
         [Display(Name = "FieldAvatar", ResourceType = typeof(Language.Profile))]

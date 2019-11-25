@@ -1,0 +1,298 @@
+﻿@model FEP.Intranet.Areas.KMC.Models.CreateKMCModel
+
+@{
+    ViewBag.Title = "KMC - Create";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section ContentStyle {
+
+    <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
+
+    <style>
+
+        .photo {
+            border: 1px solid #ddd; /* Gray border */
+            border-radius: 4px; /* Rounded border */
+            padding: 5px; /* Some padding */
+            width: 250px; /* Set a small width */
+        }
+
+        .photo:hover {
+            box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+        }
+    </style>
+}
+
+@section Contentscript{
+
+    <script src="~/Scripts/summernote/summernote-lite.min.js"></script>
+
+    <script type="text/javascript">
+
+        $('input[type=radio][name=IsEditor]').change(function () {
+            if (this.value == 'true') {
+                $("#editor").removeClass("d-none");
+                $("#file").addClass("d-none");
+            }
+            else if (this.value == 'false') {
+                $("#file").removeClass("d-none");
+                $("#editor").addClass("d-none");
+            }
+        });
+
+        $('#File').change(function (e) {
+
+            $('.custom-file-label').html('No file choosen');
+
+            if (e.target.files.length > 0) {
+                fileName = e.target.files[0].name;
+                $('.custom-file-label').html(fileName);
+            }
+
+        });
+
+        $('#Type').change(function (e) {
+
+            $('#File').val('');
+            $('.custom-file-label').html('No file choosen');
+
+            setFileAccept(this.value)
+
+        });
+
+        function setFileAccept(val) {
+
+            switch(val) {
+
+                case '0':
+                    $("#File").attr("accept", "@Model.filter_imgs");
+                    break;
+
+                case '1':
+                    $("#File").attr("accept", "@Model.filter_videos");
+                    break;
+
+                case '2':
+                    $("#File").attr("accept", "@Model.filter_audios");
+                    break;
+
+                case '3':
+                    $("#File").attr("accept", "@Model.filter_docs");
+                    break;
+
+                default:
+                    $("#File").removeAttr("accept");
+
+            }
+        }
+
+
+        $(document).ready(function () {
+
+            document.querySelector('#ThumbnailFile').addEventListener('change', function (e) {
+
+                if (this.files.length > 0) {
+
+                    var file = this.files[0];
+                    var fd = new FormData();
+                    fd.append("ThumbnailFile", file);
+
+                    var xhr = new XMLHttpRequest();
+
+                    xhr.open('POST', '@Url.Action("LoadThumbnail", "Manage", new { area = "KMC" })', true);
+
+                    //xhr.upload.onprogress = function (e) {
+                    //    if (e.lengthComputable) {
+                    //        var percentComplete = (e.loaded / e.total) * 100;
+                    //        console.log(percentComplete + '% uploaded');
+                    //    }
+                    //};
+
+                    xhr.onload = function () {
+
+                        if (this.status == 200) {
+                            var resp = JSON.parse(this.response);
+                            $('#kmc_thumbnail').attr("src", resp.image64);
+                        }
+                    };
+
+                    xhr.send(fd);
+
+                }
+                else {
+                    $('#kmc_thumbnail').attr("src", '@(BaseURL)/img/no-image.png');
+                }
+
+            }, false);
+
+            $('.summernote').summernote({ height: 300 });
+
+
+            setFileAccept($("#Type").val());
+
+        });
+
+
+    </script>
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="@Url.Action("List", "Manage", new { area = "KMC", @id = Model.CategoryId })" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("List", "Manage", new { area = "KMC", @id = Model.CategoryId })">KMC</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@Language.KMC.TitleCreate</h1>
+                    <div class="header-text">@Language.KMC.TitleDescriptionCreate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+        <div id="page-nav" class="sidebar-left page-nav">
+            <div data-perfect-scrollbar>
+                <div class="page-section">
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> KMC - @Model.Category</h6>
+                    <ul class="nav page-nav__menu">
+                        <li class="nav-item">
+                            <a href="#" data-toggle="tab" class="active nav-link">Create New</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+
+        @using (Html.BeginForm("Create", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="border-form rounded-top">
+
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(model => model.CategoryId)
+                @Html.HiddenFor(model => model.Category)
+
+                <div class="form-container">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(model => model.Category)
+                            <span class="form-control">@Model.Category</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(model => model.Title)
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = Language.KMC.PlaceholderTitle } })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(model => model.Description)
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = Language.KMC.PlaceholderDescription } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.ThumbnailUrl)
+                            <div class="media align-items-center">
+                                <div class="d-flex mr-3 align-self-center" data-toggle="tooltip" title="Click to upload image" onclick="$('#ThumbnailFile').trigger('click');">
+                                    @if (!String.IsNullOrEmpty(Model.ThumbnailUrl))
+                                    {
+                                        <img id="kmc_thumbnail" src="@(BaseURL)/img/kmc-thumbnail/@Model.ThumbnailUrl" class="photo" />
+                                    }
+                                    else
+                                    {
+                                        <img id="kmc_thumbnail" src="@(BaseURL)/img/no-image.png" class="photo" />
+                                    }
+                                </div>
+                                <div class="media-body d-none">
+                                    <div class="custom-file b-form-file">
+                                        @Html.TextBoxFor(m => m.ThumbnailFile, htmlAttributes: new { type = "file", accept = @Model.filter_imgs })
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.ThumbnailFile)
+                            </div>
+                        </div>
+                    </div>
+                    <label>@Html.DisplayNameFor(m => m.IsEditor)</label>
+                    <div class="form-inline mb-3">
+                        <div class="custom-control custom-radio">
+                            @Html.RadioButtonFor(m => m.IsEditor, "false", new { @class = "custom-control-input", id = "iseditorfalse" })
+                            <label class="custom-control-label" for="iseditorfalse">@Language.KMC.TextFile</label>
+                        </div>
+                        <div class="custom-control custom-radio ml-5">
+                            @Html.RadioButtonFor(m => m.IsEditor, "true", new { @class = "custom-control-input", id = "iseditortrue" })
+                            <label class="custom-control-label mr-3" for="iseditortrue">@Language.KMC.TextEditor</label>
+                        </div>
+                    </div>
+                    <div id="file" class="@if (Model.IsEditor) { <text>d-none</text> }">
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.Type)
+                                @Html.EnumDropDownListFor(model => model.Type, Language.KMC.PlaceholderType, htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.File)
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(model => model.File, htmlAttributes: new { @class = "custom-file-input", @type = "file" })
+                                    <label class="custom-file-label" for="customFile">No file choosen</label>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="editor" class="row @if (!Model.IsEditor) { <text>d-none</text> }">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(model => model.EditorCode)
+                            @Html.TextAreaFor(model => model.EditorCode, new { @class = "summernote form-control editor" })
+                            @Html.ValidationMessageFor(model => model.EditorCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    
+                    <label>@Html.DisplayNameFor(m => m.IsPublic)</label>
+                    <div class="form-inline mb-3">
+                        <div class="custom-control custom-radio">
+                            @Html.RadioButtonFor(m => m.IsPublic, "false", new { @class = "custom-control-input", id = "ispublicfalse" })
+                            <label class="custom-control-label" for="ispublicfalse">@Language.KMC.TextPrivate</label>
+                        </div>
+                        <div class="custom-control custom-radio ml-5">
+                            @Html.RadioButtonFor(m => m.IsPublic, "true", new { @class = "custom-control-input", id = "ispublictrue" })
+                            <label class="custom-control-label mr-3" for="ispublictrue">@Language.KMC.TextPublic</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a href="@Url.Action("List", "Manage", new { area = "KMC", @id = Model.CategoryId })" class="btn btn-default mr-2">Back</a>
+                <button class="btn btn-secondary" type="submit" name="IsShow" value="false">@Language.General.ButtonSave</button>
+                <button class="btn btn-secondary" type="submit" name="IsShow" value="true">@Language.KMC.ButtonSavePublish</button>
+            </div>
+
+        }
+
+    </div>
+
+</div>

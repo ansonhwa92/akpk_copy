@@ -27,7 +27,7 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Enrollments : </h1>
+                    <h1 class="page-title text-white">Enrollments : @ViewBag.CourseTitle (@ViewBag.CourseEventName)</h1>
                     <div class="header-text"></div>
                 </div>
             </div>
@@ -82,6 +82,12 @@
         </div>
         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
 
+        <div class="pull-right">
+            <a href="@BaseURL/eLearning/CourseEvents/InviteLearners?courseId=@Model.Filters.CourseId&eventId=@Model.Filters.CourseEventId"
+               type="button" class="btn btn-secondary">
+                Invite Learner
+            </a>
+        </div>
     </div>
     <!-- Table -->
     <table class="table tableStyle1 tabledata">
@@ -151,7 +157,7 @@
                     },
                     {
                         data: 'DateEnrolled',
-                        sortable: true,                      
+                        sortable: true,
                     },
                     {
                         data: 'PercentageCompleted',
@@ -178,7 +184,7 @@
                             }
                         }
                     },
-   
+
                     {
                         sortable: false,
                         render: function (data, type, row, meta) {

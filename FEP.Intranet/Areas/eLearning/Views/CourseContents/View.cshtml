@@ -46,25 +46,7 @@
 }
 
 <div class="row">
-
-    @*<div class="col-xl-3 col-md-3 col-sm-4 my-2">
-            <div id="page-nav" class="sidebar-left page-nav">
-                <div data-perfect-scrollbar class="ps">
-                    <div class="page-section">
-                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
-                        <ul class="nav page-nav__menu">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">@Model.Title</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-
     <div class="col-xl-12 col-md-12 col-sm-12 mt-2 pb-5">
-
-
 
         <!-- Start Form -->
         <div class="border-form rounded-top">
@@ -97,15 +79,12 @@
 
                 <hr />
 
-
-
                 @Html.Action("Get", "ContentCompletions", new { @contentId = Model.Id })
             </div>
         </div>
 
         <div class="border-left border-right border-bottom p-3 rounded-bottom">
-
-            <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+            <a href="~/eLearning/CourseModules/View/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
                title="Back">@Language.General.ButtonBack</a>
         </div>
     </div>
@@ -134,14 +113,11 @@
                 statusbar: false,
                 toolbar: false,
                 readonly: true,
-                relative_urls : false,
-                remove_script_host : false,
+                relative_urls: false,
+                remove_script_host: false,
                 convert_urls: true,
                 branding: false,
             });
         });
-
-
     </script>
 }
-

@@ -1,0 +1,42 @@
+﻿@model FEP.WebApiModel.RnP.AssessmentSurveyModel
+@{
+    Layout = null;
+}
+
+<div id="surveyContainer">
+    <div id="creatorElement"></div>
+</div>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formbuild", id = "formbuild" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.AssessmentID, new { htmlAttributes = new { @class = "form-control" } })
+    <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;">@Model.Contents</textarea>
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var scontent = $('#Contents').val();
+        surveyCreator.text = scontent;
+
+        surveyCreator.saveSurveyFunc = function (saveNo, callback) {
+            $('#Contents').val(surveyCreator.text);
+            var form = $('#formbuild');
+            $.ajax({
+                url: "@(WebApiURL)RnP/Survey/SaveAssessment",
+                type: "POST",
+                data: form.serialize(),
+                success: function (data) {
+                    //alert(data.isSuccess);
+                    //callback(saveNo, data.isSuccess);
+                }
+            });
+        };
+
+    });
+</script>
+

@@ -165,15 +165,8 @@ namespace FEP.Intranet.Areas.Template.Controllers
                     NotificationCategory = NotificationCategory.Event,
                     ParameterListToSend = paramToSend,
                     StartNotificationDate = DateTime.Now,
-                    //ReceiverId = new List<int> { 231 }
+                    ReceiverId = new List<int> { 231 }
                 };
-                DbEntities db = new DbEntities();
-                var getUsers = db.User.Where(u => u.Email != "" && u.Id <= 10).ToList();
-                reminder.ReceiverId = new List<int>();
-                foreach(User User in getUsers)
-                {
-                    reminder.ReceiverId.Add(User.Id);
-                }
 
                 var response = await WepApiMethod.SendApiAsync<ReminderResponse>
                     (HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);

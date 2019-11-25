@@ -17,9 +17,9 @@
                         <thead>
                             <tr role="row">
                                 <th class="align-center sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" style="width: 65px;">No</th>
-                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="User" style="width: 350px;">User</th>
-                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Course Status" style="width: 350px;">Course Completed / Course Enrolled</th>
-                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Options" style="width: 350px;">Options</th>
+                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="User" style="width: 350px;">@Language.eLearning.CourseGroup.LearnerLabel</th>
+                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Course Status" style="width: 350px;">@Language.eLearning.CourseGroup.CourseInfo</th>
+                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Options" style="width: 350px;">@Language.eLearning.CourseGroup.Options</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,9 +40,9 @@
                                                     <span title="@item.UserName">
                                                         @item.UserName&nbsp;
                                                         @if (@item.isMember)
-                                                        {<span class="label label-warning">group member</span>}&nbsp;
+                                                        {<span class="badge badge-warning">@Language.eLearning.CourseGroup.GroupMember</span>}&nbsp;
                                                         @if (@item.isOwner)
-                                                        {<span class="label label-danger">Owner</span>}&nbsp;
+                                                        {<span class="badge badge-danger">@Language.eLearning.CourseGroup.Owner</span>}&nbsp;
                                                     </span>
                                                     <i class="icon-lock-1"></i>
                                                 </div>
@@ -58,13 +58,13 @@
                                                     @if (@item.isMember)
                                                     {
                                                         <button onclick="arata_ascunde(this, @item.LearnerId, @item.GroupId, 0);" class="btn btn-danger" id="show_hide_bt">
-                                                            <i class="fa fa-minus"></i>@Html.Raw("&nbsp;&nbsp;Remove")
+                                                            <i class="fa fa-minus"></i>@Html.Raw("&nbsp;&nbsp;" + @Language.eLearning.CourseGroup.Remove)
                                                         </button>
                                                     }
                                                     else
                                                     {
                                                         <button onclick="arata_ascunde(this, @item.LearnerId, @item.GroupId, 1);" class="btn btn-success" id="show_hide_bt">
-                                                            <i class="fa fa-plus"></i>@Html.Raw("&nbsp;&nbsp;Add")
+                                                            <i class="fa fa-plus"></i>@Html.Raw("&nbsp;&nbsp;" + @Language.eLearning.CourseGroup.Add)
                                                         </button>
                                                     }
                                                 </div>

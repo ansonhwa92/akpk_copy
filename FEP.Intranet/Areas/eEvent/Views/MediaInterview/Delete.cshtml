@@ -59,7 +59,7 @@
 							</ol>
 						</nav>
 					</div>
-					<h1 class="page-title text-white">Delete Media Interview</h1>
+					<h1 class="page-title text-white">Media Interview Request Ref No: @Model.RefNo</h1>
 					@*<div class="header-text">List of created media interview</div>*@
 				</div>
 			</div>
@@ -134,7 +134,7 @@
 										{
 											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 1">
 										}
-										else if (Model.MediaStatus == FEP.Model.MediaStatus.NotVerified)
+										else if (Model.MediaStatus == FEP.Model.MediaStatus.RequireAmendment)
 										{
 											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Require Amendment">
 										}
@@ -151,6 +151,13 @@
 											<input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Approved">
 										}
 									}
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.BranchName)
+									@Html.EditorFor(model => model.BranchName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 								</div>
 							</div>
 

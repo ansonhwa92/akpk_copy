@@ -19,7 +19,7 @@ namespace Language.eLearning {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class CourseEvent {
@@ -57,6 +57,15 @@ namespace Language.eLearning {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completion Date.
+        /// </summary>
+        public static string CompletionDate {
+            get {
+                return ResourceManager.GetString("CompletionDate", resourceCulture);
             }
         }
         
@@ -142,6 +151,15 @@ namespace Language.eLearning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Session Name.
+        /// </summary>
+        public static string SessionName {
+            get {
+                return ResourceManager.GetString("SessionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enrollment Status.
         /// </summary>
         public static string Status {
@@ -151,7 +169,7 @@ namespace Language.eLearning {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Student Name.
         /// </summary>
         public static string StudentName {
             get {

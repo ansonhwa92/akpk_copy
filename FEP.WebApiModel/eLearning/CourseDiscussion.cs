@@ -1,4 +1,5 @@
-﻿using FEP.Model;
+﻿using FEP.Helper;
+using FEP.Model;
 using FEP.Model.eLearning;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,16 @@ namespace FEP.WebApiModel.eLearning
         [Display(Name = "Discussion Topic")]
         public string Name { get; set; }
         public int CreatedBy { get; set; }
-        public User CreatedByUser { get; set; }
+        public string CreatedByName { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime? UpdatetedOn { get; set; }
-        public int? FirstPostId { get; set; }
-        public DiscussionPost FirstPost { get; set; }
+        public int FirstPostId { get; set; }
+        public string FirstPost { get; set; }
         public string DiscussionStatus { get; set; }
+        public DiscussionVisibility DiscussionVisibility { get; set; }
     }
+
+  
 
     public class CourseDiscussionVisibilityModel
     {
@@ -156,4 +160,49 @@ namespace FEP.WebApiModel.eLearning
         public string CreatedByName { get; set; }
         public string CreatedByLevel { get; set; }
     }
+
+    public class FilterDiscussionModel : DataTableModel
+    {
+        [Display(Name = "Discussion", ResourceType = typeof(Language.eLearning.CourseDiscussion))]
+        public int DiscussionId { get; set; }
+
+        [Display(Name = "Name", ResourceType = typeof(Language.eLearning.CourseDiscussion))]
+        public string Name { get; set; }
+
+        [Display(Name = "Code", ResourceType = typeof(Language.eLearning.CourseDiscussion))]
+        public string Code { get; set; }
+    }
+
+    public class CourseDiscussionListDataTableModel
+    {
+        public int Id { get; set; }
+        [Display(Name = "Title")]
+        public string Name { get; set; }
+        [Display(Name = "Post")]
+        public string FirstPost { get; set; }
+        [Display(Name = "Poster")]
+        public string CreatedBy { get; set; }
+        [Display(Name = "DisplayDateTime")]
+        public DateTimeModel DisplayDateTime { get; set; }
+
+        [Display(Name = "DiscussionCard")]
+        public DiscussionCardModel DiscussionCard { get; set; }
+    }
+
+    public class DiscussionCardModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string FirstPost { get; set; }
+        public string CreatedBy { get; set; }
+    }
+
+    public class DateTimeModel
+    {
+        [Display(Name = "Create")]
+        public DateTime CreatedOn { get; set; }
+        [Display(Name = "Update")]
+        public DateTime? UpdatedOn { get; set; }
+    }
+
 }

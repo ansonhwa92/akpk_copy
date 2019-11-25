@@ -8,7 +8,8 @@
                 <ul style="padding-left: 20px;">
                     <li class="nav-item">
                         <p class="x-small" style="margin-bottom: 0px;">
-                            <i class="la la-globe font-icon color-secondary"></i>@Model.Category.Name</p >
+                            <i class="la la-globe font-icon color-secondary"></i>@Model.Category.Name
+                        </p>
                     </li>
                     <li class="nav-item">
                         <p class="x-small" style="margin-bottom: 0px;">
@@ -21,10 +22,10 @@
                         </p>
                     </li>
                     @*<li class="nav-item">
-                        <p class="x-small" style="margin-bottom: 0px;">
-                            <i class="la la-shield font-icon color-secondary"></i>Beginner Level
-                        </p>
-                    </li>*@
+                            <p class="x-small" style="margin-bottom: 0px;">
+                                <i class="la la-shield font-icon color-secondary"></i>Beginner Level
+                            </p>
+                        </li>*@
                     <li class="nav-item">
                         <p class="x-small" style="margin-bottom: 0px;">
                             <i class="la la-calendar-check-o font-icon color-secondary"></i>@Model.Duration @Model.DurationType's
@@ -40,10 +41,18 @@
         </div>
 
         <div class="border-form rounded mb-2" style="padding-top: 15px;padding-right: 15px;padding-bottom: 15px;padding-left: 15px;">
-            <div class="text-center">@Model.Price</div>
-            <p><a href="@Url.Action("StartTrial", "CourseEvents", new { area = "eLearning", id = @Model.Id })" class="btn btn-secondary btn-block mb-2">Take This Course</a></p>
-        </div>
 
+            @{if (Model.IsFree == true)
+                {
+                    <div class="text-center">Free</div>
+                }
+                else
+                {
+                    <div class="text-center">RM @Model.Price</div>
+                }
+            }
+            @*<div class="text-center">RM @Model.Price</div>*@
+            @* <p><a href="@Url.Action("StartTrial", "CourseEvents", new { area = "eLearning", id = @Model.Id })" class="btn btn-secondary btn-block mb-2">Take This Course</a></p>*@
+        </div>
     </div>
 </div>
-

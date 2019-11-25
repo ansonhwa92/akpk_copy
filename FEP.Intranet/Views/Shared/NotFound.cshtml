@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Page Not Found";
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+
+}
+
+<div class="register-select-wrapper">
+    <div class="col-sm-8 col-md-6 col-lg-4 mx-auto">
+        <div class="col-xs-12">
+            <h3><i class="fa fa-warning text-red"></i> Oops! The requested page was not found on this server.</h3>
+            <p>
+                Please contact System Admin.<br />
+                You may <a href="@Url.Action("Index", "Home", new { area = "" })">return to dashboard</a> or try @Html.ActionLink("back", null, null, null, new { href = Request.UrlReferrer }) to previous page.
+            </p>
+        </div>
+    </div>
+</div>

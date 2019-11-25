@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using FEP.Helper;
 using System.Diagnostics;
+using System.Web;
 
 namespace FEP.WebApi.Api.Home
 {
@@ -259,15 +260,14 @@ namespace FEP.WebApi.Api.Home
         [Route("api/Home/Profile/UpdateAvatar")]
         [HttpPut]
         [ValidationActionFilter]
-        public IHttpActionResult UpdateAvatar(int id, Image64Model model)
+        public IHttpActionResult UpdateAvatar(int id, string imageUrl)
         {           
-
             var account = db.UserAccount.Where(u => u.UserId == id).FirstOrDefault();
 
             if (account == null)
                 return BadRequest();
-
-            account.Avatar = model.image64;
+                        
+            account.Avatar = imageUrl;
 
             db.UserAccount.Attach(account);
             db.Entry(account).Property(e => e.Avatar).IsModified = true;
@@ -278,6 +278,6 @@ namespace FEP.WebApi.Api.Home
             return Ok();
 
         }
-
+        
     }
 }

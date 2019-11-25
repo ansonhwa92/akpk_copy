@@ -11,7 +11,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     public static class ContentCompletionsApiUrl
     {
         public const string Get = "eLearning/ContentCompletions/";
-        public const string Post = "eLearning/ContentCompletions/";
+        public const string Post = "eLearning/ContentCompletions";
     }
 
     public class ContentCompletionsController : FEPController
@@ -22,9 +22,21 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Post(ContentCompletionModel model)
         {
+            bool CanViewAsLearner = false;
+
+            if (CurrentUser.HasAccess(UserAccess.CourseCreate) || CurrentUser.HasAccess(UserAccess.CourseEdit) ||
+                CurrentUser.HasAccess(UserAccess.CourseVerify) || CurrentUser.HasAccess(UserAccess.CourseApproval1) ||
+                CurrentUser.HasAccess(UserAccess.CourseApproval2) || CurrentUser.HasAccess(UserAccess.CourseApproval3) ||
+                CurrentUser.HasAccess(UserAccess.CourseDiscussionCreate))
+            {
+                CanViewAsLearner = true;
+            }
+
             if (ModelState.IsValid)
             {
-                var response = await WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Post, ContentCompletionsApiUrl.Post, model);
+                model.UserId = CurrentUser.UserId.Value;
+
+                var response = await WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Post, ContentCompletionsApiUrl.Post + $"?CanViewAsLearner={CanViewAsLearner}", model);
 
                 if (response.isSuccess)
                 {
@@ -47,7 +59,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         }
                         else  // go to next module
                         {
-                            return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = nextModule.Value });
+                            return RedirectToAction("View", "CourseModules", new { area = "eLearning", @id = nextModule.Value });
                         }
                     }
                     else // go to next content
@@ -60,7 +72,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
         [ChildActionOnly]
-
         public ActionResult Get(int contentId)
         {
             int currentUserId = -1;
@@ -68,11 +79,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 currentUserId = CurrentUser.UserId.Value;
 
             var response = AsyncHelpers.RunSync<WebApiResponse<ContentCompletionModel>>(() => WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Get,
-                ContentCompletionsApiUrl.Get + $"?contentId={contentId}"));
+                ContentCompletionsApiUrl.Get + $"?contentId={contentId}&userId={currentUserId}"));
 
-            response.Data.UserId = currentUserId;
-
-            //var response = Task.Run(() => WepApiMethod.SendApiAsync<ContentCompletionModel>(HttpVerbs.Get, ContentCompletionsApiUrl.Get + $"?contentId={contentId}").GetAwaiter().GetResult());
+            // response.Data.UserId = currentUserId;
 
             if (response.isSuccess)
             {

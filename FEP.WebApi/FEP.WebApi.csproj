@@ -54,6 +54,9 @@
     <Reference Include="AutoMapper.Extensions.Microsoft.DependencyInjection, Version=0.0.0.0, Culture=neutral, PublicKeyToken=e767ac9c89543656, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.Extensions.Microsoft.DependencyInjection.7.0.0\lib\netstandard2.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll</HintPath>
     </Reference>
+    <Reference Include="CsvHelper, Version=12.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.12.2.1\lib\net47\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -167,6 +170,8 @@
     <Compile Include="Api\eLearning\FileResult.cs" />
     <Compile Include="Api\eLearning\NotificationApiController.cs" />
     <Compile Include="Api\Integration\GroupController.cs" />
+    <Compile Include="Api\KMC\CategoryController.cs" />
+    <Compile Include="Api\KMC\ManageController.cs" />
     <Compile Include="Api\Notification\EmailController.cs" />
     <Compile Include="Api\eEvent\DutyRosterController.cs" />
     <Compile Include="Api\eLearning\TOTReportController.cs" />
@@ -352,7 +357,6 @@
   <ItemGroup>
     <Folder Include="App_Data\Temp_Upload\" />
     <Folder Include="bin\roslyn\" />
-    <Folder Include="Logs\" />
     <Folder Include="Method\" />
     <Folder Include="Views\Auth\" />
     <Folder Include="Views\Cart\" />

@@ -19,23 +19,22 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View();
 		}
 
-		public async Task<ActionResult> List(int? id)
+		//public async Task<ActionResult> List(int? id)
+		public ActionResult List(int? id)
 		{
-			var response = await WepApiMethod.SendApiAsync<DetailsEventAttendentModel>(HttpVerbs.Get, $"eEvent/EventAttendent/GetEventIdForAttendent?id={id}");
+			//var response = await WepApiMethod.SendApiAsync<DetailsPublicEventModel>(HttpVerbs.Get, $"eEvent/PublicEvent/GetDelete?id={id}");
 
-			if (!response.isSuccess)
-			{
-				return HttpNotFound();
-			}
+			//if (!response.isSuccess)
+			//{
+			//	return HttpNotFound();
+			//}
 
-			var model = response.Data;
+			//model.List.EventName = response.Data.EventTitle;
 
-			//var attendee = new ListEventAttendentModel() {
-			//	model.Id = 
-			//};
-			
+			ViewBag.EventId = id;
 
-			return View(model);
+
+			return View();
 		}
 
 		// GET: eEvent/EventAttendent/Details/5

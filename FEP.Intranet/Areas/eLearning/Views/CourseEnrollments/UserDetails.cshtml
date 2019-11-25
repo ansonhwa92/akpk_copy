@@ -1,0 +1,208 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.UserCourseEnrollmentModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Manage Course";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/eLearning/Courses" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="#">Courses</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">User Details </h1>
+                    @*<div class="header-text">Course details.</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="d-flex align-items-center">
+    <div class="title">
+        <span class="title">
+            Course: @Model.CourseTitle
+        </span>
+    </div>
+</div>
+<hr>
+
+<form id="form" method="post">
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="row">
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <div class="form-container tab-content">
+
+                    <div class="tab-pane active" id="course-details">
+                        <div class="subtitle">
+                            Student Name
+                        </div>
+
+                        <div>
+                            <div class="descbox">
+                                @Model.StudentName
+                            </div>
+                        </div>
+
+                        <div class="subtitle">
+                            Date Enrolled
+                        </div>
+
+                        <div>
+                            <div class="objbox">
+                                @Model.DateEnrolled
+                            </div>
+                        </div>
+
+                        <div class="subtitle">
+                            Session Name
+                        </div>
+
+                        <div>
+                            <div class="objbox">
+                                @Model.SessionName
+                            </div>
+                        </div>
+                        <div class="subtitle">
+                            Percentage Of Completion
+                        </div>
+
+                        <div>
+                            <div class="objbox">
+                                @Model.CoursePercentageCompleted
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="subtitle">
+                            MODULES COMPLETED
+                        </div>
+
+                        <div class="divtableStyle1">
+                            <div class="row no-gutters">
+                                <div class="col-lg-12 divTableWrap">
+                                    <div class="divtableheader">
+                                        <div class="row">
+                                            <div class="col-2 text-center">No.</div>
+                                            <div class="col-3 text-center">Module Name</div>
+                                            <div class="col-3 text-center">Score</div>
+                                            <div class="col-3 text-center">Is Completed?</div>
+                                        </div>
+                                    </div>
+                                    <div class="divtableBody">
+
+                                        <div id="addForm"></div>
+                                        @{ var i = 0;
+                                            var modules = Model.CourseProgress.ToList();
+                                        }
+                                        @foreach (var item in modules)
+                                        {
+                                            { i++; }
+                                            <div class="details">
+                                                <div class="row divTd">
+                                                    <div class="col-2 text-center">@i</div>
+                                                    <div class="col-3 text-center">@Html.DisplayFor(m => item.ModuleName)</div>
+                                                    <div class="col-3 text-center">@Html.DisplayFor(m => item.Score)</div>
+                                                    <div class="col-3 text-center">@Html.DisplayFor(m => item.IsCompleted)</div>
+                                                </div>
+                                            </div>
+                                            @*<div class="editForm"></div>*@
+
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!----END MODULES -->
+
+                        <hr />
+
+                        <div class="subtitle">
+                            ENROLLMENT HISTORY
+                        </div>
+                        <div class="divtableStyle1">
+                            <div class="row no-gutters">
+                                <div class="col-lg-12 divTableWrap">
+                                    <div class="divtableheader">
+                                        <div class="row">
+                                            <div class="col-2 text-center">No.</div>
+                                            <div class="col-3 text-center">Date</div>
+                                            <div class="col-3">Remark</div>
+                                            <div class="col-3">Status</div>
+                                        </div>
+                                    </div>
+                                    <div class="divtableBody">
+
+                                        <div id="addForm"></div>
+                                        @{ var p = 0;
+                                            var history = Model.EnrollmentHistory.ToList();
+                                        }
+                                        @foreach (var item in history)
+                                        {
+                                            { p++; }
+                                            <div class="details">
+                                                <div class="row divTd">
+                                                    <div class="col-2 text-center">@p</div>
+                                                    <div class="col-3">@Html.DisplayFor(m => item.CreatedDate)</div>
+                                                    <div class="col-3">@Html.DisplayFor(m => item.Remark)</div>
+                                                    <div class="col-3">@Html.DisplayFor(m => item.Status)</div>
+                                                </div>
+                                            </div>
+                                            @*<div class="editForm"></div>*@
+
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</form>
+
+<style>
+    .form-container {
+        max-width: 100% !important
+    }
+</style>
+
+@section ContentScript {
+
+    <link href="~/css/elearn.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.truncate.js"></script>
+    <script src="~/js/elearn.js"></script>
+    <script>
+
+
+
+
+    
+    </script>
+}

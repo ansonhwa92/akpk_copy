@@ -33,7 +33,7 @@ namespace FEP.Model.Migrations
 
             DefaultSLAReminder(db);
             DefaultParameterGroup(db);
-            DefaultTemplate(db);
+            // DefaultTemplate(db);
         }
 
         private static void SeedDefaultData(DbEntities db)
@@ -322,6 +322,11 @@ namespace FEP.Model.Migrations
             AddRoleAndAccess(db, RoleNames.eLearningLearner, "Learner",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseEnroll);
+
+            AddRoleAndAccess(db, RoleNames.eLearningFacilitator, "Facilitator",
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseDiscussionGroupCreate,
+                UserAccess.CourseGroupCreate, UserAccess.CourseAddDocument, UserAccess.CourseDiscussionCreate,
+                UserAccess.CourseEnroll);
         }
 
         private static void SeedSampleUsers(DbEntities db)
@@ -333,12 +338,17 @@ namespace FEP.Model.Migrations
             AddUser(db, "elapprover2@fep.com", "elapprover2@fep.com", UserType.Individual, RoleNames.eLearningApprover2);
             AddUser(db, "elapprover3@fep.com", "elapprover3@fep.com", UserType.Individual, RoleNames.eLearningApprover3);
 
-
             AddUser(db, "min.elearn@yahoo.com", "min.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningTrainer, RoleNames.eLearningAdmin);
             AddUser(db, "v1.elearn@yahoo.com", "v1.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningVerifier);
             AddUser(db, "app1.elearn@yahoo.com", "app1.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningApprover1);
             AddUser(db, "app2.elearn@yahoo.com", "app2.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningApprover2);
             AddUser(db, "app3.elearn@yahoo.com", "app3.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningApprover3);
+
+            AddUser(db, "faci1.elearn@yahoo.com", "faci1.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningFacilitator);
+            AddUser(db, "faci2.elearn@yahoo.com", "faci2.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningFacilitator);
+
+            AddUser(db, "stud1.elearn@yahoo.com", "stud1.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningLearner);
+            AddUser(db, "stud2.elearn@yahoo.com", "stud2.elearn@yahoo.com", UserType.Individual, RoleNames.eLearningLearner);
 
             for (int i = 1; i <= 10; i++)
             {
@@ -795,7 +805,6 @@ namespace FEP.Model.Migrations
 
         public static void DefaultSLAReminder(DbEntities db)
         {
-
             db.SLAReminder.AddOrUpdate(s => s.NotificationType,
 
                 new SLAReminder { NotificationCategory = NotificationCategory.Learning, SLAEventType = SLAEventType.VerifyCourses, NotificationType = NotificationType.Verify_Courses_Creation, ETCode = "ET016EL", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
@@ -818,7 +827,6 @@ namespace FEP.Model.Migrations
 
         public static void DefaultParameterGroup(DbEntities db)
         {
-
             foreach (TemplateParameterType paramType in Enum.GetValues(typeof(TemplateParameterType)))
             {
                 SLAEventType EventType;
@@ -835,19 +843,16 @@ namespace FEP.Model.Migrations
 
                     continue;
                 }
-
             }
-
         }
 
         public static void DefaultTemplate(DbEntities db)
         {
-
             var user = db.User.Local.Where(r => r.Name.Contains("System Admin")).FirstOrDefault() ?? db.User.Where(r => r.Name.Contains("System Admin")).FirstOrDefault();
 
             db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
                 new NotificationTemplate
-                {                    
+                {
                     NotificationType = NotificationType.Verify_Courses_Creation,
                     NotificationCategory = NotificationCategory.Learning,
                     TemplateName = NotificationType.Verify_Courses_Creation.DisplayName(),
@@ -869,11 +874,9 @@ namespace FEP.Model.Migrations
                     Display = true
                 });
 
-
-
             db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
                 new NotificationTemplate
-                {                    
+                {
                     NotificationType = NotificationType.Approve_Courses_Creation_Approver1,
                     NotificationCategory = NotificationCategory.Learning,
                     TemplateName = NotificationType.Approve_Courses_Creation_Approver1.DisplayName(),
@@ -967,7 +970,6 @@ namespace FEP.Model.Migrations
                     Display = true
                 });
 
-
             db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
                 new NotificationTemplate
                 {
@@ -1015,8 +1017,6 @@ namespace FEP.Model.Migrations
                     User = user,
                     Display = true
                 });
-
         }
-
     }
 }

@@ -19,7 +19,26 @@ namespace FEP.Model
 		public DateTime? StartDate { get; set; }
 		public DateTime? EndDate { get; set; }
 		public string Venue { get; set; }
-		public float? Fee { get; set; }
+		//-----------individual------------//
+		public bool FreeIndividual { get; set; }
+		public float? IndividualFee { get; set; }
+		public float? IndividualEarlyBird { get; set; }
+		//-----individual w/ paper------------//
+		public bool FreeIndividualPaper { get; set; }
+		public float? IndividualPaperFee { get; set; }
+		public float? IndividualPaperEarlyBird { get; set; } 
+
+		//----individual w/ paper to present----//
+		public bool FreeIndividualPresent { get; set; }
+		public float? IndividualPresentFee { get; set; }
+		public float? IndividualPresentEarlyBird { get; set; }
+
+		//--------------agency------------//
+		public bool FreeAgency { get; set; }
+		public float? AgencyFee { get; set; }
+		public float? AgencyEarlyBird { get; set; } 
+
+
 		public int? ParticipantAllowed { get; set; }
 		public EventTargetGroup? TargetedGroup { get; set; }
 		public string Remarks { get; set; }
@@ -80,20 +99,7 @@ namespace FEP.Model
 		public virtual PublicEvent Event { get; set; }
 	}
 
-    [Table("AgendaScript")]
-    public class AgendaScript
-    {
-        [Key]
-        public int Id { get; set; }
-        public string TentativeScript { get; set; }
-        public int? EventId { get; set; }
-        [ForeignKey("EventId")]
-        public virtual PublicEvent Event { get; set; }
-
-    }
-
-
-    [Table("EventAgenda")]
+	[Table("EventAgenda")]
 	public class EventAgenda
 	{
 		[Key]
@@ -382,7 +388,7 @@ namespace FEP.Model
 		public EventApprovalLevel Level { get; set; }
 		public EventApprovalStatus Status { get; set; }
 		public bool RequireNext { get; set; }
-		public int ApproverId { get; set; }
+		public int? ApproverId { get; set; }
 
 		public int? ExhibitionId { get; set; }
 		[ForeignKey("ExhibitionId")]
@@ -399,6 +405,7 @@ namespace FEP.Model
 		public string EventName { get; set; }
 		public string Organiser { get; set; }
 		public string OrganiserEmail { get; set; }
+		public string OrganiserPhoneNo { get; set; }
 		public string AddressStreet1 { get; set; }
 		public string AddressStreet2 { get; set; }
 		public string AddressPoscode { get; set; }
@@ -516,4 +523,23 @@ namespace FEP.Model
 		public DateTime? CreatedDate { get; set; }
 		public bool Display { get; set; }
 	}
+
+	[Table("EventRequestApproval")]
+	public class EventRequestApproval
+	{
+		[Key]
+		public int Id { get; set; }
+		public DateTime? ApprovedDate { get; set; }
+		public string Remark { get; set; }
+		public EventApprovalLevel Level { get; set; }
+		public EventApprovalStatus Status { get; set; }
+		public bool RequireNext { get; set; }
+		public int? ApproverId { get; set; }
+		 
+		public int? EventRequestId { get; set; }
+		[ForeignKey("EventRequestId")]
+		public virtual EventRequest EventRequest { get; set; }
+	}
+
+
 }

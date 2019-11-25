@@ -17,12 +17,12 @@
 
 <script>
     $(document).ready(function () {
-        $('#GroupId').hide();
+        $('#GroupIdForm').hide();
         $('#DiscussionVisibility').on('change', function () {
             if (this.value == '1') {
-                $("#GroupId").show();
+                $("#GroupIdForm").show();
             }
-            else { $("#GroupId").hide(); }
+            else { $("#GroupIdForm").hide(); }
             //alert(this.value);
         });
 
@@ -58,7 +58,7 @@
         //$('#fileupload').fileupload();
 
         $('#fileupload').fileupload('option', {
-            maxFileSize: 500000000,
+            maxFileSize: 1073741824,
             resizeMaxWidth: 1920,
             resizeMaxHeight: 1200,
             progressall: function (e, data) {
@@ -85,67 +85,126 @@
     });
 </script>
 
+<script type="text/javascript">
+
+    //this code will be executed when a new file is selected
+    $('#Uploadfile').bind('change', function () {
+
+        //converts the file size from bytes to MB
+        var fileSize = this.files[0].size / 1024 / 1024;
+
+        //gets the full file name including the extension
+        var fileName = this.files[0].name;
+
+        //finds where the extension starts
+        var dotPosition = fileName.lastIndexOf(".");
+
+        //gets only the extension
+        var fileExt = fileName.substring(dotPosition);
+
+        //checks whether the file is .png and less than 1 MB
+        if (fileSize <= 1 && fileExt == ".png") {
+
+            //successfully validated
+
+        }
+    });
+</script>
+
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formAdd", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.Post.GotAttachment)
-    <div class="row divTd">
-        <div class="col-1 text-center"></div>
-        <div class="col px-0">
-            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.eLearning.CourseCategory.PlaceholderName } })
-            @Html.ValidationMessageFor(m => m.Name)
-        </div>
-    </div>
-    <div class="row divTd">
-        @*<div class="col px-0">
-                @Html.EditorFor(m => m.Message, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.CourseDiscussion.PlaceholderName } })
-                @Html.ValidationMessageFor(m => m.Message)
-            </div>*@
-        @*<div class="col px-0">
-                @Html.EditorFor(m => m.Topic, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.CourseDiscussion.PlaceholderName } })
-                @Html.ValidationMessageFor(m => m.Topic)
-            </div>*@
-        <div class="col-1 text-center"></div>
-        <div class="col px-0">
-            @Html.DropDownListFor(m => m.DiscussionVisibility, Model.DiscussionVisibilities, Language.eLearning.CourseCategory.PlaceholderName, htmlAttributes: new { @class = "custom-select" })
-            @Html.ValidationMessageFor(m => m.DiscussionVisibility)
-        </div>
-        <div class="col px-0">
-            @Html.DropDownListFor(m => m.GroupId, Model.Groups, Language.eLearning.CourseCategory.PlaceholderName, htmlAttributes: new { @class = "custom-select" })
-            @Html.ValidationMessageFor(m => m.GroupId)
-        </div>
-    </div>
-    <div class="row divTd">
 
-
-    </div>
-
-    <div class="row divTd">
-        <div class="col-1 text-center"></div>
-        <div class="col px-0">
-            @Html.TextAreaFor(m => m.Post.Message, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Post.Message)
+<div class="border-form rounded-top col-sm-12">
+    <div class="form-container form-container-w100">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name, new { htmlAttributes = new { @class = "control-label" } })
+            <div class="">
+                @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control text-box single-line", @placeholder = Language.eLearning.CourseDiscussion.PlaceholderName } })
+                @Html.ValidationMessageFor(m => m.Name)
+            </div>
         </div>
-        <div class="col px-0">
-            <div class="row fileupload-buttonbar" style="padding: 10px 5px 5px 15px;">
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.DiscussionVisibility, Language.eLearning.CourseDiscussion.DiscussionType, new { htmlAttributes = new { @class = "control-label" } })
+            <div class="">
+                @Html.DropDownListFor(m => m.DiscussionVisibility, Model.DiscussionVisibilities, Language.eLearning.CourseDiscussion.DiscussionType, htmlAttributes: new { @class = "custom-select" })
+                @Html.ValidationMessageFor(m => m.DiscussionVisibility)
+            </div>
+        </div>
+
+        <div class="form-group" id="GroupIdForm">
+            @Html.LabelFor(m => m.GroupId, Language.eLearning.CourseDiscussion.SelectGroup, new { htmlAttributes = new { @class = "control-label" } })
+            <div class="">
+                @Html.DropDownListFor(m => m.GroupId, Model.Groups, Language.eLearning.CourseDiscussion.SelectGroup, htmlAttributes: new { @class = "custom-select" })
+                @Html.ValidationMessageFor(m => m.GroupId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Post.Message, Language.eLearning.CourseDiscussion.FirstPost, new { htmlAttributes = new { @class = "form-label" } })
+            <div class="">
+                @Html.TextAreaFor(m => m.Post.Message, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Post.Message)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="">
                 <span id="inputArea" class="fileinput-button">
-                    <input type="file" name="files[]" multiple>
+                    <input id="Uploadfile" type="file" name="file">
                 </span>
             </div>
         </div>
 
-
-
-    </div>
-
-    <div class="row divTd">
-        <div class="col-3 pl-0 text-right">
-            <div class="icon-action">
+        <div class="form-group pull-right">
+            <div class="">
                 <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">@Language.General.ButtonAdd</button>
                 <button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">@Language.General.ButtonCancel</button>
             </div>
         </div>
     </div>
+</div>
+   
+
+    @*<div class="row divTd">*@
+    @*<div class="col px-0">
+            @Html.EditorFor(m => m.Message, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.CourseDiscussion.PlaceholderName } })
+            @Html.ValidationMessageFor(m => m.Message)
+        </div>*@
+    @*<div class="col px-0">
+            @Html.EditorFor(m => m.Topic, new { htmlAttributes = new { @class = "form-control", @placeholder = Language.CourseDiscussion.PlaceholderName } })
+            @Html.ValidationMessageFor(m => m.Topic)
+        </div>*@
+    @*<div class="col-1 text-center"></div>
+            <div class="col px-0">
+                @Html.DropDownListFor(m => m.DiscussionVisibility, Model.DiscussionVisibilities, Language.eLearning.CourseGroup.PlaceholderName, htmlAttributes: new { @class = "custom-select" })
+                @Html.ValidationMessageFor(m => m.DiscussionVisibility)
+            </div>
+            <div class="col px-0">
+                @Html.DropDownListFor(m => m.GroupId, Model.Groups, Language.eLearning.CourseGroup.PlaceholderName, htmlAttributes: new { @class = "custom-select" })
+                @Html.ValidationMessageFor(m => m.GroupId)
+            </div>
+        </div>*@
+
+    @*<div class="row divTd">
+            <div class="col-1 text-center"></div>
+            <div class="col px-0">
+                @Html.TextAreaFor(m => m.Post.Message, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Post.Message)
+            </div>
+            <div class="col px-0">
+                <div class="row fileupload-buttonbar" style="padding: 10px 5px 5px 15px;">
+
+                </div>
+            </div>
+
+
+
+        </div>*@
+
+
 }
 @*<form id="fileupload" action="@Url.Action("UploadFiles")" method="POST" enctype="multipart/form-data">
         <div class="row divTd">

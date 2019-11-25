@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using ApprovalModel = FEP.WebApiModel.PublicEvent.ApprovalModel;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
 {
@@ -68,7 +69,23 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				StartDate = pubapproval.publicevent.StartDate,
 				EndDate = pubapproval.publicevent.EndDate,
 				Venue = pubapproval.publicevent.Venue,
-				Fee = pubapproval.publicevent.Fee,
+
+				FreeIndividual = pubapproval.publicevent.FreeIndividual,
+				FreeIndividualPaper = pubapproval.publicevent.FreeIndividualPaper,
+				FreeIndividualPresent = pubapproval.publicevent.FreeIndividualPresent,
+				FreeAgency = pubapproval.publicevent.FreeAgency,
+
+				IndividualFee = pubapproval.publicevent.IndividualFee,
+				IndividualPaperFee = pubapproval.publicevent.IndividualPaperFee,
+				IndividualPresentFee = pubapproval.publicevent.IndividualPresentFee,
+				AgencyFee = pubapproval.publicevent.AgencyFee,
+
+				IndividualEarlyBird = pubapproval.publicevent.IndividualEarlyBird,
+				IndividualPaperEarlyBird = pubapproval.publicevent.IndividualPaperEarlyBird,
+				IndividualPresentEarlyBird = pubapproval.publicevent.IndividualPresentEarlyBird,
+				AgencyEarlyBird = pubapproval.publicevent.AgencyEarlyBird,
+
+				//Fee = pubapproval.publicevent.Fee,
 				ParticipantAllowed = pubapproval.publicevent.ParticipantAllowed,
 				TargetedGroup = pubapproval.publicevent.TargetedGroup,
 				EventStatus = pubapproval.publicevent.EventStatus,
@@ -82,7 +99,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				ExternalExhibitorId = pubapproval.publicevent.ExternalExhibitorId,
 				CreatedByName = pubapproval.publicevent.CreatedByName,
 				CreatedDate = pubapproval.publicevent.CreatedDate,
-                tentativeScript = pubapproval.publicevent.tentativeScript
 			};
 
 			var approval = new ApprovalModel
@@ -158,7 +174,22 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					StartDate = model.StartDate,
 					EndDate = model.EndDate,
 					Venue = model.Venue,
-					Fee = model.Fee,
+
+					FreeIndividual = model.FreeIndividual,
+					FreeIndividualPaper = model.FreeIndividualPaper,
+					FreeIndividualPresent = model.FreeIndividualPresent,
+					FreeAgency = model.FreeAgency,
+
+					IndividualFee = model.IndividualFee,
+					IndividualPaperFee = model.IndividualPaperFee,
+					IndividualPresentFee = model.IndividualPresentFee,
+					AgencyFee = model.AgencyFee,
+
+					IndividualEarlyBird = model.IndividualEarlyBird,
+					IndividualPaperEarlyBird = model.IndividualPaperEarlyBird,
+					IndividualPresentEarlyBird = model.IndividualPresentEarlyBird,
+					AgencyEarlyBird = model.AgencyEarlyBird,
+					//Fee = model.Fee,
 					ParticipantAllowed = model.ParticipantAllowed,
 					TargetedGroup = model.TargetedGroup,
 					EventStatus = model.EventStatus,
@@ -168,7 +199,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Remarks = model.Remarks,
 					CreatedBy = CurrentUser.UserId,
 					CreatedDate = DateTime.Now,
-                    tentativeScript = model.TentativeScript
 				};
 
 				//attachment
@@ -231,7 +261,23 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				StartDate = response.Data.StartDate,
 				EndDate = response.Data.EndDate,
 				Venue = response.Data.Venue,
-				Fee = response.Data.Fee,
+
+				FreeIndividual = response.Data.FreeIndividual,
+				FreeIndividualPaper = response.Data.FreeIndividualPaper,
+				FreeIndividualPresent = response.Data.FreeIndividualPresent,
+				FreeAgency = response.Data.FreeAgency,
+
+				IndividualFee = response.Data.IndividualFee,
+				IndividualPaperFee = response.Data.IndividualPaperFee,
+				IndividualPresentFee = response.Data.IndividualPresentFee,
+				AgencyFee = response.Data.AgencyFee,
+
+				IndividualEarlyBird = response.Data.IndividualEarlyBird,
+				IndividualPaperEarlyBird = response.Data.IndividualPaperEarlyBird,
+				IndividualPresentEarlyBird = response.Data.IndividualPresentEarlyBird,
+				AgencyEarlyBird = response.Data.AgencyEarlyBird,
+
+				//Fee = response.Data.Fee,
 				ParticipantAllowed = response.Data.ParticipantAllowed,
 				TargetedGroup = response.Data.TargetedGroup,
 				EventStatus = response.Data.EventStatus,
@@ -242,8 +288,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				RefNo = response.Data.RefNo,
 				SpeakerId = response.Data.SpeakerId,
 				ExternalExhibitorId = response.Data.ExternalExhibitorId,
-				Attachments = response.Data.Attachments,
-                TentativeScript = response.Data.tentativeScript
+				Attachments = response.Data.Attachments
 			};
 
 			model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
@@ -279,7 +324,23 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					StartDate = model.StartDate,
 					EndDate = model.EndDate,
 					Venue = model.Venue,
-					Fee = model.Fee,
+
+					FreeIndividual = model.FreeIndividual,
+					FreeIndividualPaper = model.FreeIndividualPaper,
+					FreeIndividualPresent = model.FreeIndividualPresent,
+					FreeAgency = model.FreeAgency,
+
+					IndividualFee = model.IndividualFee,
+					IndividualPaperFee = model.IndividualPaperFee,
+					IndividualPresentFee = model.IndividualPresentFee,
+					AgencyFee = model.AgencyFee,
+
+					IndividualEarlyBird = model.IndividualEarlyBird,
+					IndividualPaperEarlyBird = model.IndividualPaperEarlyBird,
+					IndividualPresentEarlyBird = model.IndividualPresentEarlyBird,
+					AgencyEarlyBird = model.AgencyEarlyBird,
+
+					//Fee = model.Fee,
 					ParticipantAllowed = model.ParticipantAllowed,
 					TargetedGroup = model.TargetedGroup,
 					EventStatus = model.EventStatus,
@@ -288,7 +349,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ExternalExhibitorId = model.ExternalExhibitorId,
 					Remarks = model.Remarks,
 					Attachments = model.Attachments,
-                    tentativeScript = model.TentativeScript
 				};
 
 				//attachment
@@ -347,7 +407,23 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				StartDate = response.Data.StartDate,
 				EndDate = response.Data.EndDate,
 				Venue = response.Data.Venue,
-				Fee = response.Data.Fee,
+
+				FreeIndividual = response.Data.FreeIndividual,
+				FreeIndividualPaper = response.Data.FreeIndividualPaper,
+				FreeIndividualPresent = response.Data.FreeIndividualPresent,
+				FreeAgency = response.Data.FreeAgency,
+
+				IndividualFee = response.Data.IndividualFee,
+				IndividualPaperFee = response.Data.IndividualPaperFee,
+				IndividualPresentFee = response.Data.IndividualPresentFee,
+				AgencyFee = response.Data.AgencyFee,
+
+				IndividualEarlyBird = response.Data.IndividualEarlyBird,
+				IndividualPaperEarlyBird = response.Data.IndividualPaperEarlyBird,
+				IndividualPresentEarlyBird = response.Data.IndividualPresentEarlyBird,
+				AgencyEarlyBird = response.Data.AgencyEarlyBird,
+
+				//Fee = response.Data.Fee,
 				ParticipantAllowed = response.Data.ParticipantAllowed,
 				TargetedGroup = response.Data.TargetedGroup,
 				EventStatus = response.Data.EventStatus,
@@ -358,8 +434,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				RefNo = response.Data.RefNo,
 				Attachments = response.Data.Attachments,
 				SpeakerId = response.Data.SpeakerId,
-				ExternalExhibitorId = response.Data.ExternalExhibitorId,
-                TentativeScript = response.Data.tentativeScript
+				ExternalExhibitorId = response.Data.ExternalExhibitorId
 			};
 
 			if (model == null)
@@ -405,7 +480,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Submit_PublicEvent}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Submit_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -421,8 +496,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					if (response2.isSuccess)
 					{
 						int saveThisID = response2.Data.SLAReminderStatusId;
-
-						//save saveThisID dalam table
 						response.Data.SLAReminderStatusId = saveThisID;
 
 
@@ -471,7 +544,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 				paramToSend.EventLocation = response.Data.Venue;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Verify_PublicEvent}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verify_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -483,13 +556,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-					//save saveThisID dalam table public event
-					response.Data.SLAReminderStatusId = saveThisID;
+						response.Data.SLAReminderStatusId = saveThisID;
 
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is verified.");
 					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully verified and submitted for approval.";
@@ -529,7 +604,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Approver1_PublicEvent}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver1_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -542,12 +617,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-					//save saveThisID dalam table public event
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+						response.Data.SLAReminderStatusId = saveThisID;
+
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is approved on first level.");
 					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
@@ -587,7 +665,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Approver2_PublicEvent}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver2_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -599,13 +677,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-					//save saveThisID dalam table public event
+						response.Data.SLAReminderStatusId = saveThisID;
 
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is approved on second level.");
 					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully approved and submitted to next approval.";
@@ -646,7 +726,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Approver3_PublicEvent}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver3_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -659,12 +739,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-					//save saveThisID dalam table public event
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+						response.Data.SLAReminderStatusId = saveThisID;
+
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is approved");
 					TempData["SuccessMessage"] = "Public Event Ref No: " + response.Data.RefNo + ", successfully approved.";
@@ -705,7 +788,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Reject_PublicEvent}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.RequireAmendment_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -718,12 +801,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-					//save saveThisID dalam table public event
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+						response.Data.SLAReminderStatusId = saveThisID;
+
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 
 					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is rejected and require amendment.");
@@ -765,7 +851,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Cancel_PublicEvent}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Cancelled_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -778,12 +864,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-					//save saveThisID dalam table public event
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+						response.Data.SLAReminderStatusId = saveThisID;
+
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 
 					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is cancelled.");
@@ -815,7 +904,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.EventName = response.Data.EventTitle;
 				paramToSend.EventApproval = response.Data.EventStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Recipient_Published_PublicEvent}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Published_PublicEvent}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -827,12 +916,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-					//save saveThisID dalam table public event
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+						response.Data.SLAReminderStatusId = saveThisID;
+
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 
 					await LogActivity(Modules.Event, "Public Event Ref No: " + response.Data.RefNo + " is Published.");
@@ -893,10 +985,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return category;
 
 		}
-
-
-
-
 
 
 		[HttpGet]
@@ -962,6 +1050,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 
+
 		[HttpGet]
 		public async Task<ActionResult> Details_RequestCancelModify(int? id)
 		{
@@ -970,34 +1059,151 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
-			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Get, $"eEvent/PublicEvent/Details?id={id}");
+			var response = await WepApiMethod.SendApiAsync<EventRequestApprovalModel>(HttpVerbs.Get, $"eEvent/PublicEvent/EventRequestDetails?id={id}");
 
 			if (!response.isSuccess)
 			{
 				return HttpNotFound();
 			}
 
-			var model = new FEP.Intranet.Areas.eEvent.Models.EventRequestModel()
+			var reqapproval = response.Data;
+
+			var eventreq = new EventRequestModel()
 			{
-				Id = response.Data.Id,
-				EventTitle = response.Data.EventTitle,
-				EventObjective = response.Data.EventObjective,
-				EventCategory = response.Data.EventCategory,
-				EventId = response.Data.EventId,
-				RequestStatus = response.Data.RequestStatus,
-				RequestType = response.Data.RequestType,
-				CreatedBy = response.Data.CreatedBy,
-				CreatedByName = response.Data.CreatedByName,
-				Display = response.Data.Display,
-				EventRefNo = response.Data.EventRefNo,
-				Reason = response.Data.Reason,
-				Attachments = response.Data.Attachments,
-				CreatedDate = response.Data.CreatedDate,
+				Id = reqapproval.eventrequest.Id,
+				EventTitle = reqapproval.eventrequest.EventTitle,
+				EventObjective = reqapproval.eventrequest.EventObjective,
+				EventCategory = reqapproval.eventrequest.EventCategory,
+				EventId = reqapproval.eventrequest.EventId,
+				RequestStatus = reqapproval.eventrequest.RequestStatus,
+				RequestType = reqapproval.eventrequest.RequestType,
+				CreatedBy = reqapproval.eventrequest.CreatedBy,
+				CreatedByName = reqapproval.eventrequest.CreatedByName,
+				Display = reqapproval.eventrequest.Display,
+				EventRefNo = reqapproval.eventrequest.EventRefNo,
+				Reason = reqapproval.eventrequest.Reason,
+				Attachments = reqapproval.eventrequest.Attachments,
+				CreatedDate = reqapproval.eventrequest.CreatedDate,
 			};
 
-			if (model == null)
+			var approval = new ApprovalModel
 			{
-				return HttpNotFound();
+				Id = reqapproval.approval.Id,
+				EventId = reqapproval.approval.EventId,
+				Level = reqapproval.approval.Level,
+				ApproverId = reqapproval.approval.ApproverId,
+				Status = reqapproval.approval.Status,
+				Remarks = reqapproval.approval.Remarks,
+				RequireNext = reqapproval.approval.RequireNext
+			};
+
+			var pevaluation = new EventRequestApprovalModel
+			{
+				eventrequest = eventreq,
+				approval = approval
+			};
+
+			var responseHistory = await WepApiMethod.SendApiAsync<IEnumerable<PublicEventApprovalHistoryModel>>(HttpVerbs.Get, $"eEvent/PublicEvent/GetHistoryRequest?id={reqapproval.eventrequest.Id}");
+
+			if (responseHistory.isSuccess)
+			{
+				ViewBag.History = responseHistory.Data;
+			}
+
+			return View(pevaluation);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Details_RequestCancelModify(EventRequestApprovalModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/UpdateApprovalEventRequest", model);
+
+				if (response.isSuccess)
+				{
+					if (model.approval.Status == EventApprovalStatus.Approved)
+					{
+						if (model.approval.Level == EventApprovalLevel.Verifier)
+						{
+							await VerifiedRequest(model.approval.EventId);
+							await LogActivity(Modules.Event, "Verify Cancellation/Modification Request: ", model);
+							TempData["SuccessMessage"] = "Cancellation/Modification Request is successfully verified.";
+						}
+						else
+						{
+							if (model.approval.Level == EventApprovalLevel.Approver1)
+							{
+								if (model.approval.RequireNext)
+								{
+									TempData["SuccessMessage"] = "Cancellation/Modification Request is successfully approved and require next approval.";
+									await FirstApprovedRequest(model.approval.EventId);
+									await LogActivity(Modules.Event, "Approve Cancellation/Modification Request: ", model);
+								}
+								else
+								{
+									TempData["SuccessMessage"] = "Cancellation/Modification Request is successfully approved.";
+									await FinalApprovedRequest(model.approval.EventId);
+									await LogActivity(Modules.Event, "Approve Cancellation/Modification Request by Approver 1 ", model);
+								}
+							}
+							else if (model.approval.Level == EventApprovalLevel.Approver2)
+							{
+								if (model.approval.RequireNext)
+								{
+									TempData["SuccessMessage"] = "Cancellation/Modification Request is successfully approved and require next approval.";
+									await SecondApprovedRequest(model.approval.EventId);
+									await LogActivity(Modules.Event, "Approve Cancellation/Modification Request: ", model);
+								}
+								else
+								{
+									TempData["SuccessMessage"] = "Cancellation/Modification Request is successfully approved.";
+									await FinalApprovedRequest(model.approval.EventId);
+									await LogActivity(Modules.Event, "Approve Cancellation/Modification Request by Approver 2 ", model);
+								}
+							}
+							else if (model.approval.Level == EventApprovalLevel.Approver3)
+							{
+								TempData["SuccessMessage"] = "Cancellation/Modification Request is successfully approved.";
+								await FinalApprovedRequest(model.approval.EventId);
+								await LogActivity(Modules.Event, "Cancellation/Modification Request Event by Approver 3  ", model);
+							}
+						}
+					}
+					else
+					{
+						if (model.approval.Level == EventApprovalLevel.Verifier)
+						{
+							await RequireAmendmentRequest(model.approval.EventId);
+							await LogActivity(Modules.Event, "Cancellation/Modification Request requires amendment.", model);
+							TempData["SuccessMessage"] = "Cancellation/Modification Request requires amendment.";
+						}
+						else if (model.approval.Level == EventApprovalLevel.Approver1)
+						{
+							await RequireAmendmentRequest(model.approval.EventId);
+							await LogActivity(Modules.Event, "Cancellation/Modification Request requires amendment.", model);
+							TempData["SuccessMessage"] = "Cancellation/Modification Request requires amendment.";
+						}
+						else if (model.approval.Level == EventApprovalLevel.Approver2)
+						{
+							await RequireAmendmentRequest(model.approval.EventId);
+							await LogActivity(Modules.Event, "Cancellation/Modification Request requires amendment.", model);
+							TempData["SuccessMessage"] = "Cancellation/Modification Request requires amendment.";
+						}
+						else if (model.approval.Level == EventApprovalLevel.Approver3)
+						{
+							await RequireAmendmentRequest(model.approval.EventId);
+							await LogActivity(Modules.Event, "Cancellation/Modification Request requires amendment.", model);
+							TempData["SuccessMessage"] = "Cancellation/Modification Request requires amendment.";
+						}
+					}
+					return RedirectToAction("List", "PublicEvent", new { area = "eEvent" });
+				}
+				else
+				{
+					return RedirectToAction("List", "PublicEvent", new { area = "eEvent", @id = model.approval.EventId });
+				}
 			}
 
 			return View(model);
@@ -1010,7 +1216,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Get, $"eEvent/PublicEvent/Details?id={id}");
+			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Get, $"eEvent/PublicEvent/GetEditDeleteRequest?id={id}");
 
 			if (!response.isSuccess)
 			{
@@ -1116,7 +1322,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
 				paramToSend.Reason = response.Data.Reason;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verifier_CancellationModificationRequest}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Submit_CancellationModificationRequest}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -1129,12 +1335,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					};
 
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
-
-					//save saveThisID dalam table
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusIdRequest?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
+						response.Data.SLAReminderStatusId = saveThisID;
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + " is submit for verification.");
 					TempData["SuccessMessage"] = "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", successfully submitted for verification.";
@@ -1177,7 +1384,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
 				paramToSend.Reason = response.Data.Reason;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver1_CancellationModificationRequest}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verifier_CancellationModificationRequest}");
 				if (receiveresponse.isSuccess)
 
 
@@ -1191,13 +1398,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					if (response2.isSuccess) { }
-					int saveThisID = response2.Data.SLAReminderStatusId;
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-					response.Data.SLAReminderStatusId = saveThisID;
+						response.Data.SLAReminderStatusId = saveThisID;
 
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusIdRequest?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + " is verified.");
 					TempData["SuccessMessage"] = "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", successfully verified and submitted for approval.";
@@ -1239,7 +1448,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
 				paramToSend.Reason = response.Data.Reason;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver2_CancellationModificationRequest}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver1_CancellationModificationRequest}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -1252,11 +1461,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusIdRequest?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+						response.Data.SLAReminderStatusId = saveThisID;
+
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + " is approved on first level.");
 					TempData["SuccessMessage"] = "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", successfully approved and submitted to next approval.";
@@ -1299,7 +1512,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
 				paramToSend.Reason = response.Data.Reason;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver3_CancellationModificationRequest}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver2_CancellationModificationRequest}");
 				if (receiveresponse.isSuccess)
 				{
 					CreateAutoReminder reminder = new CreateAutoReminder
@@ -1311,11 +1524,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusIdRequest?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+						response.Data.SLAReminderStatusId = saveThisID;
+
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + " is approved on second level.");
 					TempData["SuccessMessage"] = "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", successfully approved and submitted to next approval.";
@@ -1331,13 +1548,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 
-		public async Task<ActionResult> FinalApprovedRequest(int? id, string RequestType)
+		public async Task<ActionResult> FinalApprovedRequest(int? id)
 		{
 			if (id == null)
 			{
 				return HttpNotFound();
 			}
-			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Post, $"eEvent/PublicEvent/FinalApprovedRequest?id={id}&RequestType={RequestType}");
+			var response = await WepApiMethod.SendApiAsync<EventRequestModel>(HttpVerbs.Post, $"eEvent/PublicEvent/FinalApprovedRequest?id={id}");
 			if (response.isSuccess)
 			{
 				//--------------------------------------------------Stop Previous Email---------------------------------------------//
@@ -1359,7 +1576,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				paramToSend.RequestStatus = response.Data.RequestStatus.GetDisplayName();
 				paramToSend.Reason = response.Data.Reason;
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.EventAdministratorCCD}");
+				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Approver3_CancellationModificationRequest}");
 				if (receiveresponse.isSuccess)
 				{
 
@@ -1372,11 +1589,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusIdRequest?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+						response.Data.SLAReminderStatusId = saveThisID;
+
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + " is approved");
 					TempData["SuccessMessage"] = "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", successfully approved.";
@@ -1432,12 +1653,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						ReceiverId = receiveresponse.Data,
 					};
 					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					int saveThisID = response2.Data.SLAReminderStatusId;
+					if (response2.isSuccess)
+					{
+						int saveThisID = response2.Data.SLAReminderStatusId;
 
-					//save saveThisID dalam table 
-					response.Data.SLAReminderStatusId = saveThisID;
-					var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusIdRequest?id={response.Data.Id}&saveThisID={saveThisID}");
-					if (response3.isSuccess) { }
+						response.Data.SLAReminderStatusId = saveThisID;
+
+						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/PublicEvent/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+						if (response3.isSuccess) { }
+					}
 
 					await LogActivity(Modules.Event, "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + " is required amendment.");
 					TempData["SuccessMessage"] = "Cancellation/Modification Request for Public Event Ref No: " + response.Data.EventRefNo + ", successfully required amendment.";
@@ -1507,7 +1731,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 							{
 								TempData["SuccessMessage"] = "Public Event is successfully approved.";
 								await FinalApproved(model.approval.EventId);
-								await LogActivity(Modules.Event, "Approve Public by Approver 3  ", model);
+								await LogActivity(Modules.Event, "Approve Public Event by Approver 3  ", model);
 							}
 						}
 					}
@@ -1549,6 +1773,6 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View(model);
 		}
 
-		
+
 	}
 }

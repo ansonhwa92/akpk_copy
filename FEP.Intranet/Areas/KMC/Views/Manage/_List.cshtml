@@ -1,0 +1,51 @@
+﻿@model List<KMCModel>
+
+
+@foreach (var kmc in Model)
+{
+    <div class="col-lg-4 col-sm-6">
+        <div class="card__wrapper">
+            <a href="@Url.Action("Details", "Manage", new { area = "KMC", @id = kmc.Id })">
+                <div class="card__top">
+
+                    <div class="card__top__wapper">
+                        @if (!String.IsNullOrEmpty(kmc.ThumbnailUrl))
+                        {
+                            <img class="card__top__image" src="@(BaseURL)/img/kmc-thumbnail/@(kmc.ThumbnailUrl)" alt="image">
+                        }
+                        else
+                        {
+                            <img class="card__top__image" src="@(BaseURL)/img/kmc-thumbnail/no-image.png" alt="image">
+                        }
+                    </div>
+
+                </div>
+            </a>
+            <div class="card__body">
+                <a class="card__title" href="@Url.Action("Details", "Manage", new { area = "KMC", @id = kmc.Id })">@kmc.Title</a>
+                <div class="card__author">
+                    <a class="card__col-left">
+                        <span class="card__avatar">
+                            @if (!String.IsNullOrEmpty(kmc.AvatarUrl))
+                            {
+                                <img class="card__avatar__image" src="@(BaseURL)/img/avatar/@(kmc.AvatarUrl)" alt="image">
+                            }
+                            else
+                            {
+                                <img class="card__avatar__image" src="@(BaseURL)/img/no-photo.jpg" alt="image">
+                            }
+                        </span>
+                        <span class="card__name-wrap"><span class="card__instructby">Created by</span><span class="card__author-name">@kmc.CreatedBy</span></span>
+                    </a>
+                </div>
+                <div class="card__info" style="cursor:default">
+                    <div class="card__col-left">
+                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Created Date"><span class="d-inline-block">@kmc.CreatedDate.ToString("d MMMM yyyy")</span></span></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

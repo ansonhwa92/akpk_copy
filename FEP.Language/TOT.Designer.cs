@@ -313,6 +313,141 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 20 - 30.
+        /// </summary>
+        public static string TextAgeR1 {
+            get {
+                return ResourceManager.GetString("TextAgeR1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 31- 40.
+        /// </summary>
+        public static string TextAgeR2 {
+            get {
+                return ResourceManager.GetString("TextAgeR2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 41 - 50.
+        /// </summary>
+        public static string TextAgeR3 {
+            get {
+                return ResourceManager.GetString("TextAgeR3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 51 - 60.
+        /// </summary>
+        public static string TextAgeR4 {
+            get {
+                return ResourceManager.GetString("TextAgeR4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 60 and above.
+        /// </summary>
+        public static string TextAgeR5 {
+            get {
+                return ResourceManager.GetString("TextAgeR5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Age Range.
+        /// </summary>
+        public static string TextAgeRange {
+            get {
+                return ResourceManager.GetString("TextAgeRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Female.
+        /// </summary>
+        public static string TextFemale {
+            get {
+                return ResourceManager.GetString("TextFemale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Male.
+        /// </summary>
+        public static string TextMale {
+            get {
+                return ResourceManager.GetString("TextMale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1000 - 2000.
+        /// </summary>
+        public static string TextSalaryR1 {
+            get {
+                return ResourceManager.GetString("TextSalaryR1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2001 - 4000.
+        /// </summary>
+        public static string TextSalaryR2 {
+            get {
+                return ResourceManager.GetString("TextSalaryR2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 4001 - 6000.
+        /// </summary>
+        public static string TextSalaryR3 {
+            get {
+                return ResourceManager.GetString("TextSalaryR3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 6001 - 8000.
+        /// </summary>
+        public static string TextSalaryR4 {
+            get {
+                return ResourceManager.GetString("TextSalaryR4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 8001 - 10000.
+        /// </summary>
+        public static string TextSalaryR5 {
+            get {
+                return ResourceManager.GetString("TextSalaryR5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 10000 and above.
+        /// </summary>
+        public static string TextSalaryR6 {
+            get {
+                return ResourceManager.GetString("TextSalaryR6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salary Range.
+        /// </summary>
+        public static string TextSalaryRange {
+            get {
+                return ResourceManager.GetString("TextSalaryRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List of report from trainer.
         /// </summary>
         public static string TitleDescriptionList {
@@ -426,6 +561,15 @@ namespace Language {
         public static string ValidRequiredVenue {
             get {
                 return ResourceManager.GetString("ValidRequiredVenue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Time must greater or equal Start Time.
+        /// </summary>
+        public static string ValidStartEndTime {
+            get {
+                return ResourceManager.GetString("ValidStartEndTime", resourceCulture);
             }
         }
     }

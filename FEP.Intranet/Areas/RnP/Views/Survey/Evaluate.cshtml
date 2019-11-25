@@ -437,11 +437,11 @@
                                 <p class="small text-muted">@item.ApprovalDate.ToString("dd/MM/yyyy")<span class="fl-right">@item.ApprovalDate.ToString("hh:mm tt")</span></p>
                                 @if (item.Status == SurveyApprovalStatus.Approved)
                                 {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Approval Result<br>- <span class="color-green">Approved</span></p>
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><!--:Designation: -->Approval Result<br>- <span class="color-green">Approved</span></p>
                                 }
                                 else
                                 {
-                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br>:Designation: Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
+                                    <p class="small"><span class="card__author-name color-darkblue">@item.UserName</span><br><!--:Designation: -->Approval Result<br>- <span class="color-yellow">Require Amendment</span></p>
                                 }
                                 <p class="small"><strong>Remarks:</strong> <em>@item.Remarks</em></p>
                             </div>

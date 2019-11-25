@@ -46,6 +46,36 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Survey.Designer.cs">
+      <DependentUpon>Survey.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Publication.Designer.cs">
+      <DependentUpon>Publication.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="KMCCategory.Designer.cs">
+      <DependentUpon>KMCCategory.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="KMC.Designer.cs">
+      <DependentUpon>KMC.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="eLearning\CourseDiscussion.my.Designer.cs">
+      <DependentUpon>CourseDiscussion.my.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="eLearning\CourseGroup.my.Designer.cs">
+      <DependentUpon>CourseGroup.my.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="RnPForm.Designer.cs">
       <DependentUpon>RnPForm.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -90,6 +120,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Course.resx</DependentUpon>
+    </Compile>
+    <Compile Include="eLearning\CourseGroup.Designer.cs">
+      <DependentUpon>CourseGroup.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="eLearning\CourseDiscussion.Designer.cs">
+      <DependentUpon>CourseDiscussion.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="eLearning\Enum.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -218,6 +258,30 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DutyRoster.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Survey.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Survey.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Publication.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Publication.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KMCCategory.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>KMCCategory.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KMC.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>KMC.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="eLearning\CourseDiscussion.my.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CourseDiscussion.my.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="eLearning\CourseGroup.my.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CourseGroup.my.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="RnPForm.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RnPForm.Designer.cs</LastGenOutput>
@@ -269,6 +333,14 @@
     <EmbeddedResource Include="eLearning\Course.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Course.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="eLearning\CourseGroup.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CourseGroup.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="eLearning\CourseDiscussion.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CourseDiscussion.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="eLearning\Enum.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

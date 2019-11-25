@@ -30,7 +30,15 @@
                         render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
-                    },
+					},
+					{
+                        data: 'RefNo',
+                        sortable: true
+					},
+					 {
+                        data: 'BranchName',
+                        sortable: true
+					},
                     {
                         data: 'EventName',
                         sortable: true
@@ -73,7 +81,41 @@
                     {
                         data: 'ExhibitionStatusDesc',
                         sortable: false,
-
+						render: function (data, type, row, meta) {
+						 if (row.ExhibitionStatus == 0) {
+                                return "<span class='color-blue font-weight-bold'> Draft </span>";
+                            }
+                            else if (row.ExhibitionStatus == 1) {
+                                return "<span class='color-primary font-weight-bold'> Pending Verification </span>";
+                            }
+                            else if (row.ExhibitionStatus == 2) {
+                                return "<span class='color-primary font-weight-bold'> Pending Approval 1 </span>";
+                            }
+                            else if (row.ExhibitionStatus == 3) {
+                                return "<span class='color-yellow font-weight-bold'> Require Amendment </span>";
+                            }
+                            else if (row.ExhibitionStatus == 4) {
+                                return "<span class='color-primary font-weight-bold'> Pending Approval 2 </span>";
+                            }
+                            else if (row.ExhibitionStatus == 5) {
+                                return "<span class='color-primary font-weight-bold'> Pending Approval 3 </span>";
+                            }
+                            else if (row.ExhibitionStatus == 6) {
+                                return "<span class='color-green font-weight-bold'> Approved </span>";
+							}
+							else if (row.ExhibitionStatus == 11) {
+                                return "<span class='color-green font-weight-bold'> Participation Accepted </span>";
+							}
+							else if (row.ExhibitionStatus == 12) {
+                                return "<span class='color-red font-weight-bold'> Participation Declined </span>";
+						    }
+							 else if (row.ExhibitionStatus == 13) {
+                                return "<span class='color-primary font-weight-bold'> Nominees Invited </span>";
+							}
+							 else if (row.ExhibitionStatus == null) { //column status tak boleh null value
+                                return "<span class='color-blue font-weight-bold'> N/A </span>";
+                            }
+						}
                     },
                     {
                         sortable: false,
@@ -82,10 +124,18 @@
                             var action = "";
 
 							action = '<div class="icon-action">'
-							action +=   '<a href="@Url.Action("Details", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
-							 action += '<a href="@Url.Action("Edit", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
-							 action += '<a href="@Url.Action("Delete", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
-							 action += '</div>';
+
+							if (row.ExhibitionStatus == 0) {
+								action += '<a href="@Url.Action("Details", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+									action += '<a href="@Url.Action("Edit", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+									action += '<a href="@Url.Action("Delete", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+								} else if (row.ExhibitionStatus == 3) {
+								action += '<a href="@Url.Action("Details", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+									action += '<a href="@Url.Action("Edit", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+								} else {
+								action += '<a href="@Url.Action("Details", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+							}
+								action += '</div>';
 
                             return action;
                         }
@@ -218,13 +268,18 @@
 			</span>
 		</div>
 		<div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-		<div><a href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
+		@if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD))
+		{
+			<div><a href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
+		}
 	</div>
 	<!-- Table -->
-	<table class="table tableStyle1 tabledata">
+	<table class="table tableStyle1 tabledata table-responsive-xs-plus">
 		<thead>
 			<tr>
 				<th>#</th>
+				<th>@Html.DisplayNameFor(model => model.List.RefNo)</th>
+				<th>@Html.DisplayNameFor(model => model.List.BranchName)</th>
 				<th>@Html.DisplayNameFor(model => model.List.EventName)</th>
 				<th>@Html.DisplayNameFor(model => model.List.Organiser)</th>
 				<th>@Html.DisplayNameFor(model => model.List.StartDate)</th>

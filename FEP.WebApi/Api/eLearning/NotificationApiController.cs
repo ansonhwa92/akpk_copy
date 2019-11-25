@@ -72,6 +72,23 @@ namespace FEP.WebApi.Api.eLearning
                             receivers = await GetUserIds(UserAccess.CourseCreate);
                             break;
 
+                        case NotificationType.Course_Assigned_To_Facilitator:
+
+                            //get trainer assigned to the course
+                            receivers = model.Receivers;
+                            break;
+
+                        case NotificationType.Course_Student_Enrolled:
+
+                            // receivers - all trainer for that course
+                            receivers = await GetCourseTrainers(model.Id);
+
+                            // get student name
+                            var user = await db.User.FindAsync(model.LearnerUserId);
+                            model.ParameterListToSend.LearnerName = user != null ? user.Name : "";
+
+                            break;
+
                         default:
                             break;
                     }
@@ -167,7 +184,7 @@ namespace FEP.WebApi.Api.eLearning
 
                     var response = result as OkNegotiatedContentResult<ReminderResponse>;
 
-                    if(response == null)
+                    if (response == null)
                     {
                         var log = new ErrorLog
                         {
@@ -202,7 +219,7 @@ namespace FEP.WebApi.Api.eLearning
                 db.SaveChanges();
             }
 
-            return BadRequest();
+            return Ok();
         }
 
         private async Task<List<int>> GetUserIds(UserAccess userAccess)
@@ -221,6 +238,28 @@ namespace FEP.WebApi.Api.eLearning
 
                     if (user != null && user.UserAccount.IsEnable)
                         ids.Add(user.Id);
+                }
+            }
+
+            return ids.Distinct().ToList();
+        }
+
+        private async Task<List<int>> GetCourseTrainers(int courseId)
+        {
+            List<int> ids = new List<int>();
+
+            var courseTrainers = db.TrainerCourses.Where(x => x.CourseId == courseId);
+            {
+                foreach (var trainer in courseTrainers)
+                {
+                    var userId = trainer.Trainer.UserId;
+
+                    var user = await db.User.FirstOrDefaultAsync(x => x.Display == true && x.Id == userId);
+
+                    if (user != null && user.UserAccount.IsEnable)
+                    {
+                        ids.Add(user.Id);
+                    }
                 }
             }
 

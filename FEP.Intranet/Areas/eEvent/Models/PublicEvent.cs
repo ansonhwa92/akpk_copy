@@ -14,26 +14,66 @@ namespace FEP.Intranet.Areas.eEvent.Models
 	{
 		public PublicEventModel() { }
 		[Required(ErrorMessage = "Please Insert Event Title")]
-		[Display(Name = "Event Title")]
+		[Display(Name = "PubEventTitle", ResourceType = typeof(Language.Event))]
 		public string EventTitle { get; set; }
 
 		[Required(ErrorMessage = "Please Insert Event Objective")]
-		[Display(Name = "Event Objective")]
+		[Display(Name = "PubEventObjective", ResourceType = typeof(Language.Event))]
 		public string EventObjective { get; set; }
 
-		
-
 		[Required(ErrorMessage = "Please Insert Event Venue")]
-		[Display(Name = "Event Venue")]
+		[Display(Name = "PubEventVenue", ResourceType = typeof(Language.Event))]
 		public string Venue { get; set; }
 
-		[Required(ErrorMessage = "Please Insert Event Fee")]
-		[Display(Name = "Event Fee (RM) per Person")]
-		public float? Fee { get; set; }
+
+		//-----------individual------------//
+		[Display(Name = "PubEventIndividualFree", ResourceType = typeof(Language.Event))]
+		public bool FreeIndividual { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? IndividualFee { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? IndividualEarlyBird { get; set; }
+
+		//-----individual w/ paper------------//
+		[Display(Name = "PubEventIndividualPaperFree", ResourceType = typeof(Language.Event))]
+		public bool FreeIndividualPaper { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? IndividualPaperFee { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? IndividualPaperEarlyBird { get; set; }
+
+		//----individual w/ paper to present----//
+		[Display(Name = "PubEventIndividualPresentFree", ResourceType = typeof(Language.Event))]
+		public bool FreeIndividualPresent { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? IndividualPresentFee { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? IndividualPresentEarlyBird { get; set; }
+
+		//--------------agency------------//
+		[Display(Name = "PubEventAgencyFree", ResourceType = typeof(Language.Event))]
+		public bool FreeAgency { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? AgencyFee { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+		public float? AgencyEarlyBird { get; set; }
+
+
+		//[Required(ErrorMessage = "Please Insert Event Fee")]
+		//[Display(Name = "Event Fee (RM) per Person")]
+		//public float? Fee { get; set; }
 
 		[Required(ErrorMessage = "Please Insert No of Participant")]
-		[Display(Name = "No. of Participant")]
 		[RegularExpression("([1-9][0-9]*)")]
+		[Display(Name = "PubEventParticipantAllowed", ResourceType = typeof(Language.Event))]
 		public int? ParticipantAllowed { get; set; }
 
 		[Required(ErrorMessage = "Please Select Targeted Group")]
@@ -86,6 +126,25 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string origin { get; set; }
 		public string RefNo { get; set; }
 
+
+
+		[Display(Name = "PubEventLabelParticipantType", ResourceType = typeof(Language.Event))]
+		public string LabelParticipantType { get; set; }
+		[Display(Name = "PubEventLabelFree", ResourceType = typeof(Language.Event))]
+		public string LabelFree { get; set; }
+		[Display(Name = "PubEventLabelNormalFee", ResourceType = typeof(Language.Event))]
+		public string LabelNormalFee { get; set; }
+		[Display(Name = "PubEventLabelEarlyBirdFee", ResourceType = typeof(Language.Event))]
+		public string LabelEarlyBirdFee { get; set; }
+
+		[Display(Name = "PubEventLabelIndividual", ResourceType = typeof(Language.Event))]
+		public string LabelIndividual { get; set; }
+		[Display(Name = "PubEventLabelIndividualPaper", ResourceType = typeof(Language.Event))]
+		public string LabelIndividualPaper { get; set; }
+		[Display(Name = "PubEventLabelIndividualPresent", ResourceType = typeof(Language.Event))]
+		public string LabelIndividualPresent { get; set; }
+		[Display(Name = "PubEventLabelAgency", ResourceType = typeof(Language.Event))]
+		public string LabelAgency { get; set; }
 	}
 
 	public class CreatePublicEventModel : PublicEventModel
@@ -109,8 +168,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Required(ErrorMessage = "Please Insert End Date")]
 		[Display(Name = "End Date")]
 		public DateTime? EndDate { get; set; }
-
-        public string TentativeScript { get; set; }
 	}
 
 	public class EditPublicEventModel : PublicEventModel
@@ -132,14 +189,14 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Required(ErrorMessage = "Please Insert Start Date")]
 		[Display(Name = "Start Date")]
+		[DataType(DataType.Date)]
 		public DateTime? StartDate { get; set; }
 
 		[Required(ErrorMessage = "Please Insert End Date")]
 		[Display(Name = "End Date")]
+		[DataType(DataType.Date)]
 		public DateTime? EndDate { get; set; }
-
-        public string TentativeScript { get; set; }
-    }
+	}
 
 	public class DetailsPublicEventModel : PublicEventModel
 	{
@@ -165,9 +222,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "End Date")]
 		[DataType(DataType.Date)]
 		public DateTime? EndDate { get; set; }
-
-        public string TentativeScript { get; set; }
-    }
+	}
 
 	public class DeletePublicEventModel : DetailsPublicEventModel
 	{
@@ -218,7 +273,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "Status")]
 		public EventStatus? EventStatus { get; set; }
 	}
-
 	public class EventRequestModel
 	{
 		public EventRequestModel()

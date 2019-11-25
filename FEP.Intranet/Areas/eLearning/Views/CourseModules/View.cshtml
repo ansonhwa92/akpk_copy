@@ -84,89 +84,11 @@
                     <p id="afterObj"></p>
                 </div>
                 <hr />
-                <div>
-
-                    <!----START CONTENT -->
-                    @*<div id="draggable-content">
-                        @{
-
-                            var contents = Model.ModuleContents
-                                .OrderBy(x => x.Order).ToList();
-
-                            for (int i = 0; i < contents.Count(); i++)
-                            {
-                                var content = contents[i];
-
-                                var icon = "la-file-text";
-                                var title = content.ContentType;
-
-                                <div class="content-box" data-id="@content.Id" onclick="openContent(@content.Id)">
-
-                                    @switch (content.ContentType)
-                                    {
-                                        case CourseContentType.RichText:
-                                            icon = "la-file-text";
-                                            break;
-
-                                        case CourseContentType.Video:
-                                            icon = "la-youtube-play";
-
-                                            break;
-
-                                        case CourseContentType.IFrame:
-                                            icon = "la-paperclip";
-
-                                            break;
-
-                                        case CourseContentType.Document:
-                                            icon = "la-file-word-o";
-
-                                            break;
-
-                                        case CourseContentType.Audio:
-
-                                            icon = "la-file-audio-o";
-
-                                            break;
-                                        case CourseContentType.Test:
-
-                                            icon = "la-question-circle";
-
-                                            break;
-                                        case CourseContentType.Assignment:
-
-                                            icon = "la-list-alt";
-
-                                            break;
-
-                                        case CourseContentType.Flash:
-
-                                            icon = "la-flash";
-
-                                            break;
-                                        default:
-                                            icon = "la-file-text";
-                                            break;
-
-                                    }
-
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <div class="pr-3"><i class="la @icon la-2x" data-toggle="tooltip" title=@title></i><span class="pb-1">@content.Title</span></div>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                </div>
-
-                            }
-                        }
-                    </div>*@
-                </div>
             </div>
         </div>
         <div class="border-left border-right border-bottom p-3 rounded-bottom">
 
-            <a class="btn btn-default" href="~/eLearning/Courses/Content/@Model.CourseId" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
+            <a class="btn btn-default" href="~/eLearning/Courses/View/@Model.CourseId" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
 
             <a class="btn btn-default pull-right" href="~/eLearning/CourseModules/Start/@Model.Id" data-toggle="tooltip" data-placement="top" title="Next">@Language.eLearning.Course.Next</a>
         </div>

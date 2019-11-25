@@ -10,20 +10,20 @@
 		<div class="title-header-container">
 			<div class="container">
 				<!-- if have button -->
-				<div class="header-col-right float-right mt-5"><a href="~/RnP/Home" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+				<div class="header-col-right float-right mt-5"><a href="@Url.Action("Index", "Home", new { area = "RnP"})" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a></div>
 				<div class="header-col-left">
 					<div id="breadcrumb">
 						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="~/Home">Home</a></li>
-								<li class="breadcrumb-item"><a href="~/RnP/Home">Research & Publication</a></li>
-								<li class="breadcrumb-item"><a href="#">Survey</a></li>
-								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
-							</ol>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = ""})">@Language.Survey.BreadcrumbHome</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "RnP"})">@Language.Survey.BreadcrumbRnP</a></li>
+                                <li class="breadcrumb-item"><a href="#">@Language.Survey.BreadcrumbSurveys</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
 						</nav>
 					</div>
-					<h1 class="page-title text-white">List of Surveys</h1>
-					<div class="header-text">Create, edit, delete and manage surveys.</div>
+                    <h1 class="page-title text-white">@Language.Survey.IndexTitle</h1>
+                    <div class="header-text">@Language.Survey.IndexDescription</div>
 				</div>
 			</div>
 		</div>
@@ -32,9 +32,9 @@
 
 <div class="d-flex align-items-center">
 	<div class="filter dropdown">
-		<button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+        <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>@Language.Survey.LabelFilters</button>
 		<div class="dropdown-menu">
-			<div class="filter-head">Filters</div>
+            <div class="filter-head">@Language.Survey.LabelFilters</div>
 			<div class="filter-body">
 				<!--
 				<div class="sorting-wrap">
@@ -61,7 +61,7 @@
 					</div>
 				</div>
 				<div>
-					<button id="btnSearch" class="btn btn-secondary">Search</button>
+                    <button id="btnSearch" class="btn btn-secondary">@Language.Survey.ButtonSearch</button>
 				</div>
 			</div>
 		</div>
@@ -90,7 +90,7 @@
 			</span>
 		</div>
 		<div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-		<div><a href="@Url.Action("SelectType", "Survey", new { area = "RnP" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Survey</a></div>
+		<div><a href="@Url.Action("SelectType", "Survey", new { area = "RnP" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>@Language.Survey.ButtonCreateSurvey</a></div>
 	</div>
 	<!-- Table -->
 	<table class="table tableStyle1 tabledata">
@@ -100,11 +100,11 @@
                 <th>@Html.DisplayNameFor(model => model.Surveys.RefNo)</th>
                 <th>@Html.DisplayNameFor(model => model.Surveys.Title)</th>
                 <th>@Html.DisplayNameFor(model => model.Surveys.Type)</th>
-                <th>Duration</th>
-                <th>Response</th>
+                <th>@Language.Survey.LabelDuration</th>
+                <th>@Language.Survey.LabelResponse</th>
                 <!--<th>@*Html.DisplayNameFor(model => model.Surveys.Active)*@</th>-->
                 <th>@Html.DisplayNameFor(model => model.Surveys.Status)</th>
-                <th>Action</th>
+                <th>@Language.Survey.LabelAction</th>
             </tr>
 		</thead>
 	</table>

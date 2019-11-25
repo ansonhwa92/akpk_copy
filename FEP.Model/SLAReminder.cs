@@ -126,6 +126,8 @@ namespace FEP.Model
 		ApproveExhibitionRoadshowDutyRoster,
 		[Display(Name = "Reject Exhibition Roadshow - Duty Roster")]
 		RejectExhibitionRoadshowDutyRoster,
+		[Display(Name = "Reject Exhibition Roadshow - Duty Roster")]
+		SendInvitationToNominees,
 
 		[Display(Name = "Submit Media Interview")]
 		SubmitMediaInterview,
@@ -135,6 +137,11 @@ namespace FEP.Model
 		ApproveMediaInterview,
 		[Display(Name = "Reject Media Interview")]
 		RejectMediaInterview,
+
+		[Display(Name = "Media Interview - Representative Available")]
+		RepAvailable_MediaInterview,
+		[Display(Name = "Media Interview - Representative Not Available")]
+		RepNotAvailable_MediaInterview,
 
 		[Display(Name = "Submit Cancellation?mofication Request")]
 		SubmitCancellationModificationRequest,

@@ -15,12 +15,14 @@ namespace FEP.WebApiModel.eLearning
     public class CertificatesModel
     {
         public int courseId { get; set; }
+        public int CourseCertificateId { get; set; }
+        public int CourseCertificateTemplateId { get; set; }
         public int selectedBackground { get; set; }
         public int selectedTemplate { get; set; }
         public ICollection<CourseCertificateTemplate> Template { get; set; }
         public ICollection<CourseCertificate> Background { get; set; }
 
-        public Course Course { get; set; }
+        //public Course Course { get; set; }
     }
 
     //BACKGROUND
@@ -67,5 +69,26 @@ namespace FEP.WebApiModel.eLearning
         {
             this.Template = template;
         }
+    }
+
+    public class ReviewCertificateModel
+    {
+        public int CourseId { get; set; }
+        public CourseCertificate Background { get; set; }
+        public CourseCertificateTemplate Template { get; set; }
+
+    }
+
+
+    public class ViewCertificateModel
+    {
+        public int CourseId { get; set; }
+        public string CourseName { get; set; }
+        public EnrollmentStatus EnrollmentStatus { get; set; }
+        public string DateCompleted { get; set; }
+        public string StudentName { get; set; }
+        public CourseCertificate Background { get; set; }
+        public CourseCertificateTemplate Template { get; set; }
+
     }
 }

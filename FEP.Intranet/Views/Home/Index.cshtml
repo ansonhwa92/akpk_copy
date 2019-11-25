@@ -13,11 +13,52 @@
 
 }
 
-<section id="intro">
-    <div class="intro-container wow fadeInUp">
-        <h1>Your financial well-being is <span class="color-primary">our concern</span></h1>
-        <p>We're a nonprofit with the mission to provide a free, world class education for anyone, anywhere.</p>
-        <div class="mt-4"><a class="btn btn-outline-secondary">Tell Me More</a> <a class="btn btn-outline-default"><span class="pr-2"><i class="la la-play-circle"></i></span> Watch Video</a></div>
+<section id="mainbanner">
+    <!-- Start banner slider -->
+    <div id="mainbannerslider" class="carousel slide carousel-fade" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100" src="@Url.Content("~/img/banner/akpk-bnr-01.jpg")" alt="First slide">
+                <div class="carousel-caption text-center intro-container d-none d-md-block pt-5 wow fadeInUp">
+                    <h1>Your financial well-being is <span class="color-primary">our concern</span></h1>
+                    <p>We're a nonprofit with the mission to provide a free, world class education for anyone, anywhere.</p>
+                    <div class="mt-4">
+                        <a class="btn btn-outline-secondary mr-2" href="#">Tell Me More</a>
+                        <a class="btn btn-link" href="#"><i class="la la-play-circle font-icon"></i> Watch Video</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="@Url.Content("~/img/banner/akpk-bnr-rumahku.jpg")" alt="Second slide">
+                <div class="carousel-caption text-left intro-container d-none d-md-block wow fadeInUp">
+                    <h1>RUMAHKU</h1>
+                    <p class="mxw-500">Learn the mechanics of buying a house. This course caters to all Malaysian home buyers—especially first-time home buyers who qualify for Bank Negara Malaysia’s Fund for Affordable Homes.</p>
+                    <div class="mt-4">
+                        <a class="btn btn-secondary mr-2" href="#">Enroll Now</a>
+                        <a class="btn btn-outline-default" href="#">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="@Url.Content("~/img/banner/akpk-bnr-03.png")" alt="third slide">
+                <div class="carousel-caption text-left intro-container d-none d-md-block wow fadeInUp">
+                    <h1 class="mxw-500">URUSKAN ALIRAN TUNAI ANDA</h1>
+                    <p class="mxw-500">Kursus ini akan membuka minda anda tentang pengurusan kewangan, anda akan belajar bagaimana menguruskan kewangan dengan baik dan membuat keputusan dengan bijak dan berhemat.</p>
+                    <div class="mt-4">
+                        <a class="btn btn-secondary mr-2" href="#">Daftar Sekarang</a>
+                        <a class="btn btn-outline-default" href="#">Lebih Lanjut</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#mainbannerslider" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#mainbannerslider" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
 </section>
 <main id="main">
@@ -73,7 +114,7 @@
                     <div class="box-item">
                         <a href="#"></a>
                         <div class="box-container">
-                            <img src="img/about-us/icon-mission.svg" alt="image">
+                            <img src="@Url.Content("~/img/about-us/icon-mission.svg")" alt="image">
                             <p>OUR MISSION</p>
                         </div>
                     </div>
@@ -82,7 +123,7 @@
                     <div class="box-item">
                         <a href="#"></a>
                         <div class="box-container">
-                            <img src="img/about-us/icon-vision.svg" alt="image">
+                            <img src="@Url.Content("~/img/about-us/icon-vision.svg")" alt="image">
                             <p>OUR VISION</p>
                         </div>
                     </div>
@@ -91,7 +132,7 @@
                     <div class="box-item">
                         <a href="#"></a>
                         <div class="box-container">
-                            <img src="img/about-us/icon-story.svg" alt="image">
+                            <img src="@Url.Content("~/img/about-us/icon-story.svg")" alt="image">
                             <p>OUR STORY</p>
                         </div>
                     </div>
@@ -100,7 +141,7 @@
                     <div class="box-item">
                         <a href="#"></a>
                         <div class="box-container">
-                            <img src="img/about-us/icon-establishment.svg" alt="image">
+                            <img src="@Url.Content("~/img/about-us/icon-establishment.svg")" alt="image">
                             <p>OUR ESTABLISHMENT</p>
                         </div>
                     </div>
@@ -124,7 +165,7 @@
                 <div class="item row wow fadeInUp">
                     <div class="col-lg-5 col-md-12">
                         <div class="item__left pr-3">
-                            <img class="item__left__image" src="img/services/icon-fe.svg" alt="image">
+                            <img class="item__left__image" src="@Url.Content("~/img/services/icon-fe.svg")" alt="image">
                             <h2 class="item__left__title color-darkblue">Financial Education</h2>
                             <p class="item__left__content">
                                 AKPK provides financial education materials on the proper use of credit and basic money management as
@@ -135,24 +176,24 @@
                     </div>
                     <div class="col-lg-7 col-md-12">
                         <div class="item__right">
-                            <div class="item__right__image-left"><img class="item__right__image" src="img/03.png" alt="image"></div>
-                            <div class="item__right__image-right rellax" data-rellax-speed="4"><img class="item__right__image" src="img/04.png" alt="image"></div>
+                            <div class="item__right__image-left"><img class="item__right__image" src="@Url.Content("~/img/03.png")" alt="image"></div>
+                            <div class="item__right__image-right rellax" data-rellax-speed="4"><img class="item__right__image" src="@Url.Content("~/img/04.png")" alt="image"></div>
                         </div>
                     </div>
                 </div>
                 <div class="item row wow fadeInUp">
                     <div class="col-lg-7 col-md-12">
                         <div class="item__right">
-                            <div class="item__right__image-left"><img class="item__right__image" src="img/05.png" alt="image"></div>
-                            <div class="item__right__image-right rellax" data-rellax-speed="2"><img class="item__right__image" src="img/06.png" alt=""></div>
+                            <div class="item__right__image-left"><img class="item__right__image" src="@Url.Content("~/img/05.png")" alt="image"></div>
+                            <div class="item__right__image-right rellax" data-rellax-speed="2"><img class="item__right__image" src="@Url.Content("~/img/06.png")" alt=""></div>
                         </div>
                     </div>
                     <div class="col-lg-5 col-md-12">
                         <div class="item__left pl-3">
-                            <img class="item__left__image" src="img/services/icon-fc.svg" alt="image">
+                            <img class="item__left__image" src="@Url.Content("~/img/services/icon-fc.svg")" alt="image">
                             <h2 class="item__left__title color-darkblue">Financial Counselling</h2>
                             <p class="item__left__content">
-                                AKPK offers counselling and advice on managing ypur financial wisely - from budgeting, money management and credit related issues.
+                                AKPK offers counselling and advice on managing your financial wisely - from budgeting, money management and credit related issues.
                             </p>
                             <p><a href="#" class="btn btn-rounded btn-info text-white">READ MORE <span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
                         </div>
@@ -161,7 +202,7 @@
                 <div class="item row wow fadeInUp">
                     <div class="col-lg-5 col-md-12">
                         <div class="item__left pr-3">
-                            <img class="item__left__image" src="img/services/icon-dmp.svg" alt="image">
+                            <img class="item__left__image" src="@Url.Content("~/img/services/icon-dmp.svg")" alt="image">
                             <h2 class="item__left__title color-darkblue">Debt Management Programme</h2>
                             <p class="item__left__content">
                                 Our counsellors will work with you to develop a personalised debt repayment plan in consultation
@@ -172,8 +213,8 @@
                     </div>
                     <div class="col-lg-7 col-md-12">
                         <div class="item__right">
-                            <div class="item__right__image-left-3 rellax" data-rellax-speed="4"><img class="item__right__image" src="img/07.png" alt=""></div>
-                            <div class="item__right__image-right-3"><img class="item__right__image" src="img/13.png" alt="image"></div>
+                            <div class="item__right__image-left-3 rellax" data-rellax-speed="4"><img class="item__right__image" src="@Url.Content("~/img/07.png")" alt=""></div>
+                            <div class="item__right__image-right-3"><img class="item__right__image" src="@Url.Content("~/img/13.png")" alt="image"></div>
                         </div>
                     </div>
                 </div>
@@ -289,7 +330,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="counter-icon-number">
                             <div class="counter-icon">
-                                <img src="img/stats/icon-stats-event.svg" alt="image">
+                                <img src="@Url.Content("~/img/stats/icon-stats-event.svg")" alt="image">
                             </div>
                             <div class="counter-number">
                                 <span class="counter-count" data-to="1300">1300</span>
@@ -301,7 +342,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="counter-icon-number">
                             <div class="counter-icon">
-                                <img src="img/stats/icon-stats-rnp.svg" alt="image">
+                                <img src="@Url.Content("~/img/stats/icon-stats-rnp.svg")" alt="image">
                             </div>
                             <div class="counter-number">
                                 <span class="counter-count" data-to="323">323</span><span>+</span>
@@ -313,7 +354,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="counter-icon-number">
                             <div class="counter-icon">
-                                <img src="img/stats/icon-stats-course.svg" alt="image">
+                                <img src="@Url.Content("~/img/stats/icon-stats-course.svg")" alt="image">
                             </div>
                             <div class="counter-number">
                                 <span class="counter-count" data-to="845">845</span>
@@ -325,7 +366,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="counter-icon-number">
                             <div class="counter-icon">
-                                <img src="img/stats/icon-stats-enrolled.svg" alt="image">
+                                <img src="@Url.Content("~/img/stats/icon-stats-enrolled.svg")" alt="image">
                             </div>
                             <div class="counter-number">
                                 <span class="counter-count" data-to="6579">6579</span>
@@ -353,7 +394,7 @@
                         <div class="card__wrapper">
                             <div class="card__top">
                                 <div class="card__top__wapper">
-                                    <img class="card__top__image" src="img/cover-1.jpg" alt="image">
+                                    <img class="card__top__image" src="@Url.Content("~/img/cover-1.jpg")" alt="image">
                                     <div class="share-wrap">
                                         <div class="share-button sharer">
                                             <span class="share-icon">
@@ -371,7 +412,7 @@
                             <div class="card__body">
                                 <a class="card__title" href="#">Uruskan Aliran Tunai Anda: Simpan, Simpan, Simpan</a>
                                 <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/8.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
                                 </div>
                                 <div class="card__text">Menabung satu jumlah setiap hari, contohnya RM 1 setiap hari.</div>
                                 <div class="card__info">
@@ -390,7 +431,7 @@
                         <div class="card__wrapper">
                             <div class="card__top">
                                 <div class="card__top__wapper">
-                                    <img class="card__top__image" src="img/cover-2.jpg" alt="image">
+                                    <img class="card__top__image" src="@Url.Content("~/img/cover-2.jpg")" alt="image">
                                     <div class="share-wrap">
                                         <div class="share-button sharer">
                                             <span class="share-icon">
@@ -406,7 +447,7 @@
                             <div class="card__body">
                                 <a class="card__title" href="#">The Complete Foundation Stock Trading</a>
                                 <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Mu'adz Zulkifli</span></span></a>
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/47.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Mu'adz Zulkifli</span></span></a>
                                 </div>
                                 <div class="card__text">Learn to trade the stock market by a trading firm CEO.</div>
                                 <div class="card__info">
@@ -425,7 +466,7 @@
                         <div class="card__wrapper">
                             <div class="card__top">
                                 <div class="card__top__wapper">
-                                    <img class="card__top__image" src="img/cover-3.jpg" alt="image">
+                                    <img class="card__top__image" src="@Url.Content("~/img/cover-3.jpg")" alt="image">
                                     <div class="share-wrap">
                                         <div class="share-button sharer">
                                             <span class="share-icon">
@@ -441,7 +482,7 @@
                             <div class="card__body">
                                 <a class="card__title" href="#">The Complete Financial Analyst Training & Investing</a>
                                 <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/68.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Noorhaliza Abu Bakar</span></span></a>
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/68.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Noorhaliza Abu Bakar</span></span></a>
                                 </div>
                                 <div class="card__text">Succeed as a Financial Analyst & Investor by Award Winning MBA.</div>
                                 <div class="card__info">
@@ -460,7 +501,7 @@
                         <div class="card__wrapper">
                             <div class="card__top">
                                 <div class="courses__top__wapper">
-                                    <img class="card__top__image" src="img/cover-4.jpg" alt="image">
+                                    <img class="card__top__image" src="@Url.Content("~/img/cover-4.jpg")" alt="image">
                                     <div class="share-wrap">
                                         <div class="share-button sharer">
                                             <span class="share-icon">
@@ -476,7 +517,7 @@
                             <div class="card__body">
                                 <a class="card__title" href="#">Uruskan Aliran Tunai Anda: Simpan, Simpan, Simpan</a>
                                 <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/2.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
                                 </div>
                                 <div class="card__text">Menabung satu jumlah setiap hari, contohnya RM 1 setiap hari.</div>
                                 <div class="card__info">
@@ -510,7 +551,7 @@
                                 <div class="instructor-container element_instructor1">
                                     <div class="element_column">
                                         <div class="element_instructor">
-                                            <img src="img/lect-01.jpg" alt="image">
+                                            <img src="@Url.Content("~/img/lect-01.jpg")" alt="image">
                                             <div class="instructor-team-details">
                                                 <div class="instructor-team-name">Emma Watson</div>
                                                 <div class="instructor-team-job">AKPK Facilitator</div>
@@ -531,7 +572,7 @@
                                 <div class="instructor-container element_instructor2">
                                     <div class="element_column">
                                         <div class="element_instructor">
-                                            <img src="img/lect-02.jpg" alt="image">
+                                            <img src="@Url.Content("~/img/lect-02.jpg")" alt="image">
                                             <div class="instructor-team-details">
                                                 <div class="instructor-team-name">Abraham Smith</div>
                                                 <div class="instructor-team-job">Teacher</div>
@@ -581,7 +622,7 @@
                     <div class="publications__wrapper wow fadeInUp">
                         <div class="publications_col_left card__top">
                             <div class="card__top__wapper">
-                                <img class="card__top__image" src="img/cover-buku-1.jpg" alt="image">
+                                <img class="card__top__image" src="@Url.Content("~/img/cover-buku-1.jpg")" alt="image">
                                 <div class="share-wrap">
                                     <div class="share-button sharer">
                                         <span class="share-icon">
@@ -597,7 +638,7 @@
                             <div class="card__body">
                                 <a class="card__title" href="#">The Tower & The Cloud:<br /> Higher Education in the Age of Cloud Computing</a>
                                 <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Richard N.Kartz</span></span></a>
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/47.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Richard N.Kartz</span></span></a>
                                 </div>
                                 <div class="card__text">The emergence of the networked information economy is unleashing tow powerful forces.</div>
                                 <div class="card__info">
@@ -615,7 +656,7 @@
                     <div class="publications__wrapper wow fadeInUp" data-wow-delay=".5s">
                         <div class="publications_col_left card__top">
                             <div class="card__top__wapper">
-                                <img class="card__top__image" src="img/cover-buku-2.jpg" alt="image">
+                                <img class="card__top__image" src="@Url.Content("~/img/cover-buku-2.jpg")" alt="image">
                                 <div class="share-wrap">
                                     <div class="share-button sharer">
                                         <span class="share-icon">
@@ -631,7 +672,7 @@
                             <div class="card__body">
                                 <a class="card__title" href="#">Cultivating Careers: <br /> Professional Development for Campus IT</a>
                                 <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Cynthia Golden</span></span></a>
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/8.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Cynthia Golden</span></span></a>
                                 </div>
                                 <div class="card__text">This research provides an overview of current principles and practices for mentoring and developing IT professionals in higher education.</div>
                                 <div class="card__info">
@@ -665,13 +706,13 @@
                         <div class="card__wrapper wow fadeInUp">
                             <div class="card__top">
                                 <div class="card__top__wapper">
-                                    <img class="card__top__image" src="img/cover-5.jpg" alt="image">
+                                    <img class="card__top__image" src="@Url.Content("~/img/cover-5.jpg")" alt="image">
                                 </div>
                             </div>
                             <div class="card__body">
                                 <a class="card__title" href="#">Employee Engagement from A to Z</a>
                                 <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/2.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Angela Jackson</span></span></a>
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/2.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Angela Jackson</span></span></a>
                                 </div>
                                 <div class="card__info">
                                     <ul>
@@ -685,12 +726,12 @@
                         </div>
                         <div class="card__wrapper wow fadeInUp" data-wow-delay=".5s">
                             <div class="card__top">
-                                <div class="card__top__wapper"><img class="card__top__image" src="img/cover-6.jpg" alt="image"></div>
+                                <div class="card__top__wapper"><img class="card__top__image" src="@Url.Content("~/img/cover-6.jpg")" alt="image"></div>
                             </div>
                             <div class="card__body">
                                 <a class="card__title" href="#">Financial Management Excellence Certificate</a>
                                 <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/8.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Norman Bier</span></span></a>
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/8.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Norman Bier</span></span></a>
                                 </div>
                                 <div class="card__info">
                                     <ul>
@@ -704,12 +745,12 @@
                         </div>
                         <div class="card__wrapper wow fadeInUp" data-wow-delay=".7s">
                             <div class="card__top">
-                                <div class="card__top__wapper"><img class="card__top__image" src="img/cover-7.jpg" alt="image"></div>
+                                <div class="card__top__wapper"><img class="card__top__image" src="@Url.Content("~/img/cover-7.jpg")" alt="image"></div>
                             </div>
                             <div class="card__body">
                                 <a class="card__title" href="#">Sales Enablement Leadership & Learning</a>
                                 <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/47.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Antony Awaida</span></span></a>
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/47.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Antony Awaida</span></span></a>
                                 </div>
                                 <div class="card__info">
                                     <ul>
@@ -723,12 +764,12 @@
                         </div>
                         <div class="card__wrapper wow fadeInUp" data-wow-delay=".9s">
                             <div class="card__top">
-                                <div class="card__top__wapper"><img class="card__top__image" src="img/cover-8.jpg" alt="image"></div>
+                                <div class="card__top__wapper"><img class="card__top__image" src="@Url.Content("~/img/cover-8.jpg")" alt="image"></div>
                             </div>
                             <div class="card__body">
                                 <a class="card__title" href="#">AKPK International Conference & Expo</a>
                                 <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="img/68.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Aazman Iskandar</span></span></a>
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/68.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Aazman Iskandar</span></span></a>
                                 </div>
                                 <div class="card__info">
                                     <ul>
@@ -764,7 +805,7 @@
                     <div class="owl-news">
                         <div class="news-wrapper">
                             <div class="news-container">
-                                <img src="img/akpk-news-01.jpg" alt="image">
+                                <img src="@Url.Content("~/img/akpk-news-01.jpg")" alt="image">
                                 <div class="news-details">
                                     <div class="news-title">Video raya AKPK ingatkan kita supaya bayar hutang</div>
                                     <div class="news-info">
@@ -777,7 +818,7 @@
                         </div>
                         <div class="news-wrapper">
                             <div class="news-container">
-                                <img src="img/akpk-news-02.jpg" alt="image">
+                                <img src="@Url.Content("~/img/akpk-news-02.jpg")" alt="image">
                                 <div class="news-details">
                                     <div class="news-title">10 Ciri Yang Ada Pada Semua Rumah Idaman</div>
                                     <div class="news-info">

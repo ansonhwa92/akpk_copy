@@ -122,7 +122,14 @@
 
         </div>
         <div class="border-left border-right border-bottom p-3 rounded-bottom">
-            <a href="@Url.Action("ListAll")" class="btn btn-default mr-2">Back</a>
+            @if (CurrentUser.UserType == UserType.SystemAdmin)
+            {
+                <a href="@Url.Action("ListAll")" class="btn btn-default mr-2">Back</a>
+            }
+            else
+            {
+                <a href="@Url.Action("List")" class="btn btn-default mr-2">Back</a>
+            }
         </div>
     </div>
 

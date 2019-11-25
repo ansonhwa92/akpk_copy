@@ -61,6 +61,42 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assessment Questions.
+        /// </summary>
+        public static string AssessmentContents {
+            get {
+                return ResourceManager.GetString("AssessmentContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assessment Answers.
+        /// </summary>
+        public static string AssessmentResponseContents {
+            get {
+                return ResourceManager.GetString("AssessmentResponseContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback Questions.
+        /// </summary>
+        public static string FeedbackContents {
+            get {
+                return ResourceManager.GetString("FeedbackContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback Responses.
+        /// </summary>
+        public static string FeedbackResponseContents {
+            get {
+                return ResourceManager.GetString("FeedbackResponseContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approval Date.
         /// </summary>
         public static string PubApprovalApprovalDate {
@@ -124,7 +160,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Author Images.
+        ///   Looks up a localized string similar to Author Picture.
         /// </summary>
         public static string PubAuthorPictures {
             get {
@@ -223,11 +259,29 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Digital Publication File.
+        /// </summary>
+        public static string PubDigitalPublication {
+            get {
+                return ResourceManager.GetString("PubDigitalPublication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DMS Path.
         /// </summary>
         public static string PubDmsPath {
             get {
                 return ResourceManager.GetString("PubDmsPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloads.
+        /// </summary>
+        public static string PubDownloadCount {
+            get {
+                return ResourceManager.GetString("PubDownloadCount", resourceCulture);
             }
         }
         
@@ -331,7 +385,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Publication Images.
+        ///   Looks up a localized string similar to Publication Image.
         /// </summary>
         public static string PubPictures {
             get {
@@ -610,7 +664,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Author Images.
+        ///   Looks up a localized string similar to Author Picture.
         /// </summary>
         public static string SurveyAuthorPictures {
             get {
@@ -709,7 +763,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Survey Pictures.
+        ///   Looks up a localized string similar to Survey Picture.
         /// </summary>
         public static string SurveyPictures {
             get {

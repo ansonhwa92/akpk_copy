@@ -1,0 +1,59 @@
+﻿@model DetailsKMCModel
+
+<div class="modal fade">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+
+                @if (Model.IsEditor)
+                {
+                    @Html.Raw(Model.EditorCode)
+                }
+                else
+                {
+
+                    switch (Model.Type)
+                    {
+
+                        case KMCType.Image:
+
+                            <img class="content" src="@Url.Action("GetContent", "Manage", new { area = "KMC", @id = Model.FileId })" />
+
+                            break;
+
+                        case KMCType.Video:
+
+                            <video class="content" controls>
+                                <source src="@Url.Action("GetContent", "Manage", new { area = "KMC", @id = Model.FileId })" type="@Model.FileType">
+                                Your browser does not support html 5.
+                            </video>
+
+                            break;
+
+                        case KMCType.Audio:
+
+                            <audio controls>
+                                <source src="@Url.Action("GetContent", "Manage", new { area = "KMC", @id = Model.FileId })" type="@Model.FileType">                                
+                                Your browser does not support html 5.
+                            </audio>
+
+                            break;
+
+                        default:
+
+                            break;
+
+                    }
+
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

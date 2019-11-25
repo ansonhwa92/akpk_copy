@@ -490,63 +490,63 @@
 
                                 <div class="row">
                                     <div class="form-group col-lg-6">
-                                        @Html.LabelFor(model => model.ParticipationRequirement)
-                                        @Html.EditorFor(model => model.ParticipationRequirement, new { htmlAttributes = new { @class = "form-control", @placeholder = "No. of Participant", @readonly = "readonly" } })
+                                        @Html.LabelFor(model => model.exhibitionroadshow.ParticipationRequirement)
+                                        @Html.EditorFor(model => model.exhibitionroadshow.ParticipationRequirement, new { htmlAttributes = new { @class = "form-control", @placeholder = "No. of Participant", @readonly = "readonly" } })
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        @Html.LabelFor(model => model.ExhibitionStatus)
+                                        @Html.LabelFor(model => model.exhibitionroadshow.ExhibitionStatus)
                                         @*@Html.EditorFor(model => model.ExhibitionStatus, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })*@
-                                        @if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.New)
+                                        @if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.New)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Draft">
                                         }
-                                        else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified)
+                                        else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Verification">
                                         }
-                                        else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.Verified)
+                                        else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.Verified)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 1">
                                         }
-                                        else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.NotVerified)
+                                        else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified /*.NotVerified*/)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Require Amendment">
                                         }
-                                        else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover1)
+                                        else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover1)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 2">
                                         }
-                                        else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover2)
+                                        else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover2)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Pending Approval 3">
                                         }
-                                        else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover3)
+                                        else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover3)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Approved">
                                         }
-                                        else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.AcceptParticipation)
+                                        else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.AcceptParticipation)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Accept Participation">
                                         }
-                                        else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.DeclineParticipation)
+                                        else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.DeclineParticipation)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Decline Participation">
                                         }
 
 
-                                        else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.SubmitVerifyDutyRoster)
+                                        else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.SubmitVerifyDutyRoster)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Decline Participation">
                                         }
-                                        else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.VerifiedDutyRoster)
+                                        else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.VerifiedDutyRoster)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Decline Participation">
                                         }
-                                        else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.NotVerifiedDutyRoster)
+                                        else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified /*NotVerifiedDutyRoster*/)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Decline Participation">
                                         }
-                                        else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApproveDutyRoster)
+                                        else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApproveDutyRoster)
                                         {
                                             <input class="form-control bg-warning-ccd" type="text" readonly="readonly" value="Decline Participation">
                                         }
@@ -556,8 +556,8 @@
 
                                 <div class="row">
                                     <div class="form-group col-lg-12">
-                                        @Html.FEPLabelFor(m => m.NomineeId)
-                                        @Html.ListBoxFor(m => m.NomineeId, Model.Nominees, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled", })
+                                        @Html.FEPLabelFor(m => m.exhibitionroadshow.NomineeId)
+                                        @Html.ListBoxFor(m => m.exhibitionroadshow.NomineeId, Model.exhibitionroadshow.Nominees, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled", })
                                     </div>
                                 </div>
                             </div>
@@ -580,9 +580,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (Model.DutyRoster.dutyRoster != null)
+                                @if (Model.exhibitionroadshow.DutyRoster.dutyRoster != null)
                                 {
-                                    foreach (var item in Model.DutyRoster.dutyRoster)
+                                    foreach (var item in Model.exhibitionroadshow.DutyRoster.dutyRoster)
                                     {
                                         <tr>
                                             <td>@item.date</td>

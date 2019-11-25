@@ -150,7 +150,8 @@ namespace FEP.Model
         public DbSet<PublicEvent> PublicEvent { get; set; } 
 		public DbSet<EventCalendar> EventCalendar { get; set; }
 		public DbSet<EventAgenda> EventAgenda { get; set; }
-		public DbSet<EventSpeaker> EventSpeaker { get; set; }
+        public DbSet<AgendaScript> AgendaScript { get; set; }
+        public DbSet<EventSpeaker> EventSpeaker { get; set; }
 		public DbSet<EventBooking> EventBooking { get; set; }
 		public DbSet<InvitationEvent> InvitationEvent { get; set; }
 		public DbSet<EventMediaInterviewRequest> EventMediaInterviewRequest { get; set; }

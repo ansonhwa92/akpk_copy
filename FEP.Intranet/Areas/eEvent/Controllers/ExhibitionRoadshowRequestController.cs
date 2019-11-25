@@ -79,6 +79,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				BranchName = exapproval.exhibitionroadshow.BranchName,
 				ContactNo = exapproval.exhibitionroadshow.ContactNo,
 				RefNo = exapproval.exhibitionroadshow.RefNo,
+                DutyRoster = exapproval.exhibitionroadshow.DutyRoster
 			};
 
 			var approval = new ApprovalModel

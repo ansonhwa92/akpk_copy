@@ -180,7 +180,9 @@ namespace FEP.WebApiModel.PublicEvent
 		[Display(Name = "PubEventLabelAgency", ResourceType = typeof(Language.Event))]
 		public string LabelAgency { get; set; }
 
-	}
+        public string tentativeScript { get; set; }
+
+    }
 
 
 	public class DetailsPublicEventModel : PublicEventModel

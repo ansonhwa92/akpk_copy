@@ -99,7 +99,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				ExternalExhibitorId = pubapproval.publicevent.ExternalExhibitorId,
 				CreatedByName = pubapproval.publicevent.CreatedByName,
 				CreatedDate = pubapproval.publicevent.CreatedDate,
-			};
+
+                tentativeScript = pubapproval.publicevent.tentativeScript
+            };
 
 			var approval = new ApprovalModel
 			{
@@ -199,7 +201,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Remarks = model.Remarks,
 					CreatedBy = CurrentUser.UserId,
 					CreatedDate = DateTime.Now,
-				};
+
+                    tentativeScript = model.TentativeScript
+                };
 
 				//attachment
 				if (model.AttachmentFiles.Count() > 0)
@@ -288,8 +292,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				RefNo = response.Data.RefNo,
 				SpeakerId = response.Data.SpeakerId,
 				ExternalExhibitorId = response.Data.ExternalExhibitorId,
-				Attachments = response.Data.Attachments
-			};
+				Attachments = response.Data.Attachments,
+
+                TentativeScript = response.Data.tentativeScript
+            };
 
 			model.CategoryList = new SelectList(await GetCategory(), "Id", "Name");
 			model.SpeakerList = new SelectList(await GetSpeaker(), "Id", "UserName", 0);
@@ -349,7 +355,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					ExternalExhibitorId = model.ExternalExhibitorId,
 					Remarks = model.Remarks,
 					Attachments = model.Attachments,
-				};
+
+                    tentativeScript = model.TentativeScript
+                };
 
 				//attachment
 				if (model.AttachmentFiles.Count() > 0)

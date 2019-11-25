@@ -490,6 +490,8 @@
     <Content Include="img\arrow-down.svg" />
     <Content Include="img\avatar-pic.jpg" />
     <Content Include="img\banner\akpk-bnr-01.jpg" />
+    <Content Include="img\banner\akpk-bnr-03.png" />
+    <Content Include="img\banner\akpk-bnr-rumahku.jpg" />
     <Content Include="img\cover-1.jpg" />
     <Content Include="img\cover-2.jpg" />
     <Content Include="img\cover-3.jpg" />

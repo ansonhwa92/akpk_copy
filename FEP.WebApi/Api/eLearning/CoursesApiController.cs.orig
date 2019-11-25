@@ -1011,8 +1011,12 @@ namespace FEP.WebApi.Api.eLearning
             if (ModelState.IsValid)
             {
                 var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.Learner.User.Id == userId &&
+<<<<<<< HEAD
+                    x.CourseId == id && (x.Status == EnrollmentStatus.Enrolled || x.Status == EnrollmentStatus.Completed));
+=======
                     x.CourseId == id && !x.CourseEvent.IsTrial &&
-                   (x.Status == EnrollmentStatus.Enrolled || x.Status == EnrollmentStatus.Completed));
+                    x.Status == EnrollmentStatus.Completed);
+>>>>>>> 72c63132828aee4ba0f7f9a75aa335724f21787c
 
                 var entity = new UserCourseEnrollmentModel();
 

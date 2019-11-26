@@ -2,6 +2,7 @@
 using FEP.Model;
 using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.eEvent;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -25,6 +26,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			filter.UserIds = new SelectList(await GetUsers(), "Id", "Name", 0);
 
 			return View(new ListEventSpeakerModel { Filter = filter });
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> List(FilterEventSpeakerModel filter)
+		{
+			var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"eEvent/EventSpeaker/GetSpeakerList", filter);
+
+			return Content(JsonConvert.SerializeObject(response.Data), "application/json");
 		}
 
 		[HttpGet]

@@ -3,6 +3,7 @@ using FEP.Model;
 using FEP.WebApiModel.eEvent;
 using FEP.WebApiModel.PublicEvent;
 using FEP.WebApiModel.SLAReminder;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -41,6 +42,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		public ActionResult List()
 		{
 			return View();
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> List(FilterPublicEventModel filter)
+		{
+			var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"eEvent/PublicEvent/GetEventList", filter);
+
+			return Content(JsonConvert.SerializeObject(response.Data), "application/json");
 		}
 
 		// GET: PublicEvent/Details/Id

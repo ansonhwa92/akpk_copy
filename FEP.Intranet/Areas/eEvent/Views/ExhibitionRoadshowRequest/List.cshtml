@@ -15,7 +15,8 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)eEvent/ExhibitionRoadshowRequest/GetExhibitionList',
+					@*"url": '@(WebApiURL)eEvent/ExhibitionRoadshowRequest/GetExhibitionList',*@
+					 "url": '@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent" })',
                     "data": function (filter) {
                         filter.EventName = $('#Filter_EventName').val();
                         //filter.ICNo = $('#Filter_ICNo').val();

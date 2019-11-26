@@ -13,7 +13,8 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)eEvent/PublicEvent/GetEventList',
+					@*"url": '@(WebApiURL)eEvent/PublicEvent/GetEventList',*@
+					 "url": '@Url.Action("List", "PublicEvent", new { area = "eEvent" })',
                     "data": function (filter) {
 						filter.EventTitle = $('#Filter_EventTitle').val();
 						filter.EventStatus = $('#Filter_EventStatus').val();

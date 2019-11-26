@@ -2,6 +2,7 @@
 using FEP.Intranet.Areas.eEvent.Models;
 using FEP.Model;
 using FEP.WebApiModel.eEvent;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -21,6 +22,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		{
 			return View();
 		}
+
+		[HttpPost]
+		public async Task<ActionResult> List(FilterEventExternalExhibitorModel filter)
+		{
+			var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"eEvent/EventExternalExhibitor/GetExternalExhibitorList", filter);
+
+			return Content(JsonConvert.SerializeObject(response.Data), "application/json");
+		}
+
 		[HttpGet]
 		public async Task<ActionResult> Details(int? id)
 		{

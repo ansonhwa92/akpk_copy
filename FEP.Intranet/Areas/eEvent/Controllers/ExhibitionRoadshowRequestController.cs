@@ -3,6 +3,7 @@ using FEP.Model;
 using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.eEvent;
 using FEP.WebApiModel.SLAReminder;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,17 +21,16 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		// GET: eEvent/ExhibitionRoadshowRequest
 		public ActionResult List()
 		{
-			//int? CurrentUserId = CurrentUser.UserId;
-
-			//var access = new ListExhibitionRoadshowRequestModel();
-
-			//access.List.HasDetail = false;
-			//access.List.HasEdit = CurrentUser.HasAccess(UserAccess.EventAdministratorCCD);
-			//access.List.HasDelete = CurrentUser.HasAccess(UserAccess.EventAdministratorCCD);
-
 			return View();
 		}
 
+		[HttpPost]
+		public async Task<ActionResult> List(FilterExhibitionRoadshowRequestModel filter)
+		{
+			var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/GetExhibitionList", filter);
+
+			return Content(JsonConvert.SerializeObject(response.Data), "application/json");
+		}
 
 		[HttpGet]
 		public async Task<ActionResult> Details(int? id)

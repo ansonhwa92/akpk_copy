@@ -11,6 +11,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
 {
@@ -27,6 +28,14 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		public ActionResult List()
 		{
 			return View();
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> List(FilterMediaInterviewRequestApiModel filter)
+		{
+			var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/GetMediaList", filter);
+
+			return Content(JsonConvert.SerializeObject(response.Data), "application/json");
 		}
 
 		// GET: eEventMediaInterview/MediaInterview/Details/5

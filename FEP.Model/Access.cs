@@ -62,7 +62,7 @@ namespace FEP.Model
         HomeDashboard3 = 3,
 
 		//e-Event 1001 - 2000
-		[Display(Name = "Event Management")]
+		[Display(Name = "Event Management Menu")]
 		EventMenu = 1001,
 		[Display(Name = "Internal Event Menu")]
 		EventIntenalEventMenu = 1002,

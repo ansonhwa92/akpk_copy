@@ -15,7 +15,8 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)eEvent/EventSpeaker/GetSpeakerList',
+                    @*"url": '@(WebApiURL)eEvent/EventSpeaker/GetSpeakerList',*@
+					 "url": '@Url.Action("List", "EventSpeaker", new { area = "eEvent" })',
                     "data": function (filter) {
                         filter.UserId = $('#Filter_UserId').val();
 

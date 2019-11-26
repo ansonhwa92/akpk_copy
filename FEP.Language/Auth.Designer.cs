@@ -1008,9 +1008,9 @@ namespace Language {
         /// <summary>
         ///   Looks up a localized string similar to Please enter User Name.
         /// </summary>
-        public static string ValidRequiredUsername {
+        public static string ValidRequiredUserName {
             get {
-                return ResourceManager.GetString("ValidRequiredUsername", resourceCulture);
+                return ResourceManager.GetString("ValidRequiredUserName", resourceCulture);
             }
         }
         

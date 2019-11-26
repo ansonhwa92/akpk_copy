@@ -68,7 +68,6 @@ namespace FEP.Model
 		EventIntenalEventMenu = 1002,
 
 
-
 		//--------Untuk Button Sahaja----//
 		[Display(Name = "Event Admin - FED")]
 		EventAdministratorFED = 1003,
@@ -400,5 +399,33 @@ namespace FEP.Model
         //KMC 8001 - 8100
         [Display(Name = "KMC")]
         KMCMenu = 8001,
+
+        [Display(Name = "KMC - Browse")]
+        KMCBrowse = 8002,
+
+        [Display(Name = "KMC - Manage")]
+        KMCManage = 8003,
+
+        [Display(Name = "KMC - Manage - Create")]
+        KMCManageAdd = 8004,
+
+        [Display(Name = "KMC - Manage - Update")]
+        KMCManageEdit = 8005,
+
+        [Display(Name = "KMC - Manage - Delete")]
+        KMCManageDelete = 8006,
+
+        [Display(Name = "KMC - Category")]
+        KMCCategory = 8007,
+
+        [Display(Name = "KMC - Category - Create")]
+        KMCCategoryAdd = 8008,
+
+        [Display(Name = "KMC - Category - Update")]
+        KMCCategoryEdit = 8009,
+
+        [Display(Name = "KMC - Category - Delete")]
+        KMCCategoryDelete = 8010,
+
     }
 }

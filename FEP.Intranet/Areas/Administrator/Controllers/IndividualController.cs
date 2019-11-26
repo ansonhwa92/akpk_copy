@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using FEP.Model;
 using FEP.WebApiModel.SLAReminder;
+using Newtonsoft.Json;
 
 namespace FEP.Intranet.Areas.Administrator.Controllers
 {
@@ -20,6 +21,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         public ActionResult List()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> List(FilterIndividualModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"Administration/Individual/GetAll", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
         }
 
         [HttpGet]

@@ -16,7 +16,7 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)Logs/UserLog/GetAll',
+                    "url": '@Url.Action("List", "UserLog", new { area = "Logs" })',
                     "data": function (filter) {
                         filter.Module = $('#Filter_Module').val();
                         filter.Username = $('#Filter_Username').val();

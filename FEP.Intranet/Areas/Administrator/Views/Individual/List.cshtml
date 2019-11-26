@@ -16,7 +16,7 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)Administration/Individual/GetAll',
+                    "url": '@Url.Action("List", "Individual", new { area = "Administrator" })',
                     "data": function (filter) {
                         filter.Name = $('#Filter_Name').val();
                         filter.ICNo = $('#Filter_ICNo').val();

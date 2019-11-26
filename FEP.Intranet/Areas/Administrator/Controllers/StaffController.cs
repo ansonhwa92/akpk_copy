@@ -1,6 +1,7 @@
 ﻿using FEP.Helper;
 using FEP.Model;
 using FEP.WebApiModel.Administration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             filter.Departments = new SelectList(await GetDepartments(), "Id", "Name", 0);
             
             return View(new ListStaffModel { Filter = filter });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> List(FilterStaffModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"Administration/Staff/GetAll", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
         }
 
         [HttpGet]

@@ -432,7 +432,7 @@
   <data name="ValidRequiredStateId" xml:space="preserve">
     <value>Please enter State</value>
   </data>
-  <data name="ValidRequiredUsername" xml:space="preserve">
+  <data name="ValidRequiredUserName" xml:space="preserve">
     <value>Please enter User Name</value>
   </data>
   <data name="ValidTypeEmail" xml:space="preserve">

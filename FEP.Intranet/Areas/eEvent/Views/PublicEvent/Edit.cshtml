@@ -355,14 +355,12 @@
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="#">Home</a></li>
 								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
-								<li class="breadcrumb-item"><a href="#">Manage Public Event</a></li>								
+								<li class="breadcrumb-item"><a href="#">Manage Public Event</a></li>
 								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
 							</ol>
 						</nav>
 					</div>
 					<h1 class="page-title text-white">Public Event Request Ref No: @Model.RefNo</h1>
-					<h1 class="page-title text-white">Edit Event</h1>
-
 					@*<div class="header-text">List of created event</div>*@
 				</div>
 			</div>
@@ -395,13 +393,13 @@
 							</a>
 						</li>
 
-						<li id="sideMenuDetails" class="step-item rejected">
+						<li id="sideMenuDetails" class="step-item active">
 							<a href="#eventdetails" class="step-link">
 								<span class="step-number">2</span>
 								<span class="step-title">Fill Up Event Details</span>
 							</a>
 						</li>
-						<li id="sideMenuAgenda" class="step-item">
+						<li id="sideMenuAgenda" class="step-item active">
 							<a href="#eventagenda" class="step-link">
 								<span class="step-number">3</span>
 								<span class="step-title">Fill Up Event Agenda</span>
@@ -417,232 +415,236 @@
 		<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 			<!-- Start Form -->
 			<div class="border-form rounded-top">
-                <div class="form-container tab-content">
-                    <div class="tab-pane active" id="eventdetails">
-                            <div class="mt-2 mb-4 pb-1">
-                                <h4 class="color-darkblue mb-0">Event Details</h4>
-                                <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-lg-12">
-                                    @Html.FEPLabelFor(model => model.EventCategoryId)
-                                    @Html.DropDownListFor(model => model.EventCategoryId, Model.CategoryList, "-Select Category-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
-                                    @Html.ValidationMessageFor(model => model.EventCategoryId, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+				<div class="form-container tab-content">
+					<div class="tab-pane active" id="eventdetails">
+						<div class="mt-2 mb-4 pb-1">
+							<h4 class="color-darkblue mb-0">Event Details</h4>
+							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						</div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.EventCategoryId)
+								@Html.DropDownListFor(model => model.EventCategoryId, Model.CategoryList, "-Select Category-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+								@Html.ValidationMessageFor(model => model.EventCategoryId, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-12">
-                                    @Html.FEPLabelFor(model => model.EventTitle)
-                                    @Html.EditorFor(model => model.EventTitle, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
-                                    @Html.ValidationMessageFor(model => model.EventTitle, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.EventTitle)
+								@Html.EditorFor(model => model.EventTitle, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
+								@Html.ValidationMessageFor(model => model.EventTitle, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-12">
-                                    @Html.FEPLabelFor(model => model.EventObjective)
-                                    @Html.EditorFor(model => model.EventObjective, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.EventObjective, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.EventObjective)
+								@Html.EditorFor(model => model.EventObjective, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.EventObjective, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-6">
-                                    @Html.FEPLabelFor(model => model.StartDate)
-                                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start" } })
-                                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    @Html.FEPLabelFor(model => model.EndDate)
-                                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End" } })
-                                    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-6">
+								@Html.FEPLabelFor(model => model.StartDate)
+								@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start" } })
+								@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-6">
+								@Html.FEPLabelFor(model => model.EndDate)
+								@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End" } })
+								@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-12">
-                                    @Html.FEPLabelFor(model => model.Venue)
-                                    @Html.EditorFor(model => model.Venue, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
-                                    @Html.ValidationMessageFor(model => model.Venue, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.Venue)
+								@Html.EditorFor(model => model.Venue, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
+								@Html.ValidationMessageFor(model => model.Venue, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-3">
-                                    @Html.LabelFor(model => model.LabelParticipantType)
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    @Html.LabelFor(model => model.LabelFree)
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    @Html.LabelFor(model => model.LabelNormalFee)
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    @Html.LabelFor(model => model.LabelEarlyBirdFee)
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelParticipantType)
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelFree)
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelNormalFee)
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelEarlyBirdFee)
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-3">
-                                    @Html.LabelFor(model => model.LabelIndividual)
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <div class="custom-control custom-checkbox">
-                                        @Html.EditorFor(model => model.FreeIndividual, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
-                                        @Html.LabelFor(model => model.FreeIndividual, htmlAttributes: new { @class = "custom-control-label" })
-                                    </div>
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    @Html.EditorFor(model => model.IndividualFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    @Html.ValidationMessageFor(model => model.IndividualFee, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    @Html.EditorFor(model => model.IndividualEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    @Html.ValidationMessageFor(model => model.IndividualEarlyBird, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelIndividual)
+							</div>
+							<div class="form-group col-lg-3">
+								<div class="custom-control custom-checkbox">
+									@Html.EditorFor(model => model.FreeIndividual, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+									@Html.LabelFor(model => model.FreeIndividual, htmlAttributes: new { @class = "custom-control-label" })
+								</div>
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.IndividualFee, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.IndividualEarlyBird, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-3">
-                                    @Html.LabelFor(model => model.LabelIndividualPaper)
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <div class="custom-control custom-checkbox">
-                                        @Html.EditorFor(model => model.FreeIndividualPaper, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
-                                        @Html.LabelFor(model => model.FreeIndividualPaper, htmlAttributes: new { @class = "custom-control-label" })
-                                    </div>
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    @Html.EditorFor(model => model.IndividualPaperFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    @Html.ValidationMessageFor(model => model.IndividualPaperFee, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    @Html.EditorFor(model => model.IndividualPaperEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    @Html.ValidationMessageFor(model => model.IndividualPaperEarlyBird, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelIndividualPaper)
+							</div>
+							<div class="form-group col-lg-3">
+								<div class="custom-control custom-checkbox">
+									@Html.EditorFor(model => model.FreeIndividualPaper, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+									@Html.LabelFor(model => model.FreeIndividualPaper, htmlAttributes: new { @class = "custom-control-label" })
+								</div>
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualPaperFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.IndividualPaperFee, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualPaperEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.IndividualPaperEarlyBird, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-3">
-                                    @Html.LabelFor(model => model.LabelIndividualPresent)
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <div class="custom-control custom-checkbox">
-                                        @Html.EditorFor(model => model.FreeIndividualPresent, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
-                                        @Html.LabelFor(model => model.FreeIndividualPresent, htmlAttributes: new { @class = "custom-control-label" })
-                                    </div>
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    @Html.EditorFor(model => model.IndividualPresentFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    @Html.ValidationMessageFor(model => model.IndividualPresentFee, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    @Html.EditorFor(model => model.IndividualPresentEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    @Html.ValidationMessageFor(model => model.IndividualPresentEarlyBird, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelIndividualPresent)
+							</div>
+							<div class="form-group col-lg-3">
+								<div class="custom-control custom-checkbox">
+									@Html.EditorFor(model => model.FreeIndividualPresent, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+									@Html.LabelFor(model => model.FreeIndividualPresent, htmlAttributes: new { @class = "custom-control-label" })
+								</div>
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualPresentFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.IndividualPresentFee, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.IndividualPresentEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.IndividualPresentEarlyBird, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-3">
-                                    @Html.LabelFor(model => model.LabelAgency)
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <div class="custom-control custom-checkbox">
-                                        @Html.EditorFor(model => model.FreeAgency, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
-                                        @Html.LabelFor(model => model.FreeAgency, htmlAttributes: new { @class = "custom-control-label" })
-                                    </div>
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    @Html.EditorFor(model => model.AgencyFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    @Html.ValidationMessageFor(model => model.AgencyFee, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    @Html.EditorFor(model => model.AgencyEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    @Html.ValidationMessageFor(model => model.AgencyEarlyBird, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-3">
+								@Html.LabelFor(model => model.LabelAgency)
+							</div>
+							<div class="form-group col-lg-3">
+								<div class="custom-control custom-checkbox">
+									@Html.EditorFor(model => model.FreeAgency, new { htmlAttributes = new { @class = "custom-control-input js-check-selected-row" } })
+									@Html.LabelFor(model => model.FreeAgency, htmlAttributes: new { @class = "custom-control-label" })
+								</div>
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.AgencyFee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.AgencyFee, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-3">
+								@Html.EditorFor(model => model.AgencyEarlyBird, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								@Html.ValidationMessageFor(model => model.AgencyEarlyBird, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            @*<div class="row">
-                    <div class="form-group col-lg-12">
-                        @Html.FEPLabelFor(model => model.Fee)
-                        @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00" } })
-                        @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+						@*<div class="row">
+			<div class="form-group col-lg-12">
+				@Html.FEPLabelFor(model => model.Fee)
+				@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00" } })
+				@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
+			</div>
+		</div>*@
 
-                            <div class="row">
-                                <div class="form-group col-lg-12">
-                                    @Html.FEPLabelFor(model => model.ParticipantAllowed)
-                                    @Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" } })
-                                    @Html.ValidationMessageFor(model => model.ParticipantAllowed, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.ParticipantAllowed)
+								@Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" } })
+								@Html.ValidationMessageFor(model => model.ParticipantAllowed, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-12">
-                                    @Html.FEPLabelFor(model => model.TargetedGroup)
-                                    @Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
-                                    @Html.ValidationMessageFor(model => model.TargetedGroup, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.TargetedGroup)
+								@Html.EnumDropDownListFor(model => model.TargetedGroup, "-Select Group-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+								@Html.ValidationMessageFor(model => model.TargetedGroup, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-12">
-                                    @Html.FEPLabelFor(model => model.ExternalExhibitorId)
-                                    @Html.ListBoxFor(m => m.ExternalExhibitorId, Model.ExternalExhibitorList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
-                                    @Html.ValidationMessageFor(model => model.ExternalExhibitorId, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.ExternalExhibitorId)
+								@Html.ListBoxFor(m => m.ExternalExhibitorId, Model.ExternalExhibitorList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
+								@Html.ValidationMessageFor(model => model.ExternalExhibitorId, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-12">
-                                    @Html.FEPLabelFor(model => model.SpeakerId)
-                                    @Html.ListBoxFor(m => m.SpeakerId, Model.SpeakerList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
-                                    @Html.ValidationMessageFor(model => model.SpeakerId, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.SpeakerId)
+								@Html.ListBoxFor(m => m.SpeakerId, Model.SpeakerList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
+								@Html.ValidationMessageFor(model => model.SpeakerId, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                            <div class="row">
-                                <div class="form-group col-lg-12">
-                                    @Html.FEPLabelFor(model => model.Attachments)
-                                    @Html.Partial("_Attachment", Model.Attachments)
-                                    @Html.ValidationMessageFor(model => model.Attachments, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="tab-pane" id="eventagenda">
-                        <div class="mt-2 mb-4 pb-1 mr-auto">
-                            <h4 class="color-darkblue mb-0">Event Agenda</h4>
-                            <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
-                        </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.Attachments)
+								@Html.Partial("_Attachment", Model.Attachments)
+								@Html.ValidationMessageFor(model => model.Attachments, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                        <div class="row">
-                            <div class="form-group col-lg-12">
-                                @Html.HiddenFor(m => m.TentativeScript)
-                                <button type="button" class="btn btn-secondary pull-right" id="btnCreateAgenda">
-                                    <i class="la la-plus font-icon"></i>
-                                    Add Tentatives
-                                </button>
-                            </div>
-                        </div>
+						<div class="border-top p-3 rounded-bottom">
+							<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("List")'>Back</a>
+							<a class="btn btn-secondary" href="#eventagenda" data-toggle="tab">Next</a>
+						</div>
+					</div>
 
-                        <div id="generatedAgenda"></div>
+					<div class="tab-pane" id="eventagenda">
+						<div class="mt-2 mb-4 pb-1 mr-auto">
+							<h4 class="color-darkblue mb-0">Event Agenda</h4>
+							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						</div>
 
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.HiddenFor(m => m.TentativeScript)
+								<button type="button" class="btn btn-secondary pull-right" id="btnCreateAgenda">
+									<i class="la la-plus font-icon"></i>
+									Add Tentatives
+								</button>
+							</div>
+						</div>
 
-                    </div>
+						<div id="generatedAgenda"></div>
 
-                    <div class="border-left border-right border-bottom p-3 rounded-bottom">
-                        <a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
-                        <button type="submit" class="btn btn-primary btn-flat">Save</button>
-                    </div>
-                </div>
+						<hr />
+						<div>
+							@*<a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>*@
+							<a class="btn btn-default" href="#eventdetails" data-toggle="tab">Back</a>
+							<button type="submit" class="btn btn-primary btn-flat">Save</button>
+						</div>
+					</div>
 
+				</div>
+			</div>
 		</div>
-
 	</div>
-    </div>
 
 
 	<!-- Modal -->
@@ -683,7 +685,7 @@
 						<div class="form-group col-lg-12">
 							@Html.Label("Tentative")<span class="text-danger"> *</span>
 							<input class="form-control text-box single-line" data-val="true"
-								   data-val-required="Please Insert Tentative" id="tentative" name="tentative" placeholder="arrival" type="text" value="">
+								   data-val-required="Please Insert Tentative" id="tentative" name="tentative" placeholder="Be clear and descriptive" type="text" value="">
 						</div>
 					</div>
 					<div class="row">

@@ -293,6 +293,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View(model);
 		}
 
+		[HasAccess(UserAccess.EventAdministratorCCD)]
 		// GET: eEventMediaInterview/MediaInterview/Edit/5
 		public async Task<ActionResult> Edit(int? id, string origin)
 		{
@@ -409,6 +410,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View(model);
 		}
 
+		[HasAccess(UserAccess.EventAdministratorCCD)]
 		// GET: eEventMediaInterview/MediaInterview/Delete/5
 		public async Task<ActionResult> Delete(int? id)
 		{

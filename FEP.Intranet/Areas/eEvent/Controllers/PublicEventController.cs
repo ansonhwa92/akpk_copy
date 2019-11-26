@@ -230,6 +230,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					{
 						return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", id = response.Data });
 					}
+					else
+					{
+						TempData["SuccessMessage"] = "Public Event successfully created";
+						return RedirectToAction("List");
+					}
 
 				}
 
@@ -242,7 +247,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View(model);
 		}
 
-
+		[HasAccess(UserAccess.EventAdministratorFED) ]
 		// GET: PublicEvent/Edit/5
 		public async Task<ActionResult> Edit(int? id, string origin)
 		{
@@ -390,7 +395,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View(model);
 		}
 
-
+		[HasAccess(UserAccess.EventAdministratorFED)]
 		// GET: PublicEvent/Delete/5
 		[HttpGet]
 		public async Task<ActionResult> Delete(int? id)

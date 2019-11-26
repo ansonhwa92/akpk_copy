@@ -288,6 +288,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						TempData["SuccessMessage"] = "Exhibition/Roadshow Request successfully added";
 						return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", id = response.Data });
 					}
+					else
+					{
+						TempData["SuccessMessage"] = "Exhibition/Roadshow Request successfully added";
+						return RedirectToAction("List");
+					}
 				}
 			}
 
@@ -468,6 +473,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				BranchName = response.Data.BranchName,
 				ContactNo = response.Data.ContactNo,
 				RefNo = response.Data.RefNo,
+				NomineeId = response.Data.NomineeId,
+
 			};
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);

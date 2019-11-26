@@ -64,16 +64,16 @@
 						</a>
 					</li>
 
-					<li class="step-item disabled">
+					@*<li class="step-item disabled">
 						<a href="" class="step-link">
 							<span class="step-number">4</span>
 							<span class="step-title">Duty Roster</span>
 						</a>
-					</li>
+					</li>*@
 
 					<li class="step-item disabled">
 						<a href="" class="step-link">
-							<span class="step-number">5</span>
+							<span class="step-number">4</span>
 							<span class="step-title">Amendment History</span>
 						</a>
 					</li>
@@ -102,12 +102,12 @@
 						<li class="nav-item">
 							<a class="nav-link" href="#eventdetails" data-toggle="tab">Event Details</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#dutyroster" data-toggle="tab">Duty Roster</a>
-						</li>
 						@*<li class="nav-item">
-							<a class="nav-link" href="#amendmenthistory" data-toggle="tab">Amendment History</a>
+							<a class="nav-link" href="#dutyroster" data-toggle="tab">Duty Roster</a>
 						</li>*@
+						<li class="nav-item">
+							<a class="nav-link" href="#amendmenthistory" data-toggle="tab">Amendment History</a>
+						</li>
 					</ul>
 				</div>
 				<div class="tab-content">
@@ -290,20 +290,16 @@
 								</div>
 
 								<div class="row">
-									<div class="form-group col-lg-6">
+									<div class="form-group col-lg-12">
 										@Html.LabelFor(model => model.ParticipationRequirement)
 										@Html.EditorFor(model => model.ParticipationRequirement, new { htmlAttributes = new { @class = "form-control", @placeholder = "No. of Participant", @readonly = "readonly" } })
-									</div>
-									<div class="form-group col-lg-6">
-										@Html.LabelFor(model => model.ExhibitionStatus)
-										@Html.EditorFor(model => model.ExhibitionStatus, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 									</div>
 								</div>
 
 								<div class="row">
 									<div class="form-group col-lg-12">
 										@Html.FEPLabelFor(m => m.NomineeId)
-										@Html.ListBoxFor(m => m.NomineeId, Model.Nominees, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled", })
+										@Html.ListBoxFor(m => m.NomineeId, Model.Nominees, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" , @disabled = "disabled"})
 									</div>
 								</div>
 							</div>
@@ -312,7 +308,7 @@
 					</div>
 
 
-					<div class="tab-pane" id="dutyroster">
+					@*<div class="tab-pane" id="dutyroster">
 						<form>
 							<div class="form-container">
 								<div class="sub-Title my-4">
@@ -322,10 +318,10 @@
 
 							</div>
 						</form>
-					</div>
+					</div>*@
 
 
-					@*<div class="tab-pane" id="amendmenthistory">
+					<div class="tab-pane" id="amendmenthistory">
 						<form>
 							<div class="form-container">
 								<div class="sub-Title my-4">
@@ -335,7 +331,7 @@
 
 							</div>
 						</form>
-					</div>*@
+					</div>
 
 
 				</div>

@@ -18,7 +18,6 @@ namespace FEP.Model
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public bool Display { get; set; }
-
         public virtual ICollection<RoleAccess> RoleAccess { get; set; }
     }
 

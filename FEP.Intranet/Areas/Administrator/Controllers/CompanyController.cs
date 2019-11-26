@@ -4,6 +4,7 @@ using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.Auth;
 using FEP.WebApiModel.Notification;
 using FEP.WebApiModel.SLAReminder;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             filter.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
 
             return View(new ListCompanyModel { Filter = filter });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> List(FilterCompanyModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"Administration/Company/GetAll", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
         }
 
         [HttpGet]

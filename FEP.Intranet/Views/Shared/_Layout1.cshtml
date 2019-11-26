@@ -119,7 +119,7 @@
                                                     }
                                                     else
                                                     {
-                                                    <img class="card__avatar__image" src="@BaseURL/img/no-photo.jpg" alt="image">
+                                                        <img class="card__avatar__image" src="@BaseURL/img/no-photo.jpg" alt="image">
                                                     }
                                                 </span>
                                                 <span class="card__name-wrap">
@@ -254,21 +254,25 @@
                         <div class="navbar-collapse collapse main-menu-dropdown">
                             <ul class="nav navbar-nav">
                                 <li class="nav-item"><a href="@Url.Action("Dashboard", "Home", new { area = ""})" class="nav-link">Dashboard</a></li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Learning</a>
-                                    <div class="dropdown-menu">
-                                        @Html.Action("Menu", "Home", new { area = "eLearning" })
-                                    </div>
-                                </li>
-								@if (CurrentUser.HasAccess(UserAccess.EventMenu)) {
+                                @if (CurrentUser.HasAccess(UserAccess.LearningMenu))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Learning</a>
+                                        <div class="dropdown-menu">
+                                            @Html.Action("Menu", "Home", new { area = "eLearning" })
+                                        </div>
+                                    </li>
+                                }
+                                @if (CurrentUser.HasAccess(UserAccess.EventMenu))
+                                {
                                     <li class="nav-item dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">e-Event</a>
                                         <div class="dropdown-menu">
                                             @Html.Action("_Menu", "Home", new { area = "eEvent" })
                                         </div>
                                     </li>
-								}
-								@if (CurrentUser.HasAccess(UserAccess.RnPPublicationMenu))
+                                }
+                                @if (CurrentUser.HasAccess(UserAccess.RnPPublicationMenu))
                                 {
                                     <li class="nav-item dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Publication</a>
@@ -277,7 +281,7 @@
                                         </div>
                                     </li>
                                 }
-								@if (CurrentUser.HasAccess(UserAccess.RnPSurveyMenu))
+                                @if (CurrentUser.HasAccess(UserAccess.RnPSurveyMenu))
                                 {
                                     <li class="nav-item dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Research</a>

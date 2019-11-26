@@ -145,13 +145,24 @@ namespace FEP.WebApi.Api.Administration
 
                 Authentication.GeneratePassword(model.Password);
 
+                //get default role
+                var roles = db.RoleDefault.Where(r => r.DefaultRoleType == DefaultRoleType.DefaultIndividual).ToList();
+
+                List<UserRole> userroles = new List<UserRole>();
+
+                foreach(var role in roles)
+                {
+                    userroles.Add(new UserRole { Role = role.Role });
+                }
+
                 var account = new UserAccount
                 {
                     LoginId = model.Email,
                     IsEnable = false,
                     HashPassword = Authentication.HashPassword,
                     Salt = Authentication.Salt,
-                    LoginAttempt = 0
+                    LoginAttempt = 0,
+                    UserRoles = userroles
                 };
 
                 var individual = new IndividualProfile
@@ -248,13 +259,24 @@ namespace FEP.WebApi.Api.Administration
 
                 Authentication.GeneratePassword(model.Password);
 
+                //get default role
+                var roles = db.RoleDefault.Where(r => r.DefaultRoleType == DefaultRoleType.DefaultCompany).ToList();
+
+                List<UserRole> userroles = new List<UserRole>();
+
+                foreach (var role in roles)
+                {
+                    userroles.Add(new UserRole { Role = role.Role });
+                }
+
                 var account = new UserAccount
                 {
                     LoginId = model.Email,
                     IsEnable = false,
                     HashPassword = Authentication.HashPassword,
                     Salt = Authentication.Salt,
-                    LoginAttempt = 0
+                    LoginAttempt = 0,
+                    UserRoles = userroles
                 };
 
                 var company = new CompanyProfile

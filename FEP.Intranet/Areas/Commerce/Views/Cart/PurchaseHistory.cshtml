@@ -100,7 +100,8 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)Commerce/Cart/PurchaseHistory?userid=@CurrentUser.UserId',
+                    @*"url": '@(WebApiURL)Commerce/Cart/PurchaseHistory?userid=@CurrentUser.UserId',*@
+                    "url": '@Url.Action("PurchaseHistory", "Cart", new { area = "Commerce" })' + '?userid=@CurrentUser.UserId',
                     "data": function (filter) {
                         filter.Description = $('#Filters_Description').val();
                         filter.ReceiptNo = $('#Filters_ReceiptNo').val();

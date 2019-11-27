@@ -119,7 +119,8 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)RnP/Survey/GetAll',
+                    @*"url": '@(WebApiURL)RnP/Survey/GetAll',*@
+                    "url": '@Url.Action("Index", "Survey", new { area = "RnP" })',
                     "data": function (filter) {
                         //filter.Type = $('#Filters_Type').val();
                         filter.Title = $('#Filters_Title').val();

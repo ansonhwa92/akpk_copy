@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using FEP.Model;
 using FEP.WebApiModel.RnP;
 using FEP.WebApiModel.SLAReminder;
+using Newtonsoft.Json;
 
 
 namespace FEP.Intranet.Areas.Commerce.Controllers
@@ -185,19 +186,19 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
 
             if (ppromo == null)
             {
-				if ((mycart.Cart.DiscountCode != "") && (mycart.Cart.DiscountCode != null))
-				{
-					ViewBag.PromoStatus = "Invalid";
-					ViewBag.PromoExpired = false;
-					ViewBag.Discount = 0;
-				}
-				else
-				{
-					ViewBag.PromoStatus = "None";
-					ViewBag.PromoExpired = false;
-					ViewBag.Discount = 0;
-				}
-			}
+                if ((mycart.Cart.DiscountCode != "") && (mycart.Cart.DiscountCode != null))
+                {
+                    ViewBag.PromoStatus = "Invalid";
+                    ViewBag.PromoExpired = false;
+                    ViewBag.Discount = 0;
+                }
+                else
+                {
+                    ViewBag.PromoStatus = "None";
+                    ViewBag.PromoExpired = false;
+                    ViewBag.Discount = 0;
+                }
+            }
             else
             {
                 if (ppromo.Result == "Valid")
@@ -418,18 +419,16 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
         // GET: Commerce/Cart/PurchaseHistory
         public ActionResult PurchaseHistory()
         {
-            /*
-            var resBank = await WepApiMethod.SendApiAsync<List<BankInformationModel>>(HttpVerbs.Get, $"Commerce/Cart/GetBanks");
-
-            if (!resBank.isSuccess)
-            {
-                return HttpNotFound();
-            }
-
-            ViewBag.Banks = resBank.Data;
-            */
-
             return View();
+        }
+
+        // GET: Commerce/Cart/PurchaseHistory
+        [HttpPost]
+        public async Task<ActionResult> PurchaseHistory(FilterPurchaseHistoryModel filter, int userid)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"Commerce/Cart/PurchaseHistory?userid=" + userid, filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
         }
 
         // GET: Commerce/Cart/PurchaseDetails
@@ -594,6 +593,15 @@ namespace FEP.Intranet.Areas.Commerce.Controllers
             ViewBag.Banks = resBank.Data;
 
             return View();
+        }
+
+        // GET: Commerce/Cart/RefundHistory
+        [HttpPost]
+        public async Task<ActionResult> RefundHistory(FilterRefundHistoryModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"Commerce/Cart/MyRefunds", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
         }
 
     }

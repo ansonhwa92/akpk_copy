@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using FEP.Model;
 using FEP.WebApiModel.RnP;
 using FEP.WebApiModel.SLAReminder;
+using Newtonsoft.Json;
 
 
 namespace FEP.Intranet.Areas.RnP.Controllers
@@ -24,6 +25,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        // GET: RnP/Publication
+        [HasAccess(UserAccess.RnPPublicationView)]
+        [HttpPost]
+        public async Task<ActionResult> Index(FilterPublicationModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"RnP/Publication/GetAll", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
         }
 
         //menu
@@ -204,22 +215,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     string newid = resparray[0];
                     string title = resparray[1];
 
-                    if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() > 0))
-                    {
-                        await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
-                    }
-                    else if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() <= 0))
-                    {
-                        await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles.First(), null);
-                    }
-                    else if ((model.CoverPictureFiles.Count() <= 0) && (model.AuthorPictureFiles.Count() > 0))
-                    {
-                        await UploadImageFiles(int.Parse(newid), null, model.AuthorPictureFiles.First());
-                    }
-                    else
-                    {
-                        await UploadImageFiles(int.Parse(newid), null, null);
-                    }
+                    await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles, model.AuthorPictureFiles);
 
                     await LogActivity(Modules.RnP, "Create New Publication: " + title);
 
@@ -440,24 +436,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
-                    /*
-                    if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() > 0))
-                    {
-                        await UpdateImageFiles(model.ID, model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
-                    }
-                    else if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() <= 0))
-                    {
-                        await UpdateImageFiles(model.ID, model.CoverPictureFiles.First(), null);
-                    }
-                    else if ((model.CoverPictureFiles.Count() <= 0) && (model.AuthorPictureFiles.Count() > 0))
-                    {
-                        await UpdateImageFiles(model.ID, null, model.AuthorPictureFiles.First());
-                    }
-                    else
-                    {
-                        await UpdateImageFiles(model.ID, null, null);
-                    }
-                    */
+                    await UpdateImageFileCover(model.ID, model.CoverPictureFiles, model.CoverPictures);
+
+                    await UpdateImageFileAuthor(model.ID, model.AuthorPictureFiles, model.AuthorPictures);
 
                     await LogActivity(Modules.RnP, "Edit Publication: " + response.Data, model);
 
@@ -1585,7 +1566,33 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View(model);
         }
 
+        // Increments (api calls)
+
+        // Function to increment download count.
+        // GET: api/RnP/Publication/IncrementDownload
+        [Route("api/RnP/Publication/IncrementDownload")]
+        [HttpGet]
+        public async Task<string> IncrementDownload(int? id, int? userid)
+        {
+            if (id == null)
+            {
+                return "invalid";
+            }
+
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/IncrementDownload?id={id}&userid={userid}");
+
+            if (response.isSuccess)
+            {
+                return "success";
+            }
+            else
+            {
+                return "error";
+            }
+        }
+
         // Visitor functions (registered)
+        // currently all unused?
 
         // Browse publications
         // TODO: Handle search/filtering, include star rating
@@ -1710,6 +1717,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View();
         }
 
+        // GET: RnP/Publication/RefundRequest
+        [HttpPost]
+        [HasAccess(UserAccess.Refunds)]
+        public async Task<ActionResult> RefundRequest(FilterRefundRequestModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"Commerce/Cart/ListRefund", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
+        }
+
         // Update refund status to approved, then refresh list
         // POST: RnP/Publication/ApproveRefund
         [HttpPost]
@@ -1736,6 +1753,15 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             return "error";
+        }
+
+        // Download
+
+        // File download
+        [HttpGet]
+        public async Task<ActionResult> Download(int id)
+        {
+            return await FileMethod.DownloadFile(id);
         }
 
         // Settings
@@ -1847,10 +1873,22 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         }
 
         // Upload picture files
-        private async Task<int> UploadImageFiles(int pubid, HttpPostedFileBase coverfile, HttpPostedFileBase authorfile)
+        private async Task<int> UploadImageFiles(int pubid, IEnumerable<HttpPostedFileBase> coverfiles, IEnumerable<HttpPostedFileBase> authorfiles)
         {
-            string coverpath = UploadCoverFile(coverfile);
-            string authorpath = UploadAuthorFile(authorfile);
+            string coverpath = "";
+            string authorpath = "";
+
+            if (coverfiles.Count() > 0)
+            {
+                HttpPostedFileBase coverfile = coverfiles.First();
+                coverpath = UploadCoverFile(coverfile);
+            }
+
+            if (authorfiles.Count() > 0)
+            {
+                HttpPostedFileBase authorfile = authorfiles.First();
+                authorpath = UploadAuthorFile(authorfile);
+            }
 
             var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/UploadImages?pubid={pubid}&coverpic={coverpath}&authorpic={authorpath}");
 
@@ -1863,67 +1901,57 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return 0;
         }
 
-        // Update picture files
-        private async Task<int> UpdateImageFiles(int pubid, HttpPostedFileBase coverfile, HttpPostedFileBase authorfile)
+        // Update cover file
+        private async Task<int> UpdateImageFileCover(int pubid, IEnumerable<HttpPostedFileBase> coverfiles, IEnumerable<WebApiModel.FileDocuments.Attachment> covers)
         {
-            string coverpath = UploadCoverFile(coverfile);
-            string authorpath = UploadAuthorFile(authorfile);
-
-            var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/UpdateImages?pubid={pubid}&coverpic={coverpath}&authorpic={authorpath}");
-
-            if (response.isSuccess)
+            if (covers.Count() <= 0)
             {
-                var oldid = response.Data;
-                return oldid;
+                string coverpath = "";
+
+                if (coverfiles.Count() > 0)
+                {
+                    HttpPostedFileBase coverfile = coverfiles.First();
+                    coverpath = UploadCoverFile(coverfile);
+                }
+
+                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/UpdateImagesCover?pubid={pubid}&coverpic={coverpath}");
+
+                if (response.isSuccess)
+                {
+                    var oldid = response.Data;
+                    return oldid;
+                }
+
             }
 
             return 0;
         }
 
-        //
-        /*
-        private List<FileDocument> UploadImageFile(List<HttpPostedFileBase> files, int? userId = null, string directory = "publication", string fileType = "", string fileTag = "")
+        // Update author file
+        private async Task<int> UpdateImageFileAuthor(int pubid, IEnumerable<HttpPostedFileBase> authorfiles, IEnumerable<WebApiModel.FileDocuments.Attachment> authors)
         {
-            string UploadPath = System.Configuration.ConfigurationManager.AppSettings["FilePath"].ToString();
-
-            UploadPath = UploadPath + "images\\";
-
-            if (directory != "") UploadPath = UploadPath + directory + "\\";
-
-            foreach (var file in files)
+            if (authors.Count() <= 0)
             {
-                string FileName = System.IO.Path.GetFileNameWithoutExtension(file.FileName);
+                string authorpath = "";
 
-                string FileExtension = System.IO.Path.GetExtension(file.FileName);
-
-                FileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + FileName.Trim() + FileExtension;
-
-                string ServerPath = UploadPath + FileName;
-
-                file.SaveAs(ServerPath);
-
-                var filemodel = new PublicationImageFile
+                if (authorfiles.Count() > 0)
                 {
-                    FileName = FileName,
-                    FilePath = ServerPath,
-                    Directory = directory,
-                    Display = true,
-                    ParentId =
-                };
+                    HttpPostedFileBase authorfile = authorfiles.First();
+                    authorpath = UploadAuthorFile(authorfile);
+                }
 
-                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"RnP/Publication/SaveSettings", model);
+                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Publication/UpdateImagesAuthor?pubid={pubid}&authorpic={authorpath}");
 
                 if (response.isSuccess)
                 {
-                    await LogActivity(Modules.RnP, "Save Publication Settings");
-
-                    TempData["SuccessMessage"] = "Publication Settings saved successfully.";
-
-                    return RedirectToAction("Settings", "Publication", new { area = "RnP" });
+                    var oldid = response.Data;
+                    return oldid;
                 }
+
             }
+
+            return 0;
         }
-        */
 
         // Get minimum publication year from API
         private async Task<int> GetMinimumPublishedYear()

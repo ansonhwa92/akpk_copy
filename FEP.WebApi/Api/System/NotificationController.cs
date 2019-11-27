@@ -150,7 +150,7 @@ namespace FEP.WebApi.Api.Systems
                     CreatedDate = s.SendDate,
                     IsRead = s.IsRead
                 })
-                .OrderByDescending(o => o.CreatedDate).Take(5).ToList();
+                .OrderByDescending(o => o.CreatedDate).Take(10).ToList();
                 
             return Ok(notifications);
         }

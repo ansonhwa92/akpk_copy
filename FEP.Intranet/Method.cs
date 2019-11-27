@@ -260,9 +260,7 @@ namespace FEP.Intranet
             return result;
 
         }
-
         
-
         public static string SaveFile(HttpPostedFileBase file, string path, string deletefilename = null)
         {
             if (file != null)

@@ -29,7 +29,7 @@ namespace FEP.WebApi.Api.Administration
         public IHttpActionResult Get(string LoginId, string Password)
         {
 
-            var user = db.UserAccount.Where(u => u.LoginId == LoginId && u.IsEnable).FirstOrDefault();
+            var user = db.UserAccount.Where(u => u.LoginId == LoginId && u.IsEnable && u.User.Display).FirstOrDefault();
 
             if (user != null)
             {

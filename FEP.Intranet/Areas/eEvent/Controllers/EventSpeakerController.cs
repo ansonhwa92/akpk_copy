@@ -275,5 +275,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return roles;
 
 		}
+
+        public async Task<ActionResult> Download(int id)
+        {
+            return await FileMethod.DownloadFile(id);
+        }
 	}
 }

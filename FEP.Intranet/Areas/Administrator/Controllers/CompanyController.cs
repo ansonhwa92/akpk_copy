@@ -145,7 +145,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                     CreateAutoReminder notification = new CreateAutoReminder
                     {
                         NotificationType = NotificationType.ActivateAccount,
-                        NotificationCategory = NotificationCategory.Event,
+                        NotificationCategory = NotificationCategory.Learning,
                         ParameterListToSend = notificationParameter,
                         StartNotificationDate = DateTime.Now,
                         ReceiverId = new List<int> { (int)response.Data.UserId }

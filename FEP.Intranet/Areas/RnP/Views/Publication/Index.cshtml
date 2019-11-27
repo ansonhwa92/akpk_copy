@@ -134,7 +134,8 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)RnP/Publication/GetAll',
+                    @*"url": '@(WebApiURL)RnP/Publication/GetAll',*@
+                    "url": '@Url.Action("Index", "Publication", new { area = "RnP" })',
                     "data": function (filter) {
                         //filter.Type = $('#Filters_Type').val();
                         filter.Author = $('#Filters_Author').val();

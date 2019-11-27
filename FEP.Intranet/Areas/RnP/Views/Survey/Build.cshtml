@@ -161,7 +161,8 @@
                 $('#Contents').val(surveyCreator.text);
                 var form = $('#formbuild');
                 $.ajax({
-                    url: "@(WebApiURL)RnP/Survey/Build",
+                    @*url: "@(WebApiURL)RnP/Survey/Build",*@
+                    url: "@Url.Action("SaveForm", "Survey", new { area = "RnP" })",
                     type: "POST",
                     data: form.serialize(),
                     success: function (data) {
@@ -205,7 +206,8 @@
                 //alert(form.serialize());
                 //return false;
                 $.ajax({
-                    url: "@(WebApiURL)RnP/Survey/SaveTemplate",
+                    @*url: "@(WebApiURL)RnP/Survey/SaveTemplate",*@
+                    url: "@Url.Action("SaveTemplate", "Survey", new { area = "RnP" })",
                     type: "POST",
                     data: form.serialize(),
                     success: function (data) {

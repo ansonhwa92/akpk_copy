@@ -409,7 +409,8 @@
 
             $('#downloadFile').click(function () {
                 @*var myurl = '@Url.Action("IncrementDownload", "Home", new { area = "RnP" })' + '?id=' + @Model.ID;*@
-                var myurl = '@(WebApiURL)RnP/Publication/IncrementDownload?id=' + @Model.ID + '&userid=' + @CurrentUser.UserId.Value;
+                @*var myurl = '@(WebApiURL)RnP/Publication/IncrementDownload?id=' + @Model.ID + '&userid=' + @CurrentUser.UserId.Value;*@
+                var myurl = '@Url.Action("IncrementDownload", "Publication", new { area = "RnP" })' + '?id=' + @Model.ID  + '&userid=' + @CurrentUser.UserId.Value;
                 $.ajax({
                     url: myurl,
                     type: "GET",

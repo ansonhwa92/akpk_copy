@@ -101,7 +101,8 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)Setting/Group/GetAll',
+                    @*"url": '@(WebApiURL)Setting/Group/GetAll',*@
+                    "url": '@Url.Action("GetAll", "Group", new { area = "Setting" })',
                     "data": function (filter) {
                         filter.Name = $('#Filter_Name').val();
                         filter.Description = $('#Filter_Description').val();

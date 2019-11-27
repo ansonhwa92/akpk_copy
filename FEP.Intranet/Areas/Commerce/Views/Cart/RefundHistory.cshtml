@@ -146,7 +146,8 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)Commerce/Cart/MyRefunds',
+                    @*"url": '@(WebApiURL)Commerce/Cart/MyRefunds',*@
+                    "url": '@Url.Action("MyRefunds", "Cart", new { area = "Commerce" })',
                     "data": function (filter) {
                         filter.CurrentUserId = $('#Filters_CurrentUserId').val();
                         filter.Description = $('#Filters_Description').val();

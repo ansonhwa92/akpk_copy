@@ -28,6 +28,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View();
         }
 
+        // GET: RnP/Survey
+        [HasAccess(UserAccess.RnPSurveyView)]
+        [HttpPost]
+        public async Task<ActionResult> Index(FilterSurveyModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"RnP/Survey/GetAll", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
+        }
+
         //menu
         [ChildActionOnly]
         public ActionResult _Menu()
@@ -40,6 +50,15 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         public ActionResult List()
         {
             return View();
+        }
+
+        [HasAccess(UserAccess.RnPSurveyView)]
+        [HttpPost]
+        public async Task<ActionResult> List(FilterSurveyModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"RnP/Survey/GetPublished", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
         }
 
         // Show select survey type form
@@ -466,9 +485,32 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View(model);
         }
 
+        // Save build form (remain on build form) (called by surveyjs)
+        // POST: Survey/SaveForm
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SaveForm(UpdateSurveyContentsModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/Build", model);
+
+                if (response.isSuccess)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            return "invalid";
+        }
+
         // Process save template form
         // After editing build, user can save it as template (this is called via ajax).
         // POST: Survey/SaveTemplate/5
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveTemplate(UpdateSurveyTemplateModel model)
@@ -491,6 +533,29 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             return View(model);
+        }
+        */
+
+        // Save template form
+        // POST: Survey/SaveTemplate/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SaveTemplate(UpdateSurveyTemplateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/SaveTemplate", model);
+
+                if (response.isSuccess)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            return "invalid";
         }
 
         // Show review form
@@ -1360,6 +1425,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Process survey answers (testing) submission
         // Redirects to thank you page?
         // POST: Survey/SubmitAnswers/5
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SubmitTest(UpdateSurveyResponseModel model)
@@ -1388,6 +1454,29 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             return View(model);
+        }
+        */
+
+        // Save survey answers (testing) submission
+        // POST: Survey/SubmitTest
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SubmitTest(UpdateSurveyResponseModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/SubmitTest", model);
+
+                if (response.isSuccess)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            return "invalid";
         }
 
         // Show answer form
@@ -1450,6 +1539,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Process survey answers (actual) submission
         // Redirects to thank you page?
         // POST: Survey/SubmitAnswers/5
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SubmitAnswers(UpdateSurveyResponseModel model)
@@ -1478,6 +1568,29 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             return View(model);
+        }
+        */
+
+        // Save survey answers (actual) submission
+        // POST: Survey/SubmitAnswers
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SubmitAnswers(UpdateSurveyResponseModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/SubmitAnswers", model);
+
+                if (response.isSuccess)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            return "invalid";
         }
 
         // Survey results

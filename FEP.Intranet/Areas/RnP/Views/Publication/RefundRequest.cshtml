@@ -197,7 +197,8 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)Commerce/Cart/ListRefund',
+                    @*"url": '@(WebApiURL)Commerce/Cart/ListRefund',*@
+                    "url": '@Url.Action("ListRefund", "Cart", new { area = "Commerce" })',
                     "data": function (filter) {
                         filter.ItemType = $('#Filters_ItemType').val();
                         filter.BuyerName = $('#Filters_BuyerName').val();

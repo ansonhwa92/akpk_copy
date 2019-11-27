@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using FEP.Model;
 using FEP.WebApiModel.RnP;
 using FEP.WebApiModel.SLAReminder;
+using Newtonsoft.Json;
 
 
 namespace FEP.Intranet.Areas.RnP.Controllers
@@ -24,6 +25,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        // GET: RnP/Publication
+        [HasAccess(UserAccess.RnPPublicationView)]
+        [HttpPost]
+        public async Task<ActionResult> Index(FilterPublicationModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"RnP/Publication/GetAll", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
         }
 
         //menu
@@ -1555,7 +1566,33 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View(model);
         }
 
+        // Increments (api calls)
+
+        // Function to increment download count.
+        // GET: api/RnP/Publication/IncrementDownload
+        [Route("api/RnP/Publication/IncrementDownload")]
+        [HttpGet]
+        public async Task<string> IncrementDownload(int? id, int? userid)
+        {
+            if (id == null)
+            {
+                return "invalid";
+            }
+
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/IncrementDownload?id={id}&userid={userid}");
+
+            if (response.isSuccess)
+            {
+                return "success";
+            }
+            else
+            {
+                return "error";
+            }
+        }
+
         // Visitor functions (registered)
+        // currently all unused?
 
         // Browse publications
         // TODO: Handle search/filtering, include star rating
@@ -1678,6 +1715,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             ViewBag.Banks = resBank.Data;
 
             return View();
+        }
+
+        // GET: RnP/Publication/RefundRequest
+        [HttpPost]
+        [HasAccess(UserAccess.Refunds)]
+        public async Task<ActionResult> RefundRequest(FilterRefundRequestModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"Commerce/Cart/ListRefund", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
         }
 
         // Update refund status to approved, then refresh list

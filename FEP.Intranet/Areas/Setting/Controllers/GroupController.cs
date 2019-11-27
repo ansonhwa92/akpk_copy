@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+
 
 namespace FEP.Intranet.Areas.Setting.Controllers
 {
@@ -16,10 +18,21 @@ namespace FEP.Intranet.Areas.Setting.Controllers
         private DbEntities db = new DbEntities();
 
         // List
+        [HasAccess(UserAccess.RnPSurveyEdit)]
         [HttpGet]
         public ActionResult Index()
         {
             return View();
+        }
+
+        // GET: RnP/Publication
+        [HasAccess(UserAccess.RnPSurveyEdit)]
+        [HttpPost]
+        public async Task<ActionResult> Index(FilterTargetedGroup filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"Setting/Group/GetAll", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
         }
 
         // Create

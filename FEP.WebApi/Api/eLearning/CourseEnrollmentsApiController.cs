@@ -551,6 +551,13 @@ namespace FEP.WebApi.Api.eLearning
                     var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.CourseId == id &&
                         x.CourseEventId == courseEvent.Id && x.Learner.User.Id == userId);
 
+                    //wawa - find progress to continue
+                    var progress = db.CourseProgress.Where(x => x.Learner.User.Id == userId && x.CourseId == id).OrderByDescending(x => x.CreatedDate).Take(1).FirstOrDefault();
+
+                    var contentId = 0;
+                    if (progress != null)
+                        contentId = progress.ContentId;
+
                     if (enrollment != null)
                         return Ok(new UserCourseEnrollmentModel
                         {
@@ -558,7 +565,9 @@ namespace FEP.WebApi.Api.eLearning
                             StudentName = enrollment.Learner.User.Name,
                             Status = enrollment.Status,
                             CompletionDate = enrollment.CompletionDate.ToString(),
-                            CourseEventId = enrollment.CourseEventId
+                            CourseEventId = enrollment.CourseEventId,
+                             CourseProgressCount = enrollment.CourseProgress.Count(),
+                            ProgressCourseContentId = contentId
                         });
                 }
             }
@@ -567,6 +576,13 @@ namespace FEP.WebApi.Api.eLearning
                 var enrollment = db.Enrollments.Where(x => x.Learner.User.Id == userId &&
                             x.CourseId == id && !x.CourseEvent.IsTrial && x.Status != EnrollmentStatus.Withdrawn).OrderBy(x => x.CreatedDate).FirstOrDefault();
 
+                //wawa - find progress to continue
+                var progress = db.CourseProgress.Where(x => x.Learner.User.Id == userId && x.CourseId == id).OrderByDescending(x => x.CreatedDate).Take(1).FirstOrDefault();
+
+                var contentId = 0;
+                if (progress != null)
+                    contentId = progress.ContentId;
+
                 if (enrollment != null)
                     return Ok(new UserCourseEnrollmentModel
                     {
@@ -574,7 +590,9 @@ namespace FEP.WebApi.Api.eLearning
                         StudentName = enrollment.Learner.User.Name,
                         Status = enrollment.Status,
                         CompletionDate = enrollment.CompletionDate.ToString(),
-                        CourseEventId = enrollment.CourseEventId
+                        CourseEventId = enrollment.CourseEventId,
+                        CourseProgressCount = enrollment.CourseProgress.Count(),
+                        ProgressCourseContentId = contentId
                     });
             }
 

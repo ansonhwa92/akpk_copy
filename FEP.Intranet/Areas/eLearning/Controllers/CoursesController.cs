@@ -29,7 +29,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string Content = "eLearning/Courses/Content";
         public const string DeleteCourse = "eLearning/Courses/Delete";
         public const string Start = "eLearning/Courses/Start";
-
+        public const string Continue = "eLearning/Courses/Continue";
         public const string Publish = "eLearning/Courses/Publish";
         public const string IsUserEnrolled = "eLearning/Courses/IsUserEnrolled";
         public const string IsUserCompleted = "eLearning/Courses/IsUserCompleted";
@@ -404,12 +404,21 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                         if (response.isSuccess)
                         {
-                            if (response.Data.Status == EnrollmentStatus.Enrolled ||
-                                response.Data.Status == EnrollmentStatus.Completed)
+                            if (response.Data.Status == EnrollmentStatus.Enrolled || response.Data.Status == EnrollmentStatus.Completed)
                                 model.IsUserEnrolled = true;
+
+                            //to continue course
+                            if (response.Data.CourseProgressCount != 0)
+                                ViewBag.InProgress = true;
+                            else
+                                ViewBag.InProgress = false;
 
                             ViewBag.EnrollmentStatus = response.Data.Status;
                             ViewBag.EnrollmentId = response.Data.Id;
+
+                            //to continue course
+                            ViewBag.ProgressCourseContentId = response.Data.ProgressCourseContentId;
+
                         }
                     }
                     else
@@ -418,12 +427,21 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                         if (response.isSuccess)
                         {
-                            if (response.Data.Status == EnrollmentStatus.Enrolled ||
-                                                          response.Data.Status == EnrollmentStatus.Completed)
+                            if (response.Data.Status == EnrollmentStatus.Enrolled || response.Data.Status == EnrollmentStatus.Completed)
                                 model.IsUserEnrolled = true;
+
+                            //to continue course
+                            if (response.Data.CourseProgressCount != 0)
+                                ViewBag.InProgress = true;
+                            else
+                                ViewBag.InProgress = false;
 
                             ViewBag.EnrollmentStatus = response.Data.Status;
                             ViewBag.EnrollmentId = response.Data.Id;
+
+                            //to continue course
+                            ViewBag.ProgressCourseContentId = response.Data.ProgressCourseContentId;
+
                         }
                     }
                 }

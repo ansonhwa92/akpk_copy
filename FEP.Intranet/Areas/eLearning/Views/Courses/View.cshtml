@@ -104,28 +104,30 @@
 
                         <div>
                             <div class="row">
-                                @if (Model.Status == CourseStatus.Published && (ViewBag.EnrollmentStatus != EnrollmentStatus.Enrolled &&
-                                                   ViewBag.EnrollmentStatus != EnrollmentStatus.Completed))
+                                @if (Model.Status == CourseStatus.Published && (ViewBag.EnrollmentStatus != EnrollmentStatus.Enrolled && ViewBag.EnrollmentStatus != EnrollmentStatus.Completed))
                                 {
                                     <button class="btn btn-secondary m-2" onclick="checkLogin()">Enroll</button>
-
                                 }
-                                <!-- allow to start course in trial or in published but already enrolled -->
-                                @if (Model.Status == CourseStatus.Trial || (Model.Status == CourseStatus.Published && Model.IsUserEnrolled))
+
+                                @if (Model.Status == CourseStatus.Trial || (Model.Status == CourseStatus.Published && Model.IsUserEnrolled && @ViewBag.InProgress))
                                 {
+                                    <!-- allow to continue the course - already enrolled -->
+                                    <a class="btn btn-secondary m-2" href="~/eLearning/CourseContents/View/@ViewBag.ProgressCourseContentId">Continue</a>
+                                }
+                                else if (Model.Status == CourseStatus.Trial || (Model.Status == CourseStatus.Published && Model.IsUserEnrolled))
+                                {
+                                    <!-- allow to start course in trial or in published but already enrolled -->
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">Start the course</a>
                                 }
 
                                 @if (Model.Status == CourseStatus.Published && Model.IsUserEnrolled)
                                 {
-                                        <button class="btn btn-secondary m-2" id="btnWithdraw" type="button" onclick="withdraw()">Withdraw</button>
-                                    @*<a class="btn btn-secondary m-2" href="~/eLearning/Courses/Withdraw/@Model.Id">Withdraw</a>*@
+                                    <button class="btn btn-secondary m-2" id="btnWithdraw" type="button" onclick="withdraw()">Withdraw</button>
                                 }
 
                                 @if (Model.Status != CourseStatus.Published)
                                 {
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">View as Learner</a>
-
                                 }
 
                                 @if (@ViewBag.EnrollmentStatus == EnrollmentStatus.Completed)

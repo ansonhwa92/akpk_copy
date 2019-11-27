@@ -1755,6 +1755,15 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return "error";
         }
 
+        // Download
+
+        // File download
+        [HttpGet]
+        public async Task<ActionResult> Download(int id)
+        {
+            return await FileMethod.DownloadFile(id);
+        }
+
         // Settings
 
         // Settings

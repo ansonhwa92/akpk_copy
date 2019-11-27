@@ -191,22 +191,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     string newid = resparray[0];
                     string title = resparray[1];
 
-                    if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() > 0))
-                    {
-                        await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
-                    }
-                    else if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() <= 0))
-                    {
-                        await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles.First(), null);
-                    }
-                    else if ((model.CoverPictureFiles.Count() <= 0) && (model.AuthorPictureFiles.Count() > 0))
-                    {
-                        await UploadImageFiles(int.Parse(newid), null, model.AuthorPictureFiles.First());
-                    }
-                    else
-                    {
-                        await UploadImageFiles(int.Parse(newid), null, null);
-                    }
+                    await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles, model.AuthorPictureFiles);
 
                     await LogActivity(Modules.RnP, "Create New Survey: " + title);
 
@@ -366,24 +351,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
-                    /*
-                    if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() > 0))
-                    {
-                        await UpdateImageFiles(model.ID, model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
-                    }
-                    else if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() <= 0))
-                    {
-                        await UpdateImageFiles(model.ID, model.CoverPictureFiles.First(), null);
-                    }
-                    else if ((model.CoverPictureFiles.Count() <= 0) && (model.AuthorPictureFiles.Count() > 0))
-                    {
-                        await UpdateImageFiles(model.ID, null, model.AuthorPictureFiles.First());
-                    }
-                    else
-                    {
-                        await UpdateImageFiles(model.ID, null, null);
-                    }
-                    */
+                    await UpdateImageFileCover(model.ID, model.CoverPictureFiles, model.CoverPictures);
+
+                    await UpdateImageFileAuthor(model.ID, model.AuthorPictureFiles, model.AuthorPictures);
 
                     await LogActivity(Modules.RnP, "Edit Survey: " + response.Data, model);
 
@@ -1631,10 +1601,22 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         }
 
         // Upload picture files
-        private async Task<int> UploadImageFiles(int surveyid, HttpPostedFileBase coverfile, HttpPostedFileBase authorfile)
+        private async Task<int> UploadImageFiles(int surveyid, IEnumerable<HttpPostedFileBase> coverfiles, IEnumerable<HttpPostedFileBase> authorfiles)
         {
-            string coverpath = UploadCoverFile(coverfile);
-            string authorpath = UploadAuthorFile(authorfile);
+            string coverpath = "";
+            string authorpath = "";
+
+            if (coverfiles.Count() > 0)
+            {
+                HttpPostedFileBase coverfile = coverfiles.First();
+                coverpath = UploadCoverFile(coverfile);
+            }
+
+            if (authorfiles.Count() > 0)
+            {
+                HttpPostedFileBase authorfile = authorfiles.First();
+                authorpath = UploadAuthorFile(authorfile);
+            }
 
             var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UploadImages?surveyid={surveyid}&coverpic={coverpath}&authorpic={authorpath}");
 
@@ -1647,18 +1629,53 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return 0;
         }
 
-        // Update picture files
-        private async Task<int> UpdateImageFiles(int surveyid, HttpPostedFileBase coverfile, HttpPostedFileBase authorfile)
+        // Update cover file
+        private async Task<int> UpdateImageFileCover(int surveyid, IEnumerable<HttpPostedFileBase> coverfiles, IEnumerable<WebApiModel.FileDocuments.Attachment> covers)
         {
-            string coverpath = UploadCoverFile(coverfile);
-            string authorpath = UploadAuthorFile(authorfile);
-
-            var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UpdateImages?surveyid={surveyid}&coverpic={coverpath}&authorpic={authorpath}");
-
-            if (response.isSuccess)
+            if (covers.Count() <= 0)
             {
-                var oldid = response.Data;
-                return oldid;
+                string coverpath = "";
+
+                if (coverfiles.Count() > 0)
+                {
+                    HttpPostedFileBase coverfile = coverfiles.First();
+                    coverpath = UploadCoverFile(coverfile);
+                }
+
+                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UpdateImagesCover?surveyid={surveyid}&coverpic={coverpath}");
+
+                if (response.isSuccess)
+                {
+                    var oldid = response.Data;
+                    return oldid;
+                }
+
+            }
+
+            return 0;
+        }
+
+        // Update author file
+        private async Task<int> UpdateImageFileAuthor(int surveyid, IEnumerable<HttpPostedFileBase> authorfiles, IEnumerable<WebApiModel.FileDocuments.Attachment> authors)
+        {
+            if (authors.Count() <= 0)
+            {
+                string authorpath = "";
+
+                if (authorfiles.Count() > 0)
+                {
+                    HttpPostedFileBase authorfile = authorfiles.First();
+                    authorpath = UploadAuthorFile(authorfile);
+                }
+
+                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UpdateImagesAuthor?surveyid={surveyid}&authorpic={authorpath}");
+
+                if (response.isSuccess)
+                {
+                    var oldid = response.Data;
+                    return oldid;
+                }
+
             }
 
             return 0;

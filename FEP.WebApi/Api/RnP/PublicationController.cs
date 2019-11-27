@@ -1714,16 +1714,34 @@ namespace FEP.WebApi.Api.RnP
             return pubimages.ID;
         }
 
-        // GET: api/RnP/Publication/UpdateImages
-        [Route("api/RnP/Publication/UpdateImages")]
+        // GET: api/RnP/Publication/UpdateImagesCover
+        [Route("api/RnP/Publication/UpdateImagesCover")]
         [HttpGet]
-        public int UpdateImages(int pubid, string coverpic, string authorpic)
+        public int UpdateImagesCover(int pubid, string coverpic)
         {
             var pubimages = db.PublicationImages.Where(pi => pi.PublicationID == pubid).FirstOrDefault();
 
             if (pubimages != null)
             {
                 pubimages.CoverPicture = coverpic;
+                db.Entry(pubimages).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return pubimages.ID;
+            }
+
+            return 0;
+        }
+
+        // GET: api/RnP/Publication/UpdateImagesAuthor
+        [Route("api/RnP/Publication/UpdateImagesAuthor")]
+        [HttpGet]
+        public int UpdateImagesAuthor(int pubid, string authorpic)
+        {
+            var pubimages = db.PublicationImages.Where(pi => pi.PublicationID == pubid).FirstOrDefault();
+
+            if (pubimages != null)
+            {
                 pubimages.AuthorPicture = authorpic;
                 db.Entry(pubimages).State = EntityState.Modified;
                 db.SaveChanges();

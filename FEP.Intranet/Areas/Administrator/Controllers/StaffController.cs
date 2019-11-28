@@ -237,7 +237,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> _Details(int? id)
+        public async Task<ActionResult> _DetailsModal(int? id)
         {
             if (id == null)
             {
@@ -252,9 +252,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             }
 
             var model = response.Data;
-
-            //model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
-
+            
             return View(model);
 
         }

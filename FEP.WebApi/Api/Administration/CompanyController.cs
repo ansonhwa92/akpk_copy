@@ -271,7 +271,7 @@ namespace FEP.WebApi.Api.Administration
                     UserType = UserType.Company,
                     Name = model.Name,
                     Email = model.Email,
-                    ICNo = model.ICNo,
+                    ICNo = model.Type == CompanyType.NonMalaysianCompany ? model.PassportNo : model.ICNo,
                     MobileNo = model.MobileNo,
                     CountryCode = countryCode.CountryCode1,
                     Display = true,

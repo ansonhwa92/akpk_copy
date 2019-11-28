@@ -48,9 +48,9 @@
                 }
 
                 $('#pageInfo').html('Showing ' + start + ' - ' + info.end + ' of ' + info.recordsTotal);
-                
+
                 table.rows({ search: 'applied', order: 'applied' }).nodes().each(function (row, i) {
-                    var cell = table.cell(row, 0);                   
+                    var cell = table.cell(row, 0);
                     cell.data(i + 1);
                 });
 
@@ -69,28 +69,28 @@
 
                 table.draw();
             });
-                        
+
 
             $('.tabledata tbody').on('click', '.btnDelete', function () {
                 debugger
-              
+
                 var row = table.row($(this).parents('tr'));
 
                 var data = row.data();
 
                 showDelete($(this).parents('tr'), data[4], data[0], data[1], data[2]);
-               
+
             });
 
             $('.tabledata tbody').on('click', '.btnEdit', function () {
                 debugger
-              
+
                 var row = table.row($(this).parents('tr'));
 
                 var data = row.data();
 
                 showEdit($(this).parents('tr'), data[4], data[0], data[1], data[2]);
-               
+
             });
 
             $('#lengthChange').val(table.page.len());
@@ -107,7 +107,7 @@
 
             $('.editForm').each(function () {
                 $(this).prev('tr.detail').removeClass('d-none');
-                $(this).remove();               
+                $(this).remove();
             });
 
         }
@@ -120,7 +120,7 @@
                 type: 'get',
                 url: '@Url.Action("_Create", "Role", new { area = "Administrator" })',
                 success: function (data) {
-                    
+
                     $('.tabledata > tbody:last-child').prepend(data);
                     $.validator.unobtrusive.parse('#form');
 
@@ -150,12 +150,12 @@
 
                     obj.addClass('d-none');
                     obj.after(data);
-                    
+
                     $.validator.unobtrusive.parse('#form');
 
                 },
                 error: function (xhr, status, error) {
-                   
+
                 }
             });
 
@@ -175,7 +175,7 @@
 
                 },
                 error: function (xhr, status, error) {
-                    
+
                 }
             });
 
@@ -222,7 +222,7 @@
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
                             <a href="" class="active nav-link">@Language.Administrator.Role.TextRoleList</a>
-                        </li>                      
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -230,10 +230,10 @@
     </div>
     <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
 
-        <div class="border-form rounded-top">
+        <div class="divtableStyle1">
+            <div class="row no-gutters">
+                <div class="col-lg-12">
 
-            <div class="form-container form-container-w100">
-                <div class="top-filter-wrap">
                     <div class="d-flex align-items-center">
                         <div class="filter dropdown">
                             <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>@Language.General.ButtonFilter</button>
@@ -269,12 +269,10 @@
 
                     </div>
 
-                </div>
-                <hr>
-                <div>
+                    <hr>
+
                     <div class="d-flex align-items-center">
                         <div>
-                            <!-- Select option -->
                             <span class="select-arrow">
                                 <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
                                     <option value="10">10</option>
@@ -287,56 +285,54 @@
                         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
                         <button class="btn btn-secondary btn-lg" onclick="showAdd();"><i class="la la-plus font-icon"></i>@Language.Administrator.Role.ButtonCreate</button>
                     </div>
-                    <div class="divtableStyle1">
-                        <div class="row no-gutters">
-                            <div class="col-lg-12">
 
-                                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
+
+
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
+                    {
+
+                        <table class="table tableStyle1 tabledata table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>@Html.DisplayNameFor(model => model.First().Name)</th>
+                                    <th>@Html.DisplayNameFor(model => model.First().Description)</th>
+                                    <th>Action</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @{ var i = 0;}
+
+                                @foreach (var item in Model)
                                 {
+                                    { i++; }
+                                    <tr class="detail">
+                                        <td></td>
+                                        <td>@Html.DisplayFor(m => item.Name)</td>
+                                        <td>@Html.DisplayFor(m => item.Description)</td>
+                                        <td>
+                                            <a href="@Url.Action("Access", new { id = item.Id })" data-toggle="tooltip" title="Update Access"><i class="la la-list-alt text-muted"></i></a>
+                                            <a href="@Url.Action("UserRole", new { id = item.Id })" data-toggle="tooltip" title="Update User"><i class="la la-user text-muted"></i></a>
+                                            <a class="btnEdit" href="javascript:void(0);" data-toggle="tooltip" title="Edit"><i class="la la-edit text-muted"></i></a>
+                                            <a class="btnDelete" href="javascript:void(0);" data-toggle="tooltip" title="Delete"><i class="la la-trash-o text-muted"></i></a>
+                                        </td>
+                                        <td>@Html.DisplayFor(m => item.Id)</td>
+                                    </tr>
 
-                                    <table class="table tableStyle1 tabledata table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>@Html.DisplayNameFor(model => model.First().Name)</th>
-                                                <th>@Html.DisplayNameFor(model => model.First().Description)</th>
-                                                <th>Action</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            @{ var i = 0;}
-
-                                            @foreach (var item in Model)
-                                            {
-                                                { i++; }
-                                                <tr class="detail">
-                                                    <td></td>
-                                                    <td>@Html.DisplayFor(m => item.Name)</td>
-                                                    <td>@Html.DisplayFor(m => item.Description)</td>
-                                                    <td>
-                                                        <a href="@Url.Action("Access", new { id = item.Id })" data-toggle="tooltip" title="Update Access"><i class="la la-list-alt text-muted"></i></a>
-                                                        <a href="@Url.Action("UserRole", new { id = item.Id })" data-toggle="tooltip" title="Update User"><i class="la la-user text-muted"></i></a>
-                                                        <a class="btnEdit" href="javascript:void(0);" data-toggle="tooltip" title="Edit"><i class="la la-edit text-muted"></i></a>
-                                                        <a class="btnDelete" href="javascript:void(0);" data-toggle="tooltip" title="Delete"><i class="la la-trash-o text-muted"></i></a>
-                                                    </td>
-                                                    <td>@Html.DisplayFor(m => item.Id)</td>
-                                                </tr>
-
-                                            }
-
-                                        </tbody>
-                                    </table>
                                 }
-                            </div>
-                        </div>
-                    </div>
+
+                            </tbody>
+                        </table>
+                    }
                 </div>
-
             </div>
-
         </div>
+
+
+
+
 
     </div>
 

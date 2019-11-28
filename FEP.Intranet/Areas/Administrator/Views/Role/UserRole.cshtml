@@ -25,7 +25,7 @@
                         filter.Email = $('#Filter_Email').val();
                     }
                 },
-                columns: [                 
+                columns: [
                     {
                         sortable: false,
                         render: function (data, type, row, meta) {
@@ -129,16 +129,16 @@
             var url = '';
 
             if (usertype == 0) {
-                url = '@Url.Action("_Details", "Individual", new { area = "Administrator" })/' + id;
+                url = '@Url.Action("_DetailsModal", "User", new { area = "Administrator" })/' + id;
             }
             else if (usertype == 1) {
-                url = '@Url.Action("_Details", "Individual", new { area = "Administrator" })/' + id;
+                url = '@Url.Action("_DetailsModal", "Individual", new { area = "Administrator" })/' + id;
             }
             else if (usertype == 2) {
-                url = '@Url.Action("_Details", "Company", new { area = "Administrator" })/' + id;
+                url = '@Url.Action("_DetailsModal", "Company", new { area = "Administrator" })/' + id;
             }
             else if (usertype == 3) {
-                url = '@Url.Action("_Details", "Staff", new { area = "Administrator" })/' + id;
+                url = '@Url.Action("_DetailsModal", "Staff", new { area = "Administrator" })/' + id;
             }
 
             if (url != '') {
@@ -340,21 +340,12 @@
                                 <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
                             </div>
                         </div>
-                        @*<div class="sorting-wrap">
-                                <div class="sorting-dropdown">
-                                    <select class="select2 form-control small" name="sorting">
-                                        <option value="Default Sorting">Default Sorting</option>
-                                        <option value="sorting 1">Sorting 1</option>
-                                        <option value="sorting 2">Sorting 2</option>
-                                    </select>
-                                </div>
-                            </div>*@
                     </div>
+
                     <hr>
 
                     <div class="d-flex pb-4 align-items-center">
                         <div>
-                            <!-- Select option -->
                             <span class="select-arrow">
                                 <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
                                     <option value="10">10</option>
@@ -366,7 +357,7 @@
                         </div>
                         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
                         <div class="dropdown">
-                            <button class="btn btn-secondary" data-toggle="dropdown"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Add User</button>
+                            <button class="btn btn-secondary" data-toggle="dropdown"><i class="la la-plus font-icon"></i>Add User</button>
                             <div class="dropdown-menu">
 
                                 <a style="margin-top:10px" class="dropdown-item" href="javascript:void(0);" onclick="showAdd(1)">Individual</a>
@@ -380,7 +371,7 @@
                     <!-- Table -->
                     <table class="table tableStyle1 tabledata">
                         <thead>
-                            <tr>                              
+                            <tr>
                                 <th>#</th>
                                 <th>@Html.DisplayNameFor(model => model.Users.List.Name)</th>
                                 <th>@Html.DisplayNameFor(model => model.Users.List.Email)</th>

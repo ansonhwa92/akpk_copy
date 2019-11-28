@@ -123,11 +123,21 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 ModelState.AddModelError("Email", Language.Administrator.Company.ValidIsExistEmail);
             }
 
-            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={model.ICNo}");
+            var icno = model.ICNo;
+
+            if (model.Type == CompanyType.NonMalaysianCompany)
+            {
+                icno = model.PassportNo;
+            }
+
+            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={icno}");
 
             if (icnoResponse.isSuccess)
             {
-                ModelState.AddModelError("ICNo", Language.Administrator.Company.ValidIsExistICNo);
+                if (model.Type == CompanyType.NonMalaysianCompany)
+                    ModelState.AddModelError("PassportNo", Language.Administrator.Company.ValidIsExistPassportNo);
+                else
+                    ModelState.AddModelError("ICNo", Language.Administrator.Company.ValidIsExistICNo);
             }
 
             if (ModelState.IsValid)
@@ -284,11 +294,21 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 ModelState.AddModelError("Email", Language.Administrator.Company.ValidIsExistEmail);
             }
 
-            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={model.Id}&icno={model.ICNo}");
+            var icno = model.ICNo;
+
+            if (model.Type == CompanyType.NonMalaysianCompany)
+            {
+                icno = model.PassportNo;
+            }
+
+            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={model.Id}&icno={icno}");
 
             if (icnoResponse.isSuccess)
             {
-                ModelState.AddModelError("ICNo", Language.Administrator.Company.ValidIsExistICNo);
+                if (model.Type == CompanyType.NonMalaysianCompany)
+                    ModelState.AddModelError("PassportNo", Language.Administrator.Company.ValidIsExistPassportNo);
+                else
+                    ModelState.AddModelError("ICNo", Language.Administrator.Company.ValidIsExistICNo);
             }
 
             if (ModelState.IsValid)
@@ -555,7 +575,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> _Details(int? id)
+        public async Task<ActionResult> _DetailsModal(int? id)
         {
             if (id == null)
             {
@@ -572,7 +592,6 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             var model = response.Data;
 
             return View(model);
-
         }
 
         [NonAction]

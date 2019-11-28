@@ -68,9 +68,10 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             var model = new EditRoleModel
             {
-                Id = id,
+                Id = id,               
                 No = No,
-                Name = Name
+                Name = Name,
+                Description = Description,
             };
 
             return View(model);
@@ -117,7 +118,8 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 Id = id,
                 No = No,
-                Name = Name
+                Name = Name,
+                Description = Description
             };
 
             return View(model);

@@ -20,12 +20,12 @@ namespace FEP.WebApiModel.Administration
     }
 
     public class CreateRoleModel
-    {        
-        [Required]
-        [Display(Name = "Role Name")]
+    {
+        [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.Administrator.Role))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Administrator.Role))]
         public string Name { get; set; }
 
-        [Display(Name = "Description")]
+        [Display(Name = "FieldDescription", ResourceType = typeof(Language.Administrator.Role))]
         public string Description { get; set; }
     }
 
@@ -35,11 +35,11 @@ namespace FEP.WebApiModel.Administration
 
         public string No { get; set; }
 
-        [Required]
-        [Display(Name = "Role Name")]
+        [Required(ErrorMessageResourceName = "ValidRequiredName", ErrorMessageResourceType = typeof(Language.Administrator.Role))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Administrator.Role))]
         public string Name { get; set; }
 
-        [Display(Name = "Description")]
+        [Display(Name = "FieldDescription", ResourceType = typeof(Language.Administrator.Role))]
         public string Description { get; set; }
     }
 
@@ -48,12 +48,11 @@ namespace FEP.WebApiModel.Administration
         public int Id { get; set; }
 
         public string No { get; set; }
-
-        [Required]
-        [Display(Name = "Role Name")]
+        
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Administrator.Role))]
         public string Name { get; set; }
 
-        [Display(Name = "Description")]
+        [Display(Name = "FieldDescription", ResourceType = typeof(Language.Administrator.Role))]
         public string Description { get; set; }
     }
 
@@ -77,7 +76,7 @@ namespace FEP.WebApiModel.Administration
 
         public Modules? Module { get; set; }
 
-        [Display(Name = "Role Name")]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Administrator.Role))]
         public string RoleName { get; set; }
 
         public Dictionary<UserAccess, string> Access { get; set; }

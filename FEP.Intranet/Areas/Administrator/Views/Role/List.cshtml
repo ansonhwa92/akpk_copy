@@ -12,16 +12,102 @@
 
         $(document).ready(function () {
 
+            var table = $('.tabledata').DataTable({
+                columnDefs: [{
+                    searchable: false,
+                    orderable: false,
+                    targets: [0, 3]
+                },
+                {
+                    visible: false,
+                    targets:[4]
+                }],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_"
+                },
+                dom: 'rtip'
+            });
+
+            table.on('order.dt search.dt page.dt', function () {
+
+                var info = table.page.info();
+
+                var start = 0;
+                if (info.recordsTotal != 0) {
+                    start = info.start + 1;
+                }
+
+                $('#pageInfo').html('Showing ' + start + ' - ' + info.end + ' of ' + info.recordsTotal);
+                
+                table.rows({ search: 'applied', order: 'applied' }).nodes().each(function (row, i) {
+                    var cell = table.cell(row, 0);                   
+                    cell.data(i + 1);
+                });
+
+            }).draw();
+
+            $('#keyword').keyup(function () {
+
+                table.search( $(this).val()).draw();
+
+            });
+
+            $('#btnSearch').click(function () {
+
+                table.column(1).search($('#Filter_Name').val());
+                table.column(2).search($('#Filter_Description').val());
+
+                table.draw();
+            });
+                        
+
+            $('.tabledata tbody').on('click', '.btnDelete', function () {
+                debugger
+              
+                var row = table.row($(this).parents('tr'));
+
+                var data = row.data();
+
+                showDelete($(this).parents('tr'), data[4], data[0], data[1], data[2]);
+               
+            });
+
+            $('.tabledata tbody').on('click', '.btnEdit', function () {
+                debugger
+              
+                var row = table.row($(this).parents('tr'));
+
+                var data = row.data();
+
+                showEdit($(this).parents('tr'), data[4], data[0], data[1], data[2]);
+               
+            });
+
+            $('#lengthChange').val(table.page.len());
+
+            $('#lengthChange').change( function() {
+                table.page.len($(this).val()).draw();
+            });
 
 
         });
 
         function clearForm() {
-            $('#addForm').html('');
+            $('.addForm').remove();
 
             $('.editForm').each(function () {
-                $(this).html('');
-                $(this).prev('div.details').removeClass('d-none').addClass('d-block');
+                $(this).prev('tr.detail').removeClass('d-none');
+                $(this).remove();               
             });
 
         }
@@ -34,9 +120,9 @@
                 type: 'get',
                 url: '@Url.Action("_Create", "Role", new { area = "Administrator" })',
                 success: function (data) {
-
-                    $('#addForm').html(data);
-                    $.validator.unobtrusive.parse('#formAdd');
+                    
+                    $('.tabledata > tbody:last-child').prepend(data);
+                    $.validator.unobtrusive.parse('#form');
 
                 },
                 error: function (xhr, status, error) {
@@ -48,9 +134,9 @@
 
         function showDetail(obj) {
 
-            var parent = $(obj).closest('div.editForm');
+            var parent = $(obj).closest('td.editForm');
             parent.html('');
-            parent.prev('div.details').removeClass('d-none').addClass('d-block');
+            parent.prev('td.details').removeClass('d-none');
         }
 
         function showEdit(obj, id, no, name, description) {
@@ -62,16 +148,14 @@
                 url: '@Url.Action("_Edit", "Role", new { area = "Administrator" })?id=' + id + '&Name=' + name + '&Description=' + description + '&No=' + no,
                 success: function (data) {
 
-                    var parent = $(obj).closest('div.details');
-
-                    parent.removeClass('d-block').addClass('d-none');
-                    parent.next('div.editForm').html(data);
-
-                    $.validator.unobtrusive.parse('#formEdit');
+                    obj.addClass('d-none');
+                    obj.after(data);
+                    
+                    $.validator.unobtrusive.parse('#form');
 
                 },
                 error: function (xhr, status, error) {
-                    $('#detail').html('');
+                   
                 }
             });
 
@@ -86,20 +170,19 @@
                 url: '@Url.Action("_Delete", "Role", new { area = "Administrator" })?id=' + id + '&Name=' + name + '&Description=' + description + '&No=' + no,
                 success: function (data) {
 
-                    var parent = $(obj).closest('div.details');
-
-                    parent.removeClass('d-block').addClass('d-none');
-                    parent.next('div.editForm').html(data);
+                    obj.addClass('d-none');
+                    obj.after(data);
 
                 },
                 error: function (xhr, status, error) {
-                    $('#detail').html('');
+                    
                 }
             });
 
         }
 
-        
+
+
     </script>
 
 }
@@ -121,8 +204,8 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Role</h1>
-                    @*<div class="header-text">List of registered user as individual</div>*@
+                    <h1 class="page-title text-white">@Language.Administrator.Role.TitleList</h1>
+                    <div class="header-text">@Language.Administrator.Role.TitleDescription</div>
                 </div>
             </div>
         </div>
@@ -135,14 +218,11 @@
         <div id="page-nav" class="sidebar-left page-nav">
             <div data-perfect-scrollbar>
                 <div class="page-section">
-                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> Role</h6>
+                    <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i> @Language.Administrator.Role.TextRole</h6>
                     <ul class="nav page-nav__menu">
                         <li class="nav-item">
-                            <a href="" class="active nav-link">Role List</a>
-                        </li>
-                        @*<li class="nav-item">
-                                <a href="" class="nav-link">Edit</a>
-                            </li>*@
+                            <a href="" class="active nav-link">@Language.Administrator.Role.TextRoleList</a>
+                        </li>                      
                     </ul>
                 </div>
             </div>
@@ -153,15 +233,27 @@
         <div class="border-form rounded-top">
 
             <div class="form-container form-container-w100">
-                <div class="mb-4 top-filter-wrap">
+                <div class="top-filter-wrap">
                     <div class="d-flex align-items-center">
                         <div class="filter dropdown">
-                            <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+                            <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>@Language.General.ButtonFilter</button>
                             <div class="dropdown-menu">
-                                <div class="filter-head">Filters</div>
+                                <div class="filter-head">@Language.General.ButtonFilter</div>
                                 <div class="filter-body">
+                                    <div>@Language.Administrator.Role.FieldName</div>
+                                    <div class="sorting-wrap">
+                                        <div class="sorting-dropdown">
+                                            <input id="Filter_Name" class="form-control small" />
+                                        </div>
+                                    </div>
+                                    <div>@Language.Administrator.Role.FieldDescription</div>
+                                    <div class="sorting-wrap">
+                                        <div class="sorting-dropdown">
+                                            <input id="Filter_Description" class="form-control small" />
+                                        </div>
+                                    </div>
                                     <div>
-                                        <button id="btnSearch" onclick="" class="btn btn-secondary btn-block">Search</button>
+                                        <button id="btnSearch" class="btn btn-secondary btn-block">@Language.General.ButtonSearch</button>
                                     </div>
                                 </div>
                             </div>
@@ -169,57 +261,74 @@
                         <div class="divider-vertical">&nbsp;</div>
                         <!-- Search -->
                         <div class="input-keyword col-lg-5 col-sm-8 mr-auto px-0">
-                            @*@Html.EditorFor(m => m.Filter.QuickSearch, new { htmlAttributes = new { @class = "form-control form-control-rounded", placeholder = "Search" } })*@
-                            <input type="text" class="form-control form-control-rounded" />
+                            <input id="keyword" type="text" class="form-control form-control-rounded" />
                             <div class="input-group-append">
-                                <button class="btn btn-circle" type="button" onclick="searchKMC()"><i class="fas fa-search text-white"></i></button>
+                                <button class="btn btn-circle" type="button" id="quickSearch"><i class="fas fa-search text-white"></i></button>
                             </div>
                         </div>
 
                     </div>
 
                 </div>
+                <hr>
                 <div>
-                    <div class="d-flex align-items-center mb-4 mt-2">
-                        <h4 class="color-darkblue mr-auto mb-0"></h4>
-                        <button class="btn btn-secondary btn-lg" onclick="showAdd();"><i class="la la-plus font-icon"></i>Create New Role</button>
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <!-- Select option -->
+                            <span class="select-arrow">
+                                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+                        <button class="btn btn-secondary btn-lg" onclick="showAdd();"><i class="la la-plus font-icon"></i>@Language.Administrator.Role.ButtonCreate</button>
                     </div>
                     <div class="divtableStyle1">
                         <div class="row no-gutters">
                             <div class="col-lg-12">
-                                <table class="table tableStyle1 tabledata">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>@Html.DisplayNameFor(model => model.First().Name)</th>
-                                            <th>@Html.DisplayNameFor(model => model.First().Description)</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr id="addForm"></tr>
-                                        @{ var i = 0;}
 
-                                        @foreach (var item in Model)
-                                        {
-                                            { i++; }
-                                            <tr class="detail">
-                                                <td>@i.ToString()</td>
-                                                <td>@Html.DisplayFor(m => item.Name)</td>
-                                                <td>@Html.DisplayFor(m => item.Description)</td>
-                                                <td>
-                                                    <a href="@Url.Action("Access", new { id = item.Id })" data-toggle="tooltip" title="Update Access"><i class="la la-list-alt text-muted"></i></a>
-                                                    <a href="@Url.Action("UserRole", new { id = item.Id })" data-toggle="tooltip" title="Update User"><i class="la la-user text-muted"></i></a>
-                                                    <a href="javascript:void(0);" onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)', '@HttpUtility.JavaScriptStringEncode(item.Description)')" data-toggle="tooltip" title="Edit"><i class="la la-edit text-muted"></i></a>
-                                                    <a href="javascript:void(0);" onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)','@HttpUtility.JavaScriptStringEncode(item.Description)')" data-toggle="tooltip" title="Delete"><i class="la la-trash-o text-muted"></i></a>
-                                                </td>
+                                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
+                                {
+
+                                    <table class="table tableStyle1 tabledata table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>@Html.DisplayNameFor(model => model.First().Name)</th>
+                                                <th>@Html.DisplayNameFor(model => model.First().Description)</th>
+                                                <th>Action</th>
+                                                <th></th>
                                             </tr>
-                                            <tr class="editForm"></tr>
-                                        }
+                                        </thead>
+                                        <tbody>
 
-                                    </tbody>
-                                </table>
+                                            @{ var i = 0;}
 
+                                            @foreach (var item in Model)
+                                            {
+                                                { i++; }
+                                                <tr class="detail">
+                                                    <td></td>
+                                                    <td>@Html.DisplayFor(m => item.Name)</td>
+                                                    <td>@Html.DisplayFor(m => item.Description)</td>
+                                                    <td>
+                                                        <a href="@Url.Action("Access", new { id = item.Id })" data-toggle="tooltip" title="Update Access"><i class="la la-list-alt text-muted"></i></a>
+                                                        <a href="@Url.Action("UserRole", new { id = item.Id })" data-toggle="tooltip" title="Update User"><i class="la la-user text-muted"></i></a>
+                                                        <a class="btnEdit" href="javascript:void(0);" data-toggle="tooltip" title="Edit"><i class="la la-edit text-muted"></i></a>
+                                                        <a class="btnDelete" href="javascript:void(0);" data-toggle="tooltip" title="Delete"><i class="la la-trash-o text-muted"></i></a>
+                                                    </td>
+                                                    <td>@Html.DisplayFor(m => item.Id)</td>
+                                                </tr>
+
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                }
                             </div>
                         </div>
                     </div>

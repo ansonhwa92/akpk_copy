@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using FEP.Helper;
 using FEP.Model;
 
+
 namespace FEP.WebApiModel.Administration
 {
 
@@ -19,13 +20,13 @@ namespace FEP.WebApiModel.Administration
     public class FilterUserModel : DataTableModel
     {
 
-        [Display(Name = "FieldName", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Administrator.User))]
         public string Name { get; set; }
 
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Administrator.User))]
         public string Email { get; set; }
 
-        [Display(Name = "FieldUserType", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldUserType", ResourceType = typeof(Language.Administrator.User))]
         public UserType? UserType { get; set; }
 
     }
@@ -35,20 +36,20 @@ namespace FEP.WebApiModel.Administration
     {
         public int Id { get; set; }
 
-        [Display(Name = "FieldName", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Administrator.User))]
         public string Name { get; set; }
 
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Administrator.User))]
         public string Email { get; set; }
 
-        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Administrator.User))]
         public string MobileNo { get; set; }
         public string CountryCode { get; set; }
 
-        [Display(Name = "FieldUserType", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldUserType", ResourceType = typeof(Language.Administrator.User))]
         public UserType UserType { get; set; }
 
-        [Display(Name = "FieldUserType", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldUserType", ResourceType = typeof(Language.Administrator.User))]
         public string UserTypeDesc { get; set; }
     }
 
@@ -56,13 +57,13 @@ namespace FEP.WebApiModel.Administration
     {
         public int Id { get; set; }
 
-        [Display(Name = "FieldName", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Administrator.User))]
         public string Name { get; set; }
 
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Administrator.User))]
         public string Email { get; set; }
 
-        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.User))]
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Administrator.User))]
         public string MobileNo { get; set; }
         public string CountryCode { get; set; }
         public string Avatar { get; set; }

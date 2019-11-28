@@ -61,7 +61,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "@(WebApiURL)Administration/Country?id="+countryId,                        
+                url: "@Url.Action("GetCountryCode", "Company", new { area = "Administrator" })?id=" + countryId,                      
                 contentType: "text/plain",
                 dataType: "json",
                 success: function (result) {                   

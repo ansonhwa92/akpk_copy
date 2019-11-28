@@ -4,24 +4,24 @@
     Layout = null;
 }
 
-<td></td>
-<td>
-    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.Name)
-</td>
-<td>
-    @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.Description)
-</td>
-<td>
-    <div class="icon-action">
-        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formAdd" }))
-        {
+<tr class="addForm">
+    <td></td>
+    <td>
+        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.Name)
+    </td>
+    <td>
+        @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.Description)
+    </td>
+    <td>
+        <div class="icon-action">
             @Html.AntiForgeryToken()
-            <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">@Language.General.ButtonAdd</button>
-        }
-        <button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">@Language.General.ButtonCancel</button>
-    </div>
-</td>
+            <button type="submit" formaction="@Url.Action("_Create", "Role", new { area = "Administrator"})" class="btn btn-secondary btn-sm mw-auto mr-2">@Language.General.ButtonAdd</button>
+            <button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">@Language.General.ButtonCancel</button>
+        </div>
+    </td>
+</tr>
+
 
 

@@ -97,7 +97,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (emailResponse.Data)
             {
-                ModelState.AddModelError("Email", Language.Individual.ValidIsExistEmail);
+                ModelState.AddModelError("Email", Language.Administrator.Individual.ValidIsExistEmail);
             }
 
             var icno = model.ICNo;
@@ -112,9 +112,9 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             if (icnoResponse.Data)
             {
                 if (model.IsMalaysian)
-                    ModelState.AddModelError("ICNo", Language.Individual.ValidIsExistICNo);
+                    ModelState.AddModelError("ICNo", Language.Administrator.Individual.ValidIsExistICNo);
                 else
-                    ModelState.AddModelError("PassportNo", Language.Individual.ValidIsExistPassportNo);
+                    ModelState.AddModelError("PassportNo", Language.Administrator.Individual.ValidIsExistPassportNo);
             }
 
             if (ModelState.IsValid)
@@ -142,14 +142,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                     await LogActivity(Modules.Setting, "Create Individual User", model);
 
-                    TempData["SuccessMessage"] = Language.Individual.AlertCreateSuccess;
+                    TempData["SuccessMessage"] = Language.Administrator.Individual.AlertCreateSuccess;
 
                     return RedirectToAction("List", "Individual", new { area = "Administrator" });
 
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = Language.Individual.AlertCreateFail;
+                    TempData["ErrorMessage"] = Language.Administrator.Individual.AlertCreateFail;
 
                     return RedirectToAction("List", "Individual", new { area = "Administrator" });
                 }
@@ -243,7 +243,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (emailResponse.isSuccess)
             {
-                ModelState.AddModelError("Email", Language.Individual.ValidIsExistEmail);
+                ModelState.AddModelError("Email", Language.Administrator.Individual.ValidIsExistEmail);
             }
 
             var icno = model.ICNo;
@@ -258,9 +258,9 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             if (icnoResponse.isSuccess)
             {
                 if (model.IsMalaysian)
-                    ModelState.AddModelError("ICNo", Language.Individual.ValidIsExistICNo);
+                    ModelState.AddModelError("ICNo", Language.Administrator.Individual.ValidIsExistICNo);
                 else
-                    ModelState.AddModelError("PassportNo", Language.Individual.ValidIsExistPassportNo);
+                    ModelState.AddModelError("PassportNo", Language.Administrator.Individual.ValidIsExistPassportNo);
             }
 
             if (ModelState.IsValid)
@@ -271,13 +271,13 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 {
                     await LogActivity(Modules.Setting, "Update Individual User", model);
 
-                    TempData["SuccessMessage"] = Language.Individual.AlertEditSuccess;
+                    TempData["SuccessMessage"] = Language.Administrator.Individual.AlertEditSuccess;
 
                     return RedirectToAction("Details", "Individual", new { area = "Administrator", @id = model.Id });
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = Language.Individual.AlertEditFail;
+                    TempData["ErrorMessage"] = Language.Administrator.Individual.AlertEditFail;
 
                     return RedirectToAction("Details", "Individual", new { area = "Administrator", @id = model.Id });
                 }
@@ -333,14 +333,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 await LogActivity(Modules.Setting, "Activate Individual User Account");
 
-                TempData["SuccessMessage"] = Language.Individual.AlertActivateSuccess;
+                TempData["SuccessMessage"] = Language.Administrator.Individual.AlertActivateSuccess;
 
                 return RedirectToAction("Details", "Individual", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = Language.Individual.AlertActivateFail;
+                TempData["ErrorMessage"] = Language.Administrator.Individual.AlertActivateFail;
 
                 return RedirectToAction("Details", "Individual", new { area = "Administrator", @id = id });
             }
@@ -384,13 +384,13 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 await LogActivity(Modules.Setting, "Disable Individual User Account", new { id = id });
 
-                TempData["SuccessMessage"] = Language.Individual.AlertDeactivateSuccess;
+                TempData["SuccessMessage"] = Language.Administrator.Individual.AlertDeactivateSuccess;
 
                 return RedirectToAction("Details", "Individual", new { area = "Administrator", @id = id });
             }
             else
             {
-                TempData["ErrorMessage"] = Language.Individual.AlertDeactivateFail;
+                TempData["ErrorMessage"] = Language.Administrator.Individual.AlertDeactivateFail;
 
                 return RedirectToAction("Details", "Individual", new { area = "Administrator", @id = id });
             }
@@ -450,14 +450,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 await LogActivity(Modules.Setting, "Reset Individual User Account Password", new { id = id });
 
-                TempData["SuccessMessage"] = Language.Individual.AlertResetSuccess;
+                TempData["SuccessMessage"] = Language.Administrator.Individual.AlertResetSuccess;
 
                 return RedirectToAction("Details", "Individual", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = Language.Individual.AlertResetFail;
+                TempData["ErrorMessage"] = Language.Administrator.Individual.AlertResetFail;
 
                 return RedirectToAction("Details", "Individual", new { area = "Administrator", @id = id });
             }
@@ -501,14 +501,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 await LogActivity(Modules.Setting, "Delete Individual User", new { id = id });
 
-                TempData["SuccessMessage"] = Language.Individual.AlertDeleteSuccess;
+                TempData["SuccessMessage"] = Language.Administrator.Individual.AlertDeleteSuccess;
 
                 return RedirectToAction("List", "Individual", new { area = "Administrator" });
             }
             else
             {
 
-                TempData["ErrorMessage"] = Language.Individual.AlertDeleteFail;
+                TempData["ErrorMessage"] = Language.Administrator.Individual.AlertDeleteFail;
 
                 return RedirectToAction("Details", "Individual", new { area = "Administrator", @id = id });
             }
@@ -596,6 +596,18 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             return countries;
 
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetCountryCode(int? Id)
+        {
+            if (Id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<CountryModel>(HttpVerbs.Get, $"Administration/Country?id={Id}");
+            return Json(response.Data, JsonRequestBehavior.AllowGet);
         }
     }
 

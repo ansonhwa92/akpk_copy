@@ -117,13 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FieldSectorName" xml:space="preserve">
-    <value>Sector Name</value>
+  <data name="AlertActivateFail" xml:space="preserve">
+    <value>Fail to activate user account</value>
   </data>
-  <data name="FieldStateName" xml:space="preserve">
-    <value>State</value>
+  <data name="AlertActivateSuccess" xml:space="preserve">
+    <value>User account successfully activated</value>
   </data>
-  <data name="ValidRequiredSectorName" xml:space="preserve">
-    <value>Please enter Sector Name</value>
+  <data name="AlertDeactivateFail" xml:space="preserve">
+    <value>Fail to disable user account</value>
+  </data>
+  <data name="AlertDeactivateSuccess" xml:space="preserve">
+    <value>User account successfully disable</value>
+  </data>
+  <data name="AlertEditFail" xml:space="preserve">
+    <value>Fail to update user record</value>
+  </data>
+  <data name="AlertEditSuccess" xml:space="preserve">
+    <value>User record successfully updated</value>
+  </data>
+  <data name="FieldBranch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="FieldDepartment" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="FieldDesignation" xml:space="preserve">
+    <value>Designation</value>
+  </data>
+  <data name="FieldEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="FieldICNo" xml:space="preserve">
+    <value>IC Number</value>
+  </data>
+  <data name="FieldMobileNo" xml:space="preserve">
+    <value>Mobile Number</value>
+  </data>
+  <data name="FieldName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="FieldRole" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="FieldStaffId" xml:space="preserve">
+    <value>Staff Id</value>
+  </data>
+  <data name="FieldStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="PlaceholderBranch" xml:space="preserve">
+    <value>Select Branch</value>
+  </data>
+  <data name="PlaceholderDepartment" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="PlaceholderDesignation" xml:space="preserve">
+    <value>Designation</value>
+  </data>
+  <data name="PlaceholderEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="PlaceholderICNo" xml:space="preserve">
+    <value>IC Number</value>
+  </data>
+  <data name="PlaceholderMobileNo" xml:space="preserve">
+    <value>Mobile Number</value>
+  </data>
+  <data name="PlaceholderName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ValidRequiredRole" xml:space="preserve">
+    <value>Please select at least one Role</value>
   </data>
 </root>

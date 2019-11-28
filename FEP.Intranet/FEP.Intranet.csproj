@@ -787,7 +787,6 @@
     <Content Include="Areas\Administrator\Views\Staff\Details.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\Deactivate.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\Activate.cshtml" />
-    <Content Include="Areas\Administrator\Views\Role\ListOld.cshtml" />
     <Content Include="Areas\Administrator\Views\Role\_Create.cshtml" />
     <Content Include="Areas\Administrator\Views\Role\_Edit.cshtml" />
     <Content Include="Areas\Administrator\Views\Role\_Delete.cshtml" />
@@ -1071,7 +1070,6 @@
     <Content Include="Areas\eLearning\Views\Courses\ViewCertificate.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseGroup\_CoursesList.cshtml" />
     <Content Include="Areas\KMC\Views\Home\Index.cshtml" />
-    <Content Include="Areas\Administrator\Views\Role\_List.cshtml" />
     <Content Include="Areas\Administrator\Views\Role\List.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />

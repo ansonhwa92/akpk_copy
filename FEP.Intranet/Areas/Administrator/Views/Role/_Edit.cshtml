@@ -4,29 +4,26 @@
     Layout = null;
 }
 
+<tr class="editForm">
+    <td>@Html.DisplayFor(m => m.No)</td>
+    <td>
+        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.Name)
+    </td>
+    <td>
+        @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.Description)
+    </td>
+    <td>
+        <div class="icon-action">
 
-
-
-<td></td>
-<td>
-    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.Name)
-</td>
-<td>
-    @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.Description)
-</td>
-<td>
-    <div class="icon-action">
-        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formEdit" }))
-        {
             @Html.AntiForgeryToken()
 
             @Html.HiddenFor(m => m.Id)
-            <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">Update</button>
-        }
-        <button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">Cancel</button>
-    </div>
-</td>
+            <button type="submit" formaction="@Url.Action("_Edit", "Role", new { area = "Administrator"})" class="btn btn-secondary btn-sm mw-auto mr-2">Update</button>
+            <button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">Cancel</button>
+        </div>
+    </td>
+</tr>
 
 

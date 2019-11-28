@@ -25,24 +25,7 @@
                         filter.Email = $('#Filter_Email').val();
                     }
                 },
-                columns: [
-                    //{
-                    //    sortable: false,
-                    //    render: function () {
-
-                    //        var action = "";
-
-                    //        action = '<div class="custom-control custom-checkbox">'
-                    //                    +'<input id="customCheck1_2" type="checkbox" class="custom-control-input js-check-selected-row">'
-                    //                    +'<label class="custom-control-label" for="customCheck1_2">'
-                    //                     +   '<span class="text-hide">Check</span>'
-                    //                    +'</label>'
-                    //                +'</div>';
-
-                    //        return action;
-                    //    }
-
-                    //},
+                columns: [                 
                     {
                         sortable: false,
                         render: function (data, type, row, meta) {
@@ -397,15 +380,7 @@
                     <!-- Table -->
                     <table class="table tableStyle1 tabledata">
                         <thead>
-                            <tr>
-                                @*<th>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#table01" id="customCheckAll">
-                                            <label class="custom-control-label" for="customCheckAll">
-                                                <span class="text-hide">Toggle all</span>
-                                            </label>
-                                        </div>
-                                    </th>*@
+                            <tr>                              
                                 <th>#</th>
                                 <th>@Html.DisplayNameFor(model => model.Users.List.Name)</th>
                                 <th>@Html.DisplayNameFor(model => model.Users.List.Email)</th>

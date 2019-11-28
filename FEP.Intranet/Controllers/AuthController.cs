@@ -670,6 +670,18 @@ namespace FEP.Intranet.Controllers
             return RedirectToAction("Login", "Auth", new { area = "" });
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetCountryCode(int? Id)
+        {
+            if (Id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<CountryModel>(HttpVerbs.Get, $"Administration/Country?id={Id}");
+            return Json(response.Data, JsonRequestBehavior.AllowGet);
+        }
+
 
     }
 }

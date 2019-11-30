@@ -36,7 +36,12 @@
             @:console.log(RosterListJSON);
             }
 
-            $("#DutyDate").flatpickr(flatPickrOption);
+            $(".dutyRosterDatePicker").flatpickr({
+                dateFormat: "l, d/m/Y",
+                enableTime: false,
+                wrap: true,
+                minDate: "today"
+            });
 
             $("#DutyStartTime").flatpickr({
                 enableTime: true,
@@ -286,13 +291,14 @@
                     lastId = parseInt(currentId);
                 }
                 //append new row at top
-                var inputDate = '<div class="dateSelect">';
-                inputDate += '     <input class="form-control flatpickr-input" data-input="flatpickr" data-val="true" data-val-date="The field Duty Date must be a date." ';
-                inputDate += '      onchange="(RosterListJSON[\'dutyRoster\'].find(s => s.id === ' + currentId + '))[\'date\'] = this.value; SortRoster();" ';
-                inputDate += '            data-val-required="Please insert Receive Date" id="DutyDate_' + currentId + '" name="DutyDate_' + currentId + '" type="text" value="' + RosterListJSON["dutyRoster"][i]['date'] + '" readonly="readonly">';
-                inputDate += '     <a class="input-button calendar" title="toggle" data-toggle="">';
-                inputDate += '         <i class="la la-calendar"></i>';
-                inputDate += '     </a>';
+                var inputDate = '<div class="dutyRosterDatePicker">'; 
+                //inputDate += '     <input class="form-control flatpickr-input" data-input="flatpickr" data-val="true" data-val-date="The field Duty Date must be a date." ';
+                inputDate += '<input type="text" class="form-control" id="DutyDate_' + currentId + '" name="DutyDate_' + currentId + '" placeholder="Select Date.." ';
+                inputDate += '      onchange="(RosterListJSON[\'dutyRoster\'].find(s => s.id === ' + currentId + '))[\'date\'] = this.value; SortRoster();"  value="' + RosterListJSON["dutyRoster"][i]['date']+ '" data-input>';
+                //inputDate += '            data-val-required="Please insert Receive Date" id="DutyDate_' + currentId + '" name="DutyDate_' + currentId + '" type="text" value="' + RosterListJSON["dutyRoster"][i]['date'] + '" readonly="readonly">';
+                //inputDate += '     <a class="input-button calendar" title="toggle" data-toggle="">';
+                //inputDate += '         <i class="la la-calendar"></i>';
+                //inputDate += '     </a>';
                 inputDate += ' </div>';
 
                 var inputStartTime = '<input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"' +
@@ -723,17 +729,18 @@
 
                 <div class="row">
                     <div class="col-lg-3 pr-1">
-                        <div class="dateSelect">
-                            <input class="form-control flatpickr-input valid" data-input="flatpickr" data-val="true" placeholder="Pick Date"
+                        <div class="dutyRosterDatePicker">
+                            <input type="text" class="form-control" id="DutyDate" name="DutyDate" placeholder="Select Date.." data-input>
+                            @*<input class="form-control flatpickr-input valid" data-input="flatpickr" data-val="true" placeholder="Pick Date"
                                    data-val-date="The field Duty Date must be a date." data-val-required="Please insert Duty Date"
                                    id="DutyDate" name="DutyDate" type="text" value="" readonly="readonly"
-                                   aria-describedby="ReceivedDate-error" aria-invalid="false">
-                            <a class="input-button calendar" title="toggle" data-toggle="">
+                                   aria-describedby="ReceivedDate-error" aria-invalid="false">*@
+                            @*<a class="input-button calendar" title="toggle" data-toggle>
                                 <i class="la la-calendar"></i>
                             </a>
-                            <a class="input-button clear" title="clear" data-clear="">
+                            <a class="input-button clear" title="clear" data-clear>
                                 <i class="la la-times"></i>
-                            </a>
+                            </a>*@
                         </div>
                     </div>
                     <div class="col-lg-2 pl-0 pr-1">

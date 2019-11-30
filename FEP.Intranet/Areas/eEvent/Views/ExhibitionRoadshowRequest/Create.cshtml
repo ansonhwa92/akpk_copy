@@ -19,12 +19,19 @@
             noCalendar: true,
             dateFormat: "H:i",
         }
+        
 
         $(document).ready(function () {
 
             RefreshFile();
             $("#exhibition_details").addClass("active");
-            $("#DutyDate").flatpickr(flatPickrOption);
+            //$("#DutyDate").flatpickr(flatPickrOption);
+            $(".dutyRosterDatePicker").flatpickr({
+                dateFormat: "l, d/m/Y",
+                enableTime: false,
+                wrap: true,
+                minDate: "today"
+            });
             $("#DutyEndTime").flatpickr({
                 enableTime: true,
                 noCalendar: true,
@@ -742,8 +749,9 @@
 
                     <div class="row">
                         <div class="col-lg-3 pr-1">
-                            <div class="dateSelect">
-                                <input class="form-control flatpickr-input valid" data-input="flatpickr" data-val="true" placeholder="Pick Date"
+                            <div class="dutyRosterDatePicker">
+                                <input type="text" class="form-control" id="DutyDate" name="DutyDate" placeholder="Select Date.." data-input>
+                                @*<input class="form-control flatpickr-input valid" data-input="flatpickr" data-val="true" placeholder="Pick Date"
                                        data-val-date="The field Duty Date must be a date." data-val-required="Please insert Duty Date"
                                        id="DutyDate" name="DutyDate" type="text" value="" readonly="readonly"
                                        aria-describedby="ReceivedDate-error" aria-invalid="false">
@@ -752,7 +760,7 @@
                                 </a>
                                 <a class="input-button clear" title="clear" data-clear="">
                                     <i class="la la-times"></i>
-                                </a>
+                                </a>*@
                             </div>
                         </div>
                         <div class="col-lg-2 pl-0 pr-1">

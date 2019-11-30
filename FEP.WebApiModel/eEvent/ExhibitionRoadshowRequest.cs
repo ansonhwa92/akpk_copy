@@ -151,7 +151,7 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadExhibitionSupDoc", ResourceType = typeof(Language.Event))]
 		public IEnumerable<Attachment> Attachments { get; set; }
 
-        public DutyRosterTempModel DutyRoster { get; set; }
+        public string DutyRosterJSON { get; set; }
     }
 
 	public class CreateExhibitionRoadshowRequestModel

@@ -287,7 +287,7 @@ namespace FEP.WebApi.Api.eEvent
 						{
 							var tempPIC = new DutyPIC
 							{
-								id = pic.Id,
+								id = pic.UserId.Value,
 								name = pic.User.Name
 							};
 							tempDutyDetails.pic.Add(tempPIC);
@@ -1142,7 +1142,48 @@ namespace FEP.WebApi.Api.eEvent
 				return NotFound();
 			}
 
-			exhibition.NomineeId = db.ExhibitionNominee.Where(u => u.ExhibitionRoadshowId == id).Select(s => s.UserId).ToArray();
+
+            //tajul add
+            var getRoster = db.DutyRoster.Where(r => r.Display && r.ExhibitionRoadshowId == id).ToList();
+            if (getRoster != null)
+            {
+                var tempDutyRosterTempModel = new DutyRosterTempModel
+                {
+                    exhibitionId = id
+                };
+                tempDutyRosterTempModel.dutyRoster = new List<DutyDetails>();
+                foreach (var duty in getRoster)
+                {
+
+                    var getPIC = db.DutyRosterOfficer.Where(o => o.DutyRosterId == duty.Id).ToList();
+                    var tempDutyDetails = new DutyDetails
+                    {
+                        id = duty.Id,
+                        date = duty.Date.Value.ToString("dddd, dd/MM/yyyy"),
+                        startTime = duty.StartTime.Value.ToString("HH:mm"),
+                        endTime = duty.EndTime.Value.ToString("HH:mm")
+                    };
+                    if (getPIC != null)
+                    {
+                        tempDutyDetails.pic = new List<DutyPIC>();
+                        foreach (var pic in getPIC)
+                        {
+                            var tempPIC = new DutyPIC
+                            {
+                                id = pic.UserId.Value,
+                                name = pic.User.Name
+                            };
+                            tempDutyDetails.pic.Add(tempPIC);
+                        }
+                    }
+                    tempDutyRosterTempModel.dutyRoster.Add(tempDutyDetails);
+                }
+
+                exhibition.DutyRoster = tempDutyRosterTempModel;
+                exhibition.DutyRosterJSON = JsonConvert.SerializeObject(tempDutyRosterTempModel);
+            }
+
+            exhibition.NomineeId = db.ExhibitionNominee.Where(u => u.ExhibitionRoadshowId == id).Select(s => s.UserId).ToArray();
 			exhibition.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.ExhibitionRoadshow && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
 			return Ok(exhibition);

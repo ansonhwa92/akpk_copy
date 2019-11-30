@@ -154,12 +154,12 @@
 						</a>
 					</li>
 
-					@*<li class="step-item active">
+					<li class="step-item active">
 						<a href="#event_dutyroster" class="step-link" data-toggle="tab">
 							<span class="step-number">5</span>
 							<span class="step-title">Duty Roster</span>
 						</a>
-					</li>*@
+					</li>
 
 					<li class="step-item disabled">
 						<a href="" class="step-link">
@@ -530,7 +530,7 @@
                                             <td>@item.startTime - @item.endTime</td>
                                             <td>
                                                 @{
-                                                    var count = 0;
+                                                    var count = 1;
                                                     foreach (var pic in item.pic)
                                                     {
                                                         @pic.name;
@@ -538,6 +538,7 @@
                                                         {
                                                             @:,
                                                         }
+                                                        count++;
                                                     }
                                                 }
 

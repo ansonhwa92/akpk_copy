@@ -2,6 +2,7 @@
 using FEP.Model;
 using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.Home;
+using FEP.WebApiModel.RnP;
 using FEP.WebApiModel.Setting;
 using FEP.WebApiModel.SLAReminder;
 using Newtonsoft.Json;
@@ -20,17 +21,25 @@ namespace FEP.Intranet.Controllers
     {
 
         [AllowAnonymous]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var view = View();
-            view.MasterName = "~/Views/Shared/_LayoutLandingPagePublic.cshtml";
+            //var view = View();
+            //view.MasterName = "~/Views/Shared/_LayoutLandingPagePublic.cshtml";
 
             if (CurrentUser.IsAuthenticated())
             {
                 return RedirectToAction("Dashboard", "Home", new { area = "" });
             }
 
-            return view;
+
+            var Publications = await GetTopPublicationList(2);
+
+            LandingPageModel model = new LandingPageModel()
+            {
+                PublicationTopList = Publications
+            };
+
+            return View(model);
         }
 
         [AllowAnonymous]
@@ -369,7 +378,7 @@ namespace FEP.Intranet.Controllers
             var model = new ProfileAvatarModel();
 
             if (response.isSuccess)
-            {                
+            {
                 model.AvatarImageUrl = response.Data.AvatarImageUrl;
             }
 
@@ -624,7 +633,17 @@ namespace FEP.Intranet.Controllers
 
         }
 
-        
+        public async Task<List<ReturnPublicationModel>> GetTopPublicationList(int totalRecord)
+        {
+            var response = await WepApiMethod.SendApiAsync<List<ReturnPublicationModel>>(HttpVerbs.Get, $"RnP/Publication/PublicationTopList?totalRecord={totalRecord}");
+
+            if (response.isSuccess)
+            {
+                return response.Data;
+            }
+
+            return null;
+        }
 
     }
 }

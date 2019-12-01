@@ -102,6 +102,7 @@
     <Compile Include="eLearning\CourseCategory.cs" />
     <Compile Include="eLearning\CourseModuleModels.cs" />
     <Compile Include="eLearning\TOT.cs" />
+    <Compile Include="Home\LandingPageModel.cs" />
     <Compile Include="Home\ProfileModel.cs" />
     <Compile Include="eEvent\EventCategory.cs" />
     <Compile Include="eEvent\MediaInterviewRequest.cs" />

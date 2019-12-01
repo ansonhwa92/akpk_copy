@@ -1,4 +1,4 @@
-﻿
+﻿@model FEP.WebApiModel.Home.LandingPageModel
 @{
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
@@ -595,13 +595,14 @@
                 <div class="col-lg-5 col-sm-12">
                     <div class="col-instructor-right pl-3">
                         <h6 class="color-secondary">
-                            OUR INSTRUCTORS</h6>
-                            <h1 class="color-darkblue">Meet the Instructors</h1>
-                            <p class="mb-4">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-                            </p>
-                            <p class="pt-2"><a href="#" class="btn btn-rounded btn-info text-white">MEET NOW <span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
+                            OUR INSTRUCTORS
+                        </h6>
+                        <h1 class="color-darkblue">Meet the Instructors</h1>
+                        <p class="mb-4">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+                        </p>
+                        <p class="pt-2"><a href="#" class="btn btn-rounded btn-info text-white">MEET NOW <span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
                     </div>
                 </div>
             </div>
@@ -610,86 +611,58 @@
     <!-- =====================
         Our Publications
     ========================-->
-    <section id="ourpublications">
-        <div class="empty_6"></div>
-        <div class="container">
-            <h6 class="color-secondary">OUR PUBLICATIONS</h6>
-            <a href="#" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
-            <h1 class="color-darkblue">Featured Publications</h1>
-            <div class="empty_3"></div>
-            <div class="row">
-                <div class="col-lg-6 col-sm-12">
-                    <div class="publications__wrapper wow fadeInUp">
-                        <div class="publications_col_left card__top">
-                            <div class="card__top__wapper">
-                                <img class="card__top__image" src="@Url.Content("~/img/cover-buku-1.jpg")" alt="image">
-                                <div class="share-wrap">
-                                    <div class="share-button sharer">
-                                        <span class="share-icon">
-                                            <i class="material-icons">share</i>
-                                        </span>
-                                        <div class="social top center"></div>
+    @if (Model.PublicationTopList.Count() > 0)
+    {
+        <section id="ourpublications">
+            <div class="empty_6"></div>
+            <div class="container">
+                <h6 class="color-secondary">OUR PUBLICATIONS</h6>
+                <a href="@Url.Action("BrowsePublications", "Home", new { area = "RnP" })" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
+                <h1 class="color-darkblue">Featured Publications</h1>
+                <div class="empty_3"></div>
+                <div class="row">
+                    @foreach (var publication in Model.PublicationTopList)
+                    {
+                        <div class="col-lg-6 col-sm-12" >
+                            <div class="publications__wrapper wow fadeInUp">
+                                <div class="publications_col_left card__top">
+                                    <div class="card__top__wapper">
+                                        <img class="card__top__image" src="@Url.Content("./Data/images/" + publication.CoverPictures.FirstOrDefault()?.FilePath)" alt="image">
+                                        <div class="share-wrap">
+                                            <div class="share-button sharer">
+                                                <span class="share-icon">
+                                                    <i class="material-icons">share</i>
+                                                </span>
+                                                <div class="social top center"></div>
+                                            </div>
+                                            <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                        </div>
                                     </div>
-                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                </div>
+                                <div class="publications_col_right">
+                                    <div class="card__body">
+                                        <a class="card__title" href="@Url.Action("PublicationDetails", "Home", new { area = "RnP", id = publication.ID })">@publication.Title</a>
+                                        <div class="card__author">
+                                            <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("./Data/images/" + publication.AuthorPictures.FirstOrDefault()?.FilePath)" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">@publication.Author</span></span></a>
+                                        </div>
+                                        <div class="card__text">@publication.Description</div>
+                                        <div class="card__info">
+                                            <div class="card__col-left">
+                                                <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">@publication.Category</span></span></div>
+                                                <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">@publication.Year</span></span></div>
+                                            </div>
+                                            @*<div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>*@
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="publications_col_right">
-                            <div class="card__body">
-                                <a class="card__title" href="#">The Tower & The Cloud:<br /> Higher Education in the Age of Cloud Computing</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/47.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Richard N.Kartz</span></span></a>
-                                </div>
-                                <div class="card__text">The emergence of the networked information economy is unleashing tow powerful forces.</div>
-                                <div class="card__info">
-                                    <div class="card__col-left">
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Books</span></span></div>
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
-                                    </div>
-                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-sm-12">
-                    <div class="publications__wrapper wow fadeInUp" data-wow-delay=".5s">
-                        <div class="publications_col_left card__top">
-                            <div class="card__top__wapper">
-                                <img class="card__top__image" src="@Url.Content("~/img/cover-buku-2.jpg")" alt="image">
-                                <div class="share-wrap">
-                                    <div class="share-button sharer">
-                                        <span class="share-icon">
-                                            <i class="material-icons">share</i>
-                                        </span>
-                                        <div class="social top center"></div>
-                                    </div>
-                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="publications_col_right">
-                            <div class="card__body">
-                                <a class="card__title" href="#">Cultivating Careers: <br /> Professional Development for Campus IT</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/8.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Cynthia Golden</span></span></a>
-                                </div>
-                                <div class="card__text">This research provides an overview of current principles and practices for mentoring and developing IT professionals in higher education.</div>
-                                <div class="card__info">
-                                    <div class="card__col-left">
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
-                                    </div>
-                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
-        </div>
-        <div class="empty_6"></div>
-    </section>
+            <div class="empty_6"></div>
+        </section>
+    }
     <!-- =====================
         e-Events
     ========================-->

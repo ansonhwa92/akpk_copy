@@ -408,8 +408,26 @@ namespace FEP.Model
 		public virtual EventExhibitionRequest EventExhibitionRequest { get; set; }
 	}
 
+    [Table("ExhibitionRecommendation")]
+    public class ExhibitionRecommendation
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Recommendation { get; set; }
+        public int? CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public bool Display { get; set; }
 
-	[Table("EventExhibitionRequest")]
+        [ForeignKey("CreatedBy")]
+        public virtual User CreatedByUser { get; set; }
+
+        public int? ExhibitionId { get; set; }
+        [ForeignKey("ExhibitionId")]
+        public virtual EventExhibitionRequest EventExhibitionRequest { get; set; }
+    }
+
+
+    [Table("EventExhibitionRequest")]
 	public class EventExhibitionRequest
 	{
 		[Key]

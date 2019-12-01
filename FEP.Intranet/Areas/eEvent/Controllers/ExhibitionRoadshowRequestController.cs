@@ -79,8 +79,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				BranchName = exapproval.exhibitionroadshow.BranchName,
 				ContactNo = exapproval.exhibitionroadshow.ContactNo,
 				RefNo = exapproval.exhibitionroadshow.RefNo,
-                DutyRoster = exapproval.exhibitionroadshow.DutyRoster
+                DutyRoster = exapproval.exhibitionroadshow.DutyRoster,
+                RecommendationsJSON = exapproval.exhibitionroadshow.RecommendationsJSON
 			};
+
 
 			var approval = new ApprovalModel
 			{
@@ -259,7 +261,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					CreatedBy = CurrentUser.UserId,
 					BranchId = model.BranchId,
 					ContactNo = model.ContactNo,
-                    DutyRosterJSON = model.DutyRosterJSON
+                    DutyRosterJSON = model.DutyRosterJSON,
+                    RecommendationsJSON = model.RecommendationsJSON
 				};
 
 				//attachment
@@ -306,7 +309,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		}
 
 
-		//[HasAccess(UserAccess.EventAdministratorCCD)]
+		[HasAccess(UserAccess.EventAdministratorCCD)]
 		[HttpGet]
 		public async Task<ActionResult> Edit(int? id)
 		{
@@ -348,7 +351,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				BranchId = response.Data.BranchId,
 				BranchName = response.Data.BranchName,
 				ContactNo = response.Data.ContactNo,
-                DutyRosterJSON = response.Data.DutyRosterJSON
+                DutyRosterJSON = response.Data.DutyRosterJSON,
+                RecommendationsJSON = response.Data.RecommendationsJSON
 			};
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
@@ -400,7 +404,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					BranchName = model.BranchName,
 					ContactNo = model.ContactNo,
 					RefNo = model.RefNo,
-                    DutyRosterJSON = model.DutyRosterJSON
+                    DutyRosterJSON = model.DutyRosterJSON,
+                    RecommendationsJSON = model.RecommendationsJSON
 				};
 
 				//attachment
@@ -413,56 +418,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						modelapi.FilesId = files.Select(f => f.Id).ToList();
 					}
 				}
-                //duty roster
-                if (model.DutyRosterJSON != "" || model.DutyRosterJSON != null)
-                {
-                    DutyRosterTempModel drModel = JsonConvert.DeserializeObject<DutyRosterTempModel>(model.DutyRosterJSON);
-                    var getDutyRoster = db.DutyRoster.Where(d => d.ExhibitionRoadshowId == model.Id).ToList();
-                    if(getDutyRoster != null)
-                    {
-                        foreach (var itemRoster in getDutyRoster)
-                        {
-                            var getOfficers = db.DutyRosterOfficer.Where(o => o.DutyRosterId == itemRoster.Id).ToList();
-                            if(getOfficers != null)
-                            {
-                                foreach (var itemOfficer in getOfficers)
-                                {
-                                    db.DutyRosterOfficer.Remove(itemOfficer);
-                                }
-                            }
-                            
-                            db.DutyRoster.Remove(itemRoster);
-                        }
-                    }
-                    
-                    foreach (var duty in drModel.dutyRoster)
-                    {
-                        var dutyRoster = new DutyRoster
-                        {
-                            ExhibitionRoadshowId = model.Id,
-                            Date = Convert.ToDateTime(duty.date),
-                            StartTime = DateTime.ParseExact(duty.startTime, "H:mm", null, System.Globalization.DateTimeStyles.None),
-                            EndTime = DateTime.ParseExact(duty.endTime, "H:mm", null, System.Globalization.DateTimeStyles.None),
-                            CreatedBy = model.ReceivedById,
-                            CreatedDate = DateTime.Now,
-                            Display = true
-                        };
-                        db.DutyRoster.Add(dutyRoster);
-                        db.SaveChanges();
-
-                        foreach (var pic in duty.pic)
-                        {
-                            var dutyRosterOfficer = new DutyRosterOfficer
-                            {
-                                DutyRosterId = dutyRoster.Id,
-                                UserId = pic.id
-                            };
-                            db.DutyRosterOfficer.Add(dutyRosterOfficer);
-                            db.SaveChanges();
-                        }
-                    }
-
-                }
+                
 
                 var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/ExhibitionRoadshowRequest?id={model.Id}", modelapi);
 

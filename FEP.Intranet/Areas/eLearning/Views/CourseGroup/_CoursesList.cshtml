@@ -2,86 +2,147 @@
 
 @{
     Layout = null;
+    bool editEnable = CurrentUser.HasAccess(UserAccess.CourseGroupEdit);
+    var toDisplay = Model;
+    if (!editEnable)
+    {
+        if (toDisplay.Count > 0)
+        {
+            toDisplay = toDisplay.Where(m => m.GroupId.Value == m.ThisGroupId).ToList();
+        }
+
+    }
 }
+
 @section ContentScript {
 }
-
-<div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
-
-    <div class="border-form rounded-top">
-
-        <div class="form-container form-container-w100">
-            <div>
-                <div class="divtableStyle1">
-                    <table id="discussions-grid" class="table dataTable no-footer" cellpadding="0" cellspacing="0" border="0" role="grid" style="width: 100%; margin-bottom: 3px;">
-                        <thead>
-                            <tr role="row">
-                                <th class="align-center sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" style="width: 65px;">No</th>
-                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="User" style="width: 350px;">@Language.eLearning.CourseGroup.CourseLabel</th>
-                                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Options" style="width: 350px;">@Language.eLearning.CourseGroup.Options</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{ var i = 0;}
-
-
-                            @{ if (Model != null)
-                                {
-                                    foreach (var item in Model)
-                                    {
-                                        { i++; }
-                                        <tr role="row" class="odd">
-                                            <td class=" tl-align-center">
-                                                @Html.Raw(i)
-                                            </td>
-                                            <td class=" tl-align-left">
-                                                <div>
-                                                    <span title="@item.CourseName">
-                                                        @item.CourseName&nbsp;@item.EventCreatedOn&nbsp;
-                                                    </span>
-                                                    <i class="icon-lock-1"></i>
-                                                </div>
-                                            </td>
-                                           
-                                            <td class=" tl-align-left">
-                                                <div>
-                                                    @if (@item.GroupId.HasValue)
-                                                    {
-                                                    <button onclick="arata_ascundeX(this, @item.EventId, @item.ThisGroupId, 0);" class="btn btn-danger" id="show_hide_bt">
-                                                        <i class="fa fa-minus"></i>@Html.Raw("&nbsp;&nbsp;" + @Language.eLearning.CourseGroup.Remove)
-                                                    </button>
-                                                    }
-                                                    else
-                                                    {
-                                                    <button onclick="arata_ascundeX(this, @item.EventId, @item.ThisGroupId, 1);" class="btn btn-success" id="show_hide_bt">
-                                                        <i class="fa fa-plus"></i>@Html.Raw("&nbsp;&nbsp;" + @Language.eLearning.CourseGroup.Add)
-                                                    </button>
-                                                    }
-                                                </div>
-                                            </td>
-                                            @*<td class=" tl-align-left">
-                                                    <div class="tl-topic-options pull-right">
-                                                        <a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonEdit" data-toggle="tooltip"><i class="la la-edit text-muted"></i></a>
-                                                        <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>
-                                                    </div>
-                                                </td>*@
-
-                                        </tr>
-                                    }
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+<div class="table-responsive" data-toggle="lists" style="overflow-x:hidden">
+    <div class="d-flex pb-4 align-items-center">
+        <!-- Select option -->
+        <div>
+            <span class="select-arrow">
+                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                    <option selected value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </span>
         </div>
-
+        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+        <div>
+            <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+        </div>
     </div>
+    <table class="table tableStyle1 tabledata" id="GroupCourseDataTable">
+        <thead>
+            <tr role="row">
+                <th class="align-center sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" style="width: 65px;">No</th>
+                <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="User" style="width: 350px;">@Language.eLearning.CourseGroup.CourseLabel</th>
+                @if (editEnable)
+                {
+                    <th class="align-left sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Options" style="width: 350px;">@Language.eLearning.CourseGroup.Options</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @{ var i = 0;}
 
+
+            @{ if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        { i++; }
+                        <tr role="row" class="odd">
+                            <td class=" tl-align-center">
+                                @Html.Raw(i)
+                            </td>
+                            <td class=" tl-align-left">
+                                <div>
+                                    <span title="@item.CourseName">
+                                        @item.CourseName&nbsp;@item.EventCreatedOn&nbsp;
+                                    </span>
+                                    <i class="icon-lock-1"></i>
+                                </div>
+                            </td>
+                            @if (editEnable)
+                            {
+                                <td class=" tl-align-left">
+                                    <div>
+                                        @if (@item.GroupId.HasValue)
+                                        {
+                                            <button onclick="arata_ascundeX(this, @item.EventId, @item.ThisGroupId, 0);" class="btn btn-danger" id="show_hide_bt">
+                                                <i class="fa fa-minus"></i>@Html.Raw("&nbsp;&nbsp;" + @Language.eLearning.CourseGroup.Remove)
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button onclick="arata_ascundeX(this, @item.EventId, @item.ThisGroupId, 1);" class="btn btn-success" id="show_hide_bt">
+                                                <i class="fa fa-plus"></i>@Html.Raw("&nbsp;&nbsp;" + @Language.eLearning.CourseGroup.Add)
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            }
+                            @*<td class=" tl-align-left">
+                                    <div class="tl-topic-options pull-right">
+                                        <a onclick="showEdit(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonEdit" data-toggle="tooltip"><i class="la la-edit text-muted"></i></a>
+                                        <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>
+                                    </div>
+                                </td>*@
+
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
 </div>
 
 <script>
+
+    $(document).ready(function () {
+        table = $('#GroupCourseDataTable').DataTable({
+            paging: true,
+            lengthChange: true,
+            searching: true,
+            ordering: true,
+            orderMulti: false,
+            info: true,
+            autoWidth: false,
+            order: [[0, 'asc']],
+            language: {
+                processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                emptyTable: "No Record Found",
+                info: "Showing _START_ - _END_ of _TOTAL_ Course Events"
+            },
+            dom: 'rtip'
+        });
+
+        table.on('order.dt search.dt', function () {
+            var info = table.page.info();
+            $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' Course Events');
+            $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+        }).draw();
+
+        $('#lengthChange').val(table.page.len());
+
+        $('#quickSearch').keyup(function () {
+            table.search($(this).val()).draw();
+        });
+
+        $('#quickSearchBtn').click(function () {
+            table.search($(this).val()).draw();
+        });
+
+        $('#lengthChange').change(function () {
+            table.page.len($(this).val()).draw();
+
+        });
+
+    });
+
     function arata_ascundeX(button, id, gid, ops) {
 
         if (ops == 1) {

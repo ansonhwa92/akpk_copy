@@ -13,7 +13,7 @@ namespace FEP.Model.eLearning
     {
         public int GroupId { get; set; }
         public virtual Group Group { get; set; }
-        public int LearnerId { get; set; }
-        public virtual Learner Learner { get; set; }
+        public int UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

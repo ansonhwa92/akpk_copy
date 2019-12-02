@@ -526,6 +526,7 @@ namespace FEP.WebApi.Api.eLearning
                         result.Topic = s.Topic;
                         result.CreatedByName = _db.User.Find(s.CreatedBy).Name;
                         result.CreatedByLevel = _db.User.Find(s.CreatedBy).UserType.ToString();
+                        result.Avatar =  s.User.UserAccount.Avatar;
                         _result.Add(result);;
                     }
                     return Ok(_result);
@@ -676,6 +677,60 @@ namespace FEP.WebApi.Api.eLearning
                     return Ok(true);
                 }
             }
+            return NotFound();
+        }
+
+        [Route("api/eLearning/CourseDiscussion/EditMessage")]
+        [HttpPost]
+        public IHttpActionResult EditMessage(int id, string input)
+        {
+            if (id > 0)
+            {
+                using (DbEntities _db = new DbEntities())
+                {
+                    var _get = _db.DiscussionPosts.Find(id);
+                    if (_get != null)
+                    {
+                        _get.Message = input;
+
+                        _db.DiscussionPosts.Attach(_get);
+                        _db.Entry(_get).Property(m => m.Message).IsModified = true;
+                        _db.Configuration.ValidateOnSaveEnabled = false;
+
+                        _db.SaveChanges();
+
+                        return Ok(true);
+                    }
+                }
+            }
+
+            return NotFound();
+        }
+
+        [Route("api/eLearning/CourseDiscussion/DeleteMessage")]
+        [HttpPost]
+        public IHttpActionResult DeleteMessage(int id)
+        {
+            if (id > 0)
+            {
+                using (DbEntities _db = new DbEntities())
+                {
+                    var _get = _db.DiscussionPosts.Find(id);
+                    if (_get != null)
+                    {
+                        _get.IsDeleted = true;
+
+                        _db.DiscussionPosts.Attach(_get);
+                        _db.Entry(_get).Property(m => m.IsDeleted).IsModified = true;
+                        _db.Configuration.ValidateOnSaveEnabled = false;
+
+                        _db.SaveChanges();
+
+                        return Ok(true);
+                    }
+                }
+            }
+
             return NotFound();
         }
     }

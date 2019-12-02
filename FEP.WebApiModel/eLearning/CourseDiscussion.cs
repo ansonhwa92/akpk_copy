@@ -141,6 +141,8 @@ namespace FEP.WebApiModel.eLearning
 
         public string CreatedByName { get; set; }
         public string CreatedByLevel { get; set; }
+
+        public string Avatar { get; set; } = "/img/no-photo.jpg";
     }
 
     public class DiscussionAttachmentModel

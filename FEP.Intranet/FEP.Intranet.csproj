@@ -182,6 +182,7 @@
     <Compile Include="Areas\eLearning\Controllers\CourseCategoryController.cs" />
     <Compile Include="Areas\eLearning\Controllers\ContentCompletionsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseContentsController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\CourseFeedback.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseDiscussionController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseEnrollmentsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseGroupController.cs" />
@@ -1074,6 +1075,7 @@
     <Content Include="Areas\eLearning\Views\Courses\ViewCertificate.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseGroup\_CoursesList.cshtml" />
     <Content Include="Areas\KMC\Views\Home\Index.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseFeedback\_View.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

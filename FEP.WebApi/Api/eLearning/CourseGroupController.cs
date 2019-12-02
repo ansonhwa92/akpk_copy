@@ -114,13 +114,13 @@ namespace FEP.WebApi.Api.eLearning
 
                     if (getGroupInfo != null)
                     {
-                        var _getLearner = _db.Learners.Where(m => m.UserId == model.LearnerId).SingleOrDefault();
+                        var _getUser = _db.User.Find(model.UserId);
 
-                        if (_getLearner != null)
+                        if (_getUser != null)
                         {
                             Model.eLearning.GroupMember _newjoin = new Model.eLearning.GroupMember()
                             {
-                                LearnerId = _getLearner.Id,
+                                UserId = _getUser.Id,
                                 CreatedBy = getGroupInfo.CreatedBy,
                                 CreatedDate = _now,
                                 UpdatedBy = getGroupInfo.CreatedBy,
@@ -232,37 +232,52 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(GenerateMemberListing(id));
         }
 
-        private List<ListGroupMemberModel> GenerateMemberListing(int id)
+        private List<ListGroupMemberModel> GenerateMemberListing(int GroupId)
         {
             using (DbEntities _db = new DbEntities())
             {
-                var getAllLearner = _db.Learners.Where(m => m.User.Display != false).Select(s => new ListGroupMemberModel
+                    //CourseEnrolled = s.CourseEnrolled,
+                    //CourseCompleted = s.CourseCompleted
+                var getAllLearner = _db.User.Where(m => m.Display != false).Select(s => new ListGroupMemberModel
                 {
-                    GroupId = id,
-                    LearnerId = s.Id,
-                    UserId = s.UserId,
-                    UserName = s.User.Name,
-                    CourseEnrolled = s.CourseEnrolled,
-                    CourseCompleted = s.CourseCompleted
+                    GroupId = GroupId,
+                    UserId = s.Id,
+                    UserName = s.Name
                 }).ToList();
 
                 if (getAllLearner.Count > 0)
                 {
-                    var _getGroup = _db.Groups.Find(id);
+                    var _getGroup = _db.Groups.Find(GroupId);
                     if (_getGroup != null)
                     {
                         for (int x = 0; x < getAllLearner.Count; x++)
                         {
                             if (getAllLearner[x].UserId == _getGroup.CreatedBy)
+                            {
                                 getAllLearner[x].isOwner = true;
+                                getAllLearner[x].PriorityOrder = 5;
+                            }
 
-                            var _getMembers = _db.GroupMembers.Where(m => m.GroupId == id).ToList();
+                            var _getMembers = _db.GroupMembers.Where(m => m.GroupId == GroupId).ToList();
                             for (int xx = 0; xx < _getMembers.Count; xx++)
                             {
-                                if (getAllLearner[x].LearnerId == _getMembers[xx].LearnerId)
+                                if (getAllLearner[x].UserId == _getMembers[xx].UserId)
+                                {
                                     getAllLearner[x].isMember = true;
+
+                                    if (getAllLearner[x].PriorityOrder == 0)
+                                    {
+                                        getAllLearner[x].PriorityOrder++;
+                                    }
+                                }
                             }
                         }
+
+                        //var _getCourseEvent = _db.CourseEvents.Where(m => m.IsDisplayed && m.GroupId == GroupId).ToList();
+
+                        if(getAllLearner.Count>0)
+                            getAllLearner = getAllLearner.OrderByDescending(m=>m.PriorityOrder).ToList();
+                        
 
                         return getAllLearner;
                     }
@@ -278,7 +293,7 @@ namespace FEP.WebApi.Api.eLearning
         {
             using (DbEntities _db = new DbEntities())
             {
-                var _check = _db.GroupMembers.Where(m => m.GroupId == GroupId && m.LearnerId == id).SingleOrDefault();
+                var _check = _db.GroupMembers.Where(m => m.GroupId == GroupId && m.UserId == id).SingleOrDefault();
                 if (_check != null)
                 {
                     _db.Entry(_check).State = System.Data.Entity.EntityState.Deleted;
@@ -304,7 +319,7 @@ namespace FEP.WebApi.Api.eLearning
                 }
                 else
                 {
-                    if (!_check.Any(m => m.LearnerId == id))
+                    if (!_check.Any(m => m.UserId == id))
                     {
                         addToGroup(id, GroupId, uid);
                         return Ok(GenerateMemberListing(GroupId));
@@ -322,7 +337,7 @@ namespace FEP.WebApi.Api.eLearning
                 DateTime _now = DateTime.Now;
                 GroupMember _new = new GroupMember()
                 {
-                    LearnerId = id,
+                    UserId = id,
                     GroupId = GroupId,
                     CreatedDate = _now,
                     CreatedBy = uid,

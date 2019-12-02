@@ -250,10 +250,31 @@ namespace FEP.Model
         CourseEnroll,
 
         // elearning Facilitator
+        //CourseGroupCreate,
+
+        //CourseDiscussionCreate,
+
+        [Display(Name = "Course - Discussion - Create")]
+        CourseDiscussionCreate,
+
+        [Display(Name = "Course - Discussion - Delete")]
+        CourseDiscussionDelete,
+
+        [Display(Name = "Course - Discussion - Edit")]
+        CourseDiscussionEdit,
+
+        [Display(Name = "Course - Group - Create")]
         CourseGroupCreate,
 
-        CourseDiscussionCreate,
-        CourseDiscussionGroupCreate,
+        [Display(Name = "Course - Group - View")]
+        CourseGroupView,
+
+        [Display(Name = "Course - Group - Edit")]
+        CourseGroupEdit,
+
+        [Display(Name = "Course - Group - Delete")]
+        CourseGroupDelete,
+       
         CourseAddDocument,
 
         //setting 5001 - 6000

@@ -63,7 +63,7 @@
         <a class="dropdown-item" href="@Url.Action("ListToRedeem", "RewardRedemptions", new { area = "Reward" })">Claim Reward</a>
     }
 
-    else if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseDiscussionGroupCreate))// Facilitator
+    else if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseDiscussionCreate))// Facilitator
     {
         <div class="row">
             <div class="col-lg-6">

@@ -45,7 +45,7 @@ namespace FEP.WebApiModel.eLearning
     {
         [Display(Name = "Group Code")]
         public string EnrollmentCode { get; set; }
-        public int LearnerId { get; set; }
+        public int UserId { get; set; }
     }
 
     public class EditCourseGroupModel
@@ -66,12 +66,13 @@ namespace FEP.WebApiModel.eLearning
     {
         public int GroupId { get; set; }
         public string UserName { get; set; }
+        public int CreatedBy { get; set; }
         public int UserId { get; set; }
-        public int LearnerId { get; set; }
-        public int CourseEnrolled { get; set; }
-        public int CourseCompleted { get; set; }
+        public int? CourseEnrolled { get; set; }
+        public int? CourseCompleted { get; set; }
         public bool isOwner { get; set; } = false;
         public bool isMember { get; set; } = false;
+        public int PriorityOrder { get; set; } = 0;
     }
 
     public class ListCourseModel

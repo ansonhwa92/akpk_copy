@@ -120,11 +120,30 @@ namespace FEP.Model.Migrations
 
             }
 
-            AddRole(db, "Individual", "Default Individual");
+
+            var individualaccess = new List<RoleAccess> 
+            { 
+                new RoleAccess { UserAccess = UserAccess.LearningMenu },
+                new RoleAccess { UserAccess = UserAccess.EventMenu },
+                new RoleAccess { UserAccess = UserAccess.RnPPublicationMenu },
+                new RoleAccess { UserAccess = UserAccess.RnPSurveyMenu },
+                new RoleAccess { UserAccess = UserAccess.KMCMenu }                
+            };
+
+            var companyaccess = new List<RoleAccess>
+            {
+                new RoleAccess { UserAccess = UserAccess.LearningMenu },
+                new RoleAccess { UserAccess = UserAccess.EventMenu },
+                new RoleAccess { UserAccess = UserAccess.RnPPublicationMenu },
+                new RoleAccess { UserAccess = UserAccess.RnPSurveyMenu },
+                new RoleAccess { UserAccess = UserAccess.KMCMenu }
+            };
+            
+            AddRole(db, "Individual", "Default Individual", individualaccess, true, false, false);
             AddRole(db, "Individual with paper", "Individual with paper");
             AddRole(db, "Individual with paper to present", "Individual with paper to present");
 
-            AddRole(db, "Agency", "Default Agency");
+            AddRole(db, "Agency", "Default Agency", companyaccess, false, true, false);
             AddRole(db, "Organizer", "Default Organizer");
 
             //AddRole(db, "Trainer", "Default Trainer");
@@ -133,7 +152,16 @@ namespace FEP.Model.Migrations
 
             AddRole(db, "Chief Editor", "Chief Editor");
 
-            AddRole(db, "Staff", "Staff");
+            var staffaccess = new List<RoleAccess>
+            {
+                new RoleAccess { UserAccess = UserAccess.LearningMenu },
+                new RoleAccess { UserAccess = UserAccess.EventMenu },
+                new RoleAccess { UserAccess = UserAccess.RnPPublicationMenu },
+                new RoleAccess { UserAccess = UserAccess.RnPSurveyMenu },
+                new RoleAccess { UserAccess = UserAccess.KMCMenu }
+            };
+
+            AddRole(db, "Staff", "Default Staff", staffaccess, false, false, true);
 
 			//AddRole(db, "Admin Event", "Admin Event");
 			AddRole(db, "Admin R&P", "Admin R&P");
@@ -238,6 +266,7 @@ namespace FEP.Model.Migrations
 
             }
 
+          
             #region add staff
             AddStaff(db, "haroldean.l", "HAROLDEAN LIM @ LIM JIN LOK", "690315065097", "haroldean@akpk.org.my", "60106598960", "Human Capital", "MANAGER-E1", "0002");
             AddStaff(db, "azman.h", "AZMAN BIN HASIM", "690629715005", "azman@akpk.org.my", "60192333703", "Corporate Services", "GENERAL MANAGER-C1", "0003");
@@ -423,9 +452,6 @@ namespace FEP.Model.Migrations
             AddStaff(db, "fep_user3", "FEP USER 3", "123456789014", "fepuser3@fep.com", "012345678", "IT", "SENIOR EXECUTIVE", "xxxz");
             AddStaff(db, "fep_user4", "FEP USER 4", "123456789015", "fepuser4@fep.com", "012345678", "IT", "SENIOR EXECUTIVE", "xxxf");
             #endregion
-
-
-            
 
             if (!db.Ministry.Any())
             {
@@ -791,22 +817,38 @@ namespace FEP.Model.Migrations
             }
         }
 
-        public static void AddRole(DbEntities db, string RoleName, string Description, List<RoleAccess> roleaccess = null)
+        public static void AddRole(DbEntities db, string RoleName, string Description, List<RoleAccess> roleaccess = null, bool IsPublicIndividualDefault = false, bool IsPublicCompanyDefault = false, bool IsStaffDefault = false)
         {
 
-            var role = db.Role.Local.Where(r => r.Name.Contains(RoleName)).FirstOrDefault() ?? db.Role.Where(r => r.Name.Contains(RoleName)).FirstOrDefault();
+            var role = db.Role.Local.Where(r => r.Name == RoleName).FirstOrDefault() ?? db.Role.Where(r => r.Name == RoleName).FirstOrDefault();
 
             if (role == null)
             {
-                db.Role.Add(
+                role = db.Role.Add(
                     new Role
                     {
                         Name = RoleName,
                         Description = Description,
                         Display = true,
-                        CreatedDate = DateTime.Now,
+                        CreatedDate = DateTime.Now,                       
                         RoleAccess = roleaccess
                     });
+
+                if (IsPublicIndividualDefault)
+                {
+                    db.RoleDefault.Add(new RoleDefault { Role = role, DefaultRoleType = DefaultRoleType.DefaultIndividual });
+                }
+
+                if (IsPublicCompanyDefault)
+                {
+                    db.RoleDefault.Add(new RoleDefault { Role = role, DefaultRoleType = DefaultRoleType.DefaultCompany });
+                }
+
+                if (IsStaffDefault)
+                {
+                    db.RoleDefault.Add(new RoleDefault { Role = role, DefaultRoleType = DefaultRoleType.DefaultStaff });
+                }
+
             }
 
         }
@@ -857,7 +899,15 @@ namespace FEP.Model.Migrations
 
             var designation = AddDesignation(db, Designation);
 
+            var roles = db.RoleDefault.Local.Where(r => r.DefaultRoleType == DefaultRoleType.DefaultStaff).ToList();
 
+            List<UserRole> staffroles = new List<UserRole>();
+
+            foreach (var role in roles)
+            {
+                staffroles.Add(new UserRole { Role = role.Role });
+            }
+            
             if (user == null)
             {
 
@@ -867,7 +917,8 @@ namespace FEP.Model.Migrations
                     IsEnable = true,
                     LoginAttempt = 0,
                     HashPassword = "",
-                    Salt = ""
+                    Salt = "",
+                    UserRoles = staffroles
                 };
 
                 var staff = new StaffProfile

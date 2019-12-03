@@ -301,5 +301,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			return Content(JsonConvert.SerializeObject(new { image64 = "" }), "application/json");
 		}
-	}
+
+        [HttpGet]
+        public async Task<ActionResult> Download(int id)
+        {
+            return await FileMethod.DownloadFile(id);
+        }
+    }
 }

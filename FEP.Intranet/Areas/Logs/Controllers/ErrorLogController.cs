@@ -1,5 +1,6 @@
 ﻿using FEP.Helper;
 using FEP.WebApiModel.Logs;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,14 @@ namespace FEP.Intranet.Areas.Logs.Controllers
         public ActionResult List()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> List(FilterErrorLogModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"Logs/ErrorLog/GetAll", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
         }
 
         [HttpGet]

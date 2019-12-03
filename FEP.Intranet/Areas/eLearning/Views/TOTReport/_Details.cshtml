@@ -41,6 +41,12 @@
                 <span class="form-control">@Model.Venue</span>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(model => model.Organization)
+                <span class="form-control">@Model.Organization</span>
+            </div>
+        </div>
         <div class="row mb-1">
             <div class="col-lg-6">
                 <label>@Language.TOT.TextAgeRange</label>

@@ -43,6 +43,10 @@ namespace FEP.Intranet.Areas.eLearning.Models
         [Display(Name = "FieldVenue", ResourceType = typeof(Language.TOT))]
         public string Venue { get; set; }
 
+        [Required(ErrorMessageResourceName = "ValidRequiredOrganization", ErrorMessageResourceType = typeof(Language.TOT))]
+        [Display(Name = "FieldOrganization", ResourceType = typeof(Language.TOT))]
+        public string Organization { get; set; }
+
         public int AgeR1NoOfMale { get; set; }
         public int AgeR1NoOfFemale { get; set; }
 
@@ -120,6 +124,10 @@ namespace FEP.Intranet.Areas.eLearning.Models
         [Required(ErrorMessageResourceName = "ValidRequiredVenue", ErrorMessageResourceType = typeof(Language.TOT))]
         [Display(Name = "FieldVenue", ResourceType = typeof(Language.TOT))]
         public string Venue { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredOrganization", ErrorMessageResourceType = typeof(Language.TOT))]
+        [Display(Name = "FieldOrganization", ResourceType = typeof(Language.TOT))]
+        public string Organization { get; set; }
 
         public int AgeR1NoOfMale { get; set; }
         public int AgeR1NoOfFemale { get; set; }

@@ -158,6 +158,7 @@ namespace FEP.WebApi.Api.eLearning
                     StartTime = s.StartDate,
                     EndTime = s.EndDate,
                     Venue = s.Venue,
+                    Organization = s.Organization,
                     AgeR1NoOfMale = s.AgeR1NoOfMale,
                     AgeR1NoOfFemale = s.AgeR1NoOfFemale,
                     AgeR2NoOfMale = s.AgeR2NoOfMale,
@@ -208,7 +209,7 @@ namespace FEP.WebApi.Api.eLearning
                     StartDate = model.StartDate.Value,
                     EndDate = model.EndDate.Value,
                     Venue = model.Venue,                   
-                    NoOfParticipant = model.NoOfMale + model.NoOfFemale,
+                    Organization = model.Organization,
                     AgeR1NoOfMale = model.AgeR1NoOfMale,
                     AgeR1NoOfFemale = model.AgeR1NoOfFemale,
                     AgeR2NoOfMale = model.AgeR2NoOfMale,
@@ -273,6 +274,7 @@ namespace FEP.WebApi.Api.eLearning
                 report.StartDate = model.StartDate;
                 report.EndDate = model.EndDate;
                 report.Venue = model.Venue;
+                report.Organization = model.Organization;
                 report.AgeR1NoOfMale = model.AgeR1NoOfMale;
                 report.AgeR1NoOfFemale = model.AgeR1NoOfFemale;
                 report.AgeR2NoOfMale = model.AgeR2NoOfMale;
@@ -295,8 +297,7 @@ namespace FEP.WebApi.Api.eLearning
                 report.SalaryR5NoOfFemale = model.SalaryR5NoOfFemale;
                 report.SalaryR6NoOfMale = model.SalaryR6NoOfMale;
                 report.SalaryR6NoOfFemale = model.SalaryR6NoOfFemale;
-                report.NoOfParticipant = model.NoOfMale + model.NoOfFemale;               
-                
+                      
                 db.Entry(report).State = EntityState.Modified;
                 
                 //remove file 

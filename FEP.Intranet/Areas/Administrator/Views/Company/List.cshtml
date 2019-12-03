@@ -16,7 +16,7 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)Administration/Company/GetAll',
+                    "url": '@Url.Action("List", "Company", new { area = "Administrator" })',
                     "data": function (filter) {
                         filter.CompanyName = $('#Filter_CompanyName').val();
                         filter.CompanyRegNo = $('#Filter_CompanyRegNo').val();

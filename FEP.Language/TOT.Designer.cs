@@ -214,6 +214,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Organization.
+        /// </summary>
+        public static string FieldOrganization {
+            get {
+                return ResourceManager.GetString("FieldOrganization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Salary Range.
         /// </summary>
         public static string FieldSalaryRange {
@@ -282,6 +291,15 @@ namespace Language {
         public static string PlaceholderModule {
             get {
                 return ResourceManager.GetString("PlaceholderModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Organization.
+        /// </summary>
+        public static string PlaceholderOrganization {
+            get {
+                return ResourceManager.GetString("PlaceholderOrganization", resourceCulture);
             }
         }
         
@@ -525,6 +543,15 @@ namespace Language {
         public static string ValidRequiredNoOfMale {
             get {
                 return ResourceManager.GetString("ValidRequiredNoOfMale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter Organization.
+        /// </summary>
+        public static string ValidRequiredOrganization {
+            get {
+                return ResourceManager.GetString("ValidRequiredOrganization", resourceCulture);
             }
         }
         

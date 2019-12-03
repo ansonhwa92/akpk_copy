@@ -417,4 +417,10 @@
   <data name="SpFieldThumbnail" xml:space="preserve">
     <value>Speaker Image</value>
   </data>
+  <data name="PubEventPictures" xml:space="preserve">
+    <value>Event Picture</value>
+  </data>
+  <data name="PubEventSpeakerPictures" xml:space="preserve">
+    <value>Speaker Picture</value>
+  </data>
 </root>

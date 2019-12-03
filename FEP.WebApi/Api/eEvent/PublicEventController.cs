@@ -1659,5 +1659,86 @@ namespace FEP.WebApi.Api.eEvent
 			return Ok(model);
 		}
 
+		[HttpGet]
+		[Route("api/eEvent/PublicEvent/GetPublishedPublicEvent")]
+		public BrowseEventModel GetPublishedPublicEvent(string keyword, string sorting, bool workshops, bool seminars, bool dialogues,
+			bool conferences, bool symposium, bool convention)
+		{
+			var query = db.PublicEvent.Where(i => i.Display && i.EventStatus == EventStatus.Published);
+
+			var totalCount = query.Count();
+
+			query = query.Where(p => (keyword == null || keyword == ""
+			   || p.EventTitle.Contains(keyword)
+			   || p.RefNo.Contains(keyword)));
+
+			if (!workshops) { query = query.Where(p => p.EventCategoryId != 1); }
+			if (!seminars) { query = query.Where(p => p.EventCategoryId != 2); }
+			if (!dialogues) { query = query.Where(p => p.EventCategoryId != 3); }
+			if (!conferences) { query = query.Where(p => p.EventCategoryId != 4); }
+			if (!symposium) { query = query.Where(p => p.EventCategoryId != 5); }
+			if (!convention) { query = query.Where(p => p.EventCategoryId != 6); }
+
+			var filteredCount = query.Count();
+
+			if (sorting == "EventTitle")
+			{
+				query = query.OrderBy(o => o.EventTitle).OrderByDescending(o => o.CreatedDate);
+			}
+			else if (sorting == "CreatedDate")
+			{
+				query = query.OrderByDescending(o => o.CreatedDate).OrderBy(o => o.EventTitle);
+			}
+			else if (sorting == "RefNo")
+			{
+				query = query.OrderByDescending(o => o.RefNo).OrderBy(o => o.EventTitle);
+			}
+
+			var data = query.Skip(0).Take(filteredCount).Select(s => new PublicEventModel
+			{
+				Id = s.Id,
+				EventTitle = s.EventTitle,
+				EventObjective = s.EventObjective,
+				StartDate = s.StartDate,
+				EndDate = s.EndDate,
+				Venue = s.Venue,
+				FreeIndividual = s.FreeIndividual,
+				FreeIndividualPaper = s.FreeIndividualPaper,
+				FreeIndividualPresent = s.FreeIndividualPresent,
+				FreeAgency = s.FreeAgency,
+
+				IndividualFee = s.IndividualFee,
+				IndividualPaperFee = s.IndividualPaperFee,
+				IndividualPresentFee = s.IndividualPresentFee,
+				AgencyFee = s.AgencyFee,
+
+				IndividualEarlyBird = s.IndividualEarlyBird,
+				IndividualPaperEarlyBird = s.IndividualPaperEarlyBird,
+				IndividualPresentEarlyBird = s.IndividualPresentEarlyBird,
+				AgencyEarlyBird = s.AgencyEarlyBird,
+
+				EventStatus = s.EventStatus,
+				EventCategoryId = s.EventCategoryId,
+				EventCategoryName = s.EventCategory.CategoryName,
+				TargetedGroup = s.TargetedGroup,
+				SeatAllocated_EarlyBird = s.SeatAllocated_EarlyBird,
+				ParticipantAllowed = s.ParticipantAllowed,
+				Remarks = s.Remarks,
+				RefNo = s.RefNo,
+				CreatedDate = s.CreatedDate,
+				CreatedByName = s.CreatedByUser.Name,
+			}).ToList();
+
+			var browser = new BrowseEventModel
+			{
+				Keyword = keyword,
+				Sorting = sorting,
+				LastIndex = filteredCount,
+				ItemCount = totalCount,
+				PublicEvents = data
+			};
+
+			return browser;
+		}
 	}
 }

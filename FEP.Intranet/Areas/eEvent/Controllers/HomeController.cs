@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using FEP.Helper;
 using FEP.WebApiModel.LandingPage;
+using FEP.WebApiModel.PublicEvent;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
 {
@@ -43,17 +44,17 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				$"?keyword={keyword}&sorting={sorting}&workshops={workshops}&seminars={seminars}&dialogues={dialogues}&conferences={conferences}" +
 				$"symposium={symposium}&convention={convention}");
 
-			if (!response.isSuccess)
-			{
-				return HttpNotFound();
-			}
+			//if (!response.isSuccess)
+			//{
+			//	return HttpNotFound();
+			//}
 
 			var browser = response.Data;
 
-			if (browser == null)
-			{
-				return HttpNotFound();
-			}
+			//if (browser == null)
+			//{
+			//	return HttpNotFound();
+			//}
 
 			if (browser.Sorting == "title")
 			{
@@ -95,11 +96,36 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			if ((bool)seminars) { ViewBag.Typeseminars = "checked"; }
 			if ((bool)dialogues) { ViewBag.Typedialogues = "checked"; }
 			if ((bool)conferences) { ViewBag.Typeconferences = "checked"; }
-			if ((bool)symposium) { ViewBag.Typesymposium  = "checked"; }
+			if ((bool)symposium) { ViewBag.Typesymposium = "checked"; }
 			if ((bool)convention) { ViewBag.Typeconvention = "checked"; }
-			
+
 
 			return View(browser);
+		}
+
+		[AllowAnonymous]
+		public async Task<ActionResult> PublicEventDetails(int? id)
+		{
+			if (id == null)
+			{
+				return HttpNotFound();
+			}
+
+			var resPub = await WepApiMethod.SendApiAsync<DetailsPublicEventModel>(HttpVerbs.Get, $"eEvent/GetDelete?id={id}");
+
+			if (!resPub.isSuccess)
+			{
+				return HttpNotFound();
+			}
+
+			var publicevent = resPub.Data;
+
+			if (publicevent == null)
+			{
+				return HttpNotFound();
+			}
+
+			return View(publicevent);
 		}
 
 		[ChildActionOnly]

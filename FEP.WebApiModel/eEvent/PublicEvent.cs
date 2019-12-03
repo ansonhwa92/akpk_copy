@@ -185,7 +185,13 @@ namespace FEP.WebApiModel.PublicEvent
 
         public string tentativeScript { get; set; }
 
-    }
+		[Display(Name = "PubEventPictures", ResourceType = typeof(Language.Event))]
+		public string CoverPicture { get; set; }
+
+		[Display(Name = "PubEventSpeakerPictures", ResourceType = typeof(Language.Event))]
+		public string SpeakerPicture { get; set; }
+
+	}
 
 
 	public class DetailsPublicEventModel : PublicEventModel

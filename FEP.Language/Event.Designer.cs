@@ -673,6 +673,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Event Picture.
+        /// </summary>
+        public static string PubEventPictures {
+            get {
+                return ResourceManager.GetString("PubEventPictures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reference No.
         /// </summary>
         public static string PubEventRefNo {
@@ -714,6 +723,15 @@ namespace Language {
         public static string PubEventSpeakerName {
             get {
                 return ResourceManager.GetString("PubEventSpeakerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speaker Picture.
+        /// </summary>
+        public static string PubEventSpeakerPictures {
+            get {
+                return ResourceManager.GetString("PubEventSpeakerPictures", resourceCulture);
             }
         }
         

@@ -1042,7 +1042,7 @@
     <Content Include="Areas\Administrator\Views\Branch\_Delete.cshtml" />
     <Content Include="Areas\Administrator\Views\Branch\_Edit.cshtml" />
     <Content Include="Areas\Administrator\Views\Branch\List.cshtml" />
-    <Content Include="Areas\eEvent\Views\Home\BrowseEvent.cshtml" />
+    <Content Include="Areas\eEvent\Views\Home\BrowseEvent_AsReference.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Create_RequestCancelModify.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Details_RequestCancelModify.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Edit_RequestCancelModify.cshtml" />
@@ -1074,6 +1074,7 @@
     <Content Include="Areas\eLearning\Views\Courses\View.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\ViewCertificate.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseGroup\_CoursesList.cshtml" />
+    <Content Include="Areas\eEvent\Views\Home\BrowseEvent.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

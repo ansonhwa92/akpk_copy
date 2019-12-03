@@ -296,6 +296,13 @@
 
 							<div class="row">
 								<div class="form-group col-lg-12">
+									@Html.LabelFor(model => model.RepUserId)
+									@Html.ListBoxFor(model => model.RepUserId, Model.RepresentativeList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled" })
+								</div>
+							</div>
+
+							@*<div class="row">
+								<div class="form-group col-lg-12">
 									@Html.LabelFor(model => model.RepUserName)
 									@Html.EditorFor(model => model.RepUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 								</div>
@@ -320,7 +327,7 @@
 									@Html.LabelFor(model => model.RepDesignation)
 									@Html.EditorFor(model => model.RepDesignation, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 								</div>
-							</div>
+							</div>*@
 
 						</div>
 						<!-- End Form -->

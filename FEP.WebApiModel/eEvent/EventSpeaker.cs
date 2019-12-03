@@ -30,6 +30,9 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "SpExperience", ResourceType = typeof(Language.Event))]
 		public string Experience { get; set; }
 
+		[Display(Name = "SpFieldThumbnail", ResourceType = typeof(Language.Event))]
+		public string ThumbnailUrl { get; set; }
+
 		[DataType(DataType.EmailAddress)]
 		[Display(Name = "SpEmail", ResourceType = typeof(Language.Event))]
 		public string Email { get; set; }
@@ -114,7 +117,7 @@ namespace FEP.WebApiModel.eEvent
 
 		public IEnumerable<SelectListItem> UserIds { get; set; }
 
-
+		public string ThumbnailUrl { get; set; }
 	}
 
 	public class EditEventSpeakerModel : CreateEventSpeakerModel

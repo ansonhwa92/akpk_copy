@@ -256,6 +256,7 @@ namespace FEP.WebApi.Api.eEvent
 					EventCategoryId = i.EventCategoryId,
 					EventCategoryName = i.EventCategory.CategoryName,
 					TargetedGroup = i.TargetedGroup,
+					SeatAllocated_EarlyBird = i.SeatAllocated_EarlyBird,
 					ParticipantAllowed = i.ParticipantAllowed,
 					Remarks = i.Remarks,
 					RefNo = i.RefNo,
@@ -354,6 +355,7 @@ namespace FEP.WebApi.Api.eEvent
 				EventStatus = model.EventStatus,
 				EventCategoryId = model.EventCategoryId,
 				TargetedGroup = model.TargetedGroup,
+				SeatAllocated_EarlyBird = model.SeatAllocated_EarlyBird,
 				ParticipantAllowed = model.ParticipantAllowed,
 				Remarks = model.Remarks,
 				CreatedBy = model.CreatedBy,
@@ -468,6 +470,7 @@ namespace FEP.WebApi.Api.eEvent
 			publicevent.EventCategoryId = model.EventCategoryId;
 			publicevent.TargetedGroup = model.TargetedGroup;
 			publicevent.ParticipantAllowed = model.ParticipantAllowed;
+			publicevent.SeatAllocated_EarlyBird = model.SeatAllocated_EarlyBird;
 			publicevent.Remarks = model.Remarks;
 			publicevent.RefNo = model.RefNo;
 
@@ -1470,6 +1473,7 @@ namespace FEP.WebApi.Api.eEvent
 				   EventCategoryId = i.EventCategoryId,
 				   EventCategoryName = i.EventCategory.CategoryName,
 				   TargetedGroup = i.TargetedGroup,
+				   SeatAllocated_EarlyBird = i.SeatAllocated_EarlyBird,
 				   ParticipantAllowed = i.ParticipantAllowed,
 				   Remarks = i.Remarks,
 				   RefNo = i.RefNo,
@@ -1527,6 +1531,7 @@ namespace FEP.WebApi.Api.eEvent
 				   EventCategoryId = i.EventCategoryId,
 				   EventCategoryName = i.EventCategory.CategoryName,
 				   TargetedGroup = i.TargetedGroup,
+				   SeatAllocated_EarlyBird = i.SeatAllocated_EarlyBird,
 				   ParticipantAllowed = i.ParticipantAllowed,
 				   Remarks = i.Remarks,
 				   RefNo = i.RefNo,

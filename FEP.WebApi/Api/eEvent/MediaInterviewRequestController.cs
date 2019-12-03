@@ -226,7 +226,6 @@ namespace FEP.WebApi.Api.eEvent
 				Location = i.Location,
 				Language = i.Language,
 				Topic = i.Topic,
-				UserId = i.UserId,
 				RepUserName = i.User.Name,
 				RepEmail = i.User.Email,
 				RepMobileNumber = i.User.MobileNo,
@@ -259,7 +258,6 @@ namespace FEP.WebApi.Api.eEvent
 					Location = i.Location,
 					Language = i.Language,
 					Topic = i.Topic,
-					UserId = i.UserId,
 					RepUserName = i.User.Name,
 					RepEmail = i.User.Email,
 					RepMobileNumber = i.User.MobileNo,
@@ -294,6 +292,7 @@ namespace FEP.WebApi.Api.eEvent
 				};
 
 				evaluation.mediainterview.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.MediaInterview && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+				evaluation.mediainterview.RepUserId = db.MediaRepresentative.Where(r => r.MediaId == id).Select(s => s.UserId).ToArray();
 
 				return evaluation;
 			}
@@ -317,6 +316,7 @@ namespace FEP.WebApi.Api.eEvent
 				};
 
 				evaluation.mediainterview.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.MediaInterview && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+				evaluation.mediainterview.RepUserId = db.MediaRepresentative.Where(r => r.MediaId == id).Select(s => s.UserId).ToArray();
 
 				return evaluation;
 			}
@@ -343,7 +343,6 @@ namespace FEP.WebApi.Api.eEvent
 				Time = model.Time,
 				Language = model.Language,
 				Topic = model.Topic,
-				UserId = model.UserId,
 				CreatedBy = model.CreatedBy,
 				CreatedDate = DateTime.Now,
 				Display = true,
@@ -353,6 +352,17 @@ namespace FEP.WebApi.Api.eEvent
 
 			db.EventMediaInterviewRequest.Add(media);
 			db.SaveChanges();
+
+			foreach (var repid in model.RepUserId)
+			{
+				var mediarep = new MediaRepresentative
+				{
+					UserId = repid,
+					MediaInterview = media,
+				};
+
+				db.MediaRepresentative.Add(mediarep);
+			}
 
 			//files
 			foreach (var fileid in model.FilesId)
@@ -419,7 +429,6 @@ namespace FEP.WebApi.Api.eEvent
 			media.Time = model.Time;
 			media.Language = model.Language;
 			media.Topic = model.Topic;
-			media.UserId = model.UserId;
 			media.MediaStatus = model.MediaStatus;
 			media.RefNo = model.RefNo;
 			media.BranchId = model.BranchId;
@@ -427,6 +436,18 @@ namespace FEP.WebApi.Api.eEvent
 			db.Entry(media).State = EntityState.Modified;
 			db.Entry(media).Property(x => x.CreatedDate).IsModified = false;
 			db.Entry(media).Property(x => x.Display).IsModified = false;
+
+			db.MediaRepresentative.RemoveRange(db.MediaRepresentative.Where(u => u.MediaId == id));//remove all
+			foreach (var repid in model.RepUserId)
+			{
+				var mediarep = new MediaRepresentative
+				{
+					UserId = repid,
+					MediaInterview = media,
+				};
+
+				db.MediaRepresentative.Add(mediarep);
+			}
 
 			//remove file 
 			var attachments = db.EventFile.Where(s => s.FileCategory == EventFileCategory.MediaInterview && s.ParentId == model.Id).ToList();
@@ -935,7 +956,6 @@ namespace FEP.WebApi.Api.eEvent
 				   Location = i.Location,
 				   Language = i.Language,
 				   Topic = i.Topic,
-				   UserId = i.UserId,
 				   RepUserName = i.User.Name,
 				   RepEmail = i.User.Email,
 				   RepMobileNumber = i.User.MobileNo,
@@ -956,6 +976,7 @@ namespace FEP.WebApi.Api.eEvent
 			}
 
 			model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.MediaInterview && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+			model.RepUserId = db.MediaRepresentative.Where(r => r.MediaId == id).Select(s => s.UserId).ToArray();
 
 			return Ok(model);
 		}
@@ -983,7 +1004,6 @@ namespace FEP.WebApi.Api.eEvent
 				   Location = i.Location,
 				   Language = i.Language,
 				   Topic = i.Topic,
-				   UserId = i.UserId,
 				   RepUserName = i.User.Name,
 				   RepEmail = i.User.Email,
 				   RepMobileNumber = i.User.MobileNo,
@@ -999,6 +1019,7 @@ namespace FEP.WebApi.Api.eEvent
 			   }).FirstOrDefault();
 			
 			model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.MediaInterview && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
+			model.RepUserId = db.MediaRepresentative.Where(r => r.MediaId == id).Select(s => s.UserId).ToArray();
 
 			if (model == null)
 			{

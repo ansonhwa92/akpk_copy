@@ -182,7 +182,7 @@
 
 
 					}
-					else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventVerifierCCD)))
+					else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.VerifierExhibitionCCD)))
 					{
 						@*<a href='@Url.Action("Verified", "ExhibitionRoadshowRequest", new { id = Model.exhibitionroadshow.Id })'
 							   class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</a>
@@ -193,7 +193,7 @@
 						<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 						<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 					}
-					else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover1)))
+					else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver1Exhibition)))
 					{
 						@*<a href='@Url.Action("FirstApproved", "ExhibitionRoadshowRequest", new { id = Model.exhibitionroadshow.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
@@ -204,7 +204,7 @@
 						<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 						<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 					}
-					else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover1 && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover2)))
+					else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover1 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver2Exhibition)))
 					{
 						@*<a href='@Url.Action("SecondApproved", "ExhibitionRoadshowRequest", new { id = Model.exhibitionroadshow.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
@@ -215,7 +215,7 @@
 						<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 						<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 					}
-					else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover2 && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover3)))
+					else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover2 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver3Exhibition)))
 					{
 						@*<a href='@Url.Action("FinalApproved", "ExhibitionRoadshowRequest", new { id = Model.exhibitionroadshow.Id })'
 							   class="btn btn-success btn-block mb-2">Approved</a>
@@ -238,7 +238,7 @@
 					@*else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.AcceptParticipation && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD)))
 						{
 							<a href='@Url.Action("SendInvitationToNominees", "ExhibitionRoadshowRequest", new { id = Model.exhibitionroadshow.Id })'
-							   class="btn btn-outline-default btn-block mb-2">Send Invitation to Nominees</a>
+							   class="btn btn-outline-default btn-block mb-2">Send Invitation to Exhibitors</a>
 						}*@
 
 					@*else if (Model.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover3)
@@ -634,7 +634,7 @@
 									<div class="modal-body">
 										@if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.PendingVerified)
 										{
-											if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventVerifierCCD))
+											if (CurrentUser.HasAccess(FEP.Model.UserAccess.VerifierExhibitionCCD))
 											{
 												<h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
 												@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
@@ -642,7 +642,7 @@
 										}
 										else if (Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.Verified || Model.exhibitionroadshow.ExhibitionStatus == FEP.Model.ExhibitionStatus.ApprovedByApprover1)
 										{
-											if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover1) || CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover2))
+											if (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver1Exhibition) || CurrentUser.HasAccess(FEP.Model.UserAccess.Approver2Exhibition))
 											{
 												<h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
 												<h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
@@ -659,7 +659,7 @@
 													</div>
 												</div>
 											}
-											else if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover3))
+											else if (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver3Exhibition))
 											{
 												@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
 											}

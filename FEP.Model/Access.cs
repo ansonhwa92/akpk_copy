@@ -64,8 +64,7 @@ namespace FEP.Model
 		//e-Event 1001 - 2000
 		[Display(Name = "Event Management Menu")]
 		EventMenu = 1001,
-		[Display(Name = "Internal Event Menu")]
-		EventIntenalEventMenu = 1002,
+		
 
 
 
@@ -76,16 +75,6 @@ namespace FEP.Model
 		EventAdministratorCCD = 1004,
 		[Display(Name = "Event Reception")]
 		EventReception = 1005,
-		[Display(Name = "Event Admin - FED")]
-		EventVerifierFED = 1006,
-		[Display(Name = "Event Admin - CCD")]
-		EventVerifierCCD = 1007,
-		[Display(Name = "Event Approver 1")]
-		EventApprover1 = 1008,
-		[Display(Name = "Event Approver 2")]
-		EventApprover2 = 1009,
-		[Display(Name = "Event Approver 3")]
-		EventApprover3 = 1010,
 		//--------/Untuk Button Sahaja----//
 
 
@@ -103,7 +92,6 @@ namespace FEP.Model
 		[Display(Name = "Media Interview - Require Amendment")]
 		RequireAmendment_MediaInterview = 1016,
 
-
 		[Display(Name = "Exhibition RoadShow - Submit")]
 		Submit_ExhibitionRoadShow = 1017,
 		[Display(Name = "Exhibition RoadShow - Verify")]
@@ -116,7 +104,6 @@ namespace FEP.Model
 		Approver3_ExhibitionRoadShow = 1021,
 		[Display(Name = "Exhibition RoadShow - Require Amendment")]
 		RequireAmendment_ExhibitionRoadShow = 1022,
-
 
 		[Display(Name = "Public Event - Submit")]
 		Submit_PublicEvent = 1029,
@@ -137,24 +124,65 @@ namespace FEP.Model
 
         [Display(Name = "Cancellation/Modification Public Event - Submit")]
         Submit_CancellationModificationRequest = 1037,
-
         [Display(Name = "Cancellation/Modification Public Event - Verify")]
         Verifier_CancellationModificationRequest = 1038,
-
         [Display(Name = "Cancellation/Modification Public Event - Approve (Level 1)")]
         Approver1_CancellationModificationRequest = 1039,
-
         [Display(Name = "Cancellation/Modification Public Event - Approve (Level 2)")]
         Approver2_CancellationModificationRequest = 1040,
-
         [Display(Name = "Cancellation/Modification Public Event - Approve (Level 3)")]
         Approver3_CancellationModificationRequest = 1041,
-
         [Display(Name = "Cancellation/Modification Public Event - Require Amendment")]
         Amendment_CancellationModificationRequest = 1042,
 
-        //research & publication 2001 - 3000
-        [Display(Name = "R&P Management Menu")]
+		//--------/Untuk Button Sahaja----//
+		[Display(Name = "Verifier Public Event - FED")]
+		VerifierPublicEventFED = 1050,
+		[Display(Name = "Verifier Media Interview - CCD")]
+		VerifierMediaInterviewCCD = 1051,
+		[Display(Name = "Verifier Exhibition Roadshow - CCD")]
+		VerifierExhibitionCCD = 1052,
+
+		[Display(Name = "Public Event - Approver 1")]
+		Approver1PublicEvent = 1053,
+		[Display(Name = "Public Event - Approver 2")]
+		Approver2PublicEvent = 1054,
+		[Display(Name = "Public Event - Approver 3")]
+		Approver3PublicEvent = 1056,
+
+		[Display(Name = "Media Interview - Approver 1")]
+		Approver1MediaInterview = 1057,
+		[Display(Name = "Media Interview - Approver 2")]
+		Approver2MediaInterview = 1058,
+		[Display(Name = "Media Interview - Approver 3")]
+		Approver3MediaInterview = 1059,
+
+		[Display(Name = "Exhibition Roadshow - Approver 1")]
+		Approver1Exhibition = 1060,
+		[Display(Name = "Exhibition Roadshow - Approver 2")]
+		Approver2Exhibition = 1061,
+		[Display(Name = "Exhibition Roadshow - Approver 3")]
+		Approver3Exhibition = 1062,
+		//--------/Untuk Button Sahaja----//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		//research & publication 2001 - 3000
+		[Display(Name = "R&P Management Menu")]
         RnPMenu = 2001,
 
         [Display(Name = "Publication Menu")]

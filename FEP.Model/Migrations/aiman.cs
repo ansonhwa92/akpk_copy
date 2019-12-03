@@ -153,16 +153,15 @@ namespace FEP.Model.Migrations
 				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveExhibitionRoadshow, NotificationType = NotificationType.Approve_Exhibition_RoadShow_ByApprover_3, ETCode = "ET011EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.RejectExhibitionRoadshow, NotificationType = NotificationType.Reject_Exhibition_RoadShow, ETCode = "ET012EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 
-				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.SubmitExhibitionRoadshowDutyRoster, NotificationType = NotificationType.Submit_DutyRoster_For_Verification, ETCode = "ET013EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.VerifyExhibitionRoadshowDutyRoster, NotificationType = NotificationType.Verify_DutyRoster, ETCode = "ET014EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveExhibitionRoadshowDutyRoster, NotificationType = NotificationType.NotVerify_DutyRoster, ETCode = "ET015EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
-				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveExhibitionRoadshowDutyRoster, NotificationType = NotificationType.Approve_DutyRoster, ETCode = "ET016EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				//new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.SubmitExhibitionRoadshowDutyRoster, NotificationType = NotificationType.Submit_DutyRoster_For_Verification, ETCode = "ET013EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				//new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.VerifyExhibitionRoadshowDutyRoster, NotificationType = NotificationType.Verify_DutyRoster, ETCode = "ET014EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				//new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveExhibitionRoadshowDutyRoster, NotificationType = NotificationType.NotVerify_DutyRoster, ETCode = "ET015EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
+				//new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveExhibitionRoadshowDutyRoster, NotificationType = NotificationType.Approve_DutyRoster, ETCode = "ET016EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.ApproveExhibitionRoadshowDutyRoster, NotificationType = NotificationType.AcceptParticipation_Exhibition_RoadShow, ETCode = "ET017EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days },
 				new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.RejectExhibitionRoadshowDutyRoster, NotificationType = NotificationType.DeclineParticipation_Exhibition_RoadShow, ETCode = "ET018EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days }
 
 			//new SLAReminder { NotificationCategory = NotificationCategory.Event, SLAEventType = SLAEventType.SendInvitationToNominees, NotificationType = NotificationType.SendInvitationToNominees, ETCode = "ET019EE", SLAResolutionTime = 3, IntervalDuration = 1, SLADurationType = SLADurationType.Days }
 			);
-
 		}
 
 		public static void DefaultParameterGroup(DbEntities db)
@@ -286,7 +285,7 @@ namespace FEP.Model.Migrations
 			//-------------------------------------------------------------------------------------------------//
 
 			List<RoleAccess> VerifierEventFED = new List<RoleAccess>();
-			VerifierEventFED.Add(new RoleAccess { UserAccess = UserAccess.EventVerifierFED });
+			VerifierEventFED.Add(new RoleAccess { UserAccess = UserAccess.VerifierPublicEventFED });
 			VerifierEventFED.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
 			VerifierEventFED.Add(new RoleAccess { UserAccess = UserAccess.Submit_PublicEvent });
 			VerifierEventFED.Add(new RoleAccess { UserAccess = UserAccess.Submit_CancellationModificationRequest });
@@ -299,67 +298,130 @@ namespace FEP.Model.Migrations
 
 			//-------------------------------------------------------------------------------------------------//
 
-			List<RoleAccess> VerifierEventCCD = new List<RoleAccess>();
-			VerifierEventCCD.Add(new RoleAccess { UserAccess = UserAccess.EventVerifierCCD });
-			VerifierEventCCD.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
-			VerifierEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Submit_ExhibitionRoadShow });
-			VerifierEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Submit_MediaInterview });
-			VerifierEventCCD.Add(new RoleAccess { UserAccess = UserAccess.RequireAmendment_ExhibitionRoadShow });
-			VerifierEventCCD.Add(new RoleAccess { UserAccess = UserAccess.RequireAmendment_MediaInterview });
-			VerifierEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Verify_ExhibitionRoadShow });
-			VerifierEventCCD.Add(new RoleAccess { UserAccess = UserAccess.Verify_MediaInterview });
+			List<RoleAccess> VerifierMediaCCD = new List<RoleAccess>();
+			VerifierMediaCCD.Add(new RoleAccess { UserAccess = UserAccess.VerifierMediaInterviewCCD });
+			VerifierMediaCCD.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			VerifierMediaCCD.Add(new RoleAccess { UserAccess = UserAccess.Submit_ExhibitionRoadShow });
+			VerifierMediaCCD.Add(new RoleAccess { UserAccess = UserAccess.Submit_MediaInterview });
+			VerifierMediaCCD.Add(new RoleAccess { UserAccess = UserAccess.RequireAmendment_ExhibitionRoadShow });
+			VerifierMediaCCD.Add(new RoleAccess { UserAccess = UserAccess.RequireAmendment_MediaInterview });
+			VerifierMediaCCD.Add(new RoleAccess { UserAccess = UserAccess.Verify_ExhibitionRoadShow });
+			VerifierMediaCCD.Add(new RoleAccess { UserAccess = UserAccess.Verify_MediaInterview });
 
-			mhafeez.AddRole(db, "Verifier Event - CCD", "Verifier Event", VerifierEventCCD);
-
-			//-------------------------------------------------------------------------------------------------//
-
-			List<RoleAccess> EventApprover1 = new List<RoleAccess>();
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.EventApprover1 });
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Verify_PublicEvent });
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Verifier_CancellationModificationRequest });
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Verify_ExhibitionRoadShow });
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Verify_MediaInterview });
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1_PublicEvent });
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1_CancellationModificationRequest });
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1_ExhibitionRoadShow });
-			EventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1_MediaInterview });
-
-			mhafeez.AddRole(db, "Approver Event 1", "Approver Event 1", EventApprover1);
+			mhafeez.AddRole(db, "Verifier Event - CCD", "Verifier Event", VerifierMediaCCD);
 
 			//-------------------------------------------------------------------------------------------------//
 
-			List<RoleAccess> EventApprover2 = new List<RoleAccess>();
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.EventApprover2 });
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver1_CancellationModificationRequest });
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver1_ExhibitionRoadShow });
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver1_MediaInterview });
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver1_PublicEvent });
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2_CancellationModificationRequest });
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2_ExhibitionRoadShow });
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2_MediaInterview });
-			EventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2_PublicEvent });
+			List<RoleAccess> VerifierExhibitionCCD = new List<RoleAccess>();
+			VerifierExhibitionCCD.Add(new RoleAccess { UserAccess = UserAccess.VerifierExhibitionCCD });
+			VerifierExhibitionCCD.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			VerifierExhibitionCCD.Add(new RoleAccess { UserAccess = UserAccess.Submit_ExhibitionRoadShow });
+			VerifierExhibitionCCD.Add(new RoleAccess { UserAccess = UserAccess.Submit_MediaInterview });
+			VerifierExhibitionCCD.Add(new RoleAccess { UserAccess = UserAccess.RequireAmendment_ExhibitionRoadShow });
+			VerifierExhibitionCCD.Add(new RoleAccess { UserAccess = UserAccess.RequireAmendment_MediaInterview });
+			VerifierExhibitionCCD.Add(new RoleAccess { UserAccess = UserAccess.Verify_ExhibitionRoadShow });
+			VerifierExhibitionCCD.Add(new RoleAccess { UserAccess = UserAccess.Verify_MediaInterview });
 
-			mhafeez.AddRole(db, "Approver Event 2", "Approver Event 2", EventApprover2);
+			mhafeez.AddRole(db, "Verifier Event - CCD", "Verifier Event", VerifierExhibitionCCD);
 
 			//-------------------------------------------------------------------------------------------------//
 
-			List<RoleAccess> EventApprover3 = new List<RoleAccess>();
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.EventApprover3 });
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver2_CancellationModificationRequest });
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver2_ExhibitionRoadShow });
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver2_MediaInterview });
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver2_PublicEvent });
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3_CancellationModificationRequest });
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3_ExhibitionRoadShow });
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3_MediaInterview });
-			EventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3_PublicEvent });
+			List<RoleAccess> PublicEventApprover1 = new List<RoleAccess>();
+			PublicEventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1PublicEvent });
+			PublicEventApprover1.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			PublicEventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Verify_PublicEvent });
+			PublicEventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Verifier_CancellationModificationRequest });
+			PublicEventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1_PublicEvent });
+			PublicEventApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1_CancellationModificationRequest });
 
-			mhafeez.AddRole(db, "Approver Event 3", "Approver Event 3", EventApprover3);
+			mhafeez.AddRole(db, "Public Event - Approver 1", "Approver 1", PublicEventApprover1);
 
 			//-------------------------------------------------------------------------------------------------//
+
+			List<RoleAccess> MediaInterviewApprover1 = new List<RoleAccess>();
+			MediaInterviewApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1MediaInterview });
+			MediaInterviewApprover1.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			MediaInterviewApprover1.Add(new RoleAccess { UserAccess = UserAccess.Verify_MediaInterview });
+			MediaInterviewApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1_MediaInterview });
+
+			mhafeez.AddRole(db, "Media Interview - Approver 1", "Approver 1", MediaInterviewApprover1);
+
+			//-------------------------------------------------------------------------------------------------//
+
+			List<RoleAccess> ExhibitionApprover1 = new List<RoleAccess>();
+			ExhibitionApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1Exhibition });
+			ExhibitionApprover1.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			ExhibitionApprover1.Add(new RoleAccess { UserAccess = UserAccess.Verify_ExhibitionRoadShow });
+			ExhibitionApprover1.Add(new RoleAccess { UserAccess = UserAccess.Approver1_ExhibitionRoadShow });
+
+			mhafeez.AddRole(db, "Exhibition - Approver 1", "Approver 1", ExhibitionApprover1);
+
+			//-------------------------------------------------------------------------------------------------//
+
+			List<RoleAccess> PublicEventApprover2 = new List<RoleAccess>();
+			PublicEventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2PublicEvent });
+			PublicEventApprover2.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			PublicEventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver1_CancellationModificationRequest });
+			PublicEventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver1_PublicEvent });
+			PublicEventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2_CancellationModificationRequest });
+			PublicEventApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2_PublicEvent });
+
+			mhafeez.AddRole(db, "Public Event - Approver 2", "Approver 2", PublicEventApprover2);
+
+			//-------------------------------------------------------------------------------------------------//
+
+			List<RoleAccess> MediaInterviewApprover2 = new List<RoleAccess>();
+			MediaInterviewApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2MediaInterview });
+			MediaInterviewApprover2.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			MediaInterviewApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver1_MediaInterview });
+			MediaInterviewApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2_MediaInterview });
+
+			mhafeez.AddRole(db, "Media Interview - Approver 2", "Approver 2", MediaInterviewApprover2);
+
+			//-------------------------------------------------------------------------------------------------//
+
+			List<RoleAccess> ExhibitionApprover2 = new List<RoleAccess>();
+			ExhibitionApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2Exhibition });
+			ExhibitionApprover2.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			ExhibitionApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver1_ExhibitionRoadShow });
+			ExhibitionApprover2.Add(new RoleAccess { UserAccess = UserAccess.Approver2_ExhibitionRoadShow });
+
+			mhafeez.AddRole(db, "Exhibition - Approver 2", "Approver 2", ExhibitionApprover2);
+
+			//-------------------------------------------------------------------------------------------------//
+
+			List<RoleAccess> PublicEventApprover3 = new List<RoleAccess>();
+			PublicEventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3PublicEvent });
+			PublicEventApprover3.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			PublicEventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver2_CancellationModificationRequest });
+			PublicEventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver2_PublicEvent });
+			PublicEventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3_CancellationModificationRequest });
+			PublicEventApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3_PublicEvent });
+
+			mhafeez.AddRole(db, "Public Event - Approver 3", "Approver 3", PublicEventApprover3);
+
+			//-------------------------------------------------------------------------------------------------//
+
+			List<RoleAccess> MediaInterviewApprover3 = new List<RoleAccess>();
+			MediaInterviewApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3MediaInterview });
+			MediaInterviewApprover3.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			MediaInterviewApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver2_MediaInterview });
+			MediaInterviewApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3_MediaInterview });
+
+			mhafeez.AddRole(db, "Media Interview - Approver 3", "Approver 3", MediaInterviewApprover3);
+
+			//-------------------------------------------------------------------------------------------------//
+
+			List<RoleAccess> ExhibitionApprover3 = new List<RoleAccess>();
+			ExhibitionApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3Exhibition });
+			ExhibitionApprover3.Add(new RoleAccess { UserAccess = UserAccess.EventMenu });
+			ExhibitionApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver2_ExhibitionRoadShow });
+			ExhibitionApprover3.Add(new RoleAccess { UserAccess = UserAccess.Approver3_ExhibitionRoadShow });
+
+			mhafeez.AddRole(db, "Exhibition - Approver 3", "Approver 3", ExhibitionApprover3);
+
+			//-------------------------------------------------------------------------------------------------//
+
 			List<RoleAccess> EventReception = new List<RoleAccess>();
 			EventReception.Add(new RoleAccess { UserAccess = UserAccess.EventReception });
 			mhafeez.AddRole(db, "Event Reception", "Event Reception");

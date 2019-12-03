@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -56,6 +57,10 @@
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
     <Compile Include="KMC.cs" />
+    <Compile Include="Migrations\201911291103255_x.cs" />
+    <Compile Include="Migrations\201911291103255_x.designer.cs">
+      <DependentUpon>201911291103255_x.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />
@@ -119,6 +124,11 @@
       <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
       <Name>FEP.Language</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201911291103255_x.resx">
+      <DependentUpon>201911291103255_x.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

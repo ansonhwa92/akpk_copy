@@ -691,6 +691,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seat Allocated (Early Bird).
+        /// </summary>
+        public static string PubEventSeatAllocated_EarlyBird {
+            get {
+                return ResourceManager.GetString("PubEventSeatAllocated_EarlyBird", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Speakers.
         /// </summary>
         public static string PubEventSpeakerId {
@@ -858,6 +867,15 @@ namespace Language {
         public static string SpExperience {
             get {
                 return ResourceManager.GetString("SpExperience", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speaker Image.
+        /// </summary>
+        public static string SpFieldThumbnail {
+            get {
+                return ResourceManager.GetString("SpFieldThumbnail", resourceCulture);
             }
         }
         

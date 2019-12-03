@@ -138,7 +138,7 @@ namespace FEP.WebApi.Api.eEvent
 		}
 
 
-		public IHttpActionResult Get(int id)
+		public IHttpActionResult Get([FromUri]int id)
 		{
 			var speaker = db.EventSpeaker.Where(u => u.Id == id)
 				.Select(s => new DetailsEventSpeakerModel
@@ -150,7 +150,8 @@ namespace FEP.WebApi.Api.eEvent
 					PhoneNo = s.User.MobileNo,
 					Email = s.User.Email,
 					Experience = s.Experience,
-					SpeakerStatus = s.SpeakerStatus,				
+					SpeakerStatus = s.SpeakerStatus,
+					ThumbnailUrl = s.Thumbnail,
 				}).FirstOrDefault();
 
 			if (speaker == null)
@@ -175,6 +176,7 @@ namespace FEP.WebApi.Api.eEvent
 				CreatedBy = null,
 				Display = true,
 				CreatedDate = DateTime.Now,
+				Thumbnail = model.ThumbnailUrl,
 			};
 
 			db.EventSpeaker.Add(speaker);

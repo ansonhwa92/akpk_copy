@@ -169,7 +169,7 @@
 							<a href='@Url.Action("SubmitToVerify", "MediaInterview", new { area = "eEvent", id = Model.mediainterview.Id })'
 							   class="btn btn-secondary btn-block mb-2">Submit for Verification</a>
 						}
-						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.PendingVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventVerifierCCD)))
+						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.PendingVerified && (CurrentUser.HasAccess(FEP.Model.UserAccess.VerifierMediaInterviewCCD)))
 						{
 							@*<a href='@Url.Action("Verified", "MediaInterview", new { area = "eEvent", id = Model.mediainterview.Id })'
 								   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
@@ -180,7 +180,7 @@
 							<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 							<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 						}
-						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover1)))
+						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.Verified && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver1MediaInterview)))
 						{
 							@*<a href='@Url.Action("FirstApproved", "MediaInterview", new { area = "eEvent", id = Model.mediainterview.Id })'
 								   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
@@ -191,7 +191,7 @@
 							<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 							<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 						}
-						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1 && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover2)))
+						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver2MediaInterview)))
 						{
 							@*<a href='@Url.Action("SecondApproved", "MediaInterview", new { area = "eEvent", id = Model.mediainterview.Id })'
 								   class="btn btn-secondary btn-block mb-2">Submit for Approval</a>
@@ -202,7 +202,7 @@
 							<p><button class="btn btn-secondary btn-block mb-2" id="btnApprove">Submit for Approval</button></p>
 							<p><button class="btn btn-default btn-block" id="btnReject">Require Amendment</button></p>
 						}
-						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover2 && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover3)))
+						else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover2 && (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver3MediaInterview)))
 						{
 							@*<a href='@Url.Action("FinalApproved", "MediaInterview", new { area = "eEvent", id = Model.mediainterview.Id })'
 								   class="btn btn-success btn-block mb-2">Approved</a>
@@ -437,31 +437,38 @@
 
 							<div class="row">
 								<div class="form-group col-lg-12">
-									@Html.LabelFor(model => model.mediainterview.RepUserName)
-									@Html.EditorFor(model => model.mediainterview.RepUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									@Html.LabelFor(model => model.mediainterview.RepUserId)
+									@Html.ListBoxFor(model => model.mediainterview.RepUserId, Model.mediainterview.RepresentativeList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;", @disabled = "disabled" })
 								</div>
 							</div>
 
-							<div class="row">
-								<div class="form-group col-lg-12">
-									@Html.LabelFor(model => model.mediainterview.RepEmail)
-									@Html.EditorFor(model => model.mediainterview.RepEmail, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-								</div>
-							</div>
+							@*<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.mediainterview.RepUserName)
+										@Html.EditorFor(model => model.mediainterview.RepUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									</div>
+								</div>*@
 
-							<div class="row">
-								<div class="form-group col-lg-12">
-									@Html.LabelFor(model => model.mediainterview.RepMobileNumber)
-									@Html.EditorFor(model => model.mediainterview.RepMobileNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							@*<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.mediainterview.RepEmail)
+										@Html.EditorFor(model => model.mediainterview.RepEmail, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									</div>
 								</div>
-							</div>
 
-							<div class="row">
-								<div class="form-group col-lg-12">
-									@Html.LabelFor(model => model.mediainterview.RepDesignation)
-									@Html.EditorFor(model => model.mediainterview.RepDesignation, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.mediainterview.RepMobileNumber)
+										@Html.EditorFor(model => model.mediainterview.RepMobileNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									</div>
 								</div>
-							</div>
+
+								<div class="row">
+									<div class="form-group col-lg-12">
+										@Html.LabelFor(model => model.mediainterview.RepDesignation)
+										@Html.EditorFor(model => model.mediainterview.RepDesignation, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+									</div>
+								</div>*@
 
 						</div>
 						<!-- End Form -->
@@ -531,7 +538,7 @@
 								<div class="modal-body">
 									@if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.PendingVerified)
 									{
-										if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventVerifierCCD))
+										if (CurrentUser.HasAccess(FEP.Model.UserAccess.VerifierMediaInterviewCCD))
 										{
 											<h4 class="color-darkblue mb-0 mt-4">Submit for Approval</h4>
 											@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
@@ -539,7 +546,7 @@
 									}
 									else if (Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.Verified || Model.mediainterview.MediaStatus == FEP.Model.MediaStatus.ApprovedByApprover1)
 									{
-										if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover1) || CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover2))
+										if (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver1MediaInterview) || CurrentUser.HasAccess(FEP.Model.UserAccess.Approver2MediaInterview))
 										{
 											<h4 class="color-darkblue mb-0 mt-4">Next Level Approval</h4>
 											<h6 class="font-weight-normal">Do you want to submit to next level approval?</h6>
@@ -556,7 +563,7 @@
 												</div>
 											</div>
 										}
-										else if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventApprover3))
+										else if (CurrentUser.HasAccess(FEP.Model.UserAccess.Approver3MediaInterview))
 										{
 											@Html.HiddenFor(model => model.approval.RequireNext, new { htmlAttributes = new { @class = "form-control" } })
 										}

@@ -45,7 +45,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 			Attachments = new List<Attachment>();
 			AttachmentFiles = new List<HttpPostedFileBase>();
 		}
-        		
+
+		[Required]
 		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
 		public IEnumerable<Attachment> Attachments { get; set; }
 
@@ -77,6 +78,13 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string UserName { get; set; }
 
 		public IEnumerable<SelectListItem> UserIds { get; set; }
+
+		[Display(Name = "SpFieldThumbnail", ResourceType = typeof(Language.Event))]
+		public string ThumbnailUrl { get; set; }
+
+		public HttpPostedFileBase ThumbnailFile { get; set; }
+
+		public string filter_imgs { get; set; }
 	}
 
 
@@ -89,7 +97,8 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		}
 
 		public int Id { get; set; }
-        		
+
+		[Required]
 		[Display(Name = "SpAttachment", ResourceType = typeof(Language.Event))]
 		public IEnumerable<Attachment> Attachments { get; set; }
 		public IEnumerable<HttpPostedFileBase> AttachmentFiles { get; set; }
@@ -112,6 +121,11 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public string UserName { get; set; }
 
 		public IEnumerable<SelectListItem> UserIds { get; set; }
+
+		[Display(Name = "SpFieldThumbnail", ResourceType = typeof(Language.Event))]
+		public string ThumbnailUrl { get; set; }
+
+		public HttpPostedFileBase ThumbnailFile { get; set; }
 	}
 
 	public class DetailsEventSpeakerModel

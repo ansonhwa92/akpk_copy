@@ -73,7 +73,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				Time = mediaapproval.mediainterview.Time,
 				Language = mediaapproval.mediainterview.Language,
 				Topic = mediaapproval.mediainterview.Topic,
-				RepUserId = mediaapproval.mediainterview.UserId,
+				RepUserId = mediaapproval.mediainterview.RepUserId,
 				RepUserName = mediaapproval.mediainterview.RepUserName,
 				MediaStatus = mediaapproval.mediainterview.MediaStatus,
 				RefNo = mediaapproval.mediainterview.RefNo,
@@ -258,7 +258,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Time = model.Time,
 					Language = model.Language,
 					Topic = model.Topic,
-					UserId = model.RepUserId,
+					RepUserId = model.RepUserId,
 					CreatedBy = CurrentUser.UserId,
 					CreatedDate = DateTime.Now,
 					Display = true,
@@ -291,9 +291,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					{
 						return RedirectToAction("Details", "MediaInterview", new { area = "eEvent", id = response.Data });
 					}
-
 				}
-
 			}
 
 			model.RepresentativeList = new SelectList(await GetUser(), "Id", "Name");
@@ -335,7 +333,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				Time = response.Data.Time,
 				Language = response.Data.Language,
 				Topic = response.Data.Topic,
-				RepUserId = response.Data.UserId,
+				RepUserId = response.Data.RepUserId,
 				RepUserName = response.Data.RepUserName,
 				MediaStatus = response.Data.MediaStatus,
 				RefNo = response.Data.RefNo,
@@ -381,7 +379,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					Time = model.Time,
 					Language = model.Language,
 					Topic = model.Topic,
-					UserId = model.RepUserId,
+					RepUserId = model.RepUserId,
 					MediaStatus = model.MediaStatus,
 					RefNo = model.RefNo,
 					Attachments = model.Attachments,
@@ -452,7 +450,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				Time = response.Data.Time,
 				Language = response.Data.Language,
 				Topic = response.Data.Topic,
-				RepUserId = response.Data.UserId,
+				RepUserId = response.Data.RepUserId,
 				RepUserName = response.Data.RepUserName,
 				RepEmail = response.Data.RepEmail,
 				RepMobileNumber = response.Data.RepMobileNumber,

@@ -77,7 +77,7 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		[Required(ErrorMessage = "Please Insert Staff Representative")]
 		[Display(Name = "Name")]
-		public int? RepUserId { get; set; }
+		public int[] RepUserId { get; set; }
 
 		[Display(Name = "Name")]
 		public string RepUserName { get; set; }

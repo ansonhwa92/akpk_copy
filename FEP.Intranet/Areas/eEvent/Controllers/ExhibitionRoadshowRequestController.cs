@@ -869,250 +869,250 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 		//===============================================================================================
 
-		public async Task<ActionResult> SubmitDutyRoster(int? id)
-		{
-			if (id == null)
-			{
-				return HttpNotFound();
-			}
-			var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SubmitDutyRoster?id={id}");
-			if (response.isSuccess)
-			{
-				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetSLAId?id={id}");
-				if (responseGetSLAId.isSuccess)
-				{
-					int SLAReminderStatusId = responseGetSLAId.Data;
-					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
-						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
-					List<BulkNotificationModel> myNotification = responseSLA.Data;
-				}
+		//public async Task<ActionResult> SubmitDutyRoster(int? id)
+		//{
+		//	if (id == null)
+		//	{
+		//		return HttpNotFound();
+		//	}
+		//	var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SubmitDutyRoster?id={id}");
+		//	if (response.isSuccess)
+		//	{
+		//		//--------------------------------------------------Stop Previous Email---------------------------------------------//
+		//		var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetSLAId?id={id}");
+		//		if (responseGetSLAId.isSuccess)
+		//		{
+		//			int SLAReminderStatusId = responseGetSLAId.Data;
+		//			var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+		//				(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+		//			List<BulkNotificationModel> myNotification = responseSLA.Data;
+		//		}
 
-				//--------------------------------------------------Send Email---------------------------------------------//
+		//		//--------------------------------------------------Send Email---------------------------------------------//
 
-				ParameterListToSend paramToSend = new ParameterListToSend();
-				paramToSend.EventCode = response.Data.RefNo;
-				paramToSend.EventName = response.Data.EventName;
-				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
+		//		ParameterListToSend paramToSend = new ParameterListToSend();
+		//		paramToSend.EventCode = response.Data.RefNo;
+		//		paramToSend.EventName = response.Data.EventName;
+		//		paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Submit_ExhibitionRoadShow}");
-				if (receiveresponse.isSuccess)
-				{
+		//		var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Submit_ExhibitionRoadShow}");
+		//		if (receiveresponse.isSuccess)
+		//		{
 
-					CreateAutoReminder reminder = new CreateAutoReminder
-					{
-						NotificationType = NotificationType.Submit_DutyRoster_For_Verification,
-						NotificationCategory = NotificationCategory.Event,
-						ParameterListToSend = paramToSend,
-						StartNotificationDate = DateTime.Now,
-						ReceiverId = receiveresponse.Data,
-					};
-					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					if (response2.isSuccess)
-					{
-						int saveThisID = response2.Data.SLAReminderStatusId;
-						response.Data.SLAReminderStatusId = saveThisID;
-						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-						if (response3.isSuccess) { }
-					}
+		//			CreateAutoReminder reminder = new CreateAutoReminder
+		//			{
+		//				NotificationType = NotificationType.Submit_DutyRoster_For_Verification,
+		//				NotificationCategory = NotificationCategory.Event,
+		//				ParameterListToSend = paramToSend,
+		//				StartNotificationDate = DateTime.Now,
+		//				ReceiverId = receiveresponse.Data,
+		//			};
+		//			var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+		//			if (response2.isSuccess)
+		//			{
+		//				int saveThisID = response2.Data.SLAReminderStatusId;
+		//				response.Data.SLAReminderStatusId = saveThisID;
+		//				var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+		//				if (response3.isSuccess) { }
+		//			}
 
-					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is submitted Duty Roster for verification.");
-					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully submitted Duty Roster for verification.";
-				}
+		//			await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is submitted Duty Roster for verification.");
+		//			TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully submitted Duty Roster for verification.";
+		//		}
 
-				return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent" });
-			}
-			else
-			{
-				TempData["ErrorMessage"] = "Failed to submit Duty Roster for verification.";
-				return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = id });
-			}
-		}
-
-
-
-		public async Task<ActionResult> VerifiedDutyRoster(int? id)
-		{
-			if (id == null)
-			{
-				return HttpNotFound();
-			}
-			var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/VerifiedDutyRoster?id={id}");
-			if (response.isSuccess)
-			{
-				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetSLAId?id={id}");
-				if (responseGetSLAId.isSuccess)
-				{
-					int SLAReminderStatusId = responseGetSLAId.Data;
-					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
-						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
-					List<BulkNotificationModel> myNotification = responseSLA.Data;
-				}
-
-				//--------------------------------------------------Send Email---------------------------------------------//
-
-				ParameterListToSend paramToSend = new ParameterListToSend();
-				paramToSend.EventCode = response.Data.RefNo;
-				paramToSend.EventName = response.Data.EventName;
-				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
-
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verify_ExhibitionRoadShow}");
-				if (receiveresponse.isSuccess)
-				{
-
-					CreateAutoReminder reminder = new CreateAutoReminder
-					{
-						NotificationType = NotificationType.Verify_DutyRoster,
-						NotificationCategory = NotificationCategory.Event,
-						ParameterListToSend = paramToSend,
-						StartNotificationDate = DateTime.Now,
-						ReceiverId = receiveresponse.Data,
-					};
-					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					if (response2.isSuccess)
-					{
-						int saveThisID = response2.Data.SLAReminderStatusId;
-						response.Data.SLAReminderStatusId = saveThisID;
-						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-						if (response3.isSuccess) { }
-					}
-
-					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is verified Duty Roster.");
-					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully verified Duty Roster.";
-				}
-
-				return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent" });
-			}
-			else
-			{
-				TempData["ErrorMessage"] = "Failed to verify Duty Roster.";
-				return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = id });
-			}
-		}
-
-
-		public async Task<ActionResult> RejectDutyRoster(int? id)
-		{
-			if (id == null)
-			{
-				return HttpNotFound();
-			}
-			var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/RejectDutyRoster?id={id}");
-			if (response.isSuccess)
-			{
-				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetSLAId?id={id}");
-				if (responseGetSLAId.isSuccess)
-				{
-					int SLAReminderStatusId = responseGetSLAId.Data;
-					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
-						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
-					List<BulkNotificationModel> myNotification = responseSLA.Data;
-				}
-
-				//--------------------------------------------------Send Email---------------------------------------------//
-
-				ParameterListToSend paramToSend = new ParameterListToSend();
-				paramToSend.EventCode = response.Data.RefNo;
-				paramToSend.EventName = response.Data.EventName;
-				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
-
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.RequireAmendment_ExhibitionRoadShow}");
-				if (receiveresponse.isSuccess)
-				{
-
-					CreateAutoReminder reminder = new CreateAutoReminder
-					{
-						NotificationType = NotificationType.Reject_Exhibition_RoadShow,
-						NotificationCategory = NotificationCategory.Event,
-						ParameterListToSend = paramToSend,
-						StartNotificationDate = DateTime.Now,
-						ReceiverId = receiveresponse.Data,
-					};
-					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					if (response2.isSuccess)
-					{
-						int saveThisID = response2.Data.SLAReminderStatusId;
-						response.Data.SLAReminderStatusId = saveThisID;
-						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-						if (response3.isSuccess) { }
-					}
-
-					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is rejected Duty Roster.");
-					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully rejected Duty Roster.";
-				}
-
-				return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent" });
-			}
-			else
-			{
-				TempData["ErrorMessage"] = "Failed to reject Duty Roster.";
-				return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = id });
-			}
-		}
+		//		return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent" });
+		//	}
+		//	else
+		//	{
+		//		TempData["ErrorMessage"] = "Failed to submit Duty Roster for verification.";
+		//		return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = id });
+		//	}
+		//}
 
 
 
-		public async Task<ActionResult> ApproveDutyRoster(int? id)
-		{
-			if (id == null)
-			{
-				return HttpNotFound();
-			}
-			var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/ApproveDutyRoster?id={id}");
-			if (response.isSuccess)
-			{
-				//--------------------------------------------------Stop Previous Email---------------------------------------------//
-				var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetSLAId?id={id}");
-				if (responseGetSLAId.isSuccess)
-				{
-					int SLAReminderStatusId = responseGetSLAId.Data;
-					var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
-						(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
-					List<BulkNotificationModel> myNotification = responseSLA.Data;
-				}
+		//public async Task<ActionResult> VerifiedDutyRoster(int? id)
+		//{
+		//	if (id == null)
+		//	{
+		//		return HttpNotFound();
+		//	}
+		//	var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/VerifiedDutyRoster?id={id}");
+		//	if (response.isSuccess)
+		//	{
+		//		//--------------------------------------------------Stop Previous Email---------------------------------------------//
+		//		var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetSLAId?id={id}");
+		//		if (responseGetSLAId.isSuccess)
+		//		{
+		//			int SLAReminderStatusId = responseGetSLAId.Data;
+		//			var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+		//				(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+		//			List<BulkNotificationModel> myNotification = responseSLA.Data;
+		//		}
 
-				//--------------------------------------------------Send Email---------------------------------------------//
+		//		//--------------------------------------------------Send Email---------------------------------------------//
 
-				ParameterListToSend paramToSend = new ParameterListToSend();
-				paramToSend.EventCode = response.Data.RefNo;
-				paramToSend.EventName = response.Data.EventName;
-				paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
+		//		ParameterListToSend paramToSend = new ParameterListToSend();
+		//		paramToSend.EventCode = response.Data.RefNo;
+		//		paramToSend.EventName = response.Data.EventName;
+		//		paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
 
-				var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.EventAdministratorCCD}");
-				if (receiveresponse.isSuccess)
-				{
+		//		var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.Verify_ExhibitionRoadShow}");
+		//		if (receiveresponse.isSuccess)
+		//		{
 
-					CreateAutoReminder reminder = new CreateAutoReminder
-					{
-						NotificationType = NotificationType.Approve_DutyRoster,
-						NotificationCategory = NotificationCategory.Event,
-						ParameterListToSend = paramToSend,
-						StartNotificationDate = DateTime.Now,
-						ReceiverId = receiveresponse.Data,
-					};
-					var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
-					if (response2.isSuccess)
-					{
-						int saveThisID = response2.Data.SLAReminderStatusId;
-						response.Data.SLAReminderStatusId = saveThisID;
-						var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
-						if (response3.isSuccess) { }
-					}
+		//			CreateAutoReminder reminder = new CreateAutoReminder
+		//			{
+		//				NotificationType = NotificationType.Verify_DutyRoster,
+		//				NotificationCategory = NotificationCategory.Event,
+		//				ParameterListToSend = paramToSend,
+		//				StartNotificationDate = DateTime.Now,
+		//				ReceiverId = receiveresponse.Data,
+		//			};
+		//			var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+		//			if (response2.isSuccess)
+		//			{
+		//				int saveThisID = response2.Data.SLAReminderStatusId;
+		//				response.Data.SLAReminderStatusId = saveThisID;
+		//				var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+		//				if (response3.isSuccess) { }
+		//			}
 
-					await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is approved Duty Roster.");
-					TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully approved Duty Roster.";
-				}
+		//			await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is verified Duty Roster.");
+		//			TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully verified Duty Roster.";
+		//		}
 
-				return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent" });
-			}
-			else
-			{
-				TempData["ErrorMessage"] = "Failed to approve Duty Roster.";
-				return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = id });
-			}
-		}
+		//		return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent" });
+		//	}
+		//	else
+		//	{
+		//		TempData["ErrorMessage"] = "Failed to verify Duty Roster.";
+		//		return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = id });
+		//	}
+		//}
+
+
+		//public async Task<ActionResult> RejectDutyRoster(int? id)
+		//{
+		//	if (id == null)
+		//	{
+		//		return HttpNotFound();
+		//	}
+		//	var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/RejectDutyRoster?id={id}");
+		//	if (response.isSuccess)
+		//	{
+		//		//--------------------------------------------------Stop Previous Email---------------------------------------------//
+		//		var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetSLAId?id={id}");
+		//		if (responseGetSLAId.isSuccess)
+		//		{
+		//			int SLAReminderStatusId = responseGetSLAId.Data;
+		//			var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+		//				(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+		//			List<BulkNotificationModel> myNotification = responseSLA.Data;
+		//		}
+
+		//		//--------------------------------------------------Send Email---------------------------------------------//
+
+		//		ParameterListToSend paramToSend = new ParameterListToSend();
+		//		paramToSend.EventCode = response.Data.RefNo;
+		//		paramToSend.EventName = response.Data.EventName;
+		//		paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
+
+		//		var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.RequireAmendment_ExhibitionRoadShow}");
+		//		if (receiveresponse.isSuccess)
+		//		{
+
+		//			CreateAutoReminder reminder = new CreateAutoReminder
+		//			{
+		//				NotificationType = NotificationType.Reject_Exhibition_RoadShow,
+		//				NotificationCategory = NotificationCategory.Event,
+		//				ParameterListToSend = paramToSend,
+		//				StartNotificationDate = DateTime.Now,
+		//				ReceiverId = receiveresponse.Data,
+		//			};
+		//			var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+		//			if (response2.isSuccess)
+		//			{
+		//				int saveThisID = response2.Data.SLAReminderStatusId;
+		//				response.Data.SLAReminderStatusId = saveThisID;
+		//				var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+		//				if (response3.isSuccess) { }
+		//			}
+
+		//			await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is rejected Duty Roster.");
+		//			TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully rejected Duty Roster.";
+		//		}
+
+		//		return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent" });
+		//	}
+		//	else
+		//	{
+		//		TempData["ErrorMessage"] = "Failed to reject Duty Roster.";
+		//		return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = id });
+		//	}
+		//}
+
+
+
+		//public async Task<ActionResult> ApproveDutyRoster(int? id)
+		//{
+		//	if (id == null)
+		//	{
+		//		return HttpNotFound();
+		//	}
+		//	var response = await WepApiMethod.SendApiAsync<ExhibitionRoadshowRequestModel>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/ApproveDutyRoster?id={id}");
+		//	if (response.isSuccess)
+		//	{
+		//		//--------------------------------------------------Stop Previous Email---------------------------------------------//
+		//		var responseGetSLAId = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"eEvent/ExhibitionRoadshowRequest/GetSLAId?id={id}");
+		//		if (responseGetSLAId.isSuccess)
+		//		{
+		//			int SLAReminderStatusId = responseGetSLAId.Data;
+		//			var responseSLA = await WepApiMethod.SendApiAsync<List<BulkNotificationModel>>
+		//				(HttpVerbs.Get, $"Reminder/SLA/StopNotification/?SLAReminderStatusId={SLAReminderStatusId}");
+		//			List<BulkNotificationModel> myNotification = responseSLA.Data;
+		//		}
+
+		//		//--------------------------------------------------Send Email---------------------------------------------//
+
+		//		ParameterListToSend paramToSend = new ParameterListToSend();
+		//		paramToSend.EventCode = response.Data.RefNo;
+		//		paramToSend.EventName = response.Data.EventName;
+		//		paramToSend.EventApproval = response.Data.ExhibitionStatus.GetDisplayName();
+
+		//		var receiveresponse = await WepApiMethod.SendApiAsync<List<int>>(HttpVerbs.Get, $"Administration/Access/GetUser?access={UserAccess.EventAdministratorCCD}");
+		//		if (receiveresponse.isSuccess)
+		//		{
+
+		//			CreateAutoReminder reminder = new CreateAutoReminder
+		//			{
+		//				NotificationType = NotificationType.Approve_DutyRoster,
+		//				NotificationCategory = NotificationCategory.Event,
+		//				ParameterListToSend = paramToSend,
+		//				StartNotificationDate = DateTime.Now,
+		//				ReceiverId = receiveresponse.Data,
+		//			};
+		//			var response2 = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", reminder);
+		//			if (response2.isSuccess)
+		//			{
+		//				int saveThisID = response2.Data.SLAReminderStatusId;
+		//				response.Data.SLAReminderStatusId = saveThisID;
+		//				var response3 = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/SaveSLAStatusId?id={response.Data.Id}&saveThisID={saveThisID}");
+		//				if (response3.isSuccess) { }
+		//			}
+
+		//			await LogActivity(Modules.Event, "Exhibition Roadshow Ref No: " + response.Data.RefNo + " is approved Duty Roster.");
+		//			TempData["SuccessMessage"] = "Exhibition Roadshow Ref No: " + response.Data.RefNo + ", successfully approved Duty Roster.";
+		//		}
+
+		//		return RedirectToAction("List", "ExhibitionRoadshowRequest", new { area = "eEvent" });
+		//	}
+		//	else
+		//	{
+		//		TempData["ErrorMessage"] = "Failed to approve Duty Roster.";
+		//		return RedirectToAction("Details", "ExhibitionRoadshowRequest", new { area = "eEvent", @id = id });
+		//	}
+		//}
 
 		//=======================================================================================================================
 

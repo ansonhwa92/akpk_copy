@@ -280,7 +280,7 @@
 						<div class="row">
 							<div class="form-group col-lg-12">
 								@Html.FEPLabelFor(model => model.RepUserId)
-								@Html.DropDownListFor(model => model.RepUserId, Model.RepresentativeList, "-Select Representative-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+								@Html.ListBoxFor(m => m.RepUserId, Model.RepresentativeList, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
 								@Html.ValidationMessageFor(model => model.RepUserId, "", new { @class = "text-danger" })
 							</div>
 						</div>

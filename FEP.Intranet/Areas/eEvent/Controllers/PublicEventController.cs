@@ -95,6 +95,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				AgencyEarlyBird = pubapproval.publicevent.AgencyEarlyBird,
 
 				//Fee = pubapproval.publicevent.Fee,
+				SeatAllocated_EarlyBird = pubapproval.publicevent.SeatAllocated_EarlyBird,
 				ParticipantAllowed = pubapproval.publicevent.ParticipantAllowed,
 				TargetedGroup = pubapproval.publicevent.TargetedGroup,
 				EventStatus = pubapproval.publicevent.EventStatus,
@@ -176,6 +177,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				ModelState.AddModelError("EndDate", "End Date must greater or equal than Start Date");
 			}
 
+			if (model.SeatAllocated_EarlyBird > model.ParticipantAllowed) {
+
+				ModelState.AddModelError("SeatAllocated_EarlyBird", "Seat Allocated must be lower than Participant Allowed");
+			}
+
+			if (model.FreeIndividual) { }
+
 			if (ModelState.IsValid)
 			{
 				var modelapi = new CreatePublicEventModel
@@ -201,6 +209,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					IndividualPresentEarlyBird = model.IndividualPresentEarlyBird,
 					AgencyEarlyBird = model.AgencyEarlyBird,
 					//Fee = model.Fee,
+					SeatAllocated_EarlyBird = model.SeatAllocated_EarlyBird,
 					ParticipantAllowed = model.ParticipantAllowed,
 					TargetedGroup = model.TargetedGroup,
 					EventStatus = model.EventStatus,
@@ -296,6 +305,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				AgencyEarlyBird = response.Data.AgencyEarlyBird,
 
 				//Fee = response.Data.Fee,
+				SeatAllocated_EarlyBird = response.Data.SeatAllocated_EarlyBird,
 				ParticipantAllowed = response.Data.ParticipantAllowed,
 				TargetedGroup = response.Data.TargetedGroup,
 				EventStatus = response.Data.EventStatus,
@@ -334,6 +344,11 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				ModelState.AddModelError("EndDate", "End Date must greater or equal than Start Date");
 			}
 
+			if (model.SeatAllocated_EarlyBird > model.ParticipantAllowed)
+			{
+				ModelState.AddModelError("SeatAllocated_EarlyBird", "Seat Allocated must be lower than Participant Allowed");
+			}
+
 			if (ModelState.IsValid)
 			{
 				var modelapi = new EditPublicEventModel
@@ -361,6 +376,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					AgencyEarlyBird = model.AgencyEarlyBird,
 
 					//Fee = model.Fee,
+					SeatAllocated_EarlyBird = model.SeatAllocated_EarlyBird,
 					ParticipantAllowed = model.ParticipantAllowed,
 					TargetedGroup = model.TargetedGroup,
 					EventStatus = model.EventStatus,
@@ -446,6 +462,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				AgencyEarlyBird = response.Data.AgencyEarlyBird,
 
 				//Fee = response.Data.Fee,
+				SeatAllocated_EarlyBird = response.Data.SeatAllocated_EarlyBird,
 				ParticipantAllowed = response.Data.ParticipantAllowed,
 				TargetedGroup = response.Data.TargetedGroup,
 				EventStatus = response.Data.EventStatus,

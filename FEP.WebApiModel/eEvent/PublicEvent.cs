@@ -113,6 +113,9 @@ namespace FEP.WebApiModel.PublicEvent
 		//[Display(Name = "PubEventFee", ResourceType = typeof(Language.Event))]
 		//public float? Fee { get; set; }
 
+		[Display(Name = "PubEventSeatAllocated_EarlyBird", ResourceType = typeof(Language.Event))]
+		public int? SeatAllocated_EarlyBird { get; set; }
+
 		[Display(Name = "PubEventParticipantAllowed", ResourceType = typeof(Language.Event))]
 		public int? ParticipantAllowed { get; set; }
 

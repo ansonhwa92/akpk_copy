@@ -76,6 +76,11 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		[Display(Name = "PubEventParticipantAllowed", ResourceType = typeof(Language.Event))]
 		public int? ParticipantAllowed { get; set; }
 
+		[Required(ErrorMessage = "Please Insert No of Seat")]
+		[RegularExpression("([1-9][0-9]*)")]
+		[Display(Name = "PubEventSeatAllocated_EarlyBird", ResourceType = typeof(Language.Event))]
+		public int? SeatAllocated_EarlyBird { get; set; }
+
 		[Required(ErrorMessage = "Please Select Targeted Group")]
 		[Display(Name = "Targeted Group")]
 		public EventTargetGroup? TargetedGroup { get; set; }
@@ -125,8 +130,6 @@ namespace FEP.Intranet.Areas.eEvent.Models
 
 		public string origin { get; set; }
 		public string RefNo { get; set; }
-
-
 
 		[Display(Name = "PubEventLabelParticipantType", ResourceType = typeof(Language.Event))]
 		public string LabelParticipantType { get; set; }

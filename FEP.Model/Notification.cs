@@ -41,7 +41,7 @@ namespace FEP.Model
         [Display(Name = "Public Event - Cancelled")]
         Cancel_Public_Event,
 
-        [Display(Name = "Public Event - Rejected")]
+        [Display(Name = "Public Event - Require Amendment")]
         Reject_Public_Event,
 
         [Display(Name = "Public Event - Published")]
@@ -82,7 +82,7 @@ namespace FEP.Model
         [Display(Name = "Media Interview - Approve Media Interview By Approver 3")]
         Approve_Media_Interview_ByApprover_3,
 
-        [Display(Name = "Media Interview - Rejected")]
+        [Display(Name = "Media Interview - Require Amendment")]
         Reject_Media_Interview,
 
 		[Display(Name = "Media Interview - Representative Available")]
@@ -106,20 +106,20 @@ namespace FEP.Model
         [Display(Name = "Exhibition Roadshow - Approve Exhibition Roadshow By Approver 3")]
         Approve_Exhibition_RoadShow_ByApprover_3,
 
-        [Display(Name = "Exhibition RoadShow - Rejected")]
+        [Display(Name = "Exhibition RoadShow - Require Amendment")]
         Reject_Exhibition_RoadShow,
 
-        [Display(Name = "Exhibition RoadShow - Submit Duty Roster")]
-        Submit_DutyRoster_For_Verification,
+        //[Display(Name = "Exhibition RoadShow - Submit Duty Roster")]
+        //Submit_DutyRoster_For_Verification,
 
-        [Display(Name = "Exhibition RoadShow - Verify Duty Roster")]
-        Verify_DutyRoster,
+        //[Display(Name = "Exhibition RoadShow - Verify Duty Roster")]
+        //Verify_DutyRoster,
 
-        [Display(Name = "Exhibition RoadShow - Reject Duty Roster")]
-        NotVerify_DutyRoster,
+        //[Display(Name = "Exhibition RoadShow - Require Amendment Duty Roster")]
+        //NotVerify_DutyRoster,
 
-        [Display(Name = "Exhibition RoadShow - Approve Duty Roster")]
-        Approve_DutyRoster,
+        //[Display(Name = "Exhibition RoadShow - Approve Duty Roster")]
+        //Approve_DutyRoster,
 
 
 		[Display(Name = "Exhibition RoadShow - Accept Participation")]

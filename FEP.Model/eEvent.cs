@@ -38,7 +38,7 @@ namespace FEP.Model
 		public float? AgencyFee { get; set; }
 		public float? AgencyEarlyBird { get; set; } 
 
-
+		public int? SeatAllocated_EarlyBird { get; set; }
 		public int? ParticipantAllowed { get; set; }
 		public EventTargetGroup? TargetedGroup { get; set; }
 		public string Remarks { get; set; }
@@ -145,6 +145,7 @@ namespace FEP.Model
 		public SpeakerType? SpeakerType { get; set; }
 		public SpeakerStatus? SpeakerStatus { get; set; }
 		public string Experience { get; set; }
+		public string Thumbnail { get; set; }
 		public int? UserId { get; set; }
 		[ForeignKey("UserId")]
 		public virtual User User { get; set; }
@@ -182,6 +183,20 @@ namespace FEP.Model
 		public int PublicEventId { get; set; }
 		[ForeignKey("PublicEventId")]
 		public virtual PublicEvent PublicEvent { get; set; }
+	}
+
+	[Table("MediaRepresentative")]
+	public class MediaRepresentative
+	{
+		[Key]
+		public int Id { get; set; }
+		public int MediaId { get; set; } 
+		[ForeignKey("MediaId")]
+		public virtual EventMediaInterviewRequest MediaInterview { get; set; }
+
+		public int UserId { get; set; }
+		[ForeignKey("UserId")]
+		public virtual User User { get; set; }
 	}
 
 	[Table("EventBooking")]

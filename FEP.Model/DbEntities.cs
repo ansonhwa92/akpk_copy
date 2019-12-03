@@ -172,7 +172,7 @@ namespace FEP.Model
 		public DbSet<DutyRosterOfficer> DutyRosterOfficer { get; set; }
 		public DbSet<EventRequest> EventRequest { get; set; }
 		public DbSet<EventRequestApproval> EventRequestApproval { get; set; }
-
+		public DbSet<MediaRepresentative> MediaRepresentative { get; set; }
 
 		// Elearning
 		public DbSet<Course> Courses { get; set; }

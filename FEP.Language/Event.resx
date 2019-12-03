@@ -411,4 +411,10 @@
   <data name="ExRoadContactNo" xml:space="preserve">
     <value>Organiser Phone No.</value>
   </data>
+  <data name="PubEventSeatAllocated_EarlyBird" xml:space="preserve">
+    <value>Seat Allocated (Early Bird)</value>
+  </data>
+  <data name="SpFieldThumbnail" xml:space="preserve">
+    <value>Speaker Image</value>
+  </data>
 </root>

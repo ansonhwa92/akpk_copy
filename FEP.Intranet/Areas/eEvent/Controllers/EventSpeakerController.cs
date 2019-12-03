@@ -16,6 +16,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 {
 	public class EventSpeakerController : FEPController
 	{
+		public const string filter_imgs = ".png,.gif,.ico,.jpg,.jpeg,.png,.svg,.tiff,.webp";
+
 		private DbEntities db = new DbEntities();
 
 		// GET: eEventSpeaker/EventSpeaker
@@ -68,6 +70,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			};
 
 			model.UserIds = new SelectList(await GetUsers(), "Id", "Name", 0);
+			model.filter_imgs = filter_imgs;
 
 			return View(model);
 		}
@@ -91,9 +94,13 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					SpeakerType = model.SpeakerType,
 					Experience = model.Experience,
 					SpeakerStatus = model.SpeakerStatus,
-					//SpeakerPictureName = model.SpeakerPicture.FileName,
-					//SpeakerAttachmentName = model.SpeakerAttachment.FileName,
 				};
+
+				//if (model.ThumbnailFile != null)
+				//{
+				//	var filename = FileMethod.SaveFile(model.ThumbnailFile, Server.MapPath("~/img/EventSpeaker-ProfilePicture"));
+				//	modelapi.ThumbnailUrl = filename;
+				//}
 
 				//attachment
 				if (model.AttachmentFiles.Count() > 0)
@@ -117,9 +124,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					return RedirectToAction("List");
 				}
 			}
-			//TempData["ErrorMessage"] = "Fail to add new Event Speaker";
 
-            return View(model);
+			model.filter_imgs = filter_imgs;
+
+			return View(model);
 		}
 
 
@@ -274,6 +282,24 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			return roles;
 
+		}
+
+		[HttpPost]
+		public ActionResult LoadThumbnail()
+		{
+			foreach (string file in Request.Files)
+			{
+				var fileContent = Request.Files[file];
+
+				var image64 = FileMethod.ConvertImageToBase64(fileContent);
+
+				if (image64 != null)
+				{
+					return Content(JsonConvert.SerializeObject(new { image64 = image64 }), "application/json");
+				}
+			}
+
+			return Content(JsonConvert.SerializeObject(new { image64 = "" }), "application/json");
 		}
 	}
 }

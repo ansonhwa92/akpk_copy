@@ -66,8 +66,7 @@ namespace FEP.WebApiModel.MediaInterview
 		[Display(Name = "Reference No")]
 		public string RefNo { get; set; }
 
-		public int? UserId { get; set; }
-
+	
 		[Display(Name = "MediaBranch", ResourceType = typeof(Language.Event))]
 		public int? BranchId { get; set; }
 
@@ -83,7 +82,7 @@ namespace FEP.WebApiModel.MediaInterview
 		[Display(Name = "MediaRepMobileNumber", ResourceType = typeof(Language.Event))]
 		public string RepMobileNumber { get; set; }
 		[Display(Name = "Name")]
-		public int? RepUserId { get; set; }
+		public int[] RepUserId { get; set; }
 
 		public int? EventId { get; set; }
 		public string EventTitle { get; set; }

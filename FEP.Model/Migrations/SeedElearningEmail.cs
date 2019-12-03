@@ -10,7 +10,6 @@ namespace FEP.Model.Migrations
         public static void SeedTemplateParameter(DbEntities db)
         {
             var elearnTemplates = new List<NotificationType>
-
             {
                NotificationType.Verify_Courses_Creation,
                NotificationType.Approve_Courses_Creation_Approver1,
@@ -27,6 +26,7 @@ namespace FEP.Model.Migrations
                NotificationType.Notify_Admin_Participant_Withdraw,
                NotificationType.Notify_Self_Withdraw_From_Course,
 
+               // 30-11-2019 - no template yet
                NotificationType.Approve_Courses_Participant_Withdraw,
                NotificationType.Approve_Courses_Published_Withdraw,
                NotificationType.Verify_Courses_Participant_Withdraw,

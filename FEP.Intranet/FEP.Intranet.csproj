@@ -21,9 +21,12 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44360</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -612,6 +615,7 @@
     <Content Include="js\survey-builder-init-readonly.js" />
     <Content Include="js\survey-builder-init.js" />
     <Content Include="js\survey-tester-init.js" />
+    <Content Include="js\tinymce_cfg.js" />
     <Content Include="js\tmpl.min.js" />
     <Content Include="js\vendor\jquery.ui.widget.js" />
     <Content Include="lib\animate\animate.css" />
@@ -1069,6 +1073,22 @@
     <Content Include="Areas\eLearning\Views\Courses\View.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\ViewCertificate.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseGroup\_CoursesList.cshtml" />
+    <Content Include="css\fonts\02_APompadourTextSample.otf" />
+    <Content Include="css\fonts\02_APompadourTextSample.ttf" />
+    <Content Include="css\fonts\03_APompadourBoldSample.otf" />
+    <Content Include="css\fonts\03_APompadourBoldSample.ttf" />
+    <Content Include="css\fonts\ARyalBlackBlock.ttf" />
+    <Content Include="css\fonts\adam_gorry_inline.otf" />
+    <Content Include="css\fonts\adam_gorry_lights.otf" />
+    <Content Include="css\fonts\AdmirationPains.ttf" />
+    <Content Include="css\fonts\BadStories.ttf" />
+    <Content Include="css\fonts\Badang.ttf" />
+    <Content Include="css\fonts\BadangItalic.ttf" />
+    <Content Include="css\fonts\BadlyStamped.ttf" />
+    <Content Include="css\fonts\BEBAS.TTF" />
+    <Content Include="css\fonts\HellsRiderDecay.ttf" />
+    <Content Include="css\fonts\TheInboxSt.ttf" />
+    <Content Include="css\fonts\ZiGzAgEo-Reg-FFP.ttf" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

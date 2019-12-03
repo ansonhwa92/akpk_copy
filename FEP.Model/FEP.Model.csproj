@@ -56,9 +56,9 @@
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
     <Compile Include="KMC.cs" />
-    <Compile Include="Migrations\201911250418290_InitialDB.cs" />
-    <Compile Include="Migrations\201911250418290_InitialDB.designer.cs">
-      <DependentUpon>201911250418290_InitialDB.cs</DependentUpon>
+    <Compile Include="Migrations\201911300301186_initialdbmuhd301119.cs" />
+    <Compile Include="Migrations\201911300301186_initialdbmuhd301119.designer.cs">
+      <DependentUpon>201911300301186_initialdbmuhd301119.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
@@ -113,9 +113,7 @@
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -125,8 +123,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911250418290_InitialDB.resx">
-      <DependentUpon>201911250418290_InitialDB.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911300301186_initialdbmuhd301119.resx">
+      <DependentUpon>201911300301186_initialdbmuhd301119.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

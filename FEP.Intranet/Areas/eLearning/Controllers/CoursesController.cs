@@ -64,8 +64,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         //[HasAccess(UserAccess.RnPPublicationEdit)]
         public ActionResult SelectCategory()
         {
+            // need to change to call api
             ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name");
+
             ViewBag.Categories = new List<RefCourseCategory>(db.RefCourseCategories);
+
+            var cat = db.RefCourseCategories.ToList();
+
+            cat.Count();
+
             return View();
         }
 
@@ -96,27 +103,43 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         //}
 
         [HasAccess(UserAccess.CourseCreate)]
-        public ActionResult Create(int? catid)
+        public async Task<ActionResult> Create(int? catid)
         {
-            if (catid != null)
-            {
-                ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name", catid);
-            }
-            else
-            {
-                ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name");
-            }
+            //if (catid != null)
+            //{
+            //    ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name", catid);
+            //}
+            //else
+            //{
+            //    ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name");
+            //}
+
+            await GetCategories(catid.Value);
+
             var model = new CreateOrEditCourseModel();
+            model.CategoryId = catid.Value;
+
             return View(model);
         }
 
-        private async Task GetCategories()
+        private async Task GetCategories(int catId = 0)
         {
             // this should be queried from webapi
             var response = await WepApiMethod.SendApiAsync<IEnumerable<CourseCategoryModel>>(HttpVerbs.Get, CourseApiUrl.GetCategory);
 
             if (response.isSuccess)
-                ViewBag.Categories = new SelectList(response.Data, "Id", "Name");
+            {
+                //ViewBag.Categories = new SelectList(response.Data, "Id", "Name");
+
+                if (catId > 0)
+                {
+                    ViewBag.Categories = new SelectList(response.Data, "Id", "Name", catId);
+                }
+                else
+                {
+                    ViewBag.Categories = new SelectList(response.Data, "Id", "Name");
+                }
+            }
             else
             {
                 ViewBag.Categories = new SelectList(new List<CourseCategoryModel>
@@ -418,7 +441,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                             //to continue course
                             ViewBag.ProgressCourseContentId = response.Data.ProgressCourseContentId;
-
                         }
                     }
                     else
@@ -441,7 +463,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                             //to continue course
                             ViewBag.ProgressCourseContentId = response.Data.ProgressCourseContentId;
-
                         }
                     }
                 }
@@ -585,7 +606,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 //check coursecode
                 var course = db.Courses.FirstOrDefault(x => x.Code.Equals(model.Code, StringComparison.OrdinalIgnoreCase));
 
-                if (course.Id != model.Id)
+                if (course != null && course.Id != model.Id)
                 {
                     TempData["ErrorMessage"] = $"There is already a course with the Course Code {course.Code}. Please select a new code.";
 

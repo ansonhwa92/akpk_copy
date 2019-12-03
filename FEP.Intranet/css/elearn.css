@@ -1,4 +1,73 @@
-﻿.loading {
+﻿@font-face {
+    font-family: 'Pompadour';
+    font-style: normal;
+    src: url('./fonts/03_APompadourBoldSample.ttf') format('truetype'), 
+        url('./fonts/03_APompadourBoldSample.otf') format('opentype'),
+        url('./fonts/02_APompadourTextSample.ttf') format('truetype'), 
+        url('./fonts/02_APompadourTextSample.otf') format('opentype');    
+}
+
+@font-face {
+    font-family: 'Ryal Black Block';
+    src: url('./fonts/ARyalBlackBlock.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Adam Gorry';
+    /*src: url('./fonts/adam_gorry_inline.otf') format('opentype');*/
+    src: url('./fonts/adam_gorry_lights.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Admiration Pains';
+    src: url('./fonts/AdmirationPains.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Bad Stories';
+    src: url('./fonts/BadStories.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Badang';
+    src: url('./fonts/Badang.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Badang Italic';
+    font-style: italic;
+    src: url('./fonts/BadangItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Badly Stamped';
+    src: url('./fonts/BadlyStamped.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Bebas';
+    src: url('./fonts/BEBAS.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Hells Rider Decay';
+    src: url('./fonts/HellsRiderDecay.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'The Inbox St';
+    src: url('./fonts/TheInboxSt.ttf') format('truetype');
+}
+
+
+@font-face {
+    font-family: 'Zigzageo';
+    src: url('./fonts/ZiGzAgEo-Reg-FFP.ttf') format('truetype');
+}
+
+
+
+.loading {
     position: fixed;
     top: 0;
     right: 0;

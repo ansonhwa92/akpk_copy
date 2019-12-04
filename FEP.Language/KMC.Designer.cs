@@ -214,6 +214,15 @@ namespace Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role.
+        /// </summary>
+        public static string FieldRole {
+            get {
+                return ResourceManager.GetString("FieldRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thumbnail Image.
         /// </summary>
         public static string FieldThumbnail {
@@ -331,7 +340,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Private.
+        ///   Looks up a localized string similar to Internal.
         /// </summary>
         public static string TextPrivate {
             get {
@@ -358,7 +367,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create KMC File.
+        ///   Looks up a localized string similar to Create Knowledge Management Centre.
         /// </summary>
         public static string TitleCreate {
             get {
@@ -403,7 +412,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to KMC Details.
+        ///   Looks up a localized string similar to Knowledge Management Centre Details.
         /// </summary>
         public static string TitleDetails {
             get {
@@ -412,7 +421,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update KMC file.
+        ///   Looks up a localized string similar to Update Knowledge Management Centre.
         /// </summary>
         public static string TitleEdit {
             get {
@@ -421,7 +430,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to KMC File.
+        ///   Looks up a localized string similar to Knowledge Management Centre.
         /// </summary>
         public static string TitleList {
             get {
@@ -471,6 +480,15 @@ namespace Language {
         public static string ValidRequiredFile {
             get {
                 return ResourceManager.GetString("ValidRequiredFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select at least one role.
+        /// </summary>
+        public static string ValidRequiredRole {
+            get {
+                return ResourceManager.GetString("ValidRequiredRole", resourceCulture);
             }
         }
         

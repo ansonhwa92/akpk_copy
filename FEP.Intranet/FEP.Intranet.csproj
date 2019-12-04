@@ -1067,11 +1067,15 @@
     <Content Include="Areas\eLearning\Views\Courses\View.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\ViewCertificate.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseGroup\_CoursesList.cshtml" />
-    <Content Include="Areas\KMC\Views\Home\Index.cshtml" />
+    <Content Include="Areas\KMC\Views\Home\Browse.cshtml" />
     <Content Include="Areas\Administrator\Views\Role\List.cshtml" />
     <Content Include="Areas\Administrator\Views\Individual\_Details.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\_Details.cshtml" />
     <Content Include="Areas\Administrator\Views\Company\_Details.cshtml" />
+    <Content Include="Areas\KMC\Views\Home\_Index.cshtml" />
+    <Content Include="Areas\KMC\Views\Home\_List.cshtml" />
+    <Content Include="Areas\KMC\Views\Home\Index.cshtml" />
+    <Content Include="Areas\KMC\Views\Home\_Content.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

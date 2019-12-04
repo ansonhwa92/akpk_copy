@@ -1,6 +1,8 @@
 ﻿using FEP.Helper;
 using FEP.Model;
+using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.KMC;
+using FEP.WebApiModel.SLAReminder;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -61,13 +63,6 @@ namespace FEP.Intranet.Areas.KMC.Controllers
                 ViewBag.Categories = responseCategory.Data;
             }
 
-            var responseKMC = await WepApiMethod.SendApiAsync<List<KMCModel>>(HttpVerbs.Get, $"KMC/Manage/GetAll?categoryId={Id}");
-
-            if (responseKMC.isSuccess)
-            {
-                model.List = responseKMC.Data;
-            }
-
             return View(model);
         }
 
@@ -83,6 +78,15 @@ namespace FEP.Intranet.Areas.KMC.Controllers
                 model = response.Data;
             }
 
+            if (model.Count > 0)
+            {
+                ViewBag.PageInfo = "Showing 1 - " + model.Count + " of " + model.Count + " results";
+            }
+            else
+            {
+                ViewBag.PageInfo = "Showing 0 - 0 of 0 results";
+            }
+            
             return PartialView(model);
 
         }
@@ -146,6 +150,10 @@ namespace FEP.Intranet.Areas.KMC.Controllers
             model.filter_audios = filter_audios;
             model.filter_docs = filter_docs;
 
+            model.IsPublic = true;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
             return View(model);
         }
 
@@ -153,6 +161,11 @@ namespace FEP.Intranet.Areas.KMC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Models.CreateKMCModel model)
         {
+
+            if (model.IsPublic)
+            {
+                ModelState.Remove("RoleIds");
+            }
 
             if (model.IsEditor)
             {
@@ -221,6 +234,7 @@ namespace FEP.Intranet.Areas.KMC.Controllers
                     IsShow = model.IsShow,
                     IsEditor = model.IsEditor,
                     EditorCode = model.EditorCode,
+                    RoleIds = model.RoleIds,
                     CreatedBy = CurrentUser.UserId.Value
                 };
 
@@ -241,10 +255,43 @@ namespace FEP.Intranet.Areas.KMC.Controllers
                     }
                 }
 
-                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"KMC/Manage", modelapi);
+                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"KMC/Manage", modelapi);
 
                 if (response.isSuccess)
                 {
+                    if (!model.IsPublic && model.IsShow)//send notification
+                    {
+                        var userIds = new List<int>();
+
+                        foreach(var roleId in model.RoleIds)
+                        {
+                            var responseUsers = await WepApiMethod.SendApiAsync<List<UserModel>>(HttpVerbs.Get, $"Administration/Role/GetAllUser?roleId={roleId}");
+
+                            if (responseUsers.isSuccess)
+                            {
+                                userIds = userIds.Union(responseUsers.Data.Select(r => r.Id).ToList()).ToList();
+                            }
+                        }
+
+                        if (userIds.Count > 0)
+                        {
+                            ParameterListToSend notificationParameter = new ParameterListToSend();
+                            notificationParameter.Link = $"<a href = '" + BaseURL + "/KMC/Home/Browse/" + response.Data.ToString() + "' > here </a>";
+
+                            CreateAutoReminder notification = new CreateAutoReminder
+                            {
+                                NotificationType = NotificationType.KMCCreated,
+                                NotificationCategory = NotificationCategory.Learning,
+                                ParameterListToSend = notificationParameter,
+                                StartNotificationDate = DateTime.Now,
+                                ReceiverId = userIds
+                            };
+
+                            var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
+                        }
+                                                
+                    }
+
                     await LogActivity(Modules.KMC, "Create KMC", model);
 
                     TempData["SuccessMessage"] = Language.KMC.AlertSuccessCreate;
@@ -298,6 +345,7 @@ namespace FEP.Intranet.Areas.KMC.Controllers
                 Category = data.Category.Title,
                 EditorCode = data.EditorCode,
                 IsPublic = data.IsPublic,
+                RoleIds = data.Roles.Select(s => s.Id).ToArray(),
                 IsShow = data.IsShow
             };
 
@@ -306,6 +354,8 @@ namespace FEP.Intranet.Areas.KMC.Controllers
             model.filter_audios = filter_audios;
             model.filter_docs = filter_docs;
 
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
             return View(model);
         }
 
@@ -313,6 +363,10 @@ namespace FEP.Intranet.Areas.KMC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(Models.EditKMCModel model)
         {
+            if (model.IsPublic)
+            {
+                ModelState.Remove("RoleIds");
+            }
 
             if (model.IsEditor)
             {
@@ -384,6 +438,7 @@ namespace FEP.Intranet.Areas.KMC.Controllers
                     IsPublic = model.IsPublic,
                     IsShow = model.IsShow,
                     IsEditor = model.IsEditor,
+                    RoleIds = model.RoleIds,
                     EditorCode = model.EditorCode,
                     FileId = model.IsEditor ? null : model.FileId,
                     ThumbnailUrl = model.ThumbnailUrl
@@ -410,6 +465,39 @@ namespace FEP.Intranet.Areas.KMC.Controllers
 
                 if (response.isSuccess)
                 {
+                    if (!model.IsPublic && model.IsShow)//send notification
+                    {
+                        var userIds = new List<int>();
+
+                        foreach (var roleId in model.RoleIds)
+                        {
+                            var responseUsers = await WepApiMethod.SendApiAsync<List<UserModel>>(HttpVerbs.Get, $"Administration/Role/GetAllUser?roleId={roleId}");
+
+                            if (responseUsers.isSuccess)
+                            {
+                                userIds = userIds.Union(responseUsers.Data.Select(r => r.Id).ToList()).ToList();
+                            }
+                        }
+
+                        if (userIds.Count > 0)
+                        {
+                            ParameterListToSend notificationParameter = new ParameterListToSend();
+                            notificationParameter.Link = $"<a href = '" + BaseURL + "/KMC/Home/Browse/" + model.Id.ToString() + "' > here </a>";
+
+                            CreateAutoReminder notification = new CreateAutoReminder
+                            {
+                                NotificationType = NotificationType.KMCCreated,
+                                NotificationCategory = NotificationCategory.Learning,
+                                ParameterListToSend = notificationParameter,
+                                StartNotificationDate = DateTime.Now,
+                                ReceiverId = userIds
+                            };
+
+                            var responseNotification = await WepApiMethod.SendApiAsync<ReminderResponse>(HttpVerbs.Post, $"Reminder/SLA/GenerateAutoNotificationReminder/", notification);
+                        }
+
+                    }
+
                     await LogActivity(Modules.KMC, "Edit KMC", model);
 
                     TempData["SuccessMessage"] = Language.KMC.AlertSuccessUpdate;
@@ -427,6 +515,8 @@ namespace FEP.Intranet.Areas.KMC.Controllers
             model.filter_videos = filter_videos;
             model.filter_audios = filter_audios;
             model.filter_docs = filter_docs;
+
+            model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
 
             return View(model);
 
@@ -490,10 +580,27 @@ namespace FEP.Intranet.Areas.KMC.Controllers
             return Content(JsonConvert.SerializeObject(new { image64 = "" }), "application/json");
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetContent(int Id)
         {
             return await FileMethod.DownloadFile(Id);
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<RoleModel>> GetRoles()
+        {
+            var roles = Enumerable.Empty<RoleModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<RoleModel>>(HttpVerbs.Get, $"Administration/Role");
+
+            if (response.isSuccess)
+            {
+                roles = response.Data.OrderBy(o => o.Name);
+            }
+
+            return roles;
+
         }
     }
 }

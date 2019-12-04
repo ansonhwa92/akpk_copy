@@ -18,9 +18,9 @@
             width: 250px; /* Set a small width */
         }
 
-            .photo:hover {
-                box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
-            }
+        .photo:hover {
+            box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+        }
     </style>
 }
 
@@ -39,6 +39,16 @@
                 $("#file").removeClass("d-none");
                 $("#editor").addClass("d-none");
             }
+        });
+
+        $('input[type=radio][name=IsPublic]').change(function () {
+            if (this.value == 'true') {                
+                $("#role").addClass("d-none");
+            }
+            else if (this.value == 'false') {
+                $("#role").removeClass("d-none");               
+            }
+
         });
 
         $('#File').change(function (e) {
@@ -265,7 +275,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-lg-12">
-                                                               
+
                                 @Html.FEPLabelFor(model => model.File)
                                 <div id="display_file" class="input-group @if (Model.FileId == null) { <text>d-none</text> }">
                                     @Html.HiddenFor(model => model.FileId)
@@ -281,7 +291,6 @@
                                     </div>
                                     @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -295,14 +304,22 @@
                     </div>
 
                     <label>@Html.DisplayNameFor(m => m.IsPublic)</label>
-                    <div class="form-inline mb-3">
+                    <div class="form-inline mb-1">
                         <div class="custom-control custom-radio">
-                            @Html.RadioButtonFor(m => m.IsPublic, "false", new { @class = "custom-control-input", id = "ispublicfalse" })
-                            <label class="custom-control-label" for="ispublicfalse">@Language.KMC.TextPrivate</label>
+                            @Html.RadioButtonFor(m => m.IsPublic, "true", new { @class = "custom-control-input", id = "ispublictrue" })
+                            <label class="custom-control-label" for="ispublictrue">@Language.KMC.TextPublic</label>
                         </div>
                         <div class="custom-control custom-radio ml-5">
-                            @Html.RadioButtonFor(m => m.IsPublic, "true", new { @class = "custom-control-input", id = "ispublictrue" })
-                            <label class="custom-control-label mr-3" for="ispublictrue">@Language.KMC.TextPublic</label>
+                            @Html.RadioButtonFor(m => m.IsPublic, "false", new { @class = "custom-control-input", id = "ispublicfalse" })
+                            <label class="custom-control-label mr-3" for="ispublicfalse">@Language.KMC.TextPrivate</label>
+                        </div>
+                    </div>
+
+                    <div id="role" class="row @if (Model.IsPublic) { <text>d-none</text> }">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.RoleIds)
+                            @Html.ListBoxFor(m => m.RoleIds, Model.Roles, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
+                            @Html.ValidationMessageFor(m => m.RoleIds)
                         </div>
                     </div>
                 </div>

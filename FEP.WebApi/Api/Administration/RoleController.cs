@@ -178,6 +178,29 @@ namespace FEP.WebApi.Api.Administration
 
         }
 
+        [Route("api/Administration/Role/GetAllUser")]
+        [HttpGet]
+        public IHttpActionResult GetAllUser([FromUri]int roleId)
+        {
+            var role = db.Role.Where(r => r.Id == roleId).FirstOrDefault();
+
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            var users = db.UserRole.Where(ur => ur.RoleId == roleId)
+                .Select(u => new UserModel 
+                { 
+                    Id = u.UserId, 
+                    Name = u.UserAccount.User.Name, 
+                    Email = u.UserAccount.User.Email,
+                    UserType = u.UserAccount.User.UserType 
+                }).ToList();
+
+            return Ok(users);
+        }
+
         [Route("api/Administration/Role/GetUser")]
         [HttpPost]
         public IHttpActionResult GetUser([FromUri]int RoleId, [FromBody] FilterUserModel request)

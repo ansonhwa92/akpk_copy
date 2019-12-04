@@ -240,7 +240,7 @@ namespace FEP.Model
         //KMC
         public DbSet<KMCs> KMCs { get; set; }
         public DbSet<KMCCategory> KMCCategory { get; set; }
-        public DbSet<KMCUser> KMCUser { get; set; }
+        public DbSet<KMCRole> KMCRole { get; set; }
 
         //CTE
         public DbSet<Months> Months { get; set; }

@@ -53,6 +53,12 @@ namespace FEP.Intranet.Areas.KMC.Models
         [Display(Name = "FieldEditorCode", ResourceType = typeof(Language.KMC))]
         public string EditorCode { get; set; }
 
+        [Display(Name = "FieldRole", ResourceType = typeof(Language.KMC))]
+        [Required(ErrorMessageResourceName = "ValidRequiredRole", ErrorMessageResourceType = typeof(Language.KMC))]
+        public int[] RoleIds { get; set; }
+
+        public IEnumerable<SelectListItem> Roles { get; set; }
+
         public string filter_imgs { get; set; }
         public string filter_videos { get; set; }
         public string filter_audios { get; set; }
@@ -108,6 +114,12 @@ namespace FEP.Intranet.Areas.KMC.Models
         [Required(ErrorMessageResourceName = "ValidRequiredEditor", ErrorMessageResourceType = typeof(Language.KMC))]
         [Display(Name = "FieldEditorCode", ResourceType = typeof(Language.KMC))]
         public string EditorCode { get; set; }
+
+        [Display(Name = "FieldRole", ResourceType = typeof(Language.KMC))]
+        [Required(ErrorMessageResourceName = "ValidRequiredRole", ErrorMessageResourceType = typeof(Language.KMC))]
+        public int[] RoleIds { get; set; }
+
+        public IEnumerable<SelectListItem> Roles { get; set; }
 
         public string filter_imgs { get; set; }
         public string filter_videos { get; set; }

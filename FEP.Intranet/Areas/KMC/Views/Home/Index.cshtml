@@ -1,8 +1,144 @@
-﻿
+﻿@model CategoryModel
+
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout1.cshtml";
+    ViewBag.Title = "KMC";
+    Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
 }
 
-<h2>Index</h2>
+@section ContentStyle {
 
+    <style>
+
+        .photo {
+            border: 1px solid #ddd; /* Gray border */
+            border-radius: 4px; /* Rounded border */
+            padding: 5px; /* Some padding */
+            width: 250px; /* Set a small width */
+        }
+
+        .photo:hover {
+            box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+        }
+
+        .content {
+            width: 100%;
+            height: auto;
+        }
+
+        audio {
+            margin: auto;
+        }
+    </style>
+}
+
+@section ContentScript {
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            searchKMC();
+
+            $('input[name=category]').click(function () {
+                if (this.checked) {
+                    searchKMC();
+                }
+            });
+
+        });
+
+        function searchKMC()
+        {
+            var categoryId = $('input[name=category]:checked').val();
+
+            var filter =
+            {
+                Title: $('#Filter_Title').val(),
+                CreatedBy: $('#Filter_CreatedBy').val(),
+                DateFrom: $('#Filter_DateFrom').val(),
+                DateTo: $('#Filter_DateTo').val(),
+                QuickSearch: $('#Filter_QuickSearch').val()
+            };
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("_List", "Home", new { area = "KMC" })/' + categoryId,
+                dataType: "html",
+                data: filter,
+                success: function (data) {
+
+                    $('#kmc_list').html(data);
+                    showPageInfo();
+
+                },
+                error: function (xhr, status, error) {
+
+                }
+            });
+
+        }
+
+    </script>
+
+}
+
+@section Nav{
+    <div id="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+            </ol>
+        </nav>
+    </div>
+    <h1 class="page-title text-white">Knowledge Management Centre</h1>
+    <div class="header-text"></div>
+}
+
+<main id="landing-inner" class="rellax" data-rellax-speed="0">
+    <!-- =====================
+        Landing Content
+    ========================-->
+    <section id="main-content">
+        <!-- =====================
+            Search Dropdown
+        ========================-->
+        <div id="search-dropdown">
+            <div class="container">
+                <div id="search-dropdown">
+                    <div class="container">
+                        <div class="search-dropdown-wrapper">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <select class="select2" name="module">
+                                        <option value="e-Learning">e-Learning</option>
+                                        <option value="e-Events">e-Events</option>
+                                        <option value="Research">Research</option>
+                                        <option value="Publications">Publications</option>
+                                    </select>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Search for online courses, instructor name, etc.." name="search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="empty_6"></div>
+    </section>
+
+    <!-- =====================
+       Searching Result
+    ========================-->
+    <section id="search-result" class="publications">
+        <div class="container">
+            @Html.Partial("_Index", Model)
+        </div>
+    </section>
+    <hr />
+    @Html.Partial("_NewsArticle")
+</main>
+<div id="modalContent"></div>

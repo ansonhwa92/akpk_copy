@@ -17,12 +17,13 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">KMC Management</a></li>
+                                <li class="breadcrumb-item"><a href="#">KMC</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">KMC Management</h1>
+                    <h1 class="page-title text-white">@Language.KMC.TitleList</h1>
+                    <div class="header-text">@Language.KMC.TitleDescriptionList</div>
                 </div>
             </div>
         </div>
@@ -67,8 +68,6 @@
                             }
 
                         </div>
-
-
 
                     </div>
 

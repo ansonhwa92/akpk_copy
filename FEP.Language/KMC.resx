@@ -168,6 +168,9 @@
   <data name="FieldIsShow" xml:space="preserve">
     <value>Availability</value>
   </data>
+  <data name="FieldRole" xml:space="preserve">
+    <value>Role</value>
+  </data>
   <data name="FieldThumbnail" xml:space="preserve">
     <value>Thumbnail Image</value>
   </data>
@@ -208,7 +211,7 @@
     <value>Hide</value>
   </data>
   <data name="TextPrivate" xml:space="preserve">
-    <value>Private</value>
+    <value>Internal</value>
   </data>
   <data name="TextPublic" xml:space="preserve">
     <value>Public</value>
@@ -217,7 +220,7 @@
     <value>Shown</value>
   </data>
   <data name="TitleCreate" xml:space="preserve">
-    <value>Create KMC File</value>
+    <value>Create Knowledge Management Centre</value>
   </data>
   <data name="TitleDescriptionCreate" xml:space="preserve">
     <value />
@@ -232,13 +235,13 @@
     <value />
   </data>
   <data name="TitleDetails" xml:space="preserve">
-    <value>KMC Details</value>
+    <value>Knowledge Management Centre Details</value>
   </data>
   <data name="TitleEdit" xml:space="preserve">
-    <value>Update KMC file</value>
+    <value>Update Knowledge Management Centre</value>
   </data>
   <data name="TitleList" xml:space="preserve">
-    <value>KMC File</value>
+    <value>Knowledge Management Centre</value>
   </data>
   <data name="ValidExistTitle" xml:space="preserve">
     <value>File Title already registered in the system</value>
@@ -254,6 +257,9 @@
   </data>
   <data name="ValidRequiredFile" xml:space="preserve">
     <value>Please Select File</value>
+  </data>
+  <data name="ValidRequiredRole" xml:space="preserve">
+    <value>Please select at least one role</value>
   </data>
   <data name="ValidRequiredTitle" xml:space="preserve">
     <value>Please enter Title</value>

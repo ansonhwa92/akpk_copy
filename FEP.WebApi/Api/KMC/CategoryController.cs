@@ -27,6 +27,7 @@ namespace FEP.WebApi.Api.KMC
 
         public IHttpActionResult Get()
         {
+
             var categories = db.KMCCategory.Where(u => u.Display).Select(s => new CategoryModel
             {
                 Id = s.Id,
@@ -34,6 +35,7 @@ namespace FEP.WebApi.Api.KMC
             }).ToList();
 
             return Ok(categories);
+
         }
 
         public IHttpActionResult Get(int id)

@@ -41,6 +41,15 @@
             }
         });
 
+        $('input[type=radio][name=IsPublic]').change(function () {
+            if (this.value == 'true') {                
+                $("#role").addClass("d-none");
+            }
+            else if (this.value == 'false') {
+                $("#role").removeClass("d-none");               
+            }
+        });
+
         $('#File').change(function (e) {
 
             $('.custom-file-label').html('No file choosen');
@@ -270,16 +279,24 @@
                             @Html.ValidationMessageFor(model => model.EditorCode, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    
+
                     <label>@Html.DisplayNameFor(m => m.IsPublic)</label>
-                    <div class="form-inline mb-3">
+                    <div class="form-inline mb-1">
                         <div class="custom-control custom-radio">
-                            @Html.RadioButtonFor(m => m.IsPublic, "false", new { @class = "custom-control-input", id = "ispublicfalse" })
-                            <label class="custom-control-label" for="ispublicfalse">@Language.KMC.TextPrivate</label>
+                            @Html.RadioButtonFor(m => m.IsPublic, "true", new { @class = "custom-control-input", id = "ispublictrue" })
+                            <label class="custom-control-label" for="ispublictrue">@Language.KMC.TextPublic</label>
                         </div>
                         <div class="custom-control custom-radio ml-5">
-                            @Html.RadioButtonFor(m => m.IsPublic, "true", new { @class = "custom-control-input", id = "ispublictrue" })
-                            <label class="custom-control-label mr-3" for="ispublictrue">@Language.KMC.TextPublic</label>
+                            @Html.RadioButtonFor(m => m.IsPublic, "false", new { @class = "custom-control-input", id = "ispublicfalse" })
+                            <label class="custom-control-label mr-3" for="ispublicfalse">@Language.KMC.TextPrivate</label>
+                        </div>
+                    </div>
+
+                    <div id="role" class="row @if (Model.IsPublic) { <text>d-none</text> }">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.RoleIds)
+                            @Html.ListBoxFor(m => m.RoleIds, Model.Roles, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
+                            @Html.ValidationMessageFor(m => m.RoleIds)
                         </div>
                     </div>
                 </div>

@@ -39,9 +39,20 @@ namespace FEP.Intranet.Controllers
             return View("/Views/Shared/Error.cshtml");
         }
 
-        public ActionResult Dashboard()
+        public async Task<ActionResult> Dashboard()
         {
-            return View();
+            var userid = CurrentUser.UserId;
+
+            var response = await WepApiMethod.SendApiAsync<DashboardList>(HttpVerbs.Get, $"Home/Dashboard/GetDashbordList?userid={userid}");
+
+            if (response.isSuccess)
+            {
+                var model = response.Data;
+                return View(model);
+            }
+
+            return new HttpStatusCodeResult(404);
+
         }
 
         public async Task<ActionResult> MyProfile()
@@ -369,7 +380,7 @@ namespace FEP.Intranet.Controllers
             var model = new ProfileAvatarModel();
 
             if (response.isSuccess)
-            {                
+            {
                 model.AvatarImageUrl = response.Data.AvatarImageUrl;
             }
 
@@ -624,7 +635,7 @@ namespace FEP.Intranet.Controllers
 
         }
 
-        
+
 
     }
 }

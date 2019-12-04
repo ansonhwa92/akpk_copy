@@ -1697,6 +1697,7 @@
     <Content Include="Scripts\tinymce\plugins\mathSymbols\README.md" />
     <Content Include="Views\Home\UpdateAvatar.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\Shared\_DashboardList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

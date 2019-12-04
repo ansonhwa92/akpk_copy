@@ -170,6 +170,7 @@
     <Compile Include="Api\eLearning\CourseEnrollmentsApiController.cs" />
     <Compile Include="Api\eLearning\FileResult.cs" />
     <Compile Include="Api\eLearning\NotificationApiController.cs" />
+    <Compile Include="Api\Home\DashboardController.cs" />
     <Compile Include="Api\Integration\GroupController.cs" />
     <Compile Include="Api\KMC\CategoryController.cs" />
     <Compile Include="Api\KMC\ManageController.cs" />

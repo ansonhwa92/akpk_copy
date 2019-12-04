@@ -1,4 +1,5 @@
-﻿
+﻿@model DashboardList
+
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout1.cshtml";
@@ -31,25 +32,22 @@
 
 <div class="row">
 
-
-    @*<div class="col-xl-3 col-md-3 col-sm-4 my-2">
-        <div id="page-nav" class="sidebar-left page-nav">
-            <div data-perfect-scrollbar>
-                <div class="page-section">
-                    <h6 class="x-small color-darkblue">Dashboard</h6>
-                    <ul class="nav page-nav__menu">
-                        <li class="nav-item">
-                            <a href="@Url.Action("MyProfile", "Home", new { area = "" })" class="nav-link">My Profile</a>
-                        </li>                      
-                    </ul>
+    <!-- End content leftbar -->
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <!-- Start Tab Content -->
+        <div class="border-form rounded-top">
+            <form>
+                <div class="form-container form-container-w100">
+                    <div class="form-container form-container-w100 tab-content">
+                        @*<div class="mt-2 mb-4 pb-1">
+                                <h4 class="color-darkblue mb-0">Category</h4>
+                            </div>*@
+                        <div class="row">
+                            @Html.Partial("_DashboardList", Model)
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-
-        
-    </div>*@
 </div>
-
-

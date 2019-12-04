@@ -1,0 +1,13 @@
+﻿@model DashboardList
+
+@foreach (var item in Model.DashboardItemList)
+{
+
+    <div class="col-lg-4">
+        <div class="box-contain">
+            <div class="card text-center">
+                <span>@(item.StatusName) (@(item.Count))</span>
+            </div>
+        </div>
+    </div>
+}

@@ -211,16 +211,18 @@ namespace FEP.Model.Migrations
                 );
             }
 
-            if (!db.Branch.Any())
-            {
-                var state = db.State.Local.Where(r => r.Name == "Wilayah Persekutuan Kuala Lumpur").FirstOrDefault() ?? db.State.Where(r => r.Name == "Wilayah Persekutuan Kuala Lumpur").FirstOrDefault();
-
-                db.Branch.AddOrUpdate(s => s.Name,
-                    new Branch { State = state, Name = "HQ", Display = true }
-                    );
-
-            }
-
+            AddBranch(db, "HQ", "Wilayah Persekutuan Kuala Lumpur");
+            AddBranch(db, "JHR", "Johor");
+            AddBranch(db, "KDH", "Kedah");
+            AddBranch(db, "KTN", "Kelantan");
+            AddBranch(db, "MLK", "Melaka");
+            AddBranch(db, "PHG", "Pahang");
+            AddBranch(db, "PRK", "Perak");
+            AddBranch(db, "PNG", "Pulau Pinang");
+            AddBranch(db, "SBH", "Sabah");
+            AddBranch(db, "SWK", "Sarawak");
+            AddBranch(db, "TRG", "Terengganu");
+            
 
             if (!db.Department.Any())
             {
@@ -889,6 +891,19 @@ namespace FEP.Model.Migrations
 
             return designation;
 
+        }
+
+        public static void AddBranch(DbEntities db, string BranchName, string StateName)
+        {
+            var state = db.State.Local.Where(r => r.Name == StateName).FirstOrDefault() ?? db.State.Where(r => r.Name == StateName).FirstOrDefault();
+
+            if (state != null)
+            {
+                db.Branch.AddOrUpdate(s => s.Name,
+                new Branch { State = state, StateId = state.Id, Name = BranchName, Display = true }
+                );
+            }
+            
         }
 
         public static void AddStaff(DbEntities db, string Username, string Name, string ICNo, string Email, string MobileNo, string Department, string Designation, string StaffId)

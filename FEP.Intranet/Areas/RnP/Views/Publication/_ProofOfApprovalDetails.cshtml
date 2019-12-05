@@ -34,7 +34,7 @@
                         @Html.Hidden("ProofOfApprovals[" + i + "].Id", item.Id)
                     </td>
                     <td>
-                        <a href="@Html.Raw(WebApiURL)System/File/Download?id=@item.Id" data-toggle="tooltip" title="Download File"><i class="fa fa-file-download"></i></a>
+                        <a href="@Url.Action("Download", "Publication", new { area = "RnP", id = item.Id})" data-toggle="tooltip" title="Download File"><i class="fa fa-file-download"></i></a>
                     </td>
                 </tr>
                 ++i;

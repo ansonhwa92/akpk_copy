@@ -112,6 +112,12 @@
                 </div>
             </div>
 
+            @*<div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <button type="button" class="btn btn-default" id="btnAddQuestions" name="btnAddQuestions" value="AddQuestions">
+                    <i class="la la-edit font-icon" style="font-size: 1.5rem;"></i>Add Questions
+                </button>
+            </div>*@
+
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
                 @if (Model.CreateContentFrom == FEP.Model.eLearning.CreateContentFrom.Module)
                 {
@@ -360,6 +366,10 @@
                 }
             }
 
+            $('#btnAddQuestions').click(function (event) {
+                var url = '@Html.Raw(@Url.Action($"Questions", "CourseContents", new { area = "eLearning", courseid = Model.CourseId, moduleid = Model.CourseModuleId }))';
+                window.location = url;
+            });
         });
     </script>
 

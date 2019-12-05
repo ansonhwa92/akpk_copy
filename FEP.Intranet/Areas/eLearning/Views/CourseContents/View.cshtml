@@ -77,6 +77,28 @@
 
                 @Html.Partial($"_view{Model.ContentType.ToString()}", Model)
 
+                <!-- survey start -->
+                <hr />
+                <div class="form-group">
+                    <h4>@ViewBag.QuizTitle</h4>
+                </div>
+                <div id="surveyContainer"></div>
+                <div id="surveyResult"></div>
+                <div id="testdiv"></div>
+                <textarea id="Questions" name="Questions" class="form-control" rows="3" style="display:none;">@ViewBag.QuizContents</textarea>
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formresponse", id = "formresponse" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <input type="hidden" name="Id" class="form-control" value="@ViewBag.Id" />
+                    <input type="hidden" name="QuizId" id="QuizId" class="form-control" value="@ViewBag.QuizId" />
+                    <input type="hidden" name="UserId" id="UserId" class="form-control" value="@CurrentUser.UserId" />
+                    <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;"></textarea>
+                    <textarea id="Answers" name="Answers" class="form-control" rows="3" style="display:none;"></textarea>
+                }
+                <!-- survey end -->
+
                 <hr />
 
                 @Html.Action("Get", "ContentCompletions", new { @contentId = Model.Id })
@@ -98,6 +120,13 @@
 </style>
 
 @section ContentScript {
+
+    <!-- Survey -->
+    <link href="https://surveyjs.azureedge.net/1.1.8/survey.css" type="text/css" rel="stylesheet">
+    <script src="https://surveyjs.azureedge.net/1.1.8/survey.jquery.min.js"></script>
+    <script type="text/javascript" src="@BaseURL/js/survey-tester-init.js"></script>
+    @*<script src="@BaseURL/js/main.js"></script>*@
+
     <script src="~/Scripts/tinymce/tinymce.min.js"></script>
 
     <script>
@@ -118,6 +147,110 @@
                 convert_urls: true,
                 branding: false,
             });
+
+            // survey portion
+
+            //var surveyJSON = $('#Questions').val();
+            //var survey = new Survey.Model(surveyJSON);
+
+            var surveyJSON = @Html.Raw(ViewBag.QuizContents);
+            var survey = new Survey.Model(surveyJSON);
+
+            $("#surveyContainer").Survey({
+                model: survey,
+                onComplete: sendDataToServer
+            });
+
+            survey.onValidateQuestion.add(function (s, options) {
+                if (options.name == 'animalwater') {
+                    if (options.value != 'Whale') {
+                        options.error = "The answer is not correct. Please give another answer";
+                    }
+                }
+            });
+
+            function sendDataToServer(survey) {
+                var givenanswers = survey.data;
+                var answerstring = JSON.stringify(givenanswers);
+                var correctcount = survey.getCorrectedAnswerCount();
+                var incorrectcount = survey.getInCorrectedAnswerCount();
+                var totalcount = correctcount + incorrectcount;
+                var wronganswers = "The following answers were incorrect:<br/>";
+                if (incorrectcount > 0) {
+                    var qs = survey.getAllQuestions();
+                    qs.forEach(function (q) {
+                        if (q.correctAnswer != undefined) {
+                            var correctans = q.correctAnswer;
+                            var givenans = q.value;
+                            if (correctans != givenans) {
+                                wronganswers = wronganswers + "- " + givenans + "<br/>";
+                            }
+                        }
+                    });
+                    $('#surveyResult').css('color', 'red');
+                    $('#surveyResult').html("<b>You only answered " + correctcount + " out of " + totalcount + " questions correctly. Please try again!</b><br/>" + wronganswers);
+                    survey.clear();
+                    survey.render();
+                    //var btn1 = $('#btnComplete');
+                    //var btn2 = $('#btnTimerComplete');
+                    //var btn3 = $('#btnAnswerComplete');
+                    //if (btn1.length > 0) {
+                    //    var btndisabled = btn1.prop('disabled');
+                    //    if (!btndisabled) {
+                    //        btn1.prop('disabled', true);
+                    //    }
+                    //}
+                    return false;
+                }
+                else {
+                    $('#surveyResult').css('color', 'green');
+                    $('#surveyResult').html("<b>You have answered " + correctcount + " out of " + totalcount + " questions correctly. Congratulations!</b><br/>");
+                }
+
+                $('#Answers').val(answerstring);
+                var form = $('#formresponse');
+                $.ajax({
+                    url: "@Url.Action("SubmitAnswers", "CourseContents", new { area = "eLearning" })",
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        //$('#testdiv').text(data);
+                        //callback(saveNo, data.isSuccess);
+                    },
+                    error: function (xhr, status, error) {
+                        //alert(xhr.responseText);
+                    }
+                });
+            }
+
+            $('#btnComplete,#btnTimerComplete,#btnAnswerComplete').click(function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                var quizid = $('#QuizId').val();
+                //alert(quizid);
+                if (quizid != 0) {
+                    var userid = $('#UserId').val();
+                    $.ajax({
+                        url: "@Url.Action("QuizCompleted", "CourseContents", new { area = "eLearning" })" + "?quizid=" + quizid + "&userid=" + userid,
+                        type: "GET",
+                        success: function (data) {
+                            //alert(data);
+                            if (data == "False") {
+                                $('#surveyResult').css('color', 'red');
+                                $('#surveyResult').html("<b>You must first answer all of this Content's Questions correctly before you can proceed to the next Content!</b><br/>");
+                                return false;
+                            }
+                            else {
+                                $('#formCompletion').submit();
+                            }
+                        }
+                    });
+                }
+                else {
+                    $('#formCompletion').submit();
+                }
+            });
         });
+
     </script>
 }

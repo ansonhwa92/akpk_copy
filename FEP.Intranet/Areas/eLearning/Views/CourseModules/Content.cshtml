@@ -193,6 +193,10 @@
                                                                    data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>
                                                                 <a href="@Url.Action($"Edit", "CourseContents", new { area = "eLearning", id = content.Id })"
                                                                    data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit"></i></a>
+                                                                <!-- firus start -->
+                                                                <a href="@Url.Action($"Questions", "CourseContents", new { area = "eLearning", id = content.Id, courseid = content.CourseId, moduleid = content.CourseModuleId })"
+                                                                   data-toggle="tooltip" data-placement="top" title="Questions"><i class="la la-question-circle"></i></a>
+                                                                <!-- firus end -->
                                                                 <a href="@Url.Action($"Delete", "CourseContents", new { area = "eLearning", id = content.Id })"
                                                                    data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o"></i></a>
 

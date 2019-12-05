@@ -81,6 +81,40 @@ namespace FEP.WebApiModel.eLearning
     }
 
 
+    // firus
+    public class CreateOrEditContentQuizModel
+    {
+        public int Id { get; set; }
+
+        [Required]
+        [Display(Name = "QuestionsTitle", ResourceType = typeof(Language.eLearning.Content))]
+        public string Title { get; set; }
+
+        public int ContentId { get; set; }
+
+        public int CourseModuleId { get; set; }
+
+        public int CourseId { get; set; }
+
+        public string Contents { get; set; }
+
+        public string PageTitle { get; set; }
+    }
+
+
+    // firus
+    public class CreateOrEditContentAnswersModel
+    {
+        public int Id { get; set; }
+
+        public int QuizId { get; set; }
+
+        public int UserId { get; set; }
+
+        public string Answers { get; set; }
+    }
+
+
     public class ContentCompletionModel : BaseEntity
     {
         public string Title { get; set; }
@@ -111,6 +145,7 @@ namespace FEP.WebApiModel.eLearning
 
 
     }
+
 
     public class DeleteContentModel
     {

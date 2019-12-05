@@ -2360,7 +2360,7 @@ namespace FEP.WebApi.Api.RnP
             paramToSend.PublicationTitle = model.Title;
             paramToSend.PublicationAuthor = model.Author;
             paramToSend.PublicationCode = model.RefNo;
-            paramToSend.PublicationApproval = "";
+            paramToSend.PublicationApproval = "Publication Withdrawn";
 
             var template = db.NotificationTemplates.Where(t => t.NotificationType == NotificationType.Approve_Publication_Withdrawal_Final).FirstOrDefault();
             string Subject = generateBodyMessage("Publication Withdrawal Notice", NotificationType.Approve_Publication_Withdrawal_Final, paramToSend);

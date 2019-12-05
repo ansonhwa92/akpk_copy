@@ -64,6 +64,29 @@ namespace FEP.Model.eLearning
         public int? Width { get; set; } = 100;
     }
 
+
+    // firus
+    public class CourseContentQuiz
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public int ContentId { get; set; }
+        public int? CourseModuleId { get; set; }
+        public int? CourseId { get; set; }
+        public string Contents { get; set; }
+    }
+
+
+    // firus
+    public class CourseContentAnswers
+    {
+        public int Id { get; set; }
+        public int QuizId { get; set; }
+        public int UserId { get; set; }
+        public string Answers { get; set; }
+    }
+
+
     public enum ShowIFrameAs
     {
         Embedded,

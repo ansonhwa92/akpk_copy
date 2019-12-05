@@ -2638,6 +2638,23 @@ namespace FEP.WebApi.Api.RnP
             return null;
         }
 
+        // eLearning
+
+        // Function to check if a certain quiz has been done by user
+        [Route("api/RnP/Survey/ContentQuizCompleted")]
+        [HttpGet]
+        public bool ContentQuizCompleted(int quizid, int userid)
+        {
+            if (db.CourseContentAnswers.Any(cc => cc.QuizId == quizid && cc.UserId == userid))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         // Targeted Groups lookup
 
         // Check if logged in user's email is in target group

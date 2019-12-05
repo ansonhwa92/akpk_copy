@@ -118,10 +118,45 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             {
                 ModelState.AddModelError("ProofOfApproval", "Please upload at least one (1) Proof Of Approval");
             }
-
             if (model.DigitalPublications.Count() == 0 && model.DigitalPublicationFiles.Count() == 0 && (model.Digitalcopy == true || model.HDcopy == true))
             {
                 ModelState.AddModelError("DigitalPublications", "Please upload the Digital copy of the Publication");
+            }
+            if (model.CoverPictureFiles.Count() > 0)
+            {
+                foreach (var myfile in model.CoverPictureFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("CoverPictures", "Publication image must be in png, jpg, jpeg, or gif format");
+                    }
+                }
+            }
+            if (model.AuthorPictureFiles.Count() > 0)
+            {
+                foreach (var myfile in model.AuthorPictureFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("AuthorPictures", "Author picture must be in png, jpg, jpeg, or gif format");
+                    }
+                }
+            }
+            if (model.ProofOfApprovalFiles.Count() > 0)
+            {
+                foreach (var myfile in model.ProofOfApprovalFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".txt") && (myext != ".pdf") && (myext != ".doc") && (myext != ".docx") && (myext != ".xls") && (myext != ".xlsx") && (myext != ".ppt") && (myext != ".pptx") && (myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("ProofOfApproval", "Proof of Approval document must be in txt, pdf, doc, docx, xls, xlsx, ppt, pptx, png, gif, jpg, or jpeg format");
+                    }
+                }
             }
 
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/TitleExists?id={null}&title={model.Title}&author={model.Author}");
@@ -342,10 +377,45 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             {
                 ModelState.AddModelError("ProofOfApproval", "Please upload at least one (1) Proof Of Approval");
             }
-
             if (model.DigitalPublications.Count() == 0 && model.DigitalPublicationFiles.Count() == 0 && (model.Digitalcopy == true || model.HDcopy == true))
             {
                 ModelState.AddModelError("DigitalPublications", "Please upload the Digital copy of the Publication");
+            }
+            if (model.CoverPictureFiles.Count() > 0)
+            {
+                foreach (var myfile in model.CoverPictureFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("CoverPictures", "Publication image must be in png, jpg, jpeg, or gif format");
+                    }
+                }
+            }
+            if (model.AuthorPictureFiles.Count() > 0)
+            {
+                foreach (var myfile in model.AuthorPictureFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("AuthorPictures", "Author picture must be in png, jpg, jpeg, or gif format");
+                    }
+                }
+            }
+            if (model.ProofOfApprovalFiles.Count() > 0)
+            {
+                foreach (var myfile in model.ProofOfApprovalFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".txt") && (myext != ".pdf") && (myext != ".doc") && (myext != ".docx") && (myext != ".xls") && (myext != ".xlsx") && (myext != ".ppt") && (myext != ".pptx") && (myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("ProofOfApproval", "Proof of Approval document must be in txt, pdf, doc, docx, xls, xlsx, ppt, pptx, png, gif, jpg, or jpeg format");
+                    }
+                }
             }
 
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Publication/TitleExists?id={model.ID}&title={model.Title}&author={model.Author}");
@@ -666,6 +736,18 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             if (model.ProofOfWithdrawal.Count() == 0 && model.ProofOfWithdrawalFiles.Count() == 0)
             {
                 ModelState.AddModelError("ProofOfWithdrawal", "Please upload at least one (1) Proof Of Withdrawal");
+            }
+            if (model.ProofOfWithdrawalFiles.Count() > 0)
+            {
+                foreach (var myfile in model.ProofOfWithdrawalFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".txt") && (myext != ".pdf") && (myext != ".doc") && (myext != ".docx") && (myext != ".xls") && (myext != ".xlsx") && (myext != ".ppt") && (myext != ".pptx") && (myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("ProofOfWithdrawal", "Proof of Withdrawal document must be in txt, pdf, doc, docx, xls, xlsx, ppt, pptx, png, gif, jpg, or jpeg format");
+                    }
+                }
             }
 
             if (ModelState.IsValid)

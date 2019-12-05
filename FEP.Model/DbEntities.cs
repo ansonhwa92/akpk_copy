@@ -208,6 +208,9 @@ namespace FEP.Model
         public DbSet<FreeTextAnswer> FreeTextAnswers { get; set; }
         public DbSet<ContentQuestion> ContentQuestions { get; set; }
 
+        // firus
+        public DbSet<CourseContentQuiz> CourseContentQuizzes { get; set; }
+        public DbSet<CourseContentAnswers> CourseContentAnswers { get; set; }
 
         // Elearning Discussion
         public DbSet<Discussion> Discussions { get; set; }

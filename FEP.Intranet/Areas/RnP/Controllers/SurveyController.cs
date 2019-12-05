@@ -146,6 +146,42 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             {
                 ModelState.AddModelError("ProofOfApproval", "Please upload at least one (1) Proof Of Approval");
             }
+            if (model.CoverPictureFiles.Count() > 0)
+            {
+                foreach (var myfile in model.CoverPictureFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("CoverPictures", "Survey picture must be in png, jpg, jpeg, or gif format");
+                    }
+                }
+            }
+            if (model.AuthorPictureFiles.Count() > 0)
+            {
+                foreach (var myfile in model.AuthorPictureFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("AuthorPictures", "Author picture must be in png, jpg, jpeg, or gif format");
+                    }
+                }
+            }
+            if (model.ProofOfApprovalFiles.Count() > 0)
+            {
+                foreach (var myfile in model.ProofOfApprovalFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".txt") && (myext != ".pdf") && (myext != ".doc") && (myext != ".docx") && (myext != ".xls") && (myext != ".xlsx") && (myext != ".ppt") && (myext != ".pptx") && (myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("ProofOfApproval", "Proof of Approval document must be in txt, pdf, doc, docx, xls, xlsx, ppt, pptx, png, gif, jpg, or jpeg format");
+                    }
+                }
+            }
 
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Survey/TitleExists?id={null}&title={model.Title}");
 
@@ -308,6 +344,42 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             if (model.ProofOfApproval.Count() == 0 && model.ProofOfApprovalFiles.Count() == 0)
             {
                 ModelState.AddModelError("ProofOfApproval", "Please upload at least one (1) Proof Of Approval");
+            }
+            if (model.CoverPictureFiles.Count() > 0)
+            {
+                foreach (var myfile in model.CoverPictureFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("CoverPictures", "Survey picture must be in png, jpg, jpeg, or gif format");
+                    }
+                }
+            }
+            if (model.AuthorPictureFiles.Count() > 0)
+            {
+                foreach (var myfile in model.AuthorPictureFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("AuthorPictures", "Author picture must be in png, jpg, jpeg, or gif format");
+                    }
+                }
+            }
+            if (model.ProofOfApprovalFiles.Count() > 0)
+            {
+                foreach (var myfile in model.ProofOfApprovalFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".txt") && (myext != ".pdf") && (myext != ".doc") && (myext != ".docx") && (myext != ".xls") && (myext != ".xlsx") && (myext != ".ppt") && (myext != ".pptx") && (myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("ProofOfApproval", "Proof of Approval document must be in txt, pdf, doc, docx, xls, xlsx, ppt, pptx, png, gif, jpg, or jpeg format");
+                    }
+                }
             }
 
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Survey/TitleExists?id={model.ID}&title={model.Title}");
@@ -1792,6 +1864,15 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             return 0;
+        }
+
+        // Download
+
+        // File download
+        [HttpGet]
+        public async Task<ActionResult> Download(int id)
+        {
+            return await FileMethod.DownloadFile(id);
         }
 
         // General SLA reminder

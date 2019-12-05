@@ -378,5 +378,114 @@ namespace FEP.WebApi.Api.eLearning
 
             return Ok(entities);
         }
+
+
+        // firus
+        [Route("api/eLearning/CourseContents/GetQuiz")]
+        [HttpGet]
+        public CreateOrEditContentQuizModel GetQuiz(int id, int courseid, int moduleid, string contenttitle)
+        {
+            var quiz = db.CourseContentQuizzes.Where(z => z.ContentId == id && z.CourseId == courseid && z.CourseModuleId == moduleid).Select(s => new CreateOrEditContentQuizModel
+            {
+                Id = s.Id,
+                Title = s.Title,
+                ContentId = s.ContentId,
+                CourseId = s.CourseId.Value,
+                CourseModuleId = s.CourseModuleId.Value,
+                PageTitle = contenttitle,
+                Contents = s.Contents
+            }).FirstOrDefault();
+
+            if (quiz != null)
+            {
+                return quiz;
+            }
+            else
+            {
+                var newquiz = new CreateOrEditContentQuizModel
+                {
+                    CourseId = courseid,
+                    CourseModuleId = moduleid,
+                    ContentId = id,
+                    Title = "",
+                    PageTitle = contenttitle,
+                    Contents = ""
+                    //Contents = "{ title: \"Content Quiz\" }"
+                };
+                return newquiz;
+            }
+        }
+
+        // firus
+        [Route("api/eLearning/CourseContents/SaveQuiz")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool SaveQuiz([FromBody] CreateOrEditContentQuizModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var quiz = db.CourseContentQuizzes.Where(z => z.Id == model.Id).FirstOrDefault();
+
+                if (quiz != null)
+                {
+                    quiz.Title = model.Title;
+                    quiz.Contents = model.Contents;
+                    db.Entry(quiz).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    var newquiz = new CourseContentQuiz
+                    {
+                        CourseId = model.CourseId,
+                        CourseModuleId = model.CourseModuleId,
+                        ContentId = model.ContentId,
+                        Title = model.Title,
+                        Contents = model.Contents
+                    };
+                    db.CourseContentQuizzes.Add(newquiz);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // firus
+        [Route("api/eLearning/CourseContents/SubmitAnswers")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool SubmitAnswers([FromBody] CreateOrEditContentAnswersModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var quizanswer = db.CourseContentAnswers.Where(a => a.QuizId == model.QuizId && a.UserId == model.UserId).FirstOrDefault();
+
+                if (quizanswer != null)
+                {
+                    quizanswer.Answers = model.Answers;
+                    db.Entry(quizanswer).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    var newquizanswer = new CourseContentAnswers
+                    {
+                        QuizId = model.QuizId,
+                        UserId = model.UserId,
+                        Answers = model.Answers
+                    };
+                    db.CourseContentAnswers.Add(newquizanswer);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 }

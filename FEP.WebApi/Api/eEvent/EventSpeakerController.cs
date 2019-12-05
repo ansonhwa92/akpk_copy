@@ -39,7 +39,6 @@ namespace FEP.WebApi.Api.eEvent
 			query = query.Where(s =>
 				(request.UserId == null || s.UserId == request.UserId)
 			 && (request.SpeakerType == null || s.SpeakerType == request.SpeakerType)
-			 //&& (request.DateAssigned == null || DbFunctions.TruncateTime(request.DateAssigned) == DbFunctions.TruncateTime(DateTime.Now))
 			 && (request.Email == null || s.User.Email.Contains(request.Email))
 			);
 
@@ -51,7 +50,6 @@ namespace FEP.WebApi.Api.eEvent
 				query = query.Where(p => p.User.Name.Contains(value)
 				|| p.SpeakerType.GetDisplayName().Contains(value)
 				|| p.User.Email.Contains(value)
-				//|| p.DateAssigned.ToString().Contains(value)
 				);
 			}
 

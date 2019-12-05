@@ -217,7 +217,7 @@ namespace FEP.Model.Migrations
 
                 db.Branch.AddOrUpdate(s => s.Name,
                     new Branch { State = state, Name = "HQ", Display = true }
-                    );
+					);
 
             }
 

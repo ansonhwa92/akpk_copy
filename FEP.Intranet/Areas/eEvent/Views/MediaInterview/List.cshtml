@@ -16,7 +16,7 @@
                 ajax: {
                     "type": "post",
 					@*"url": '@(WebApiURL)eEvent/MediaInterviewRequest/GetMediaList',*@
-					 "url": '@Url.Action("List", "MediaInterview", new { area = "eEvent" })',
+					 "url": '@Url.Action("List", "MediaInterview", new { area = "eEvent", CurrentUser.UserId })',
                     "data": function (filter) {
                         filter.MediaName = $('#Filter_MediaName').val();
                         //filter.ICNo = $('#Filter_ICNo').val();

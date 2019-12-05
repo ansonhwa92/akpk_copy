@@ -165,7 +165,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		// POST: PublicEvent/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Create(FEP.Intranet.Areas.eEvent.Models.CreatePublicEventModel model, string Submittype)
+		public async Task<ActionResult> Create(FEP.Intranet.Areas.eEvent.Models.CreatePublicEventModel model, string SubmittypeX)
 		{
 			if (model.Attachments.Count() == 0 && model.AttachmentFiles.Count() == 0)
 			{
@@ -239,12 +239,12 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				if (response.isSuccess)
 				{
 					await LogActivity(Modules.Event, "Create Public Event", model);
-					if (Submittype == "Save")
+					if (SubmittypeX == "Save")
 					{
 						TempData["SuccessMessage"] = "Public Event successfully created";
 						return RedirectToAction("List");
 					}
-					else if (Submittype == "Submit")
+					else if (SubmittypeX == "Submit")
 					{
 						return RedirectToAction("Details", "PublicEvent", new { area = "eEvent", id = response.Data });
 					}

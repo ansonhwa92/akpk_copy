@@ -163,7 +163,7 @@
 						<div class="row">
 							<div class="form-group col-lg-12">
 								@Html.FEPLabelFor(model => model.ContactNo)
-								@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "01xxxxxxxxx" } })
+								@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "601xxxxxxxxx" } })
 								@Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -218,10 +218,10 @@
 							</div>
 						</div>
 
-						<div class="border-top p-3 rounded-bottom">
+						@*<div class="border-top p-3 rounded-bottom">
 							<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("List")'>Back</a>
 							<a class="btn btn-secondary" href="#step3" data-toggle="tab">Next</a>
-						</div>
+						</div>*@
 					</div>
 
 					<div class="tab-pane" id="step3">
@@ -265,10 +265,10 @@
 							</div>
 						</div>
 
-						<div class="border-top p-3 rounded-bottom">
+						@*<div class="border-top p-3 rounded-bottom">
 							<a class="btn btn-default font-weight-normal mr-2" href="#step2">Back</a>
 							<a class="btn btn-secondary" href="#step4" data-toggle="tab">Next</a>
-						</div>
+						</div>*@
 					</div>
 
 					<div class="tab-pane" id="step4">
@@ -287,8 +287,9 @@
 
 						<hr/>
 						<div>
-							<input class="form-control" type="hidden" name="CreatorId" id="CreatorId" value="@CurrentUser.UserId">
-							<a class="btn btn-default font-weight-normal mr-2" href="#step3">Back</a>
+							@*<input class="form-control" type="hidden" name="CreatorId" id="CreatorId" value="@CurrentUser.UserId">*@
+							@*<a class="btn btn-default font-weight-normal mr-2" href="#step3">Back</a>*@
+							<a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
 							<button type="submit" class="btn btn-default" id="btnSave" name="Submittype" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save as Draft</button>
 							<button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Review for Submission</button>
 						</div>

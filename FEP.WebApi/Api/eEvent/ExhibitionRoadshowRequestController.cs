@@ -31,8 +31,9 @@ namespace FEP.WebApi.Api.eEvent
 		[HttpPost]
 		public IHttpActionResult Post(FilterExhibitionRoadshowRequestModel request)
 		{
+			var getuserid = db.User.Where(i => i.Id == request.UserId).Select(s => s.StaffProfile.BranchId).FirstOrDefault();
 
-			var query = db.EventExhibitionRequest.Where(u => u.Display);
+			var query = db.EventExhibitionRequest.Where(u => u.Display && (u.BranchId == getuserid || request.HasAccessCCD == true || (u.BranchId == getuserid && request.HasAccessCCD == true)));
 
 			var totalCount = query.Count();
 
@@ -47,7 +48,9 @@ namespace FEP.WebApi.Api.eEvent
 				var value = request.search.value.Trim();
 
 				query = query.Where(p => p.EventName.Contains(value)
-
+				|| p.Branch.Name.Contains(value)
+				|| p.RefNo.Contains(value)
+				|| p.ExhibitionStatus.GetDisplayName().Contains(value)
 				);
 			}
 

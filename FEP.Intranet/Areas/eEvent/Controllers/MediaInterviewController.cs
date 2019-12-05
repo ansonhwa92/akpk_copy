@@ -33,6 +33,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		[HttpPost]
 		public async Task<ActionResult> List(FilterMediaInterviewRequestApiModel filter)
 		{
+			filter.UserId = CurrentUser.UserId;
+			filter.HasAccessCCD = CurrentUser.HasAccess(UserAccess.EventAdministratorCCD);
+
 			var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"eEvent/MediaInterviewRequest/GetMediaList", filter);
 
 			return Content(JsonConvert.SerializeObject(response.Data), "application/json");

@@ -27,6 +27,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 		[HttpPost]
 		public async Task<ActionResult> List(FilterExhibitionRoadshowRequestModel filter)
 		{
+			filter.UserId = CurrentUser.UserId;
+			filter.HasAccessCCD = CurrentUser.HasAccess(UserAccess.EventAdministratorCCD);
+
 			var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"eEvent/ExhibitionRoadshowRequest/GetExhibitionList", filter);
 
 			return Content(JsonConvert.SerializeObject(response.Data), "application/json");

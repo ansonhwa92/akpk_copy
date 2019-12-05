@@ -388,7 +388,7 @@
 						<li class="step-item complete">
 							<a href="" class="step-link">
 								<span class="step-number">1</span>
-								<span class="step-title">List Of Event</span>
+								<span class="step-title">List Of Public Event</span>
 							</a>
 						</li>
 
@@ -560,27 +560,21 @@
 							</div>
 						</div>
 
-						@*<div class="row">
-			<div class="form-group col-lg-12">
-				@Html.FEPLabelFor(model => model.Fee)
-				@Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00" } })
-				@Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
-			</div>
-		</div>*@
 
-					<div class="row">
-						<div class="form-group col-lg-6">
-							@Html.FEPLabelFor(model => model.ParticipantAllowed)
-							@Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" } })
-							@Html.ValidationMessageFor(model => model.ParticipantAllowed, "", new { @class = "text-danger" })
-						</div>
 
-						<div class="form-group col-lg-6">
-							@Html.FEPLabelFor(model => model.SeatAllocated_EarlyBird)
-							@Html.EditorFor(model => model.SeatAllocated_EarlyBird, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" } })
-							@Html.ValidationMessageFor(model => model.SeatAllocated_EarlyBird, "", new { @class = "text-danger" })
+						<div class="row">
+							<div class="form-group col-lg-6">
+								@Html.FEPLabelFor(model => model.ParticipantAllowed)
+								@Html.EditorFor(model => model.ParticipantAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" } })
+								@Html.ValidationMessageFor(model => model.ParticipantAllowed, "", new { @class = "text-danger" })
+							</div>
+
+							<div class="form-group col-lg-6">
+								@Html.FEPLabelFor(model => model.SeatAllocated_EarlyBird)
+								@Html.EditorFor(model => model.SeatAllocated_EarlyBird, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" } })
+								@Html.ValidationMessageFor(model => model.SeatAllocated_EarlyBird, "", new { @class = "text-danger" })
+							</div>
 						</div>
-					</div>
 
 						<div class="row">
 							<div class="form-group col-lg-12">
@@ -614,10 +608,10 @@
 							</div>
 						</div>
 
-						<div class="border-top p-3 rounded-bottom">
-							<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("List")'>Back</a>
-							<a class="btn btn-secondary" href="#eventagenda" data-toggle="tab">Next</a>
-						</div>
+						@*<div class="border-top p-3 rounded-bottom">
+						<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("List")'>Back</a>
+						<a class="btn btn-secondary" href="#eventagenda" data-toggle="tab">Next</a>
+					</div>*@
 					</div>
 
 					<div class="tab-pane" id="eventagenda">
@@ -638,15 +632,15 @@
 
 						<div id="generatedAgenda"></div>
 
-						<hr />
-						<div>
-							@*<a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>*@
-							<a class="btn btn-default" href="#eventdetails" data-toggle="tab">Back</a>
-							<button type="submit" class="btn btn-primary btn-flat">Save</button>
-						</div>
+
 					</div>
 
 				</div>
+			</div>
+			<div class="border-left border-right border-bottom p-3 rounded-bottom">
+				<a href='@Url.Action("List")' class="btn btn-warning btn-flat">Cancel</a>
+				@*<a class="btn btn-default" href="#eventdetails" data-toggle="tab">Back</a>*@
+				<button type="submit" class="btn btn-primary btn-flat">Save</button>
 			</div>
 		</div>
 	</div>

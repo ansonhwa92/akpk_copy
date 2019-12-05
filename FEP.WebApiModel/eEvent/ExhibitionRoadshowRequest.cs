@@ -117,6 +117,9 @@ namespace FEP.WebApiModel.eEvent
 		[Display(Name = "ExRoadExhibitionStatusDesc", ResourceType = typeof(Language.Event))]
 		public string ExhibitionStatusDesc { get; set; }
 
+		public int? UserId { get; set; }
+
+		public bool? HasAccessCCD { get; set; }
 	}
 
 	public class ListExhibitionRoadshowRequestModel

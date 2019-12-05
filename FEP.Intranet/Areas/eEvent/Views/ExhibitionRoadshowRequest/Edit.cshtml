@@ -1,13 +1,13 @@
 ﻿@model FEP.Intranet.Areas.eEvent.Models.EditExhibitionRoadshowRequestModel
 
 @{
-    ViewBag.Title = "Exhibition/Roadshow Request";
-    Layout = "~/Views/Shared/_Layout1.cshtml";
+	ViewBag.Title = "Exhibition/Roadshow Request";
+	Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
 @section ContentScript{
 
-    <script type="text/javascript">
+	<script type="text/javascript">
 
         var flatPickrOption = {
             dateFormat: "l, d/m/Y",
@@ -124,7 +124,7 @@
                     alert("You didn't input any recommendation.")
                 }
             });
-            
+
 
             var rCounter = 0;
             $("#confirmSaveRecommendation").click(function () {
@@ -508,469 +508,434 @@
 
             $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
         })
-    </script>
+	</script>
 
 }
 
 @section Nav {
 
-    <div class="title_header">
-        <div class="title-header-container">
-            <div class="container">
-                <!-- if have button -->
-                <div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
-                <div class="header-col-left">
-                    <div id="breadcrumb">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Event Management</a></li>
-                                <li class="breadcrumb-item"><a href="#">Manage Exhibition/Roadshow Request</a></li>
-                                <li class="breadcrumb-item"><a href="#">Exhibition/Roadshow Request List</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <h1 class="page-title text-white">Exhibition/Roadshow Request Ref No: @Model.RefNo</h1>
-                    @*<div class="header-text">List of created event</div>*@
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="title_header">
+		<div class="title-header-container">
+			<div class="container">
+				<!-- if have button -->
+				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+				<div class="header-col-left">
+					<div id="breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
+								<li class="breadcrumb-item"><a href="#">Manage Exhibition/Roadshow Request</a></li>
+								<li class="breadcrumb-item"><a href="#">Exhibition/Roadshow Request List</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+							</ol>
+						</nav>
+					</div>
+					<h1 class="page-title text-white">Exhibition/Roadshow Request Ref No: @Model.RefNo</h1>
+					@*<div class="header-text">List of created event</div>*@
+				</div>
+			</div>
+		</div>
+	</div>
 
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", id = "target" }))
 {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.ExhibitionStatus)
+	@Html.AntiForgeryToken()
+	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+	@Html.HiddenFor(model => model.Id)
+	@Html.HiddenFor(model => model.ExhibitionStatus)
 
-    <div class="row">
-        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
-            <div class="sidebar-left">
-                <!-- Steps -->
-                <div class="sidebar-inner sticky">
-                    <ul class="steps steps-vertical">
+	<div class="row">
 
-                        <li class="step-item disabled">
-                            <a href="" class="step-link">
-                                <span class="step-number">1</span>
-                                <span class="step-title">Exhibition/Roadshow Request List</span>
-                            </a>
-                        </li>
+		<div class="col-xl-3 col-md-3 col-sm-4 my-2">
+			<div id="page-nav" class="sidebar-left page-nav">
+				<div data-perfect-scrollbar>
+					<div class="sidebar-inner">
+						<ul class="steps steps-vertical nav">
 
+							<li class="step-item disabled">
+								<a href="#step1" class="step-link" data-toggle="tab">
+									<span class="step-number">1</span>
+									<span class="step-title">List Of Exhibition/Roadshow Request</span>
+								</a>
+							</li>
 
-                        <li class="step-item active">
-                            <a href="" class="step-link">
-                                <span class="step-number">2</span>
-                                <span class="step-title">Fill up Exhibition Details</span>
-                            </a>
-                        </li>
+							<li class="step-item active">
+								<a href="#step2" class="step-link" data-toggle="tab">
+									<span class="step-number">2</span>
+									<span class="step-title">Fill Up Exhibition Details</span>
+								</a>
+							</li>
 
+							<li class="step-item active">
+								<a href="#step3" class="step-link" data-toggle="tab">
+									<span class="step-number">3</span>
+									<span class="step-title">Fill Up Event Details</span>
+								</a>
+							</li>
 
-                        <li class="step-item active">
-                            <a href="" class="step-link">
-                                <span class="step-number">3</span>
-                                <span class="step-title">Fill up Event Details</span>
-                            </a>
-                        </li>
+							<li class="step-item active">
+								<a href="#step4" class="step-link" data-toggle="tab">
+									<span class="step-number">4</span>
+									<span class="step-title">Fill Up Duty Roster</span>
+								</a>
+							</li>
 
-                        <li class="step-item active">
-                            <a href="#event_dutyroster" class="step-link" data-toggle="tab">
-                                <span class="step-number">5</span>
-                                <span class="step-title">Fill up Duty Roster</span>
-                            </a>
-                        </li>
+							<li class="step-item active">
+								<a href="#step5" class="step-link" data-toggle="tab">
+									<span class="step-number">5</span>
+									<span class="step-title">Fill Up Recommendation</span>
+								</a>
+							</li>
 
-                        <li class="step-item active">
-                            <a href="#event_recommendation" class="step-link" data-toggle="tab">
-                                <span class="step-number">6</span>
-                                <span class="step-title">Fill up Recommendation</span>
-                            </a>
-                        </li>
-
-                    </ul>
-                    <!-- End Steps -->
-                </div>
-
-
-                <br />
-
-            </div>
-        </div>
+						</ul>
+						<!-- End Steps -->
+					</div>
+				</div>
+			</div>
+		</div>
 
 
-
-        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-            <!-- Start Form -->
-            <div class="border-form rounded-top">
-                <div class="form-container">
+		<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+			<div class="border-form rounded-top">
+				<div class="form-container tab-content">
 
 
-                    <div class="mt-2 mb-4 px-3 pt-4">
-                        <h4 class="color-darkblue mb-0">Exhibition/Roadshow Request Details</h4>
-                        <h6 class="font-weight-normal">Review your request details before update</h6>
-                    </div>
-                    <!-- Start Tabbing Review Step for submission -->
-                    <div class="custom-tab px-3">
-                        <ul class="nav nav-line">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#exhibitiondetails" data-toggle="tab">Exhibition Details</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#eventdetails" data-toggle="tab">Event Details</a>
-                            </li>
-                            @*<li class="nav-item">
-                                    <a class="nav-link" href="#xxxdetails" data-toggle="tab">xxx Details</a>
-                                </li>*@
-                        </ul>
-                    </div>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="exhibitiondetails">
-                            <div class="form-container">
-                                <div class="sub-Title my-4">
-                                    Exhibition Details
-                                </div>
+					<div class="tab-pane active" id="step2">
+						<div class="mt-2 mb-4 pb-1">
+							<h4 class="color-darkblue mb-0">Fill up Exhibition Details</h4>
+							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        @Html.FEPLabelFor(model => model.ReceivedById)
-                                        @Html.DropDownListFor(model => model.ReceivedById, Model.ReceivedBys, "-Select Name-", htmlAttributes: new { @class = "form-control select2-area", style = "width: 100%" })
-                                        @Html.ValidationMessageFor(model => model.ReceivedById, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.ReceivedById)
+								@Html.DropDownListFor(model => model.ReceivedById, Model.ReceivedBys, "-Select Name-", htmlAttributes: new { @class = "form-control select2-area", style = "width: 100%" })
+								@Html.ValidationMessageFor(model => model.ReceivedById, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        @Html.FEPLabelFor(model => model.ReceivedDate)
-                                        @Html.EditorFor(model => model.ReceivedDate, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.ReceivedDate, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-6">
+								@Html.FEPLabelFor(model => model.ReceivedDate)
+								@Html.EditorFor(model => model.ReceivedDate, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.ReceivedDate, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        @Html.FEPLabelFor(model => model.Receive_Via)
-                                        @Html.EditorFor(model => model.Receive_Via, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Receive_Via, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.Receive_Via)
+								@Html.EditorFor(model => model.Receive_Via, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.Receive_Via, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        @Html.FEPLabelFor(model => model.Attachments)
-                                        @Html.Partial("_Attachment", Model.Attachments)
-                                        @Html.ValidationMessageFor(model => model.Attachments, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.Attachments)
+								@Html.Partial("_Attachment", Model.Attachments)
+								@Html.ValidationMessageFor(model => model.Attachments, "", new { @class = "text-danger" })
+							</div>
+						</div>
+					</div>
 
-                                @* ===Supporting Document=== *@
+					<div class="tab-pane" id="step3">
+						<div class="mb-4 mt-2 mr-auto">
+							<h4 class="color-darkblue mb-0">Fill up Event Details</h4>
+							<h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+						</div>
 
-                            </div>
-                            <!-- End Form -->
-                        </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.BranchId)
+								@Html.DropDownListFor(model => model.BranchId, Model.BranchList, "-Select Branch-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+								@Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                        <div class="tab-pane" id="eventdetails">
-                            <div class="form-container">
-                                <div class="sub-Title my-4">
-                                    Event Details
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.EventName)
+								@Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.EventName, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        @Html.FEPLabelFor(model => model.BranchId)
-                                        @Html.DropDownListFor(model => model.BranchId, Model.BranchList, "-Select Branch-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
-                                        @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.Organiser)
+								@Html.EditorFor(model => model.Organiser, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.Organiser, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        @Html.FEPLabelFor(model => model.EventName)
-                                        @Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.EventName, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.OrganiserEmail)
+								@Html.EditorFor(model => model.OrganiserEmail, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.OrganiserEmail, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        @Html.FEPLabelFor(model => model.Organiser)
-                                        @Html.EditorFor(model => model.Organiser, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Organiser, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.ContactNo)
+								@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "601xxxxxxxxx" } })
+								@Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        @Html.FEPLabelFor(model => model.OrganiserEmail)
-                                        @Html.EditorFor(model => model.OrganiserEmail, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.OrganiserEmail, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.AddressStreet1)
+								@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
+								@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        @Html.FEPLabelFor(model => model.ContactNo)
-                                        @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 2" } })
+								@Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        @Html.FEPLabelFor(model => model.AddressStreet1)
-                                        @Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
-                                        @Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-6">
+								@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode" } })
+								@Html.ValidationMessageFor(model => model.AddressPoscode, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-6">
+								@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
+								@Html.ValidationMessageFor(model => model.AddressCity, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        @Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 2" } })
-                                        @Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(model => model.State)
+								@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+								@Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        @Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode" } })
-                                        @Html.ValidationMessageFor(model => model.AddressPoscode, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        @Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
-                                        @Html.ValidationMessageFor(model => model.AddressCity, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-6">
+								@Html.FEPLabelFor(model => model.StartDate)
+								@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start" } })
+								@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-6">
+								@Html.FEPLabelFor(model => model.EndDate)
+								@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End" } })
+								@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        @Html.FEPLabelFor(model => model.State)
-                                        @Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
-                                        @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-6">
+								@Html.FEPLabelFor(model => model.StartTime)
+								@Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Date Start" } })
+								@Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-6">
+								@Html.FEPLabelFor(model => model.EndTime)
+								@Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Date End" } })
+								@Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        @Html.FEPLabelFor(model => model.StartDate)
-                                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start" } })
-                                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        @Html.FEPLabelFor(model => model.EndDate)
-                                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End" } })
-                                        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-6">
+								@Html.FEPLabelFor(model => model.ParticipationRequirement, htmlAttributes: new { @class = "control-label col-md-12" })
+								@Html.EditorFor(model => model.ParticipationRequirement, new { htmlAttributes = new { @class = "form-control", @placeholder = "No. of Participant" } })
+								@Html.ValidationMessageFor(model => model.ParticipationRequirement, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group col-lg-6">
+								@Html.LabelFor(model => model.ExhibitionStatus)
+								@Html.EditorFor(model => model.ExhibitionStatusDesc, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+							</div>
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        @Html.FEPLabelFor(model => model.StartTime)
-                                        @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Date Start" } })
-                                        @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        @Html.FEPLabelFor(model => model.EndTime)
-                                        @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Date End" } })
-                                        @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+						<div class="row">
+							<div class="form-group col-lg-12">
+								@Html.FEPLabelFor(m => m.NomineeId)
+								@Html.ListBoxFor(m => m.NomineeId, Model.Nominees, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
+								@Html.ValidationMessageFor(m => m.NomineeId)
+							</div>
+						</div>
+					</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        @Html.FEPLabelFor(model => model.ParticipationRequirement, htmlAttributes: new { @class = "control-label col-md-12" })
-                                        @Html.EditorFor(model => model.ParticipationRequirement, new { htmlAttributes = new { @class = "form-control", @placeholder = "No. of Participant" } })
-                                        @Html.ValidationMessageFor(model => model.ParticipationRequirement, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        @Html.LabelFor(model => model.ExhibitionStatus)
-                                        @Html.EditorFor(model => model.ExhibitionStatusDesc, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    </div>
-                                </div>
+					<div class="tab-pane" id="step4">
+						<div class="mt-2 mb-4 pb-1">
+							<h4 class="color-darkblue mb-0">Fill up Duty Roster Details</h4>
+							<a class="btn btn-default btn-sm mw-auto" href="#" id="AddRosterBtn">
+								<div id="AddRosterBtnIcon"><i class="la la-edit color-secondary"></i></div>
+								<div id="AddRosterBtnCaption">&nbsp;&nbsp;Edit</div>
+							</a>
+							@Html.HiddenFor(model => model.DutyRosterJSON)
+						</div>
 
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        @Html.FEPLabelFor(m => m.NomineeId)
-                                        @Html.ListBoxFor(m => m.NomineeId, Model.Nominees, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
-                                        @Html.ValidationMessageFor(m => m.NomineeId)
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Form -->
-                            <!-- Action Button -->
-                            <!-- End Action Button -->
-                        </div>
+						<!-- Table -->
+						<!-- Table -->
+						<table class="table tableStyle1 tabledata table-responsive-xs-plus" id="finalTable">
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Time</th>
+									<th>Officers in-charge</th>
+								</tr>
+							</thead>
 
-                        <div class="tab-pane" id="event_dutyroster">
-                            <div class="d-flex align-items-center mb-4 mt-2">
-                                <h4 class="color-darkblue mr-auto mb-0">Event Duty Roster<br><span class="small">View proposed duty roster for this event below.</span></h4>
-                                <a class="btn btn-default btn-sm mw-auto" href="#" id="AddRosterBtn">
-                                    <div id="AddRosterBtnIcon"><i class="la la-edit color-secondary"></i></div>
-                                    <div id="AddRosterBtnCaption">&nbsp;&nbsp;Edit</div>
-                                </a>
-                                @Html.HiddenFor(model => model.DutyRosterJSON)
-                            </div>
+							<tbody></tbody>
+						</table>
 
-                            <!-- Table -->
-                            <!-- Table -->
-                            <table class="table tableStyle1 tabledata table-responsive-xs-plus" id="finalTable">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>Officers in-charge</th>
-                                    </tr>
-                                </thead>
+					</div>
 
-                                <tbody></tbody>
-                            </table>
+					<div class="tab-pane" id="step5">
+						<div class="mt-2 mb-4 pb-1">
+							<h4 class="color-darkblue mb-0">Fill up Recommendation Details</h4>
+							<a class="btn btn-default btn-sm mw-auto" href="#" id="AddRecommendationBtn">
+								<div id="AddRecommendationBtnIcon"><i class="la la-plus color-secondary"></i></div>
+								<div id="AddRecommendationBtnCaption">&nbsp;&nbsp;Add New</div>
+							</a>
+							@Html.HiddenFor(model => model.RecommendationsJSON)
+						</div>
+						<!-- Table -->
+						<table class="table tableStyle1 tabledata table-responsive-xs-plus" id="recommendationTable">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Recommendation</th>
+									<th></th>
+								</tr>
+							</thead>
 
-                        </div>
-                        <div class="tab-pane" id="event_recommendation">
-                            <div class="d-flex align-items-center mb-4 mt-2">
-                                <h4 class="color-darkblue mr-auto mb-0">Event Recommendations<br><span class="small">View proposed recommendations for this event below.</span></h4>
-                                <a class="btn btn-default btn-sm mw-auto" href="#" id="AddRecommendationBtn">
-                                    <div id="AddRecommendationBtnIcon"><i class="la la-plus color-secondary"></i></div>
-                                    <div id="AddRecommendationBtnCaption">&nbsp;&nbsp;Add New</div>
-                                </a>
-                                @Html.HiddenFor(model => model.RecommendationsJSON)
-                            </div>
-                            <!-- Table -->
-                            <table class="table tableStyle1 tabledata table-responsive-xs-plus" id="recommendationTable">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Recommendation</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
+							<tbody></tbody>
+						</table>
 
-                                <tbody></tbody>
-                            </table>
-                        </div>
+						<hr />
+						<div>
+							<a href='@Url.Action("List")' class="btn btn-default btn-flat">Cancel</a>
+							<button class="btn btn-secondary" type="submit">Save</button>
+						</div>
+					</div>
 
-                    </div>
-                </div>
-            </div>
-
-            <div class="border-left border-right border-bottom p-3 rounded-bottom">
-                <a href='@Url.Action("List")' class="btn btn-default btn-flat">Cancel</a>
-                <button class="btn btn-secondary" type="submit">Save</button>
-            </div>
-
-        </div>
-    </div>
+				</div>
+			</div>
+		</div>
+	</div>
 }
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-lg">
+	<div class="modal-dialog modal-lg">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="mr-auto">
-                    <h4 class="color-darkblue mb-0">Add Duty Roster</h4>
-                    <h6 class="font-weight-normal">Assign tasks, time, and date to officers in-charge.</h6>
-                </div>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <input type="hidden" id="exhibitionId" name="exhibitionId" value="" />
-            </div>
-            <div class="modal-body">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="mr-auto">
+					<h4 class="color-darkblue mb-0">Add Duty Roster</h4>
+					<h6 class="font-weight-normal">Assign tasks, time, and date to officers in-charge.</h6>
+				</div>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<input type="hidden" id="exhibitionId" name="exhibitionId" value="" />
+			</div>
+			<div class="modal-body">
 
-                <div class="row">
-                    <div class="col-lg-3 pr-1">
-                        <div class="dutyRosterDatePicker">
-                            <input type="text" class="form-control" id="DutyDate" name="DutyDate" placeholder="Select Date.." data-input>
-                            @*<input class="form-control flatpickr-input valid" data-input="flatpickr" data-val="true" placeholder="Pick Date"
-                                data-val-date="The field Duty Date must be a date." data-val-required="Please insert Duty Date"
-                                id="DutyDate" name="DutyDate" type="text" value="" readonly="readonly"
-                                aria-describedby="ReceivedDate-error" aria-invalid="false">*@
-                            @*<a class="input-button calendar" title="toggle" data-toggle>
-                                    <i class="la la-calendar"></i>
-                                </a>
-                                <a class="input-button clear" title="clear" data-clear>
-                                    <i class="la la-times"></i>
-                                </a>*@
-                        </div>
-                    </div>
-                    <div class="col-lg-2 pl-0 pr-1">
-                        <input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"
-                               data-val-required="Please insert Start Time"
-                               id="DutyStartTime" name="DutyStartTime" placeholder="Start"
-                               type="text" value="" readonly="readonly" aria-describedby="StartTime-error" aria-invalid="false">
-                    </div>
-                    <div class="col-lg-2 pl-0 pr-1">
-                        <input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"
-                               data-val-required="Please insert End Time"
-                               id="DutyEndTime" name="DutyEndTime" placeholder="End"
-                               type="text" value="" readonly="readonly" aria-describedby="EndTime-error" aria-invalid="false">
-                    </div>
-                    <div class="col-lg-4 pl-0 pr-1">
-                        <div id="personList"></div>
-                    </div>
-                    <div class="col-lg-1 pl-0">
-                        <a class="btn btn-secondary btn-sm mw-auto mh-100" href="#" id="AddRowBtn"><i class="la la-plus"></i></a>
-                    </div>
-                </div>
-                <!-- Table -->
-                <table class="table tableStyle1 tabledata" id="floatTable">
-                    <thead>
-                        <tr>
-                            <th width="40%">Date</th>
-                            <th>Time</th>
-                            <th></th>
-                            <th width="40%">Officers in-charge</th>
-                        </tr>
-                    </thead>
+				<div class="row">
+					<div class="col-lg-3 pr-1">
+						<div class="dutyRosterDatePicker">
+							<input type="text" class="form-control" id="DutyDate" name="DutyDate" placeholder="Select Date.." data-input>
+							@*<input class="form-control flatpickr-input valid" data-input="flatpickr" data-val="true" placeholder="Pick Date"
+								data-val-date="The field Duty Date must be a date." data-val-required="Please insert Duty Date"
+								id="DutyDate" name="DutyDate" type="text" value="" readonly="readonly"
+								aria-describedby="ReceivedDate-error" aria-invalid="false">*@
+							@*<a class="input-button calendar" title="toggle" data-toggle>
+									<i class="la la-calendar"></i>
+								</a>
+								<a class="input-button clear" title="clear" data-clear>
+									<i class="la la-times"></i>
+								</a>*@
+						</div>
+					</div>
+					<div class="col-lg-2 pl-0 pr-1">
+						<input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"
+							   data-val-required="Please insert Start Time"
+							   id="DutyStartTime" name="DutyStartTime" placeholder="Start"
+							   type="text" value="" readonly="readonly" aria-describedby="StartTime-error" aria-invalid="false">
+					</div>
+					<div class="col-lg-2 pl-0 pr-1">
+						<input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"
+							   data-val-required="Please insert End Time"
+							   id="DutyEndTime" name="DutyEndTime" placeholder="End"
+							   type="text" value="" readonly="readonly" aria-describedby="EndTime-error" aria-invalid="false">
+					</div>
+					<div class="col-lg-4 pl-0 pr-1">
+						<div id="personList"></div>
+					</div>
+					<div class="col-lg-1 pl-0">
+						<a class="btn btn-secondary btn-sm mw-auto mh-100" href="#" id="AddRowBtn"><i class="la la-plus"></i></a>
+					</div>
+				</div>
+				<!-- Table -->
+				<table class="table tableStyle1 tabledata" id="floatTable">
+					<thead>
+						<tr>
+							<th width="40%">Date</th>
+							<th>Time</th>
+							<th></th>
+							<th width="40%">Officers in-charge</th>
+						</tr>
+					</thead>
 
-                    <tbody>
-                    </tbody>
-                </table>
+					<tbody></tbody>
+				</table>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmSaveRoster">Save and Close</button>
-            </div>
-        </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmSaveRoster">Save and Close</button>
+			</div>
+		</div>
 
-    </div>
+	</div>
 </div>
 
 <!-- Modal Recommendation-->
 <div class="modal fade" id="recommendationModal" role="dialog">
-    <div class="modal-dialog modal-lg">
+	<div class="modal-dialog modal-lg">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="mr-auto">
-                    <h4 class="color-darkblue mb-0">Add Recommendation</h4>
-                    <h6 class="font-weight-normal">Add your recommendation here.</h6>
-                </div>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <input type="hidden" id="recommendationId" name="recommendationId" value="" />
-            </div>
-            <div class="modal-body">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="mr-auto">
+					<h4 class="color-darkblue mb-0">Add Recommendation</h4>
+					<h6 class="font-weight-normal">Add your recommendation here.</h6>
+				</div>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<input type="hidden" id="recommendationId" name="recommendationId" value="" />
+			</div>
+			<div class="modal-body">
 
-                <div class="row">
-                    <div class="form-group col-lg-12">
-                        @Html.Label("Recommendation")<span class="text-danger"> *</span>
-                        <input class="form-control text-box single-line" data-val="true"
-                               data-val-required="Please Insert Recommendation" id="recommendationInput" name="recommendationInput" placeholder="Be clear and descriptive" type="text" value="">
-                    </div>
-                </div>
+				<div class="row">
+					<div class="form-group col-lg-12">
+						@Html.Label("Recommendation")<span class="text-danger"> *</span>
+						<input class="form-control text-box single-line" data-val="true"
+							   data-val-required="Please Insert Recommendation" id="recommendationInput" name="recommendationInput" placeholder="Be clear and descriptive" type="text" value="">
+					</div>
+				</div>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmUpdateRecommendation">Update</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmSaveRecommendation">Save and Close</button>
-            </div>
-        </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmUpdateRecommendation">Update</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmSaveRecommendation">Save and Close</button>
+			</div>
+		</div>
 
-    </div>
+	</div>
 </div>

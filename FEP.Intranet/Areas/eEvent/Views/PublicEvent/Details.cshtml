@@ -10,12 +10,6 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 
-			$('#btnSubmit').click(function (event) {
-                var pid = $(this).data('pubid');
-                var url = '@Url.Action("SubmitToVerify", "PublicEvent", new { area = "eEvent" })?id=' + pid;
-                window.location = url;
-            });
-
 			 $('#tab_details').click(function () {
                 $('#publicevent-details').show();
 				 $('#amendment-history').hide();
@@ -206,6 +200,7 @@
 	<div class="col-xl-3 col-md-3 col-sm-4 my-2">
 		<div id="page-nav" class="sidebar-left page-nav">
 			<div data-perfect-scrollbar>
+
 				<div class="page-section">
 					<h6 class="x-small color-darkblue"><i class="la la-info-circle font-icon color-secondary align-bottom"></i> Request Information</h6>
 					<ul class="nav page-nav__menu">
@@ -220,7 +215,6 @@
 						</li>
 					</ul>
 				</div>
-
 				<br />
 				<div>
 					@if (Model.publicevent.EventStatus == FEP.Model.EventStatus.New && (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorFED)))
@@ -283,7 +277,6 @@
 						   class="btn btn-success btn-block mb-2">Publish</a>
 					}
 				</div>
-
 			</div>
 		</div>
 	</div>
@@ -293,6 +286,7 @@
 		<div class="border-form rounded-top">
 			<div class="form-container tab-content">
 				<div class="tab-pane active" id="publicevent-details">
+
 					<div class="d-flex align-items-center mb-4 mt-2">
 						<h4 class="color-darkblue mr-auto mb-0">Public Event Details<br><span class="small">Review public event details below.</span></h4>
 						@if (Model.publicevent.EventStatus == FEP.Model.EventStatus.New || Model.publicevent.EventStatus == FEP.Model.EventStatus.RequireAmendment

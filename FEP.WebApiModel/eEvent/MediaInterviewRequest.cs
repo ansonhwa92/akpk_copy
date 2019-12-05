@@ -119,6 +119,10 @@ namespace FEP.WebApiModel.MediaInterview
 
 		[Display(Name = "Reference No")]
 		public string RefNo { get; set; }
+
+		public int? UserId { get; set; }
+
+		public bool? HasAccessCCD { get; set; }
 	}
 
 	public class DetailsMediaInterviewRequestApiModel : MediaInterviewRequestApiModel

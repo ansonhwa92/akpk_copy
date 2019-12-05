@@ -31,7 +31,9 @@ namespace FEP.WebApi.Api.eEvent
 		[HttpPost]
 		public IHttpActionResult Post(FilterMediaInterviewRequestApiModel request)
 		{
-			var query = db.EventMediaInterviewRequest.Where(u => u.Display);
+			var getuserid = db.User.Where(i => i.Id == request.UserId).Select(s => s.StaffProfile.BranchId).FirstOrDefault();
+
+			var query = db.EventMediaInterviewRequest.Where(u => u.Display && (u.BranchId == getuserid || request.HasAccessCCD == true || (u.BranchId == getuserid && request.HasAccessCCD == true)));
 
 			var totalCount = query.Count();
 
@@ -46,9 +48,9 @@ namespace FEP.WebApi.Api.eEvent
 				var value = request.search.value.Trim();
 
 				query = query.Where(p => p.MediaName.Contains(value)
-				//|| p.ICNo.Contains(value)
-				//|| p.Email.Contains(value)
-				//|| p.MobileNo.Contains(value)
+				|| p.Branch.Name.Contains(value)
+				|| p.RefNo.Contains(value)
+				|| p.MediaStatus.GetDisplayName().Contains(value)
 				);
 			}
 
@@ -920,14 +922,14 @@ namespace FEP.WebApi.Api.eEvent
 		{
 			var phistory = db.EventMediaInterviewApproval.Join(db.User, pa => pa.ApproverId, u => u.Id, (pa, u) => new { pa.MediaId, pa.Level, pa.ApproverId, pa.ApprovedDate, pa.Status, pa.Remark, UserName = u.Name })
 				.Where(pa => pa.MediaId == id && pa.Status != EventApprovalStatus.None).OrderByDescending(pa => pa.ApprovedDate).Select(s => new MediaInterviewApprovalHistoryModel
-			{
-				Level = s.Level,
-				ApproverId = s.ApproverId,
-				ApprovalDate = s.ApprovedDate,
-				UserName = s.UserName,
-				Status = s.Status,
-				Remarks = s.Remark
-			}).ToList();
+				{
+					Level = s.Level,
+					ApproverId = s.ApproverId,
+					ApprovalDate = s.ApprovedDate,
+					UserName = s.UserName,
+					Status = s.Status,
+					Remarks = s.Remark
+				}).ToList();
 
 			return phistory;
 		}
@@ -1017,7 +1019,7 @@ namespace FEP.WebApi.Api.eEvent
 				   BranchId = i.BranchId,
 				   BranchName = i.Branch.Name
 			   }).FirstOrDefault();
-			
+
 			model.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.MediaInterview && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 			model.RepUserId = db.MediaRepresentative.Where(r => r.MediaId == id).Select(s => s.UserId).ToArray();
 

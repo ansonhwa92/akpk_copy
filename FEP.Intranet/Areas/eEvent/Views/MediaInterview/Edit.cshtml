@@ -81,10 +81,11 @@
 				<div data-perfect-scrollbar>
 					<div class="sidebar-inner">
 						<ul class="steps steps-vertical nav">
-							<li class="step-item complete">
+
+							<li class="step-item disabled">
 								<a href="#step1" class="step-link" data-toggle="tab">
 									<span class="step-number">1</span>
-									<span class="step-title">Select Event Category</span>
+									<span class="step-title">List Of Media Interview</span>
 								</a>
 							</li>
 							<li class="step-item active">
@@ -122,6 +123,7 @@
 			<!-- Start Form -->
 			<div class="border-form rounded-top">
 				<div class="form-container tab-content">
+
 					<div class="tab-pane active" id="step2">
 						<div class="mt-2 mb-4 pb-1">
 							<h4 class="color-darkblue mb-0">Fill up Invitation Details</h4>
@@ -163,7 +165,7 @@
 						<div class="row">
 							<div class="form-group col-lg-12">
 								@Html.FEPLabelFor(model => model.ContactNo)
-								@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control" , @placeholder = "01xxxxxxxxx" } })
+								@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control" , @placeholder = "601xxxxxxxxx" } })
 								@Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -218,10 +220,10 @@
 							</div>
 						</div>
 
-						<div class="border-top p-3 rounded-bottom">
+						@*<div class="border-top p-3 rounded-bottom">
 							<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("List")'>Back</a>
 							<a class="btn btn-secondary" href="#step3" data-toggle="tab">Next</a>
-						</div>
+						</div>*@
 					</div>
 
 					<div class="tab-pane" id="step3">
@@ -265,10 +267,10 @@
 							</div>
 						</div>
 
-						<div class="border-top p-3 rounded-bottom">
+						@*<div class="border-top p-3 rounded-bottom">
 							<a class="btn btn-default font-weight-normal mr-2" href="#step2">Back</a>
 							<a class="btn btn-secondary" href="#step4" data-toggle="tab">Next</a>
-						</div>
+						</div>*@
 					</div>
 
 					<div class="tab-pane" id="step4">
@@ -295,6 +297,5 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 }

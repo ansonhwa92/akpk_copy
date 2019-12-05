@@ -36,80 +36,123 @@ namespace FEP.WebApi.Api.eLearning
 
             if (model.ReceiverType == ReceiverType.UserIds || model.ReceiverType == ReceiverType.Both)
             {
-                // find receivers
-                if (model.ReceiverId == null || model.ReceiverId.Count() > 0)
+                switch (model.NotificationType)
                 {
-                    switch (model.NotificationType)
-                    {
-                        case NotificationType.Verify_Courses_Creation:
+                    case NotificationType.Verify_Courses_Creation:
+                        receivers = await GetUserIds(UserAccess.CourseVerify);
 
-                            receivers = await GetUserIds(UserAccess.CourseVerify);
+                        break;
 
-                            break;
+                    case NotificationType.Approve_Courses_Creation_Approver1:
+                        receivers = await GetUserIds(UserAccess.CourseApproval1);
+                        break;
 
-                        case NotificationType.Approve_Courses_Creation_Approver1:
+                    case NotificationType.Approve_Courses_Creation_Approver2:
+                        receivers = await GetUserIds(UserAccess.CourseApproval2);
+                        break;
 
-                            receivers = await GetUserIds(UserAccess.CourseApproval1);
-                            break;
+                    case NotificationType.Approve_Courses_Creation_Approver3:
+                        receivers = await GetUserIds(UserAccess.CourseApproval3);
+                        break;
 
-                        case NotificationType.Approve_Courses_Creation_Approver2:
+                    case NotificationType.Course_Amendment:
+                        receivers = await GetUserIds(UserAccess.CourseCreate);
+                        break;
 
-                            receivers = await GetUserIds(UserAccess.CourseApproval2);
-                            break;
+                    case NotificationType.Course_Approved:
+                        receivers = await GetUserIds(UserAccess.CourseCreate);
+                        break;
 
-                        case NotificationType.Approve_Courses_Creation_Approver3:
+                    case NotificationType.Course_Assigned_To_Facilitator:
+                        //get trainer assigned to the course
+                        receivers = model.Receivers;
+                        break;
 
-                            receivers = await GetUserIds(UserAccess.CourseApproval3);
-                            break;
+                    case NotificationType.Course_Student_Enrolled:
+                        receivers = await GetCourseTrainers(model.Id);
 
-                        case NotificationType.Course_Amendment:
+                        // get student name
+                        var user = await db.User.FindAsync(model.SenderId);
+                        model.ParameterListToSend.LearnerName = user != null ? user.Name : "";
 
-                            receivers = await GetUserIds(UserAccess.CourseCreate);
-                            break;
+                        break;
 
-                        case NotificationType.Course_Approved:
+                    case NotificationType.Notify_Admin_Participant_Withdraw:
+                        var admin = await db.Courses.FindAsync(model.Id);
 
-                            receivers = await GetUserIds(UserAccess.CourseCreate);
-                            break;
+                        if (admin != null)
+                            receivers.Add(admin.CreatedBy);
 
-                        case NotificationType.Course_Assigned_To_Facilitator:
+                        break;
 
-                            //get trainer assigned to the course
-                            receivers = model.Receivers;
-                            break;
+                    case NotificationType.Notify_Self_Withdraw_From_Course:
+                    case NotificationType.Verify_Courses_Creation_Self:
+                    case NotificationType.Approve_Courses_Creation_Approver_Self:
+                    case NotificationType.Course_Amendment_Self:
 
-                        case NotificationType.Course_Student_Enrolled:
+                        receivers.Add(model.SenderId);
 
-                            // receivers - all trainer for that course
-                            receivers = await GetCourseTrainers(model.Id);
+                        break;
 
-                            // get student name
-                            var user = await db.User.FindAsync(model.LearnerUserId);
-                            model.ParameterListToSend.LearnerName = user != null ? user.Name : "";
+                    case NotificationType.Course_Approved_Others:
 
-                            break;
+                        receivers.AddRange(await GetUserIds(UserAccess.CourseVerify));
 
-                        case NotificationType.Notify_Admin_Participant_Withdraw:
+                        break;
 
-                            var admin = await db.Courses.FindAsync(model.Id);
+                    case NotificationType.Course_Approved_Self:
 
-                            if (admin != null)
-                                receivers.Add(admin.CreatedBy);
+                        receivers.Add(model.SenderId);
+                        break;
 
-                            break;
+                    case NotificationType.Course_Publish:
 
-                        case NotificationType.Notify_Self_Withdraw_From_Course:
+                        receivers.Add(model.SenderId);
+                        receivers.AddRange(await GetUserIds(UserAccess.CourseVerify));
+                        receivers.AddRange(await GetUserIds(UserAccess.CourseApproval1));
+                        receivers.AddRange(await GetUserIds(UserAccess.CourseApproval2));
+                        receivers.AddRange(await GetUserIds(UserAccess.CourseApproval3));
+                        break;
 
-                            receivers.Add(model.LearnerUserId);
+                    case NotificationType.Course_Cancelled:
 
-                            break;
+                        receivers.Add(model.SenderId);
 
-                        default:
-                            break;
-                    }
+                        var approval = db.CourseApprovals.Where(x => x.CourseId == model.Id).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
 
-                    model.ReceiverId = receivers;
+                        if (approval != null)
+                        {
+                            if (approval.ApprovalLevel == ApprovalLevel.Verifier)
+                            {
+                                receivers.AddRange(await GetUserIds(UserAccess.CourseVerify));
+                            }
+
+                            if (approval.ApprovalLevel == ApprovalLevel.Approver1)
+                            {
+                                receivers.AddRange(await GetUserIds(UserAccess.CourseApproval1));
+                            }
+
+                            if (approval.ApprovalLevel == ApprovalLevel.Approver2)
+                            {
+                                receivers.AddRange(await GetUserIds(UserAccess.CourseApproval2));
+                            }
+
+                            if (approval.ApprovalLevel == ApprovalLevel.Approver3)
+                            {
+                                receivers.AddRange(await GetUserIds(UserAccess.CourseApproval3));
+                            }
+                        }
+
+                        break;
+
+                    default:
+                        break;
                 }
+
+                if (model.ReceiverId == null)
+                    model.ReceiverId = new List<int>();
+
+                model.ReceiverId.AddRange(receivers);
             }
 
             if (model.Type == typeof(Course))
@@ -122,32 +165,7 @@ namespace FEP.WebApi.Api.eLearning
                 }
             }
 
-            CreateAutoReminder createdAutoReminder = new CreateAutoReminder
-            {
-                NotificationCategory = model.NotificationCategory,
-                NotificationType = model.NotificationType,
-                ParameterListToSend = model.ParameterListToSend,
-                ReceiverId = model.ReceiverId,
-                StartNotificationDate = DateTime.Now
-            };
-
-            //var emailToSend = new CourseEmailQueue
-            //{
-            //    NotificationCategory = model.NotificationCategory.ToString(),
-            //    NotificationType = model.NotificationType.ToString(),
-            //    CourseId = model.Id,
-            //    Parameters = JsonConvert.SerializeObject(model.ParameterListToSend),
-            //    Receivers = model.ReceiverId.ToString(),
-            //};
-
-            //db.CourseEmailQueue.Add(emailQueue);
-
             await db.SaveChangesAsync();
-
-            //return Ok();
-
-            // TEMPORARILY DISABLE BELOW BECAUSE IT REQUIRES CONNECTION TO THE EMAIL SERVER WHICH WILL
-            // SLOW DOWN THE TESTING.. SO..., TO ENABLE comment Return Ok above
 
             var controller = new SLAReminderController();
 
@@ -155,6 +173,15 @@ namespace FEP.WebApi.Api.eLearning
             {
                 if (model.IsNeedRemainder)
                 {
+                    CreateAutoReminder createdAutoReminder = new CreateAutoReminder
+                    {
+                        NotificationCategory = model.NotificationCategory,
+                        NotificationType = model.NotificationType,
+                        ParameterListToSend = model.ParameterListToSend,
+                        ReceiverId = model.ReceiverId,
+                        StartNotificationDate = DateTime.Now
+                    };
+
                     var result = await controller.GenerateAutoNotificationReminder(createdAutoReminder);
 
                     var response = result as OkNegotiatedContentResult<ReminderResponse>;

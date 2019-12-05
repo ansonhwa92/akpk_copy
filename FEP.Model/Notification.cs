@@ -172,6 +172,9 @@ namespace FEP.Model
         [Display(Name = "Verify Courses Creation")]
         Verify_Courses_Creation,
 
+        [Display(Name = "Verify Courses Creation To Self")]
+        Verify_Courses_Creation_Self,
+
         [Display(Name = "Verify Courses Published Change")]
         Verify_Courses_Published_Change,
 
@@ -182,6 +185,9 @@ namespace FEP.Model
         Verify_Courses_Participant_Withdraw,
 
         //Approve Courses
+        [Display(Name = "Approve Courses Creation Self")]
+        Approve_Courses_Creation_Approver_Self,
+
         [Display(Name = "Approve Courses Creation By First Approver")]
         Approve_Courses_Creation_Approver1,
 
@@ -204,11 +210,26 @@ namespace FEP.Model
         [Display(Name = "Course Is Approved")]
         Course_Approved,
 
+        [Display(Name = "Course Is Approved, Send to Others ")]
+        Course_Approved_Others,
+
+        [Display(Name = "Course Is Approved, Send to Self ")]
+        Course_Approved_Self,
+
         [Display(Name = "Course Requires Amendment")]
         Course_Amendment,
 
+        [Display(Name = "Course Requires Amendment Self")]
+        Course_Amendment_Self,
+
+        [Display(Name = "Course Is Cancelled")]
+        Course_Cancelled,
+
         [Display(Name = "Invitation To Enroll To Course")]
         Course_Invitation,
+
+        [Display(Name = "Publish Course")]
+        Course_Publish,
 
         // Course - Facilitators
         [Display(Name = "Assigned To Course")]

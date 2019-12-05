@@ -31,7 +31,7 @@ namespace FEP.Model.eLearning
 
         // Total duration of the course, 10 days? 10 weeeks. Used with DurationType
         [Range(0.5, 1000, ErrorMessage = "Invalid Value")]
-        public decimal? Duration { get; set; } 
+        public decimal? Duration { get; set; }
 
         public DurationType DurationType { get; set; }
 
@@ -134,7 +134,7 @@ namespace FEP.Model.eLearning
 
         public void UpdateCourseStat()
         {
-            TotalModules = this.Modules.Count();            
+            TotalModules = this.Modules.Count();
             TotalContents = this.Modules.Sum(x => x.TotalContent);
         }
     }
@@ -182,9 +182,11 @@ namespace FEP.Model.eLearning
         [Display(Name = "CourseStatusThirdApproval", ResourceType = typeof(Language.eLearning.Enum))]
         ThirdApproval, //9
 
+        [Display(Name = "CourseCancelled", ResourceType = typeof(Language.eLearning.Enum))]
+        Cancelled,
+
         Hidden, //The course is hidden froom search and view, however the point given is still valid
         Deleted,
-
     }
 
     /// <summary>

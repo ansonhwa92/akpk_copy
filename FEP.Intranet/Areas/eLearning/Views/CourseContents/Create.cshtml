@@ -164,7 +164,9 @@
         var uploadImgUrl = '@(BaseURL)/eLearning/File/UploadFile';
         var getImgUrl = '@(BaseURL)/eLearning/File/GetImg/?fileName=';
         var uploadDocUrl = '@(BaseURL)/eLearning/File/UploadFile';
-        var convertFileUrl = '@(BaseURL)eLearning/File/DocToHTML';
+        var convertFileUrl = '@(BaseURL)/eLearning/File/DocToHTML';
+        var getSlideShareUrl = '@(BaseURL)/eLearning/CourseContents/GetSlideshare';
+        var getDocUrl = '@(BaseURL)/eLearning/File/GetDoc';
 
 
         $(document).ready(function () {
@@ -208,7 +210,6 @@
                     $("#audio2").prop("checked", true);
                     $('#File').prop("disabled", false);
                     $("#ContentFileId").prop("disabled", true);
-
                 }
             }
 
@@ -244,7 +245,6 @@
 
                     document.getElementById("otherDoc").style.display = "none";
                     document.getElementById("slideShareDoc").style.display = "block";
-
                 }
             }
 

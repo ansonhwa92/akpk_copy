@@ -28,10 +28,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string EditRulesCourse = "eLearning/Courses/EditRules";
         public const string Content = "eLearning/Courses/Content";
         public const string DeleteCourse = "eLearning/Courses/Delete";
+        public const string CancelCourse = "eLearning/Courses/CancelCourse";
         public const string Start = "eLearning/Courses/Start";
         public const string Continue = "eLearning/Courses/Continue";
-        public const string Publish = "eLearning/Courses/Publish";
+
+        //public const string Publish = "eLearning/Courses/Publish";
         public const string IsUserEnrolled = "eLearning/Courses/IsUserEnrolled";
+
         public const string IsUserCompleted = "eLearning/Courses/IsUserCompleted";
     }
 
@@ -91,29 +94,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(course);
         }
 
-        //[HasAccess(UserAccess.CourseCreate)]
-        //// GET: eLearning/Courses/Create
-        //public async Task<ActionResult> Create()
-        //{
-        //    CreateOrEditCourseModel model = new CreateOrEditCourseModel();
-
-        //    await GetCategories();
-
-        //    return View(model);
-        //}
-
         [HasAccess(UserAccess.CourseCreate)]
         public async Task<ActionResult> Create(int? catid)
         {
-            //if (catid != null)
-            //{
-            //    ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name", catid);
-            //}
-            //else
-            //{
-            //    ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name");
-            //}
-
             await GetCategories(catid.Value);
 
             var model = new CreateOrEditCourseModel();
@@ -129,8 +112,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (response.isSuccess)
             {
-                //ViewBag.Categories = new SelectList(response.Data, "Id", "Name");
-
                 if (catId > 0)
                 {
                     ViewBag.Categories = new SelectList(response.Data, "Id", "Name", catId);
@@ -199,12 +180,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     {
                         return RedirectToAction("Review", "Courses", new { area = "eLearning", @id = newid });
                     }
-
-                    //if (!String.IsNullOrEmpty(id))
-
-                    //    return RedirectToAction("Content", "Courses", new { id = id });
-                    //else
-                    //    return RedirectToAction("Index", "Courses");
                 }
                 else
                 {
@@ -213,8 +188,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     return RedirectToAction("Index", "Courses", new { area = "eLearning" });
                 }
             }
-
-            //TempData["ErrorMessage"] = "Cannot add course. Please ensure all required fields are filled in correctly.";
 
             //await GetCategories();
             ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name", model.CategoryId);
@@ -643,6 +616,37 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             await GetCategories();
 
             return View(model);
+        }
+
+        [HttpPost]
+        [HasAccess(UserAccess.CourseCreate)]
+        public async Task<ActionResult> CancelCourse(int? id, string title = "")
+        {
+            if (id == null)
+            {
+                TempData["ErrorMessage"] = "Cannot find such course.";
+
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
+            }
+
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, CourseApiUrl.CancelCourse + $"?id={id}");
+
+            if (response.isSuccess)
+            {
+                await LogActivity(Modules.Learning, $"Cancel Course titled {title} Success: " + response.Data, CurrentUser.UserId.Value);
+
+                TempData["SuccessMessage"] = $"Creation of course titled {title} is successfully cancelled.";
+
+                await Notifier.NotifyCourseCancelled(NotificationType.Course_Cancelled,
+                    id.Value, CurrentUser.UserId.Value, "", "",
+                    title, Url.AbsoluteAction("Index", "Courses", new { area = "eLearning" }));
+            }
+            else
+            {
+                TempData["ErrorMessage"] = $"Failed to Cancel Course {title}.";
+            }
+
+            return RedirectToAction("Index", "Courses", new { area = "eLearning" });
         }
 
         [HasAccess(UserAccess.CourseCreate)]

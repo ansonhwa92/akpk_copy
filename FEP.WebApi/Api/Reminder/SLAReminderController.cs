@@ -639,7 +639,7 @@ namespace FEP.WebApi.Api.Reminder
 
             var receivers = new List<string>();
 
-            if (model.ReceiverType == WebApiModel.eLearning.ReceiverType.UserIds)
+            if (model.ReceiverType == WebApiModel.eLearning.ReceiverType.UserIds || model.ReceiverType == WebApiModel.eLearning.ReceiverType.Both)
             {
                 foreach (var item in model.ReceiverId)
                 {
@@ -647,7 +647,8 @@ namespace FEP.WebApi.Api.Reminder
                     receivers.Add(receiverEmailAddress);
                 }
             }
-            else
+
+            if (model.ReceiverType == WebApiModel.eLearning.ReceiverType.Emails || model.ReceiverType == WebApiModel.eLearning.ReceiverType.Both)
             {
                 //send email ke setiap reciever
                 if (!String.IsNullOrEmpty(model.Emails))

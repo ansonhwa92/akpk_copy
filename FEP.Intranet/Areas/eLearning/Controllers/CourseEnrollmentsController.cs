@@ -182,7 +182,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                             Link = this.Url.AbsoluteAction("View", "Courses", new { id = courseId }),
                         },
 
-                        LearnerUserId = currentUserId,
+                        SenderId = currentUserId,
                         ReceiverType = ReceiverType.UserIds,
                         IsNeedRemainder = false,
                     };
@@ -256,10 +256,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 if (response.Data.IsSuccess)
                 {
-
                     await LogActivity(Modules.Learning, ElearningActivity.UserRequestWithdrawal, response.Data.Message, id);
 
-                    // TODO: Send email for withdrawal
                     await Notifier.UserWithdrawFromCourse(id, currentUserId, CurrentUser.Name,
                          Url.AbsoluteAction("Content", "Course", new { id = id }));
 

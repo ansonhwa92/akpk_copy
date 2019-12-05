@@ -1,17 +1,181 @@
 ﻿@model FEP.Intranet.Areas.eEvent.Models.EditExhibitionRoadshowRequestModel
 
 @{
-	ViewBag.Title = "Exhibition/Roadshow Request";
-	Layout = "~/Views/Shared/_Layout1.cshtml";
+    ViewBag.Title = "Exhibition/Roadshow Request";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
 @section ContentScript{
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
+        var flatPickrOption = {
+            dateFormat: "l, d/m/Y",
+            enableTime: false,
+            minDate: "today"
+        }
+        var flatTimePickrOption = {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+        }
+
+        var RosterListJSON = {
+            "exhibitionId": 0,
+            "dutyRoster":[]
+        }
+        var RecommendationListJSON = {
+            "exhibitionId": 0,
+            "recommendations": []
+        }
+        var GlobalLastId = 0;
+        var GlobalRecommendationLastId = 0;
+
+        function editRecommendation(id) {
+            for (var i = 0; i < RecommendationListJSON["recommendations"].length; i++) {
+                if (RecommendationListJSON["recommendations"][i]["id"] == id) {
+                    $("#recommendationInput").val(RecommendationListJSON["recommendations"][i]["description"]);
+                    $("#recommendationId").val(RecommendationListJSON["recommendations"][i]["id"]);
+                    $("#confirmUpdateRecommendation").show();
+                    $("#confirmSaveRecommendation").hide();
+
+                    $("#recommendationModal").modal("show");
+                    break;
+                }
+            }
+        }
+        function deleteRecommendation(id) {
+            for (j = 0; j < RecommendationListJSON["recommendations"].length; j++) {
+                if (RecommendationListJSON["recommendations"][j]["id"] == id) {
+                    //debugger;
+                    if (confirm('Are you sure to delete this entry? \n' + RecommendationListJSON['recommendations'][j]['description'] )) {
+
+                        RecommendationListJSON["recommendations"].splice(j, 1);
+                        renderRecommendation();
+                    } else {
+
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        function renderRecommendation() {
+            $('#recommendationTable tbody').empty();
+            var lastId = 0;
+            var count = 1;
+            for (var i = 0; i < RecommendationListJSON["recommendations"].length; i++) {
+                var currentId = RecommendationListJSON["recommendations"][i]["id"];
+                if (parseInt(currentId) > lastId) {
+                    lastId = parseInt(currentId);
+                }
+                var toDisplay =
+                '<tr>' +
+                '<td>' + count + '</td>' +
+                '<td>' + RecommendationListJSON["recommendations"][i]['description'] + '</td> ' +
+                '<td>' +
+                '<a href="#" data-toggle="tooltip" data-placement="top" data-original-title="Edit" onclick="editRecommendation(' + RecommendationListJSON["recommendations"][i]['id'] + ')"> <i class="la la-edit text-muted"></i></a>'+
+				'<a href="#" data-toggle="tooltip" data-placement="top" data-original-title="Delete" onclick="deleteRecommendation(' + RecommendationListJSON["recommendations"][i]['id'] + ')"> <i class="la la-times" style="color:red"></i></a>'+
+                '</td>' +
+                '</tr>';
+
+                $('#recommendationTable tbody').append(toDisplay);
+                count++;
+
+                GlobalRecommendationLastId = lastId;
+            }
+        }
 		$(document).ready(function () {
 
-			RefreshFile();
+            RefreshFile();
+            //-----------------------------------------------------------------
+            //  RECOMMENDATION Portion
+            //-----------------------------------------------------------------
+            @if(Model.RecommendationsJSON != null)
+            {
+            @:RecommendationListJSON = JSON.parse('@Html.Raw(Model.RecommendationsJSON)');
+            @:console.log(RecommendationListJSON);
+            @:renderRecommendation();
+            }
+            $("#AddRecommendationBtn").click(function () {
+                $("#recommendationInput").val('');
+                $("#recommendationId").val('');
+                $("#confirmUpdateRecommendation").hide();
+                $("#confirmSaveRecommendation").show();
+                $("#recommendationModal").modal("show");
+            });
+
+            $("#confirmUpdateRecommendation").click(function () {
+                if ($("#recommendationInput").val() != '') {
+                    var item = {
+                        "id": $("#recommendationId").val(),
+                        "description": $("#recommendationInput").val(),
+                    }
+                    for (var i = 0; i < RecommendationListJSON["recommendations"].length; i++) {
+                        if (RecommendationListJSON["recommendations"][i]["id"] == item["id"]) {
+                            RecommendationListJSON["recommendations"][i] = item;
+                            break;
+                        }
+                    }
+                    renderRecommendation();
+                }
+                else {
+                    alert("You didn't input any recommendation.")
+                }
+            });
+            
+
+            var rCounter = 0;
+            $("#confirmSaveRecommendation").click(function () {
+                if ($("#recommendationInput").val() != '') {
+                    rCounter = GlobalRecommendationLastId + 1;
+                    var item = {
+                        "id": "",
+                        "description": $("#recommendationInput").val(),
+                    }
+                    item['id'] = rCounter;
+                    rCounter++;
+                    RecommendationListJSON['recommendations'].push(item);
+                    //console.log(RecommendationListJSON);
+                    renderRecommendation();
+                }
+                else {
+                    alert("You didn't input any recommendation.")
+                }
+            });
+            //------------------------------------------------------------
+            //  DUTY ROSTER portion
+            //------------------------------------------------------------
+            @if(Model.DutyRosterJSON != null)
+            {
+            @:RosterListJSON = JSON.parse('@Html.Raw(Model.DutyRosterJSON)');
+            @:renderDutyRoster();
+            @:console.log(RosterListJSON);
+            }
+            //------------------------------------------------------------
+
+            $(".dutyRosterDatePicker").flatpickr({
+                dateFormat: "l, d/m/Y",
+                enableTime: false,
+                wrap: true,
+                minDate: "today"
+            });
+
+            $("#DutyStartTime").flatpickr({
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                onValueUpdate: function (dObj, dStr, fp, dayElem) {
+                    //debugger;
+                    $("#DutyEndTime").flatpickr({
+                        enableTime: true,
+                        noCalendar: true,
+                        dateFormat: "H:i",
+                        minDate: dStr,
+                    });
+                }
+            });
 
 		});
 
@@ -33,298 +197,780 @@
 			dateFormat: "d/m/Y",
 			enableTime: false,
 			minDate: "today",
-		});
+        });
+        //------------------------------------------------------------
+        //  DUTY ROSTER portion
+        //------------------------------------------------------------
+        function sortByProperty(property1, property2) {
+            return function (a, b) {
 
-	</script>
+                if (a[property1] === b[property1]) {
+                    return a[property2] > b[property2] ? 1 : -1;
+                }
+
+                var tempA = a[property1].split(' ')[1].split('/');
+                var A = tempA[2] + tempA[1] + tempA[0];
+                var tempB = b[property1].split(' ')[1].split('/');
+                var B = tempB[2] + tempB[1] + tempB[0];
+                return A > B ? 1 : -1;
+                //return a[property1].split(' ')[1] > b[property1].split(' ')[1] ? 1 : -1;
+            }
+        }
+
+        function SortRoster() {
+            RosterListJSON['dutyRoster'].sort(sortByProperty("date", "startTime"));
+            //console.log(RosterListJSON);
+            SortFloatTable();
+        }
+
+        function SortFloatTable(){
+            var tbody = $('#floatTable tbody');
+
+            tbody.find('tr').sort(function (a, b) {
+                var tempB = $(b).children('td').eq(0).children("div").children("input").val().split(' ')[1].split('/');
+                var tempA = $(a).children('td').eq(0).children("div").children("input").val().split(' ')[1].split('/');
+
+                var B = tempB[2] + tempB[1] + tempB[0];
+                var A = tempA[2] + tempA[1] + tempA[0];
+
+                if (A < B) {
+                    return -1;
+                }
+
+                if (A > B) {
+                    return 1;
+                }
+
+                //if date is the same, compare time
+                B = $(b).children('td').eq(1).children("input").val().toUpperCase();
+                A = $(a).children('td').eq(1).children("input").val().toUpperCase();
+                if (A < B) {
+                    return -1;
+                }
+
+                if (A > B) {
+                    return 1;
+                }
+
+                return 0;
+            }).appendTo(tbody);
+        }
+
+        var tCounter = 0;
+        $("#AddRowBtn").click(function () {
+
+            tCounter = GlobalLastId+1;
+            var dataPIC = $("#DutyInCharge").select2("data");
+            var item = {
+                "id": "",
+                "date":  $("#DutyDate").val(),
+                "startTime": $("#DutyStartTime").val(),
+                "endTime": $("#DutyEndTime").val(),
+                "pic": []
+            }
+            for (k = 0; k < dataPIC.length; k++) {
+                var eachPIC = {
+                    "id": dataPIC[k].id,
+                    "name": dataPIC[k].text
+                }
+                item['pic'].push(eachPIC);
+            }
+
+            if ($("#DutyDate").val() != "" && $("#DutyStartTime").val() != "" && $("#DutyEndTime").val() != "") {
+
+                for (var n = 0; n < RosterListJSON['dutyRoster'].length; n++) {
+                    if (RosterListJSON['dutyRoster'][n]['date'] == item['date']) {
+                        if (RosterListJSON['dutyRoster'][n]['startTime'] == item['startTime']) {
+                            alert("There is a tentative with the same time already exist.\nPlease select different time");
+                            return;
+                        }
+                    }
+                }
+
+                item['id'] = tCounter;
+                tCounter++;
+                RosterListJSON['dutyRoster'].push(item);
+
+                renderDutyRosterEditor();
+                console.log(RosterListJSON);
+                $("#DutyDate").val('');
+                $("#DutyStartTime").val('');
+                $("#DutyEndTime").val('');
+                $("#DutyInCharge").val('').change();
+            }
+
+        });
+
+        function repopulatePIC(data) {
+            if (RosterListJSON["dutyRoster"].length > 0) {
+                for (var i = 0; i < RosterListJSON["dutyRoster"].length; i++) {
+                    var getId = RosterListJSON["dutyRoster"][i]["id"];
+
+                    var preselectedPIC = [];
+                    for (var k = 0; k < RosterListJSON['dutyRoster'][i]['pic'].length; k++) {
+                        preselectedPIC.push(RosterListJSON['dutyRoster'][i]['pic'][k]['id']);
+                    }
+
+                    //console.log(preselectedPIC);
+                    //debugger;
+
+                    var selector = "<select class='js-example-basic-multiple select2-area select2-hidden-accessible' onchange='updateOfficer(" + getId + ")' name='DutyInCharge_"+getId+"' multiple='multiple' data-select2-id='DutyInCharge_"+getId+"' id='DutyInCharge_"+getId+"' style='width:100%' aria-hidden='true' >";
+                    for (var j = 0; j < data.length; j++) {
+                        selector += "<option value='" + data[j].id + "'>" + data[j].text + "</option>";
+                    }
+                    selector += "</select>";
+
+                    $("#personList_"+getId+"").html(selector);
+                    $('.js-example-basic-multiple').select2();
+                    $("#DutyInCharge_" + getId + "").select2({ placeholder: "Pick Officer" });
+                    $("#DutyInCharge_" + getId + "").val(preselectedPIC).trigger("change");
+                }
+
+
+            }
+
+        }
+
+        $("#AddRosterBtn").click(function () {
+            var data = $("#NomineeId").select2("data");
+            var selector = "<select class='js-example-basic-multiple select2-area select2-hidden-accessible' name='DutyInCharge' multiple='multiple' data-select2-id='DutyInCharge' id='DutyInCharge' style='width:100%' aria-hidden='true' >";
+            for (i = 0; i < data.length; i++) {
+                selector += "<option value='" + data[i].id + "'>" + data[i].text + "</option>";
+            }
+            selector += "</select>";
+            $("#personList").html(selector);
+            $('.js-example-basic-multiple').select2();
+            $("#DutyInCharge").select2({ placeholder: "Pick Officer" });
+            tCounter = 0;
+
+            renderDutyRosterEditor();
+            repopulatePIC(data);
+            $('#myModal').modal('show');
+        })
+
+        $("#confirmSaveRoster").click(function () {
+            console.log(RosterListJSON);
+            renderDutyRoster();
+        });
+
+        function renderDutyRoster() {
+            RosterListJSON['dutyRoster'].sort(sortByProperty("date", "startTime"));
+            $('#finalTable tbody').empty();
+
+            for (var i = 0; i < RosterListJSON["dutyRoster"].length; i++) {
+
+                var toDisplay =
+                    '<tr>' +
+                    '<td>' + RosterListJSON["dutyRoster"][i]["date"] + '</td>' +
+                    '<td><div class="row">' + RosterListJSON["dutyRoster"][i]["startTime"] + ' - ' + RosterListJSON["dutyRoster"][i]["endTime"] + '</div></td>' +
+                    //'<td><div class"row"><div class="col-md-7"><div id="personList_' + item['id'] + '"></div><div class="col-md-5">' + removeBtn + '</div></div></div></td>' +
+                    '<td>' +
+                    '<div class="row">';
+
+                var PIClist = "";
+                for (var j = 0; j < RosterListJSON["dutyRoster"][i]["pic"].length; j++) {
+                    PIClist += RosterListJSON["dutyRoster"][i]["pic"][j]["name"];
+                    if (j < RosterListJSON["dutyRoster"][i]["pic"].length - 1) {
+                        PIClist += ', ';
+                    }
+                }
+
+                toDisplay +=
+                    '<div class="col-md-10">' + PIClist + '</div></div>'+
+                    '</div>' +
+                    '</td> ' +
+                    '</tr>';
+                $('#finalTable tbody').append(toDisplay);
+            }
+        }
+
+        function updateStartTime(id) {
+            (RosterListJSON['dutyRoster'].find(s => s.id === id))['startTime'] = $('#DutyStartTime_' + id + '').val();
+        }
+        function updateEndTime(id) {
+            (RosterListJSON['dutyRoster'].find(s => s.id === id))['endTime'] = $('#DutyEndTime_' + id + '').val();
+        }
+        function updateOfficer(id) {
+            var tempPIC = [];
+            var dataPIC = $("#DutyInCharge_" + id + "").select2("data");
+
+            for (m = 0; m < dataPIC.length; m++) {
+                var eachPIC = {
+                    "id": dataPIC[m].id,
+                    "name": dataPIC[m].text
+                }
+                tempPIC.push(eachPIC);
+            }
+            (RosterListJSON['dutyRoster'].find(s => s.id === id))['pic'] = tempPIC;
+        }
+        function renderDutyRosterEditor() {
+            $('#floatTable tbody').empty();
+            var lastId = 0;
+            for (var i = 0; i < RosterListJSON["dutyRoster"].length; i++) {
+                var currentId = RosterListJSON["dutyRoster"][i]['id'];
+                if (parseInt(currentId) > lastId) {
+                    lastId = parseInt(currentId);
+                }
+                //append new row at top
+                var inputDate = '<div class="dutyRosterDatePicker">';
+                //inputDate += '     <input class="form-control flatpickr-input" data-input="flatpickr" data-val="true" data-val-date="The field Duty Date must be a date." ';
+                inputDate += '<input type="text" class="form-control" id="DutyDate_' + currentId + '" name="DutyDate_' + currentId + '" placeholder="Select Date.." ';
+                inputDate += '      onchange="(RosterListJSON[\'dutyRoster\'].find(s => s.id === ' + currentId + '))[\'date\'] = this.value; SortRoster();"  value="' + RosterListJSON["dutyRoster"][i]['date']+ '" data-input>';
+                //inputDate += '            data-val-required="Please insert Receive Date" id="DutyDate_' + currentId + '" name="DutyDate_' + currentId + '" type="text" value="' + RosterListJSON["dutyRoster"][i]['date'] + '" readonly="readonly">';
+                //inputDate += '     <a class="input-button calendar" title="toggle" data-toggle="">';
+                //inputDate += '         <i class="la la-calendar"></i>';
+                //inputDate += '     </a>';
+                inputDate += ' </div>';
+
+                var inputStartTime = '<input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"' +
+                    'data-val-required="Please insert Start Time" ' +
+                    'id="DutyStartTime_' + currentId + '" name="DutyStartTime_' + currentId + '" placeholder="Start" ' +
+                    'onchange="updateStartTime(' + currentId + ')" ' +
+                    'type="text" value="' + RosterListJSON["dutyRoster"][i]['startTime'] + '" readonly="readonly" aria-describedby="StartTime-error" aria-invalid="false">';
+                var inputEndTime = '<input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"' +
+                    'data-val-required="Please insert Start Time" ' +
+                    'id="DutyEndTime_' + currentId + '" name="DutyEndTime_' + currentId + '" placeholder="End" ' +
+                    'onchange="updateEndTime(' + currentId + ')" ' +
+                    'type="text" value="' + RosterListJSON["dutyRoster"][i]['endTime'] + '" readonly="readonly" aria-describedby="StartTime-error" aria-invalid="false">';
+
+                GlobalLastId = lastId;
+                var toDisplay =
+                    '<tr id="row_' + RosterListJSON["dutyRoster"][i]['id'] + '">' +
+                    '<td style="padding: 3px;">' + inputDate + '</td>' +
+                    '<td style="padding: 3px;">' + inputStartTime + '</td>' +
+                    '<td style="padding: 3px;">' + inputEndTime + '</td>' +
+                    '<td style="padding: 3px;">' +
+                    '<div class="row">';
+
+                var preselectedPIC = [];
+                for (var j = 0; j < RosterListJSON["dutyRoster"][i]["pic"].length; j++) {
+                    preselectedPIC.push(RosterListJSON['dutyRoster'][i]['pic'][j]['id']);
+                }
+                //console.log(preselectedPIC);
+
+                var removeBtn = '<a href="#" data-toggle="tooltip" data-placement="top" data-original-title="Delete" onclick="deleteDuty(' + currentId + ')"><i class="la la-times" style="color:red"></i></a>';
+                toDisplay +=
+                    '<div class="col-md-10"><div id="personList_' + currentId + '"></div></div>' +
+                    '<div class="col-md-2">' + removeBtn + '</div>' +
+                    '</div>' +
+                    '</td> ' +
+                    '</tr>';
+                $('#floatTable tbody').append(toDisplay);
+                $('#DutyStartTime_' + currentId + '').flatpickr(flatTimePickrOption);
+                $('#DutyEndTime_' + currentId + '').flatpickr(flatTimePickrOption);
+                $('#DutyStartTime_' + currentId + '').focusout(function () {
+                    //SortRoster();
+                })
+                $('#DutyEndTime_' + currentId + '').focusout(function () {
+                    //SortRoster();
+                })
+                $('#DutyDate_' + currentId + '').flatpickr(flatPickrOption);
+                var data = $("#NomineeId").select2("data");
+                var selector = "<select class='js-example-basic-multiple select2-area select2-hidden-accessible' onchange='updateOfficer(" + currentId + ")' name='DutyInCharge_" + currentId + "' multiple='multiple' data-select2-id='DutyInCharge_" + currentId + "' id='DutyInCharge_" + currentId + "' style='width:100%' aria-hidden='true'>";
+                for (k = 0; k < data.length; k++) {
+                    selector += "<option value='" + data[k].id + "'>" + data[k].text + "</option>";
+                }
+                selector += "</select>";
+                $("#personList_" + currentId + "").html(selector);
+                $('.js-example-basic-multiple').select2();
+                $("#DutyInCharge_" + currentId + "").val(preselectedPIC).trigger("change");
+
+
+            }
+             SortRoster();
+        }
+
+        function deleteDuty(tId) {
+            for (j = 0; j < RosterListJSON['dutyRoster'].length; j++) {
+                if (RosterListJSON['dutyRoster'][j]['id'] == tId) {
+                    //debugger;
+                    if (confirm('Are you sure to delete this entry? \n' + RosterListJSON['dutyRoster'][j]['date'] + ' ' + RosterListJSON['dutyRoster'][j]['startTime'] + ' - ' + RosterListJSON['dutyRoster'][j]['endTime'])) {
+                        RosterListJSON['dutyRoster'].splice(j, 1);
+                        $("#row_" + tId + "").remove();
+                    } else {
+
+                    }
+
+                    break;
+                }
+            }
+
+        }
+
+        //------------------------------------------------------------
+
+        $('#target').submit(function(event) {
+
+            event.preventDefault(); //this will prevent the default submit
+            // your code here (But not asynchronous code such as Ajax because it does not wait for response and move to next line.)
+            $("#DutyRosterJSON").val(JSON.stringify(RosterListJSON));
+            $("#RecommendationsJSON").val(JSON.stringify(RecommendationListJSON));
+
+            $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+        })
+    </script>
 
 }
 
 @section Nav {
 
-	<div class="title_header">
-		<div class="title-header-container">
-			<div class="container">
-				<!-- if have button -->
-				<div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
-				<div class="header-col-left">
-					<div id="breadcrumb">
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item"><a href="#">Event Management</a></li>
-								<li class="breadcrumb-item"><a href="#">Manage Exhibition/Roadshow Request</a></li>
-								<li class="breadcrumb-item"><a href="#">Exhibition/Roadshow Request List</a></li>
-								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
-							</ol>
-						</nav>
-					</div>
-					<h1 class="page-title text-white">Exhibition/Roadshow Request Ref No: @Model.RefNo</h1>
-					@*<div class="header-text">List of created event</div>*@
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href='@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent"})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Event Management</a></li>
+                                <li class="breadcrumb-item"><a href="#">Manage Exhibition/Roadshow Request</a></li>
+                                <li class="breadcrumb-item"><a href="#">Exhibition/Roadshow Request List</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Exhibition/Roadshow Request Ref No: @Model.RefNo</h1>
+                    @*<div class="header-text">List of created event</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
 
 }
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", id = "target" }))
 {
-	@Html.AntiForgeryToken()
-	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-	@Html.HiddenFor(model => model.Id)
-	@Html.HiddenFor(model => model.ExhibitionStatus)
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.ExhibitionStatus)
 
-	<div class="row">
-		<div class="col-xl-3 col-md-3 col-sm-4 my-2">
-			<div class="sidebar-left">
-				<!-- Steps -->
-				<div class="sidebar-inner sticky">
-					<ul class="steps steps-vertical">
+    <div class="row">
+        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+            <div class="sidebar-left">
+                <!-- Steps -->
+                <div class="sidebar-inner sticky">
+                    <ul class="steps steps-vertical">
 
-						<li class="step-item disabled">
-							<a href="" class="step-link">
-								<span class="step-number">1</span>
-								<span class="step-title">Exhibition/Roadshow Request List</span>
-							</a>
-						</li>
-
-
-						<li class="step-item active">
-							<a href="" class="step-link">
-								<span class="step-number">2</span>
-								<span class="step-title">Fill up Exhibition Details</span>
-							</a>
-						</li>
+                        <li class="step-item disabled">
+                            <a href="" class="step-link">
+                                <span class="step-number">1</span>
+                                <span class="step-title">Exhibition/Roadshow Request List</span>
+                            </a>
+                        </li>
 
 
-						<li class="step-item active">
-							<a href="" class="step-link">
-								<span class="step-number">3</span>
-								<span class="step-title">Fill up Event Details</span>
-							</a>
-						</li>
-
-					</ul>
-					<!-- End Steps -->
-				</div>
+                        <li class="step-item active">
+                            <a href="" class="step-link">
+                                <span class="step-number">2</span>
+                                <span class="step-title">Fill up Exhibition Details</span>
+                            </a>
+                        </li>
 
 
-				<br />
+                        <li class="step-item active">
+                            <a href="" class="step-link">
+                                <span class="step-number">3</span>
+                                <span class="step-title">Fill up Event Details</span>
+                            </a>
+                        </li>
 
-			</div>
-		</div>
+                        <li class="step-item active">
+                            <a href="#event_dutyroster" class="step-link" data-toggle="tab">
+                                <span class="step-number">5</span>
+                                <span class="step-title">Fill up Duty Roster</span>
+                            </a>
+                        </li>
+
+                        <li class="step-item active">
+                            <a href="#event_recommendation" class="step-link" data-toggle="tab">
+                                <span class="step-number">6</span>
+                                <span class="step-title">Fill up Recommendation</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                    <!-- End Steps -->
+                </div>
+
+
+                <br />
+
+            </div>
+        </div>
 
 
 
-		<div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-			<!-- Start Form -->
-			<div class="border-form rounded-top">
-				<div class="form-container">
+        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+            <!-- Start Form -->
+            <div class="border-form rounded-top">
+                <div class="form-container">
 
 
-					<div class="mt-2 mb-4 px-3 pt-4">
-						<h4 class="color-darkblue mb-0">Exhibition/Roadshow Request Details</h4>
-						<h6 class="font-weight-normal">Review your request details before update</h6>
-					</div>
-					<!-- Start Tabbing Review Step for submission -->
-					<div class="custom-tab px-3">
-						<ul class="nav nav-line">
-							<li class="nav-item">
-								<a class="nav-link active" href="#exhibitiondetails" data-toggle="tab">Exhibition Details</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#eventdetails" data-toggle="tab">Event Details</a>
-							</li>
-							@*<li class="nav-item">
-									<a class="nav-link" href="#xxxdetails" data-toggle="tab">xxx Details</a>
-								</li>*@
-						</ul>
-					</div>
-					<div class="tab-content">
-						<div class="tab-pane active" id="exhibitiondetails">
-							<div class="form-container">
-								<div class="sub-Title my-4">
-									Exhibition Details
-								</div>
+                    <div class="mt-2 mb-4 px-3 pt-4">
+                        <h4 class="color-darkblue mb-0">Exhibition/Roadshow Request Details</h4>
+                        <h6 class="font-weight-normal">Review your request details before update</h6>
+                    </div>
+                    <!-- Start Tabbing Review Step for submission -->
+                    <div class="custom-tab px-3">
+                        <ul class="nav nav-line">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#exhibitiondetails" data-toggle="tab">Exhibition Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#eventdetails" data-toggle="tab">Event Details</a>
+                            </li>
+                            @*<li class="nav-item">
+                                    <a class="nav-link" href="#xxxdetails" data-toggle="tab">xxx Details</a>
+                                </li>*@
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="exhibitiondetails">
+                            <div class="form-container">
+                                <div class="sub-Title my-4">
+                                    Exhibition Details
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-12">
-										@Html.FEPLabelFor(model => model.ReceivedById)
-										@Html.DropDownListFor(model => model.ReceivedById, Model.ReceivedBys, "-Select Name-", htmlAttributes: new { @class = "form-control select2-area", style = "width: 100%" })
-										@Html.ValidationMessageFor(model => model.ReceivedById, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.FEPLabelFor(model => model.ReceivedById)
+                                        @Html.DropDownListFor(model => model.ReceivedById, Model.ReceivedBys, "-Select Name-", htmlAttributes: new { @class = "form-control select2-area", style = "width: 100%" })
+                                        @Html.ValidationMessageFor(model => model.ReceivedById, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-6">
-										@Html.FEPLabelFor(model => model.ReceivedDate)
-										@Html.EditorFor(model => model.ReceivedDate, new { htmlAttributes = new { @class = "form-control" } })
-										@Html.ValidationMessageFor(model => model.ReceivedDate, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        @Html.FEPLabelFor(model => model.ReceivedDate)
+                                        @Html.EditorFor(model => model.ReceivedDate, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.ReceivedDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-12">
-										@Html.FEPLabelFor(model => model.Receive_Via)
-										@Html.EditorFor(model => model.Receive_Via, new { htmlAttributes = new { @class = "form-control" } })
-										@Html.ValidationMessageFor(model => model.Receive_Via, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.FEPLabelFor(model => model.Receive_Via)
+                                        @Html.EditorFor(model => model.Receive_Via, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Receive_Via, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-12">
-										@Html.FEPLabelFor(model => model.Attachments)
-										@Html.Partial("_Attachment", Model.Attachments)
-										@Html.ValidationMessageFor(model => model.Attachments, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.FEPLabelFor(model => model.Attachments)
+                                        @Html.Partial("_Attachment", Model.Attachments)
+                                        @Html.ValidationMessageFor(model => model.Attachments, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								@* ===Supporting Document=== *@
+                                @* ===Supporting Document=== *@
 
-							</div>
-							<!-- End Form -->
-						</div>
+                            </div>
+                            <!-- End Form -->
+                        </div>
 
-						<div class="tab-pane" id="eventdetails">
-							<div class="form-container">
-								<div class="sub-Title my-4">
-									Event Details
-								</div>
+                        <div class="tab-pane" id="eventdetails">
+                            <div class="form-container">
+                                <div class="sub-Title my-4">
+                                    Event Details
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-12">
-										@Html.FEPLabelFor(model => model.BranchId)
-										@Html.DropDownListFor(model => model.BranchId, Model.BranchList, "-Select Branch-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
-										@Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.FEPLabelFor(model => model.BranchId)
+                                        @Html.DropDownListFor(model => model.BranchId, Model.BranchList, "-Select Branch-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+                                        @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-12">
-										@Html.FEPLabelFor(model => model.EventName)
-										@Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control" } })
-										@Html.ValidationMessageFor(model => model.EventName, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.FEPLabelFor(model => model.EventName)
+                                        @Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.EventName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-12">
-										@Html.FEPLabelFor(model => model.Organiser)
-										@Html.EditorFor(model => model.Organiser, new { htmlAttributes = new { @class = "form-control" } })
-										@Html.ValidationMessageFor(model => model.Organiser, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.FEPLabelFor(model => model.Organiser)
+                                        @Html.EditorFor(model => model.Organiser, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Organiser, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-12">
-										@Html.FEPLabelFor(model => model.OrganiserEmail)
-										@Html.EditorFor(model => model.OrganiserEmail, new { htmlAttributes = new { @class = "form-control" } })
-										@Html.ValidationMessageFor(model => model.OrganiserEmail, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.FEPLabelFor(model => model.OrganiserEmail)
+                                        @Html.EditorFor(model => model.OrganiserEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.OrganiserEmail, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-12">
-										@Html.FEPLabelFor(model => model.ContactNo)
-										@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control" } })
-										@Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.FEPLabelFor(model => model.ContactNo)
+                                        @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-12">
-										@Html.FEPLabelFor(model => model.AddressStreet1)
-										@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
-										@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.FEPLabelFor(model => model.AddressStreet1)
+                                        @Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
+                                        @Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-12">
-										@Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 2" } })
-										@Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.EditorFor(model => model.AddressStreet2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 2" } })
+                                        @Html.ValidationMessageFor(model => model.AddressStreet2, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-6">
-										@Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode" } })
-										@Html.ValidationMessageFor(model => model.AddressPoscode, "", new { @class = "text-danger" })
-									</div>
-									<div class="form-group col-lg-6">
-										@Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
-										@Html.ValidationMessageFor(model => model.AddressCity, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        @Html.EditorFor(model => model.AddressPoscode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Poscode" } })
+                                        @Html.ValidationMessageFor(model => model.AddressPoscode, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        @Html.EditorFor(model => model.AddressCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "City" } })
+                                        @Html.ValidationMessageFor(model => model.AddressCity, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-12">
-										@Html.FEPLabelFor(model => model.State)
-										@Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
-										@Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.FEPLabelFor(model => model.State)
+                                        @Html.EnumDropDownListFor(model => model.State, "-Select State-", htmlAttributes: new { @class = "form-control select2", style = "width:100%" })
+                                        @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-6">
-										@Html.FEPLabelFor(model => model.StartDate)
-										@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start" } })
-										@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-									</div>
-									<div class="form-group col-lg-6">
-										@Html.FEPLabelFor(model => model.EndDate)
-										@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End" } })
-										@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        @Html.FEPLabelFor(model => model.StartDate)
+                                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date Start" } })
+                                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        @Html.FEPLabelFor(model => model.EndDate)
+                                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder = "Date End" } })
+                                        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-6">
-										@Html.FEPLabelFor(model => model.StartTime)
-										@Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Date Start" } })
-										@Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
-									</div>
-									<div class="form-group col-lg-6">
-										@Html.FEPLabelFor(model => model.EndTime)
-										@Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Date End" } })
-										@Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        @Html.FEPLabelFor(model => model.StartTime)
+                                        @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Date Start" } })
+                                        @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        @Html.FEPLabelFor(model => model.EndTime)
+                                        @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control timeSelect", @placeholder = "Date End" } })
+                                        @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-6">
-										@Html.FEPLabelFor(model => model.ParticipationRequirement, htmlAttributes: new { @class = "control-label col-md-12" })
-										@Html.EditorFor(model => model.ParticipationRequirement, new { htmlAttributes = new { @class = "form-control", @placeholder = "No. of Participant" } })
-										@Html.ValidationMessageFor(model => model.ParticipationRequirement, "", new { @class = "text-danger" })
-									</div>
-									<div class="form-group col-lg-6">
-										@Html.LabelFor(model => model.ExhibitionStatus)
-										@Html.EditorFor(model => model.ExhibitionStatusDesc, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-									</div>
-								</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        @Html.FEPLabelFor(model => model.ParticipationRequirement, htmlAttributes: new { @class = "control-label col-md-12" })
+                                        @Html.EditorFor(model => model.ParticipationRequirement, new { htmlAttributes = new { @class = "form-control", @placeholder = "No. of Participant" } })
+                                        @Html.ValidationMessageFor(model => model.ParticipationRequirement, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        @Html.LabelFor(model => model.ExhibitionStatus)
+                                        @Html.EditorFor(model => model.ExhibitionStatusDesc, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    </div>
+                                </div>
 
-								<div class="row">
-									<div class="form-group col-lg-12">
-										@Html.FEPLabelFor(m => m.NomineeId)
-										@Html.ListBoxFor(m => m.NomineeId, Model.Nominees, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
-										@Html.ValidationMessageFor(m => m.NomineeId)
-									</div>
-								</div>
-							</div>
-							<!-- End Form -->
-							<!-- Action Button -->
-							<!-- End Action Button -->
-						</div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        @Html.FEPLabelFor(m => m.NomineeId)
+                                        @Html.ListBoxFor(m => m.NomineeId, Model.Nominees, htmlAttributes: new { @class = "js-example-basic-multiple", style = "width: 100%;" })
+                                        @Html.ValidationMessageFor(m => m.NomineeId)
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Form -->
+                            <!-- Action Button -->
+                            <!-- End Action Button -->
+                        </div>
 
-					</div>
-				</div>
-			</div>
+                        <div class="tab-pane" id="event_dutyroster">
+                            <div class="d-flex align-items-center mb-4 mt-2">
+                                <h4 class="color-darkblue mr-auto mb-0">Event Duty Roster<br><span class="small">View proposed duty roster for this event below.</span></h4>
+                                <a class="btn btn-default btn-sm mw-auto" href="#" id="AddRosterBtn">
+                                    <div id="AddRosterBtnIcon"><i class="la la-edit color-secondary"></i></div>
+                                    <div id="AddRosterBtnCaption">&nbsp;&nbsp;Edit</div>
+                                </a>
+                                @Html.HiddenFor(model => model.DutyRosterJSON)
+                            </div>
 
-			<div class="border-left border-right border-bottom p-3 rounded-bottom">
-				<a href='@Url.Action("List")' class="btn btn-default btn-flat">Cancel</a>
-				<button class="btn btn-secondary" type="submit">Save</button>
-			</div>
+                            <!-- Table -->
+                            <!-- Table -->
+                            <table class="table tableStyle1 tabledata table-responsive-xs-plus" id="finalTable">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Officers in-charge</th>
+                                    </tr>
+                                </thead>
 
-		</div>
-	</div>
+                                <tbody></tbody>
+                            </table>
+
+                        </div>
+                        <div class="tab-pane" id="event_recommendation">
+                            <div class="d-flex align-items-center mb-4 mt-2">
+                                <h4 class="color-darkblue mr-auto mb-0">Event Recommendations<br><span class="small">View proposed recommendations for this event below.</span></h4>
+                                <a class="btn btn-default btn-sm mw-auto" href="#" id="AddRecommendationBtn">
+                                    <div id="AddRecommendationBtnIcon"><i class="la la-plus color-secondary"></i></div>
+                                    <div id="AddRecommendationBtnCaption">&nbsp;&nbsp;Add New</div>
+                                </a>
+                                @Html.HiddenFor(model => model.RecommendationsJSON)
+                            </div>
+                            <!-- Table -->
+                            <table class="table tableStyle1 tabledata table-responsive-xs-plus" id="recommendationTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Recommendation</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody></tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <a href='@Url.Action("List")' class="btn btn-default btn-flat">Cancel</a>
+                <button class="btn btn-secondary" type="submit">Save</button>
+            </div>
+
+        </div>
+    </div>
 }
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="mr-auto">
+                    <h4 class="color-darkblue mb-0">Add Duty Roster</h4>
+                    <h6 class="font-weight-normal">Assign tasks, time, and date to officers in-charge.</h6>
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <input type="hidden" id="exhibitionId" name="exhibitionId" value="" />
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-lg-3 pr-1">
+                        <div class="dutyRosterDatePicker">
+                            <input type="text" class="form-control" id="DutyDate" name="DutyDate" placeholder="Select Date.." data-input>
+                            @*<input class="form-control flatpickr-input valid" data-input="flatpickr" data-val="true" placeholder="Pick Date"
+                                data-val-date="The field Duty Date must be a date." data-val-required="Please insert Duty Date"
+                                id="DutyDate" name="DutyDate" type="text" value="" readonly="readonly"
+                                aria-describedby="ReceivedDate-error" aria-invalid="false">*@
+                            @*<a class="input-button calendar" title="toggle" data-toggle>
+                                    <i class="la la-calendar"></i>
+                                </a>
+                                <a class="input-button clear" title="clear" data-clear>
+                                    <i class="la la-times"></i>
+                                </a>*@
+                        </div>
+                    </div>
+                    <div class="col-lg-2 pl-0 pr-1">
+                        <input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"
+                               data-val-required="Please insert Start Time"
+                               id="DutyStartTime" name="DutyStartTime" placeholder="Start"
+                               type="text" value="" readonly="readonly" aria-describedby="StartTime-error" aria-invalid="false">
+                    </div>
+                    <div class="col-lg-2 pl-0 pr-1">
+                        <input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"
+                               data-val-required="Please insert End Time"
+                               id="DutyEndTime" name="DutyEndTime" placeholder="End"
+                               type="text" value="" readonly="readonly" aria-describedby="EndTime-error" aria-invalid="false">
+                    </div>
+                    <div class="col-lg-4 pl-0 pr-1">
+                        <div id="personList"></div>
+                    </div>
+                    <div class="col-lg-1 pl-0">
+                        <a class="btn btn-secondary btn-sm mw-auto mh-100" href="#" id="AddRowBtn"><i class="la la-plus"></i></a>
+                    </div>
+                </div>
+                <!-- Table -->
+                <table class="table tableStyle1 tabledata" id="floatTable">
+                    <thead>
+                        <tr>
+                            <th width="40%">Date</th>
+                            <th>Time</th>
+                            <th></th>
+                            <th width="40%">Officers in-charge</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmSaveRoster">Save and Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Recommendation-->
+<div class="modal fade" id="recommendationModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="mr-auto">
+                    <h4 class="color-darkblue mb-0">Add Recommendation</h4>
+                    <h6 class="font-weight-normal">Add your recommendation here.</h6>
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <input type="hidden" id="recommendationId" name="recommendationId" value="" />
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.Label("Recommendation")<span class="text-danger"> *</span>
+                        <input class="form-control text-box single-line" data-val="true"
+                               data-val-required="Please Insert Recommendation" id="recommendationInput" name="recommendationInput" placeholder="Be clear and descriptive" type="text" value="">
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmUpdateRecommendation">Update</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmSaveRecommendation">Save and Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

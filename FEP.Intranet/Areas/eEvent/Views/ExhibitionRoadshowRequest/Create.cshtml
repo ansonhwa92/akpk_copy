@@ -20,13 +20,49 @@
             dateFormat: "H:i",
         }
 
+        var RecommendationListJSON = {
+            "exhibitionId": 0,
+            "recommendations": []
+        }
+
         $(document).ready(function () {
 
             RefreshFile();
             $("#exhibition_details").addClass("active");
-            
+            //$("#DutyDate").flatpickr(flatPickrOption);
+            $(".dutyRosterDatePicker").flatpickr({
+                dateFormat: "l, d/m/Y",
+                enableTime: false,
+                wrap: true,
+                minDate: "today"
+            });
+            $("#DutyEndTime").flatpickr({
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i"
+            });
 
-            $("#DutyDate").flatpickr(flatPickrOption);
+            $("#StartDate").flatpickr({
+                dateFormat: "d/m/Y",
+                enableTime: false,
+                minDate: "today",
+                onValueUpdate: function (dObj, dStr, fp, dayElem) {
+                    $("#EndDate").flatpickr({
+                        dateFormat: "d/m/Y",
+                        enableTime: false,
+                        minDate: dStr
+                    });
+                }
+            });
+
+
+            $("#EndDate").flatpickr({
+                dateFormat: "d/m/Y",
+                enableTime: false,
+                minDate: "today",
+            });
+
+
 
             $("#DutyStartTime").flatpickr({
                 enableTime: true,
@@ -45,34 +81,9 @@
 
         });
 
-        
 
-        $("#DutyEndTime").flatpickr({
-            enableTime: true,
-            noCalendar: true,
-            dateFormat: "H:i"
-        });
 
-        $("#StartDate").flatpickr({
-            dateFormat: "d/m/Y",
-            enableTime: false,
-            minDate: "today",
-            onValueUpdate: function (dObj, dStr, fp, dayElem) {
-                debugger;
-                $("#EndDate").flatpickr({
-                    dateFormat: "d/m/Y",
-                    enableTime: false,
-                    minDate: dStr,
-                });
-            }
-        });
-        
 
-        $("#EndDate").flatpickr({
-            dateFormat: "d/m/Y",
-            enableTime: false,
-            minDate: "today",
-        });
 
         function repopulatePIC(data) {
             if (RosterListJSON["dutyRoster"].length > 0) {
@@ -83,27 +94,121 @@
                     for (var k = 0; k < RosterListJSON['dutyRoster'][i]['pic'].length; k++) {
                         preselectedPIC.push(RosterListJSON['dutyRoster'][i]['pic'][k]['id']);
                     }
-                    
+
                     console.log(preselectedPIC);
                     debugger;
 
-                    var selector = "<select class='js-example-basic-multiple select2-area select2-hidden-accessible' name='DutyInCharge_"+getId+"' multiple='multiple' data-select2-id='DutyInCharge_"+getId+"' id='DutyInCharge_"+getId+"' style='width:100%' aria-hidden='true' >";
+                    var selector = "<select class='js-example-basic-multiple select2-area select2-hidden-accessible' name='DutyInCharge_" + getId + "' multiple='multiple' data-select2-id='DutyInCharge_" + getId + "' id='DutyInCharge_" + getId + "' style='width:100%' aria-hidden='true' >";
                     for (var j = 0; j < data.length; j++) {
                         selector += "<option value='" + data[j].id + "'>" + data[j].text + "</option>";
                     }
                     selector += "</select>";
 
-                    $("#personList_"+getId+"").html(selector);
+                    $("#personList_" + getId + "").html(selector);
                     $('.js-example-basic-multiple').select2();
                     $("#DutyInCharge_" + getId + "").select2({ placeholder: "Pick Officer" });
                     $("#DutyInCharge_" + getId + "").val(preselectedPIC).trigger("change");
                 }
 
-                
+
             }
-            
+
         }
-                               
+
+        $("#AddRecommendationBtn").click(function () {
+            $("#recommendationInput").val('');
+            $("#recommendationId").val('');     
+            $("#confirmUpdateRecommendation").hide();
+            $("#confirmSaveRecommendation").show();
+            $("#recommendationModal").modal("show");
+        });
+
+
+        function editRecommendation(id) {
+            for (var i = 0; i < RecommendationListJSON["recommendations"].length; i++) {
+                if (RecommendationListJSON["recommendations"][i]["id"] == id) {
+                    $("#recommendationInput").val(RecommendationListJSON["recommendations"][i]["description"]);
+                    $("#recommendationId").val(RecommendationListJSON["recommendations"][i]["id"]);     
+                    $("#confirmUpdateRecommendation").show();
+                    $("#confirmSaveRecommendation").hide();
+                    
+                    $("#recommendationModal").modal("show");
+                    break;
+                }
+            }
+        }
+        function deleteRecommendation(id) {
+            for (j = 0; j < RecommendationListJSON["recommendations"].length; j++) {
+                if (RecommendationListJSON["recommendations"][j]["id"] == id) {
+                    //debugger;
+                    if (confirm('Are you sure to delete this entry? \n' + RecommendationListJSON['recommendations'][j]['description'] )) {
+                        
+                        RecommendationListJSON["recommendations"].splice(j, 1);
+                        renderRecommendation();
+                    } else {
+
+                    }
+
+                    break;
+                }
+            }
+        }
+        $("#confirmUpdateRecommendation").click(function () {
+            if ($("#recommendationInput").val() != '') {
+                var item = {
+                    "id": $("#recommendationId").val(),
+                    "description": $("#recommendationInput").val(),
+                }
+                for (var i = 0; i < RecommendationListJSON["recommendations"].length; i++) {
+                    if (RecommendationListJSON["recommendations"][i]["id"] == item["id"]) {
+                        RecommendationListJSON["recommendations"][i] = item;
+                        break;
+                    }
+                }
+                renderRecommendation();
+            }
+            else {
+                alert("You didn't input any recommendation.")
+            }
+        });
+
+        function renderRecommendation() {
+            $('#recommendationTable tbody').empty();
+            var count = 1;
+            for (var i = 0; i < RecommendationListJSON["recommendations"].length; i++) {
+                var toDisplay =
+                '<tr>' +
+                '<td>' + count + '</td>' +
+                '<td>' + RecommendationListJSON["recommendations"][i]['description'] + '</td> ' +
+                '<td>' +
+                '<a href="#" data-toggle="tooltip" data-placement="top" data-original-title="Edit" onclick="editRecommendation(' + RecommendationListJSON["recommendations"][i]['id'] + ')"> <i class="la la-edit text-muted"></i></a>'+
+				'<a href="#" data-toggle="tooltip" data-placement="top" data-original-title="Delete" onclick="deleteRecommendation(' + RecommendationListJSON["recommendations"][i]['id'] + ')"> <i class="la la-times" style="color:red"></i></a>'+
+                '</td>' +
+                '</tr>';                
+
+                $('#recommendationTable tbody').append(toDisplay);
+                count++;
+            }
+        }
+
+        var rCounter = 0;
+        $("#confirmSaveRecommendation").click(function () {
+            if ($("#recommendationInput").val() != '') {
+                var item = {
+                    "id": "",
+                    "description": $("#recommendationInput").val(),
+                }
+                item['id'] = rCounter;
+                rCounter++;
+                RecommendationListJSON['recommendations'].push(item);
+                //console.log(RecommendationListJSON);
+                renderRecommendation();
+            }
+            else {
+                alert("You didn't input any recommendation.")
+            }
+        });
+
         $("#AddRosterBtn").click(function () {
             var data = $("#NomineeId").select2("data");
             var selector = "<select class='js-example-basic-multiple select2-area select2-hidden-accessible' name='DutyInCharge' multiple='multiple' data-select2-id='DutyInCharge' id='DutyInCharge' style='width:100%' aria-hidden='true' >";
@@ -123,37 +228,39 @@
 
         var RosterListJSON = {
             "exhibitionId": 0,
-            "dutyRoster":[]                
+            "dutyRoster": []
         }
 
         function sortByProperty(property1, property2) {
             return function (a, b) {
-                /*if (a[property] > b[property])
-                    return 1;
-                else if (a[property] < b[property])
-                    return -1;
 
-                return 0;*/
-                
                 if (a[property1] === b[property1]) {
                     return a[property2] > b[property2] ? 1 : -1;
                 }
-                return a[property1].split(' ')[1] > b[property1].split(' ')[1] ? 1 : -1;
+                var tempA = a[property1].split(' ')[1].split('/');
+                var A = tempA[2] + tempA[1] + tempA[0];
+                var tempB = b[property1].split(' ')[1].split('/');
+                var B = tempB[2] + tempB[1] + tempB[0];
+                return A > B ? 1 : -1;
+                //return a[property1].split(' ')[1] > b[property1].split(' ')[1] ? 1 : -1;
             }
         }
 
         function SortRoster() {
             RosterListJSON['dutyRoster'].sort(sortByProperty("date", "startTime"));
-            console.log(RosterListJSON);
+            //console.log(RosterListJSON);
             SortFloatTable();
         }
 
-        function SortFloatTable(){
+        function SortFloatTable() {
             var tbody = $('#floatTable tbody');
-                
+
             tbody.find('tr').sort(function (a, b) {
-                var B = $(b).children('td').eq(0).children("div").children("input").val().split(' ')[1].toUpperCase();
-                var A = $(a).children('td').eq(0).children("div").children("input").val().split(' ')[1].toUpperCase();
+                var tempB = $(b).children('td').eq(0).children("div").children("input").val().split(' ')[1].split('/');
+                var tempA = $(a).children('td').eq(0).children("div").children("input").val().split(' ')[1].split('/');
+
+                var B = tempB[2] + tempB[1] + tempB[0];
+                var A = tempA[2] + tempA[1] + tempA[0];
 
                 if (A < B) {
                     return -1;
@@ -177,7 +284,7 @@
                 return 0;
             }).appendTo(tbody);
         }
-                
+
 
         var tCounter = 0;
         $("#AddRowBtn").click(function () {
@@ -185,7 +292,7 @@
             var dataPIC = $("#DutyInCharge").select2("data");
             var item = {
                 "id": "",
-                "date":  $("#DutyDate").val(),
+                "date": $("#DutyDate").val(),
                 "startTime": $("#DutyStartTime").val(),
                 "endTime": $("#DutyEndTime").val(),
                 "pic": []
@@ -199,6 +306,15 @@
             }
 
             if ($("#DutyDate").val() != "" && $("#DutyStartTime").val() != "" && $("#DutyEndTime").val() != "") {
+
+                for (var n = 0; n < RosterListJSON['dutyRoster'].length; n++) {
+                    if (RosterListJSON['dutyRoster'][n]['date'] == item['date']) {
+                        if (RosterListJSON['dutyRoster'][n]['startTime'] == item['startTime']) {
+                            alert("There is a tentative with the same time already exist.\nPlease select different time");
+                            return;
+                        }
+                    }
+                }
 
                 item['id'] = tCounter;
                 tCounter++;
@@ -308,9 +424,9 @@
                 $("#DutyEndTime").val('');
                 $("#DutyInCharge").val('').change();
 
-                
 
-                
+
+
 
             }
             else {
@@ -355,7 +471,7 @@
                 }
 
                 toDisplay +=
-                    '<div class="col-md-10">' + PIClist + '</div></div>'+
+                    '<div class="col-md-10">' + PIClist + '</div>' +
                     '</div>' +
                     '</td> ' +
                     '</tr>';
@@ -381,11 +497,11 @@
                         console.log(RosterListJSON);
                         RosterListJSON['dutyRoster'].splice(j, 1);
                         console.log(RosterListJSON);
-                        delRowTableFloat(tId);    
+                        delRowTableFloat(tId);
                     } else {
-                        
+
                     }
-                    
+
                     break;
                 }
             }
@@ -396,11 +512,12 @@
             $("#row_" + tId + "").remove();
         }
 
-        $('#target').submit(function(event) {
+        $('#target').submit(function (event) {
 
             event.preventDefault(); //this will prevent the default submit
             // your code here (But not asynchronous code such as Ajax because it does not wait for response and move to next line.)
             $("#DutyRosterJSON").val(JSON.stringify(RosterListJSON));
+            $("#RecommendationsJSON").val(JSON.stringify(RecommendationListJSON));
 
             $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
         })
@@ -482,9 +599,16 @@
                                 </a>
                             </li>
 
+                            <li class="step-item active">
+                                <a href="#event_recommendation" id="tab_eventrecommendation" class="step-link" data-toggle="tab">
+                                    <span class="step-number">5</span>
+                                    <span class="step-title">Fill Up Recommendation</span>
+                                </a>
+                            </li>
+
                             <li class="step-item disabled">
                                 <a href="#event_reviewsubmission" id="tab_reviewsubmission" class="step-link" data-toggle="tab">
-                                    <span class="step-number">5</span>
+                                    <span class="step-number">6</span>
                                     <span class="step-title">Review & Submission</span>
                                 </a>
                             </li>
@@ -506,29 +630,29 @@
                             <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
                         </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.ReceivedById)
-								@Html.DropDownListFor(model => model.ReceivedById, Model.ReceivedBys, "-Select Name-", htmlAttributes: new { @class = "form-control select2-area", style = "width: 100%" })
-								@Html.ValidationMessageFor(model => model.ReceivedById, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.ReceivedById)
+                                @Html.DropDownListFor(model => model.ReceivedById, Model.ReceivedBys, "-Select Name-", htmlAttributes: new { @class = "form-control select2-area", style = "width: 100%" })
+                                @Html.ValidationMessageFor(model => model.ReceivedById, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.ReceivedDate)
-								@Html.EditorFor(model => model.ReceivedDate, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.ReceivedDate, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.ReceivedDate)
+                                @Html.EditorFor(model => model.ReceivedDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ReceivedDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.Receive_Via)
-								@Html.EditorFor(model => model.Receive_Via, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.Receive_Via, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.Receive_Via)
+                                @Html.EditorFor(model => model.Receive_Via, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Receive_Via, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
                         <div class="row">
                             <div class="form-group col-lg-12">
@@ -551,53 +675,53 @@
                             <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
                         </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.BranchId)
-								@Html.DropDownListFor(model => model.BranchId, Model.BranchList, "-Select Branch-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
-								@Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.BranchId)
+                                @Html.DropDownListFor(model => model.BranchId, Model.BranchList, "-Select Branch-", htmlAttributes: new { @class = "form-control select2", style = "width: 100%" })
+                                @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.EventName)
-								@Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.EventName, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.EventName)
+                                @Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.EventName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.Organiser)
-								@Html.EditorFor(model => model.Organiser, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.Organiser, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.Organiser)
+                                @Html.EditorFor(model => model.Organiser, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Organiser, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.OrganiserEmail)
-								@Html.EditorFor(model => model.OrganiserEmail, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.OrganiserEmail, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.OrganiserEmail)
+                                @Html.EditorFor(model => model.OrganiserEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.OrganiserEmail, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.ContactNo)
-								@Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.ContactNo)
+                                @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="row">
-							<div class="form-group col-lg-12">
-								@Html.FEPLabelFor(model => model.AddressStreet1)
-								@Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
-								@Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.AddressStreet1)
+                                @Html.EditorFor(model => model.AddressStreet1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Street address line 1" } })
+                                @Html.ValidationMessageFor(model => model.AddressStreet1, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
                         <div class="row">
                             <div class="form-group col-lg-12">
@@ -672,7 +796,7 @@
                             <a class="btn btn-secondary" href="#event_dutyroster" data-toggle="tab">Next</a>
                         </div>
 
-                        
+
 
                     </div>
 
@@ -708,31 +832,64 @@
                         </div>
                     </div>
 
+                    <div class="tab-pane" id="event_recommendation">
+                        <div class="d-flex align-items-center mb-4 mt-2">
+                            <h4 class="color-darkblue mr-auto mb-0">Event Recommendations<br><span class="small">View proposed recommendations for this event below.</span></h4>
+                            <a class="btn btn-default btn-sm mw-auto" href="#" id="AddRecommendationBtn">
+                                <div id="AddRecommendationBtnIcon"><i class="la la-plus color-secondary"></i></div>
+                                <div id="AddRecommendationBtnCaption">&nbsp;&nbsp;Add New</div>
+                            </a>
+                            @Html.HiddenFor(model => model.RecommendationsJSON)
+                        </div>
+                        <!-- Table -->
+                        <table class="table tableStyle1 tabledata table-responsive-xs-plus" id="recommendationTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Recommendation</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody></tbody>
+                        </table>
+
+                        <hr />
+                        <div>
+                            <input class="form-control" type="hidden" name="CreatorId" id="CreatorId" value="@CurrentUser.UserId">
+                            <a class="btn btn-default font-weight-normal mr-2" href='#event_details' data-toggle="tab">Back</a>
+                            <button type="submit" class="btn btn-default" id="btnSave" name="Submittype" value="Save"><i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save as Draft</button>
+                            <button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Review for Submission</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 }
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog modal-lg">
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="mr-auto">
-                        <h4 class="color-darkblue mb-0">Add Duty Roster</h4>
-                        <h6 class="font-weight-normal">Assign tasks, time, and date to officers in-charge.</h6>
-                    </div>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <input type="hidden" id="exhibitionId" name="exhibitionId" value="" />
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="mr-auto">
+                    <h4 class="color-darkblue mb-0">Add Duty Roster</h4>
+                    <h6 class="font-weight-normal">Assign tasks, time, and date to officers in-charge.</h6>
                 </div>
-                <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <input type="hidden" id="exhibitionId" name="exhibitionId" value="" />
+            </div>
+            <div class="modal-body">
 
-                    <div class="row">
-                        <div class="col-lg-3 pr-1">
-                            <div class="dateSelect">
-                                <input class="form-control flatpickr-input valid" data-input="flatpickr" data-val="true" placeholder="Pick Date"
+                <div class="row">
+                    <div class="col-lg-3 pr-1">
+                        <div class="dutyRosterDatePicker">
+                            <input type="text" class="form-control" id="DutyDate" name="DutyDate" placeholder="Select Date.." data-input>
+                            @*<input class="form-control flatpickr-input valid" data-input="flatpickr" data-val="true" placeholder="Pick Date"
                                        data-val-date="The field Duty Date must be a date." data-val-required="Please insert Duty Date"
                                        id="DutyDate" name="DutyDate" type="text" value="" readonly="readonly"
                                        aria-describedby="ReceivedDate-error" aria-invalid="false">
@@ -741,52 +898,83 @@
                                 </a>
                                 <a class="input-button clear" title="clear" data-clear="">
                                     <i class="la la-times"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 pl-0 pr-1">
-                            <input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"
-                                   data-val-required="Please insert Start Time"
-                                   id="DutyStartTime" name="DutyStartTime" placeholder="Start"
-                                   type="text" value="" readonly="readonly" aria-describedby="StartTime-error" aria-invalid="false">
-                        </div>
-                        <div class="col-lg-2 pl-0 pr-1">
-                            <input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"
-                                   data-val-required="Please insert End Time"
-                                   id="DutyEndTime" name="DutyEndTime" placeholder="End"
-                                   type="text" value="" readonly="readonly" aria-describedby="EndTime-error" aria-invalid="false">
-                        </div>
-                        <div class="col-lg-4 pl-0 pr-1">
-                            <div id="personList"></div>
-                        </div>
-                        <div class="col-lg-1 pl-0">
-                            <a class="btn btn-secondary btn-sm mw-auto mh-100" href="#" id="AddRowBtn"><i class="la la-plus"></i></a>
+                                </a>*@
                         </div>
                     </div>
-                    <!-- Table -->
-                    <table class="table tableStyle1 tabledata" id="floatTable">
-                        <thead>
-                            <tr>
-                                <th width="40%">Date</th>
-                                <th>Time</th>
-                                <th></th>
-                                <th width="40%">Officers in-charge</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-
-                            
-
-                        </tbody>
-                    </table>
-
+                    <div class="col-lg-2 pl-0 pr-1">
+                        <input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"
+                               data-val-required="Please insert Start Time"
+                               id="DutyStartTime" name="DutyStartTime" placeholder="Start"
+                               type="text" value="" readonly="readonly" aria-describedby="StartTime-error" aria-invalid="false">
+                    </div>
+                    <div class="col-lg-2 pl-0 pr-1">
+                        <input class="form-control timeSelect text-box single-line flatpickr-input active valid" data-val="true"
+                               data-val-required="Please insert End Time"
+                               id="DutyEndTime" name="DutyEndTime" placeholder="End"
+                               type="text" value="" readonly="readonly" aria-describedby="EndTime-error" aria-invalid="false">
+                    </div>
+                    <div class="col-lg-4 pl-0 pr-1">
+                        <div id="personList"></div>
+                    </div>
+                    <div class="col-lg-1 pl-0">
+                        <a class="btn btn-secondary btn-sm mw-auto mh-100" href="#" id="AddRowBtn"><i class="la la-plus"></i></a>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmSaveRoster">Save and Close</button>
-                </div>
+                <!-- Table -->
+                <table class="table tableStyle1 tabledata" id="floatTable">
+                    <thead>
+                        <tr>
+                            <th width="40%">Date</th>
+                            <th>Time</th>
+                            <th></th>
+                            <th width="40%">Officers in-charge</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+
             </div>
-
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmSaveRoster">Save and Close</button>
+            </div>
         </div>
+
     </div>
+</div>
+<!-- Modal Recommendation-->
+<div class="modal fade" id="recommendationModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="mr-auto">
+                    <h4 class="color-darkblue mb-0">Add Recommendation</h4>
+                    <h6 class="font-weight-normal">Add your recommendation here.</h6>
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <input type="hidden" id="recommendationId" name="recommendationId" value="" />
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        @Html.Label("Recommendation")<span class="text-danger"> *</span>
+                        <input class="form-control text-box single-line" data-val="true"
+                               data-val-required="Please Insert Recommendation" id="recommendationInput" name="recommendationInput" placeholder="Be clear and descriptive" type="text" value="">
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmUpdateRecommendation">Update</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmSaveRecommendation">Save and Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

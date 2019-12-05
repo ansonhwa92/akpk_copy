@@ -79,8 +79,10 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				BranchName = exapproval.exhibitionroadshow.BranchName,
 				ContactNo = exapproval.exhibitionroadshow.ContactNo,
 				RefNo = exapproval.exhibitionroadshow.RefNo,
-                DutyRoster = exapproval.exhibitionroadshow.DutyRoster
+                DutyRoster = exapproval.exhibitionroadshow.DutyRoster,
+                RecommendationsJSON = exapproval.exhibitionroadshow.RecommendationsJSON
 			};
+
 
 			var approval = new ApprovalModel
 			{
@@ -259,7 +261,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					CreatedBy = CurrentUser.UserId,
 					BranchId = model.BranchId,
 					ContactNo = model.ContactNo,
-                    DutyRosterJSON = model.DutyRosterJSON
+                    DutyRosterJSON = model.DutyRosterJSON,
+                    RecommendationsJSON = model.RecommendationsJSON
 				};
 
 				//attachment
@@ -348,6 +351,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				BranchId = response.Data.BranchId,
 				BranchName = response.Data.BranchName,
 				ContactNo = response.Data.ContactNo,
+                DutyRosterJSON = response.Data.DutyRosterJSON,
+                RecommendationsJSON = response.Data.RecommendationsJSON
 			};
 
 			model.ReceivedBys = new SelectList(await GetUsers(), "Id", "Name", 0);
@@ -399,6 +404,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 					BranchName = model.BranchName,
 					ContactNo = model.ContactNo,
 					RefNo = model.RefNo,
+                    DutyRosterJSON = model.DutyRosterJSON,
+                    RecommendationsJSON = model.RecommendationsJSON
 				};
 
 				//attachment
@@ -411,8 +418,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 						modelapi.FilesId = files.Select(f => f.Id).ToList();
 					}
 				}
+                
 
-				var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/ExhibitionRoadshowRequest?id={model.Id}", modelapi);
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Put, $"eEvent/ExhibitionRoadshowRequest?id={model.Id}", modelapi);
 
 				if (response.isSuccess)
 				{

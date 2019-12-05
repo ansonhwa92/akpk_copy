@@ -98,10 +98,11 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		{
 			Attachments = new List<Attachment>();
 			AttachmentFiles = new List<HttpPostedFileBase>();
-		}
+        }
 
         //tajul add
         public string DutyRosterJSON { get; set; }
+        public string RecommendationsJSON { get; set; }
 
         [Display(Name = "ExRoadExhibitionSupDoc", ResourceType = typeof(Language.Event))]
 		public IEnumerable<Attachment> Attachments { get; set; }

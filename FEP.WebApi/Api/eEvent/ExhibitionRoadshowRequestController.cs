@@ -260,7 +260,28 @@ namespace FEP.WebApi.Api.eEvent
 					ContactNo = s.OrganiserPhoneNo,
 				}).FirstOrDefault();
 
-			//tajul add
+            //tajul add
+            var getRecommendations = db.ExhibitionRecommendation.Where(r => r.Display && r.ExhibitionId == id).ToList();
+            exhibition.RecommendationsJSON = "";
+            if (getRecommendations != null)
+            {
+                var tempRecommendation = new RecommendationModel
+                {
+                    exhibitionId = id
+                };
+                tempRecommendation.recommendations = new List<RecommendationDetailModel>();
+                foreach (var item in getRecommendations)
+                {
+                    var tempDetail = new RecommendationDetailModel
+                    {
+                        id = item.Id,
+                        description = item.Recommendation
+                    };
+                    tempRecommendation.recommendations.Add(tempDetail);
+                }
+                exhibition.RecommendationsJSON = JsonConvert.SerializeObject(tempRecommendation);
+            }
+
 			var getRoster = db.DutyRoster.Where(r => r.Display && r.ExhibitionRoadshowId == id).ToList();
 			if (getRoster != null)
 			{
@@ -287,7 +308,7 @@ namespace FEP.WebApi.Api.eEvent
 						{
 							var tempPIC = new DutyPIC
 							{
-								id = pic.Id,
+								id = pic.UserId.Value,
 								name = pic.User.Name
 							};
 							tempDutyDetails.pic.Add(tempPIC);
@@ -407,6 +428,24 @@ namespace FEP.WebApi.Api.eEvent
 				db.EventFile.Add(eventfile);
 			}
 
+            //recommendations
+            if(model.RecommendationsJSON != null)
+            {
+                dynamic recommendationObj = JsonConvert.DeserializeObject(model.RecommendationsJSON);
+
+                foreach(var item in recommendationObj.recommendations)
+                {
+                    var recommendation = new ExhibitionRecommendation
+                    {
+                        Recommendation = item.description,
+                        CreatedBy = exroad.CreatedBy,
+                        CreatedDate = DateTime.Now,
+                        ExhibitionId = exroad.Id,
+                        Display = true
+                    };
+                    db.ExhibitionRecommendation.Add(recommendation);
+                }
+            }
             //duty roster
             if (model.DutyRosterJSON != "" || model.DutyRosterJSON != null) {
                 DutyRosterTempModel drModel = JsonConvert.DeserializeObject<DutyRosterTempModel>(model.DutyRosterJSON);
@@ -533,6 +572,75 @@ namespace FEP.WebApi.Api.eEvent
 
 				db.ExhibitionNominee.Add(nominee);
 			}
+
+            //duty roster
+            if (model.DutyRosterJSON != "" || model.DutyRosterJSON != null)
+            {
+                DutyRosterTempModel drModel = JsonConvert.DeserializeObject<DutyRosterTempModel>(model.DutyRosterJSON);
+                var getDutyRoster = db.DutyRoster.Where(d => d.ExhibitionRoadshowId == model.Id).ToList();
+                if (getDutyRoster != null)
+                {
+                    foreach (var itemRoster in getDutyRoster)
+                    {
+                        var getOfficers = db.DutyRosterOfficer.Where(o => o.DutyRosterId == itemRoster.Id).ToList();
+                        if (getOfficers != null)
+                        {
+                            foreach (var itemOfficer in getOfficers)
+                            {
+                                db.DutyRosterOfficer.Remove(itemOfficer);
+                            }
+                        }
+
+                        db.DutyRoster.Remove(itemRoster);
+                    }
+                }
+
+                foreach (var duty in drModel.dutyRoster)
+                {
+                    var dutyRoster = new DutyRoster
+                    {
+                        ExhibitionRoadshowId = model.Id,
+                        Date = Convert.ToDateTime(duty.date),
+                        StartTime = DateTime.ParseExact(duty.startTime, "H:mm", null, System.Globalization.DateTimeStyles.None),
+                        EndTime = DateTime.ParseExact(duty.endTime, "H:mm", null, System.Globalization.DateTimeStyles.None),
+                        CreatedBy = model.ReceivedById,
+                        CreatedDate = DateTime.Now,
+                        Display = true
+                    };
+                    db.DutyRoster.Add(dutyRoster);
+                    db.SaveChanges();
+
+                    foreach (var pic in duty.pic)
+                    {
+                        var dutyRosterOfficer = new DutyRosterOfficer
+                        {
+                            DutyRosterId = dutyRoster.Id,
+                            UserId = pic.id
+                        };
+                        db.DutyRosterOfficer.Add(dutyRosterOfficer);
+                        db.SaveChanges();
+                    }
+                }
+
+            }
+            //recommendation
+            if (model.RecommendationsJSON != null)
+            {
+                db.ExhibitionRecommendation.RemoveRange(db.ExhibitionRecommendation.Where(r => r.ExhibitionId == id));
+                RecommendationModel rModel = JsonConvert.DeserializeObject<RecommendationModel>(model.RecommendationsJSON);
+                foreach(var item in rModel.recommendations)
+                {
+                    var recommendation = new ExhibitionRecommendation
+                    {
+                        Recommendation = item.description,
+                        CreatedBy = exroad.CreatedBy,
+                        CreatedDate = DateTime.Now,
+                        ExhibitionId = exroad.Id,
+                        Display = true
+                    };
+                    db.ExhibitionRecommendation.Add(recommendation);
+                }
+            }
 
 			//remove file 
 			var attachments = db.EventFile.Where(s => s.FileCategory == EventFileCategory.ExhibitionRoadshow && s.ParentId == model.Id).ToList();
@@ -1142,7 +1250,69 @@ namespace FEP.WebApi.Api.eEvent
 				return NotFound();
 			}
 
-			exhibition.NomineeId = db.ExhibitionNominee.Where(u => u.ExhibitionRoadshowId == id).Select(s => s.UserId).ToArray();
+
+            //tajul add
+            var getRecommendations = db.ExhibitionRecommendation.Where(r => r.Display && r.ExhibitionId == id).ToList();
+            exhibition.RecommendationsJSON = "";
+            if (getRecommendations != null)
+            {
+                var tempRecommendation = new RecommendationModel
+                {
+                    exhibitionId = id
+                };
+                tempRecommendation.recommendations = new List<RecommendationDetailModel>();
+                foreach (var item in getRecommendations)
+                {
+                    var tempDetail = new RecommendationDetailModel
+                    {
+                        id = item.Id,
+                        description = item.Recommendation
+                    };
+                    tempRecommendation.recommendations.Add(tempDetail);
+                }
+                exhibition.RecommendationsJSON = JsonConvert.SerializeObject(tempRecommendation);
+            }
+
+            var getRoster = db.DutyRoster.Where(r => r.Display && r.ExhibitionRoadshowId == id).ToList();
+            if (getRoster != null)
+            {
+                var tempDutyRosterTempModel = new DutyRosterTempModel
+                {
+                    exhibitionId = id
+                };
+                tempDutyRosterTempModel.dutyRoster = new List<DutyDetails>();
+                foreach (var duty in getRoster)
+                {
+
+                    var getPIC = db.DutyRosterOfficer.Where(o => o.DutyRosterId == duty.Id).ToList();
+                    var tempDutyDetails = new DutyDetails
+                    {
+                        id = duty.Id,
+                        date = duty.Date.Value.ToString("dddd, dd/MM/yyyy"),
+                        startTime = duty.StartTime.Value.ToString("HH:mm"),
+                        endTime = duty.EndTime.Value.ToString("HH:mm")
+                    };
+                    if (getPIC != null)
+                    {
+                        tempDutyDetails.pic = new List<DutyPIC>();
+                        foreach (var pic in getPIC)
+                        {
+                            var tempPIC = new DutyPIC
+                            {
+                                id = pic.UserId.Value,
+                                name = pic.User.Name
+                            };
+                            tempDutyDetails.pic.Add(tempPIC);
+                        }
+                    }
+                    tempDutyRosterTempModel.dutyRoster.Add(tempDutyDetails);
+                }
+
+                exhibition.DutyRoster = tempDutyRosterTempModel;
+                exhibition.DutyRosterJSON = JsonConvert.SerializeObject(tempDutyRosterTempModel);
+            }
+
+            exhibition.NomineeId = db.ExhibitionNominee.Where(u => u.ExhibitionRoadshowId == id).Select(s => s.UserId).ToArray();
 			exhibition.Attachments = db.FileDocument.Where(f => f.Display).Join(db.EventFile.Where(e => e.FileCategory == EventFileCategory.ExhibitionRoadshow && e.ParentId == id), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName }).ToList();
 
 			return Ok(exhibition);

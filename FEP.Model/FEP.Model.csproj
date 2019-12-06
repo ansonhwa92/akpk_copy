@@ -57,25 +57,13 @@
     <Compile Include="CTE.cs" />
     <Compile Include="elearning\Feedback.cs" />
     <Compile Include="KMC.cs" />
-    <Compile Include="Migrations\201911281404125_initial.cs" />
-    <Compile Include="Migrations\201911281404125_initial.designer.cs">
-      <DependentUpon>201911281404125_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201911232123335_x.cs" />
+    <Compile Include="Migrations\201911232123335_x.designer.cs">
+      <DependentUpon>201911232123335_x.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912010426172_now.cs" />
-    <Compile Include="Migrations\201912010426172_now.designer.cs">
-      <DependentUpon>201912010426172_now.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912041249533_feedback.cs" />
-    <Compile Include="Migrations\201912041249533_feedback.designer.cs">
-      <DependentUpon>201912041249533_feedback.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912051331441_feedbackupdate.cs" />
-    <Compile Include="Migrations\201912051331441_feedbackupdate.designer.cs">
-      <DependentUpon>201912051331441_feedbackupdate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912060307465_accessrole_feedback.cs" />
-    <Compile Include="Migrations\201912060307465_accessrole_feedback.designer.cs">
-      <DependentUpon>201912060307465_accessrole_feedback.cs</DependentUpon>
+    <Compile Include="Migrations\201912060303586_AddFieldNameForCourseCertificate.cs" />
+    <Compile Include="Migrations\201912060303586_AddFieldNameForCourseCertificate.designer.cs">
+      <DependentUpon>201912060303586_AddFieldNameForCourseCertificate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
@@ -130,9 +118,7 @@
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -142,20 +128,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911281404125_initial.resx">
-      <DependentUpon>201911281404125_initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912010426172_now.resx">
-      <DependentUpon>201912010426172_now.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912041249533_feedback.resx">
-      <DependentUpon>201912041249533_feedback.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912051331441_feedbackupdate.resx">
-      <DependentUpon>201912051331441_feedbackupdate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912060307465_accessrole_feedback.resx">
-      <DependentUpon>201912060307465_accessrole_feedback.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911232123335_x.resx">
+      <DependentUpon>201911232123335_x.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

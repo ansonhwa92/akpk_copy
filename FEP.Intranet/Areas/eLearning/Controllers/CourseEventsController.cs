@@ -2,9 +2,11 @@
 using FEP.Intranet.Areas.eLearning.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
+using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.eLearning;
 using FEP.WebApiModel.SLAReminder;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -201,10 +203,81 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
         [HttpGet]
-        public ActionResult AddLearner()
+        public ActionResult _AddIndividual()
         {
-            return View("_addLearner");
+            return View();
         }
+
+        [HttpGet]
+        public async Task<ActionResult> _AddCompany()
+        {
+            var filter = new FilterCompanyModel();
+
+            filter.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+
+            return View(new ListCompanyModel { Filter = filter });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _AddStaff()
+        {
+            var filter = new FilterStaffModel();
+
+            filter.Branchs = new SelectList(await GetBranches(), "Id", "Name", 0);
+            filter.Departments = new SelectList(await GetDepartments(), "Id", "Name", 0);
+
+            return View(new ListStaffModel { Filter = filter });
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<SectorModel>> GetSectors()
+        {
+
+            var sectors = Enumerable.Empty<SectorModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<SectorModel>>(HttpVerbs.Get, $"Administration/Sector");
+
+            if (response.isSuccess)
+            {
+                sectors = response.Data.OrderBy(o => o.Name);
+            }
+
+            return sectors;
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<BranchModel>> GetBranches()
+        {
+
+            var branches = Enumerable.Empty<BranchModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<BranchModel>>(HttpVerbs.Get, $"Administration/Branch");
+
+            if (response.isSuccess)
+            {
+                branches = response.Data.OrderBy(o => o.Name);
+            }
+
+            return branches;
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<DepartmentModel>> GetDepartments()
+        {
+
+            var departments = Enumerable.Empty<DepartmentModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<DepartmentModel>>(HttpVerbs.Get, $"Administration/Department");
+
+            if (response.isSuccess)
+            {
+                departments = response.Data.OrderBy(o => o.Name);
+            }
+
+            return departments;
+
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> AddLearner(int CourseId, int CourseEventId, int[] Ids)
@@ -297,19 +370,23 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 await LogActivity(Modules.Learning, $"Success publishing - Course - {id}-{title}");
 
+                await Notifier.NotifyCoursePublish(NotificationType.Course_Publish,
+                     id, CurrentUser.UserId.Value, "", createdBy.ToString(),
+                     title, Url.AbsoluteAction("Content", "Course", new { id = id }));
+
                 if (viewCategory == ViewCategory.Public)
                 {
-                    TempData["SuccessMessage"] = "Published successful. The course is now available for the Public.";
+                    TempData["SuccessMessage"] = $"Course titled {title} published successfully and open for public.";
                 }
                 else
                 {
-                    TempData["SuccessMessage"] = "Published successful. You can now invite group/students to enroll to the course.";
+                    TempData["SuccessMessage"] = $"Course titled {title} published successfully.You can now invite group / students to enroll to the course.";
                 }
             }
             else
             {
                 await LogError(Modules.Learning, $"Error publishing - Course - {id}-{title}");
-                TempData["ErrorMessage"] = "Error publishing the course.";
+                TempData["ErrorMessage"] = $"Error publishing the course {title}.";
             }
 
             return RedirectToAction("Content", "Courses", new { area = "eLearning", id = id });

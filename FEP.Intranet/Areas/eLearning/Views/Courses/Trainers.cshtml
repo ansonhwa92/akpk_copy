@@ -129,14 +129,14 @@
         });
 
         function showUser(id, usertype) {
-
+            console.log("usertype -", usertype)
             var url = '';
 
             if (usertype == 0) {
-                url = '@Url.Action("_Details", "Individual", new { area = "Administrator" })/' + id;
+                url = '@Url.Action("_Details", "Courses", new { area = "eLearning" })/' + id;
             }
             else if (usertype == 1) {
-                url = '@Url.Action("_Details", "Individual", new { area = "Administrator" })/' + id;
+                url = '@Url.Action("_Details", "Courses", new { area = "eLearning" })/' + id;
             }
             else if (usertype == 2) {
                 url = '@Url.Action("_Details", "Company", new { area = "Administrator" })/' + id;
@@ -171,9 +171,15 @@
 
         function showAdd(usertype) {
             var url = '';
-           
+
             if (usertype == 1) {
-                url = '@Url.Action("_Add", "Courses", new { area = "eLearning" })';
+                url = '@Url.Action("_AddIndividual", "Courses", new { area = "eLearning" })';
+            }
+              else if (usertype == 2) {
+                url = '@Url.Action("_AddCompany", "Courses", new { area = "eLearning" })';
+            }
+            else if (usertype == 3) {
+                url = '@Url.Action("_AddStaff", "Courses", new { area = "eLearning" })';
             }
            
             if (url != '') {

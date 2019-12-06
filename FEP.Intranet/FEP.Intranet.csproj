@@ -618,6 +618,7 @@
     <Content Include="js\survey-builder-init-readonly.js" />
     <Content Include="js\survey-builder-init.js" />
     <Content Include="js\survey-tester-init.js" />
+    <Content Include="js\tinymce_cfg.js" />
     <Content Include="js\tmpl.min.js" />
     <Content Include="js\vendor\jquery.ui.widget.js" />
     <Content Include="lib\animate\animate.css" />
@@ -882,7 +883,7 @@
     <Content Include="Areas\eLearning\Views\CourseContents\_createAssignment.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Trainers.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_defaultContent.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\_Add.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_AddIndividual.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_viewAssignment.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_viewTest.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_detailVideo.cshtml" />
@@ -1075,8 +1076,6 @@
     <Content Include="Areas\eLearning\Views\Courses\View.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\ViewCertificate.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseGroup\_CoursesList.cshtml" />
-    <Content Include="Areas\KMC\Views\Home\Index.cshtml" />
-    <Content Include="Areas\eLearning\Views\CourseFeedback\_View.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

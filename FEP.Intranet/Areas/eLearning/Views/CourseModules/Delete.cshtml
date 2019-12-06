@@ -82,14 +82,17 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Description)
-                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" })
+                            @*@Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" })*@
+
+                            @Html.Raw(Model.Description)
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.LabelFor(model => model.Objectives)
-                            @Html.TextAreaFor(model => model.Objectives, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" })
+                            @*@Html.TextAreaFor(model => model.Objectives, new { @class = "form-control", rows = 6, @placeholder = "Be clear and descriptive", @readonly = "readonly" })*@
+                            @Html.Raw(Model.Objectives)
                         </div>
                     </div>
                 </div>

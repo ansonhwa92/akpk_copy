@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using FEP.Helper;
+using FEP.Intranet.Areas.Administrator.Controllers;
 using FEP.Intranet.Areas.eLearning.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
+using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.eLearning;
 using FEP.WebApiModel.SLAReminder;
 using System;
@@ -28,9 +30,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string EditRulesCourse = "eLearning/Courses/EditRules";
         public const string Content = "eLearning/Courses/Content";
         public const string DeleteCourse = "eLearning/Courses/Delete";
+        public const string CancelCourse = "eLearning/Courses/CancelCourse";
         public const string Start = "eLearning/Courses/Start";
-        public const string Publish = "eLearning/Courses/Publish";
+        public const string Continue = "eLearning/Courses/Continue";
+
+        //public const string Publish = "eLearning/Courses/Publish";
         public const string IsUserEnrolled = "eLearning/Courses/IsUserEnrolled";
+
         public const string IsUserCompleted = "eLearning/Courses/IsUserCompleted";
     }
 
@@ -63,8 +69,15 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         //[HasAccess(UserAccess.RnPPublicationEdit)]
         public ActionResult SelectCategory()
         {
+            // need to change to call api
             ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name");
+
             ViewBag.Categories = new List<RefCourseCategory>(db.RefCourseCategories);
+
+            var cat = db.RefCourseCategories.ToList();
+
+            cat.Count();
+
             return View();
         }
 
@@ -83,39 +96,33 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(course);
         }
 
-        //[HasAccess(UserAccess.CourseCreate)]
-        //// GET: eLearning/Courses/Create
-        //public async Task<ActionResult> Create()
-        //{
-        //    CreateOrEditCourseModel model = new CreateOrEditCourseModel();
-
-        //    await GetCategories();
-
-        //    return View(model);
-        //}
-
         [HasAccess(UserAccess.CourseCreate)]
-        public ActionResult Create(int? catid)
+        public async Task<ActionResult> Create(int? catid)
         {
-            if (catid != null)
-            {
-                ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name", catid);
-            }
-            else
-            {
-                ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name");
-            }
+            await GetCategories(catid.Value);
+
             var model = new CreateOrEditCourseModel();
+            model.CategoryId = catid.Value;
+
             return View(model);
         }
 
-        private async Task GetCategories()
+        private async Task GetCategories(int catId = 0)
         {
             // this should be queried from webapi
             var response = await WepApiMethod.SendApiAsync<IEnumerable<CourseCategoryModel>>(HttpVerbs.Get, CourseApiUrl.GetCategory);
 
             if (response.isSuccess)
-                ViewBag.Categories = new SelectList(response.Data, "Id", "Name");
+            {
+                if (catId > 0)
+                {
+                    ViewBag.Categories = new SelectList(response.Data, "Id", "Name", catId);
+                }
+                else
+                {
+                    ViewBag.Categories = new SelectList(response.Data, "Id", "Name");
+                }
+            }
             else
             {
                 ViewBag.Categories = new SelectList(new List<CourseCategoryModel>
@@ -175,12 +182,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     {
                         return RedirectToAction("Review", "Courses", new { area = "eLearning", @id = newid });
                     }
-
-                    //if (!String.IsNullOrEmpty(id))
-
-                    //    return RedirectToAction("Content", "Courses", new { id = id });
-                    //else
-                    //    return RedirectToAction("Index", "Courses");
                 }
                 else
                 {
@@ -189,8 +190,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     return RedirectToAction("Index", "Courses", new { area = "eLearning" });
                 }
             }
-
-            //TempData["ErrorMessage"] = "Cannot add course. Please ensure all required fields are filled in correctly.";
 
             //await GetCategories();
             ViewBag.CategoryId = new SelectList(db.RefCourseCategories, "Id", "Name", model.CategoryId);
@@ -265,9 +264,102 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
         [HttpGet]
-        public ActionResult _Add()
+        public async Task<ActionResult> _Details(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<DetailsIndividualModel>(HttpVerbs.Get, $"Administration/Individual?id={id}");
+
+            if (!response.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var model = response.Data;
+
+            //model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
+
+        }
+
+        [HttpGet]
+        public ActionResult _AddIndividual()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _AddCompany()
+        {
+            var filter = new FilterCompanyModel();
+
+            filter.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+
+            return View(new ListCompanyModel { Filter = filter });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _AddStaff()
+        {
+            var filter = new FilterStaffModel();
+
+            filter.Branchs = new SelectList(await GetBranches(), "Id", "Name", 0);
+            filter.Departments = new SelectList(await GetDepartments(), "Id", "Name", 0);
+
+            return View(new ListStaffModel { Filter = filter });
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<SectorModel>> GetSectors()
+        {
+
+            var sectors = Enumerable.Empty<SectorModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<SectorModel>>(HttpVerbs.Get, $"Administration/Sector");
+
+            if (response.isSuccess)
+            {
+                sectors = response.Data.OrderBy(o => o.Name);
+            }
+
+            return sectors;
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<BranchModel>> GetBranches()
+        {
+
+            var branches = Enumerable.Empty<BranchModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<BranchModel>>(HttpVerbs.Get, $"Administration/Branch");
+
+            if (response.isSuccess)
+            {
+                branches = response.Data.OrderBy(o => o.Name);
+            }
+
+            return branches;
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<DepartmentModel>> GetDepartments()
+        {
+
+            var departments = Enumerable.Empty<DepartmentModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<DepartmentModel>>(HttpVerbs.Get, $"Administration/Department");
+
+            if (response.isSuccess)
+            {
+                departments = response.Data.OrderBy(o => o.Name);
+            }
+
+            return departments;
+
         }
 
         /// <summary>
@@ -389,31 +481,57 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return RedirectToAction("Index", "Courses");
             }
 
-            // check if user enrolled
-            if (CurrentUser.UserId != null)
+            // Get enrollment Status
+            if (model.Status == CourseStatus.Published)
             {
-                var currentUserId = CurrentUser.UserId.Value;
-
-                if (String.IsNullOrEmpty(enrollmentCode))
+                if (CurrentUser.UserId != null)
                 {
-                    var response = await WepApiMethod.SendApiAsync<UserCourseEnrollmentModel>(HttpVerbs.Get, CourseApiUrl.IsUserCompleted + $"?id={id}&userId={currentUserId}");
+                    var currentUserId = CurrentUser.UserId.Value;
 
-                    if (response.isSuccess)
+                    if (String.IsNullOrEmpty(enrollmentCode))
                     {
-                        model.IsUserEnrolled = response.Data.IsUserEnrolled;
-                        ViewBag.EnrollmentStatus = response.Data.Status;
-                        ViewBag.EnrollmentId = response.Data.Id;
+                        var response = await WepApiMethod.SendApiAsync<UserCourseEnrollmentModel>(HttpVerbs.Get, CourseEnrollmentApiUrl.GetEnrollment +
+                            $"?id={id}&userId={currentUserId}");
+
+                        if (response.isSuccess)
+                        {
+                            if (response.Data.Status == EnrollmentStatus.Enrolled || response.Data.Status == EnrollmentStatus.Completed)
+                                model.IsUserEnrolled = true;
+
+                            //to continue course
+                            if (response.Data.CourseProgressCount != 0)
+                                ViewBag.InProgress = true;
+                            else
+                                ViewBag.InProgress = false;
+
+                            ViewBag.EnrollmentStatus = response.Data.Status;
+                            ViewBag.EnrollmentId = response.Data.Id;
+
+                            //to continue course
+                            ViewBag.ProgressCourseContentId = response.Data.ProgressCourseContentId;
+                        }
                     }
-                }
-                else
-                {
-                    var response = await WepApiMethod.SendApiAsync<UserCourseEnrollmentModel>(HttpVerbs.Get, CourseApiUrl.IsUserCompleted + $"?id={id}&userId={currentUserId}&enrollmentCode={enrollmentCode}");
-
-                    if (response.isSuccess)
+                    else
                     {
-                        model.IsUserEnrolled = response.Data.IsUserEnrolled;
-                        ViewBag.EnrollmentStatus = response.Data.Status;
-                        ViewBag.EnrollmentId = response.Data.Id;
+                        var response = await WepApiMethod.SendApiAsync<UserCourseEnrollmentModel>(HttpVerbs.Get, CourseApiUrl.IsUserCompleted + $"?id={id}&userId={currentUserId}&enrollmentCode={enrollmentCode}");
+
+                        if (response.isSuccess)
+                        {
+                            if (response.Data.Status == EnrollmentStatus.Enrolled || response.Data.Status == EnrollmentStatus.Completed)
+                                model.IsUserEnrolled = true;
+
+                            //to continue course
+                            if (response.Data.CourseProgressCount != 0)
+                                ViewBag.InProgress = true;
+                            else
+                                ViewBag.InProgress = false;
+
+                            ViewBag.EnrollmentStatus = response.Data.Status;
+                            ViewBag.EnrollmentId = response.Data.Id;
+
+                            //to continue course
+                            ViewBag.ProgressCourseContentId = response.Data.ProgressCourseContentId;
+                        }
                     }
                 }
             }
@@ -556,7 +674,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 //check coursecode
                 var course = db.Courses.FirstOrDefault(x => x.Code.Equals(model.Code, StringComparison.OrdinalIgnoreCase));
 
-                if (course != null)
+                if (course != null && course.Id != model.Id)
                 {
                     TempData["ErrorMessage"] = $"There is already a course with the Course Code {course.Code}. Please select a new code.";
 
@@ -593,6 +711,37 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             await GetCategories();
 
             return View(model);
+        }
+
+        [HttpPost]
+        [HasAccess(UserAccess.CourseCreate)]
+        public async Task<ActionResult> CancelCourse(int? id, string title = "")
+        {
+            if (id == null)
+            {
+                TempData["ErrorMessage"] = "Cannot find such course.";
+
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
+            }
+
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, CourseApiUrl.CancelCourse + $"?id={id}");
+
+            if (response.isSuccess)
+            {
+                await LogActivity(Modules.Learning, $"Cancel Course titled {title} Success: " + response.Data, CurrentUser.UserId.Value);
+
+                TempData["SuccessMessage"] = $"Creation of course titled {title} is successfully cancelled.";
+
+                await Notifier.NotifyCourseCancelled(NotificationType.Course_Cancelled,
+                    id.Value, CurrentUser.UserId.Value, "", "",
+                    title, Url.AbsoluteAction("Index", "Courses", new { area = "eLearning" }));
+            }
+            else
+            {
+                TempData["ErrorMessage"] = $"Failed to Cancel Course {title}.";
+            }
+
+            return RedirectToAction("Index", "Courses", new { area = "eLearning" });
         }
 
         [HasAccess(UserAccess.CourseCreate)]
@@ -752,6 +901,22 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return courses;
+        }
+
+        //wawa - for my courses list
+        [HasAccess(UserAccess.CourseView)]
+        [HttpGet]
+        public async Task<ActionResult> MyCourses()
+        {
+            var currentUserId = CurrentUser.UserId.Value;
+
+            var model = Enumerable.Empty<ReturnMyCoursesModel>();
+
+            var response = await WepApiMethod.SendApiAsync<IEnumerable<ReturnMyCoursesModel>>(HttpVerbs.Get, $"eLearning/Courses/GetMyCoursesList?id={currentUserId}");
+
+            model = response.Data;
+
+            return View(model);
         }
 
         public ActionResult Users(int courseId)

@@ -245,6 +245,12 @@ namespace FEP.Model
         //CTE
         public DbSet<Months> Months { get; set; }
 
+
+        //Feedback
+        public DbSet<Feedback> Feedback { get; set; }
+        public DbSet<FeedbackView> FeedbackView { get; set; }
+        public DbSet<FeedbackContent> FeedbackContent { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();

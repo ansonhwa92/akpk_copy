@@ -274,7 +274,13 @@ namespace FEP.Model
 
         [Display(Name = "Course - Group - Delete")]
         CourseGroupDelete,
-       
+
+        [Display(Name = "Course - Feedback - View")]
+        CourseFeedbackView,
+
+        [Display(Name = "Course - Feedback Post - Delete")]
+        CourseFeedbackPostDelete,
+
         CourseAddDocument,
 
         //setting 5001 - 6000

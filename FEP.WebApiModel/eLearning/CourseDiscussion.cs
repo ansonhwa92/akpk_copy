@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace FEP.WebApiModel.eLearning
 {
@@ -25,7 +26,7 @@ namespace FEP.WebApiModel.eLearning
         public DiscussionVisibility DiscussionVisibility { get; set; }
     }
 
-  
+
 
     public class CourseDiscussionVisibilityModel
     {
@@ -206,5 +207,54 @@ namespace FEP.WebApiModel.eLearning
         [Display(Name = "Update")]
         public DateTime? UpdatedOn { get; set; }
     }
+
+    public class FeedbackModel
+    {
+        public int id { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> Visibilities { get; set; }
+        public List<FeedbackContentModel> Children { get; set; }
+        public FeedbackContentCreateModel NewPost { get; set; } = new FeedbackContentCreateModel();
+    }
+
+    public class FeedbackVisibility
+    {
+        public int Id { get; set; }
+        public string Type { get; set; }
+    }
+
+    public class FeedbackContentModel
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public string Name { get; set; }
+        public DateTime Created { get; set; } = DateTime.Now;
+        public DateTime? Updated { get; set; }
+        public string Avatar { get; set; }
+        [AllowHtml]
+        public string Post { get; set; }
+        public int Visibility { get; set; }
+    }
+
+    public class FeedbackContentCreateModel
+    {
+        public int? FeedbackId { get; set; }
+        public int UserId { get; set; }
+        public DateTime Created { get; set; } = DateTime.Now;
+        [AllowHtml]
+        public string Post { get; set; }
+        public int Visibility { get; set; }
+    }
+
+    public class FeedbackCreateModel
+    {
+        public string Header { get; set; }
+        [AllowHtml]
+        public string Template { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime Created { get; set; } = DateTime.Now;
+        public bool isDeleted { get; set; } = false;
+
+    }
+
 
 }

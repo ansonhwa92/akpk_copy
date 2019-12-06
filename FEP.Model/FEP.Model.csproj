@@ -55,6 +55,7 @@
     <Compile Include="Access.cs" />
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
+    <Compile Include="elearning\Feedback.cs" />
     <Compile Include="KMC.cs" />
     <Compile Include="Migrations\201911281404125_initial.cs" />
     <Compile Include="Migrations\201911281404125_initial.designer.cs">
@@ -63,6 +64,18 @@
     <Compile Include="Migrations\201912010426172_now.cs" />
     <Compile Include="Migrations\201912010426172_now.designer.cs">
       <DependentUpon>201912010426172_now.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912041249533_feedback.cs" />
+    <Compile Include="Migrations\201912041249533_feedback.designer.cs">
+      <DependentUpon>201912041249533_feedback.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912051331441_feedbackupdate.cs" />
+    <Compile Include="Migrations\201912051331441_feedbackupdate.designer.cs">
+      <DependentUpon>201912051331441_feedbackupdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912060307465_accessrole_feedback.cs" />
+    <Compile Include="Migrations\201912060307465_accessrole_feedback.designer.cs">
+      <DependentUpon>201912060307465_accessrole_feedback.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
@@ -134,6 +147,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912010426172_now.resx">
       <DependentUpon>201912010426172_now.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912041249533_feedback.resx">
+      <DependentUpon>201912041249533_feedback.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912051331441_feedbackupdate.resx">
+      <DependentUpon>201912051331441_feedbackupdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912060307465_accessrole_feedback.resx">
+      <DependentUpon>201912060307465_accessrole_feedback.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

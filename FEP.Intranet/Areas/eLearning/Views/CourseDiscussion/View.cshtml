@@ -113,7 +113,7 @@
                                 <div>
                                     <div>
                                         <div class="pull-left text-center" style="margin-right:15px;">
-                                            @if (!String.IsNullOrEmpty(CurrentUser.Avatar))
+                                            @if (!String.IsNullOrEmpty(Model.Post[p].Avatar))
                                             {
                                                 <img src="@BaseURL/img/avatar/@Model.Post[p].Avatar" alt="Avatar" class="rounded-sm rounded-color" width="55">
                                                 // <img src="@BaseURL/img/avatar/@CurrentUser.Avatar" alt="Avatar" class="rounded-circle rounded-color" width="40">

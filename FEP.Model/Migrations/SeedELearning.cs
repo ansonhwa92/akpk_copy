@@ -33,7 +33,11 @@ namespace FEP.Model.Migrations
 
             DefaultSLAReminder(db);
             DefaultParameterGroup(db);
+
             // DefaultTemplate(db);
+
+            DefaultFeedbackView(db);
+            DefaultFeedback(db);
         }
 
         private static void SeedDefaultData(DbEntities db)
@@ -303,16 +307,19 @@ namespace FEP.Model.Migrations
             // Seed Role and Access
             AddRoleAndAccess(db, RoleNames.eLearningTrainer, "Default Trainer",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
+                UserAccess.CourseFeedbackView, UserAccess.CourseFeedbackPostDelete,
                 UserAccess.CourseGroupCreate, UserAccess.CourseAddDocument);
             AddRoleAndAccess(db, RoleNames.eLearningAdmin, "Admin eLearning",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, 
                 UserAccess.CourseCreate, UserAccess.CourseEdit,
                 UserAccess.CourseGroupCreate, UserAccess.CourseGroupEdit, UserAccess.CourseGroupView,
+                UserAccess.CourseFeedbackView, UserAccess.CourseFeedbackPostDelete,
                 UserAccess.CourseDiscussionCreate,
                 UserAccess.CoursePublish, UserAccess.CoursePublish);
             AddRoleAndAccess(db, RoleNames.eLearningVerifier, "Verifier eLearning",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseGroupView,
+                UserAccess.CourseFeedbackView,
                 UserAccess.CourseVerify);
             AddRoleAndAccess(db, RoleNames.eLearningApprover1, "Approver eLearning 1",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
@@ -332,7 +339,8 @@ namespace FEP.Model.Migrations
             AddRoleAndAccess(db, RoleNames.eLearningFacilitator, "Facilitator",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu,
                 UserAccess.CourseGroupCreate, UserAccess.CourseGroupEdit, UserAccess.CourseGroupView, 
-                UserAccess.CourseDiscussionCreate,
+                UserAccess.CourseDiscussionCreate, UserAccess.CourseFeedbackPostDelete,
+                UserAccess.CourseFeedbackView,
                 UserAccess.CourseAddDocument, 
                 UserAccess.CourseEnroll);
         }
@@ -1027,6 +1035,23 @@ namespace FEP.Model.Migrations
                     User = user,
                     Display = true
                 });
+        }
+
+        public static void DefaultFeedbackView(DbEntities db)
+        {
+            db.FeedbackView.AddOrUpdate(s => s.View,
+              new FeedbackView {  View = "Instructor and me only"},
+              new FeedbackView {  View = "Everybody"}
+
+          );
+        }
+
+        public static void DefaultFeedback(DbEntities db)
+        {
+            db.Feedback.AddOrUpdate(s => s.Header,
+              new Feedback { CreatedBy = 1, CreatedDate = DateTime.Now, Header = "Header", Template = "Template" }
+
+          );
         }
     }
 }

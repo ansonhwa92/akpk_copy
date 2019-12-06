@@ -60,6 +60,10 @@
     <Compile Include="Migrations\201911250418290_InitialDB.designer.cs">
       <DependentUpon>201911250418290_InitialDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912060303586_AddFieldNameForCourseCertificate.cs" />
+    <Compile Include="Migrations\201912060303586_AddFieldNameForCourseCertificate.designer.cs">
+      <DependentUpon>201912060303586_AddFieldNameForCourseCertificate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />
@@ -127,6 +131,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201911250418290_InitialDB.resx">
       <DependentUpon>201911250418290_InitialDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912060303586_AddFieldNameForCourseCertificate.resx">
+      <DependentUpon>201912060303586_AddFieldNameForCourseCertificate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

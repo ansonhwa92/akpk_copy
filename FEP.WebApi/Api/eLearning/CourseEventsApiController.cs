@@ -41,7 +41,7 @@ namespace FEP.WebApi.Api.eLearning
             base.Dispose(disposing);
         }
 
-        [Route("api/eLearning/CourseEvents/Get")]
+        [Route("api/eLearning/CourseEvents/")]
         [HttpGet]
         public async Task<IHttpActionResult> Get(int? id)
         {
@@ -172,6 +172,114 @@ namespace FEP.WebApi.Api.eLearning
             else
             {
                 data = data.OrderBy(o => o.Name).OrderBy(o => o.Name);
+            }
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+        }
+
+        /// For use in Invitation page, to list all invited users
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/eLearning/CourseEvents/GetInvitationByCourseEventId")]
+        [HttpPost]
+        public IHttpActionResult GetInvitationByCourseEventId(FilterCourseInvitationModel request)
+        {
+            var query = db.CourseInvitations
+                .Where(x => x.CourseEventId == request.CourseEventId);
+
+            if (!String.IsNullOrEmpty(request.Email))
+                query = query.Where(x => x.Emails.ToLower().Contains(request.Email.ToLower()));
+
+            var totalCount = query.Count();
+
+            query = query.OrderBy(x => x.CreatedDate);
+
+            //quick search,  and hide course where ViewCategory.Public and Status = Private
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+                query = query.Where(p => p.Emails.Contains(value));
+            }
+
+            
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(x => new ReturnBriefCourseInvitationModel
+                {
+                    CourseEventId = x.Id,
+                    Name = "",
+                    Email = x.Emails,
+                    Status = EnrollmentStatus.Invited,
+                });
+
+            var tempData = data.ToList();
+
+            foreach (var item in tempData)
+            {
+                var learner = db.Enrollments.FirstOrDefault(x => x.CourseEventId == item.CourseEventId &&
+                    x.Learner.User.Email == request.Email);
+
+                if (learner != null)
+                {
+                    item.Name = learner.Learner.User.Name;
+                    item.Status = learner.Status;
+                }
+                else
+                {
+                    item.Status = EnrollmentStatus.Invited;
+                }
+            }
+
+            data = tempData.AsQueryable();          
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "Email":
+
+                        if (sortAscending)
+                        {
+                            data = data.OrderBy(o => o.Email);
+                        }
+                        else
+                        {
+                            data = data.OrderByDescending(o => o.Email);
+                        }
+
+                        break;
+
+                    case "Name":
+
+                        if (sortAscending)
+                        {
+                            data = data.OrderBy(o => o.Name);
+                        }
+                        else
+                        {
+                            data = data.OrderByDescending(o => o.Name);
+                        }
+
+                        break;
+
+                    default:
+                        data = data.OrderBy(o => o.Email).OrderBy(o => o.Email);
+                        break;
+                }
+            }
+            else
+            {
+                data = data.OrderBy(o => o.Email).OrderBy(o => o.Email);
             }
 
             return Ok(new DataTableResponse
@@ -771,7 +879,7 @@ namespace FEP.WebApi.Api.eLearning
 
             //sum total content - added by wawar
 
-            var totalContent =  db.CourseContents.Where(x => x.CourseId == id);
+            var totalContent = db.CourseContents.Where(x => x.CourseId == id);
             entity.TotalContents = totalContent.Count();
 
             var totalModule = db.CourseModules.Where(x => x.CourseId == id);
@@ -826,7 +934,9 @@ namespace FEP.WebApi.Api.eLearning
                 }
 
                 var courseEvent = _mapper.Map<CourseEvent>(model);
-                courseEvent.Status = CourseEventStatus.AvailableToPrivate;
+
+                courseEvent.Status = entity.ViewCategory == ViewCategory.Private ?
+                    CourseEventStatus.AvailableToPrivate : CourseEventStatus.AvailableToPublic;
 
                 try
                 {
@@ -847,8 +957,10 @@ namespace FEP.WebApi.Api.eLearning
                         CourseId = model.CourseId,
                         EnrollmentCode = model.EnrollmentCode,
                         CreatedBy = model.CreatedBy,
-                        Description = model.Name,
+                        UpdatedBy = model.CreatedBy,
+                        Description = model.Description,
                         IsVisible = true,
+                        Name = model.Name,
                     };
 
                     try
@@ -900,14 +1012,19 @@ namespace FEP.WebApi.Api.eLearning
                 if (String.IsNullOrEmpty(model.LearnerEmails))
                     return BadRequest("No emails found.");
 
-                db.CourseInvitations.Add(new CourseInvitation
+                var emails = model.LearnerEmails.Split(',');
+
+                foreach (var email in emails)
                 {
-                    CourseId = model.CourseId,
-                    CourseEventId = model.CourseEventId,
-                    NotificationType = NotificationType.Course_Invitation,
-                    CreatedBy = int.Parse(model.CreatedBy),
-                    Emails = model.LearnerEmails,
-                });
+                    db.CourseInvitations.Add(new CourseInvitation
+                    {
+                        CourseId = model.CourseId,
+                        CourseEventId = model.CourseEventId,
+                        NotificationType = NotificationType.Course_Invitation,
+                        CreatedBy = int.Parse(model.CreatedBy),
+                        Emails = email,
+                    });
+                }
                 await db.SaveChangesAsync();
             }
             return Ok();

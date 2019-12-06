@@ -275,5 +275,31 @@ namespace FEP.Intranet.Areas.eLearning.Helper
 
             await EmaiHelper.SendNotification(notifyModel);
         }
+
+        public async static Task SendEnrollmentInvitationByListOfEmails(NotificationType notifyType, int id, int senderId,
+               string receiverEmails = "", string author = "", string title = "", string link = "")
+        {
+            var notifyModel = new NotificationModel
+            {
+                Id = id,
+                Type = typeof(Course),
+                NotificationType = notifyType,
+                NotificationCategory = NotificationCategory.Learning,
+                StartNotificationDate = DateTime.Now,
+                ParameterListToSend = new ParameterListToSend
+                {
+                    CourseAuthor = author,
+                    CourseTitle = title,
+                    CourseApproval = "Course Invitation",
+                    Link = link,
+                },
+                ReceiverType = ReceiverType.Emails,
+                SenderId = senderId,
+                Emails = receiverEmails,
+                IsNeedRemainder = false,
+            };
+
+            await EmaiHelper.SendNotification(notifyModel);
+        }
     }
 }

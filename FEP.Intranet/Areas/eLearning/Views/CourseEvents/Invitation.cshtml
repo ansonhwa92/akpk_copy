@@ -1,7 +1,7 @@
 ﻿@using FEP.Model
 @using FEP.Model.eLearning
 
-@model FEP.WebApiModel.eLearning.ReturnListCourseEventModel
+@model FEP.WebApiModel.eLearning.ReturnListCourseInvitationModel
 
 @{
     ViewBag.Title = "Index";
@@ -26,7 +26,7 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">List of Sessions : @ViewBag.CourseTitle</h1>
+                    <h1 class="page-title text-white">Emails Invited for @ViewBag.CourseEventName</h1>
                     <div class="header-text"></div>
                 </div>
             </div>
@@ -35,6 +35,7 @@
 }
 
 @Html.HiddenFor(m => m.Filters.CourseId)
+@Html.HiddenFor(m => m.Filters.CourseEventId)
 
 <div class="d-flex align-items-center">
     <div class="filter dropdown">
@@ -43,18 +44,13 @@
             <div class="filter-head">Filters</div>
             <div class="filter-body">
 
-                <div>@Html.DisplayNameFor(m => m.Filters.Name) </div>
+                <div>@Html.DisplayNameFor(m => m.Filters.Email) </div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        @Html.EditorFor(m => m.Filters.Name, new { htmlAttributes = new { @class = "form-control small" } })
+                        @Html.EditorFor(m => m.Filters.Email, new { htmlAttributes = new { @class = "form-control small" } })
                     </div>
                 </div>
-                <div>@Html.DisplayNameFor(m => m.Filters.EnrollmentCode)</div>
-                <div class="sorting-wrap">
-                    <div class="sorting-dropdown">
-                        @Html.EditorFor(m => m.Filters.EnrollmentCode, new { htmlAttributes = new { @class = "form-control small" } })
-                    </div>
-                </div>
+                @*<div>@Html.DisplayNameFor(m => m.Filters.CourseEventId)</div>*@
                 <div>
                     <button id="btnSearch" class="btn btn-secondary mt-2">Search</button>
                 </div>
@@ -86,12 +82,17 @@
         </div>
         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
 
-        @if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+        @if (CurrentUser.HasAccess(UserAccess.CourseGroupCreate))
         {
             <div>
-                <a href="@Url.Action("Create", "CourseEvents", new { area = "eLearning", id = Model.Filters.CourseId })" class="btn btn-secondary">
-                    <i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>New Session
-                </a>
+                <a href="@Url.Action("InviteMoreLearners", "CourseEvents", new
+                    {
+                        area = "eLearning",
+                        eventId = Model.Filters.CourseEventId,
+                        title = ViewBag.CourseTitle
+                    })" class="btn btn-secondary">
+                    <i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Invite
+                </a>&nbsp;';
             </div>
         }
     </div>
@@ -102,10 +103,9 @@
             <tr>
 
                 <th>#</th>
-                <th>@Html.DisplayNameFor(model => model.CourseEvents.Name)</th>
-                <th>@Html.DisplayNameFor(model => model.CourseEvents.EnrollmentCode)</th>
-                <th>@Html.DisplayNameFor(model => model.CourseEvents.NumberOfLearners)</th>
-                <th>@Html.DisplayNameFor(model => model.CourseEvents.Group)</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -133,18 +133,16 @@
                 scrollX: false,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)eLearning/CourseEvents/GetAllEventsByCourse',
+                    "url": '@(WebApiURL)eLearning/CourseEvents/GetInvitationByCourseEventId',
                     "data": function (filter) {
                         console.log("-", filter);
 
-                        filter.Name = $('#Filters_Name').val();
-                        filter.EnrollmentCode = $('#Filters_EnrollmentCode').val();
-                        filter.CourseId = $('#Filters_CourseId').val();
+                        filter.Email = $('#Filters_Email').val();
+                        filter.CourseEventId = $('#Filters_CourseEventId').val();
                     },
                     dataFilter: function (res) {
                         // do what you need to the data before it loads to the table
 
-                        // for debugging only for now
                         return res;
                     },
                     error: function (x, y) {
@@ -159,21 +157,29 @@
                         }
                     },
                     {
-                        data: 'Name',
+                        data: 'Email',
                         sortable: true
                     },
-                    {
-                        data: 'EnrollmentCode',
+                                        {
+                        data: 'Name',
                         sortable: true
                     },
 
                     {
-                        data: 'NumberOfLearners',
-                        sortable: true
-                    },
-                    {
-                        data: 'Group',
+                        data: 'Status',
                         sortable: true,
+                        render: function (data, type, row, meta) {
+
+                            switch (row.Status) {
+                                case @Json.Encode(EnrollmentStatus.Enrolled) :
+                                    return "<span class='color-green font-weight-bold'>Enrolled</span>";
+
+                                case @Json.Encode(EnrollmentStatus.Invited) :
+                                    return "<span class='color-blue font-weight-normal'>Invited</span>";
+                                default:
+                                    return "<span class='color-red font-weight-bold'>" + row.Status + "</span>";
+                            }
+                        }
                     },
                     {
                         sortable: false,
@@ -181,7 +187,7 @@
 
                             var action = "";
 
-                            var cancreate = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseCreate));
+                            @*var cancreate = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseCreate));
                             var cancreateGroup = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseDiscussionGroupCreate));
 
                             action = '<div class="icon-action">';
@@ -191,11 +197,6 @@
                                         @Model.Filters.CourseId + "&courseEventId=" + row.CourseEventId +
                                     '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>';
 
-                                action += '<a href="@Url.Action("Invitation", "CourseEvents", new { area = "eLearning" })?courseEventId=' +
-                                        row.CourseEventId + "&eventName=" + encodeURIComponent(row.Name) +
-                                        "&courseTitle=" + encodeURIComponent("@ViewBag.CourseTitle") +
-                                        '" data-toggle="tooltip" data-placement="top" title="View Invitations"><i class="la la-users"></i></a>';
-
                                 action += '<a href="@Url.Action("InviteLearners", "CourseEvents", new { area = "eLearning" })?courseId=' +
                                         @Model.Filters.CourseId + "&eventId=" + row.CourseEventId + "&enrollmentCode=" + encodeURIComponent(row.EnrollmentCode) +
                                         "&title=" + encodeURIComponent("@ViewBag.CourseTitle") +
@@ -203,7 +204,7 @@
 
                             }
 
-                            action += "</div>";
+                            action += "</div>";*@
                             console.log(action);
 
                             return action;

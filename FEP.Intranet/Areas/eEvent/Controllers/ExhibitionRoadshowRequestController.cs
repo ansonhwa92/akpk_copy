@@ -86,18 +86,20 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
                 RecommendationsJSON = exapproval.exhibitionroadshow.RecommendationsJSON
 			};
 
-
-			var approval = new ApprovalModel
-			{
-				Id = exapproval.approval.Id,
-				ExhibitionId = exapproval.approval.ExhibitionId,
-				Level = exapproval.approval.Level,
-				ApproverId = exapproval.approval.ApproverId,
-				Status = exapproval.approval.Status,
-				Remarks = exapproval.approval.Remarks,
-				RequireNext = exapproval.approval.RequireNext
-			};
-
+            var approval = new ApprovalModel();
+            if (exapproval.approval != null)
+            {
+                approval = new ApprovalModel
+                {
+                    Id = exapproval.approval.Id,
+                    ExhibitionId = exapproval.approval.ExhibitionId,
+                    Level = exapproval.approval.Level,
+                    ApproverId = exapproval.approval.ApproverId,
+                    Status = exapproval.approval.Status,
+                    Remarks = exapproval.approval.Remarks,
+                    RequireNext = exapproval.approval.RequireNext
+                };
+            }
 			var pevaluation = new ExhibitionRoadshowApprovalModel
 			{
 				exhibitionroadshow = exhibition,
@@ -485,6 +487,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				ContactNo = response.Data.ContactNo,
 				RefNo = response.Data.RefNo,
 				NomineeId = response.Data.NomineeId,
+                DutyRoster = response.Data.DutyRoster,
+                RecommendationsJSON = response.Data.RecommendationsJSON
 
 			};
 

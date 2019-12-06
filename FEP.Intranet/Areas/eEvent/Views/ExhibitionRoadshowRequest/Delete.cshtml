@@ -7,6 +7,10 @@
 
 @section ContentScript {
 	<script type="text/javascript">
+        var RecommendationListJSON = {
+            "exhibitionId": 0,
+            "recommendations": []
+        }
 		$(document).ready(function () {
 
 			$('#tab_exhibition').click(function () {
@@ -47,8 +51,30 @@
 				$('#dutyroster-details').hide();
 				$('#recommendation-details').hide();
 				$('#amendment-history').show();
-			});
-		});
+            });
+
+            
+            @if(Model.RecommendationsJSON != null)
+            {
+            @:RecommendationListJSON = JSON.parse('@Html.Raw(Model.RecommendationsJSON)');
+            @:renderRecommendationTable();
+            @:console.log(RecommendationListJSON);
+            }
+        });
+        function renderRecommendationTable() {
+            $('#recommendationTable tbody').empty();
+            var count = 1;
+            for (var i = 0; i < RecommendationListJSON["recommendations"].length; i++) {
+                var toDisplay =
+                '<tr>' +
+                '<td>' + count + '</td>' +
+                '<td>' + RecommendationListJSON["recommendations"][i]['description'] + '</td> ' +
+                '</tr>';
+
+                $('#recommendationTable tbody').append(toDisplay);
+                count++;
+            }
+        }
 	</script>
 }
 @section Nav {
@@ -304,19 +330,66 @@
 				</div>
 
 
-				<div class="tab-pane" id="dutyroster-details">
-					<div class="d-flex align-items-center mb-4 mt-2">
-						<h4 class="color-darkblue mr-auto mb-0">Event Duty Roster<br><span class="small">View proposed duty roster for this event below.</span></h4>
-					</div>
+                <div class="tab-pane" id="dutyroster-details">
+                    <div class="d-flex align-items-center mb-4 mt-2">
+                        <h4 class="color-darkblue mr-auto mb-0">Event Duty Roster<br><span class="small">View proposed duty roster for this event below.</span></h4>
+                    </div>
+                    <!-- Table -->
+                    <table class="table tableStyle1 tabledata table-responsive-xs-plus" id="finalTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Officers in-charge</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.DutyRoster.dutyRoster != null)
+                            {
+                                foreach (var item in Model.DutyRoster.dutyRoster)
+                                {
+                                    <tr>
+                                        <td>@item.date</td>
+                                        <td>@item.startTime - @item.endTime</td>
+                                        <td>
+                                            @{
+                                                var count = 1;
+                                                foreach (var pic in item.pic)
+                                                {
+                                                    @pic.name;
+                                                    if (count != item.pic.Count())
+                                                    {
+                                                        @:,
+                                                    }
+                                                    count++;
+                                                }
+                                            }
 
-				</div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
 
-				<div class="tab-pane" id="recommendation-details">
-					<div class="d-flex align-items-center mb-4 mt-2">
-						<h4 class="color-darkblue mr-auto mb-0">Event Recommendation<br><span class="small">View proposed Recommendation for this event below.</span></h4>
-					</div>
+                        </tbody>
+                    </table>
+                </div>
 
-				</div>
+                <div class="tab-pane" id="recommendation-details">
+                    <div class="d-flex align-items-center mb-4 mt-2">
+                        <h4 class="color-darkblue mr-auto mb-0">Event Recommendation<br><span class="small">View proposed Recommendation for this event below.</span></h4>
+                    </div>
+                    <!-- Table -->
+                    <table class="table tableStyle1 tabledata table-responsive-xs-plus" id="recommendationTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Recommendation</th>
+                            </tr>
+                        </thead>
+
+                        <tbody></tbody>
+                    </table>
+                </div>
 
 				
 			</div>

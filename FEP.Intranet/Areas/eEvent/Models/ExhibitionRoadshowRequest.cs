@@ -1,4 +1,5 @@
 ﻿using FEP.Model;
+using FEP.WebApiModel.eEvent;
 using FEP.WebApiModel.FileDocuments;
 using System;
 using System.Collections.Generic;
@@ -334,7 +335,10 @@ namespace FEP.Intranet.Areas.eEvent.Models
 		public int Id { get; set; }
 		[Display(Name = "ExRoadExhibitionSupDoc", ResourceType = typeof(Language.Event))]
 		public IEnumerable<Attachment> Attachments { get; set; }
-	}
+
+        public DutyRosterTempModel DutyRoster { get; set; }
+        public string RecommendationsJSON { get; set; }
+    }
 
 
 }

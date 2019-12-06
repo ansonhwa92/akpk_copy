@@ -103,64 +103,84 @@
             //------------------------------------------------------------------
             //generate Agenda
             var weekday = new Array(7);
-                weekday[0] = "Sun";
-                weekday[1] = "Mon";
-                weekday[2] = "Tue";
-                weekday[3] = "Wed";
-                weekday[4] = "Thu";
-                weekday[5] = "Fri";
-            weekday[6] = "Saturday";
-            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
-              "July", "Aug", "Sept", "Oct", "Nov", "Dec"
+                weekday[0] = "SUN";
+                weekday[1] = "MON";
+                weekday[2] = "TUE";
+                weekday[3] = "WED";
+                weekday[4] = "THU";
+                weekday[5] = "FRI";
+                weekday[6] = "SAT";
+            const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUNE",
+              "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"
             ];
 
             var AgendaJSON = JSON.parse('@Html.Raw(Model.publicevent.tentativeScript)');
             console.log(AgendaJSON);
             var prevDate = "";
-                var currentDate = "";
-                var DayCounter = 0;
-                var toDisplay = '<dl class="row">';
-                for (j = 0; j < AgendaJSON['tentatives'].length; j++) {
-                    currentDate = AgendaJSON['tentatives'][j]['date'];
-                    if (prevDate != currentDate) {
-                        toDisplay += '</dl>';
-                        toDisplay += '<hr />';
-                        toDisplay += '<dl class="row">';
+            var currentDate = "";
+            var DayCounter = 0;
+            var tempSegment = "BeforeMorning";
+            var toDisplay = '<dl class="row">';
+            for (j = 0; j < AgendaJSON['tentatives'].length; j++) {
+                currentDate = AgendaJSON['tentatives'][j]['date'];
+                if (prevDate != currentDate) {
+                    toDisplay += '</dl>';
+                    toDisplay += '<hr />';
+                    toDisplay += '<dl class="row">';
 
-                        var tempCurrent = currentDate.split('/');
-                        var mydate = new Date(tempCurrent[2] + '-' + tempCurrent[1] + '-' + tempCurrent[0]);
-                        var dateMark = weekday[mydate.getDay()] + ', ' + mydate.getDate() + ' ' + monthNames[mydate.getMonth()];
-                        toDisplay += '<dt class="col-sm-2"><b><div class="card bg-light p-2  border-grey"><span class="small">' + dateMark + '</span></div></b></dt>';
-                        toDisplay += '<dd class="col-sm-10">';
+                    var tempCurrent = currentDate.split('/');
+                    var mydate = new Date(tempCurrent[2] + '-' + tempCurrent[1] + '-' + tempCurrent[0]);
+                    var dateMark = weekday[mydate.getDay()] + ', ' + mydate.getDate() + ' ' + monthNames[mydate.getMonth()];
+                    toDisplay += '<dt class="col-sm-2 p-0"><b><div class="card bg-light p-0 d-flex justify-content-center align-items-center border-grey">' + dateMark + '</div></b></dt>';
+                    toDisplay += '<dd class="col-sm-10">';
 
-                        var tempDate = AgendaJSON['tentatives'][j]['date'];
-                        var tempSessionName = '';
-                        if (AgendaJSON['sessionNames'].length > 0) { let sName = AgendaJSON['sessionNames'].find(s => s.date === tempDate); tempSessionName = (sName != null) ? sName['value'] : ''; }
-                        toDisplay += '<h5 class="color-darkblue mb-0">' + tempSessionName + '</h5>';
+                    var tempDate = AgendaJSON['tentatives'][j]['date'];
+                    var tempSessionName = '';
+                    if (AgendaJSON['sessionNames'].length > 0) { let sName = AgendaJSON['sessionNames'].find(s => s.date === tempDate); tempSessionName = (sName != null) ? sName['value'] : ''; }
+                    toDisplay += '<h5 class="color-darkblue mb-0">' + tempSessionName + '</h5>';
 
-                        var tempSessionDesc = '';
-                        if (AgendaJSON['sessionDescriptions'].length > 0) { let sDesc = AgendaJSON['sessionDescriptions'].find(s => s.date === tempDate); tempSessionDesc = (sDesc != null) ? sDesc['value'] : ''; }
-                        toDisplay += '<h6 class="font-weight-normal">' + tempSessionDesc + '</h6>';
+                    var tempSessionDesc = '';
+                    if (AgendaJSON['sessionDescriptions'].length > 0) { let sDesc = AgendaJSON['sessionDescriptions'].find(s => s.date === tempDate); tempSessionDesc = (sDesc != null) ? sDesc['value'] : ''; }
+                    toDisplay += '<h6 class="font-weight-normal">' + tempSessionDesc + '</h6>';
 
-                        toDisplay += '</dd>';
-                        DayCounter++;
-                    }
+                    toDisplay += '</dd>';
+                    DayCounter++;
+                }
+
+                var daySegment = "Morning";
+                var ampm = "am";
+                var theHour = parseInt(AgendaJSON['tentatives'][j]['time'].split(':')[0]);
+                if (theHour >= 12) {
+                    ampm = "pm";
+                }
+                if (theHour >= 12 && theHour <= 16) { daySegment = "Afternoon"; }
+                if (theHour >= 17) { daySegment = "Evening"; }
+
+                    
+                if (tempSegment != daySegment) {
+                    toDisplay += '<dt class="col-sm-12 m-2"></dt>'; //buffer
 
                     toDisplay += '<dt class="col-sm-2"></dt>';
-                    toDisplay += '<dt class="col-sm-2"><p class="text-left small">' + AgendaJSON['tentatives'][j]['time'] + '</p></dt>';
-                    toDisplay += '<dd class="col-sm-8"><p class="small">' + AgendaJSON['tentatives'][j]['tentative'];
-                    if (AgendaJSON['tentatives'][j]['speakers'].length > 0) {
-                        for (m = 0; m < AgendaJSON['tentatives'][j]['speakers'].length; m++) {
-                            toDisplay += '<br><i class="fa fa-user-tie font-icon"></i>' + AgendaJSON['tentatives'][j]['speakers'][m]['name'];
-                        }
-                    }
-                    toDisplay += '</p></dd>';
-
-                    prevDate = currentDate;
+                    toDisplay += '<dt class="col-sm-4 color-darkblue"><b>' + daySegment + '</b></dt>';
+                    toDisplay += '<dt class="col-sm-6"></dt>';
+                    tempSegment = daySegment;
                 }
-                toDisplay += '</dl>';
 
-                $("#generatedAgenda").html(toDisplay);
+                toDisplay += '<dt class="col-sm-2"></dt>';
+                toDisplay += '<dt class="col-sm-2 font-weight-normal">' + AgendaJSON['tentatives'][j]['time'] + ampm + '</dt>';
+                toDisplay += '<dt class="col-sm-8 font-weight-normal">' + AgendaJSON['tentatives'][j]['tentative'];
+                if (AgendaJSON['tentatives'][j]['speakers'].length > 0) {
+                    for (m = 0; m < AgendaJSON['tentatives'][j]['speakers'].length; m++) {
+                        toDisplay += '<br><i class="fa fa-user-tie font-icon"></i>' + AgendaJSON['tentatives'][j]['speakers'][m]['name'];
+                    }
+                }
+                toDisplay += '</dt>';
+
+                prevDate = currentDate;
+            }
+            toDisplay += '</dl>';
+
+            $("#generatedAgenda").html(toDisplay);
 
             //------------------------------------------------------------------
 

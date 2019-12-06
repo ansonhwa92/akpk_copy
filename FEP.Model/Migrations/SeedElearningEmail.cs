@@ -10,23 +10,29 @@ namespace FEP.Model.Migrations
         public static void SeedTemplateParameter(DbEntities db)
         {
             var elearnTemplates = new List<NotificationType>
-
             {
-               NotificationType.Verify_Courses_Creation,
+               NotificationType.Verify_Courses_Creation,  // Email to Verifier
+               NotificationType.Verify_Courses_Creation_Self, // Send Copy to Self
+
+               NotificationType.Approve_Courses_Creation_Approver_Self,
                NotificationType.Approve_Courses_Creation_Approver1,
                NotificationType.Approve_Courses_Creation_Approver2,
                NotificationType.Approve_Courses_Creation_Approver3,
                NotificationType.Course_Approved,
+               NotificationType.Course_Approved_Self,
+               NotificationType.Course_Approved_Others,
                NotificationType.Course_Amendment,
                NotificationType.Course_Invitation,
-               NotificationType.Approve_Courses_Published_Change,
-               NotificationType.Approve_Courses_Published_Withdraw,
                NotificationType.Course_Assigned_To_Facilitator,
                NotificationType.Course_Student_Enrolled,
 
                NotificationType.Notify_Admin_Participant_Withdraw,
                NotificationType.Notify_Self_Withdraw_From_Course,
 
+               NotificationType.Course_Publish,
+               NotificationType.Course_Cancelled,
+
+               // 30-11-2019 - no template yet
                NotificationType.Approve_Courses_Participant_Withdraw,
                NotificationType.Approve_Courses_Published_Withdraw,
                NotificationType.Verify_Courses_Participant_Withdraw,
@@ -88,8 +94,6 @@ namespace FEP.Model.Migrations
             }
             db.SaveChanges();
         }
-
-        //  --  check wasap  on email notification
 
         public static void Seed(DbEntities db)
         {
@@ -172,6 +176,56 @@ namespace FEP.Model.Migrations
 
                         break;
 
+                    case NotificationType.Verify_Courses_Creation_Self: // Should send to creator
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "Request for  A New Course Verification : [#CourseTitle]",
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
+                                                <p>You have sent a course [#CourseTitle] for verification.</p><br />
+                                                Please click <a href='[#Link]'>here</a>.<br />
+                                                Thank you.",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
+                    case NotificationType.Approve_Courses_Creation_Approver_Self:
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "Request For Approval needed for Course : [#CourseTitle]",
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
+                                                <p>You have requested for appoval of the course course [#CourseTitle].</p><br />
+                                                Please  click <a href='[#Link]'>here</a><br /><br />
+                                                Thank you.",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
                     case NotificationType.Approve_Courses_Creation_Approver1:
                     case NotificationType.Approve_Courses_Creation_Approver2:
                     case NotificationType.Approve_Courses_Creation_Approver3:
@@ -200,6 +254,8 @@ namespace FEP.Model.Migrations
                         break;
 
                     case NotificationType.Course_Approved:
+                    case NotificationType.Course_Approved_Self:
+                    case NotificationType.Course_Approved_Others:
 
                         db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
                         new NotificationTemplate
@@ -212,6 +268,81 @@ namespace FEP.Model.Migrations
                             TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
                                                 <p>The course [#CourseTitle] has been approved.</p><br />
                                                 Please  click <a href='[#Link]'>here</a> to view.<br />
+                                                Thank you.",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
+                    case NotificationType.Course_Publish:
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "Course  [#CourseTitle] has been Published",
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
+                                                <p>The course [#CourseTitle] has been published.</p><br />
+                                                Please  click <a href='[#Link]'>here</a> to view.<br /> <br />
+                                                Thank you.",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
+                    case NotificationType.Course_Cancelled:
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "Course  [#CourseTitle] has been Cancelled",
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
+                                                <p>The course [#CourseTitle] has been cancelled.</p><br />
+                                                Please  click <a href='[#Link]'>here</a> to view.<br /> <br />
+                                                Thank you.",
+                            enableSMSMessage = false,
+                            SMSMessage = "SMS Message Template",
+                            enableWebMessage = false,
+                            WebMessage = "Web Message Template",
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = user.Id,
+                            Display = true
+                        });
+
+                        break;
+
+                    case NotificationType.Course_Amendment_Self:
+
+                        db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                        new NotificationTemplate
+                        {
+                            NotificationType = notifyType,
+                            TemplateName = notifyType.DisplayName(),
+                            TemplateRefNo = "T" + ((int)notifyType).ToString(),
+                            enableEmail = true,
+                            TemplateSubject = "Revert Course [#CourseTitle] For Amendment",
+                            TemplateMessage = @"Dear [#ReceiverFullName],<br /> <br />
+                                                <p>You have reverted the course [#CourseTitle] for ammendment.</p><br />
+                                                Please  click <a href='[#Link]'>here</a> to view.<br /> <br />
                                                 Thank you.",
                             enableSMSMessage = false,
                             SMSMessage = "SMS Message Template",

@@ -15,7 +15,9 @@ namespace FEP.WebApiModel.eLearning
         public ReceiverType ReceiverType { get; set; }
 
         public List<int> Receivers { get; set; } // if set before hand
-        public int LearnerUserId { get; set; }
+        public int SenderId { get; set; }
+        //public List<UserAccess> UserWithAccesses { get; set; }
+        //public bool CopyToSender { get; set; } = false;
     }
 
     public enum ReceiverType

@@ -62,7 +62,7 @@
             <label>@Language.eLearning.Content.RichText</label>
             <div class="">
 
-                @Html.TextAreaFor(model => model.Text, new { @class = "summernote form-control" })
+                @Html.TextAreaFor(model => model.Text, new { @class = "form-control" })
 
                 @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
             </div>

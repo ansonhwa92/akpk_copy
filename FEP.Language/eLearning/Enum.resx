@@ -156,6 +156,9 @@
   <data name="ClickButton" xml:space="preserve">
     <value>Press complete button</value>
   </data>
+  <data name="CourseCancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
   <data name="CourseStatusAmendment" xml:space="preserve">
     <value>Amendment</value>
   </data>

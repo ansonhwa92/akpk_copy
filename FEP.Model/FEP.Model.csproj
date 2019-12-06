@@ -56,9 +56,9 @@
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
     <Compile Include="KMC.cs" />
-    <Compile Include="Migrations\201911250418290_InitialDB.cs" />
-    <Compile Include="Migrations\201911250418290_InitialDB.designer.cs">
-      <DependentUpon>201911250418290_InitialDB.cs</DependentUpon>
+    <Compile Include="Migrations\201912050835563_initdbmuhd061219.cs" />
+    <Compile Include="Migrations\201912050835563_initdbmuhd061219.designer.cs">
+      <DependentUpon>201912050835563_initdbmuhd061219.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201912060303586_AddFieldNameForCourseCertificate.cs" />
     <Compile Include="Migrations\201912060303586_AddFieldNameForCourseCertificate.designer.cs">
@@ -117,9 +117,7 @@
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -129,8 +127,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911250418290_InitialDB.resx">
-      <DependentUpon>201911250418290_InitialDB.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912050835563_initdbmuhd061219.resx">
+      <DependentUpon>201912050835563_initdbmuhd061219.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912060303586_AddFieldNameForCourseCertificate.resx">
       <DependentUpon>201912060303586_AddFieldNameForCourseCertificate.cs</DependentUpon>

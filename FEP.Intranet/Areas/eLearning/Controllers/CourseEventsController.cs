@@ -370,19 +370,23 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             {
                 await LogActivity(Modules.Learning, $"Success publishing - Course - {id}-{title}");
 
+                await Notifier.NotifyCoursePublish(NotificationType.Course_Publish,
+                     id, CurrentUser.UserId.Value, "", createdBy.ToString(),
+                     title, Url.AbsoluteAction("Content", "Course", new { id = id }));
+
                 if (viewCategory == ViewCategory.Public)
                 {
-                    TempData["SuccessMessage"] = "Published successful. The course is now available for the Public.";
+                    TempData["SuccessMessage"] = $"Course titled {title} published successfully and open for public.";
                 }
                 else
                 {
-                    TempData["SuccessMessage"] = "Published successful. You can now invite group/students to enroll to the course.";
+                    TempData["SuccessMessage"] = $"Course titled {title} published successfully.You can now invite group / students to enroll to the course.";
                 }
             }
             else
             {
                 await LogError(Modules.Learning, $"Error publishing - Course - {id}-{title}");
-                TempData["ErrorMessage"] = "Error publishing the course.";
+                TempData["ErrorMessage"] = $"Error publishing the course {title}.";
             }
 
             return RedirectToAction("Content", "Courses", new { area = "eLearning", id = id });

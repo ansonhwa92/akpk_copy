@@ -66,15 +66,6 @@
             <button id="quickSearchBtn" class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
         </div>
     </div>
-    @*<div class="sorting-wrap">
-            <div class="sorting-dropdown">
-                <select class="select2 form-control small" name="sorting">
-                    <option value="Default Sorting">Default Sorting</option>
-                    <option value="sorting 1">Sorting 1</option>
-                    <option value="sorting 2">Sorting 2</option>
-                </select>
-            </div>
-        </div>*@
 </div>
 <hr>
 <div class="table-responsive" data-toggle="lists" style="overflow-x:hidden">
@@ -95,7 +86,6 @@
         @if (CurrentUser.HasAccess(UserAccess.CourseCreate))
         {
             <div><a href="@Url.Action("SelectCategory", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>
-            @*<div><a href="@Url.Action("Create", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>*@
         }
     </div>
     <!-- Table -->
@@ -188,13 +178,19 @@
                                     return "<span class='color-yellow font-weight-bold'>Pending Verification</span>";
 
                                 case @Json.Encode(CourseStatus.Verified) :
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 1</span>";
+
                                 case @Json.Encode(CourseStatus.FirstApproval) :
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 2</span>";
+
                                 case @Json.Encode(CourseStatus.SecondApproval) :
-                                case @Json.Encode(CourseStatus.ThirdApproval) :
-                                    return "<span class='color-secondary font-weight-bold'>Pending Approval</span>";
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 3</span>";
+
+                                case @Json.Encode(CourseStatus.Cancelled) :
+                                    return "<span class='color-secondary font-weight-bold'>Course Cancelled </span>";
 
                                 case @Json.Encode(CourseStatus.Amendment) :
-                                    return "<span class='text-warning font-weight-bold'>Require amendment</span>";
+                                    return "<span class='text-warning font-weight-bold'>Pending Amendment</span>";
 
                                 case @Json.Encode(CourseStatus.Approved) :
                                     return "<span class='color-green font-weight-bold'>Approved</span>";
@@ -235,7 +231,7 @@
                                     action += '<a href="@Url.Action("Delete", "Courses", new { area = "eLearning" })/' + row.Id +
                                         '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o "></i></i></a>';
                                 }
-                                else {
+                                else if(row.Status != 10) { // not cancelled
                                     action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id +
                                         '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit "></i></a>';
                                 }

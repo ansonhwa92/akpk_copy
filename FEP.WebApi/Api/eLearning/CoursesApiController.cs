@@ -947,6 +947,28 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(model);
         }
 
+        [Route("api/eLearning/Courses/CancelCourse")]
+        [HttpPost]
+        public async Task<IHttpActionResult> CancelCourse(int id)
+        {
+            Course course = await db.Courses.FindAsync(id);
+
+            if (course != null)
+            {
+                string ptitle = course.Title;
+
+                course.Status = CourseStatus.Cancelled;
+
+                db.SetModified(course);
+
+                db.SaveChanges();
+
+                return Ok(ptitle);
+            }
+
+            return BadRequest();
+        }
+
         [Route("api/eLearning/Courses/Delete")]
         public string Delete(int id)
         {

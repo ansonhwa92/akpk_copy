@@ -51,7 +51,7 @@
         <!-- Start Form -->
         <div class="border-form rounded-top">
 
-            @if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit))
+            @if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit) && Model.Status != FEP.Model.eLearning.CourseStatus.Cancelled)
             {
                 <div class="col-sm-12 ">
                     <div class="row float-right">

@@ -880,7 +880,7 @@
     <Content Include="Areas\eLearning\Views\CourseContents\_createAssignment.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Trainers.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_defaultContent.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\_Add.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_AddIndividual.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_viewAssignment.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_viewTest.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_detailVideo.cshtml" />
@@ -1073,6 +1073,13 @@
     <Content Include="Areas\eLearning\Views\Courses\View.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\ViewCertificate.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseGroup\_CoursesList.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\MyCourses.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_AddCompany.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_AddStaff.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_Details.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\_AddCompany.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\_AddIndividual.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\_AddStaff.cshtml" />
     <Content Include="css\fonts\02_APompadourTextSample.otf" />
     <Content Include="css\fonts\02_APompadourTextSample.ttf" />
     <Content Include="css\fonts\03_APompadourBoldSample.otf" />

@@ -1,0 +1,268 @@
+﻿@model FEP.WebApiModel.Administration.ListCompanyModel
+
+@{
+
+    Layout = null;
+}
+
+<script>
+
+    function initTable() {
+
+        var table = $('.tableuser').DataTable({
+            serverSide: true,
+            processing: true,
+            ajax: {
+                "type": "post",
+                "url": '@(WebApiURL)eLearning/CourseEvents/GetAllAgency',
+                "data": function (filter) {
+                    filter.CompanyName = $('#Filter_User_CompanyName').val();
+                    filter.Type = $('#Filter_User_Type').val();
+                    filter.Email = $('#Filter_User_Email').val();
+                }
+            },
+            columns: [
+                {
+                    sortable: false,
+                    render: function (data, type, row, meta) {
+
+                        var action = "";
+
+                        action = '<div class="custom-control custom-checkbox">'
+                                    +'<input id="' + row.Id + '" name="select" type="checkbox" value="' + row.Id + '" class="custom-control-input">'
+                                    +'<label class="custom-control-label" for="' + row.Id + '">'
+                                        +'<span class="text-hide">Check</span>'
+                                    +'</label>'
+                                +'</div>';
+
+                        return action;
+                    }
+
+                },
+                {
+                    sortable: false,
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    data: 'Type',
+                    sortable: true,
+                    render: function (data, type, row, meta) {
+                        if (row.Type == 0) {
+                            return "<span>@CompanyType.Government</span>";
+                        }
+                        else if (row.Type == 1) {
+                            return "<span>@CompanyType.MalaysianCompany</span>";
+                        }
+                        else if (row.Type == 2) {
+                            return "<span>@CompanyType.NonMalaysianCompany</span>";
+                        }
+                    }
+                },
+                {
+                    data: 'CompanyName',
+                    sortable: true
+                },
+                //{
+                //    data: 'CompanyRegNo',
+                //    sortable: true
+                //},
+                //{
+                //    data: 'Sector',
+                //    sortable: true
+                //},
+                {
+                    data: 'Email',
+                    sortable: true
+                },
+                {
+                    data: 'Status',
+                    sortable: true,
+                    render: function (data, type, row, meta) {
+                        if (data) {
+                            return "<span class='color-green font-weight-bold'>Active</span>";
+                        }
+                        else {
+                            return "<span class='color-grey font-weight-bold'>Disable</span>"
+                        }
+
+                    }
+                }
+            ],
+            paging: true,
+            lengthChange: true,
+            searching: true,
+            ordering: true,
+            orderMulti: false,
+            info: true,
+            autoWidth: false,
+            order: [[1, 'asc']],
+            language: {
+                processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                emptyTable: "No Record Found",
+                info: "Showing _START_ - _END_ of _TOTAL_ user"
+            },
+            dom: 'rtip'
+        });
+
+        $('#lengthChangeUser').val(table.page.len());
+
+        $('#quickSearchUser').keyup( function () {
+            table.search($(this).val()).draw();
+        });
+
+        $('#lengthChangeUser').change( function() {
+            table.page.len($(this).val()).draw();
+        });
+
+        $('#btnSearchUser').click(function () {
+            table.ajax.reload();
+        });
+
+        table.on('order.dt search.dt page.dt', function () {
+            var info = table.page.info();
+
+            var start = 0;
+            if (info.recordsTotal != 0) {
+                start = info.start + 1;
+            }
+
+            $('#pageInfoUser').html('Showing ' + start + ' - ' + info.end + ' of ' + info.recordsTotal + ' user');
+            $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+        }).draw();
+
+        $("#customCheckAll").click(function () {
+
+            if ($(this).prop("checked") == true) {
+                $('input[type="checkbox"][name="select"]').prop("checked", true);
+            }
+            else {
+                $('input[type="checkbox"][name="select"]').prop("checked", false);
+            }
+
+        });
+
+        addCompany = function () {
+
+            var userids = [];
+
+            table.$('input[type="checkbox"][name="select"]').each(function () {
+
+                if (this.checked) {
+                    userids.push(this.value);
+                }
+            });
+
+            if (userids.length > 0) {
+                addUser(userids);//pass to main page
+            }
+
+        };
+
+    }
+
+
+</script>
+
+
+<div class="modal fade">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Add Agency User</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="d-flex align-items-center">
+                    <div class="filter dropdown">
+                        <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+                        <div class="dropdown-menu">
+                            <div class="filter-head">Filters</div>
+                            <div class="filter-body">
+                                <div>@Html.DisplayNameFor(m => m.Filter.Type)</div>
+                                <div class="sorting-wrap">
+                                    <div class="sorting-dropdown">
+                                        @Html.EnumDropDownListFor(m => m.Filter.Type, "Select All", htmlAttributes: new { @id = "Filter_User_Type", @class = "select2 form-control small" })
+                                    </div>
+                                </div>
+                                <div>@Html.DisplayNameFor(m => m.Filter.CompanyName)</div>
+                                <div class="sorting-wrap">
+                                    <div class="sorting-dropdown">
+                                        @Html.EditorFor(m => m.Filter.CompanyName, new { htmlAttributes = new { @id = "Filter_User_CompanyName", @class = "form-control small" } })
+                                    </div>
+                                </div>
+                                <div>@Html.DisplayNameFor(m => m.Filter.Email)</div>
+                                <div class="sorting-wrap">
+                                    <div class="sorting-dropdown">
+                                        @Html.EditorFor(m => m.Filter.Email, new { htmlAttributes = new { @id = "Filter_User_Email", @class = "form-control small" } })
+                                    </div>
+                                </div>
+                                <div>
+                                    <button id="btnSearchUser" class="btn btn-secondary btn-block">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divider-vertical">&nbsp;</div>
+                    <!-- Search -->
+                    <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+                        <input id="quickSearchUser" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+                        <div class="input-group-append">
+                            <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+                <hr>
+                <div class="table-responsive" data-toggle="lists">
+                    <div class="d-flex pb-4 align-items-center">
+                        <div>
+                            <!-- Select option -->
+                            <span class="select-arrow">
+                                <select id="lengthChangeUser" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div id="pageInfoUser" class="showing-result px-3 py-2 mr-auto"></div>
+                    </div>
+                    <!-- Table -->
+                    <table class="table tableStyle1 tableuser">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-target="#table01" id="customCheckAll">
+                                        <label class="custom-control-label" for="customCheckAll">
+                                            <span class="text-hide">Toggle all</span>
+                                        </label>
+                                    </div>
+                                </th>
+                                <th>#</th>
+                                <th>@Html.DisplayNameFor(model => model.List.Type)</th>
+                                <th>@Html.DisplayNameFor(model => model.List.CompanyName)</th>
+                                <th>@Html.DisplayNameFor(model => model.List.Email)</th>
+                                <th>@Html.DisplayNameFor(model => model.List.Status)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table01"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" onclick="addCompany()" class="btn btn-secondary" data-dismiss="modal">Add</button>
+            </div>
+
+        </div>
+    </div>
+</div>

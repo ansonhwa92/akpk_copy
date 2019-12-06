@@ -467,6 +467,7 @@ namespace FEP.WebApi.Api.eLearning
             });
         }
 
+        //Get Individual user that has trainer@facilitator role
         [Route("api/eLearning/Courses/GetAllTrainers")]
         [HttpPost]
         public IHttpActionResult GetAllTrainers(FilterIndividualModel request)
@@ -589,6 +590,258 @@ namespace FEP.WebApi.Api.eLearning
                 recordsFiltered = filteredCount,
                 data = data.ToArray()
             });
+        }
+
+        //Get Agency/Company user that has trainer@facilitator role
+        [Route("api/eLearning/Courses/GetAllAgency")]
+        [HttpPost]
+        public IHttpActionResult Post(FilterCompanyModel request)
+        {
+            var query = db.UserRole.Where(u => u.UserAccount.User.Display && u.UserAccount.User.UserType == UserType.Company &&
+                (u.Role.Name == RoleNames.eLearningTrainer ||
+                u.Role.Name == RoleNames.eLearningFacilitator)).Select(x => x.UserAccount.User.CompanyProfile);
+
+            //var query = db.CompanyProfile.Where(u => u.User.Display && u.User.UserType == UserType.Company);
+
+            var totalCount = query.Count();
+
+            //advance search
+            query = query.Where(s => (request.CompanyName == null || s.CompanyName.Contains(request.CompanyName))
+               && (request.Email == null || s.User.Email.Contains(request.Email))
+               && (request.Type == null || s.Type == request.Type)
+               );
+
+            //quick search 
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+
+                query = query.Where(p => p.CompanyName.Contains(value)
+                || p.CompanyRegNo.Contains(value)
+                || p.Sector.Name.Contains(value)
+                || p.User.Email.Contains(value)
+                );
+            }
+
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "CompanyName":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.CompanyName);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.CompanyName);
+                        }
+
+                        break;
+
+                    case "TypeDesc":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Type);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Type);
+                        }
+
+                        break;
+
+                    case "Email":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.User.Email);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.User.Email);
+                        }
+
+                        break;
+
+                    case "Sector":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Sector.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Sector.Name);
+                        }
+
+                        break;
+
+                    default:
+                        query = query.OrderByDescending(o => o.CompanyName);
+                        break;
+                }
+
+            }
+            else
+            {
+                query = query.OrderByDescending(o => o.CompanyName);
+            }
+
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(s => new CompanyModel
+                {
+                    Id = s.UserId,
+                    CompanyName = s.CompanyName,
+                    Email = s.User.Email,
+                    Type = s.Type,
+                    Status = s.User.UserAccount != null ? s.User.UserAccount.IsEnable : false
+                }).ToList();
+
+            data.ForEach(s => s.TypeDesc = s.Type.GetDisplayName());
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+
+        }
+
+        //Get staff user that has trainer@facilitator role
+        [Route("api/eLearning/Courses/GetAllStaff")]
+        [HttpPost]
+        public IHttpActionResult Post(FilterStaffModel request)
+        {
+            var query = db.UserRole.Where(u => u.UserAccount.User.Display && u.UserAccount.User.UserType == UserType.Staff &&
+               (u.Role.Name == RoleNames.eLearningTrainer ||
+               u.Role.Name == RoleNames.eLearningFacilitator)).Select(x => x.UserAccount.User.StaffProfile);
+
+            //var query = db.StaffProfile.Where(u => u.User.Display && u.User.UserType == UserType.Staff);
+
+            var totalCount = query.Count();
+
+            //advance search
+            query = query.Where(s => (request.Name == null || s.User.Name.Contains(request.Name))
+               && (request.BranchId == null || s.BranchId == request.BranchId)
+               && (request.Email == null || s.User.Email.Contains(request.Email))
+               && (request.DepartmentId == null || s.DepartmentId == request.DepartmentId)
+               );
+
+            //quick search 
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+
+                query = query.Where(p => p.User.Name.Contains(value)
+                || p.User.Email.Contains(value)
+                || p.Branch.Name.Contains(value)
+                || p.Department.Name.Contains(value)
+                );
+            }
+
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "Name":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.User.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.User.Name);
+                        }
+
+                        break;
+
+                    case "Branch":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Branch.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Branch.Name);
+                        }
+
+                        break;
+
+                    case "Department":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Department.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Department.Name);
+                        }
+
+                        break;
+
+                    case "Email":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.User.Email);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.User.Email);
+                        }
+
+                        break;
+
+                    default:
+                        query = query.OrderByDescending(o => o.User.Name);
+                        break;
+                }
+
+            }
+            else
+            {
+                query = query.OrderByDescending(o => o.User.Name);
+            }
+
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(s => new StaffModel
+                {
+                    Id = s.User.Id,
+                    Name = s.User.Name,
+                    Email = s.User.Email,
+                    Branch = s.Branch.Name,
+                    Department = s.Department.Name,
+                    Status = s.User.UserAccount.IsEnable
+                }).ToList();
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+
         }
 
         /// <summary>
@@ -949,6 +1202,42 @@ namespace FEP.WebApi.Api.eLearning
             }).ToList();
 
             return Ok(courses);
+        }
+
+        //wawa - get my courses list
+        [Route("api/eLearning/Courses/GetMyCoursesList")]
+        [HttpGet]
+        public IHttpActionResult GetMyCoursesList(int id)
+        {
+            //SAMBUNG SINI
+
+
+            var model = new List<ReturnMyCoursesModel>();
+
+            var learner = db.Learners.FirstOrDefault(x => x.UserId == id);
+
+            var enroll = db.Enrollments.Where(x => x.LearnerId == learner.Id).ToList();
+
+            foreach (var item in enroll)
+            {
+                var courses = db.Courses.Where(u => u.Id == item.CourseId);
+
+                model = courses
+                .Select(s => new ReturnMyCoursesModel
+                {
+                    Id = s.Id,
+                    CategoryId = s.CategoryId,
+                    Title = s.Title,
+                    Description = s.Description,
+                    Language = s.Language,
+                    Price = s.Price.Value,
+                    //TotalStudent = s.TotalStudent,
+                    IntroImageFileName = s.IntroImageFileName,
+                    Status = s.Status
+                }).ToList();
+            }
+
+            return Ok(model);
         }
 
         /// <returns></returns>

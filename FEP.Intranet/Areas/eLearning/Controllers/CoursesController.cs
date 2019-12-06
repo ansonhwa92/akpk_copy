@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using FEP.Helper;
+using FEP.Intranet.Areas.Administrator.Controllers;
 using FEP.Intranet.Areas.eLearning.Helper;
 using FEP.Model;
 using FEP.Model.eLearning;
+using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.eLearning;
 using FEP.WebApiModel.SLAReminder;
 using System;
@@ -266,9 +268,102 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
         [HttpGet]
-        public ActionResult _Add()
+        public async Task<ActionResult> _Details(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<DetailsIndividualModel>(HttpVerbs.Get, $"Administration/Individual?id={id}");
+
+            if (!response.isSuccess)
+            {
+                return HttpNotFound();
+            }
+
+            var model = response.Data;
+
+            //model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
+
+            return View(model);
+
+        }
+
+        [HttpGet]
+        public ActionResult _AddIndividual()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _AddCompany()
+        {
+            var filter = new FilterCompanyModel();
+
+            filter.Sectors = new SelectList(await GetSectors(), "Id", "Name", 0);
+
+            return View(new ListCompanyModel { Filter = filter });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> _AddStaff()
+        {
+            var filter = new FilterStaffModel();
+
+            filter.Branchs = new SelectList(await GetBranches(), "Id", "Name", 0);
+            filter.Departments = new SelectList(await GetDepartments(), "Id", "Name", 0);
+
+            return View(new ListStaffModel { Filter = filter });
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<SectorModel>> GetSectors()
+        {
+
+            var sectors = Enumerable.Empty<SectorModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<SectorModel>>(HttpVerbs.Get, $"Administration/Sector");
+
+            if (response.isSuccess)
+            {
+                sectors = response.Data.OrderBy(o => o.Name);
+            }
+
+            return sectors;
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<BranchModel>> GetBranches()
+        {
+
+            var branches = Enumerable.Empty<BranchModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<BranchModel>>(HttpVerbs.Get, $"Administration/Branch");
+
+            if (response.isSuccess)
+            {
+                branches = response.Data.OrderBy(o => o.Name);
+            }
+
+            return branches;
+        }
+
+        [NonAction]
+        private async Task<IEnumerable<DepartmentModel>> GetDepartments()
+        {
+
+            var departments = Enumerable.Empty<DepartmentModel>();
+
+            var response = await WepApiMethod.SendApiAsync<List<DepartmentModel>>(HttpVerbs.Get, $"Administration/Department");
+
+            if (response.isSuccess)
+            {
+                departments = response.Data.OrderBy(o => o.Name);
+            }
+
+            return departments;
+
         }
 
         /// <summary>
@@ -781,6 +876,22 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return courses;
+        }
+
+        //wawa - for my courses list
+        [HasAccess(UserAccess.CourseView)]
+        [HttpGet]
+        public async Task<ActionResult> MyCourses()
+        {
+            var currentUserId = CurrentUser.UserId.Value;
+
+            var model = Enumerable.Empty<ReturnMyCoursesModel>();
+
+            var response = await WepApiMethod.SendApiAsync<IEnumerable<ReturnMyCoursesModel>>(HttpVerbs.Get, $"eLearning/Courses/GetMyCoursesList?id={currentUserId}");
+
+            model = response.Data;
+
+            return View(model);
         }
 
         public ActionResult Users(int courseId)

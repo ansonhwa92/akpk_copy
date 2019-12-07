@@ -29,16 +29,14 @@ namespace FEP.WebApiModel.eLearning
     public class CreateBackgroundModel
     {
         public int Id { get; set; }
-
         [Required]
+        public string Name { get; set; }
         public string Description { get; set; }
-
         [Required]
         public HttpPostedFileBase File { get; set; }
         public string FileName { get; set; }
         public FileUpload FileUpload { get; set; }
         public int? FileUploadId { get; set; }
-
         [Required]
         [Display(Name = "Page Orientation")]
         public TypePageOrientation TypePageOrientation { get; set; }
@@ -50,12 +48,11 @@ namespace FEP.WebApiModel.eLearning
         public int Id { get; set; }
 
         [Required]
+        public string Name { get; set; }
         public string Description { get; set; }
-
         [Required]
         [Display(Name = "Page Orientation")]
         public TypePageOrientation TypePageOrientation { get; set; }
-
         [Required]
         [AllowHtml]
         public string Template { get; set; }

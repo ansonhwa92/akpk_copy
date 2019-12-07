@@ -85,12 +85,20 @@
 
                         <div class="row">
                             <div class="form-group col-lg-12">
-                                @Html.FEPLabelFor(model => model.Description)
-                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
-                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                @Html.FEPLabelFor(model => model.Name)
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
 
                             </div>
                         </div>
+
+                        @*<div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.FEPLabelFor(model => model.Description)
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = "Be clear and descriptive" } })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
 
                         <div class="row">
                             <div class="form-group col-lg-12">

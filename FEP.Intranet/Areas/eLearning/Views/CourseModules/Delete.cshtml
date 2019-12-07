@@ -7,11 +7,6 @@
 }
 
 
-@section ContentScript{
-    <script type="text/javascript">
-    </script>
-}
-
 @section Nav{
     <div class="title_header">
         <div class="title-header-container">
@@ -100,15 +95,35 @@
         </div>
 
         <div class="border-left border-right border-bottom p-3 rounded-bottom">
-
-            @using (Html.BeginForm())
-            {
+            <form method="post" id="formDeleteModule">
+                <a href="@Url.Action("Content", "Courses", new { area = "eLearning", id = Model.CourseId })" style="text-decoration: none;" class="btn btn-warning btn-flat">Cancel</a>
+                @*<button type="submit" class="btn btn-primary pull-right"><i class="la la-trash font-icon" style="font-size: 1.5rem;"></i>Delete</button>*@
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.Id)
+                <button type="button" id="btnDeleteModule" class="btn btn-primary pull-right" onclick="deleteModule()"><i class="la la-trash font-icon" style="font-size: 1.5rem;"></i>Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
 
-                <a href="@Url.Action("Content", "Courses", new { area = "eLearning", id = Model.CourseId })" style="text-decoration: none;" class="btn btn-warning btn-flat">Cancel</a>
-                <button type="submit" class="btn btn-primary pull-right"><i class="la la-trash font-icon" style="font-size: 1.5rem;"></i>Delete</button>
-            }
+<!-- Alert Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="alertBox">
+    <input id="forAction" hidden />
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnYes">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
         </div>
     </div>
 </div>
@@ -118,3 +133,40 @@
         max-width: none !important;
     }
 </style>
+
+@section ContentScript {
+    <script type="text/javascript">
+
+        function deleteModule() {
+            showAlertBox("Delete", "Delete", "Are you sure you want to delete this? All contents in this module will also be deleted.");
+            }
+
+        function showAlertBox(forAction, title, body) {
+
+                var moduleName = $("#Title").val();
+                $("#alertBox .modal-title").text(title +" "+ moduleName);
+                $("#alertBox .modal-body").text(body);
+
+                $('#forAction').val(forAction); // alert for what action
+
+                $('#alertBox').modal();
+            }
+      
+             $('#btnYes').click(function (e) {
+                e.preventDefault();
+
+                var forAction = $('#forAction').val();
+                console.log('for action -', forAction);
+
+                var form = $("#formDeleteModule");
+                var id = $("#Id").val();
+
+                     if (forAction == "Delete") {
+                         console.log('id -', id);
+                         form.attr('action', "@BaseURL/eLearning/CourseModules/Delete?id=" + id);
+
+                    form.submit();
+                }
+            });
+    </script>
+    }

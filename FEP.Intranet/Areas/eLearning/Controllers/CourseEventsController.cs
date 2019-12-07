@@ -17,7 +17,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     {
         public const string StartTrial = "eLearning/CourseEvents/StartTrial";
         public const string StopTrial = "eLearning/CourseEvents/StopTrial";
-        public const string Get = "eLearning/CourseEvents/";
+        public const string Get = "eLearning/CourseEvents";
         public const string GetEventByCourseId = "eLearning/CourseEvents/GetEventByCourseId";
 
         public const string AddLearner = "eLearning/CourseEvents/AddLearner";
@@ -54,6 +54,31 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
+        // List of all sessions available for this course
+        // From this list, can also see enrolmments
+        [Authorize]
+        public ActionResult Invitation(int courseEventId, string eventName, string courseTitle)
+        {
+            if (!CurrentUser.HasAccess(UserAccess.CourseDiscussionCreate) && !CurrentUser.HasAccess(UserAccess.CourseDiscussionGroupCreate))
+            {
+                TempData["Error"] = "Unauthorized Access";
+
+                return RedirectToAction("Index", "Courses", new { area = "eLearning" });
+            }
+
+            var model = new ReturnListCourseInvitationModel
+            {
+                CourseInvitations = new ReturnBriefCourseInvitationModel(),
+                Filters = new FilterCourseInvitationModel { CourseEventId = courseEventId },
+            };
+
+            ViewBag.CourseTitle = courseTitle;
+            ViewBag.CourseEventName = eventName;
+            ViewBag.CourseEventId = courseEventId;
+
+            return View(model);
+        }
+
         [Authorize]
         [HasAccess(UserAccess.CoursePublish)]
         public ActionResult Create(int? id)
@@ -82,9 +107,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 {
                     if (response.Data.IsSuccess)
                     {
-                        await LogActivity(Modules.Learning, $"A session -{model.Name} is Created for Course Id : {model.CourseId}");
+                        await LogActivity(Modules.Learning, $"A session titled {model.Name} is Created for Course Id : {model.CourseId}");
 
-                        TempData["SuccessMessage"] = $"Successfully created  {model.Name}. You can now invite students to the session.";
+                        TempData["SuccessMessage"] = $"A session titled {model.Name} is created. You can now invite students to the session.";
 
                         return RedirectToAction(nameof(InviteLearners), "CourseEvents",
                             new
@@ -104,7 +129,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                await LogError(Modules.Learning, $"Fail create session for Course Id {model.Id} ");
+                await LogError(Modules.Learning, $"Fail create session for Course Id {model.Id}");
 
                 TempData["ErrorMessage"] = $"Failed to create a session for this Course.";
             }
@@ -415,6 +440,32 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
+        public async Task<ActionResult> InviteMoreLearners(int eventId, string title)
+        {
+            var createdBy = CurrentUser.UserId;
+
+            var courseEvent = await TryGetCourseEvent(eventId);
+
+            if (courseEvent != null)
+            {
+                var model = new InviteLearnerModel
+                {
+                    CourseId = courseEvent.CourseId,
+                    CourseEventId = eventId,
+                    EnrollmentCode = courseEvent.EnrollmentCode,
+                    CourseTitle = title
+                };
+
+                return View("InviteLearners", model);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = $"Cannot get the event.";
+
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> InviteLearners(InviteLearnerModel model)
         {
@@ -428,32 +479,10 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 TempData["SuccessMessage"] = "An invitation will be sent to the listed emails.";
 
                 // -- send email
-                var notifyModel = new NotificationModel
-                {
-                    Id = model.CourseEventId,
-                    Type = typeof(CourseEvent),
-                    NotificationType = NotificationType.Course_Invitation,
-                    NotificationCategory = NotificationCategory.Learning,
-                    StartNotificationDate = DateTime.Now,
-                    ParameterListToSend = new ParameterListToSend
-                    {
-                        CourseAuthor = model.CreatedBy,
-                        CourseTitle = model.CourseTitle,
-                        CourseApproval = "Course Verification",
-                        Link = this.Url.AbsoluteAction("View", "Courses", new { id = model.CourseId, enrollmentCode = model.EnrollmentCode })
-                    },
-                    Emails = model.LearnerEmails,
-                    IsNeedRemainder = false,
-                    ReceiverType = ReceiverType.Emails,
-                };
-
-                var emailResponse = await EmaiHelper.SendNotification(notifyModel);
-
-                if (emailResponse == null || String.IsNullOrEmpty(emailResponse.Status) ||
-                    !emailResponse.Status.Equals("Success", System.StringComparison.OrdinalIgnoreCase))
-                {
-                    await LogError(Modules.Learning, $"Error Sending Email For Course Invitation. Course Title (Id) : {model.CourseTitle} - {model.CourseId}");
-                }
+                await Notifier.SendEnrollmentInvitationByListOfEmails(NotificationType.Course_Invitation,
+                    model.CourseEventId, CurrentUser.UserId.Value,
+                    model.LearnerEmails, model.CreatedBy, model.CourseTitle, Url.AbsoluteAction("View", "Courses",
+                    new { id = model.CourseId, enrollmentCode = model.EnrollmentCode }));
             }
             else
             {

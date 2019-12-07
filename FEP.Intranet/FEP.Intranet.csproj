@@ -1096,6 +1096,7 @@
     <Content Include="css\fonts\HellsRiderDecay.ttf" />
     <Content Include="css\fonts\TheInboxSt.ttf" />
     <Content Include="css\fonts\ZiGzAgEo-Reg-FFP.ttf" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\Invitation.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

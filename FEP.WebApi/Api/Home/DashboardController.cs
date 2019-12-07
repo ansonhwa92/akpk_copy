@@ -51,6 +51,11 @@ namespace FEP.WebApi.Api.Home
             {
                 dashboardList = ExhibitionEventDashboardStatusList();
             }
+            else if (module == DashboardModule.KMC)
+            {
+                dashboardList = KMCList();
+            }
+
             dashboardList.ModuleName = module;
 
 
@@ -202,6 +207,27 @@ namespace FEP.WebApi.Api.Home
                 });
             }
 
+            return dashboardList;
+        }
+        private DashboardList KMCList()
+        {
+            var dashboardList = new DashboardList();
+
+            var items = db.KMCs.GroupBy(x => x.KMCCategoryId,
+                                        (key, group) => new { CategoryID = key, Items = group.ToList() })
+                        .ToList();
+
+            foreach(var item in items)
+            {
+                var itemList = new DashboardItemList();
+
+                itemList.Count = item.Items.Count;
+                itemList.StatusName = db.KMCCategory.FirstOrDefault(x => x.Id == item.CategoryID).Title;
+                itemList.RedirectLink = "/KMC/Manage/List/" + db.KMCCategory.FirstOrDefault(x => x.Id == item.CategoryID).Id;
+
+                dashboardList.DashboardItemList.Add(itemList);
+            }
+    
             return dashboardList;
         }
     }

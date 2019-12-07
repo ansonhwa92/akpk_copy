@@ -23,6 +23,7 @@ namespace FEP.WebApiModel.Home
         public int StatusID { get; set; }
         public string StatusName { get; set; }
         public int Count { get; set; }
+        public string RedirectLink { get; set; }
     }
 
     public enum DashboardModule
@@ -47,6 +48,8 @@ namespace FEP.WebApiModel.Home
         Research,
         [Display(Name = "Publication")]
         Publication,
+        [Display(Name = "Survey")]
+        Survey
     }
 
     public class DashboardModuleByRole

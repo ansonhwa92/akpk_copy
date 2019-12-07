@@ -30,18 +30,23 @@
 
 }
 
+<a href="@Url.Action("Dashboard", "Home", new { module = FEP.WebApiModel.Home.DashboardModule.PublicEvent })">Public Event</a>
+|
+<a href="@Url.Action("Dashboard", "Home", new { module = FEP.WebApiModel.Home.DashboardModule.Courses })">Course</a>
+|
+<a href="@Url.Action("Dashboard", "Home", new { module = FEP.WebApiModel.Home.DashboardModule.MediaInterview })">Media Interview</a>
+|
+<a href="@Url.Action("Dashboard", "Home", new { module = FEP.WebApiModel.Home.DashboardModule.Exhibition })">Exhibition/Roadshow</a>
+
 <div class="row">
 
     <!-- End content leftbar -->
-    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+    <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
         <!-- Start Tab Content -->
-        <div class="border-form rounded-top">
+        <div @*class="border-form rounded-top"*@>
             <form>
-                <div class="form-container form-container-w100">
-                    <div class="form-container form-container-w100 tab-content">
-                        @*<div class="mt-2 mb-4 pb-1">
-                                <h4 class="color-darkblue mb-0">Category</h4>
-                            </div>*@
+                <div @*class="form-container form-container-w100"*@>
+                    <div @*class="form-container form-container-w100 tab-content"*@>
                         <div class="row">
                             @Html.Partial("_DashboardList", Model)
                         </div>
@@ -51,3 +56,83 @@
         </div>
     </div>
 </div>
+
+
+@if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.PublicEvent)
+{
+    @Html.Partial("../../Areas/eEvent/Views/Shared/_PublicEventList", new FEP.WebApiModel.PublicEvent.ListPublicEventModel())
+
+    @section ContentScript{
+        <script>
+            $(document).ready(function () {
+                initTable();
+                ActionBox()
+
+                $('.statusItem').on('click', function (e) {
+                    var currentStatusVal = $(e.currentTarget).find('input').val()
+                    $('#Filter_EventStatus').val(currentStatusVal);
+                    $('.tabledata').DataTable().ajax.reload()
+                    $('#Filter_EventStatus').val('');
+                });
+            })
+        </script>
+    }
+}
+else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.Courses)
+{
+
+    @Html.Partial("../../Areas/eLearning/Views/Shared/_CoursesList", new FEP.WebApiModel.eLearning.ReturnListCourseModel())
+
+    @section ContentScript{
+        <script>
+            $(document).ready(function () {
+                initTable();
+
+                $('.statusItem').on('click', function (e) {
+                    var currentStatusVal = $(e.currentTarget).find('input').val()
+                    $('#Filters_Status').val(currentStatusVal);
+                    $('.tabledata').DataTable().ajax.reload()
+                    $('#Filters_Status').val('');
+                });
+            })
+        </script>
+    }
+}
+else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.MediaInterview)
+{
+
+    @Html.Partial("../../Areas/eEvent/Views/Shared/_MediaInterviewList", new FEP.WebApiModel.MediaInterview.ListMediaInterviewRequestApi())
+
+    @section ContentScript{
+        <script>
+            $(document).ready(function () {
+                initTable();
+
+                //$('.statusItem').on('click', function (e) {
+                //    var currentStatusVal = $(e.currentTarget).find('input').val()
+                //    $('#Filters_Status').val(currentStatusVal);
+                //    $('.tabledata').DataTable().ajax.reload()
+                //});
+            })
+        </script>
+    }
+}
+else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.Exhibition)
+{
+
+    @Html.Partial("../../Areas/eEvent/Views/Shared/_ExhibitionRoadshowRequestList", new FEP.WebApiModel.eEvent.ListExhibitionRoadshowRequestModel())
+
+    @section ContentScript{
+        <script>
+            $(document).ready(function () {
+                initTable();
+
+                //$('.statusItem').on('click', function (e) {
+                //    var currentStatusVal = $(e.currentTarget).find('input').val()
+                //    $('#Filters_Status').val(currentStatusVal);
+                //    $('.tabledata').DataTable().ajax.reload()
+                //});
+            })
+        </script>
+    }
+}

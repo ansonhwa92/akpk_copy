@@ -39,11 +39,16 @@ namespace FEP.Intranet.Controllers
             return View("/Views/Shared/Error.cshtml");
         }
 
-        public async Task<ActionResult> Dashboard()
+        public async Task<ActionResult> Dashboard(DashboardModule? module)
         {
             var userid = CurrentUser.UserId;
 
-            var response = await WepApiMethod.SendApiAsync<DashboardList>(HttpVerbs.Get, $"Home/Dashboard/GetDashbordList?userid={userid}");
+            if(module == null)
+            {
+                module = DashboardModule.Courses;
+            }
+
+            var response = await WepApiMethod.SendApiAsync<DashboardList>(HttpVerbs.Get, $"Home/Dashboard/GetDashbordList?userid={userid}&module={module}");
 
             if (response.isSuccess)
             {
@@ -636,6 +641,6 @@ namespace FEP.Intranet.Controllers
         }
 
 
-
+        
     }
 }

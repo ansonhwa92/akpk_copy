@@ -146,6 +146,11 @@ namespace FEP.WebApi.Api.eLearning
             //                        (String.IsNullOrEmpty(request.Code) || x.Title.Contains(request.Code)) && x.IsDeleted != true);
             var query = db.Courses.Where(x => x.IsDeleted == false);
 
+            if(request.Status != null)
+            {
+                query = query.Where(x => x.Status == request.Status);
+            }
+
             if (!String.IsNullOrEmpty(request.Title))
                 query = query.Where(x => x.Title.ToLower().Contains(request.Title.ToLower()));
 

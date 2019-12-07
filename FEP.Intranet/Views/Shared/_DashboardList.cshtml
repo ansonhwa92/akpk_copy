@@ -2,12 +2,21 @@
 
 @foreach (var item in Model.DashboardItemList)
 {
+<div class="col-md-4 statusItem mt-3">
+    <div class="card border-left-3 border-left-primary shadow h-100">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center h-100">
+                <div class="col-9 mr-1">
+                    <h4 class="card-title">@(item.Count)</h4>
+                    <p class="card-text">@(item.StatusName)</p>
+                </div>
+                <div class="col-2">
 
-    <div class="col-lg-4">
-        <div class="box-contain">
-            <div class="card text-center">
-                <span>@(item.StatusName) (@(item.Count))</span>
+                    <i class="material-icons md-36">content_paste</i>
+                </div>
             </div>
         </div>
     </div>
+    <input value=@item.StatusID hidden />
+</div>
 }

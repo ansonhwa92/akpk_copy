@@ -46,6 +46,11 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "Code", ResourceType = typeof(Language.eLearning.Course))]
         public string Code { get; set; }
+
+        [Display(Name = "Status", ResourceType = typeof(Language.eLearning.Course))]
+        public CourseStatus? Status { get; set; }
+
+        public bool RequireAction { get; set; }
     }
 
     public class CreateOrEditCourseModel : BaseModel

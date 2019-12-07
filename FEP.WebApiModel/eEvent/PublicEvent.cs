@@ -47,7 +47,11 @@ namespace FEP.WebApiModel.PublicEvent
 		[Display(Name = "PubEventStatus", ResourceType = typeof(Language.Event))]
 		public EventStatus? EventStatus { get; set; }
 
-	}
+        public bool? RequireAction { get; set; }
+
+        public UserAccess? UserAccess { get; set; }
+
+    }
 
 	public class PublicEventModel
 	{

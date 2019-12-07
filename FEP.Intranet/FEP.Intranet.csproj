@@ -1076,6 +1076,12 @@
     <Content Include="Areas\eLearning\Views\CourseGroup\_CoursesList.cshtml" />
     <Content Include="Areas\KMC\Views\Home\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\Home\BrowseEvent.cshtml" />
+    <Content Include="Areas\eEvent\Views\Shared\_PublicEventList.cshtml" />
+    <Content Include="Areas\eLearning\Views\Shared\_CoursesList.cshtml" />
+    <Content Include="Areas\RnP\Views\Shared\_SurveyList.cshtml" />
+    <Content Include="Areas\eEvent\Views\Shared\_MediaInterviewList.cshtml" />
+    <Content Include="Areas\eEvent\Views\Shared\_ExhibitionRoadshowRequestList.cshtml" />
+    <Content Include="Areas\RnP\Views\Shared\_PublicationList.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1706,7 +1712,6 @@
     <Folder Include="Areas\Commerce\Views\Shared\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
     <Folder Include="Areas\eEvent\Views\EventRefund\" />
-    <Folder Include="Areas\eEvent\Views\Shared\" />
     <Folder Include="Areas\KMC\Views\Shared\" />
     <Folder Include="Areas\Logs\Models\" />
     <Folder Include="Areas\Logs\Views\Shared\" />

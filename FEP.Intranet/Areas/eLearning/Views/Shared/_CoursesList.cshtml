@@ -1,0 +1,281 @@
+﻿@using FEP.Model
+@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.ReturnListCourseModel
+
+<div class="d-flex align-items-center">
+    <div class="filter dropdown">
+        <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+        <div class="dropdown-menu">
+            <div class="filter-head">Filters</div>
+            <div class="filter-body">
+
+                <div>@Html.DisplayNameFor(m => m.Filters.Code) </div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filters.Code, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.Filters.Title)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filters.Title, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div hidden>
+                    <div>@Html.DisplayNameFor(m => m.Filters.Status)</div>
+                    <div class="sorting-wrap">
+                        <div class="sorting-dropdown">
+                            @Html.EditorFor(m => m.Filters.Status, new { htmlAttributes = new { @class = "form-control small" } })
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button id="btnSearch" class="btn btn-secondary mt-2">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider-vertical">&nbsp;</div>
+    <!-- Search -->
+    <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+        <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+        <div class="input-group-append">
+            <button id="quickSearchBtn" class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+        </div>
+    </div>
+    @*<div class="sorting-wrap">
+            <div class="sorting-dropdown">
+                <select class="select2 form-control small" name="sorting">
+                    <option value="Default Sorting">Default Sorting</option>
+                    <option value="sorting 1">Sorting 1</option>
+                    <option value="sorting 2">Sorting 2</option>
+                </select>
+            </div>
+        </div>*@
+</div>
+<hr>
+<div class="table-responsive" data-toggle="lists" style="overflow-x:hidden">
+    <div class="d-flex pb-4 align-items-center">
+        <div>
+            <!-- Select option -->
+            <span class="select-arrow">
+                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </span>
+        </div>
+        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+
+        @if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+        {
+            <div><a href="@Url.Action("SelectCategory", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>
+            @*<div><a href="@Url.Action("Create", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>*@
+        }
+    </div>
+    <!-- Table -->
+    <table class="table tableStyle1 tabledata">
+        <thead>
+            <tr>
+
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.Courses.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Courses.Code)</th>
+                <th>@Html.DisplayNameFor(model => model.Courses.Price)</th>
+                <th>@Html.DisplayNameFor(model => model.Courses.Status)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<style>
+
+    .dataTables_scrollBody {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+    }
+</style>
+
+
+<link href="~/css/elearn.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    function initTable() {
+        var table = $('.tabledata').DataTable({
+            serverSide: true,
+            processing: true,
+            responsive: true,
+            scrollX: false,
+            ajax: {
+                "type": "post",
+                "url": '@(WebApiURL)eLearning/Courses/GetAll',
+                "data": function (filter) {
+                    console.log("-", filter);
+
+                    filter.Code = $('#Filters_Code').val();
+                    filter.Title = $('#Filters_Title').val();
+                    filter.Status = $('#Filters_Status').val();
+                    filter.Price = $('#Filters_Price').val();
+                },
+                dataFilter: function (res) {
+                    // do what you need to the data before it loads to the table
+                    // for debugging only for now
+                    return res;
+                },
+                error: function (x, y) {
+                    console.log("Error -", x);
+                }
+            },
+            columns: [
+                {
+                    sortable: false,
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    data: 'Title',
+                    sortable: true
+                },
+                {
+                    data: 'Code',
+                    sortable: true
+                },
+                {
+                    data: 'Price',
+                    sortable: true
+                },
+                {
+                    data: 'Status',
+                    sortable: true,
+                    render: function (data, type, row, meta) {
+
+                        switch (row.Status) {
+                            case @Json.Encode(CourseStatus.Trial) :
+                                return "<span class='color-grey font-weight-bold'>Trial</span>";
+
+                            case @Json.Encode(CourseStatus.Draft) :
+                                return "<span class='color-grey font-weight-bold'>Draft</span>";
+
+                            case @Json.Encode(CourseStatus.Submitted) :
+                                return "<span class='color-yellow font-weight-bold'>Pending Verification</span>";
+
+                            case @Json.Encode(CourseStatus.Verified) :
+                            case @Json.Encode(CourseStatus.FirstApproval) :
+                            case @Json.Encode(CourseStatus.SecondApproval) :
+                            case @Json.Encode(CourseStatus.ThirdApproval) :
+                                return "<span class='color-secondary font-weight-bold'>Pending Approval</span>";
+
+                            case @Json.Encode(CourseStatus.Amendment) :
+                                return "<span class='text-warning font-weight-bold'>Require amendment</span>";
+
+                            case @Json.Encode(CourseStatus.Approved) :
+                                return "<span class='color-green font-weight-bold'>Approved</span>";
+
+                            case @Json.Encode(CourseStatus.Published) :
+                                return "<span class='color-blue font-weight-bold'>Published</span>";
+
+                            default:
+                                return "<span class='color-red font-weight-bold'>" + row.Status + "</span>";
+
+                        }
+                    }
+                },
+                {
+                    sortable: false,
+                    render: function (data, type, row, meta) {
+
+                        var action = "";
+
+                        var canedit = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseEdit));
+                        var canverify = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseVerify));
+                        var canapprove1 = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseApproval1));
+                        var canapprove2 = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseApproval2));
+                        var canapprove3 = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseApproval3));
+                        var canpublish = @Json.Encode(CurrentUser.HasAccess(UserAccess.CoursePublish));
+                        var canwithdraw = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseEnroll));
+
+                        action = '<div class="icon-action">';
+                        // everyone with access course edit/create/verify/aprove can view
+                        // learner access is using courseView
+                        action += '<a href="@Url.Action("View", "Courses", new { area = "eLearning" })/' + row.Id +
+                            '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>&nbsp;';
+
+                        if (canedit) {
+                            if (row.Status == 0 || row.Status == 5) { // Draft or Amendment
+                                action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id +
+                                    '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit "></i></a>';
+                                action += '<a href="@Url.Action("Delete", "Courses", new { area = "eLearning" })/' + row.Id +
+                                    '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o "></i></i></a>';
+                            }
+                            else {
+                                action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id +
+                                    '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit "></i></a>';
+                            }
+                        }
+
+                        if (canverify || canapprove1 || canapprove2 || canapprove3) {
+                            if (row.Status == 2 || row.Status == 3 || row.Status == 4 || row.Status == 5 ||
+                                row.Status == 6 || row.Status == 7 || row.Status == 8) { // submitted to 3rd approval
+                                action += '<a href="@Url.Action("Approve", "CourseApprovals", new { area = "eLearning" })/' + row.Id +
+                                    '" data-toggle="tooltip" data-placement="top" title="Approvals"><i class="la la-check-square"></i></a>&nbsp;';
+                            }
+                        }
+
+                        if (canpublish) {
+                            if (row.Status == 4) { // approved or published
+                                action += '<a href="@Url.Action("Content", "Courses", new { area = "eLearning" })/' + row.Id +
+                                    '" data-toggle="tooltip" data-placement="top" title="Publish"><i class="la la-book"></i></a>&nbsp;';
+                            }
+                        }
+
+                        return action;
+                    }
+                }
+            ],
+            paging: true,
+            lengthChange: true,
+            searching: true,
+            ordering: true,
+            orderMulti: false,
+            info: true,
+            autoWidth: false,
+            order: [[1, 'asc']],
+            language: {
+                processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                emptyTable: "No Record Found",
+                info: "Showing _START_ - _END_ of _TOTAL_ courses"
+            },
+            dom: 'rtip'
+        });
+
+        $('#lengthChange').val(table.page.len());
+
+        $('#quickSearch').keyup(function () {
+            table.search($(this).val()).draw();
+        });
+
+        $('#quickSearchBtn').click(function () {
+            table.search($(this).val()).draw();
+        });
+
+        $('#lengthChange').change(function () {
+            table.page.len($(this).val()).draw();
+        });
+
+        $('#btnSearch').click(function () {
+            table.ajax.reload();
+        });
+
+        table.on('order.dt search.dt', function () {
+            var info = table.page.info();
+            $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' courses');
+            $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+        }).draw();
+
+    }
+</script>
+

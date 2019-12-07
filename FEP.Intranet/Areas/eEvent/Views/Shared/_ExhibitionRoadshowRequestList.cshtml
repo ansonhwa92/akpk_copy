@@ -1,0 +1,260 @@
+﻿@model FEP.WebApiModel.eEvent.ListExhibitionRoadshowRequestModel
+
+<script type="text/javascript">
+
+		 function initTable() {
+
+            var table = $('.tabledata').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    "type": "post",
+					@*"url": '@(WebApiURL)eEvent/ExhibitionRoadshowRequest/GetExhibitionList',*@
+					 "url": '@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent" })',
+                    "data": function (filter) {
+                        filter.EventName = $('#Filter_EventName').val();
+                        //filter.ICNo = $('#Filter_ICNo').val();
+                        //filter.MobileNo = $('#Filter_MobileNo').val();
+                        //filter.Email = $('#Filter_Email').val();
+                    }
+                },
+				columns: [
+
+					 {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+					},
+					{
+                        data: 'RefNo',
+                        sortable: true
+					},
+					 {
+                        data: 'BranchName',
+                        sortable: true
+					},
+                    {
+                        data: 'EventName',
+                        sortable: true
+                    },
+                    {
+                        data: 'Organiser',
+                        sortable: true
+					},
+
+					  {
+                        data: 'StartDate',
+						sortable: true,
+						  render: function (data, type, row, meta) {
+
+							  var x = moment(data);
+
+							  if (x.isValid()) {
+								  return x.format("DD/MM/YYYY");
+							  }
+							  else {
+								  return '';
+							  }
+
+                        }
+					},
+					   {
+                        data: 'EndDate',
+						sortable: true,
+						render: function (data, type, row, meta) {
+                            var x = moment(data);
+
+							  if (x.isValid()) {
+								  return x.format("DD/MM/YYYY");
+							  }
+							  else {
+								  return '';
+							  }
+                        }
+                    },
+                    {
+                        data: 'ExhibitionStatusDesc',
+                        sortable: false,
+						render: function (data, type, row, meta) {
+						 if (row.ExhibitionStatus == 0) {
+                                return "<span class='color-blue font-weight-bold'> Draft </span>";
+                            }
+                            else if (row.ExhibitionStatus == 1) {
+                                return "<span class='color-primary font-weight-bold'> Pending Verification </span>";
+                            }
+                            else if (row.ExhibitionStatus == 2) {
+                                return "<span class='color-primary font-weight-bold'> Pending Approval 1 </span>";
+                            }
+                            else if (row.ExhibitionStatus == 3) {
+                                return "<span class='color-yellow font-weight-bold'> Require Amendment </span>";
+                            }
+                            else if (row.ExhibitionStatus == 4) {
+                                return "<span class='color-primary font-weight-bold'> Pending Approval 2 </span>";
+                            }
+                            else if (row.ExhibitionStatus == 5) {
+                                return "<span class='color-primary font-weight-bold'> Pending Approval 3 </span>";
+                            }
+                            else if (row.ExhibitionStatus == 6) {
+                                return "<span class='color-green font-weight-bold'> Approved </span>";
+							}
+							else if (row.ExhibitionStatus == 11) {
+                                return "<span class='color-green font-weight-bold'> Participation Accepted </span>";
+							}
+							else if (row.ExhibitionStatus == 12) {
+                                return "<span class='color-red font-weight-bold'> Participation Declined </span>";
+						    }
+							 else if (row.ExhibitionStatus == 13) {
+                                return "<span class='color-primary font-weight-bold'> Nominees Invited </span>";
+							}
+							 else if (row.ExhibitionStatus == null) { //column status tak boleh null value
+                                return "<span class='color-blue font-weight-bold'> N/A </span>";
+                            }
+						}
+                    },
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+
+                            var action = "";
+
+							action = '<div class="icon-action">'
+
+							if (row.ExhibitionStatus == 0) {
+								action += '<a href="@Url.Action("Details", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+									action += '<a href="@Url.Action("Edit", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+									action += '<a href="@Url.Action("Delete", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>'
+								} else if (row.ExhibitionStatus == 3) {
+								action += '<a href="@Url.Action("Details", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+									action += '<a href="@Url.Action("Edit", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>'
+								} else {
+								action += '<a href="@Url.Action("Details", "ExhibitionRoadshowRequest", new { area = "eEvent" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>'
+							}
+								action += '</div>';
+
+                            return action;
+                        }
+                    }
+                ],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_"
+                },
+                dom: 'rtip'
+            });
+
+            $('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup( function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change( function() {
+                table.page.len($(this).val()).draw();
+            });
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt', function () {
+                var info = table.page.info();
+
+                var start = 0;
+                if (info.recordsTotal != 0) {
+                    start = info.start + 1;
+                }
+
+                $('#pageInfo').html('Showing ' + start + ' - ' + info.end + ' of ' + info.recordsTotal);
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            }).draw();
+
+
+        }
+</script>
+
+<div class="d-flex align-items-center">
+    <div class="filter dropdown">
+        <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+        <div class="dropdown-menu">
+            <div class="filter-head">Filters</div>
+            <div class="filter-body">
+                <div>@Html.DisplayNameFor(m => m.Filter.EventName)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filter.EventName, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.Filter.ExhibitionStatus)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filter.ExhibitionStatus, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.Filter.Organiser)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filter.Organiser, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>
+                    <button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider-vertical">&nbsp;</div>
+    <!-- Search -->
+    <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+        <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+        <div class="input-group-append">
+            <button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="table-responsive" data-toggle="lists">
+    <div class="d-flex pb-4 align-items-center">
+        <div>
+            <!-- Select option -->
+            <span class="select-arrow">
+                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </span>
+        </div>
+        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+        @if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD))
+        {
+            <div><a href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
+        }
+    </div>
+    <!-- Table -->
+    <table class="table tableStyle1 tabledata table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.List.RefNo)</th>
+                <th>@Html.DisplayNameFor(model => model.List.BranchName)</th>
+                <th>@Html.DisplayNameFor(model => model.List.EventName)</th>
+                <th>@Html.DisplayNameFor(model => model.List.Organiser)</th>
+                <th>@Html.DisplayNameFor(model => model.List.StartDate)</th>
+                <th>@Html.DisplayNameFor(model => model.List.EndDate)</th>
+                <th>@Html.DisplayNameFor(model => model.List.ExhibitionStatusDesc)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>

@@ -87,6 +87,7 @@ else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.Courses)
         <script>
             $(document).ready(function () {
                 initTable();
+                ActionBox();
 
                 $('.statusItem').on('click', function (e) {
                     var currentStatusVal = $(e.currentTarget).find('input').val()

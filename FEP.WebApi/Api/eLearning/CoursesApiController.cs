@@ -151,6 +151,36 @@ namespace FEP.WebApi.Api.eLearning
                 query = query.Where(x => x.Status == request.Status);
             }
 
+            if (request.RequireAction == true)
+            {
+                var courseStatusList = new List<CourseStatus?>();
+
+                if (request.UserAccess == UserAccess.CourseCreate)
+                {
+                    courseStatusList.Add(CourseStatus.Draft);
+                    courseStatusList.Add(CourseStatus.Amendment);
+                }
+                else if (request.UserAccess == UserAccess.CourseVerify)
+                {
+                    courseStatusList.Add(CourseStatus.Submitted);
+                }
+                else if (request.UserAccess == UserAccess.CourseApproval1)
+                {
+                    courseStatusList.Add(CourseStatus.FirstApproval);
+                }
+                else if (request.UserAccess == UserAccess.CourseApproval2)
+                {
+                    courseStatusList.Add(CourseStatus.SecondApproval);
+
+                }
+                else if (request.UserAccess == UserAccess.CourseApproval3)
+                {
+                    courseStatusList.Add(CourseStatus.ThirdApproval);
+                }
+
+                query = query.Where(u => courseStatusList.Contains(u.Status));
+            }
+
             if (!String.IsNullOrEmpty(request.Title))
                 query = query.Where(x => x.Title.ToLower().Contains(request.Title.ToLower()));
 

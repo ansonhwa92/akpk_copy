@@ -2,6 +2,33 @@
 @using FEP.Model.eLearning
 @model FEP.WebApiModel.eLearning.ReturnListCourseModel
 
+@using FEP.Model
+
+@{
+    UserAccess currentUser = UserAccess.HomeDashboard1; //assign dummy
+
+    if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+    {
+        currentUser = UserAccess.CourseCreate;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.CourseVerify))
+    {
+        currentUser = UserAccess.CourseVerify;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.CourseApproval1))
+    {
+        currentUser = UserAccess.CourseApproval1;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.CourseApproval2))
+    {
+        currentUser = UserAccess.CourseApproval2;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.CourseApproval3))
+    {
+        currentUser = UserAccess.CourseApproval3;
+    }
+}
+
 <div class="d-flex align-items-center">
     <div class="filter dropdown">
         <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
@@ -22,10 +49,14 @@
                     </div>
                 </div>
                 <div hidden>
-                    <div>@Html.DisplayNameFor(m => m.Filters.Status)</div>
                     <div class="sorting-wrap">
                         <div class="sorting-dropdown">
                             @Html.EditorFor(m => m.Filters.Status, new { htmlAttributes = new { @class = "form-control small" } })
+                        </div>
+                    </div>
+                    <div class="sorting-wrap">
+                        <div class="sorting-dropdown">
+                            @Html.EditorFor(m => m.Filters.RequireAction, new { htmlAttributes = new { @class = "form-control small" } })
                         </div>
                     </div>
                 </div>
@@ -68,12 +99,13 @@
             </span>
         </div>
         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-
-        @if (CurrentUser.HasAccess(UserAccess.CourseCreate))
-        {
-            <div><a href="@Url.Action("SelectCategory", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>
-            @*<div><a href="@Url.Action("Create", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>*@
-        }
+        <div class="create-new-record-button">
+            @if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+            {
+                <a href="@Url.Action("SelectCategory", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a>
+                @*<div><a href="@Url.Action("Create", "Courses", new { area = "eLearning" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Course</a></div>*@
+            }
+        </div>
     </div>
     <!-- Table -->
     <table class="table tableStyle1 tabledata">
@@ -119,6 +151,8 @@
                     filter.Title = $('#Filters_Title').val();
                     filter.Status = $('#Filters_Status').val();
                     filter.Price = $('#Filters_Price').val();
+                    filter.RequireAction = $('#Filters_RequireAction').val();                    
+                    filter.UserAccess = "@currentUser";
                 },
                 dataFilter: function (res) {
                     // do what you need to the data before it loads to the table
@@ -276,6 +310,33 @@
             $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
         }).draw();
 
+    }
+
+    function ActionBox() {
+        $('.create-new-record-button').children('a').hide();
+        $('.create-new-record-button').append('<button class="btn btn-secondary btnRequireAction">Require Action</button>');
+        $('.create-new-record-button').append('<button class="btn btn-outline-secondary btnAll">All</button>');
+
+        $('.create-new-record-button').on('click', '.btnRequireAction', function () {
+            $('#Filters_RequireAction').val("true");
+            console.log($('#Filter_RequireAction').val());
+            $('.btnRequireAction').removeClass('btn-outline-secondary').addClass('btn-secondary');
+            $('.btnAll').removeClass('btn-secondary').addClass('btn-outline-secondary');
+            $('.tabledata').DataTable().ajax.reload();
+        });
+
+
+        $('.create-new-record-button').on('blur', '.btnRequireAction', function () {
+
+            console.log('actionblur');
+            $('#Filters_RequireAction').val("false");
+        });
+
+        $('.create-new-record-button').on('click', '.btnAll', function () {
+            $('.btnRequireAction').removeClass('btn-secondary').addClass('btn-outline-secondary');
+            $('.btnAll').removeClass('btn-outline-secondary').addClass('btn-secondary');
+            $('.tabledata').DataTable().ajax.reload();
+        });
     }
 </script>
 

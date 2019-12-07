@@ -33,12 +33,46 @@ namespace FEP.WebApi.Api.eEvent
 		{
 			var query = db.EventMediaInterviewRequest.Where(u => u.Display);
 
-			var totalCount = query.Count();
+            if(request.MediaStatus != null)
+            {
+                query = db.EventMediaInterviewRequest.Where(u => u.MediaStatus == request.MediaStatus);
+            }
+            
+
+            if (request.RequireAction == true)
+            {
+                var mediaStatusList = new List<MediaStatus?>();
+
+                if (request.UserAccess == UserAccess.EventAdministratorCCD)
+                {
+                    mediaStatusList.Add(MediaStatus.New);
+                    mediaStatusList.Add(MediaStatus.RequireAmendment);
+                }
+                else if (request.UserAccess == UserAccess.VerifierExhibitionCCD)
+                {
+                    mediaStatusList.Add(MediaStatus.PendingVerified);
+                }
+                else if (request.UserAccess == UserAccess.Approver1MediaInterview)
+                {
+                    mediaStatusList.Add(MediaStatus.Verified);
+                }
+                else if (request.UserAccess == UserAccess.Approver2MediaInterview)
+                {
+                    mediaStatusList.Add(MediaStatus.ApprovedByApprover1);
+
+                }
+                else if (request.UserAccess == UserAccess.Approver3MediaInterview)
+                {
+                    mediaStatusList.Add(MediaStatus.ApprovedByApprover2);
+                }
+
+                query = query.Where(u => mediaStatusList.Contains(u.MediaStatus));
+            }
+
+            var totalCount = query.Count();
 
 			//advance search
-			query = query.Where(s => (request.MediaName == null || s.MediaName.Contains(request.MediaName))
-
-			   );
+			query = query.Where(s => (request.MediaName == null || s.MediaName.Contains(request.MediaName)));
 
 			//quick search 
 			if (!string.IsNullOrEmpty(request.search.value))

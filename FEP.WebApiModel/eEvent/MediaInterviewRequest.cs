@@ -119,9 +119,11 @@ namespace FEP.WebApiModel.MediaInterview
 
 		[Display(Name = "Reference No")]
 		public string RefNo { get; set; }
-	}
+        public bool? RequireAction { get; set; }
+        public UserAccess UserAccess { get; set; }
+    }
 
-	public class DetailsMediaInterviewRequestApiModel : MediaInterviewRequestApiModel
+    public class DetailsMediaInterviewRequestApiModel : MediaInterviewRequestApiModel
 	{
 		public IEnumerable<Attachment> Attachments { get; set; }
 	}

@@ -6,6 +6,7 @@ using FEP.WebApiModel.Home;
 using System.Web.Http;
 using FEP.Model.eLearning;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace FEP.WebApi.Api.Home
 {
@@ -137,14 +138,13 @@ namespace FEP.WebApi.Api.Home
         {
             var mapping = new Dictionary<int, string>();
 
-            mapping.Add((int)CourseStatus.Draft, "Draft");
-            mapping.Add((int)CourseStatus.Submitted, "Pending Verification");
-            mapping.Add((int)CourseStatus.FirstApproval, "Pending Approval I");
-            mapping.Add((int)CourseStatus.SecondApproval, "Pending Approval II");
-            mapping.Add((int)CourseStatus.ThirdApproval, "Pending Approval III");
-            mapping.Add((int)CourseStatus.Published, "Published");
-            mapping.Add((int)CourseStatus.Trial, "Active Trial Run");
-            mapping.Add((int)CourseStatus.Amendment, "Pending Amendments");
+            mapping.Add((int)MediaStatus.New, EnumHelper.GetDisplayName(MediaStatus.New));
+            mapping.Add((int)MediaStatus.PendingVerified, EnumHelper.GetDisplayName(MediaStatus.PendingVerified));
+            mapping.Add((int)MediaStatus.Verified, EnumHelper.GetDisplayName(MediaStatus.Verified));
+            mapping.Add((int)MediaStatus.ApprovedByApprover1, EnumHelper.GetDisplayName(MediaStatus.ApprovedByApprover1));
+            mapping.Add((int)MediaStatus.ApprovedByApprover2, EnumHelper.GetDisplayName(MediaStatus.ApprovedByApprover2));
+            mapping.Add((int)MediaStatus.ApprovedByApprover3, EnumHelper.GetDisplayName(MediaStatus.ApprovedByApprover3));
+            mapping.Add((int)MediaStatus.RequireAmendment, EnumHelper.GetDisplayName(MediaStatus.RequireAmendment));
 
             return mapping;
         }
@@ -152,9 +152,8 @@ namespace FEP.WebApi.Api.Home
         private DashboardList MediaEventDashboardStatusList()
         {
             var dashboardList = new DashboardList();
-            //dashboardList.ModuleName = typeof(DashboardModule).GetEnumName(DashboardModule.eEvent);
 
-            var eventStatusMapping = EventStatusMapping();
+            var eventStatusMapping = MediaEventStatusMapping();
 
             foreach (var item in eventStatusMapping)
             {
@@ -169,14 +168,28 @@ namespace FEP.WebApi.Api.Home
 
             return dashboardList;
         }
+        
+        private Dictionary<int, string> ExhibitionEventStatusMapping()
+        {
+            var mapping = new Dictionary<int, string>();
 
+            mapping.Add((int)ExhibitionStatus.New, EnumHelper.GetDisplayName(ExhibitionStatus.New));
+            mapping.Add((int)ExhibitionStatus.PendingVerified, EnumHelper.GetDisplayName(ExhibitionStatus.PendingVerified));
+            mapping.Add((int)ExhibitionStatus.Verified, EnumHelper.GetDisplayName(ExhibitionStatus.Verified));
+            mapping.Add((int)ExhibitionStatus.ApprovedByApprover1, EnumHelper.GetDisplayName(ExhibitionStatus.ApprovedByApprover1));
+            mapping.Add((int)ExhibitionStatus.ApprovedByApprover2, EnumHelper.GetDisplayName(ExhibitionStatus.ApprovedByApprover2));
+            mapping.Add((int)ExhibitionStatus.RequireAmendment, EnumHelper.GetDisplayName(ExhibitionStatus.RequireAmendment));
+            mapping.Add((int)ExhibitionStatus.ApprovedByApprover3, EnumHelper.GetDisplayName(ExhibitionStatus.ApprovedByApprover3));
+
+            return mapping;
+        }
 
         private DashboardList ExhibitionEventDashboardStatusList()
         {
             var dashboardList = new DashboardList();
             //dashboardList.ModuleName = typeof(DashboardModule).GetEnumName(DashboardModule.eEvent);
 
-            var eventStatusMapping = EventStatusMapping();
+            var eventStatusMapping = ExhibitionEventStatusMapping();
 
             foreach (var item in eventStatusMapping)
             {
@@ -191,5 +204,17 @@ namespace FEP.WebApi.Api.Home
 
             return dashboardList;
         }
+    }
+}
+
+public static class EnumHelper
+{
+    public static string GetDisplayName(this Enum enumValue)
+    {
+        return enumValue.GetType()
+                        .GetMember(enumValue.ToString())
+                        .First()
+                        .GetCustomAttribute<DisplayAttribute>()
+                        .GetName();
     }
 }

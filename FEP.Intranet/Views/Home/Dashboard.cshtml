@@ -107,12 +107,14 @@ else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.MediaInterview
         <script>
             $(document).ready(function () {
                 initTable();
+                ActionBox()
 
-                //$('.statusItem').on('click', function (e) {
-                //    var currentStatusVal = $(e.currentTarget).find('input').val()
-                //    $('#Filters_Status').val(currentStatusVal);
-                //    $('.tabledata').DataTable().ajax.reload()
-                //});
+                $('.statusItem').on('click', function (e) {
+                    var currentStatusVal = $(e.currentTarget).find('input').val()
+                    $('#Filter_MediaStatus').val(currentStatusVal);
+                    $('.tabledata').DataTable().ajax.reload()
+                    $('#Filter_MediaStatus').val('');
+                });
             })
         </script>
     }

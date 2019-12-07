@@ -115,6 +115,8 @@ namespace FEP.WebApiModel.eEvent
 		public ExhibitionStatus? ExhibitionStatus { get; set; }
 		[Display(Name = "ExRoadExhibitionStatusDesc", ResourceType = typeof(Language.Event))]
 		public string ExhibitionStatusDesc { get; set; }
+        public bool? RequireAction { get; set; }
+        public UserAccess? UserAccess { get; set; }
 
 	}
 

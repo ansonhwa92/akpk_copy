@@ -34,12 +34,45 @@ namespace FEP.WebApi.Api.eEvent
 
 			var query = db.EventExhibitionRequest.Where(u => u.Display);
 
+            if (request.ExhibitionStatus != null)
+            {
+                query = query.Where(u => u.ExhibitionStatus == request.ExhibitionStatus);
+            }
+
+            if (request.RequireAction == true)
+            {
+                var exhibitionStatusList = new List<ExhibitionStatus?>();
+
+                if (request.UserAccess == UserAccess.EventAdministratorCCD)
+                {
+                    exhibitionStatusList.Add(ExhibitionStatus.New);
+                    exhibitionStatusList.Add(ExhibitionStatus.RequireAmendment);
+                }
+                else if (request.UserAccess == UserAccess.VerifierExhibitionCCD)
+                {
+                    exhibitionStatusList.Add(ExhibitionStatus.PendingVerified); 
+                }
+                else if (request.UserAccess == UserAccess.Approver1Exhibition)
+                {
+                    exhibitionStatusList.Add(ExhibitionStatus.Verified);
+                }
+                else if (request.UserAccess == UserAccess.Approver2Exhibition)
+                {
+                    exhibitionStatusList.Add(ExhibitionStatus.ApprovedByApprover1);
+
+                }
+                else if (request.UserAccess == UserAccess.Approver3Exhibition)
+                {
+                    exhibitionStatusList.Add(ExhibitionStatus.ApprovedByApprover2);
+                }
+
+                query = query.Where(u => exhibitionStatusList.Contains(u.ExhibitionStatus));
+            }
+
 			var totalCount = query.Count();
 
 			//advance search
-			query = query.Where(s => (request.EventName == null || s.EventName.Contains(request.EventName))
-
-			);
+			query = query.Where(s => (request.EventName == null || s.EventName.Contains(request.EventName)));
 
 			//quick search 
 			if (!string.IsNullOrEmpty(request.search.value))

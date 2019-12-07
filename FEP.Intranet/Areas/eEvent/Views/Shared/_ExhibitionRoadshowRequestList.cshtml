@@ -1,4 +1,31 @@
 ﻿@model FEP.WebApiModel.eEvent.ListExhibitionRoadshowRequestModel
+@using FEP.Model
+
+@{
+    UserAccess currentUser = UserAccess.HomeDashboard1; //assign dummy
+
+    if (CurrentUser.HasAccess(UserAccess.EventAdministratorCCD))
+    {
+        currentUser = UserAccess.EventAdministratorCCD;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.VerifierExhibitionCCD))
+    {
+        currentUser = UserAccess.VerifierExhibitionCCD;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.Approver1Exhibition))
+    {
+        currentUser = UserAccess.Approver1Exhibition;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.Approver2Exhibition))
+    {
+        currentUser = UserAccess.Approver2Exhibition;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.Approver3Exhibition))
+    {
+        currentUser = UserAccess.Approver3Exhibition;
+    }
+}
+
 
 <script type="text/javascript">
 
@@ -13,6 +40,10 @@
 					 "url": '@Url.Action("List", "ExhibitionRoadshowRequest", new { area = "eEvent" })',
                     "data": function (filter) {
                         filter.EventName = $('#Filter_EventName').val();
+                        filter.UserAccess = "@currentUser";
+                        filter.ExhibitionStatus = $('#Filter_ExhibitionStatus').val(); 
+                        filter.RequireAction = $('#Filter_RequireAction').val();
+                        
                         //filter.ICNo = $('#Filter_ICNo').val();
                         //filter.MobileNo = $('#Filter_MobileNo').val();
                         //filter.Email = $('#Filter_Email').val();
@@ -177,9 +208,31 @@
                 $('#pageInfo').html('Showing ' + start + ' - ' + info.end + ' of ' + info.recordsTotal);
                 $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
             }).draw();
+    }
+
+    function ActionBox() {
+        $('.create-new-record-button').children('a').hide();
+        $('.create-new-record-button').append('<button class="btn btn-secondary btnRequireAction">Require Action</button>');
+        $('.create-new-record-button').append('<button class="btn btn-outline-secondary btnAll">All</button>');
+
+        $('.create-new-record-button').on('click', '.btnRequireAction', function () {
+            $('#Filter_RequireAction').val("true");
+            $('.btnRequireAction').removeClass('btn-outline-secondary').addClass('btn-secondary');
+            $('.btnAll').removeClass('btn-secondary').addClass('btn-outline-secondary');
+            $('.tabledata').DataTable().ajax.reload();
+        });
 
 
-        }
+        $('.create-new-record-button').on('blur', '.btnRequireAction', function () {
+            $('#Filter_RequireAction').val("false");
+        });
+
+        $('.create-new-record-button').on('click', '.btnAll', function () {
+            $('.btnRequireAction').removeClass('btn-secondary').addClass('btn-outline-secondary');
+            $('.btnAll').removeClass('btn-outline-secondary').addClass('btn-secondary');
+            $('.tabledata').DataTable().ajax.reload();
+        });
+    }
 </script>
 
 <div class="d-flex align-items-center">
@@ -209,6 +262,14 @@
                 <div>
                     <button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
                 </div>
+                <div hidden>
+                    <div class="sorting-wrap">
+                        <div class="sorting-dropdown">
+                            @Html.EditorFor(m => m.Filter.RequireAction, new { htmlAttributes = new { @class = "form-control small" } })
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -236,10 +297,13 @@
             </span>
         </div>
         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-        @if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD))
-        {
-            <div><a href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
-        }
+        <div class="create-new-record-button">
+            @if (CurrentUser.HasAccess(FEP.Model.UserAccess.EventAdministratorCCD))
+            {
+                <a href="@Url.Action("Create_SelectCategory", "PublicEvent", new { area = "eEvent" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a>
+
+            }
+        </div>
     </div>
     <!-- Table -->
     <table class="table tableStyle1 tabledata table-striped">

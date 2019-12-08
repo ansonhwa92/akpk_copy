@@ -120,14 +120,24 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (emailResponse.isSuccess)
             {
-                ModelState.AddModelError("Email", Language.Company.ValidIsExistEmail);
+                ModelState.AddModelError("Email", Language.Administrator.Company.ValidIsExistEmail);
             }
 
-            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={model.ICNo}");
+            var icno = model.ICNo;
+
+            if (model.Type == CompanyType.NonMalaysianCompany)
+            {
+                icno = model.PassportNo;
+            }
+
+            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={null}&icno={icno}");
 
             if (icnoResponse.isSuccess)
             {
-                ModelState.AddModelError("ICNo", Language.Company.ValidIsExistICNo);
+                if (model.Type == CompanyType.NonMalaysianCompany)
+                    ModelState.AddModelError("PassportNo", Language.Administrator.Company.ValidIsExistPassportNo);
+                else
+                    ModelState.AddModelError("ICNo", Language.Administrator.Company.ValidIsExistICNo);
             }
 
             if (ModelState.IsValid)
@@ -136,7 +146,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 if (response.isSuccess)
                 {
-                                       
+
                     ParameterListToSend notificationParameter = new ParameterListToSend();
                     notificationParameter.UserFullName = model.Name;
                     notificationParameter.Link = $"<a href = '" + BaseURL + "/Auth/ActivateAccount/" + response.Data.UID + "' > here </a>";
@@ -145,7 +155,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                     CreateAutoReminder notification = new CreateAutoReminder
                     {
                         NotificationType = NotificationType.ActivateAccount,
-                        NotificationCategory = NotificationCategory.Event,
+                        NotificationCategory = NotificationCategory.Learning,
                         ParameterListToSend = notificationParameter,
                         StartNotificationDate = DateTime.Now,
                         ReceiverId = new List<int> { (int)response.Data.UserId }
@@ -155,14 +165,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                     await LogActivity(Modules.Setting, "Create Agency User", model);
 
-                    TempData["SuccessMessage"] = Language.Company.AlertCreateSuccess;
+                    TempData["SuccessMessage"] = Language.Administrator.Company.AlertCreateSuccess;
 
                     return RedirectToAction("List", "Company", new { area = "Administrator" });
 
                 }
                 else
                 {
-                    TempData["SuccessMessage"] = Language.Company.AlertCreateFail;
+                    TempData["SuccessMessage"] = Language.Administrator.Company.AlertCreateFail;
 
                     return RedirectToAction("List", "Company", new { area = "Administrator" });
                 }
@@ -281,14 +291,24 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
             if (emailResponse.isSuccess)
             {
-                ModelState.AddModelError("Email", Language.Company.ValidIsExistEmail);
+                ModelState.AddModelError("Email", Language.Administrator.Company.ValidIsExistEmail);
             }
 
-            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={model.Id}&icno={model.ICNo}");
+            var icno = model.ICNo;
+
+            if (model.Type == CompanyType.NonMalaysianCompany)
+            {
+                icno = model.PassportNo;
+            }
+
+            var icnoResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"Administration/User/IsICNoExist?id={model.Id}&icno={icno}");
 
             if (icnoResponse.isSuccess)
             {
-                ModelState.AddModelError("ICNo", Language.Company.ValidIsExistICNo);
+                if (model.Type == CompanyType.NonMalaysianCompany)
+                    ModelState.AddModelError("PassportNo", Language.Administrator.Company.ValidIsExistPassportNo);
+                else
+                    ModelState.AddModelError("ICNo", Language.Administrator.Company.ValidIsExistICNo);
             }
 
             if (ModelState.IsValid)
@@ -299,13 +319,13 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 {
                     await LogActivity(Modules.Setting, "Update Agency User", model);
 
-                    TempData["SuccessMessage"] = Language.Company.AlertEditSuccess;
+                    TempData["SuccessMessage"] = Language.Administrator.Company.AlertEditSuccess;
 
                     return RedirectToAction("Details", "Company", new { area = "Administrator", @id = model.Id });
                 }
                 else
                 {
-                    TempData["SuccessMessage"] = Language.Company.AlertEditFail;
+                    TempData["SuccessMessage"] = Language.Administrator.Company.AlertEditFail;
 
                     return RedirectToAction("Details", "Company", new { area = "Administrator", @id = model.Id });
                 }
@@ -361,14 +381,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 await LogActivity(Modules.Setting, "Activate Agency User Account", new { id = id });
 
-                TempData["SuccessMessage"] = Language.Company.AlertActivateSuccess;
+                TempData["SuccessMessage"] = Language.Administrator.Company.AlertActivateSuccess;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = Language.Company.AlertActivateFail;
+                TempData["ErrorMessage"] = Language.Administrator.Company.AlertActivateFail;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
@@ -410,14 +430,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 await LogActivity(Modules.Setting, "Disable Agency User Account", new { id = id });
 
-                TempData["SuccessMessage"] = Language.Company.AlertDeactivateSuccess;
+                TempData["SuccessMessage"] = Language.Administrator.Company.AlertDeactivateSuccess;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = Language.Company.AlertActivateFail;
+                TempData["ErrorMessage"] = Language.Administrator.Company.AlertActivateFail;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
@@ -479,14 +499,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
 
                 await LogActivity(Modules.Setting, "Reset Agency User Account Password", new { id = id });
 
-                TempData["SuccessMessage"] = Language.Company.AlertResetSuccess;
+                TempData["SuccessMessage"] = Language.Administrator.Company.AlertResetSuccess;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = Language.Company.AlertResetFail;
+                TempData["ErrorMessage"] = Language.Administrator.Company.AlertResetFail;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
@@ -530,14 +550,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 await LogActivity(Modules.Setting, "Delete Agency User", new { id = id });
 
-                TempData["SuccessMessage"] = Language.Company.AlertDeleteSuccess;
+                TempData["SuccessMessage"] = Language.Administrator.Company.AlertDeleteSuccess;
 
                 return RedirectToAction("List", "Company", new { area = "Administrator" });
             }
             else
             {
 
-                TempData["ErrorMessage"] = Language.Company.AlertDeleteFail;
+                TempData["ErrorMessage"] = Language.Administrator.Company.AlertDeleteFail;
 
                 return RedirectToAction("Details", "Company", new { area = "Administrator", @id = id });
             }
@@ -555,7 +575,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> _Details(int? id)
+        public async Task<ActionResult> _DetailsModal(int? id)
         {
             if (id == null)
             {
@@ -572,7 +592,6 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             var model = response.Data;
 
             return View(model);
-
         }
 
         [NonAction]
@@ -656,5 +675,18 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             return roles;
 
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetCountryCode(int? Id)
+        {
+            if (Id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<CountryModel>(HttpVerbs.Get, $"Administration/Country?id={Id}");
+            return Json(response.Data, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

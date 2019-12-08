@@ -185,7 +185,7 @@
 					</div>
 				</div>
 				<div>
-					<button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
+					<button id="btnSearch" class="btn btn-secondary btn-block">@Language.General.ButtonSearch</button>
 				</div>
 			</div>
 		</div>
@@ -198,15 +198,7 @@
 			<button class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
 		</div>
 	</div>
-	@*<div class="sorting-wrap">
-			<div class="sorting-dropdown">
-				<select class="select2 form-control small" name="sorting">
-					<option value="Default Sorting">Default Sorting</option>
-					<option value="sorting 1">Sorting 1</option>
-					<option value="sorting 2">Sorting 2</option>
-				</select>
-			</div>
-		</div>*@
+	
 </div>
 <hr>
 <div class="table-responsive" data-toggle="lists">
@@ -223,20 +215,12 @@
 			</span>
 		</div>
 		<div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-		<div><a href="@Url.Action("Create", "Individual", new { area = "Administrator" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create New</a></div>
+		<div><a href="@Url.Action("Create", "Individual", new { area = "Administrator" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>@Language.Administrator.Individual.ButtonCreate</a></div>
 	</div>
 	<!-- Table -->
 	<table class="table tableStyle1 tabledata">
 		<thead>
-			<tr>
-				@*<th>
-						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input js-toggle-check-all" data-target="#table01" id="customCheckAll">
-							<label class="custom-control-label" for="customCheckAll">
-								<span class="text-hide">Toggle all</span>
-							</label>
-						</div>
-					</th>*@
+			<tr>				
 				<th>#</th>
 				<th>@Html.DisplayNameFor(model => model.List.Name)</th>
 				<th>@Html.DisplayNameFor(model => model.List.ICNo)</th>

@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Language;
 using FEP.Model.eLearning;
+using FEP.Model;
 
 namespace FEP.WebApiModel.eLearning
 {

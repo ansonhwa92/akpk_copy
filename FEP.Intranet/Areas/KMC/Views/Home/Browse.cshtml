@@ -1,0 +1,113 @@
+﻿
+@model CategoryModel
+
+@{
+    ViewBag.Title = "KMC - Browse";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section ContentStyle {
+
+    <style>
+
+        .photo {
+            border: 1px solid #ddd; /* Gray border */
+            border-radius: 4px; /* Rounded border */
+            padding: 5px; /* Some padding */
+            width: 250px; /* Set a small width */
+        }
+
+        .photo:hover {
+            box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+        }
+
+        .content {
+            width: 100%;
+            height: auto;
+        }
+
+        audio {
+            margin: auto;
+        }
+    </style>
+}
+
+@section ContentScript {
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            searchKMC();
+
+            $('input[name=category]').click(function () {
+                if (this.checked) {
+                    searchKMC();
+                }
+            });
+
+        });
+
+        function searchKMC()
+        {
+            var categoryId = $('input[name=category]:checked').val();
+
+            var filter =
+            {
+                Title: $('#Filter_Title').val(),
+                CreatedBy: $('#Filter_CreatedBy').val(),
+                DateFrom: $('#Filter_DateFrom').val(),
+                DateTo: $('#Filter_DateTo').val(),
+                QuickSearch: $('#Filter_QuickSearch').val()
+            };
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("_List", "Home", new { area = "KMC" })/' + categoryId,
+                dataType: "html",
+                data: filter,
+                success: function (data) {
+
+                    $('#kmc_list').html(data);
+                    showPageInfo();
+
+                },
+                error: function (xhr, status, error) {
+
+                }
+            });
+
+        }
+
+    </script>
+
+}
+
+@section Nav {
+
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+
+                <div class="header-col-right float-right mt-5"><a href="@Url.Action("Index", "Manage", new { area = "KMC" })" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@Language.KMC.TitleList</h1>
+                    <div class="header-text">@Language.KMC.TitleDescriptionList</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@Html.Partial("_Index", Model)
+
+<div id="modalContent"></div>

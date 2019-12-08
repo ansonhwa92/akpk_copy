@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Language {
+namespace Language.Administrator {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Language {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Language.Staff", typeof(Staff).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Language.Administrator.Staff", typeof(Staff).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -93,6 +93,24 @@ namespace Language {
         public static string AlertDeactivateSuccess {
             get {
                 return ResourceManager.GetString("AlertDeactivateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to update user record.
+        /// </summary>
+        public static string AlertEditFail {
+            get {
+                return ResourceManager.GetString("AlertEditFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User record successfully updated.
+        /// </summary>
+        public static string AlertEditSuccess {
+            get {
+                return ResourceManager.GetString("AlertEditSuccess", resourceCulture);
             }
         }
         

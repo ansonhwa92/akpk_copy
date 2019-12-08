@@ -6,6 +6,27 @@
         $('#pageInfo').html('@ViewBag.PageInfo');
     }
 
+    function showContent(id)
+    {
+        $.ajax({
+            type: 'get',
+            url: '@Url.Action("_Content", "Home", new { area = "KMC" })/' + id,
+            success: function (data) {
+
+                $('#modalContent').html(data);
+                $('#modalContent').children('.modal').first().modal('show');
+
+            },
+            error: function (xhr, status, error) {
+                $('#modalContent').html('');
+            }
+        });
+
+        $('#modalContent').on('hidden.bs.modal', function (e) {
+            $('#modalContent').html('');
+        });
+    }
+
 </script>
 
 
@@ -13,7 +34,7 @@
 {
     <div class="col-lg-4 col-sm-6">
         <div class="card__wrapper">
-            <a href="@Url.Action("Details", "Manage", new { area = "KMC", @id = kmc.Id })">
+            <a style="cursor:pointer" onclick="showContent(@kmc.Id)">
                 <div class="card__top">
 
                     <div class="card__top__wapper">
@@ -30,7 +51,7 @@
                 </div>
             </a>
             <div class="card__body">
-                <a class="card__title" href="@Url.Action("Details", "Manage", new { area = "KMC", @id = kmc.Id })">@kmc.Title</a>
+                <a class="card__title" style="cursor:pointer" onclick="showContent(@kmc.Id)">@kmc.Title</a>
                 <div class="card__author">
                     <a class="card__col-left">
                         <span class="card__avatar">
@@ -50,7 +71,6 @@
                     <div class="card__col-left">
                         <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Created Date"><span class="d-inline-block">@kmc.CreatedDate.ToString("d MMMM yyyy")</span></span></div>
                     </div>
-
                 </div>
             </div>
         </div>

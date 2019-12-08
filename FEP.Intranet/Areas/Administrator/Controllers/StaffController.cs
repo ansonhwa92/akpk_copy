@@ -101,13 +101,13 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
                 {
                     await LogActivity(Modules.Setting, "Update Staff", model);
 
-                    TempData["SuccessMessage"] = Language.Individual.AlertEditSuccess;
+                    TempData["SuccessMessage"] = Language.Administrator.Staff.AlertEditSuccess;
 
                     return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = model.Id });
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = Language.Individual.AlertEditFail;
+                    TempData["ErrorMessage"] = Language.Administrator.Staff.AlertEditFail;
 
                     return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = model.Id });
                 }
@@ -153,14 +153,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 await LogActivity(Modules.Setting, "Activate Staff Account", new { id = id });
 
-                TempData["SuccessMessage"] = Language.Staff.AlertActivateSuccess;
+                TempData["SuccessMessage"] = Language.Administrator.Staff.AlertActivateSuccess;
 
                 return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = Language.Staff.AlertActivateFail;
+                TempData["ErrorMessage"] = Language.Administrator.Staff.AlertActivateFail;
 
                 return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = id });
             }
@@ -200,14 +200,14 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             {
                 await LogActivity(Modules.Setting, "Disable Staff Account", new { id = id });
 
-                TempData["SuccessMessage"] = Language.Staff.AlertDeactivateSuccess;
+                TempData["SuccessMessage"] = Language.Administrator.Staff.AlertDeactivateSuccess;
 
                 return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = id });
             }
             else
             {
 
-                TempData["ErrorMessage"] = Language.Staff.AlertDeactivateFail;
+                TempData["ErrorMessage"] = Language.Administrator.Staff.AlertDeactivateFail;
 
                 return RedirectToAction("Details", "Staff", new { area = "Administrator", @id = id });
             }
@@ -237,7 +237,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> _Details(int? id)
+        public async Task<ActionResult> _DetailsModal(int? id)
         {
             if (id == null)
             {
@@ -252,9 +252,7 @@ namespace FEP.Intranet.Areas.Administrator.Controllers
             }
 
             var model = response.Data;
-
-            //model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
-
+            
             return View(model);
 
         }

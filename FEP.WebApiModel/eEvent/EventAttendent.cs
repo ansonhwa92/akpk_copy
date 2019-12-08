@@ -64,7 +64,7 @@ namespace FEP.WebApiModel.eEvent
 
 		[Display(Name = "AttICNo", ResourceType = typeof(Language.Event))]
 		[Required(ErrorMessage = "Please Insert MyCard Number")]
-		[RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericICNo", ErrorMessageResourceType = typeof(Language.Individual))]
+		[RegularExpression("([0-9]+)", ErrorMessageResourceName = "ValidNumericICNo", ErrorMessageResourceType = typeof(Language.Administrator.Individual))]
 		public string ICNo { get; set; }
 
 		[Display(Name = "AttCheckInStatus", ResourceType = typeof(Language.Event))]

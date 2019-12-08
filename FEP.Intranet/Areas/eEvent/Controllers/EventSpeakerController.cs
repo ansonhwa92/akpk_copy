@@ -284,28 +284,9 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 		}
 
-		[HttpPost]
-		public ActionResult LoadThumbnail()
-		{
-			foreach (string file in Request.Files)
-			{
-				var fileContent = Request.Files[file];
-
-				var image64 = FileMethod.ConvertImageToBase64(fileContent);
-
-				if (image64 != null)
-				{
-					return Content(JsonConvert.SerializeObject(new { image64 = image64 }), "application/json");
-				}
-			}
-
-			return Content(JsonConvert.SerializeObject(new { image64 = "" }), "application/json");
-		}
-
-        [HttpGet]
         public async Task<ActionResult> Download(int id)
         {
             return await FileMethod.DownloadFile(id);
         }
-    }
+	}
 }

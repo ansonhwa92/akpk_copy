@@ -5,18 +5,16 @@
         <div class="col-lg-6">
             <div class="menu-list">
                 <h6 class="color-darkblue">Menu</h6>
-                @if (CurrentUser.HasAccess(UserAccess.KMCBrowse))
-                {
-                    <a class="dropdown-item" href="@Url.Action("Index", "Home", new { area = "KMC" })">Browse KMC</a>
-                }
-
                 @if (CurrentUser.HasAccess(UserAccess.KMCManage))
                 {
                     <a class="dropdown-item" href="@Url.Action("Index", "Manage", new { area = "KMC" })">Manage KMC</a>
                 }
+
+                <a class="dropdown-item" href="@Url.Action("Browse", "Home", new { area = "KMC" })">Browse</a>
             </div>
         </div>
     }
+
     @if (CurrentUser.HasAccess(UserAccess.KMCCategory))
     {
         <div class="col-lg-6">

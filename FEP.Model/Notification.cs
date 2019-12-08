@@ -19,6 +19,9 @@ namespace FEP.Model
         [Display(Name = "System Error")]
         SystemError,
 
+        [Display(Name = "KMC Created")]
+        KMCCreated,
+
         //---------------------------------------------------
         //tajul tambah for SLA
 

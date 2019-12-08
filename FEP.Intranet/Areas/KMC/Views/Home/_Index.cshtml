@@ -1,0 +1,48 @@
+﻿@model CategoryModel
+
+<div class="row">
+    <div class="col-lg-3">
+        <div class="search-col-left">
+            <div class="input-keyword mb-5">
+                <input type="text" class="form-control form-control-rounded" placeholder="Type keyword here..." id="Filter_QuickSearch">
+                <div class="input-group-append">
+                    <button class="btn btn-circle" type="button" onclick="searchKMC()"><i class="fas fa-search text-white"></i></button>
+                </div>
+            </div>
+            <!-- Listing Filter -->
+            <div class="listing_filter dropdown dd-side">
+                <div class="dropdown-menu">
+                    <div class="listing-filter-inner">
+
+                        <h4 class="color-darkblue">Categories</h4>
+
+                        @foreach (var category in ViewBag.Categories)
+                        {
+                            <div class="form-inline">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="category" id="@category.Id" @if (Model.Id == category.Id) { <text>checked</text> } value="@category.Id" />
+                                    <label class="custom-control-label mr-3" for="@category.Id">@category.Title</label>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <div class="search-col-right">
+            <div class="top-filter-wrap">
+                <div id="pageInfo" class="showing-result"></div>
+            </div>
+            <div class="empty_3"></div>
+
+            <div class="some-list">
+                <div id="kmc_list" class="row">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

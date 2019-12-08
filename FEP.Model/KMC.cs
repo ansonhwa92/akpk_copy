@@ -48,21 +48,21 @@ namespace FEP.Model
 
     }
 
-    [Table("KMCUser")]
-    public class KMCUser
+    [Table("KMCRole")]
+    public class KMCRole
     {
         [Key]
         public int Id { get; set; }
 
         public int KMCId { get; set; }
 
-        public int UserId { get; set; }
+        public int RoleId { get; set; }
 
         [ForeignKey("KMCId")]
         public virtual KMCs KMC { get; set; }
 
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        [ForeignKey("RoleId")]
+        public virtual Role Role { get; set; }
     }
 
 

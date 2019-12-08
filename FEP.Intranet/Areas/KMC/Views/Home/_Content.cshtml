@@ -4,13 +4,13 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
 
-            <div class="modal-header">       
+            <div class="modal-header">
                 <h4 class="modal-title">@Model.Title</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <div class="modal-body">
-                
+
                 @if (Model.IsEditor)
                 {
                     @Html.Raw(Model.EditorCode)
@@ -65,8 +65,9 @@
 
                 }
 
-            </div>           
-            
+            </div>
+
         </div>
     </div>
 </div>
+

@@ -96,7 +96,10 @@ namespace FEP.Model
         [Display(Name = "Reset Password")]
         ResetPassword,
 
-		[Display(Name = "Submit Public Event")]
+        [Display(Name = "New KMC Created")]
+        KMCCreated,
+
+        [Display(Name = "Submit Public Event")]
 		SubmitPublicEvent,
 		[Display(Name = "Verify Public Event")]
         VerifyPublicEvent,

@@ -211,16 +211,18 @@ namespace FEP.Model.Migrations
                 );
             }
 
-            if (!db.Branch.Any())
-            {
-                var state = db.State.Local.Where(r => r.Name == "Wilayah Persekutuan Kuala Lumpur").FirstOrDefault() ?? db.State.Where(r => r.Name == "Wilayah Persekutuan Kuala Lumpur").FirstOrDefault();
-
-                db.Branch.AddOrUpdate(s => s.Name,
-                    new Branch { State = state, Name = "HQ", Display = true }
-					);
-
-            }
-
+            AddBranch(db, "HQ", "Wilayah Persekutuan Kuala Lumpur");
+            AddBranch(db, "JHR", "Johor");
+            AddBranch(db, "KDH", "Kedah");
+            AddBranch(db, "KTN", "Kelantan");
+            AddBranch(db, "MLK", "Melaka");
+            AddBranch(db, "PHG", "Pahang");
+            AddBranch(db, "PRK", "Perak");
+            AddBranch(db, "PNG", "Pulau Pinang");
+            AddBranch(db, "SBH", "Sabah");
+            AddBranch(db, "SWK", "Sarawak");
+            AddBranch(db, "TRG", "Terengganu");
+            
 
             if (!db.Department.Any())
             {
@@ -891,6 +893,19 @@ namespace FEP.Model.Migrations
 
         }
 
+        public static void AddBranch(DbEntities db, string BranchName, string StateName)
+        {
+            var state = db.State.Local.Where(r => r.Name == StateName).FirstOrDefault() ?? db.State.Where(r => r.Name == StateName).FirstOrDefault();
+
+            if (state != null)
+            {
+                db.Branch.AddOrUpdate(s => s.Name,
+                new Branch { State = state, StateId = state.Id, Name = BranchName, Display = true }
+                );
+            }
+            
+        }
+
         public static void AddStaff(DbEntities db, string Username, string Name, string ICNo, string Email, string MobileNo, string Department, string Designation, string StaffId)
         {
             var user = db.User.Local.Where(r => r.ICNo == ICNo && r.UserType == UserType.Staff).FirstOrDefault() ?? db.User.Where(r => r.ICNo == ICNo && r.UserType == UserType.Staff).FirstOrDefault();
@@ -981,7 +996,8 @@ namespace FEP.Model.Migrations
             db.SLAReminder.AddOrUpdate(s => s.NotificationType,
                 new SLAReminder { NotificationCategory = NotificationCategory.System, SLAEventType = SLAEventType.ActivateAccount, NotificationType = NotificationType.ActivateAccount, ETCode = "ET001SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days },
                 new SLAReminder { NotificationCategory = NotificationCategory.System, SLAEventType = SLAEventType.ResetPassword, NotificationType = NotificationType.ResetPassword, ETCode = "ET002SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days },
-                new SLAReminder { NotificationCategory = NotificationCategory.System, SLAEventType = SLAEventType.SystemError, NotificationType = NotificationType.SystemError, ETCode = "ET003SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days }
+                new SLAReminder { NotificationCategory = NotificationCategory.System, SLAEventType = SLAEventType.SystemError, NotificationType = NotificationType.SystemError, ETCode = "ET003SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days },
+                new SLAReminder { NotificationCategory = NotificationCategory.System, SLAEventType = SLAEventType.KMCCreated, NotificationType = NotificationType.KMCCreated, ETCode = "ET004SY", SLAResolutionTime = 0, IntervalDuration = 0, SLADurationType = SLADurationType.Days }
             );
         }
 
@@ -1006,8 +1022,11 @@ namespace FEP.Model.Migrations
             new ParameterGroup { SLAEventType = SLAEventType.ResetPassword, TemplateParameterType = TemplateParameterType.Link });
 
             db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
-            new ParameterGroup { SLAEventType = SLAEventType.ActivateAccount, TemplateParameterType = TemplateParameterType.LoginDetail });
+            new ParameterGroup { SLAEventType = SLAEventType.KMCCreated, TemplateParameterType = TemplateParameterType.Link });
 
+            db.ParameterGroup.AddOrUpdate(p => new { p.TemplateParameterType, p.SLAEventType },
+            new ParameterGroup { SLAEventType = SLAEventType.ActivateAccount, TemplateParameterType = TemplateParameterType.LoginDetail });
+                        
         }
 
         public static void DefaultTemplate(DbEntities db)
@@ -1042,6 +1061,8 @@ namespace FEP.Model.Migrations
                 new TemplateParameters { NotificationType = NotificationType.ActivateAccount, TemplateParameterType = "LoginDetail" }
                 );
 
+
+
             db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
                 new NotificationTemplate
                 {
@@ -1062,10 +1083,36 @@ namespace FEP.Model.Migrations
                     User = user,
                     Display = true
                 });
-
+                       
             db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType },
                 new TemplateParameters { NotificationType = NotificationType.ResetPassword, TemplateParameterType = "UserFullName" },
                 new TemplateParameters { NotificationType = NotificationType.ResetPassword, TemplateParameterType = "Link" }
+                );
+                       
+
+            db.NotificationTemplates.AddOrUpdate(t => t.NotificationType,
+                new NotificationTemplate
+                {
+                    NotificationType = NotificationType.KMCCreated,
+                    NotificationCategory = NotificationCategory.System,
+                    TemplateName = NotificationType.KMCCreated.DisplayName(),
+                    TemplateRefNo = "T" + ((int)NotificationType.KMCCreated).ToString(),
+                    enableEmail = true,
+                    TemplateSubject = "FE Portal New Knowledge Management Centre Content",
+                    TemplateMessage = "&lt;p&gt;&lt;span style=&quot;font-size: 1rem;&quot;&gt;You can access new created KMC&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;font-size: 1rem;&quot;&gt;[#Link]&lt;/span&gt;&lt;br&gt;&lt;/p&gt;",
+                    enableSMSMessage = false,
+                    SMSMessage = "SMS Message Template",
+                    enableWebMessage = true,
+                    WebMessage = "New Content in Knowledge Management Centre",
+                    WebNotifyLink = "",
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = user.Id,
+                    User = user,
+                    Display = true
+                });
+
+            db.TemplateParameters.AddOrUpdate(t => new { t.NotificationType, t.TemplateParameterType },                
+                new TemplateParameters { NotificationType = NotificationType.KMCCreated, TemplateParameterType = "Link" }
                 );
 
 

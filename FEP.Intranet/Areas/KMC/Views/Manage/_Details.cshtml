@@ -5,6 +5,12 @@
     <div class="form-container">
         <div class="row">
             <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(model => model.Category)
+                <span class="form-control">@Model.Category.Title</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
                 @Html.FEPLabelFor(model => model.Title)
                 <span class="form-control">@Model.Title</span>
             </div>
@@ -33,7 +39,7 @@
             </div>
             <div class="form-group col-lg-6">
                 @Html.LabelFor(model => model.IsPublic)
-                <div class="form-inline mb-3">
+                <div class="form-inline mb-1">
                     <div class="custom-control custom-radio">
                         @Html.RadioButtonFor(m => m.IsPublic, "false", new { @class = "custom-control-input", id = "no3", disabled = "disabled" })
                         <label class="custom-control-label mr-3" for="no3">@Language.KMC.TextPrivate</label>
@@ -43,6 +49,22 @@
                         <label class="custom-control-label" for="yes3">@Language.KMC.TextPublic</label>
                     </div>
                 </div>
+
+                @if (!Model.IsPublic)
+                {
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.FEPLabelFor(m => m.Roles)
+                            <div class="input-group">
+                                @foreach (var role in Model.Roles)
+                                {
+                                    <span class="badge badge-pill badge-primary ml-1 mb-1" data-toggle="tooltip" title="@role.Description">@role.Name</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
                 @Html.LabelFor(model => model.IsShow)
                 <div class="form-inline mb-3">
                     <div class="custom-control custom-radio">
@@ -54,23 +76,13 @@
                         <label class="custom-control-label" for="no3">@Language.KMC.TextHide</label>
                     </div>
                 </div>
+
                 <div class="form-inline">
-                    @if (Model.Type == KMCType.Document || Model.Type == KMCType.Others)
-                    {
-                        <a class="btn btn-default btn-sm mw-auto float-right my-2" href="@Url.Action("GetContent", "Manage", new { area = "KMC", @id = Model.FileId })">
-                            <span class="align-middle">
-                                <i class="la la-file-o color-secondary font-icon"></i>
-                            </span>Content
-                        </a>
-                    }
-                    else
-                    {
-                        <a class="btn btn-default btn-sm mw-auto float-right my-2" href="javascript:void(0)" onclick="showContent();">
-                            <span class="align-middle">
-                                <i class="la la-file-o color-secondary font-icon"></i>
-                            </span>Content
-                        </a>
-                    }
+                    <a class="btn btn-default btn-sm mw-auto float-right my-2" href="javascript:void(0)" onclick="showContent();">
+                        <span class="align-middle">
+                            <i class="la la-file-o color-secondary font-icon"></i>
+                        </span>Content
+                    </a>
                 </div>
             </div>
         </div>

@@ -35,7 +35,7 @@ namespace FEP.Intranet.Controllers
             {
                 UserId = 1,
                 NotificationType = NotificationType.ActivateAccount,
-                Category = NotificationCategory.Event,
+                Category = NotificationCategory.Learning,
                 Message = "tetst",
                 Link = ""
             };
@@ -253,7 +253,7 @@ namespace FEP.Intranet.Controllers
                     CreateAutoReminder notification = new CreateAutoReminder
                     {
                         NotificationType = NotificationType.ActivateAccount,
-                        NotificationCategory = NotificationCategory.Event,
+                        NotificationCategory = NotificationCategory.Learning,
                         ParameterListToSend = notificationParameter,
                         StartNotificationDate = DateTime.Now,
                         ReceiverId = new List<int> { (int)response.Data.UserId }
@@ -361,7 +361,7 @@ namespace FEP.Intranet.Controllers
                     CreateAutoReminder notification = new CreateAutoReminder
                     {
                         NotificationType = NotificationType.ActivateAccount,
-                        NotificationCategory = NotificationCategory.Event,
+                        NotificationCategory = NotificationCategory.Learning,
                         ParameterListToSend = notificationParameter,
                         StartNotificationDate = DateTime.Now,
                         ReceiverId = new List<int> { (int)response.Data.UserId }
@@ -605,7 +605,7 @@ namespace FEP.Intranet.Controllers
                     CreateAutoReminder notification = new CreateAutoReminder
                     {
                         NotificationType = NotificationType.ResetPassword,
-                        NotificationCategory = NotificationCategory.Event,
+                        NotificationCategory = NotificationCategory.Learning,
                         ParameterListToSend = notificationParameter,
                         StartNotificationDate = DateTime.Now,
                         ReceiverId = new List<int> { (int)response.Data.UserId }
@@ -668,6 +668,18 @@ namespace FEP.Intranet.Controllers
             }
 
             return RedirectToAction("Login", "Auth", new { area = "" });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetCountryCode(int? Id)
+        {
+            if (Id == null)
+            {
+                return HttpNotFound();
+            }
+
+            var response = await WepApiMethod.SendApiAsync<CountryModel>(HttpVerbs.Get, $"Administration/Country?id={Id}");
+            return Json(response.Data, JsonRequestBehavior.AllowGet);
         }
 
 

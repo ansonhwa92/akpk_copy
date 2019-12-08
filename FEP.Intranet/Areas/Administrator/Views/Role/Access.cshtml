@@ -66,6 +66,7 @@
             <div class="form-container form-container-w100">
                 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form" }))
                 {
+
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(m => m.RoleId)
                     <div class="">

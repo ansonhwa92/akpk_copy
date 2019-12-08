@@ -60,7 +60,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "@(WebApiURL)Administration/Country?id="+countryId,
+                url: "@Url.Action("GetCountryCode", "Company", new { area = "Administrator" })?id=" + countryId,
                 contentType: "text/plain",
                 dataType: "json",
                 success: function (result) {
@@ -155,7 +155,7 @@
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.Type, htmlAttributes: new { @class = "form-label" })
                             <span class="select-arrow">
-                                @Html.EnumDropDownListFor(m => m.Type, Language.Company.PlaceholderType, htmlAttributes: new { @class = "custom-select" })
+                                @Html.EnumDropDownListFor(m => m.Type, Language.Administrator.Company.PlaceholderType, htmlAttributes: new { @class = "custom-select" })
                             </span>
                             @Html.ValidationMessageFor(m => m.Type)
                         </div>
@@ -164,7 +164,7 @@
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.MinistryId, htmlAttributes: new { @class = "form-label" })
                             <span class="select-arrow">
-                                @Html.DropDownListFor(m => m.MinistryId, Model.Ministries, Language.Company.PlaceholderMinistry, htmlAttributes: new { @class = "custom-select" })
+                                @Html.DropDownListFor(m => m.MinistryId, Model.Ministries, Language.Administrator.Company.PlaceholderMinistry, htmlAttributes: new { @class = "custom-select" })
                             </span>
                             @Html.ValidationMessageFor(m => m.MinistryId)
                         </div>
@@ -173,7 +173,7 @@
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.SectorId, htmlAttributes: new { @class = "form-label" })
                             <span class="select-arrow">
-                                @Html.DropDownListFor(m => m.SectorId, Model.Sectors, Language.Company.PlaceholderSectorId, htmlAttributes: new { @class = "custom-select" })
+                                @Html.DropDownListFor(m => m.SectorId, Model.Sectors, Language.Administrator.Company.PlaceholderSectorId, htmlAttributes: new { @class = "custom-select" })
                             </span>
                             @Html.ValidationMessageFor(m => m.SectorId)
                         </div>
@@ -181,13 +181,13 @@
                     <div class="row">
                         <div class="form-group col-lg-12 companyname @if (Model.Type == CompanyType.Government) { <text>d-none</text> }">
                             @Html.FEPLabelFor(m => m.CompanyName, htmlAttributes: new { @class = "form-label" })
-                            @Html.EditorFor(m => m.CompanyName, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderCompanyName } })
+                            @Html.EditorFor(m => m.CompanyName, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderCompanyName } })
                             @Html.ValidationMessageFor(m => m.CompanyName)
                         </div>
 
                         <div class="form-group col-lg-12 agencyname @if (Model.Type != CompanyType.Government) { <text>d-none</text> }">
                             @Html.FEPLabelFor(m => m.AgencyName, htmlAttributes: new { @class = "form-label" })
-                            @Html.EditorFor(m => m.AgencyName, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderAgencyName } })
+                            @Html.EditorFor(m => m.AgencyName, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderAgencyName } })
                             @Html.ValidationMessageFor(m => m.AgencyName)
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                     <div class="row companyregno @if (Model.Type != CompanyType.MalaysianCompany) { <text>d-none</text> }">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.CompanyRegNo, htmlAttributes: new { @class = "form-label" })
-                            @Html.EditorFor(m => m.CompanyRegNo, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderCompRegNo } })
+                            @Html.EditorFor(m => m.CompanyRegNo, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderCompRegNo } })
                             @Html.ValidationMessageFor(m => m.CompanyRegNo)
                         </div>
                     </div>
@@ -205,7 +205,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="input-group mb-3">
-                                    @Html.EditorFor(m => m.Address1, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderAddress1 } })
+                                    @Html.EditorFor(m => m.Address1, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderAddress1 } })
                                     @Html.ValidationMessageFor(m => m.Address1)
                                 </div>
                             </div>
@@ -213,22 +213,22 @@
                         <div class="row">
                             <div class="col">
                                 <div class="input-group mb-3">
-                                    @Html.EditorFor(m => m.Address2, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderAddress2 } })
+                                    @Html.EditorFor(m => m.Address2, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderAddress2 } })
                                     @Html.ValidationMessageFor(m => m.Address2)
                                 </div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col malaysian @if (Model.Type == CompanyType.NonMalaysianCompany) { <text>d-none</text> }">
-                                @Html.EditorFor(m => m.PostCodeMalaysian, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderPostCode } })
+                                @Html.EditorFor(m => m.PostCodeMalaysian, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderPostCode } })
                                 @Html.ValidationMessageFor(m => m.PostCodeMalaysian)
                             </div>
                             <div class="col non-malaysian @if (Model.Type != CompanyType.NonMalaysianCompany) { <text>d-none</text> }">
-                                @Html.EditorFor(m => m.PostCodeNonMalaysian, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderPostCode } })
+                                @Html.EditorFor(m => m.PostCodeNonMalaysian, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderPostCode } })
                                 @Html.ValidationMessageFor(m => m.PostCodeNonMalaysian)
                             </div>
                             <div class="col">
-                                @Html.EditorFor(m => m.City, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderCity } })
+                                @Html.EditorFor(m => m.City, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderCity } })
                                 @Html.ValidationMessageFor(m => m.City)
                             </div>
                         </div>
@@ -236,12 +236,12 @@
                             <div class="col">
                                 <div class="input-group malaysian @if (Model.Type == CompanyType.NonMalaysianCompany) { <text>d-none</text> }">
                                     <span class="select-arrow">
-                                        @Html.DropDownListFor(m => m.StateId, Model.States, Language.Company.PlaceholderStateId, htmlAttributes: new { @class = "custom-select" })
+                                        @Html.DropDownListFor(m => m.StateId, Model.States, Language.Administrator.Company.PlaceholderStateId, htmlAttributes: new { @class = "custom-select" })
                                     </span>
                                     @Html.ValidationMessageFor(m => m.StateId)
                                 </div>
                                 <div class="input-group non-malaysian @if (Model.Type != CompanyType.NonMalaysianCompany) { <text>d-none</text> }">
-                                    @Html.EditorFor(m => m.State, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderStateId } })
+                                    @Html.EditorFor(m => m.State, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderStateId } })
                                     @Html.ValidationMessageFor(m => m.State)
                                 </div>
                             </div>
@@ -254,7 +254,7 @@
                                 </div>
                                 <div class="input-group non-malaysian @if (Model.Type != CompanyType.NonMalaysianCompany) { <text>d-none</text> }">
                                     <span class="select-arrow">
-                                        @Html.DropDownListFor(m => m.CountryId, Model.Countries, Language.Company.PlaceholderCountryId, htmlAttributes: new { @class = "custom-select" })
+                                        @Html.DropDownListFor(m => m.CountryId, Model.Countries, Language.Administrator.Company.PlaceholderCountryId, htmlAttributes: new { @class = "custom-select" })
                                     </span>
                                     @Html.ValidationMessageFor(m => m.CountryId)
                                 </div>
@@ -269,7 +269,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text countrycode">@Html.Raw(Model.CountryCode)</span>
                                 </div>
-                                @Html.EditorFor(m => m.CompanyPhoneNo, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderCompanyPhoneNo } })
+                                @Html.EditorFor(m => m.CompanyPhoneNo, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderCompanyPhoneNo } })
                             </div>
                             @Html.ValidationMessageFor(m => m.CompanyPhoneNo)
                         </div>
@@ -278,26 +278,26 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.Name)
-                            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderName } })
+                            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderName } })
                             @Html.ValidationMessageFor(m => m.Name)
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12 malaysian @if (Model.Type == CompanyType.NonMalaysianCompany) { <text>d-none</text> }">
                             @Html.FEPLabelFor(m => m.ICNo, htmlAttributes: new { @class = "form-label" })
-                            @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Company.PlaceholderICNo } })
+                            @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Administrator.Company.PlaceholderICNo } })
                             @Html.ValidationMessageFor(m => m.ICNo)
                         </div>
                         <div class="form-group col-lg-12 non-malaysian @if (Model.Type != CompanyType.NonMalaysianCompany) { <text>d-none</text> }">
                             @Html.FEPLabelFor(m => m.PassportNo, htmlAttributes: new { @class = "form-label" })
-                            @Html.EditorFor(m => m.PassportNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Company.PlaceholderPassportNo } })
+                            @Html.EditorFor(m => m.PassportNo, new { htmlAttributes = new { @class = "form-control form-control-prepended", placeholder = Language.Administrator.Company.PlaceholderPassportNo } })
                             @Html.ValidationMessageFor(m => m.PassportNo)
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
                             @Html.FEPLabelFor(m => m.Email)
-                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderEmail } })
+                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderEmail } })
                             @Html.ValidationMessageFor(m => m.Email)
                         </div>
                     </div>
@@ -308,7 +308,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text countrycode">@Html.Raw(Model.CountryCode)</span>
                                 </div>
-                                @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Company.PlaceholderMobileNo } })
+                                @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control", placeholder = Language.Administrator.Company.PlaceholderMobileNo } })
                             </div>
                             @Html.ValidationMessageFor(m => m.MobileNo)
                         </div>
@@ -324,8 +324,8 @@
 
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
-                <a href="@Url.Action("List")" class="btn btn-default mr-2">Back</a>
-                <button class="btn btn-secondary" type="submit">Save</button>
+                <a href="@Url.Action("List")" class="btn btn-default mr-2">@Language.General.ButtonBack</a>
+                <button class="btn btn-secondary" type="submit">@Language.General.ButtonSave</button>
             </div>
 
         }

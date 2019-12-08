@@ -97,7 +97,7 @@
                     <div class="form-group col-lg-12">
                         @Html.FEPLabelFor(m => m.BranchId)
                         <span class="select-arrow">
-                            @Html.DropDownListFor(m => m.BranchId, Model.Branches, Language.Staff.PlaceholderBranch, htmlAttributes: new { @class = "custom-select" })
+                            @Html.DropDownListFor(m => m.BranchId, Model.Branches, Language.Administrator.Staff.PlaceholderBranch, htmlAttributes: new { @class = "custom-select" })
                         </span>
                         @Html.ValidationMessageFor(m => m.BranchId)
                     </div>

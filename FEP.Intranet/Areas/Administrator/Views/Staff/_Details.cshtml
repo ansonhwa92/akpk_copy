@@ -1,95 +1,79 @@
 ﻿@model DetailsStaffModel
 
-@{
-
-    Layout = null;
-}
-
-
-<div class="modal fade">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h4 class="modal-title">Staff Details</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <div class="form-container">
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(m => m.Name)
+                @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
             </div>
-
-
-            <div class="modal-body">
-                <div class="form-container">
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.Name)
-                            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.StaffId)
-                            @Html.EditorFor(m => m.StaffId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.Department)
-                            @Html.EditorFor(m => m.Department.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.Branch)
-                            @Html.EditorFor(m => m.Branch.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.Designation)
-                            @Html.EditorFor(m => m.Designation.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.ICNo)
-                            @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.Email)
-                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.FEPLabelFor(m => m.MobileNo)
-                            @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            @Html.LabelFor(m => m.Status)
-                            <div>
-                                @if (Model.Status)
-                                {
-                                    <span class='color-green font-weight-bold'>Active</span>
-                                }
-                                else
-                                {
-                                    <span class='color-grey font-weight-bold'>Disable</span>
-                                }
-                            </div>
-                        </div>
-                    </div>
-
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(m => m.StaffId)
+                @Html.EditorFor(m => m.StaffId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(m => m.Department)
+                @Html.EditorFor(m => m.Department.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(m => m.Branch)
+                @Html.EditorFor(m => m.Branch.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(m => m.Designation)
+                @Html.EditorFor(m => m.Designation.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(m => m.ICNo)
+                @Html.EditorFor(m => m.ICNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(m => m.Email)
+                @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(m => m.MobileNo)
+                @Html.EditorFor(m => m.MobileNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.FEPLabelFor(m => m.Roles)
+                <div class="input-group">
+                    @foreach (var role in Model.Roles)
+                    {
+                        <span class="badge badge-pill badge-primary ml-1 mb-1" data-toggle="tooltip" title="@role.Description">@role.Name</span>
+                    }
                 </div>
             </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-
         </div>
-    </div>
-</div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.LabelFor(m => m.Status)
+                <div>
+                    @if (Model.Status)
+                    {
+                        <span class='color-green font-weight-bold'>Active</span>
+                    }
+                    else
+                    {
+                        <span class='color-grey font-weight-bold'>Disable</span>
+                    }
+                </div>
+            </div>
+        </div>
 
+    </div>

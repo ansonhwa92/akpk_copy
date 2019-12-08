@@ -42,6 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Administrator\Role.Designer.cs">
+      <DependentUpon>Role.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Administrator\User.Designer.cs">
+      <DependentUpon>User.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="DutyRoster.Designer.cs">
       <DependentUpon>DutyRoster.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -142,17 +152,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Module.resx</DependentUpon>
     </Compile>
-    <Compile Include="Company.Designer.cs">
+    <Compile Include="Administrator\Company.Designer.cs">
       <DependentUpon>Company.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Staff.Designer.cs">
+    <Compile Include="Administrator\Staff.Designer.cs">
       <DependentUpon>Staff.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Individual.Designer.cs">
+    <Compile Include="Administrator\Individual.Designer.cs">
       <DependentUpon>Individual.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -217,11 +227,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Administration.Designer.cs">
-      <DependentUpon>Administration.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="AccountSetting.Designer.cs">
       <DependentUpon>AccountSetting.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -234,11 +239,6 @@
     </Compile>
     <Compile Include="UserLog.Designer.cs">
       <DependentUpon>UserLog.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="User.Designer.cs">
-      <DependentUpon>User.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -255,6 +255,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Administrator\Role.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Role.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administrator\User.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>User.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="DutyRoster.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DutyRoster.Designer.cs</LastGenOutput>
@@ -311,15 +319,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Event_MessageAlert.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Company.resx">
+    <EmbeddedResource Include="Administrator\Company.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Company.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Staff.resx">
+    <EmbeddedResource Include="Administrator\Staff.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Staff.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Individual.resx">
+    <EmbeddedResource Include="Administrator\Individual.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Individual.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -395,10 +403,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RnPEnum.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Administration.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Administration.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="AccountSetting.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AccountSetting.Designer.cs</LastGenOutput>
@@ -410,10 +414,6 @@
     <EmbeddedResource Include="UserLog.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>UserLog.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="User.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>User.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Enum.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

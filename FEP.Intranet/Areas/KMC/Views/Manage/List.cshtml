@@ -13,6 +13,7 @@
 
         $(document).ready(function () {
 
+            searchKMC();
 
         });
 
@@ -36,6 +37,7 @@
                 success: function (data) {
 
                     $('#list').html(data);
+                    showPageInfo();
 
                 },
                 error: function (xhr, status, error) {
@@ -99,87 +101,78 @@
         </div>
     </div>
     <!-- End content leftbar -->
-    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-        <!-- Start Tab Content -->
-        <div class="border-form rounded-top">
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2">
 
+        <div class="border-form rounded-top p-3">
 
-            <div class="form-container form-container-w100">
+            <h4 class="color-darkblue mb-4 mt-2">@Html.DisplayFor(m => m.Category.Title)</h4>
 
-                <div class="form-container form-container-w100 tab-content">
+            <div class="row">
+                <div class="col-lg-12">
 
-                    <div class="mt-2 mb-2 pb-1">
-                        <h4 class="color-darkblue mb-0">@Model.Category.Title</h4>
-                    </div>
-
-                    <div class="mb-4 top-filter-wrap">
-                        <div class="d-flex align-items-center">
-                            <div class="filter dropdown">
-                                <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
-                                <div class="dropdown-menu">
-                                    <div class="filter-head">Filters</div>
-                                    <div class="filter-body">
-                                        <div>@Html.DisplayNameFor(m => m.Filter.Title)</div>
-                                        <div class="sorting-wrap">
-                                            <div class="sorting-dropdown">
-                                                @Html.EditorFor(m => m.Filter.Title, new { htmlAttributes = new { @class = "form-control small" } })
-                                            </div>
+                    <div class="d-flex align-items-center">
+                        <div class="filter dropdown">
+                            <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+                            <div class="dropdown-menu">
+                                <div class="filter-head">Filters</div>
+                                <div class="filter-body">
+                                    <div>@Html.DisplayNameFor(m => m.Filter.Title)</div>
+                                    <div class="sorting-wrap">
+                                        <div class="sorting-dropdown">
+                                            @Html.EditorFor(m => m.Filter.Title, new { htmlAttributes = new { @class = "form-control small" } })
                                         </div>
-                                        <div>@Html.DisplayNameFor(m => m.Filter.CreatedBy)</div>
-                                        <div class="sorting-wrap">
-                                            <div class="sorting-dropdown">
-                                                @Html.EditorFor(m => m.Filter.CreatedBy, new { htmlAttributes = new { @class = "form-control small" } })
-                                            </div>
+                                    </div>
+                                    <div>@Html.DisplayNameFor(m => m.Filter.CreatedBy)</div>
+                                    <div class="sorting-wrap">
+                                        <div class="sorting-dropdown">
+                                            @Html.EditorFor(m => m.Filter.CreatedBy, new { htmlAttributes = new { @class = "form-control small" } })
                                         </div>
-                                        <div>@Html.DisplayNameFor(m => m.Filter.DateFrom)</div>
-                                        <div class="sorting-wrap">
-                                            <div class="sorting-dropdown">
-                                                @Html.EditorFor(m => m.Filter.DateFrom, new { htmlAttributes = new { @class = "form-control small" } })
-                                            </div>
+                                    </div>
+                                    <div>@Html.DisplayNameFor(m => m.Filter.DateFrom)</div>
+                                    <div class="sorting-wrap">
+                                        <div class="sorting-dropdown">
+                                            @Html.EditorFor(m => m.Filter.DateFrom, new { htmlAttributes = new { @class = "form-control small" } })
                                         </div>
-                                        <div>@Html.DisplayNameFor(m => m.Filter.DateTo)</div>
-                                        <div class="sorting-wrap">
-                                            <div class="sorting-dropdown">
-                                                @Html.EditorFor(m => m.Filter.DateTo, new { htmlAttributes = new { @class = "form-control small" } })
-                                            </div>
+                                    </div>
+                                    <div>@Html.DisplayNameFor(m => m.Filter.DateTo)</div>
+                                    <div class="sorting-wrap">
+                                        <div class="sorting-dropdown">
+                                            @Html.EditorFor(m => m.Filter.DateTo, new { htmlAttributes = new { @class = "form-control small" } })
                                         </div>
-                                        <div>
-                                            <button id="btnSearch" onclick="searchKMC()" class="btn btn-secondary btn-block">Search</button>
-                                        </div>
+                                    </div>
+                                    <div>
+                                        <button id="btnSearch" onclick="searchKMC()" class="btn btn-secondary btn-block">Search</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="divider-vertical">&nbsp;</div>
-                            <!-- Search -->
-                            <div class="input-keyword col-lg-5 col-sm-8 mr-auto px-0">
-                                @Html.EditorFor(m => m.Filter.QuickSearch, new { htmlAttributes = new { @class = "form-control form-control-rounded", placeholder = "Search" } })
-                                <div class="input-group-append">
-                                    <button class="btn btn-circle" type="button" onclick="searchKMC()"><i class="fas fa-search text-white"></i></button>
-                                </div>
+                        </div>
+                        <div class="divider-vertical">&nbsp;</div>
+                        <!-- Search -->
+                        <div class="input-keyword col-lg-5 col-sm-8 mr-auto px-0">
+                            @Html.EditorFor(m => m.Filter.QuickSearch, new { htmlAttributes = new { @class = "form-control form-control-rounded", placeholder = "Search" } })
+                            <div class="input-group-append">
+                                <button class="btn btn-circle" type="button" onclick="searchKMC()"><i class="fas fa-search text-white"></i></button>
                             </div>
-
                         </div>
 
-                        <div class="sorting-wrap">
+                    </div>
 
-                            <a class="btn btn-secondary btn-lg" href="@Url.Action("Create", "Manage", new { area = "KMC", @id = Model.Category.Id })"><i class="la la-plus font-icon"></i>@Language.General.ButtonCreate</a>
+                    <hr />
 
-                        </div>
+                    <div class="d-flex align-items-center">
+
+                        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+                        <a class="btn btn-secondary btn-lg" href="@Url.Action("Create", "Manage", new { area = "KMC", @id = Model.Category.Id })"><i class="la la-plus font-icon"></i>@Language.General.ButtonCreate</a>
+
                     </div>
 
                     <div class="some-list">
-                        <div id="list" class="row">
-
-                            @Html.Partial("_List", Model.List)
-
-                        </div>
+                        <div id="list" class="row"></div>
                     </div>
 
                 </div>
 
             </div>
-
-
 
         </div>
     </div>

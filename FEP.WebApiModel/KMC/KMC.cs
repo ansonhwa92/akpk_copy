@@ -1,4 +1,5 @@
 ﻿using FEP.Model;
+using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.FileDocuments;
 using System;
 using System.Collections.Generic;
@@ -71,6 +72,9 @@ namespace FEP.WebApiModel.KMC
         public bool IsShow { get; set; }
         public bool IsEditor { get; set; }
 
+        [Required(ErrorMessageResourceName = "ValidRequiredRole", ErrorMessageResourceType = typeof(Language.KMC))]
+        public int[] RoleIds { get; set; }
+
         [Required(ErrorMessageResourceName = "ValidRequiredCreatedBy", ErrorMessageResourceType = typeof(Language.KMC))]
         public int CreatedBy { get; set; }
 
@@ -98,6 +102,9 @@ namespace FEP.WebApiModel.KMC
         public bool IsPublic { get; set; }
         public bool IsShow { get; set; }
         public bool IsEditor { get; set; }
+
+        [Required(ErrorMessageResourceName = "ValidRequiredRole", ErrorMessageResourceType = typeof(Language.KMC))]
+        public int[] RoleIds { get; set; }
 
         [Required(ErrorMessageResourceName = "ValidRequiredCreatedBy", ErrorMessageResourceType = typeof(Language.KMC))]
         public int CreatedBy { get; set; }
@@ -144,6 +151,9 @@ namespace FEP.WebApiModel.KMC
 
         [Display(Name = "FieldIsEditor", ResourceType = typeof(Language.KMC))]
         public bool IsEditor { get; set; }
+
+        [Display(Name = "FieldRole", ResourceType = typeof(Language.KMC))]
+        public List<RoleModel> Roles { get; set; }
 
         [Display(Name = "FieldCreatedBy", ResourceType = typeof(Language.KMC))]
         public string CreatedBy { get; set; }

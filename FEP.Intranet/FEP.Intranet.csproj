@@ -21,12 +21,9 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44360</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>
-    </IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -233,7 +230,6 @@
     <Compile Include="Areas\Template\Models\EmailTemplate.cs" />
     <Compile Include="Areas\Template\TemplateAreaRegistration.cs" />
     <Compile Include="Areas\Setting\Controllers\AccountController.cs" />
-    <Compile Include="Areas\Setting\Controllers\ParameterController.cs" />
     <Compile Include="Areas\Setting\SettingAreaRegistration.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Areas\eEvent\Controllers\MediaInterviewController.cs" />
@@ -797,7 +793,6 @@
     <Content Include="Areas\Administrator\Views\Staff\Details.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\Deactivate.cshtml" />
     <Content Include="Areas\Administrator\Views\Staff\Activate.cshtml" />
-    <Content Include="Areas\Administrator\Views\Role\List.cshtml" />
     <Content Include="Areas\Administrator\Views\Role\_Create.cshtml" />
     <Content Include="Areas\Administrator\Views\Role\_Edit.cshtml" />
     <Content Include="Areas\Administrator\Views\Role\_Delete.cshtml" />
@@ -805,11 +800,10 @@
     <Content Include="Areas\Administrator\Views\Role\UserRole.cshtml" />
     <Content Include="Areas\Administrator\Views\User\_AddUser.cshtml" />
     <Content Include="Areas\Administrator\Views\Individual\_Add.cshtml" />
-    <Content Include="Areas\Administrator\Views\Individual\_Details.cshtml" />
-    <Content Include="Areas\Administrator\Views\Company\_Details.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\_DetailsModal.cshtml" />
+    <Content Include="Areas\Administrator\Views\Company\_DetailsModal.cshtml" />
     <Content Include="Areas\Administrator\Views\Company\_Add.cshtml" />
     <Content Include="Areas\Setting\Views\web.config" />
-    <Content Include="Areas\Setting\Views\Parameter\Index.cshtml" />
     <Content Include="Areas\Administrator\Views\Sector\List.cshtml" />
     <Content Include="Areas\Administrator\Views\Sector\_Edit.cshtml" />
     <Content Include="Areas\Administrator\Views\Sector\_Delete.cshtml" />
@@ -951,7 +945,7 @@
     <Content Include="Areas\RnP\Views\Home\ThankYou.cshtml" />
     <Content Include="Areas\Commerce\Views\web.config" />
     <Content Include="Areas\Administrator\Views\Staff\_Add.cshtml" />
-    <Content Include="Areas\Administrator\Views\Staff\_Details.cshtml" />
+    <Content Include="Areas\Administrator\Views\Staff\_DetailsModal.cshtml" />
     <Content Include="Areas\eEvent\Views\EventAgenda\List.cshtml" />
     <Content Include="Areas\eEvent\Views\EventAgenda\Details.cshtml" />
     <Content Include="Areas\eEvent\Views\EventAgenda\Create.cshtml" />
@@ -1080,11 +1074,19 @@
     <Content Include="Areas\eLearning\Views\Courses\View.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\ViewCertificate.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseGroup\_CoursesList.cshtml" />
+    <Content Include="Areas\KMC\Views\Home\Browse.cshtml" />
+    <Content Include="Areas\Administrator\Views\Role\List.cshtml" />
+    <Content Include="Areas\Administrator\Views\Individual\_Details.cshtml" />
+    <Content Include="Areas\Administrator\Views\Staff\_Details.cshtml" />
+    <Content Include="Areas\Administrator\Views\Company\_Details.cshtml" />
+    <Content Include="Areas\KMC\Views\Home\_Index.cshtml" />
+    <Content Include="Areas\KMC\Views\Home\_List.cshtml" />
     <Content Include="Areas\KMC\Views\Home\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\Home\BrowseEvent.cshtml" />
     <Content Include="Areas\eEvent\Views\Home\PublicEventDetails.cshtml" />
     <Content Include="Areas\eEvent\Views\Home\EventSelectTicket.cshtml" />
     <Content Include="Areas\eEvent\Views\Home\PurchasePublicEvent.cshtml" />
+    <Content Include="Areas\KMC\Views\Home\_Content.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

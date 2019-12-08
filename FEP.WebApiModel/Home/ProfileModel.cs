@@ -30,35 +30,35 @@ namespace FEP.WebApiModel.Home
     {
 
         
-        [Display(Name = "FieldStaffId", ResourceType = typeof(Language.Staff))]
+        [Display(Name = "FieldStaffId", ResourceType = typeof(Language.Administrator.Staff))]
         public string StaffId { get; set; }
 
-        [Display(Name = "FieldName", ResourceType = typeof(Language.Staff))]
+        [Display(Name = "FieldName", ResourceType = typeof(Language.Administrator.Staff))]
         public string Name { get; set; }
 
-        [Display(Name = "FieldDepartment", ResourceType = typeof(Language.Staff))]
+        [Display(Name = "FieldDepartment", ResourceType = typeof(Language.Administrator.Staff))]
         public DepartmentModel Department { get; set; }
 
-        [Display(Name = "FieldBranch", ResourceType = typeof(Language.Staff))]
+        [Display(Name = "FieldBranch", ResourceType = typeof(Language.Administrator.Staff))]
         public BranchModel Branch { get; set; }
 
-        [Display(Name = "FieldDesignation", ResourceType = typeof(Language.Staff))]
+        [Display(Name = "FieldDesignation", ResourceType = typeof(Language.Administrator.Staff))]
         public DesignationModel Designation { get; set; }
 
-        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Staff))]
+        [Display(Name = "FieldEmail", ResourceType = typeof(Language.Administrator.Staff))]
         public string Email { get; set; }
 
-        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Staff))]
+        [Display(Name = "FieldICNo", ResourceType = typeof(Language.Administrator.Staff))]
         public string ICNo { get; set; }
 
-        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Staff))]
+        [Display(Name = "FieldMobileNo", ResourceType = typeof(Language.Administrator.Staff))]
         public string MobileNo { get; set; }
         public string CountryCode { get; set; }
 
-        [Display(Name = "FieldStatus", ResourceType = typeof(Language.Staff))]
+        [Display(Name = "FieldStatus", ResourceType = typeof(Language.Administrator.Staff))]
         public bool Status { get; set; }
 
-        [Display(Name = "FieldRole", ResourceType = typeof(Language.Individual))]
+        [Display(Name = "FieldRole", ResourceType = typeof(Language.Administrator.Staff))]
         public List<RoleModel> Roles { get; set; }
     }
 

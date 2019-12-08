@@ -2,7 +2,7 @@
 <header id="header" class="topbar">
     <div class="container-fluid">
         <div id="logo" class="float-left">
-            <a href="/" class="scrollto"><img src="@BaseURL/img/logo-akpk.svg" alt="logo" data-toggle="tooltip" title="AKPK"></a>
+            <a href="@Url.Action("Index", "Home", new { area = "" })" class="scrollto"><img src="@BaseURL/img/logo-akpk.svg" alt="logo" data-toggle="tooltip" title="AKPK"></a>
         </div>
         <nav id="nav-menu-container">
             <ul class="nav-menu">
@@ -18,7 +18,7 @@
                     <div class="line-menu short end"></div>
                 </div>
                 <div class="dropdown-menu dropdown-menu-left animated--grow-in" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="kmc.html">Knowledge Management Centre (KMC)</a>
+                    <a class="dropdown-item" href="@Url.Action("Index", "Home", new { area = "KMC" })">Knowledge Management Centre (KMC)</a>
                     <a href="https://obs.akpk.org.my/" class="dropdown-item" target="_blank">Online Booking System (OBS)</a>
                     <a class="dropdown-item" href="#">About Us</a>
                     <a class="dropdown-item" href="#">AKPK Gateway</a>

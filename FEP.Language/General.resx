@@ -144,6 +144,9 @@
   <data name="ButtonEdit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="ButtonFilter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
   <data name="ButtonGenerate" xml:space="preserve">
     <value>Generate Report</value>
   </data>

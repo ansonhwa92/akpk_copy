@@ -167,6 +167,8 @@
     <Compile Include="Areas\Administrator\Controllers\SectorController.cs" />
     <Compile Include="Areas\Administrator\Controllers\StaffController.cs" />
     <Compile Include="Areas\Administrator\Controllers\UserController.cs" />
+    <Compile Include="Areas\CarouselManagement\CarouselManagementAreaRegistration.cs" />
+    <Compile Include="Areas\CarouselManagement\Controllers\CarouselController.cs" />
     <Compile Include="Areas\Commerce\CommerceAreaRegistration.cs" />
     <Compile Include="Areas\Commerce\Controllers\CartController.cs" />
     <Compile Include="Areas\eEvent\Controllers\DutyRosterController.cs" />
@@ -255,6 +257,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\eLearning\Views\CourseContents\_createVideo.cshtml" />
+    <Content Include="css\custom-public.css" />
     <Content Include="img\EventSpeaker-ProfilePicture\20191128010700_WhatsApp Image 2019-11-21 at 8.45.37 PM.jpeg" />
     <Content Include="img\EventSpeaker-ProfilePicture\20191203114445_WhatsApp Image 2019-11-21 at 8.45.37 PM.jpeg" />
     <Content Include="img\EventSpeaker-ProfilePicture\20191203115522_WhatsApp Image 2019-11-21 at 8.45.37 PM.jpeg" />
@@ -1125,6 +1128,15 @@
     <Content Include="Areas\eEvent\Views\Shared\_ExhibitionRoadshowRequestList.cshtml" />
     <Content Include="Areas\RnP\Views\Shared\_PublicationList.cshtml" />
     <Content Include="Areas\KMC\Views\Shared\_AdminDashboardKMC.cshtml" />
+    <Content Include="Areas\CarouselManagement\Views\web.config" />
+    <Content Include="Areas\CarouselManagement\Views\Carousel\Create.cshtml" />
+    <Content Include="Areas\CarouselManagement\Views\Carousel\Delete.cshtml" />
+    <Content Include="Areas\CarouselManagement\Views\Carousel\Details.cshtml" />
+    <Content Include="Areas\CarouselManagement\Views\Carousel\Edit.cshtml" />
+    <Content Include="Areas\CarouselManagement\Views\Carousel\Index.cshtml" />
+    <Content Include="Areas\CarouselManagement\Views\Carousel\_Menu.cshtml" />
+    <Content Include="Areas\CarouselManagement\Views\Carousel\_CoverPicture.cshtml" />
+    <Content Include="Areas\CarouselManagement\Views\Carousel\SequenceList.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1751,6 +1763,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administrator\Models\" />
+    <Folder Include="Areas\CarouselManagement\Models\" />
     <Folder Include="Areas\Commerce\Models\" />
     <Folder Include="Areas\Commerce\Views\Shared\" />
     <Folder Include="Areas\eEvent\Views\Default\" />
@@ -1765,6 +1778,7 @@
     <Folder Include="Areas\SLAReminder\Views\Shared\" />
     <Folder Include="Areas\Template\Views\Shared\" />
     <Folder Include="bin\roslyn\" />
+    <Folder Include="Data\images\carousel\" />
     <Folder Include="Data\images\publication\" />
     <Folder Include="Data\images\research\" />
     <Folder Include="img\avatar\" />

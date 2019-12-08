@@ -1,0 +1,20 @@
+﻿using FEP.Model;
+using FEP.WebApiModel.RnP;
+using FEP.WebApiModel.Carousel;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+
+namespace FEP.WebApiModel.Home
+{
+    public class LandingPageModel
+    {
+        public List<ReturnPublicationModel> PublicationTopList { get; set; }
+        public List<CreateCarouselModel> CarouselList { get; set; }
+    }
+}

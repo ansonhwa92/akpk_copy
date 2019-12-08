@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Access.cs" />
+    <Compile Include="Carousel.cs" />
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
     <Compile Include="elearning\Feedback.cs" />

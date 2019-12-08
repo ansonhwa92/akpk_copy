@@ -269,6 +269,61 @@ namespace FEP.WebApi.Api.RnP
             return publications;
         }
 
+        // Alternative function for listing (top listing)
+        // GET: api/RnP/Publication/PublicationTopList (misc list) - CURRENTLY USED FOR ANONYMOUS BROWSING
+        [Route("api/RnP/Publication/PublicationTopList")]
+        [HttpGet]
+        public List<ReturnPublicationModel> PublicationTopList(int totalRecord = 0)
+        {
+            var publications = db.Publication.Where(p => p.Status == PublicationStatus.Published).OrderByDescending(p => p.DateAdded).Take(totalRecord).Select(s => new ReturnPublicationModel
+            {
+                ID = s.ID,
+                CategoryID = s.CategoryID,
+                Author = s.Author,
+                Coauthor = s.Coauthor,
+                Title = s.Title,
+                Year = s.Year,
+                Description = s.Description,
+                Language = s.Language,
+                ISBN = s.ISBN,
+                Hardcopy = s.Hardcopy,
+                Digitalcopy = s.Digitalcopy,
+                FreeHCopy = s.FreeHCopy,
+                FreeDCopy = s.FreeDCopy,
+                FreeHDCopy = s.FreeHDCopy,
+                HDcopy = s.HDcopy,
+                HPrice = s.HPrice,
+                DPrice = s.DPrice,
+                HDPrice = s.HDPrice,
+                StockBalance = s.StockBalance,
+                WithdrawalReason = s.WithdrawalReason,
+                //ProofOfWithdrawal = s.ProofOfWithdrawal,
+                CancelRemark = s.CancelRemark,
+                DateAdded = s.DateAdded,
+                CreatorId = s.CreatorId,
+                RefNo = s.RefNo,
+                Status = s.Status,
+                DateCancelled = s.DateCancelled,
+                ViewCount = s.ViewCount,
+                PurchaseCount = s.PurchaseCount,
+                DownloadCount = s.DownloadCount,
+                DmsPath = s.DmsPath,
+                Category = s.Category.Name
+            }).ToList();
+
+            foreach (var publication in publications)
+            {
+                publication.CoverPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.CoverImage && p.ParentId == publication.ID), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName, FilePath = s.FilePath }).ToList();
+                publication.AuthorPictures = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.AuthorImage && p.ParentId == publication.ID), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName, FilePath = s.FilePath }).ToList();
+                publication.ProofOfApproval = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfApproval && p.ParentId == publication.ID), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName, FilePath = s.FilePath }).ToList();
+                publication.ProofOfWithdrawal = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.ProofOfWithdrawal && p.ParentId == publication.ID), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName, FilePath = s.FilePath }).ToList();
+                publication.DigitalPublications = db.FileDocument.Where(f => f.Display).Join(db.PublicationFile.Where(p => p.FileCategory == PublicationFileCategory.DigitalPublication && p.ParentId == publication.ID), s => s.Id, c => c.FileId, (s, b) => new Attachment { Id = s.Id, FileName = s.FileName, FilePath = s.FilePath }).ToList();
+            }
+            
+
+            return publications;
+        }
+
         // GET: api/RnP/Publication/GetPublications (list) - CURRENTLY USED FOR ANONYMOUS BROWSING
         [Route("api/RnP/Publication/GetPublications")]
         [HttpGet]

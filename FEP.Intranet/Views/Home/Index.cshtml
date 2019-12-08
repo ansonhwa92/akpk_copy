@@ -1,4 +1,4 @@
-﻿
+﻿@model FEP.WebApiModel.Home.LandingPageModel
 @{
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
@@ -13,44 +13,50 @@
 
 }
 
+@section ContentScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#top_header_content').addClass("public-landing");
+        });
+    </script>
+}
+
 <section id="mainbanner">
     <!-- Start banner slider -->
     <div id="mainbannerslider" class="carousel slide carousel-fade" data-ride="carousel">
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="d-block w-100" src="@Url.Content("~/img/banner/akpk-bnr-01.jpg")" alt="First slide">
-                <div class="carousel-caption text-center intro-container d-none d-md-block pt-5 wow fadeInUp">
-                    <h1>Your financial well-being is <span class="color-primary">our concern</span></h1>
-                    <p>We're a nonprofit with the mission to provide a free, world class education for anyone, anywhere.</p>
-                    <div class="mt-4">
-                        <a class="btn btn-outline-secondary mr-2" href="#">Tell Me More</a>
-                        <a class="btn btn-link" href="#"><i class="la la-play-circle font-icon"></i> Watch Video</a>
+            @if (Model.CarouselList.Count() > 0)
+            {
+                var count = 0;
+                foreach (var carousel in Model.CarouselList)
+                {
+                    count++;
+                    var position = carousel.TextLocation == FreeTextLocation.Left ? "text-left" : "text-center";
+                    <div class="carousel-item @Html.Raw( (count == 1)? "active" : "")">
+                        <img class="d-block w-100" src="@Url.Content("~/Data/images/carousel/" + carousel.CarouselImage)" alt="third slide">
+                        <div class="carousel-caption @position intro-container d-none d-md-block wow fadeInUp">
+                            @Html.Raw(carousel.FreeTextArea)
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                //default carousel to avoid UI break
+                <div class="carousel-item active">
+                    <img class="d-block w-100" src="@Url.Content("~/img/banner/akpk-bnr-01.jpg")" alt="First slide">
+                    <div class="carousel-caption text-center intro-container d-none d-md-block pt-5 wow fadeInUp">
+                        <h1>Your financial well-being is <span class="color-primary">our concern</span></h1>
+                        <p>We're a nonprofit with the mission to provide a free, world class education for anyone, anywhere.</p>
+                        <div class="mt-4">
+                            <a class="btn btn-outline-secondary mr-2" href="#">Tell Me More</a>
+                            <a class="btn btn-link" href="#"><i class="la la-play-circle font-icon"></i> Watch Video</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="@Url.Content("~/img/banner/akpk-bnr-rumahku.jpg")" alt="Second slide">
-                <div class="carousel-caption text-left intro-container d-none d-md-block wow fadeInUp">
-                    <h1>RUMAHKU</h1>
-                    <p class="mxw-500">Learn the mechanics of buying a house. This course caters to all Malaysian home buyers—especially first-time home buyers who qualify for Bank Negara Malaysia’s Fund for Affordable Homes.</p>
-                    <div class="mt-4">
-                        <a class="btn btn-secondary mr-2" href="#">Enroll Now</a>
-                        <a class="btn btn-outline-default" href="#">Learn More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="@Url.Content("~/img/banner/akpk-bnr-03.png")" alt="third slide">
-                <div class="carousel-caption text-left intro-container d-none d-md-block wow fadeInUp">
-                    <h1 class="mxw-500">URUSKAN ALIRAN TUNAI ANDA</h1>
-                    <p class="mxw-500">Kursus ini akan membuka minda anda tentang pengurusan kewangan, anda akan belajar bagaimana menguruskan kewangan dengan baik dan membuat keputusan dengan bijak dan berhemat.</p>
-                    <div class="mt-4">
-                        <a class="btn btn-secondary mr-2" href="#">Daftar Sekarang</a>
-                        <a class="btn btn-outline-default" href="#">Lebih Lanjut</a>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
+
         <a class="carousel-control-prev" href="#mainbannerslider" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
@@ -71,7 +77,7 @@
         ========================-->
         <div id="search-dropdown">
             <div class="container">
-                <div class="search-dropdown-wrapper">
+                <div class="search-dropdown-wrapper rellax" data-rellax-speed="0">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <select class="select2" name="module">
@@ -90,166 +96,374 @@
             </div>
         </div>
         <div class="empty_6"></div>
+    </section>
+    <!-- =====================
+        Our Course
+    ========================-->
+    <section id="ourcourse">
         <div class="container">
+            <h6 class="color-secondary">OUR COURSE</h6>
+            <a href="#" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
+            <h1 class="color-darkblue">Online Courses</h1>
+            <div class="empty_3"></div>
             <div class="row">
-                <div class="col-lg-12">
-                    <h6 class="color-secondary">ABOUT US</h6>
-                </div>
-                <div class="col-lg-6 col-sm-12">
-                    <div class="col-pr">
-                        <h1 class="color-darkblue">Make Prudent Financial Management A Way Of Life</h1>
+                <div class="card-slider owl-carousel">
+                    <div class="wow fadeInUp">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="card__top__wapper">
+                                    <img class="card__top__image" src="@Url.Content("~/img/public/akpk-cover-uruskan-aliran-tunai-anda.jpg")" alt="image">
+                                    <div class="share-wrap">
+                                        <div class="share-button sharer">
+                                            <span class="share-icon">
+                                                <i class="material-icons">
+                                                    share
+                                                </i>
+                                            </span>
+                                            <div class="social top center"></div>
+                                        </div>
+                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                    </div>
+                                    <div class="badge"><span>RM128.90</span></div>
+                                </div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Uruskan Aliran Tunai Anda</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/public/nirmalasupramaniam-avatar.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Nirmala M Supramaniam</span></span></a>
+                                </div>
+                                <div class="card__text">Kursus ini akan membuka minda anda tentang pengurusan kewangan, anda akan belajar bagaimana menguruskan kewangan dengan baik dan membuat keputusan dengan bijak dan berhemat.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">5</span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">100</span></div>
+                                    </div>
+                                    <div class="card__col-right">
+                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-6 col-sm-12">
-                    <div class="mt-2">
-                        <div class="col-wrapper">
-                            <p>The Credit Counselling and Debt Management Agency, or commonly known as Agensi Kaunseling dan Pengurusan Kredit (AKPK), is an agency set up by Bank Negara Malaysia in April 2006 to help individuals take control of their financial situation and gain peace of mind that comes from the wise use of credit.</p>
+                    <div class="wow fadeInUp" data-wow-delay=".5s">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="card__top__wapper">
+                                    <img class="card__top__image" src="@Url.Content("~/img/public/akpk-cover-duittogether.jpg")" alt="image">
+                                    <div class="share-wrap">
+                                        <div class="share-button sharer">
+                                            <span class="share-icon">
+                                                <i class="material-icons">share</i>
+                                            </span>
+                                            <div class="social top center"></div>
+                                        </div>
+                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                    </div>
+                                    <div class="badge"><span>RM40.90</span></div>
+                                </div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">"Duit" Together</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/public/mmuadzzulkifli-avatar.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Mu'adz Zulkifli</span></span></a>
+                                </div>
+                                <div class="card__text">What You Will Learn.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">3</span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">1266</span></div>
+                                    </div>
+                                    <div class="card__col-right">
+                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wow fadeInUp" data-wow-delay=".7s">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="card__top__wapper">
+                                    <img class="card__top__image" src="@Url.Content("~/img/public/akpk-cover-rumahku.jpg")" alt="image">
+                                    <div class="share-wrap">
+                                        <div class="share-button sharer">
+                                            <span class="share-icon">
+                                                <i class="material-icons">share</i>
+                                            </span>
+                                            <div class="social top center"></div>
+                                        </div>
+                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                    </div>
+                                    <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
+                                </div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Rumahku</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/public/lizabubakar-avatar.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Noorhaliza Abu Bakar</span></span></a>
+                                </div>
+                                <div class="card__text">Pelajari selok-belok pembelian rumah.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">6</span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">3641</span></div>
+                                    </div>
+                                    <div class="card__col-right">
+                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wow fadeInUp" data-wow-delay=".9s">
+                        <div class="card__wrapper">
+                            <div class="card__top">
+                                <div class="courses__top__wapper">
+                                    <img class="card__top__image" src="@Url.Content("~/img/public/akpk-cover-uruskan-aliran-tunai-anda.jpg")" alt="image">
+                                    <div class="share-wrap">
+                                        <div class="share-button sharer">
+                                            <span class="share-icon">
+                                                <i class="material-icons">share</i>
+                                            </span>
+                                            <div class="social top center"></div>
+                                        </div>
+                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                    </div>
+                                    <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
+                                </div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Uruskan Aliran Tunai Anda: Simpan, Simpan, Simpan</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/2.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
+                                </div>
+                                <div class="card__text">Menabung satu jumlah setiap hari, contohnya RM 1 setiap hari.</div>
+                                <div class="card__info">
+                                    <div class="card__col-left">
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">5</span></div>
+                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">100</span></div>
+                                    </div>
+                                    <div class="card__col-right">
+                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="empty_3"></div>
-            <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="box-item">
-                        <a href="#"></a>
-                        <div class="box-container">
-                            <img src="@Url.Content("~/img/about-us/icon-mission.svg")" alt="image">
-                            <p>OUR MISSION</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="box-item">
-                        <a href="#"></a>
-                        <div class="box-container">
-                            <img src="@Url.Content("~/img/about-us/icon-vision.svg")" alt="image">
-                            <p>OUR VISION</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="box-item">
-                        <a href="#"></a>
-                        <div class="box-container">
-                            <img src="@Url.Content("~/img/about-us/icon-story.svg")" alt="image">
-                            <p>OUR STORY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="box-item">
-                        <a href="#"></a>
-                        <div class="box-container">
-                            <img src="@Url.Content("~/img/about-us/icon-establishment.svg")" alt="image">
-                            <p>OUR ESTABLISHMENT</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
     <!-- =====================
-        Our Services
-    ========================-->
-    <section id="ourservices">
-        <div class="empty_4"></div>
+            e-Events
+        ========================-->
+    <section id="eevents" class="bg-main">
+        <div class="empty_3"></div>
         <div class="container">
-            <div class="text-center">
-                <h6 class="color-secondary">OUR SERVICES</h6>
-                <h1 class="color-darkblue">We've got your back, financially speaking</h1>
-                <p>Find out how these financial services we offered to you can help you manage your financial burden.</p>
-            </div>
-            <div class="empty_3"></div>
-            <div>
-                <div class="item row wow fadeInUp">
-                    <div class="col-lg-5 col-md-12">
-                        <div class="item__left pr-3">
-                            <img class="item__left__image" src="@Url.Content("~/img/services/icon-fe.svg")" alt="image">
-                            <h2 class="item__left__title color-darkblue">Financial Education</h2>
-                            <p class="item__left__content">
-                                AKPK provides financial education materials on the proper use of credit and basic money management as
-                                well as tips on how to use credit responsibly.
-                            </p>
-                            <p><a href="#" class="btn btn-rounded btn-info text-white">READ MORE <span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
+            <h6 class="color-secondary">
+                E-EVENTS</6>
+                <a href="#" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
+                <h1 class="color-darkblue">Public Events</h1>
+                <div class="empty_3"></div>
+                <div class="row">
+                    <div class="card-slider owl-carousel">
+                        <div class="card__wrapper wow fadeInUp">
+                            <div class="card__top">
+                                <div class="card__top__wapper">
+                                    <img class="card__top__image" src="@Url.Content("~/img/cover-5.jpg")" alt="image">
+                                </div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Employee Engagement from A to Z</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/2.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Angela Jackson</span></span></a>
+                                </div>
+                                <div class="card__info">
+                                    <ul>
+                                        <li class="date"><span class="d-inline-block" data-toggle="tooltip" title="Event Date"><span class="card__icon"><i class="la la-calendar"></i></span></span>8 - 9 Sept, 2019</li>
+                                        <li class="place"><span class="d-inline-block" data-toggle="tooltip" title="Venue"><span class="card__icon"><i class="la la-map-marker"></i></span></span>PWTC, Kuala Lumpur</li>
+                                        <li class="eventname"><span class="d-inline-block" data-toggle="tooltip" title="Event type"><span class="card__icon"><i class="la la-list-ul"></i></span></span>Workshop</li>
+                                        <li class="status sellingfast"><span class="d-inline-block" data-toggle="tooltip" title="Seating Availability"><span class="card__icon"><i class="fas fa-chair"></i></span></span>Selling Fast</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-7 col-md-12">
-                        <div class="item__right">
-                            <div class="item__right__image-left"><img class="item__right__image" src="@Url.Content("~/img/03.png")" alt="image"></div>
-                            <div class="item__right__image-right rellax" data-rellax-speed="4"><img class="item__right__image" src="@Url.Content("~/img/04.png")" alt="image"></div>
+                        <div class="card__wrapper wow fadeInUp" data-wow-delay=".5s">
+                            <div class="card__top">
+                                <div class="card__top__wapper"><img class="card__top__image" src="@Url.Content("~/img/cover-6.jpg")" alt="image"></div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Financial Management Excellence Certificate</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/8.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Norman Bier</span></span></a>
+                                </div>
+                                <div class="card__info">
+                                    <ul>
+                                        <li class="date"><span class="card__icon"><i class="la la-calendar"></i></span>3 - 5 Sept, 2019</li>
+                                        <li class="place"><span class="card__icon"><i class="la la-map-marker"></i></span>KLCC, Kuala Lumpur</li>
+                                        <li class="eventname"><span class="card__icon"><i class="la la-list-ul"></i></span>Symposium</li>
+                                        <li class="status available"><span class="card__icon"><i class="fas fa-chair"></i></span>Available</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__wrapper wow fadeInUp" data-wow-delay=".7s">
+                            <div class="card__top">
+                                <div class="card__top__wapper"><img class="card__top__image" src="@Url.Content("~/img/cover-7.jpg")" alt="image"></div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">Sales Enablement Leadership & Learning</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/47.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Antony Awaida</span></span></a>
+                                </div>
+                                <div class="card__info">
+                                    <ul>
+                                        <li class="date"><span class="card__icon"><i class="la la-calendar"></i></span>3 - 7 Sept, 2019</li>
+                                        <li class="place"><span class="card__icon"><i class="la la-map-marker"></i></span>PICC, Kuala Lumpur</li>
+                                        <li class="eventname"><span class="card__icon"><i class="la la-list-ul"></i></span>Exhibition</li>
+                                        <li class="status available"><span class="card__icon"><i class="fas fa-chair"></i></span>Available</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__wrapper wow fadeInUp" data-wow-delay=".9s">
+                            <div class="card__top">
+                                <div class="card__top__wapper"><img class="card__top__image" src="@Url.Content("~/img/cover-8.jpg")" alt="image"></div>
+                            </div>
+                            <div class="card__body">
+                                <a class="card__title" href="#">AKPK International Conference & Expo</a>
+                                <div class="card__author">
+                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/68.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Aazman Iskandar</span></span></a>
+                                </div>
+                                <div class="card__info">
+                                    <ul>
+                                        <li class="date"><span class="card__icon"><i class="la la-calendar"></i></span>8 - 9 Sept, 2019</li>
+                                        <li class="place"><span class="card__icon"><i class="la la-map-marker"></i></span>Bukit Jalil Conference Hall</li>
+                                        <li class="eventname"><span class="card__icon"><i class="la la-list-ul"></i></span>Workshop</li>
+                                        <li class="status soldout"><span class="card__icon"><i class="fas fa-chair"></i></span>Sold Out</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="item row wow fadeInUp">
-                    <div class="col-lg-7 col-md-12">
-                        <div class="item__right">
-                            <div class="item__right__image-left"><img class="item__right__image" src="@Url.Content("~/img/05.png")" alt="image"></div>
-                            <div class="item__right__image-right rellax" data-rellax-speed="2"><img class="item__right__image" src="@Url.Content("~/img/06.png")" alt=""></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-5 col-md-12">
-                        <div class="item__left pl-3">
-                            <img class="item__left__image" src="@Url.Content("~/img/services/icon-fc.svg")" alt="image">
-                            <h2 class="item__left__title color-darkblue">Financial Counselling</h2>
-                            <p class="item__left__content">
-                                AKPK offers counselling and advice on managing your financial wisely - from budgeting, money management and credit related issues.
-                            </p>
-                            <p><a href="#" class="btn btn-rounded btn-info text-white">READ MORE <span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="item row wow fadeInUp">
-                    <div class="col-lg-5 col-md-12">
-                        <div class="item__left pr-3">
-                            <img class="item__left__image" src="@Url.Content("~/img/services/icon-dmp.svg")" alt="image">
-                            <h2 class="item__left__title color-darkblue">Debt Management Programme</h2>
-                            <p class="item__left__content">
-                                Our counsellors will work with you to develop a personalised debt repayment plan in consultation
-                                with your financial service providers.
-                            </p>
-                            <p><a href="#" class="btn btn-rounded btn-info text-white">READ MORE <span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
-                        </div>
-                    </div>
-                    <div class="col-lg-7 col-md-12">
-                        <div class="item__right">
-                            <div class="item__right__image-left-3 rellax" data-rellax-speed="4"><img class="item__right__image" src="@Url.Content("~/img/07.png")" alt=""></div>
-                            <div class="item__right__image-right-3"><img class="item__right__image" src="@Url.Content("~/img/13.png")" alt="image"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <div class="empty_3"></div>
         </div>
     </section>
     <!-- =====================
-        Client Testimonial
+        Our Publications
     ========================-->
-    <section id="clienttestimonial">
-        <!-- <div class="empty_3"></div> -->
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-5 col-sm-12 pr-0">
-                    <div class="empty_3"></div>
-                    <h6 class="testi-header color-secondary">CLIENT TESTIMONIAL</h6>
-                    <div class="testimonial-slide">
-                        <div class="testi-content">
-                            <h4 class="color-darkblue">The program they came up with is not an undue hardship. I can handle it easily. I'm in control of my life again and it feels really good.</h4>
-                            <h6 class="color-darkblue">FATTAYAH HAMID, <span class="job">Content Specialist</span></h6>
+    @if (Model.PublicationTopList.Count() > 0)
+    {
+        <section id="ourpublications">
+            <div class="empty_6"></div>
+            <div class="container">
+                <h6 class="color-secondary">OUR PUBLICATIONS</h6>
+                <a href="@Url.Action("BrowsePublications", "Home", new { area = "RnP" })" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
+                <h1 class="color-darkblue">Publications</h1>
+                <div class="empty_3"></div>
+                <div class="row">
+                    @foreach (var publication in Model.PublicationTopList)
+                    {
+                        <div class="col-lg-6 col-sm-12">
+                            <div class="publications__wrapper wow fadeInUp">
+                                <div class="publications_col_left card__top">
+                                    <div class="card__top__wapper">
+                                        <img class="card__top__image" src="@Url.Content("~/Data/images/" + publication.CoverPictures.FirstOrDefault()?.FilePath)" alt="image">
+                                        <div class="share-wrap">
+                                            <div class="share-button sharer">
+                                                <span class="share-icon">
+                                                    <i class="material-icons">share</i>
+                                                </span>
+                                                <div class="social top center"></div>
+                                            </div>
+                                            <span class="heart-icon"><i class="la la-heart-o"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="publications_col_right">
+                                    <div class="card__body">
+                                        <a class="card__title" href="@Url.Action("PublicationDetails", "Home", new { area = "RnP", id = publication.ID })">@publication.Title</a>
+                                        <div class="card__author">
+                                            <a class="card__col-left" href="#">
+                                                <span class="card__avatar">
+                                                    <img class="card__avatar__image" src="@Url.Content("~/Data/images/" + publication.AuthorPictures.FirstOrDefault()?.FilePath)" alt="image">
+                                                </span>
+                                                <span class="card__name-wrap">
+                                                    <span class="card__instructby">Published by</span>
+                                                    <span class="card__author-name">@publication.Author</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div class="card__text">@publication.Description</div>
+                                        <div class="card__info">
+                                            <div class="card__col-left">
+                                                <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">@publication.Category</span></span></div>
+                                                <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">@publication.Year</span></span></div>
+                                            </div>
+                                            <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="testi-content">
-                            <h4 class="color-darkblue">The program they came up with is not an undue hardship. I can handle it easily. I'm in control of my life again and it feels really good.</h4>
-                            <h6 class="color-darkblue">ADILA, <span class="job">Content Specialist</span></h6>
-                        </div>
-                    </div>
+                    }
                 </div>
-                <div class="col-lg-7 col-sm-12 pr-0">
-                    <div class="col-right">
-                        <!-- <img src="img/image-2.jpg" alt="image" class="img-fluid rounded"> -->
-                        <iframe width="100%" height="400" src="https://www.youtube.com/embed/uBfh8ckHXCk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="empty_6 d-none d-sm-block"></div>
+        </section>
+    }
+
+
+    <!-- =====================
+       Our News & Articles
+    ========================-->
+    <section id="ournews" class="bg-main">
+        <div class="row ournews-container no-gutters">
+            <div class="col-lg-6">
+                <div class="empty_3"></div>
+                <div class="news-desc">
+                    <h6 class="color-secondary">LATEST NEWS</h6>
+                    <h1 class="color-darkblue">Learning Resources</h1>
+                    <p>Your trusted source of learning materials such as articles, infographics and videos including news headlines, interviews and statistical analysis</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="empty_3"></div>
+                <div class="news-carousel">
+                    <div class="owl-news">
+                        <div class="news-wrapper">
+                            <div class="news-container">
+                                <img src="@Url.Content("~/img/akpk-news-01.jpg")" alt="image">
+                                <div class="news-details">
+                                    <div class="news-title">Video raya AKPK ingatkan kita supaya bayar hutang</div>
+                                    <div class="news-info">
+                                        <span class="news-category">News</span>
+                                        <span class="news-separator"><i class="fas fa-circle"></i></span>
+                                        <span class="news-date">7 Sept 2019</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="news-wrapper">
+                            <div class="news-container">
+                                <img src="@Url.Content("~/img/akpk-news-02.jpg")" alt="image">
+                                <div class="news-details">
+                                    <div class="news-title">10 Ciri Yang Ada Pada Semua Rumah Idaman</div>
+                                    <div class="news-info">
+                                        <span class="news-category">Articles</span>
+                                        <span class="news-separator"><i class="fas fa-circle"></i></span>
+                                        <span class="news-date">7 Sept 2019</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="empty_3">&nbsp;</div>
     </section>
     <!-- =====================
         Learning Centre
@@ -375,461 +589,6 @@
                         </div>
                     </div>
                     <!-- /counter -->
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- =====================
-        Our Course
-    ========================-->
-    <section id="ourcourse" class="bg-main">
-        <div class="container">
-            <h6 class="color-secondary">OUR COURSE</h6>
-            <a href="#" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
-            <h1 class="color-darkblue">Featured Courses</h1>
-            <div class="empty_3"></div>
-            <div class="row">
-                <div class="card-slider owl-carousel">
-                    <div class="wow fadeInUp">
-                        <div class="card__wrapper">
-                            <div class="card__top">
-                                <div class="card__top__wapper">
-                                    <img class="card__top__image" src="@Url.Content("~/img/cover-1.jpg")" alt="image">
-                                    <div class="share-wrap">
-                                        <div class="share-button sharer">
-                                            <span class="share-icon">
-                                                <i class="material-icons">
-                                                    share
-                                                </i>
-                                            </span>
-                                            <div class="social top center"></div>
-                                        </div>
-                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                    </div>
-                                    <div class="badge"><span>RM128.90</span></div>
-                                </div>
-                            </div>
-                            <div class="card__body">
-                                <a class="card__title" href="#">Uruskan Aliran Tunai Anda: Simpan, Simpan, Simpan</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/8.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
-                                </div>
-                                <div class="card__text">Menabung satu jumlah setiap hari, contohnya RM 1 setiap hari.</div>
-                                <div class="card__info">
-                                    <div class="card__col-left">
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">5</span></div>
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">100</span></div>
-                                    </div>
-                                    <div class="card__col-right">
-                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wow fadeInUp" data-wow-delay=".5s">
-                        <div class="card__wrapper">
-                            <div class="card__top">
-                                <div class="card__top__wapper">
-                                    <img class="card__top__image" src="@Url.Content("~/img/cover-2.jpg")" alt="image">
-                                    <div class="share-wrap">
-                                        <div class="share-button sharer">
-                                            <span class="share-icon">
-                                                <i class="material-icons">share</i>
-                                            </span>
-                                            <div class="social top center"></div>
-                                        </div>
-                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                    </div>
-                                    <div class="badge"><span>RM40.90</span></div>
-                                </div>
-                            </div>
-                            <div class="card__body">
-                                <a class="card__title" href="#">The Complete Foundation Stock Trading</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/47.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Mu'adz Zulkifli</span></span></a>
-                                </div>
-                                <div class="card__text">Learn to trade the stock market by a trading firm CEO.</div>
-                                <div class="card__info">
-                                    <div class="card__col-left">
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">3</span></div>
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">1266</span></div>
-                                    </div>
-                                    <div class="card__col-right">
-                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wow fadeInUp" data-wow-delay=".7s">
-                        <div class="card__wrapper">
-                            <div class="card__top">
-                                <div class="card__top__wapper">
-                                    <img class="card__top__image" src="@Url.Content("~/img/cover-3.jpg")" alt="image">
-                                    <div class="share-wrap">
-                                        <div class="share-button sharer">
-                                            <span class="share-icon">
-                                                <i class="material-icons">share</i>
-                                            </span>
-                                            <div class="social top center"></div>
-                                        </div>
-                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                    </div>
-                                    <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
-                                </div>
-                            </div>
-                            <div class="card__body">
-                                <a class="card__title" href="#">The Complete Financial Analyst Training & Investing</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/68.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Noorhaliza Abu Bakar</span></span></a>
-                                </div>
-                                <div class="card__text">Succeed as a Financial Analyst & Investor by Award Winning MBA.</div>
-                                <div class="card__info">
-                                    <div class="card__col-left">
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">6</span></div>
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">3641</span></div>
-                                    </div>
-                                    <div class="card__col-right">
-                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">4.2</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wow fadeInUp" data-wow-delay=".9s">
-                        <div class="card__wrapper">
-                            <div class="card__top">
-                                <div class="courses__top__wapper">
-                                    <img class="card__top__image" src="@Url.Content("~/img/cover-4.jpg")" alt="image">
-                                    <div class="share-wrap">
-                                        <div class="share-button sharer">
-                                            <span class="share-icon">
-                                                <i class="material-icons">share</i>
-                                            </span>
-                                            <div class="social top center"></div>
-                                        </div>
-                                        <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                    </div>
-                                    <div class="badge"><s>RM100.00</s><span>RM69.99</span></div>
-                                </div>
-                            </div>
-                            <div class="card__body">
-                                <a class="card__title" href="#">Uruskan Aliran Tunai Anda: Simpan, Simpan, Simpan</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/2.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Instruct by</span><span class="card__author-name">Intan Noor Syakira</span></span></a>
-                                </div>
-                                <div class="card__text">Menabung satu jumlah setiap hari, contohnya RM 1 setiap hari.</div>
-                                <div class="card__info">
-                                    <div class="card__col-left">
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-book"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Total Modules">5</span></div>
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-graduation-cap"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Student Enrolled">100</span></div>
-                                    </div>
-                                    <div class="card__col-right">
-                                        <span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="empty_3"></div>
-        </div>
-    </section>
-    <!-- =====================
-        Our Instructors
-    ======================== -->
-    <section id="ourinstructors">
-        <div class="container">
-            <div class="row flex-column-reverse flex-md-row">
-                <div class="col-lg-7 col-sm-12">
-                    <div class="row">
-                        <div class="col-lg-6 col-sm-4">
-                            <div class="instructor-wrapper">
-                                <div class="iotm"><span class="card__icon"><i class="la la-trophy"></i></span><span data-toggle="tooltip" title="Instructor of The Month">IoTM</span></div>
-                                <div class="instructor-container element_instructor1">
-                                    <div class="element_column">
-                                        <div class="element_instructor">
-                                            <img src="@Url.Content("~/img/lect-01.jpg")" alt="image">
-                                            <div class="instructor-team-details">
-                                                <div class="instructor-team-name">Emma Watson</div>
-                                                <div class="instructor-team-job">AKPK Facilitator</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="element_column_back pt-6">
-                                        <p class="profile-text">Emma's been a proffesional software developer for over 35 years. During her career she has worked for major companies such as Fujitsu, Mitsubishi and Saab.</p>
-                                        <p class="more-link"><a href="#" class="color-secondary">View Full Profile<span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
-                                        <div class="mediasocial"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-4">
-                            <div class="instructor-wrapper">
-                                <div class="iotm"><span class="card__icon"><i class="la la-trophy"></i></span><span data-toggle="tooltip" title="Instructor of The Month">IoTM</span></div>
-                                <div class="instructor-container element_instructor2">
-                                    <div class="element_column">
-                                        <div class="element_instructor">
-                                            <img src="@Url.Content("~/img/lect-02.jpg")" alt="image">
-                                            <div class="instructor-team-details">
-                                                <div class="instructor-team-name">Abraham Smith</div>
-                                                <div class="instructor-team-job">Teacher</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="element_column_back pt-6">
-                                        <p class="profile-text">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-                                        </p>
-                                        <p class="more-link"><a href="#" class="color-secondary">View Full Profile<span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
-                                        <div class="mediasocial"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-sm-12">
-                    <div class="col-instructor-right pl-3">
-                        <h6 class="color-secondary">
-                            OUR INSTRUCTORS</h6>
-                            <h1 class="color-darkblue">Meet the Instructors</h1>
-                            <p class="mb-4">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-                            </p>
-                            <p class="pt-2"><a href="#" class="btn btn-rounded btn-info text-white">MEET NOW <span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- =====================
-        Our Publications
-    ========================-->
-    <section id="ourpublications">
-        <div class="empty_6"></div>
-        <div class="container">
-            <h6 class="color-secondary">OUR PUBLICATIONS</h6>
-            <a href="#" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
-            <h1 class="color-darkblue">Featured Publications</h1>
-            <div class="empty_3"></div>
-            <div class="row">
-                <div class="col-lg-6 col-sm-12">
-                    <div class="publications__wrapper wow fadeInUp">
-                        <div class="publications_col_left card__top">
-                            <div class="card__top__wapper">
-                                <img class="card__top__image" src="@Url.Content("~/img/cover-buku-1.jpg")" alt="image">
-                                <div class="share-wrap">
-                                    <div class="share-button sharer">
-                                        <span class="share-icon">
-                                            <i class="material-icons">share</i>
-                                        </span>
-                                        <div class="social top center"></div>
-                                    </div>
-                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="publications_col_right">
-                            <div class="card__body">
-                                <a class="card__title" href="#">The Tower & The Cloud:<br /> Higher Education in the Age of Cloud Computing</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/47.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Richard N.Kartz</span></span></a>
-                                </div>
-                                <div class="card__text">The emergence of the networked information economy is unleashing tow powerful forces.</div>
-                                <div class="card__info">
-                                    <div class="card__col-left">
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Books</span></span></div>
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
-                                    </div>
-                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-sm-12">
-                    <div class="publications__wrapper wow fadeInUp" data-wow-delay=".5s">
-                        <div class="publications_col_left card__top">
-                            <div class="card__top__wapper">
-                                <img class="card__top__image" src="@Url.Content("~/img/cover-buku-2.jpg")" alt="image">
-                                <div class="share-wrap">
-                                    <div class="share-button sharer">
-                                        <span class="share-icon">
-                                            <i class="material-icons">share</i>
-                                        </span>
-                                        <div class="social top center"></div>
-                                    </div>
-                                    <span class="heart-icon"><i class="la la-heart-o"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="publications_col_right">
-                            <div class="card__body">
-                                <a class="card__title" href="#">Cultivating Careers: <br /> Professional Development for Campus IT</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/8.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Published by</span><span class="card__author-name">Cynthia Golden</span></span></a>
-                                </div>
-                                <div class="card__text">This research provides an overview of current principles and practices for mentoring and developing IT professionals in higher education.</div>
-                                <div class="card__info">
-                                    <div class="card__col-left">
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-list-ul"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Type"><span class="d-inline-block">Research</span></span></div>
-                                        <div class="col-left__item"><span class="card__icon"><i class="la la-calendar"></i></span><span class="d-inline-block" data-toggle="tooltip" title="Publication Year"><span class="d-inline-block">2019</span></span></div>
-                                    </div>
-                                    <div class="card__col-right"><span class="card__icon"><i class="la la-star"></i></span><span class="d-inline-block" data-toggle="tooltip" title="14,000 learners rated 5 star">5.0</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="empty_6"></div>
-    </section>
-    <!-- =====================
-        e-Events
-    ========================-->
-    <section id="eevents" class="bg-main">
-        <div class="empty_3"></div>
-        <div class="container">
-            <h6 class="color-secondary">
-                E-EVENTS</6>
-                <a href="#" class="btn btn-outline-secondary btn-rounded float-right">VIEW ALL</a>
-                <h1 class="color-darkblue">Featured Events</h1>
-                <div class="empty_3"></div>
-                <div class="row">
-                    <div class="card-slider owl-carousel">
-                        <div class="card__wrapper wow fadeInUp">
-                            <div class="card__top">
-                                <div class="card__top__wapper">
-                                    <img class="card__top__image" src="@Url.Content("~/img/cover-5.jpg")" alt="image">
-                                </div>
-                            </div>
-                            <div class="card__body">
-                                <a class="card__title" href="#">Employee Engagement from A to Z</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/2.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Angela Jackson</span></span></a>
-                                </div>
-                                <div class="card__info">
-                                    <ul>
-                                        <li class="date"><span class="d-inline-block" data-toggle="tooltip" title="Event Date"><span class="card__icon"><i class="la la-calendar"></i></span></span>8 - 9 Sept, 2019</li>
-                                        <li class="place"><span class="d-inline-block" data-toggle="tooltip" title="Venue"><span class="card__icon"><i class="la la-map-marker"></i></span></span>PWTC, Kuala Lumpur</li>
-                                        <li class="eventname"><span class="d-inline-block" data-toggle="tooltip" title="Event type"><span class="card__icon"><i class="la la-list-ul"></i></span></span>Workshop</li>
-                                        <li class="status sellingfast"><span class="d-inline-block" data-toggle="tooltip" title="Seating Availability"><span class="card__icon"><i class="fas fa-chair"></i></span></span>Selling Fast</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card__wrapper wow fadeInUp" data-wow-delay=".5s">
-                            <div class="card__top">
-                                <div class="card__top__wapper"><img class="card__top__image" src="@Url.Content("~/img/cover-6.jpg")" alt="image"></div>
-                            </div>
-                            <div class="card__body">
-                                <a class="card__title" href="#">Financial Management Excellence Certificate</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/8.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Norman Bier</span></span></a>
-                                </div>
-                                <div class="card__info">
-                                    <ul>
-                                        <li class="date"><span class="card__icon"><i class="la la-calendar"></i></span>3 - 5 Sept, 2019</li>
-                                        <li class="place"><span class="card__icon"><i class="la la-map-marker"></i></span>KLCC, Kuala Lumpur</li>
-                                        <li class="eventname"><span class="card__icon"><i class="la la-list-ul"></i></span>Symposium</li>
-                                        <li class="status available"><span class="card__icon"><i class="fas fa-chair"></i></span>Available</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card__wrapper wow fadeInUp" data-wow-delay=".7s">
-                            <div class="card__top">
-                                <div class="card__top__wapper"><img class="card__top__image" src="@Url.Content("~/img/cover-7.jpg")" alt="image"></div>
-                            </div>
-                            <div class="card__body">
-                                <a class="card__title" href="#">Sales Enablement Leadership & Learning</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/47.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Antony Awaida</span></span></a>
-                                </div>
-                                <div class="card__info">
-                                    <ul>
-                                        <li class="date"><span class="card__icon"><i class="la la-calendar"></i></span>3 - 7 Sept, 2019</li>
-                                        <li class="place"><span class="card__icon"><i class="la la-map-marker"></i></span>PICC, Kuala Lumpur</li>
-                                        <li class="eventname"><span class="card__icon"><i class="la la-list-ul"></i></span>Exhibition</li>
-                                        <li class="status available"><span class="card__icon"><i class="fas fa-chair"></i></span>Available</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card__wrapper wow fadeInUp" data-wow-delay=".9s">
-                            <div class="card__top">
-                                <div class="card__top__wapper"><img class="card__top__image" src="@Url.Content("~/img/cover-8.jpg")" alt="image"></div>
-                            </div>
-                            <div class="card__body">
-                                <a class="card__title" href="#">AKPK International Conference & Expo</a>
-                                <div class="card__author">
-                                    <a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="@Url.Content("~/img/68.jpg")" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">Lead Speaker</span><span class="card__author-name">Aazman Iskandar</span></span></a>
-                                </div>
-                                <div class="card__info">
-                                    <ul>
-                                        <li class="date"><span class="card__icon"><i class="la la-calendar"></i></span>8 - 9 Sept, 2019</li>
-                                        <li class="place"><span class="card__icon"><i class="la la-map-marker"></i></span>Bukit Jalil Conference Hall</li>
-                                        <li class="eventname"><span class="card__icon"><i class="la la-list-ul"></i></span>Workshop</li>
-                                        <li class="status soldout"><span class="card__icon"><i class="fas fa-chair"></i></span>Sold Out</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="empty_6"></div>
-        </div>
-    </section>
-    <!-- =====================
-       Our News & Articles
-    ========================-->
-    <section id="ournews" class="bg-main">
-        <div class="row ournews-container no-gutters">
-            <div class="col-lg-6">
-                <div class="empty_3"></div>
-                <div class="news-desc">
-                    <h6 class="color-secondary">LATEST NEWS</h6>
-                    <h1 class="color-darkblue">Our News & Articles</h1>
-                    <p>Your trusted source for breaking news, analysis, exclusive interviews, headlines, and videos at AKPK.org.my</p>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="empty_3"></div>
-                <div class="news-carousel">
-                    <div class="owl-news">
-                        <div class="news-wrapper">
-                            <div class="news-container">
-                                <img src="@Url.Content("~/img/akpk-news-01.jpg")" alt="image">
-                                <div class="news-details">
-                                    <div class="news-title">Video raya AKPK ingatkan kita supaya bayar hutang</div>
-                                    <div class="news-info">
-                                        <span class="news-category">News</span>
-                                        <span class="news-separator"><i class="fas fa-circle"></i></span>
-                                        <span class="news-date">7 Sept 2019</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="news-wrapper">
-                            <div class="news-container">
-                                <img src="@Url.Content("~/img/akpk-news-02.jpg")" alt="image">
-                                <div class="news-details">
-                                    <div class="news-title">10 Ciri Yang Ada Pada Semua Rumah Idaman</div>
-                                    <div class="news-info">
-                                        <span class="news-category">Articles</span>
-                                        <span class="news-separator"><i class="fas fa-circle"></i></span>
-                                        <span class="news-date">7 Sept 2019</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

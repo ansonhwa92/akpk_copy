@@ -1,0 +1,195 @@
+﻿@model FEP.WebApiModel.Carousel.CarouselModel
+
+@{
+    ViewBag.Title = "Carousel Sequence Management";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/CarouselManagement/Carousel" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/CarouselManagement/Carousel">Carousel Management</a></li>
+                                <li class="breadcrumb-item"><a href="~/CarouselManagement/Carousel">Carousel Sequence Management</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Sequences of Carousel</h1>
+                    <div class="header-text">Manage carousels sequence.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="table-responsive" data-toggle="lists">
+    <div class="d-flex pb-4 align-items-center">
+        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>    </div>
+    <!-- Table -->
+    <table class="table tableStyle1 tabledata">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Description)</th>
+                <th width="150px">@Html.DisplayNameFor(model => model.CarouselImage)</th>
+                <th>@Html.DisplayNameFor(model => model.Sequence)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section ContentScript{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var sequenceList = [];
+            var table = $('.tabledata').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    "type": "post",
+                    "url": '@(WebApiURL)Carousels/Carousel/GetAll',
+                    "data": function (filter) {
+                        filter.Title = $('#Filters_Title').val();
+                        filter.Description = $('#Filters_Description').val();
+                    },
+                    dataSrc: function (json) {
+                        console.log(json.data);
+                        sequenceList = json.data;
+                        return json.data;
+                    },
+                    dataFilter: function (res) {
+                        // do what you need to the data before it loads to the table
+                        // for debugging only for now
+                        return res;
+                    },
+                    error: function (x, y) {
+                        console.log(x);
+                    }
+                },
+                columns: [
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'Title',
+                        sortable: true
+                    },
+                    {
+                        data: 'Description',
+                        sortable: true
+                    },
+                    {
+                        data: 'CarouselImage',
+                        sortable: false,
+                        render: function (data, type, row) {
+                            return '<img src="/Data/images/carousel/' + data + '" width="150px;"/>';
+                        }
+                    },
+                    {
+                        data: 'Sequence',
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            var $select = $('<select/>', { 'class': 'ctrl-status' });
+                            $.each(sequenceList, function (k, v) {
+                                var $option = $("<option/>", {
+                                    "text": v.Sequence,
+                                    "value": v.Sequence
+                                });
+
+                                if (row.Sequence === v.Sequence) {
+                                    $option.attr("selected", "selected");
+                                }
+                                $select.append($option);
+                            });
+                            return $select.prop("outerHTML");
+                        }
+                    },
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+
+                            var action = "";
+                            var canEdit = true;
+                            @*var canview = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationView));*@
+
+                            action = '<div class="icon-action">';
+
+                            if (canEdit) {
+                                action += '<a href="@Url.Action("Details", "Carousel", new { area = "CarouselManagement" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>&nbsp;';
+                            }
+                            action += '</div>';
+
+                            return action;
+                        }
+                    }
+                ],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: false,
+                autoWidth: false,
+                order: [[4, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_ carousels"
+                },
+                dom: 'rtip'
+            });
+
+            $('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#quickSearchBtn').click(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change(function () {
+                table.page.len($(this).val()).draw();
+            });
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt', function () {
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            }).draw();
+
+            // Handle change event for status selection control
+            $('.tabledata').on('change', '.ctrl-status', function(){
+                var data = $('.tabledata').DataTable().row($(this).closest('tr')).data();
+                
+                var URL = "@(WebApiURL)Carousels/Carousel/UpdateSequence";
+                var data = {
+                    Id: data.Id,
+                    Sequence: parseInt($(this).val())
+                };
+
+                $.post(URL, data, function (data, status) {
+                    table.ajax.reload();
+                });
+            });
+        });
+
+    </script>
+
+}

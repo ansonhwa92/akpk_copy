@@ -1,0 +1,21 @@
+﻿@{
+    //if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseVerify) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseApproval1) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseApproval2) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseApproval3))
+    //{
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="menu-list">
+                <h6 class="color-darkblue">Menu</h6>
+                <a class="dropdown-item" href="@Url.Action("Index", "Carousel", new { area = "CarouselManagement" })">Manage Carousel</a>
+                <a class="dropdown-item" href="@Url.Action("Create", "Carousel", new { area = "CarouselManagement" })">Create Carousel</a>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="menu-list">
+                <h6 class="color-darkblue">Setting</h6>
+                <a class="dropdown-item" href="@Url.Action("SequenceList", "Carousel", new { area = "CarouselManagement" })">Carousel Sequence</a>
+            </div>
+        </div>
+    </div>
+    @*}*@
+}

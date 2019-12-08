@@ -13,6 +13,9 @@ namespace FEP.WebApiModel.FileDocuments
 
         [Display(Name = "File Name")]
         public string FileName { get; set; }
+
+        [Display(Name = "File Location")]
+        public string FilePath { get; set; }
     }
 
 }
